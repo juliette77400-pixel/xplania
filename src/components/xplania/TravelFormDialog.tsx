@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
-import type { TravelFormData, TravelPlan } from "@/types/travel";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import StepBasicInfo from "@/components/xplania/form-steps/StepBasicInfo";
 import StepTravelerProfile from "@/components/xplania/form-steps/StepTravelerProfile";
 import StepObjectives from "@/components/xplania/form-steps/StepObjectives";
@@ -13,7 +15,7 @@ import StepTransport from "@/components/xplania/form-steps/StepTransport";
 import StepConstraints from "@/components/xplania/form-steps/StepConstraints";
 import StepEnvironment from "@/components/xplania/form-steps/StepEnvironment";
 import StepInspirations from "@/components/xplania/form-steps/StepInspirations";
-import TravelPlanResults from "@/components/xplania/TravelPlanResults";
+import DashboardCards from "@/components/xplania/DashboardCards";
 
 const STEP_LABELS = [
   "Informations de base",
@@ -80,8 +82,11 @@ interface TravelFormDialogProps {
 const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<TravelFormData>(defaultFormData);
-  const [plan, setPlan] = useState<TravelPlan | null>(null);
+  const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
   const [generating, setGenerating] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const updateForm = (partial: Partial<TravelFormData>) => {
     setFormData((prev) => ({ ...prev, ...partial }));
@@ -89,74 +94,51 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
 
   const totalSteps = STEP_LABELS.length;
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setGenerating(true);
-    const dest = formData.destination || "votre destination";
+    setShowDashboard(true);
+    setAiError(null);
+    setRecommendations(null);
 
-    setTimeout(() => {
-      const days = formData.duration ? parseInt(formData.duration) || 7 : 7;
-      const budget = formData.totalBudget || 1500;
-
-      setPlan({
-        budgetEstimate: {
-          total: budget,
-          perDay: Math.round(budget / days),
-          breakdown: [
-            { category: "Hébergement", amount: Math.round(budget * 0.35) },
-            { category: "Transport", amount: Math.round(budget * 0.25) },
-            { category: "Alimentation", amount: Math.round(budget * 0.2) },
-            { category: "Activités", amount: Math.round(budget * 0.15) },
-            { category: "Divers", amount: Math.round(budget * 0.05) },
-          ],
-        },
-        documents: [
-          "Passeport valide (6 mois après retour)",
-          `Visa requis pour ${dest} — vérifiez les conditions spécifiques au pays`,
-          "Assurance voyage internationale couvrant la région",
-          "Copie des réservations (hébergement + transport)",
-          `Carte de vaccination spécifique à ${dest} si nécessaire`,
-          formData.hasInternationalPermit === "Oui" ? "Permis de conduire international" : "",
-        ].filter(Boolean),
-        luggage: [
-          `Vêtements adaptés au climat de ${dest} (${formData.climatePreference || "vérifiez la météo locale"})`,
-          "Trousse de toilette (format cabine)",
-          `Adaptateur électrique compatible avec ${dest}`,
-          "Médicaments personnels + trousse premiers soins",
-          "Copies documents importants (papier + numérique)",
-          ...(formData.baggageTypes || []).map((b) => `${b} recommandé selon vos préférences`),
-        ],
-        culturalTips: [
-          `Informez-vous sur les coutumes et traditions spécifiques de ${dest}`,
-          `Apprenez les salutations et expressions courantes utilisées à ${dest}`,
-          `Respectez les codes vestimentaires en vigueur dans la région de ${dest}`,
-          `Renseignez-vous sur les pourboires pratiqués à ${dest}`,
-          `Téléchargez une app de traduction hors-ligne adaptée à la langue de ${dest}`,
-          ...(formData.culturalImmersion === "Oui" ? [`Explorez les quartiers authentiques et marchés locaux de ${dest} pour une immersion complète`] : []),
-        ],
-        weatherInfo: `Consultez la météo spécifique à ${dest} pour la période du ${formData.departureDate || "départ"} au ${formData.returnDate || "retour"}. Climat attendu : ${formData.climatePreference || "non précisé"}.`,
-        localRecommendations: [
-          `Privilégiez les restaurants fréquentés par les habitants de ${dest}`,
-          `Utilisez les transports locaux de ${dest} pour une immersion authentique`,
-          `Visitez les marchés et commerces typiques de ${dest}`,
-          `Réservez les activités populaires de ${dest} à l'avance`,
-          `Gardez de la monnaie locale de ${dest} sur vous`,
-          ...(formData.environmentalSensitivity === "Forte" ? [`Privilégiez les hébergements et transports éco-responsables à ${dest}`] : []),
-        ],
+    try {
+      const { data, error } = await supabase.functions.invoke("travel-recommendations", {
+        body: { formData },
       });
+
+      if (error) {
+        throw new Error(error.message || "Erreur lors de l'appel IA");
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      setRecommendations(data.recommendations);
+    } catch (err: any) {
+      const message = err?.message || "Erreur inconnue";
+      setAiError(message);
+      toast({
+        title: "Erreur",
+        description: message,
+        variant: "destructive",
+      });
+    } finally {
       setGenerating(false);
-    }, 2000);
+    }
   };
 
   const handleClose = () => {
     onOpenChange(false);
     setTimeout(() => {
       setStep(0);
-      setPlan(null);
+      setShowDashboard(false);
+      setRecommendations(null);
+      setAiError(null);
       setFormData(defaultFormData);
     }, 300);
   };
 
-  if (plan) {
+  if (showDashboard) {
     return (
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto glass-card border-border">
@@ -165,7 +147,12 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
               Votre plan de voyage — {formData.destination}
             </DialogTitle>
           </DialogHeader>
-          <TravelPlanResults plan={plan} formData={formData} />
+          <DashboardCards
+            formData={formData}
+            recommendations={recommendations}
+            loading={generating}
+            error={aiError}
+          />
         </DialogContent>
       </Dialog>
     );
