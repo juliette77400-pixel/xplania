@@ -224,7 +224,7 @@ const GuideValisePage = () => {
 
         <VoyageAnalysis tripData={tripData} destination={destination} days={days} />
 
-        <WeatherSection weather={weather} destination={destination} />
+        <WeatherSection destination={destination} />
 
         <LuggageModes activeMode={luggageMode} onSelect={handleModeChange} />
 
