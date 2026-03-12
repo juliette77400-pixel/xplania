@@ -1,13 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle, Baby, Dog, Utensils, Accessibility, Wallet, Timer, Leaf, Fish, Wheat, Milk, Moon, Star, Shell, Nut } from "lucide-react";
+import { AlertTriangle, Baby, Dog, Accessibility, Wallet, Timer, Utensils, Leaf, Wheat, Milk, Moon, Star, Shell, Nut } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
 const CONSTRAINTS: { label: string; icon: React.ReactNode }[] = [
   { label: "Voyage avec enfant", icon: <Baby className="w-4 h-4" /> },
   { label: "Voyage avec animal", icon: <Dog className="w-4 h-4" /> },
-  { label: "Régime alimentaire particulier", icon: <Utensils className="w-4 h-4" /> },
   { label: "Mobilité réduite", icon: <Accessibility className="w-4 h-4" /> },
   { label: "Budget limité", icon: <Wallet className="w-4 h-4" /> },
   { label: "Temps limité", icon: <Timer className="w-4 h-4" /> },
@@ -114,6 +113,34 @@ const StepConstraints = ({ data, update }: Props) => {
             placeholder="Ex : Fauteuil roulant, canne, assistance aéroport..."
             value={data.mobilityDetails}
             onChange={(e) => update({ mobilityDetails: e.target.value })}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+      )}
+
+      {data.constraints.includes("Budget limité") && (
+        <div className="space-y-2">
+          <Label className="text-foreground font-semibold flex items-center gap-2">
+            <Wallet className="w-4 h-4 text-primary" /> Détaillez vos contraintes financières
+          </Label>
+          <Input
+            placeholder="Ex : Maximum 800€ tout compris, hébergement économique..."
+            value={data.budgetDetails}
+            onChange={(e) => update({ budgetDetails: e.target.value })}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+      )}
+
+      {data.constraints.includes("Temps limité") && (
+        <div className="space-y-2">
+          <Label className="text-foreground font-semibold flex items-center gap-2">
+            <Timer className="w-4 h-4 text-primary" /> Précisez vos contraintes de durée
+          </Label>
+          <Input
+            placeholder="Ex : Seulement 3 jours, départ impératif le vendredi..."
+            value={data.timeDetails}
+            onChange={(e) => update({ timeDetails: e.target.value })}
             className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
           />
         </div>

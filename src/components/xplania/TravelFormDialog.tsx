@@ -37,6 +37,7 @@ const defaultFormData: TravelFormData = {
   returnDate: "",
   duration: "",
   tripTypes: [],
+  tripTypeOther: "",
   travelerType: "",
   age: 0,
   activityLevel: "",
@@ -57,12 +58,15 @@ const defaultFormData: TravelFormData = {
   accommodationStanding: "",
   bookingStatus: "",
   hasStopover: "",
+  stopoverCount: 0,
   localTransport: [],
   hasInternationalPermit: "",
   constraints: [],
   childrenCount: 0,
   animalDetails: "",
   mobilityDetails: "",
+  budgetDetails: "",
+  timeDetails: "",
   importantNotes: "",
   dietaryPreferences: [],
   dietaryOther: "",
@@ -77,9 +81,11 @@ const defaultFormData: TravelFormData = {
 interface TravelFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onTripGenerated?: (data: TravelFormData, recs: TravelRecommendations) => void;
+  onGenerating?: (loading: boolean) => void;
 }
 
-const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
+const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }: TravelFormDialogProps) => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<TravelFormData>(defaultFormData);
   const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
@@ -99,6 +105,7 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
     setShowDashboard(true);
     setAiError(null);
     setRecommendations(null);
+    onGenerating?.(true);
 
     try {
       const { data, error } = await supabase.functions.invoke("travel-recommendations", {
@@ -114,6 +121,7 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
       }
 
       setRecommendations(data.recommendations);
+      onTripGenerated?.(formData, data.recommendations);
     } catch (err: any) {
       const message = err?.message || "Erreur inconnue";
       setAiError(message);
@@ -124,6 +132,7 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
       });
     } finally {
       setGenerating(false);
+      onGenerating?.(false);
     }
   };
 

@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Train, Plane, Hotel, CheckCircle, Package, Ship, Bus, Car, Bike, TrainFront, HelpCircle, FileCheck } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
@@ -67,6 +68,23 @@ const StepTransport = ({ data, update }: Props) => {
           ))}
         </div>
       </div>
+
+      {data.hasStopover === "Oui" && (
+        <div className="space-y-2">
+          <Label className="text-foreground font-semibold flex items-center gap-2">
+            <Ship className="w-4 h-4 text-primary" /> Combien d'escales ?
+          </Label>
+          <Input
+            type="number"
+            min={1}
+            max={10}
+            value={data.stopoverCount || ""}
+            onChange={(e) => update({ stopoverCount: parseInt(e.target.value) || 0 })}
+            placeholder="Ex : 1"
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground w-32"
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label className="text-foreground font-semibold">Transport local</Label>
