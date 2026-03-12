@@ -34,7 +34,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
     try {
       await emailjs.send(
         "service_23bwf9g",
-        "template_206dhup",
+        "template_2o6dhup",
         {
           rating: `${rating}`,
           suggestions: suggestions.trim(),
