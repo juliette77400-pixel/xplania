@@ -54,9 +54,10 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
       setSending(false);
       setSent(true);
       toast.success("Merci pour votre feedback, vous contribuez à améliorer Xplania ✨");
-    } catch {
+    } catch (err) {
+      console.error("EmailJS error:", err);
       setSending(false);
-      toast.error("Une erreur est survenue lors de l'envoi.");
+      toast.error("Une erreur est survenue lors de l'envoi. Vérifiez la console.");
     }
   };
 
