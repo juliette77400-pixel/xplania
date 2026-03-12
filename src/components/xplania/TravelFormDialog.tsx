@@ -65,6 +65,8 @@ const defaultFormData: TravelFormData = {
   childrenCount: 0,
   animalDetails: "",
   mobilityDetails: "",
+  budgetDetails: "",
+  timeDetails: "",
   importantNotes: "",
   dietaryPreferences: [],
   dietaryOther: "",
