@@ -196,8 +196,8 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                   {i + 1}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{tip.title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{tip.description}</p>
+                  <p className="text-sm font-semibold text-foreground">{toText(tip.title)}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{toText(tip.description)}</p>
                 </div>
               </div>
             ))}
