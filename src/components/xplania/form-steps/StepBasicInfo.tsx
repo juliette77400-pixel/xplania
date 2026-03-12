@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MapPin, Calendar, Clock, Compass, Palmtree, Mountain, Drama, UtensilsCrossed, Dumbbell, Camera, Flame, Snail, Plane, HelpCircle } from "lucide-react";
+import { MapPin, Calendar, Clock, Compass, Palmtree, Mountain, Drama, UtensilsCrossed, Dumbbell, Camera, Flame, Snail, Plane, HelpCircle, Search } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
+import { searchDeparturePoints, formatDeparturePoint, type DeparturePoint } from "@/data/departure-points";
 
 const TRIP_TYPES: { label: string; icon: React.ReactNode }[] = [
   { label: "Exploration", icon: <Compass className="w-4 h-4" /> },
@@ -17,15 +18,6 @@ const TRIP_TYPES: { label: string; icon: React.ReactNode }[] = [
   { label: "Autre", icon: <HelpCircle className="w-4 h-4" /> },
 ];
 
-const DEPARTURE_SUGGESTIONS = [
-  "Paris - CDG (Aéroport)", "Paris - Orly (Aéroport)", "Lyon - Saint-Exupéry (Aéroport)",
-  "Marseille - Provence (Aéroport)", "Nice - Côte d'Azur (Aéroport)", "Toulouse - Blagnac (Aéroport)",
-  "Bordeaux - Mérignac (Aéroport)", "Nantes - Atlantique (Aéroport)", "Lille - Lesquin (Aéroport)",
-  "Strasbourg (Gare/Aéroport)", "Montpellier (Aéroport)", "Bruxelles - Zaventem (Aéroport)",
-  "Genève (Aéroport)", "Londres - Heathrow (Aéroport)", "Amsterdam - Schiphol (Aéroport)",
-  "Paris (Ville)", "Lyon (Ville)", "Marseille (Ville)", "Bordeaux (Ville)", "Nice (Ville)",
-];
-
 interface Props {
   data: TravelFormData;
   update: (d: Partial<TravelFormData>) => void;
@@ -33,7 +25,7 @@ interface Props {
 
 const StepBasicInfo = ({ data, update }: Props) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<DeparturePoint[]>([]);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   const toggleTripType = (opt: string) => {
@@ -47,19 +39,13 @@ const StepBasicInfo = ({ data, update }: Props) => {
 
   const handleDepartureChange = (value: string) => {
     update({ departureLocation: value });
-    if (value.length >= 2) {
-      const filtered = DEPARTURE_SUGGESTIONS.filter((s) =>
-        s.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredSuggestions(filtered);
-      setShowSuggestions(filtered.length > 0);
-    } else {
-      setShowSuggestions(false);
-    }
+    const results = searchDeparturePoints(value);
+    setFilteredSuggestions(results);
+    setShowSuggestions(results.length > 0);
   };
 
-  const selectSuggestion = (suggestion: string) => {
-    update({ departureLocation: suggestion });
+  const selectSuggestion = (point: DeparturePoint) => {
+    update({ departureLocation: formatDeparturePoint(point) });
     setShowSuggestions(false);
   };
 
@@ -91,31 +77,40 @@ const StepBasicInfo = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold flex items-center gap-2">
           <Plane className="w-4 h-4 text-primary" /> Lieu de départ
         </Label>
-        <Input
-          placeholder="Tapez pour rechercher (aéroport, ville, pays...)"
-          value={data.departureLocation}
-          onChange={(e) => handleDepartureChange(e.target.value)}
-          onFocus={() => {
-            if (data.departureLocation.length >= 2) {
-              const filtered = DEPARTURE_SUGGESTIONS.filter((s) =>
-                s.toLowerCase().includes(data.departureLocation.toLowerCase())
-              );
-              setFilteredSuggestions(filtered);
-              setShowSuggestions(filtered.length > 0);
-            }
-          }}
-          className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-        />
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <Input
+            placeholder="Tapez une ville, un aéroport ou un code IATA..."
+            value={data.departureLocation}
+            onChange={(e) => handleDepartureChange(e.target.value)}
+            onFocus={() => {
+              const results = searchDeparturePoints(data.departureLocation);
+              if (results.length > 0) {
+                setFilteredSuggestions(results);
+                setShowSuggestions(true);
+              }
+            }}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground pl-10"
+          />
+        </div>
         {showSuggestions && (
-          <div className="absolute z-50 w-full mt-1 glass-card border border-border rounded-xl max-h-48 overflow-y-auto shadow-lg">
-            {filteredSuggestions.map((s) => (
+          <div className="absolute z-50 w-full mt-1 glass-card border border-border rounded-xl max-h-64 overflow-y-auto shadow-lg">
+            {filteredSuggestions.map((point) => (
               <button
-                key={s}
+                key={`${point.code}-${point.type}`}
                 type="button"
-                onClick={() => selectSuggestion(s)}
-                className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors first:rounded-t-xl last:rounded-b-xl"
+                onClick={() => selectSuggestion(point)}
+                className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors first:rounded-t-xl last:rounded-b-xl flex items-center gap-3"
               >
-                {s}
+                <span className="text-base">{point.type === "airport" ? "✈️" : "🚄"}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium truncate">
+                    {point.city} — {point.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {point.country} • [{point.code}]
+                  </p>
+                </div>
               </button>
             ))}
           </div>
