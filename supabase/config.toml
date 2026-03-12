@@ -1,1 +1,4 @@
 project_id = "alhhvpqtskymltokcgov"
+
+[functions.travel-recommendations]
+verify_jwt = false
