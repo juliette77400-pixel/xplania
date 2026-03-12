@@ -105,6 +105,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
     setShowDashboard(true);
     setAiError(null);
     setRecommendations(null);
+    onGenerating?.(true);
 
     try {
       const { data, error } = await supabase.functions.invoke("travel-recommendations", {
@@ -120,6 +121,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
       }
 
       setRecommendations(data.recommendations);
+      onTripGenerated?.(formData, data.recommendations);
     } catch (err: any) {
       const message = err?.message || "Erreur inconnue";
       setAiError(message);
@@ -130,6 +132,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
       });
     } finally {
       setGenerating(false);
+      onGenerating?.(false);
     }
   };
 
