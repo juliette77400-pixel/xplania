@@ -7,6 +7,7 @@ import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimat
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
 import WeatherSection from "@/components/valise/WeatherSection";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
+import AiTipCard from "@/components/valise/AiTipCard";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import ActivityItems from "@/components/valise/ActivityItems";
 import CulturalTips from "@/components/valise/CulturalTips";
@@ -132,7 +133,6 @@ function buildCategories(mode: LuggageMode): Record<string, ChecklistItem[]> {
   return { ...baseCategories, ...(modeExtras[mode] || {}) };
 }
 
-// Auto-detect suggested mode from trip data
 function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): LuggageMode | null {
   const all = [...(tripTypes || []), ...(objectives || [])].join(" ").toLowerCase();
   if (all.includes("plage") || all.includes("balnéaire") || all.includes("mer")) return "plage";
@@ -161,13 +161,18 @@ const GuideValisePage = () => {
   const [generationStep, setGenerationStep] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
-  const [hasGenerated, setHasGenerated] = useState(false);
+  const [isSwitchingMode, setIsSwitchingMode] = useState(false);
 
-  const handleModeChange = (mode: LuggageMode) => {
+  const handleModeChange = useCallback(async (mode: LuggageMode) => {
+    if (mode === luggageMode) return;
+    setIsSwitchingMode(true);
     setLuggageMode(mode);
+    // Simulate AI analysis delay for perceived performance
+    await new Promise((r) => setTimeout(r, 1200));
     setCategories(buildCategories(mode));
-    toast.success(`Mode "${mode}" activé`, { description: "La checklist a été adaptée." });
-  };
+    setIsSwitchingMode(false);
+    toast.success(`Mode "${mode}" activé`, { description: "La checklist a été adaptée par l'IA." });
+  }, [luggageMode]);
 
   const toggleItem = (cat: string, idx: number) => {
     setCategories((prev) => ({
@@ -214,7 +219,6 @@ const GuideValisePage = () => {
     }
     await new Promise((r) => setTimeout(r, 400));
     setIsGenerating(false);
-    setHasGenerated(true);
     setActiveSection(7);
     toast.success("Valise générée ! 🧳", { description: "Checklist personnalisée prête." });
   }, []);
@@ -236,8 +240,6 @@ const GuideValisePage = () => {
 
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
-
-  // Derive trip type label for outfit filtering
   const tripTypeLabel = tripData?.tripTypes?.[0] || tripData?.objectives?.[0] || "";
 
   return (
@@ -250,7 +252,7 @@ const GuideValisePage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-8 max-w-4xl space-y-8">
+      <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
         <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} />
 
         <GenerationAnimation isGenerating={isGenerating} currentStep={generationStep} />
@@ -259,15 +261,44 @@ const GuideValisePage = () => {
 
         <WeatherSection destination={destination} />
 
-        <LuggageModes activeMode={luggageMode} onSelect={handleModeChange} suggestedMode={suggestedMode} />
+        {/* Mode selection pills + AI tip */}
+        <div className="space-y-4">
+          <LuggageModes
+            activeMode={luggageMode}
+            onSelect={handleModeChange}
+            suggestedMode={suggestedMode}
+            isLoading={isSwitchingMode}
+          />
+          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} />
+        </div>
 
-        <ChecklistSection
-          categories={categories}
-          onToggle={toggleItem}
-          onAdd={addItem}
-          onRemove={removeItem}
-          isLoading={isRegenerating}
-        />
+        {/* Dashboard checklist cards */}
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-bold text-foreground">Ma checklist</h2>
+              <p className="text-xs text-muted-foreground">{checkedItems}/{totalItems} objets sélectionnés</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-24 h-2 rounded-full bg-muted/50 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
+                  style={{ width: `${totalItems > 0 ? (checkedItems / totalItems) * 100 : 0}%` }}
+                />
+              </div>
+              <span className="text-xs font-bold text-primary">
+                {totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0}%
+              </span>
+            </div>
+          </div>
+          <ChecklistSection
+            categories={categories}
+            onToggle={toggleItem}
+            onAdd={addItem}
+            onRemove={removeItem}
+            isLoading={isRegenerating || isSwitchingMode}
+          />
+        </div>
 
         <ActivityItems objectives={tripData?.objectives} onAddToChecklist={addActivityItems} />
 
