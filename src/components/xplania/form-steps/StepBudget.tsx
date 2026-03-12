@@ -1,11 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Wallet } from "lucide-react";
+import { Wallet, Home, Sparkles, UtensilsCrossed, Ticket, Map, Train } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
-const SPENDING_PRIORITIES = [
-  "Hébergement", "Expériences", "Restaurants",
-  "Activités", "Excursions", "Confort transport"
+const SPENDING_PRIORITIES: { label: string; icon: React.ReactNode }[] = [
+  { label: "Hébergement", icon: <Home className="w-4 h-4" /> },
+  { label: "Expériences", icon: <Sparkles className="w-4 h-4" /> },
+  { label: "Restaurants", icon: <UtensilsCrossed className="w-4 h-4" /> },
+  { label: "Activités", icon: <Ticket className="w-4 h-4" /> },
+  { label: "Excursions", icon: <Map className="w-4 h-4" /> },
+  { label: "Confort transport", icon: <Train className="w-4 h-4" /> },
 ];
 
 interface Props {
@@ -61,16 +65,17 @@ const StepBudget = ({ data, update }: Props) => {
         <div className="flex flex-wrap gap-2">
           {SPENDING_PRIORITIES.map((opt) => (
             <button
-              key={opt}
+              key={opt.label}
               type="button"
-              onClick={() => togglePriority(opt)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                data.spendingPriorities.includes(opt)
+              onClick={() => togglePriority(opt.label)}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
+                data.spendingPriorities.includes(opt.label)
                   ? "gradient-button text-primary-foreground"
                   : "glass-card text-foreground hover:bg-muted"
               }`}
             >
-              {opt}
+              {opt.icon}
+              {opt.label}
             </button>
           ))}
         </div>
