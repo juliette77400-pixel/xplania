@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import ModuleNavbar from "@/components/shared/ModuleNavbar";
 
 import BudgetHero from "@/components/budget/BudgetHero";
+import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
 import BudgetConfig from "@/components/budget/BudgetConfig";
 import BudgetGenerationAnim, { STEPS } from "@/components/budget/BudgetGenerationAnim";
 import BudgetAiResult from "@/components/budget/BudgetAiResult";
@@ -89,6 +90,11 @@ const GuideBudgetPage = () => {
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         {/* Hero */}
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} />
+
+        {/* Trip summary dashboard — visible BEFORE generation */}
+        {!hasGenerated && !isGenerating && (
+          <TripSummaryDashboard tripData={tripData} />
+        )}
 
         {/* Generation animation */}
         <AnimatePresence>
