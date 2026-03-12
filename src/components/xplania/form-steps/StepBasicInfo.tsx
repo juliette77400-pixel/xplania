@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MapPin, Calendar, Clock, Compass, Palmtree, Mountain, Drama, UtensilsCrossed, Dumbbell, Camera, Flame, Snail, Plane } from "lucide-react";
+import { MapPin, Calendar, Clock, Compass, Palmtree, Mountain, Drama, UtensilsCrossed, Dumbbell, Camera, Flame, Snail, Plane, HelpCircle } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
 const TRIP_TYPES: { label: string; icon: React.ReactNode }[] = [
@@ -14,6 +14,7 @@ const TRIP_TYPES: { label: string; icon: React.ReactNode }[] = [
   { label: "Photographie", icon: <Camera className="w-4 h-4" /> },
   { label: "Spiritualité", icon: <Flame className="w-4 h-4" /> },
   { label: "Voyage slow", icon: <Snail className="w-4 h-4" /> },
+  { label: "Autre", icon: <HelpCircle className="w-4 h-4" /> },
 ];
 
 const DEPARTURE_SUGGESTIONS = [
@@ -178,6 +179,20 @@ const StepBasicInfo = ({ data, update }: Props) => {
           ))}
         </div>
       </div>
+
+      {data.tripTypes.includes("Autre") && (
+        <div className="space-y-2">
+          <Label className="text-foreground font-semibold flex items-center gap-2">
+            <HelpCircle className="w-4 h-4 text-primary" /> Précisez votre type de voyage
+          </Label>
+          <Input
+            placeholder="Ex : Voyage humanitaire, road trip en van..."
+            value={data.tripTypeOther}
+            onChange={(e) => update({ tripTypeOther: e.target.value })}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+      )}
     </div>
   );
 };

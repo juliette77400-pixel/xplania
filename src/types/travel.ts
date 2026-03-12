@@ -6,6 +6,7 @@ export interface TravelFormData {
   returnDate: string;
   duration: string;
   tripTypes: string[];
+  tripTypeOther: string;
 
   // Section 2 - Profil du voyageur
   travelerType: string;
@@ -38,6 +39,7 @@ export interface TravelFormData {
   // Section 7 - Transport
   bookingStatus: string;
   hasStopover: string;
+  stopoverCount: number;
   localTransport: string[];
   hasInternationalPermit: string;
 
@@ -46,6 +48,8 @@ export interface TravelFormData {
   childrenCount: number;
   animalDetails: string;
   mobilityDetails: string;
+  budgetDetails: string;
+  timeDetails: string;
   importantNotes: string;
   dietaryPreferences: string[];
   dietaryOther: string;
@@ -102,7 +106,6 @@ export interface TravelRecommendations {
   budgetBreakdown: BudgetItem[];
 }
 
-// Keep backward compat
 export interface TravelPlan {
   budgetEstimate: {
     total: number;
