@@ -144,26 +144,6 @@ const GuideValisePage = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
-  const [weather] = useState<WeatherInfo | null>(() => {
-    if (recommendations?.weather) {
-      return {
-        temperature: recommendations.weather.temperature,
-        conditions: recommendations.weather.current,
-        advice: [recommendations.weather.advice].filter(Boolean) as string[],
-      };
-    }
-    return {
-      temperature: "22°C",
-      humidity: "65%",
-      wind: "15 km/h",
-      conditions: "Partiellement nuageux",
-      advice: [
-        "Prévois un pull léger : nuits fraîches prévues (15-17°C)",
-        "Prévois un imperméable léger : 30% de chance de pluie",
-        "Climat tempéré : privilégie les vêtements respirants et superposables",
-      ],
-    };
-  });
 
   const handleModeChange = (mode: LuggageMode) => {
     setLuggageMode(mode);
