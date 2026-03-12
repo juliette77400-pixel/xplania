@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { Wallet, FileText, Luggage, ArrowRight } from "lucide-react";
 
-const DashboardSection = () => {
+interface Props {
+  onCreateTrip: () => void;
+}
+
+const DashboardSection = ({ onCreateTrip }: Props) => {
   return (
     <section id="create" className="py-24">
       <div className="container mx-auto px-6">
@@ -44,13 +48,13 @@ const DashboardSection = () => {
             ))}
           </div>
 
-          <a
-            href="#"
+          <button
+            onClick={onCreateTrip}
             className="gradient-button w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
           >
             Créer mon voyage
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>
