@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Luggage, Wallet, FileText, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const features = [
   {
@@ -8,6 +9,7 @@ const features = [
     title: "Valise intelligente",
     description: "Génération automatique d'une liste de bagages selon destination, météo et durée du séjour.",
     benefits: ["Ne rien oublier d'essentiel", "Optimiser l'espace de vos bagages"],
+    link: "/guide-valise",
   },
   {
     num: 2,
@@ -15,6 +17,7 @@ const features = [
     title: "Guide budget",
     description: "Estimation du coût du voyage et suivi des dépenses.",
     benefits: ["Éviter les mauvaises surprises financières", "Adapter le budget selon le coût de la vie local"],
+    link: "/guide-budget",
   },
   {
     num: 3,
@@ -22,6 +25,7 @@ const features = [
     title: "Guide visa & démarches",
     description: "Checklist personnalisée des documents nécessaires pour voyager.",
     benefits: ["Simplifier les démarches administratives", "S'assurer d'avoir tous les documents requis"],
+    link: "/guide-visa",
   },
 ];
 
@@ -70,10 +74,13 @@ const FeaturesSection = () => {
                   </li>
                 ))}
               </ul>
-              <button className="mt-6 flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
-                Tester la fonctionnalité
+              <Link
+                to={f.link}
+                className="mt-6 flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all"
+              >
+                Découvrir le guide
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
               <p className="mt-2 text-xs text-muted-foreground">Accès instantané • Sans inscription</p>
             </motion.div>
           ))}
