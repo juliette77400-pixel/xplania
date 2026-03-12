@@ -1,23 +1,48 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Users } from "lucide-react";
+import { Users, User, Heart, Users2, Briefcase, Laptop, Backpack, Armchair, GraduationCap, Gem, Footprints, Activity, Globe } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
-const TRAVELER_TYPES = [
-  "Solo", "Couple", "Famille avec enfants", "Groupe d'amis",
-  "Voyage professionnel", "Digital nomad", "Backpacker",
-  "Retraité(e)", "Étudiant", "Lune de miel", "Aventurier solo"
+const TRAVELER_TYPES: { label: string; icon: React.ReactNode }[] = [
+  { label: "Solo", icon: <User className="w-4 h-4" /> },
+  { label: "Couple", icon: <Heart className="w-4 h-4" /> },
+  { label: "Famille avec enfants", icon: <Users className="w-4 h-4" /> },
+  { label: "Groupe d'amis", icon: <Users2 className="w-4 h-4" /> },
+  { label: "Voyage professionnel", icon: <Briefcase className="w-4 h-4" /> },
+  { label: "Digital nomad", icon: <Laptop className="w-4 h-4" /> },
+  { label: "Backpacker", icon: <Backpack className="w-4 h-4" /> },
+  { label: "Retraité(e)", icon: <Armchair className="w-4 h-4" /> },
+  { label: "Étudiant", icon: <GraduationCap className="w-4 h-4" /> },
+  { label: "Lune de miel", icon: <Gem className="w-4 h-4" /> },
+  { label: "Aventurier solo", icon: <Footprints className="w-4 h-4" /> },
 ];
 
-const ACTIVITY_LEVELS = ["Sédentaire", "Modéré", "Actif", "Très actif"];
-
-const LANGUAGES = [
-  "Français", "Anglais", "Espagnol", "Italien", "Allemand",
-  "Chinois", "Japonais", "Arabe", "Russe", "Portugais", "Autre"
+const ACTIVITY_LEVELS: { label: string; icon: React.ReactNode }[] = [
+  { label: "Sédentaire", icon: <Armchair className="w-4 h-4" /> },
+  { label: "Modéré", icon: <Footprints className="w-4 h-4" /> },
+  { label: "Actif", icon: <Activity className="w-4 h-4" /> },
+  { label: "Très actif", icon: <Activity className="w-4 h-4" /> },
 ];
 
-const EXPERIENCE_LEVELS = [
-  "Premier voyage", "Voyage occasionnel", "Voyageur régulier", "Grand explorateur"
+const LANGUAGES: { label: string; flag: string }[] = [
+  { label: "Français", flag: "🇫🇷" },
+  { label: "Anglais", flag: "🇬🇧" },
+  { label: "Espagnol", flag: "🇪🇸" },
+  { label: "Italien", flag: "🇮🇹" },
+  { label: "Allemand", flag: "🇩🇪" },
+  { label: "Chinois", flag: "🇨🇳" },
+  { label: "Japonais", flag: "🇯🇵" },
+  { label: "Arabe", flag: "🇸🇦" },
+  { label: "Russe", flag: "🇷🇺" },
+  { label: "Portugais", flag: "🇵🇹" },
+  { label: "Autre", flag: "🌍" },
+];
+
+const EXPERIENCE_LEVELS: { label: string; icon: React.ReactNode }[] = [
+  { label: "Premier voyage", icon: <Globe className="w-4 h-4" /> },
+  { label: "Voyage occasionnel", icon: <Globe className="w-4 h-4" /> },
+  { label: "Voyageur régulier", icon: <Globe className="w-4 h-4" /> },
+  { label: "Grand explorateur", icon: <Globe className="w-4 h-4" /> },
 ];
 
 interface Props {
@@ -25,14 +50,15 @@ interface Props {
   update: (d: Partial<TravelFormData>) => void;
 }
 
-const SelectButton = ({ selected, label, onClick }: { selected: boolean; label: string; onClick: () => void }) => (
+const SelectButton = ({ selected, label, onClick, icon }: { selected: boolean; label: string; onClick: () => void; icon?: React.ReactNode }) => (
   <button
     type="button"
     onClick={onClick}
-    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
       selected ? "gradient-button text-primary-foreground" : "glass-card text-foreground hover:bg-muted"
     }`}
   >
+    {icon}
     {label}
   </button>
 );
@@ -54,7 +80,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         </Label>
         <div className="flex flex-wrap gap-2">
           {TRAVELER_TYPES.map((opt) => (
-            <SelectButton key={opt} selected={data.travelerType === opt} label={opt} onClick={() => update({ travelerType: opt })} />
+            <SelectButton key={opt.label} selected={data.travelerType === opt.label} label={opt.label} icon={opt.icon} onClick={() => update({ travelerType: opt.label })} />
           ))}
         </div>
       </div>
@@ -77,7 +103,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">Niveau d'activité</Label>
         <div className="flex flex-wrap gap-2">
           {ACTIVITY_LEVELS.map((opt) => (
-            <SelectButton key={opt} selected={data.activityLevel === opt} label={opt} onClick={() => update({ activityLevel: opt })} />
+            <SelectButton key={opt.label} selected={data.activityLevel === opt.label} label={opt.label} icon={opt.icon} onClick={() => update({ activityLevel: opt.label })} />
           ))}
         </div>
       </div>
@@ -86,7 +112,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">Langues parlées</Label>
         <div className="flex flex-wrap gap-2">
           {LANGUAGES.map((lang) => (
-            <SelectButton key={lang} selected={languages.includes(lang)} label={lang} onClick={() => toggleLanguage(lang)} />
+            <SelectButton key={lang.label} selected={languages.includes(lang.label)} label={`${lang.flag} ${lang.label}`} onClick={() => toggleLanguage(lang.label)} />
           ))}
         </div>
       </div>
@@ -114,7 +140,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">Niveau d'expérience voyage</Label>
         <div className="flex flex-wrap gap-2">
           {EXPERIENCE_LEVELS.map((opt) => (
-            <SelectButton key={opt} selected={data.travelExperience === opt} label={opt} onClick={() => update({ travelExperience: opt })} />
+            <SelectButton key={opt.label} selected={data.travelExperience === opt.label} label={opt.label} icon={opt.icon} onClick={() => update({ travelExperience: opt.label })} />
           ))}
         </div>
       </div>

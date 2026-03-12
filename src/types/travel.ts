@@ -1,6 +1,7 @@
 export interface TravelFormData {
   // Section 1 - Informations de base
   destination: string;
+  departureLocation: string;
   departureDate: string;
   returnDate: string;
   duration: string;
@@ -31,6 +32,7 @@ export interface TravelFormData {
 
   // Section 6 - Hébergement
   accommodationType: string;
+  accommodationTypeOther: string;
   accommodationStanding: string;
 
   // Section 7 - Transport
@@ -42,6 +44,8 @@ export interface TravelFormData {
   // Section 8 - Contraintes
   constraints: string[];
   childrenCount: number;
+  animalDetails: string;
+  mobilityDetails: string;
   importantNotes: string;
   dietaryPreferences: string[];
   dietaryOther: string;
@@ -49,6 +53,9 @@ export interface TravelFormData {
   // Section 9 - Préférences environnementales
   connectivity: string;
   climatePreference: string;
+  environmentalSensitivity: string;
+  culturalImmersion: string;
+  baggageTypes: string[];
 
   // Section 10 - Inspirations
   inspirations: string;

@@ -30,6 +30,7 @@ const STEP_LABELS = [
 
 const defaultFormData: TravelFormData = {
   destination: "",
+  departureLocation: "",
   departureDate: "",
   returnDate: "",
   duration: "",
@@ -50,6 +51,7 @@ const defaultFormData: TravelFormData = {
   totalBudget: 0,
   spendingPriorities: [],
   accommodationType: "",
+  accommodationTypeOther: "",
   accommodationStanding: "",
   bookingStatus: "",
   hasStopover: "",
@@ -57,11 +59,16 @@ const defaultFormData: TravelFormData = {
   hasInternationalPermit: "",
   constraints: [],
   childrenCount: 0,
+  animalDetails: "",
+  mobilityDetails: "",
   importantNotes: "",
   dietaryPreferences: [],
   dietaryOther: "",
   connectivity: "",
   climatePreference: "",
+  environmentalSensitivity: "",
+  culturalImmersion: "",
+  baggageTypes: [],
   inspirations: "",
 };
 
@@ -84,6 +91,8 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
 
   const handleGenerate = () => {
     setGenerating(true);
+    const dest = formData.destination || "votre destination";
+
     setTimeout(() => {
       const days = formData.duration ? parseInt(formData.duration) || 7 : 7;
       const budget = formData.totalBudget || 1500;
@@ -102,34 +111,36 @@ const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
         },
         documents: [
           "Passeport valide (6 mois après retour)",
-          `Visa requis pour ${formData.destination || "votre destination"}`,
-          "Assurance voyage internationale",
+          `Visa requis pour ${dest} — vérifiez les conditions spécifiques au pays`,
+          "Assurance voyage internationale couvrant la région",
           "Copie des réservations (hébergement + transport)",
-          "Carte de vaccination si nécessaire",
+          `Carte de vaccination spécifique à ${dest} si nécessaire`,
           formData.hasInternationalPermit === "Oui" ? "Permis de conduire international" : "",
         ].filter(Boolean),
         luggage: [
-          "Vêtements adaptés à la météo locale",
+          `Vêtements adaptés au climat de ${dest} (${formData.climatePreference || "vérifiez la météo locale"})`,
           "Trousse de toilette (format cabine)",
-          "Chargeur universel + adaptateur",
+          `Adaptateur électrique compatible avec ${dest}`,
           "Médicaments personnels + trousse premiers soins",
           "Copies documents importants (papier + numérique)",
-          "Sac à dos jour / sac pliable",
+          ...(formData.baggageTypes || []).map((b) => `${b} recommandé selon vos préférences`),
         ],
         culturalTips: [
-          `Renseignez-vous sur les coutumes locales de ${formData.destination || "votre destination"}`,
-          "Apprenez quelques mots de base dans la langue locale",
-          "Respectez les codes vestimentaires locaux",
-          "Informez-vous sur les pourboires (montant et habitudes)",
-          "Téléchargez une app de traduction hors-ligne",
+          `Informez-vous sur les coutumes et traditions spécifiques de ${dest}`,
+          `Apprenez les salutations et expressions courantes utilisées à ${dest}`,
+          `Respectez les codes vestimentaires en vigueur dans la région de ${dest}`,
+          `Renseignez-vous sur les pourboires pratiqués à ${dest}`,
+          `Téléchargez une app de traduction hors-ligne adaptée à la langue de ${dest}`,
+          ...(formData.culturalImmersion === "Oui" ? [`Explorez les quartiers authentiques et marchés locaux de ${dest} pour une immersion complète`] : []),
         ],
-        weatherInfo: `Consultez la météo de ${formData.destination || "votre destination"} 1 semaine avant le départ. Préférence : ${formData.climatePreference || "non précisée"}.`,
+        weatherInfo: `Consultez la météo spécifique à ${dest} pour la période du ${formData.departureDate || "départ"} au ${formData.returnDate || "retour"}. Climat attendu : ${formData.climatePreference || "non précisé"}.`,
         localRecommendations: [
-          "Privilégiez les restaurants fréquentés par les locaux",
-          "Utilisez les transports en commun pour une immersion authentique",
-          "Visitez les marchés locaux pour découvrir la gastronomie",
-          "Réservez vos activités populaires à l'avance",
-          "Gardez toujours un peu de monnaie locale sur vous",
+          `Privilégiez les restaurants fréquentés par les habitants de ${dest}`,
+          `Utilisez les transports locaux de ${dest} pour une immersion authentique`,
+          `Visitez les marchés et commerces typiques de ${dest}`,
+          `Réservez les activités populaires de ${dest} à l'avance`,
+          `Gardez de la monnaie locale de ${dest} sur vous`,
+          ...(formData.environmentalSensitivity === "Forte" ? [`Privilégiez les hébergements et transports éco-responsables à ${dest}`] : []),
         ],
       });
       setGenerating(false);

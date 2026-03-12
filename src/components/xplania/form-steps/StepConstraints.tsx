@@ -1,23 +1,48 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Baby, Dog, Utensils, Accessibility, Wallet, Timer, Leaf, Fish, Wheat, Milk, Moon, Star, Shell, Nut } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
-const CONSTRAINTS = [
-  "Voyage avec enfant", "Voyage avec animal", "Régime alimentaire particulier",
-  "Mobilité réduite", "Budget limité", "Temps limité"
+const CONSTRAINTS: { label: string; icon: React.ReactNode }[] = [
+  { label: "Voyage avec enfant", icon: <Baby className="w-4 h-4" /> },
+  { label: "Voyage avec animal", icon: <Dog className="w-4 h-4" /> },
+  { label: "Régime alimentaire particulier", icon: <Utensils className="w-4 h-4" /> },
+  { label: "Mobilité réduite", icon: <Accessibility className="w-4 h-4" /> },
+  { label: "Budget limité", icon: <Wallet className="w-4 h-4" /> },
+  { label: "Temps limité", icon: <Timer className="w-4 h-4" /> },
 ];
 
-const DIETARY = [
-  "Végétarien", "Vegan", "Sans gluten", "Sans lactose", "Halal",
-  "Kasher", "Sans porc", "Sans fruits de mer", "Sans noix", "Sans arachides"
+const DIETARY: { label: string; icon: React.ReactNode }[] = [
+  { label: "Végétarien", icon: <Leaf className="w-4 h-4" /> },
+  { label: "Vegan", icon: <Leaf className="w-4 h-4" /> },
+  { label: "Sans gluten", icon: <Wheat className="w-4 h-4" /> },
+  { label: "Sans lactose", icon: <Milk className="w-4 h-4" /> },
+  { label: "Halal", icon: <Moon className="w-4 h-4" /> },
+  { label: "Kasher", icon: <Star className="w-4 h-4" /> },
+  { label: "Sans fruits de mer", icon: <Shell className="w-4 h-4" /> },
+  { label: "Sans noix", icon: <Nut className="w-4 h-4" /> },
+  { label: "Sans arachides", icon: <Nut className="w-4 h-4" /> },
+  { label: "Sans cacahuète", icon: <Nut className="w-4 h-4" /> },
 ];
 
 interface Props {
   data: TravelFormData;
   update: (d: Partial<TravelFormData>) => void;
 }
+
+const SelectButton = ({ selected, label, onClick, icon }: { selected: boolean; label: string; onClick: () => void; icon?: React.ReactNode }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
+      selected ? "gradient-button text-primary-foreground" : "glass-card text-foreground hover:bg-muted"
+    }`}
+  >
+    {icon}
+    {label}
+  </button>
+);
 
 const StepConstraints = ({ data, update }: Props) => {
   const toggleConstraint = (opt: string) => {
@@ -42,18 +67,13 @@ const StepConstraints = ({ data, update }: Props) => {
         </Label>
         <div className="flex flex-wrap gap-2">
           {CONSTRAINTS.map((opt) => (
-            <button
-              key={opt}
-              type="button"
-              onClick={() => toggleConstraint(opt)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                data.constraints.includes(opt)
-                  ? "gradient-button text-primary-foreground"
-                  : "glass-card text-foreground hover:bg-muted"
-              }`}
-            >
-              {opt}
-            </button>
+            <SelectButton
+              key={opt.label}
+              selected={data.constraints.includes(opt.label)}
+              label={opt.label}
+              icon={opt.icon}
+              onClick={() => toggleConstraint(opt.label)}
+            />
           ))}
         </div>
       </div>
@@ -71,6 +91,34 @@ const StepConstraints = ({ data, update }: Props) => {
         </div>
       )}
 
+      {data.constraints.includes("Voyage avec animal") && (
+        <div className="space-y-2">
+          <Label className="text-foreground font-semibold flex items-center gap-2">
+            <Dog className="w-4 h-4 text-primary" /> Précisez l'animal (nature/taille)
+          </Label>
+          <Input
+            placeholder="Ex : Chien de petite taille, chat..."
+            value={data.animalDetails}
+            onChange={(e) => update({ animalDetails: e.target.value })}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+      )}
+
+      {data.constraints.includes("Mobilité réduite") && (
+        <div className="space-y-2">
+          <Label className="text-foreground font-semibold flex items-center gap-2">
+            <Accessibility className="w-4 h-4 text-primary" /> Besoins spécifiques en assistance
+          </Label>
+          <Input
+            placeholder="Ex : Fauteuil roulant, canne, assistance aéroport..."
+            value={data.mobilityDetails}
+            onChange={(e) => update({ mobilityDetails: e.target.value })}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+      )}
+
       <div className="space-y-2">
         <Label className="text-foreground font-semibold">Éléments importants à savoir</Label>
         <Textarea
@@ -82,21 +130,18 @@ const StepConstraints = ({ data, update }: Props) => {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground font-semibold">Régime alimentaire</Label>
+        <Label className="text-foreground font-semibold flex items-center gap-2">
+          <Utensils className="w-4 h-4 text-primary" /> Régime alimentaire
+        </Label>
         <div className="flex flex-wrap gap-2">
           {DIETARY.map((opt) => (
-            <button
-              key={opt}
-              type="button"
-              onClick={() => toggleDietary(opt)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                data.dietaryPreferences.includes(opt)
-                  ? "gradient-button text-primary-foreground"
-                  : "glass-card text-foreground hover:bg-muted"
-              }`}
-            >
-              {opt}
-            </button>
+            <SelectButton
+              key={opt.label}
+              selected={data.dietaryPreferences.includes(opt.label)}
+              label={opt.label}
+              icon={opt.icon}
+              onClick={() => toggleDietary(opt.label)}
+            />
           ))}
         </div>
       </div>
