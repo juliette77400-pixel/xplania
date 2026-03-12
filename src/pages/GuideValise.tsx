@@ -5,7 +5,7 @@ import StepProgressBar from "@/components/valise/StepProgressBar";
 import ValiseHero from "@/components/valise/ValiseHero";
 import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimation";
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
-import WeatherSection, { type WeatherInfo } from "@/components/valise/WeatherSection";
+import WeatherSection from "@/components/valise/WeatherSection";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import ActivityItems from "@/components/valise/ActivityItems";
