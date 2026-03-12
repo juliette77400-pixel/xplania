@@ -270,7 +270,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.documents.map((doc, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-foreground">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                {doc}
+                {toText(doc)}
               </li>
             ))}
           </ul>
