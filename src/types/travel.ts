@@ -61,6 +61,48 @@ export interface TravelFormData {
   inspirations: string;
 }
 
+export interface WeatherData {
+  current: string;
+  temperature: string;
+  forecast: string;
+  advice: string;
+}
+
+export interface CulturalTip {
+  title: string;
+  description: string;
+}
+
+export interface Activity {
+  name: string;
+  description: string;
+  type: "culture" | "nature" | "gastronomie" | "aventure";
+  estimatedCost: string;
+}
+
+export interface LocalRecommendation {
+  category: "restaurant" | "transport" | "quartier" | "marché";
+  name: string;
+  description: string;
+}
+
+export interface BudgetItem {
+  category: string;
+  amount: number;
+  tip: string;
+}
+
+export interface TravelRecommendations {
+  weather: WeatherData;
+  culturalTips: CulturalTip[];
+  activities: Activity[];
+  localRecommendations: LocalRecommendation[];
+  documents: string[];
+  luggage: string[];
+  budgetBreakdown: BudgetItem[];
+}
+
+// Keep backward compat
 export interface TravelPlan {
   budgetEstimate: {
     total: number;
