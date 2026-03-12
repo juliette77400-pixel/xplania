@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { useTravelContext } from "@/contexts/TravelContext";
+import { useTravelStore } from "@/stores/useTravelStore";
 import ValiseHeader from "@/components/valise/ValiseHeader";
 import StepProgressBar from "@/components/valise/StepProgressBar";
 import ValiseHero from "@/components/valise/ValiseHero";
@@ -146,7 +146,7 @@ function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): Lugga
 }
 
 const GuideValisePage = () => {
-  const { tripData } = useTravelContext();
+  const { tripData } = useTravelStore();
   const destination = tripData?.destination || "votre destination";
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;
 
