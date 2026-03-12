@@ -14,9 +14,9 @@ interface Props {
 }
 
 const FeedbackDialog = ({ open, onOpenChange }: Props) => {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [suggestions, setSuggestions] = useState("");
+  const [problems, setProblems] = useState("");
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [sending, setSending] = useState(false);
