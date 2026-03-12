@@ -91,6 +91,11 @@ const GuideBudgetPage = () => {
         {/* Hero */}
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} />
 
+        {/* Trip summary dashboard — visible BEFORE generation */}
+        {!hasGenerated && !isGenerating && (
+          <TripSummaryDashboard tripData={tripData} />
+        )}
+
         {/* Generation animation */}
         <AnimatePresence>
           {isGenerating && <BudgetGenerationAnim isGenerating={isGenerating} currentStep={genStep} />}
