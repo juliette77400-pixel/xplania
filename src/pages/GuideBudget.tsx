@@ -1,9 +1,10 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, RotateCcw } from "lucide-react";
-import { useTravelContext } from "@/contexts/TravelContext";
+import { RotateCcw } from "lucide-react";
+import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
+import ModuleNavbar from "@/components/shared/ModuleNavbar";
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import BudgetConfig from "@/components/budget/BudgetConfig";
@@ -17,7 +18,7 @@ import BudgetTips from "@/components/budget/BudgetTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
 
 const GuideBudgetPage = () => {
-  const { tripData } = useTravelContext();
+  const { tripData } = useTravelStore();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
   const userBudget = tripData?.totalBudget || 820;
@@ -52,7 +53,6 @@ const GuideBudgetPage = () => {
       setGenStep(i + 1);
     }
     await new Promise((r) => setTimeout(r, 400));
-    // Slightly randomize AI suggestions
     setCategories((prev) =>
       prev.map((c) => ({
         ...c,
@@ -84,36 +84,9 @@ const GuideBudgetPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/#create" className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-foreground" />
-            </Link>
-            <div>
-              <h1 className="text-lg font-bold text-foreground">💰 Budget Intelligent</h1>
-              <p className="text-xs text-muted-foreground">Propulsé par IA Xplania</p>
-            </div>
-          </div>
-          {hasGenerated && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleRegenerate}
-              disabled={isGenerating}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-button text-primary-foreground text-sm font-semibold disabled:opacity-50"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Regénérer le budget
-            </motion.button>
-          )}
-        </div>
-      </div>
+      <ModuleNavbar />
 
-      <div className="container mx-auto px-6 max-w-5xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         {/* Hero */}
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} />
 
@@ -130,18 +103,29 @@ const GuideBudgetPage = () => {
               animate={{ opacity: 1 }}
               className="space-y-6 pb-12"
             >
-              {/* Config */}
-              <BudgetConfig tripData={tripData} />
+              {/* Regenerate button */}
+              <div className="flex justify-end">
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleRegenerate}
+                  disabled={isGenerating}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold transition-colors disabled:opacity-50"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Regénérer le budget
+                </motion.button>
+              </div>
 
-              {/* AI Result */}
+              <BudgetConfig tripData={tripData} />
               <BudgetAiResult
                 totalBudget={totalBudget}
                 days={days}
                 destination={destination}
                 onModify={() => setShowModify(!showModify)}
               />
-
-              {/* Forecast */}
               <BudgetForecast
                 totalBudget={totalBudget}
                 categories={categories}
@@ -149,30 +133,19 @@ const GuideBudgetPage = () => {
                 onAiAdjust={handleAiAdjust}
                 isLoading={isGenerating}
               />
-
-              {/* Expense Tracker Table */}
               <ExpenseTracker categories={categories} />
-
-              {/* Charts */}
               <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} />
-
-              {/* Alerts & Tips */}
               <BudgetAlerts categories={categories} destination={destination} />
-
-              {/* Saving Tips */}
               <BudgetTips />
-
-              {/* Add Expense Form */}
               <AddExpenseForm onAdd={handleAddExpense} />
 
-              {/* Back */}
-              <div className="text-center pb-8">
+              {/* CTA */}
+              <div className="flex justify-center">
                 <Link
-                  to="/#create"
+                  to="/guide-visa"
                   className="gradient-button inline-flex items-center gap-2 px-6 py-3 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
                 >
-                  <ArrowLeft className="w-4 h-4" />
-                  Retour au dashboard
+                  Continuer vers Visa & Préparatifs →
                 </Link>
               </div>
             </motion.div>
