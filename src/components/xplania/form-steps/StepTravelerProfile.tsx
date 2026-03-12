@@ -38,8 +38,9 @@ const SelectButton = ({ selected, label, onClick }: { selected: boolean; label: 
 );
 
 const StepTravelerProfile = ({ data, update }: Props) => {
+  const languages = data.languages || [];
   const toggleLanguage = (lang: string) => {
-    const current = data.languages;
+    const current = languages;
     update({
       languages: current.includes(lang) ? current.filter((l) => l !== lang) : [...current, lang],
     });
