@@ -218,11 +218,11 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.activities.map((act, i) => (
               <div key={i} className="p-3 rounded-xl bg-muted/30 space-y-1">
                 <div className="flex items-center gap-2">
-                  {activityIcons[act.type] || <Compass className="w-4 h-4 text-primary" />}
-                  <p className="text-sm font-semibold text-foreground">{act.name}</p>
+                  {activityIcons[String(act.type)] || <Compass className="w-4 h-4 text-primary" />}
+                  <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
                 </div>
-                <p className="text-xs text-muted-foreground">{act.description}</p>
-                <p className="text-xs font-medium text-primary">≈ {act.estimatedCost}</p>
+                <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
+                <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
               </div>
             ))}
           </div>
