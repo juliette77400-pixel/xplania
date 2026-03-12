@@ -173,9 +173,9 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             </div>
           </div>
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p><span className="font-medium text-foreground">Actuellement :</span> {rec.weather.current}</p>
-            <p><span className="font-medium text-foreground">Prévisions :</span> {rec.weather.forecast}</p>
-            <p><span className="font-medium text-foreground">Conseil :</span> {rec.weather.advice}</p>
+            <p><span className="font-medium text-foreground">Actuellement :</span> {toText(rec.weather.current)}</p>
+            <p><span className="font-medium text-foreground">Prévisions :</span> {toText(rec.weather.forecast)}</p>
+            <p><span className="font-medium text-foreground">Conseil :</span> {toText(rec.weather.advice)}</p>
           </div>
         </motion.div>
       )}
