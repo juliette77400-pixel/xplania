@@ -37,6 +37,7 @@ const defaultFormData: TravelFormData = {
   returnDate: "",
   duration: "",
   tripTypes: [],
+  tripTypeOther: "",
   travelerType: "",
   age: 0,
   activityLevel: "",
