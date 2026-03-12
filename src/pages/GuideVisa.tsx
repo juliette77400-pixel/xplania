@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import {
   FileText, Shield, AlertTriangle, Lightbulb, CheckCircle, Globe,
   Stethoscope, RotateCcw, Sparkles, Brain, Search, ShieldCheck,
-  Syringe, ListChecks, Heart, Phone, MapPin, Flag
+  Syringe, ListChecks, Heart, Phone, MapPin, Flag, AlertCircle
 } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import ModuleNavbar from "@/components/shared/ModuleNavbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── Data ──
 
@@ -37,57 +38,72 @@ const generalDocuments = [
   "Documents spécifiques selon ta destination et ton activité prévue.",
 ];
 
-const getVisaInfo = (destination: string) => {
-  const d = destination.toLowerCase();
-  if (d.includes("japon")) return {
-    visa: "Visa touristique de 90 jours (exemption pour les ressortissants français).",
-    security: "Pays très sûr. Faible criminalité.",
-    health: ["Vaccins recommandés : hépatite A/B, encéphalite japonaise.", "Assurance maladie fortement recommandée."],
-    checklist: ["Passeport valide 6 mois+", "Japan Rail Pass (à acheter avant le départ)", "Pocket Wi-Fi / SIM locale", "Carte Suica/Pasmo pour le métro", "Adaptateur de prise type A/B"],
-  };
-  if (d.includes("états-unis") || d.includes("usa") || d.includes("etats")) return {
-    visa: "ESTA obligatoire (autorisation électronique, 14$ en ligne). Passeport biométrique requis.",
-    security: "Sécurité variable selon les villes. Vigilance dans certaines zones urbaines.",
-    health: ["Aucun vaccin obligatoire.", "Assurance médicale INDISPENSABLE (coûts médicaux très élevés)."],
-    checklist: ["ESTA validé", "Passeport biométrique", "Assurance santé internationale", "Preuve de fonds suffisants", "Adresse du premier hébergement"],
-  };
-  if (d.includes("thaïlande") || d.includes("thailande")) return {
-    visa: "Exemption de visa pour les séjours ≤ 30 jours (ressortissants français).",
-    security: "Globalement sûr. Prudence dans les zones frontalières sud.",
-    health: ["Vaccins recommandés : hépatite A/B, typhoïde, rage.", "Traitement antipaludéen dans certaines régions."],
-    checklist: ["Passeport valide 6 mois+", "Billet retour ou continuation", "Assurance voyage", "Preuve de fonds (≥ 20 000 THB)", "Photo d'identité de réserve"],
-  };
-  if (d.includes("maroc")) return {
-    visa: "Pas de visa requis pour les séjours ≤ 90 jours (ressortissants français).",
-    security: "Globalement sûr. Vigilance dans les zones isolées du sud.",
-    health: ["Vaccins recommandés : hépatite A/B, typhoïde.", "Eau en bouteille recommandée."],
-    checklist: ["Passeport valide 6 mois+", "Réservation hôtel", "Assurance voyage", "Espèces en dirhams (MAD)", "Vêtements adaptés aux coutumes locales"],
-  };
-  // Default EU
-  return {
-    visa: "Pas de visa nécessaire pour les séjours ≤ 90 jours (espace Schengen).",
-    security: "Zone sûre. Vigilance habituelle dans les grandes villes.",
-    health: ["Carte européenne d'assurance maladie recommandée.", "Aucun vaccin obligatoire."],
-    checklist: ["Carte d'identité ou passeport", "Carte européenne d'assurance maladie", "Réservations hébergement", "Billets de transport", "Copie des documents dans le cloud"],
-  };
-};
-
-const alerts = [
+const staticAlerts = [
   { icon: Shield, text: "Vérifie la validité de ton passeport. De nombreux pays exigent une validité d'au moins 6 mois après la date de retour prévue." },
   { icon: Stethoscope, text: "Certaines destinations exigent une assurance voyage obligatoire. Renseigne-toi avant de partir pour éviter les mauvaises surprises." },
 ];
 
-const tips = [
+const staticTips = [
   { num: 1, text: "Garde une copie digitale de tous tes documents importants dans le cloud. Cela te sauvera en cas de perte ou de vol." },
   { num: 2, text: "Note les coordonnées de l'ambassade ou du consulat de ton pays dans ta destination. C'est essentiel en cas d'urgence." },
   { num: 3, text: "Renseigne-toi sur les restrictions douanières. Chaque pays a ses règles concernant l'importation de produits alimentaires, médicaments et objets de valeur." },
   { num: 4, text: "Vérifie les recommandations sanitaires et les vaccins obligatoires pour ta destination sur le site de ton ministère des Affaires étrangères." },
 ];
 
+// ── Types ──
+
+interface VisaAIResult {
+  visa: {
+    required: boolean;
+    type: string;
+    duration: string;
+    details: string;
+    cost?: string;
+  };
+  security: {
+    level: string;
+    summary: string;
+    zones_to_avoid?: string[];
+    tips: string[];
+  };
+  health: {
+    mandatory_vaccines?: string[];
+    recommended_vaccines: string[];
+    health_risks: string[];
+    insurance_required: boolean;
+    tips: string[];
+  };
+  checklist: {
+    item: string;
+    category: string;
+    priority: string;
+  }[];
+  emergency_contacts: {
+    embassy: string;
+    local_emergency: string;
+    tourist_police?: string;
+  };
+}
+
+// ── Helpers ──
+
+const securityLevelConfig: Record<string, { color: string; bg: string; border: string; label: string }> = {
+  safe: { color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20", label: "🟢 Sûr" },
+  moderate: { color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20", label: "🟡 Modéré" },
+  caution: { color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", label: "🟠 Vigilance" },
+  danger: { color: "text-destructive", bg: "bg-destructive/10", border: "border-destructive/20", label: "🔴 Danger" },
+};
+
+const priorityConfig: Record<string, { color: string; bg: string }> = {
+  obligatoire: { color: "text-destructive", bg: "bg-destructive/10" },
+  recommandé: { color: "text-primary", bg: "bg-primary/10" },
+  optionnel: { color: "text-muted-foreground", bg: "bg-muted/30" },
+};
+
 // ── Component ──
 
 const GuideVisaPage = () => {
-  const { tripData, recommendations } = useTravelStore();
+  const { tripData } = useTravelStore();
   const contextDestination = tripData?.destination || "";
 
   const [selectedDestination, setSelectedDestination] = useState(contextDestination || "");
@@ -96,9 +112,10 @@ const GuideVisaPage = () => {
   const [genStep, setGenStep] = useState(0);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [aiResult, setAiResult] = useState<VisaAIResult | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const destination = selectedDestination || contextDestination || "votre destination";
-  const visaInfo = getVisaInfo(destination);
 
   const runGeneration = useCallback(async () => {
     if (!selectedDestination) {
@@ -107,42 +124,64 @@ const GuideVisaPage = () => {
     }
     setIsGenerating(true);
     setGenStep(0);
-    for (let i = 0; i < GENERATION_STEPS.length; i++) {
-      await new Promise((r) => setTimeout(r, 700));
-      setGenStep(i + 1);
+    setAiError(null);
+
+    // Start step animation in parallel with API call
+    const stepPromise = (async () => {
+      for (let i = 0; i < GENERATION_STEPS.length - 1; i++) {
+        await new Promise((r) => setTimeout(r, 700));
+        setGenStep(i + 1);
+      }
+    })();
+
+    try {
+      const { data, error } = await supabase.functions.invoke("visa-info", {
+        body: {
+          destination: selectedDestination,
+          nationality: selectedNationality,
+          duration: tripData?.duration || "7",
+          travelerType: tripData?.travelerType || "touriste",
+        },
+      });
+
+      await stepPromise;
+
+      if (error) throw new Error(error.message || "Erreur lors de l'appel IA");
+      if (data?.error) throw new Error(data.error);
+
+      setAiResult(data);
+      setGenStep(GENERATION_STEPS.length);
+      await new Promise((r) => setTimeout(r, 400));
+      setHasGenerated(true);
+      setCheckedItems({});
+      toast.success("Formalités vérifiées par l'IA ! 📋");
+    } catch (e) {
+      console.error("visa-info error:", e);
+      setAiError(e instanceof Error ? e.message : "Erreur inconnue");
+      toast.error("Erreur lors de la génération", {
+        description: e instanceof Error ? e.message : "Réessayez dans quelques instants.",
+      });
+    } finally {
+      setIsGenerating(false);
     }
-    await new Promise((r) => setTimeout(r, 400));
-    setIsGenerating(false);
-    setHasGenerated(true);
-    setCheckedItems({});
-    toast.success("Formalités vérifiées ! 📋");
-  }, [selectedDestination]);
+  }, [selectedDestination, selectedNationality, tripData?.duration, tripData?.travelerType]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading("Xplania reconsulte les autorités…", { id: "regen-visa" });
-    setIsGenerating(true);
-    setGenStep(0);
-    for (let i = 0; i < GENERATION_STEPS.length; i++) {
-      await new Promise((r) => setTimeout(r, 500));
-      setGenStep(i + 1);
-    }
-    await new Promise((r) => setTimeout(r, 300));
-    setIsGenerating(false);
-    setCheckedItems({});
-    toast.success("Formalités recalculées !", { id: "regen-visa" });
-  }, []);
+    await runGeneration();
+    toast.dismiss("regen-visa");
+  }, [runGeneration]);
 
   const toggleCheck = (item: string) => {
     setCheckedItems((prev) => ({ ...prev, [item]: !prev[item] }));
   };
 
-  const totalChecklist = visaInfo.checklist.length;
-  const doneChecklist = visaInfo.checklist.filter((c) => checkedItems[c]).length;
+  const checklist = aiResult?.checklist || [];
+  const totalChecklist = checklist.length;
+  const doneChecklist = checklist.filter((c) => checkedItems[c.item]).length;
 
-  // AI documents from recommendations
-  const aiDocuments = recommendations?.documents?.length
-    ? recommendations.documents.map((d) => String(typeof d === "object" ? Object.values(d)[0] : d))
-    : null;
+  const secLevel = aiResult?.security?.level || "safe";
+  const secConfig = securityLevelConfig[secLevel] || securityLevelConfig.safe;
 
   return (
     <div className="min-h-screen bg-background">
@@ -237,7 +276,7 @@ const GuideVisaPage = () => {
             disabled={isGenerating || !selectedDestination}
             className="w-full mt-5 gradient-button text-primary-foreground font-bold py-3 rounded-xl transition-opacity hover:opacity-90 disabled:opacity-50"
           >
-            Analyser
+            {isGenerating ? "Analyse en cours…" : "Analyser"}
           </motion.button>
         </motion.div>
 
@@ -295,12 +334,35 @@ const GuideVisaPage = () => {
           )}
         </AnimatePresence>
 
+        {/* Error state */}
+        {aiError && !isGenerating && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card rounded-2xl p-6 border border-destructive/20"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <AlertCircle className="w-5 h-5 text-destructive" />
+              <h3 className="text-base font-bold text-foreground">Erreur de génération</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">{aiError}</p>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={runGeneration}
+              className="px-4 py-2 rounded-xl gradient-button text-primary-foreground text-sm font-semibold"
+            >
+              Réessayer
+            </motion.button>
+          </motion.div>
+        )}
+
         {/* Content after generation */}
         <AnimatePresence>
-          {hasGenerated && !isGenerating && (
+          {hasGenerated && !isGenerating && aiResult && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 pb-12">
 
-              {/* Visa & Security */}
+              {/* Visa */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -317,19 +379,64 @@ const GuideVisaPage = () => {
                 </div>
                 <div className="space-y-3">
                   <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                    <div className="flex items-center gap-2 mb-1">
-                      <FileText className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-bold text-foreground">Visa</span>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-bold text-foreground">
+                          {aiResult.visa.type}
+                        </span>
+                      </div>
+                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${aiResult.visa.required ? "bg-destructive/20 text-destructive" : "bg-green-500/20 text-green-400"}`}>
+                        {aiResult.visa.required ? "Visa requis" : "Sans visa"}
+                      </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">{visaInfo.visa}</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-green-500/5 border border-green-500/10">
-                    <div className="flex items-center gap-2 mb-1">
-                      <ShieldCheck className="w-4 h-4 text-green-400" />
-                      <span className="text-sm font-bold text-foreground">Zone de sécurité</span>
+                    <p className="text-sm text-muted-foreground mt-2">{aiResult.visa.details}</p>
+                    <div className="flex gap-4 mt-3 text-xs text-muted-foreground">
+                      <span>⏱ Durée max : {aiResult.visa.duration}</span>
+                      {aiResult.visa.cost && <span>💰 Coût : {aiResult.visa.cost}</span>}
                     </div>
-                    <p className="text-sm text-muted-foreground">{visaInfo.security}</p>
                   </div>
+                </div>
+              </motion.div>
+
+              {/* Security */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className="glass-card rounded-2xl p-6 shadow-md"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-10 h-10 rounded-xl ${secConfig.bg} flex items-center justify-center`}>
+                    <ShieldCheck className={`w-5 h-5 ${secConfig.color}`} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground">Sécurité</h3>
+                    <span className={`text-xs font-bold ${secConfig.color}`}>{secConfig.label}</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">{aiResult.security.summary}</p>
+
+                {aiResult.security.zones_to_avoid && aiResult.security.zones_to_avoid.length > 0 && (
+                  <div className="p-3 rounded-xl bg-destructive/5 border border-destructive/10 mb-3">
+                    <p className="text-xs font-bold text-destructive mb-1">⚠️ Zones déconseillées :</p>
+                    <ul className="space-y-1">
+                      {aiResult.security.zones_to_avoid.map((z, i) => (
+                        <li key={i} className="text-xs text-muted-foreground flex items-center gap-1">
+                          <span className="text-destructive">•</span> {z}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  {aiResult.security.tips.map((tip, i) => (
+                    <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-muted/30">
+                      <Shield className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                      <p className="text-xs text-foreground">{tip}</p>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
 
@@ -346,14 +453,53 @@ const GuideVisaPage = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-foreground">Santé & Vaccins</h3>
-                    <p className="text-xs text-muted-foreground">Recommandations sanitaires pour {destination}</p>
+                    <span className={`text-xs font-bold ${aiResult.health.insurance_required ? "text-destructive" : "text-green-400"}`}>
+                      {aiResult.health.insurance_required ? "Assurance obligatoire" : "Assurance recommandée"}
+                    </span>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {visaInfo.health.map((h, i) => (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-destructive/5 border border-destructive/10">
-                      <Heart className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
-                      <p className="text-sm text-foreground">{h}</p>
+
+                {aiResult.health.mandatory_vaccines && aiResult.health.mandatory_vaccines.length > 0 && (
+                  <div className="p-3 rounded-xl bg-destructive/5 border border-destructive/10 mb-3">
+                    <p className="text-xs font-bold text-destructive mb-2">💉 Vaccins obligatoires :</p>
+                    <div className="flex flex-wrap gap-2">
+                      {aiResult.health.mandatory_vaccines.map((v, i) => (
+                        <span key={i} className="text-xs px-2 py-1 rounded-full bg-destructive/20 text-destructive font-medium">{v}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {aiResult.health.recommended_vaccines.length > 0 && (
+                  <div className="p-3 rounded-xl bg-primary/5 border border-primary/10 mb-3">
+                    <p className="text-xs font-bold text-primary mb-2">💉 Vaccins recommandés :</p>
+                    <div className="flex flex-wrap gap-2">
+                      {aiResult.health.recommended_vaccines.map((v, i) => (
+                        <span key={i} className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary font-medium">{v}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {aiResult.health.health_risks.length > 0 && (
+                  <div className="mb-3">
+                    <p className="text-xs font-bold text-foreground mb-2">⚠️ Risques sanitaires :</p>
+                    <div className="space-y-1.5">
+                      {aiResult.health.health_risks.map((r, i) => (
+                        <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-muted/30">
+                          <Heart className="w-3.5 h-3.5 text-destructive shrink-0 mt-0.5" />
+                          <p className="text-xs text-foreground">{r}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-1.5">
+                  {aiResult.health.tips.map((tip, i) => (
+                    <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-muted/30">
+                      <Lightbulb className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                      <p className="text-xs text-foreground">{tip}</p>
                     </div>
                   ))}
                 </div>
@@ -388,38 +534,61 @@ const GuideVisaPage = () => {
                     </span>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {visaInfo.checklist.map((item, i) => {
-                    const checked = !!checkedItems[item];
-                    return (
-                      <motion.button
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                        onClick={() => toggleCheck(item)}
-                        className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left ${
-                          checked
-                            ? "bg-primary/10 border border-primary/20"
-                            : "bg-muted/30 hover:bg-muted/50 border border-transparent"
-                        }`}
-                      >
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
-                          checked ? "bg-primary border-primary" : "border-muted-foreground/40"
-                        }`}>
-                          {checked && <CheckCircle className="w-3 h-3 text-primary-foreground" />}
-                        </div>
-                        <span className={`text-sm ${checked ? "text-foreground line-through opacity-70" : "text-foreground"}`}>
-                          {item}
-                        </span>
-                      </motion.button>
-                    );
-                  })}
-                </div>
+
+                {/* Group by category */}
+                {["document", "santé", "pratique", "finance"].map((cat) => {
+                  const items = checklist.filter((c) => c.category === cat);
+                  if (items.length === 0) return null;
+                  const catLabels: Record<string, string> = {
+                    document: "📄 Documents",
+                    santé: "🏥 Santé",
+                    pratique: "🎒 Pratique",
+                    finance: "💳 Finance",
+                  };
+                  return (
+                    <div key={cat} className="mb-4">
+                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                        {catLabels[cat] || cat}
+                      </p>
+                      <div className="space-y-1.5">
+                        {items.map((item, i) => {
+                          const checked = !!checkedItems[item.item];
+                          const pConfig = priorityConfig[item.priority] || priorityConfig.optionnel;
+                          return (
+                            <motion.button
+                              key={i}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: i * 0.03 }}
+                              onClick={() => toggleCheck(item.item)}
+                              className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left ${
+                                checked
+                                  ? "bg-primary/10 border border-primary/20"
+                                  : "bg-muted/30 hover:bg-muted/50 border border-transparent"
+                              }`}
+                            >
+                              <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
+                                checked ? "bg-primary border-primary" : "border-muted-foreground/40"
+                              }`}>
+                                {checked && <CheckCircle className="w-3 h-3 text-primary-foreground" />}
+                              </div>
+                              <span className={`text-sm flex-1 ${checked ? "text-foreground line-through opacity-70" : "text-foreground"}`}>
+                                {item.item}
+                              </span>
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${pConfig.bg} ${pConfig.color}`}>
+                                {item.priority}
+                              </span>
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </motion.div>
 
-              {/* AI Documents */}
-              {aiDocuments && (
+              {/* Emergency contacts */}
+              {aiResult.emergency_contacts && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -427,22 +596,25 @@ const GuideVisaPage = () => {
                   className="glass-card rounded-2xl p-6 shadow-md"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center">
-                      <Globe className="w-5 h-5 text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-foreground">Documents requis (IA)</h3>
-                      <p className="text-xs text-muted-foreground">Générés selon votre profil voyageur</p>
-                    </div>
+                    <Phone className="w-5 h-5 text-primary" />
+                    <h3 className="text-base font-bold text-foreground">Contacts d'urgence</h3>
                   </div>
-                  <ul className="space-y-2">
-                    {aiDocuments.map((doc, i) => (
-                      <li key={i} className="flex items-start gap-3 p-3 rounded-xl bg-primary/5 border border-primary/10">
-                        <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <p className="text-sm text-foreground">{doc}</p>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-3 rounded-xl bg-muted/30">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">🏛 Ambassade / Consulat</p>
+                      <p className="text-sm text-foreground">{aiResult.emergency_contacts.embassy}</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-muted/30">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">🚨 Urgences locales</p>
+                      <p className="text-sm text-foreground">{aiResult.emergency_contacts.local_emergency}</p>
+                    </div>
+                    {aiResult.emergency_contacts.tourist_police && (
+                      <div className="p-3 rounded-xl bg-muted/30">
+                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">👮 Police touristique</p>
+                        <p className="text-sm text-foreground">{aiResult.emergency_contacts.tourist_police}</p>
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               )}
 
@@ -479,7 +651,7 @@ const GuideVisaPage = () => {
                   <h3 className="text-base font-bold text-foreground">Alertes importantes</h3>
                 </div>
                 <div className="space-y-3">
-                  {alerts.map((alert, i) => (
+                  {staticAlerts.map((alert, i) => (
                     <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-destructive/5 border border-destructive/10">
                       <alert.icon className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                       <p className="text-sm text-foreground">{alert.text}</p>
@@ -500,7 +672,7 @@ const GuideVisaPage = () => {
                   <h3 className="text-base font-bold text-foreground">Astuces pratiques</h3>
                 </div>
                 <div className="space-y-3">
-                  {tips.map((tip) => (
+                  {staticTips.map((tip) => (
                     <div key={tip.num} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
                       <span className="flex items-center justify-center w-7 h-7 rounded-full gradient-button text-xs font-bold text-primary-foreground shrink-0">
                         {tip.num}
