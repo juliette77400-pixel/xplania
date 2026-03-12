@@ -168,7 +168,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
               <h3 className="text-lg font-bold text-foreground">Météo à {formData.destination}</h3>
               <div className="flex items-center gap-2 mt-0.5">
                 <Thermometer className="w-3.5 h-3.5 text-muted-foreground" />
-                <span className="text-sm font-semibold gradient-text">{rec.weather.temperature}</span>
+                <span className="text-sm font-semibold gradient-text">{toText(rec.weather.temperature)}</span>
               </div>
             </div>
           </div>
