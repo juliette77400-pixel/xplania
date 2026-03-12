@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import ModuleNavbar from "@/components/shared/ModuleNavbar";
 
 import BudgetHero from "@/components/budget/BudgetHero";
+import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
 import BudgetConfig from "@/components/budget/BudgetConfig";
 import BudgetGenerationAnim, { STEPS } from "@/components/budget/BudgetGenerationAnim";
 import BudgetAiResult from "@/components/budget/BudgetAiResult";
