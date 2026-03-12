@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import {
   CloudSun, Thermometer, Globe, MapPin, Wallet,
   FileText, Luggage, Compass, UtensilsCrossed, Trees,
-  Mountain, Landmark, CheckCircle, CalendarDays, Users, Plane
+  Mountain, Landmark, CheckCircle, CalendarDays, Users, Plane,
+  Sparkles, RefreshCw
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
@@ -26,30 +27,95 @@ const activityIcons: Record<string, React.ReactNode> = {
   aventure: <Mountain className="w-4 h-4 text-accent" />,
 };
 
-const SkeletonCard = ({ lines = 4 }: { lines?: number }) => (
+const SkeletonCard = ({ title, lines = 4 }: { title: string; lines?: number }) => (
   <div className="glass-card rounded-2xl p-6 space-y-4">
-    <Skeleton className="h-5 w-1/3 bg-muted" />
+    <div className="flex items-center gap-3">
+      <Skeleton className="h-10 w-10 rounded-xl bg-muted" />
+      <Skeleton className="h-5 w-40 bg-muted" />
+    </div>
     {Array.from({ length: lines }).map((_, i) => (
-      <Skeleton key={i} className="h-4 w-full bg-muted" />
+      <Skeleton key={i} className={`h-4 bg-muted ${i % 2 === 0 ? "w-full" : "w-3/4"}`} />
     ))}
   </div>
 );
 
+const LoadingState = ({ destination }: { destination: string }) => (
+  <div className="space-y-6">
+    {/* Loading header */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="glass-card rounded-2xl p-8 text-center"
+    >
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+        className="w-12 h-12 mx-auto mb-4 rounded-xl gradient-button flex items-center justify-center"
+      >
+        <Sparkles className="w-6 h-6 text-primary-foreground" />
+      </motion.div>
+      <h3 className="text-lg font-bold text-foreground mb-2">
+        Analyse en cours pour {destination}...
+      </h3>
+      <p className="text-sm text-muted-foreground max-w-md mx-auto">
+        Notre IA génère des recommandations ultra-personnalisées basées sur votre profil de voyageur. Cela peut prendre quelques secondes.
+      </p>
+      <div className="mt-6 h-1.5 w-64 mx-auto rounded-full bg-muted overflow-hidden">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ background: "var(--gradient-primary)" }}
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 15, ease: "easeInOut" }}
+        />
+      </div>
+    </motion.div>
+
+    <SkeletonCard title="Résumé" lines={3} />
+    <SkeletonCard title="Météo" lines={3} />
+    <SkeletonCard title="Culture" lines={5} />
+    <SkeletonCard title="Activités" lines={4} />
+  </div>
+);
+
 const DashboardCards = ({ formData, recommendations, loading, error }: Props) => {
+  if (loading) {
+    return <LoadingState destination={formData.destination || "votre destination"} />;
+  }
+
   if (error) {
     return (
-      <div className="glass-card rounded-2xl p-8 text-center">
-        <p className="text-destructive font-semibold mb-2">Erreur</p>
-        <p className="text-muted-foreground text-sm">{error}</p>
-      </div>
+      <motion.div {...cardAnim} className="glass-card rounded-2xl p-8 text-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-destructive/20 flex items-center justify-center">
+          <RefreshCw className="w-6 h-6 text-destructive" />
+        </div>
+        <p className="text-foreground font-semibold mb-2">Oups, une erreur est survenue</p>
+        <p className="text-muted-foreground text-sm max-w-md mx-auto">{error}</p>
+        <p className="text-xs text-muted-foreground mt-3">Cliquez sur "Réessayer" pour relancer l'analyse.</p>
+      </motion.div>
     );
   }
 
   const rec = recommendations;
+  if (!rec) return null;
+
   const days = formData.duration ? parseInt(formData.duration) || 7 : 7;
 
   return (
     <div className="space-y-6">
+      {/* Success banner */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/20"
+      >
+        <CheckCircle className="w-5 h-5 text-primary shrink-0" />
+        <p className="text-sm text-foreground">
+          <span className="font-semibold">Plan généré avec succès !</span>{" "}
+          Voici vos recommandations personnalisées pour {formData.destination}.
+        </p>
+      </motion.div>
+
       {/* Trip Summary Card */}
       <motion.div {...cardAnim} transition={{ delay: 0 }} className="glass-card rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
@@ -77,9 +143,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
       </motion.div>
 
       {/* Weather Card */}
-      {loading ? (
-        <SkeletonCard lines={3} />
-      ) : rec?.weather ? (
+      {rec.weather && (
         <motion.div {...cardAnim} transition={{ delay: 0.1 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
@@ -99,12 +163,10 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             <p><span className="font-medium text-foreground">Conseil :</span> {rec.weather.advice}</p>
           </div>
         </motion.div>
-      ) : null}
+      )}
 
       {/* Cultural Tips Card */}
-      {loading ? (
-        <SkeletonCard lines={5} />
-      ) : rec?.culturalTips?.length ? (
+      {rec.culturalTips?.length > 0 && (
         <motion.div {...cardAnim} transition={{ delay: 0.2 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center shrink-0">
@@ -126,12 +188,10 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             ))}
           </div>
         </motion.div>
-      ) : null}
+      )}
 
       {/* Activities Card */}
-      {loading ? (
-        <SkeletonCard lines={6} />
-      ) : rec?.activities?.length ? (
+      {rec.activities?.length > 0 && (
         <motion.div {...cardAnim} transition={{ delay: 0.3 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
@@ -152,12 +212,10 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             ))}
           </div>
         </motion.div>
-      ) : null}
+      )}
 
       {/* Budget Card */}
-      {loading ? (
-        <SkeletonCard lines={5} />
-      ) : rec?.budgetBreakdown?.length ? (
+      {rec.budgetBreakdown?.length > 0 && (
         <motion.div {...cardAnim} transition={{ delay: 0.4 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center shrink-0">
@@ -184,12 +242,10 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             ))}
           </div>
         </motion.div>
-      ) : null}
+      )}
 
       {/* Documents Card */}
-      {loading ? (
-        <SkeletonCard />
-      ) : rec?.documents?.length ? (
+      {rec.documents?.length > 0 && (
         <motion.div {...cardAnim} transition={{ delay: 0.5 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <FileText className="w-5 h-5 text-primary" />
@@ -204,12 +260,10 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             ))}
           </ul>
         </motion.div>
-      ) : null}
+      )}
 
       {/* Luggage Card */}
-      {loading ? (
-        <SkeletonCard />
-      ) : rec?.luggage?.length ? (
+      {rec.luggage?.length > 0 && (
         <motion.div {...cardAnim} transition={{ delay: 0.6 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <Luggage className="w-5 h-5 text-primary" />
@@ -224,32 +278,30 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             ))}
           </ul>
         </motion.div>
-      ) : null}
+      )}
 
       {/* Local Recommendations Card */}
-      {loading ? (
-        <SkeletonCard lines={5} />
-      ) : rec?.localRecommendations?.length ? (
+      {rec.localRecommendations?.length > 0 && (
         <motion.div {...cardAnim} transition={{ delay: 0.7 }} className="glass-card rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
             <MapPin className="w-5 h-5 text-primary" />
             <h3 className="text-sm font-semibold text-foreground">Recommandations locales</h3>
           </div>
           <div className="space-y-3">
-            {rec.localRecommendations.map((rec, i) => (
+            {rec.localRecommendations.map((item, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
                 <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full shrink-0 capitalize">
-                  {rec.category}
+                  {item.category}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{rec.name}</p>
-                  <p className="text-xs text-muted-foreground">{rec.description}</p>
+                  <p className="text-sm font-semibold text-foreground">{item.name}</p>
+                  <p className="text-xs text-muted-foreground">{item.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </motion.div>
-      ) : null}
+      )}
     </div>
   );
 };
