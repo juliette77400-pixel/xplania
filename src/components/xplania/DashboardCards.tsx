@@ -250,9 +250,9 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {rec.budgetBreakdown.map((b, i) => (
               <div key={i} className="p-3 rounded-lg bg-muted/50">
-                <p className="text-xs text-muted-foreground">{b.category}</p>
-                <p className="text-sm font-bold text-foreground">{b.amount} €</p>
-                <p className="text-[10px] text-primary mt-1">{b.tip}</p>
+                <p className="text-xs text-muted-foreground">{toText(b.category)}</p>
+                <p className="text-sm font-bold text-foreground">{toText(b.amount)} €</p>
+                <p className="text-[10px] text-primary mt-1">{toText(b.tip)}</p>
               </div>
             ))}
           </div>
