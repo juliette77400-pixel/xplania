@@ -306,11 +306,11 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.localRecommendations.map((item, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
                 <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full shrink-0 capitalize">
-                  {item.category}
+                  {toText(item.category)}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{item.name}</p>
-                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                  <p className="text-sm font-semibold text-foreground">{toText(item.name)}</p>
+                  <p className="text-xs text-muted-foreground">{toText(item.description)}</p>
                 </div>
               </div>
             ))}
