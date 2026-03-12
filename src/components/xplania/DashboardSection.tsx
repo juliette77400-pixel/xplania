@@ -187,7 +187,7 @@ const DashboardSection = ({ onCreateTrip, tripData, recommendations, loading }: 
               </TabsContent>
 
               <TabsContent value="valise">
-                <GuideValiseTab formData={tripData} recommendations={recommendations} />
+                <GuideValise formData={tripData} recommendations={recommendations} />
                 <div className="mt-4 text-center">
                   <Link to="/guide-valise" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
                     Voir le guide complet →
