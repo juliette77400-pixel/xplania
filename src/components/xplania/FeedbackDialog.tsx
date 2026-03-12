@@ -1,4 +1,5 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,19 +27,25 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
       return;
     }
 
-    setSending(true);
-
-    // EmailJS integration placeholder
-    // To activate: install @emailjs/browser, add your service/template/public key
-    // import emailjs from '@emailjs/browser';
-    // await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', { name, email, message }, 'YOUR_PUBLIC_KEY');
-
-    // Simulate sending
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setSending(false);
-    setSent(true);
-    toast.success("Merci pour votre feedback !");
+    try {
+      await emailjs.send(
+        "service_23bwf9g",
+        "template_206dhup",
+        {
+          from_name: name.trim(),
+          from_email: email.trim(),
+          message: message.trim(),
+          to_email: "juliettenoel.xplania@gmail.com",
+        },
+        "g30bYpbP1x83gUEsQ"
+      );
+      setSending(false);
+      setSent(true);
+      toast.success("Merci pour votre feedback, vous contribuez à améliorer Xplania ✨");
+    } catch {
+      setSending(false);
+      toast.error("Une erreur est survenue lors de l'envoi.");
+    }
 
     setTimeout(() => {
       onOpenChange(false);
