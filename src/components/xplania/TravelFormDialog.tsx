@@ -81,9 +81,11 @@ const defaultFormData: TravelFormData = {
 interface TravelFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onTripGenerated?: (data: TravelFormData, recs: TravelRecommendations) => void;
+  onGenerating?: (loading: boolean) => void;
 }
 
-const TravelFormDialog = ({ open, onOpenChange }: TravelFormDialogProps) => {
+const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }: TravelFormDialogProps) => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<TravelFormData>(defaultFormData);
   const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
