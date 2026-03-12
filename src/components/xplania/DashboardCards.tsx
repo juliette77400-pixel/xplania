@@ -20,6 +20,21 @@ const cardAnim = {
   animate: { opacity: 1, y: 0 },
 };
 
+// Helper to safely render any value as text (AI may return objects instead of strings)
+const toText = (val: unknown): string => {
+  if (typeof val === "string") return val;
+  if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (val && typeof val === "object") {
+    // Extract first string value from object
+    const values = Object.values(val);
+    for (const v of values) {
+      if (typeof v === "string") return v;
+    }
+    return JSON.stringify(val);
+  }
+  return "";
+};
+
 const activityIcons: Record<string, React.ReactNode> = {
   culture: <Landmark className="w-4 h-4 text-secondary" />,
   nature: <Trees className="w-4 h-4 text-primary" />,
@@ -153,14 +168,14 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
               <h3 className="text-lg font-bold text-foreground">Météo à {formData.destination}</h3>
               <div className="flex items-center gap-2 mt-0.5">
                 <Thermometer className="w-3.5 h-3.5 text-muted-foreground" />
-                <span className="text-sm font-semibold gradient-text">{rec.weather.temperature}</span>
+                <span className="text-sm font-semibold gradient-text">{toText(rec.weather.temperature)}</span>
               </div>
             </div>
           </div>
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p><span className="font-medium text-foreground">Actuellement :</span> {rec.weather.current}</p>
-            <p><span className="font-medium text-foreground">Prévisions :</span> {rec.weather.forecast}</p>
-            <p><span className="font-medium text-foreground">Conseil :</span> {rec.weather.advice}</p>
+            <p><span className="font-medium text-foreground">Actuellement :</span> {toText(rec.weather.current)}</p>
+            <p><span className="font-medium text-foreground">Prévisions :</span> {toText(rec.weather.forecast)}</p>
+            <p><span className="font-medium text-foreground">Conseil :</span> {toText(rec.weather.advice)}</p>
           </div>
         </motion.div>
       )}
@@ -181,8 +196,8 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                   {i + 1}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{tip.title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{tip.description}</p>
+                  <p className="text-sm font-semibold text-foreground">{toText(tip.title)}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{toText(tip.description)}</p>
                 </div>
               </div>
             ))}
@@ -203,11 +218,11 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.activities.map((act, i) => (
               <div key={i} className="p-3 rounded-xl bg-muted/30 space-y-1">
                 <div className="flex items-center gap-2">
-                  {activityIcons[act.type] || <Compass className="w-4 h-4 text-primary" />}
-                  <p className="text-sm font-semibold text-foreground">{act.name}</p>
+                  {activityIcons[String(act.type)] || <Compass className="w-4 h-4 text-primary" />}
+                  <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
                 </div>
-                <p className="text-xs text-muted-foreground">{act.description}</p>
-                <p className="text-xs font-medium text-primary">≈ {act.estimatedCost}</p>
+                <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
+                <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
               </div>
             ))}
           </div>
@@ -235,9 +250,9 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {rec.budgetBreakdown.map((b, i) => (
               <div key={i} className="p-3 rounded-lg bg-muted/50">
-                <p className="text-xs text-muted-foreground">{b.category}</p>
-                <p className="text-sm font-bold text-foreground">{b.amount} €</p>
-                <p className="text-[10px] text-primary mt-1">{b.tip}</p>
+                <p className="text-xs text-muted-foreground">{toText(b.category)}</p>
+                <p className="text-sm font-bold text-foreground">{toText(b.amount)} €</p>
+                <p className="text-[10px] text-primary mt-1">{toText(b.tip)}</p>
               </div>
             ))}
           </div>
@@ -255,7 +270,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.documents.map((doc, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-foreground">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                {doc}
+                {toText(doc)}
               </li>
             ))}
           </ul>
@@ -273,7 +288,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.luggage.map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-foreground">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                {item}
+                {toText(item)}
               </li>
             ))}
           </ul>
@@ -291,11 +306,11 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             {rec.localRecommendations.map((item, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
                 <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full shrink-0 capitalize">
-                  {item.category}
+                  {toText(item.category)}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{item.name}</p>
-                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                  <p className="text-sm font-semibold text-foreground">{toText(item.name)}</p>
+                  <p className="text-xs text-muted-foreground">{toText(item.description)}</p>
                 </div>
               </div>
             ))}
