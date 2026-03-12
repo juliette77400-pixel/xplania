@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useTravelContext } from "@/contexts/TravelContext";
 import ValiseHeader from "@/components/valise/ValiseHeader";
 import StepProgressBar from "@/components/valise/StepProgressBar";
@@ -15,7 +15,7 @@ import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
 import { toast } from "sonner";
 
-// ── Default categories ──
+// ── Categories data ──
 const baseCategories: Record<string, ChecklistItem[]> = {
   "Vêtements essentiels": [
     { name: "T-shirts (3-4)", description: "Couleurs neutres, respirants", checked: true },
@@ -132,18 +132,36 @@ function buildCategories(mode: LuggageMode): Record<string, ChecklistItem[]> {
   return { ...baseCategories, ...(modeExtras[mode] || {}) };
 }
 
+// Auto-detect suggested mode from trip data
+function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): LuggageMode | null {
+  const all = [...(tripTypes || []), ...(objectives || [])].join(" ").toLowerCase();
+  if (all.includes("plage") || all.includes("balnéaire") || all.includes("mer")) return "plage";
+  if (all.includes("rando") || all.includes("trek") || all.includes("nature")) return "randonnée";
+  if (all.includes("business") || all.includes("professionnel")) return "business";
+  if (all.includes("road") || all.includes("voiture")) return "roadtrip";
+  if (all.includes("photo") || all.includes("créat")) return "photo";
+  if (all.includes("aventure") || all.includes("sport")) return "aventure";
+  if (all.includes("luxe") || all.includes("confort")) return "confort";
+  return null;
+}
+
 const GuideValisePage = () => {
-  const { tripData, recommendations } = useTravelContext();
+  const { tripData } = useTravelContext();
   const destination = tripData?.destination || "votre destination";
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;
 
-  const [luggageMode, setLuggageMode] = useState<LuggageMode>("confort");
-  const [categories, setCategories] = useState(() => buildCategories("confort"));
+  const suggestedMode = useMemo(
+    () => detectSuggestedMode(tripData?.tripTypes, tripData?.objectives),
+    [tripData?.tripTypes, tripData?.objectives]
+  );
+
+  const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode || "confort");
+  const [categories, setCategories] = useState(() => buildCategories(suggestedMode || "confort"));
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
-
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const handleModeChange = (mode: LuggageMode) => {
     setLuggageMode(mode);
@@ -174,16 +192,29 @@ const GuideValisePage = () => {
     toast("Objet supprimé");
   };
 
+  const addActivityItems = useCallback((items: string[]) => {
+    setCategories((prev) => {
+      const catName = "Ajoutés par activité";
+      const existing = prev[catName] || [];
+      const newItems: ChecklistItem[] = items
+        .filter((item) => !existing.some((e) => e.name === item))
+        .map((name) => ({ name, description: "", checked: false }));
+      if (newItems.length === 0) return prev;
+      return { ...prev, [catName]: [...existing, ...newItems] };
+    });
+  }, []);
+
   const runGeneration = useCallback(async () => {
     setIsGenerating(true);
     setGenerationStep(0);
     for (let i = 0; i < STEPS.length; i++) {
-      await new Promise((r) => setTimeout(r, 400));
+      await new Promise((r) => setTimeout(r, 450));
       setGenerationStep(i + 1);
       setActiveSection(Math.min(i, 7));
     }
-    await new Promise((r) => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 400));
     setIsGenerating(false);
+    setHasGenerated(true);
     setActiveSection(7);
     toast.success("Valise générée ! 🧳", { description: "Checklist personnalisée prête." });
   }, []);
@@ -192,7 +223,7 @@ const GuideValisePage = () => {
     async (scope: "all" | "clothes" | "activities") => {
       setIsRegenerating(true);
       toast.loading("Régénération en cours…", { id: "regen" });
-      await new Promise((r) => setTimeout(r, 1500));
+      await new Promise((r) => setTimeout(r, 1800));
       setCategories(buildCategories(luggageMode));
       setIsRegenerating(false);
       toast.success(
@@ -206,11 +237,13 @@ const GuideValisePage = () => {
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
 
+  // Derive trip type label for outfit filtering
+  const tripTypeLabel = tripData?.tripTypes?.[0] || tripData?.objectives?.[0] || "";
+
   return (
     <div className="min-h-screen bg-background">
       <ValiseHeader checkedItems={checkedItems} totalItems={totalItems} />
 
-      {/* Step progress */}
       <div className="border-b border-border bg-background/60 backdrop-blur">
         <div className="container mx-auto">
           <StepProgressBar currentStep={activeSection} />
@@ -226,15 +259,21 @@ const GuideValisePage = () => {
 
         <WeatherSection destination={destination} />
 
-        <LuggageModes activeMode={luggageMode} onSelect={handleModeChange} />
+        <LuggageModes activeMode={luggageMode} onSelect={handleModeChange} suggestedMode={suggestedMode} />
 
-        <ChecklistSection categories={categories} onToggle={toggleItem} onAdd={addItem} onRemove={removeItem} />
+        <ChecklistSection
+          categories={categories}
+          onToggle={toggleItem}
+          onAdd={addItem}
+          onRemove={removeItem}
+          isLoading={isRegenerating}
+        />
 
-        <ActivityItems />
+        <ActivityItems objectives={tripData?.objectives} onAddToChecklist={addActivityItems} />
 
         <CulturalTips destination={destination} />
 
-        <OutfitRecommendations />
+        <OutfitRecommendations tripType={tripTypeLabel} destination={destination} />
 
         <ActionButtons onRegenerate={handleRegenerate} isRegenerating={isRegenerating} />
 
