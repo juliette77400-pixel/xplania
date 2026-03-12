@@ -8,7 +8,11 @@ const particles = Array.from({ length: 12 }, (_, i) => ({
   delay: Math.random() * 4,
 }));
 
-const HeroSection = () => {
+interface Props {
+  onCreateTrip: () => void;
+}
+
+const HeroSection = ({ onCreateTrip }: Props) => {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden">
       {particles.map((p) => (
@@ -55,13 +59,13 @@ const HeroSection = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
         className="flex flex-col sm:flex-row gap-4 mt-10"
       >
-        <a
-          href="#create"
+        <button
+          onClick={onCreateTrip}
           className="gradient-button px-8 py-4 rounded-xl text-primary-foreground font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity"
         >
           <Sparkles className="w-5 h-5" />
           Créer mon voyage gratuitement
-        </a>
+        </button>
         <a
           href="#features"
           className="glass-card px-8 py-4 rounded-xl text-foreground font-semibold flex items-center gap-2 hover:bg-muted transition-colors"

@@ -1,6 +1,11 @@
 import { Plane } from "lucide-react";
 
-const Navbar = () => {
+interface Props {
+  onCreateTrip: () => void;
+  onFeedback: () => void;
+}
+
+const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
@@ -18,17 +23,20 @@ const Navbar = () => {
           <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Comment ça marche
           </a>
-          <a href="#feedback" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+          <button
+            onClick={onFeedback}
+            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+          >
             Feedback
-          </a>
+          </button>
         </div>
 
-        <a
-          href="#create"
+        <button
+          onClick={onCreateTrip}
           className="gradient-button px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
         >
           Créer mon voyage
-        </a>
+        </button>
       </div>
     </nav>
   );

@@ -19,7 +19,11 @@ const cards = [
   },
 ];
 
-const BetaSection = () => {
+interface Props {
+  onFeedback: () => void;
+}
+
+const BetaSection = ({ onFeedback }: Props) => {
   return (
     <section id="feedback" className="py-24">
       <div className="container mx-auto px-6">
@@ -67,13 +71,13 @@ const BetaSection = () => {
           <p className="text-muted-foreground text-sm mb-6">
             Votre feedback est essentiel pour améliorer Xplania et créer l'outil de voyage parfait
           </p>
-          <a
-            href="#"
+          <button
+            onClick={onFeedback}
             className="gradient-button inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
           >
             <MessageSquare className="w-5 h-5" />
             Donner mon feedback
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>
