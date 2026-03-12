@@ -58,6 +58,7 @@ const defaultFormData: TravelFormData = {
   accommodationStanding: "",
   bookingStatus: "",
   hasStopover: "",
+  stopoverCount: 0,
   localTransport: [],
   hasInternationalPermit: "",
   constraints: [],
