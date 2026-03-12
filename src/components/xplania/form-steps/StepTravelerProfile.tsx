@@ -86,7 +86,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">Langues parlées</Label>
         <div className="flex flex-wrap gap-2">
           {LANGUAGES.map((lang) => (
-            <SelectButton key={lang} selected={data.languages.includes(lang)} label={lang} onClick={() => toggleLanguage(lang)} />
+            <SelectButton key={lang} selected={languages.includes(lang)} label={lang} onClick={() => toggleLanguage(lang)} />
           ))}
         </div>
       </div>
