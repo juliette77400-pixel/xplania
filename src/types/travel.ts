@@ -1,47 +1,57 @@
 export interface TravelFormData {
-  // Section 1 - Destination
+  // Section 1 - Informations de base
   destination: string;
-  departure: string;
-  
-  // Section 2 - Dates
-  dateMode: 'dates' | 'duration';
   departureDate: string;
   returnDate: string;
-  duration: number;
-  
-  // Section 3 - Travelers
-  travelerCount: number;
-  travelerType: 'solo' | 'couple' | 'amis' | 'famille' | 'business';
-  
-  // Section 4 - Trip type
+  duration: string;
   tripTypes: string[];
-  tripTypeOther: string;
-  
+
+  // Section 2 - Profil du voyageur
+  travelerType: string;
+  age: number;
+  activityLevel: string;
+  languages: string[];
+  speaksLocalLanguage: string;
+  needsFrenchGuide: string;
+  travelExperience: string;
+
+  // Section 3 - Objectif du voyage
+  objectives: string[];
+  objectiveOther: string;
+  feelings: string[];
+  priorities: string[];
+
+  // Section 4 - Style de voyage
+  organization: string;
+  rhythm: string;
+
   // Section 5 - Budget
   totalBudget: number;
-  
-  // Section 6 - Accommodation
-  accommodations: string[];
-  accommodationOther: string;
-  
+  spendingPriorities: string[];
+
+  // Section 6 - Hébergement
+  accommodationType: string;
+  accommodationStanding: string;
+
   // Section 7 - Transport
-  transports: string[];
-  transportPreference: string;
-  
-  // Section 8 - Food
+  bookingStatus: string;
+  hasStopover: string;
+  localTransport: string[];
+  hasInternationalPermit: string;
+
+  // Section 8 - Contraintes
+  constraints: string[];
+  childrenCount: number;
+  importantNotes: string;
   dietaryPreferences: string[];
   dietaryOther: string;
-  
-  // Section 9 - Activities
-  activities: string[];
-  activityOther: string;
-  
-  // Section 10 - Luggage
-  luggageType: string;
-  
-  // Section 11 - Weather (display only)
-  
-  // Section 12 - AI generation (output)
+
+  // Section 9 - Préférences environnementales
+  connectivity: string;
+  climatePreference: string;
+
+  // Section 10 - Inspirations
+  inspirations: string;
 }
 
 export interface TravelPlan {
