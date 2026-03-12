@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MessageSquare, Send, CheckCircle } from "lucide-react";
+import { MessageSquare, Send, CheckCircle, Star } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
@@ -16,16 +16,20 @@ interface Props {
 const FeedbackDialog = ({ open, onOpenChange }: Props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [suggestions, setSuggestions] = useState("");
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) {
-      toast.error("Veuillez remplir tous les champs");
+    if (!name.trim() || !email.trim() || !suggestions.trim() || rating === 0) {
+      toast.error("Veuillez remplir tous les champs et donner une note");
       return;
     }
+
+    setSending(true);
 
     try {
       await emailjs.send(
@@ -34,7 +38,8 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
         {
           from_name: name.trim(),
           from_email: email.trim(),
-          message: message.trim(),
+          rating: `${rating}`,
+          suggestions: suggestions.trim(),
           to_email: "juliettenoel.xplania@gmail.com",
         },
         "g30bYpbP1x83gUEsQ"
@@ -46,19 +51,24 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
       setSending(false);
       toast.error("Une erreur est survenue lors de l'envoi.");
     }
+  };
 
-    setTimeout(() => {
-      onOpenChange(false);
-      setSent(false);
-      setName("");
-      setEmail("");
-      setMessage("");
-    }, 2000);
+  const handleClose = (isOpen: boolean) => {
+    onOpenChange(isOpen);
+    if (!isOpen) {
+      setTimeout(() => {
+        setSent(false);
+        setName("");
+        setEmail("");
+        setSuggestions("");
+        setRating(0);
+      }, 300);
+    }
   };
 
   if (sent) {
     return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="glass-card border-border">
           <div className="flex flex-col items-center gap-4 py-8">
             <div className="w-16 h-16 rounded-full gradient-button flex items-center justify-center">
@@ -66,7 +76,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
             </div>
             <h3 className="text-xl font-bold text-foreground">Merci !</h3>
             <p className="text-sm text-muted-foreground text-center">
-              Votre feedback a bien été envoyé. Il nous aide à améliorer Xplania.
+              Merci pour votre feedback, vous contribuez à améliorer Xplania ✨
             </p>
           </div>
         </DialogContent>
@@ -75,7 +85,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="glass-card border-border">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-foreground">
@@ -108,12 +118,40 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
               required
             />
           </div>
+
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">Message</Label>
+            <Label className="text-foreground font-semibold">Note</Label>
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className="p-1 transition-transform hover:scale-110"
+                >
+                  <Star
+                    className={`w-7 h-7 transition-colors ${
+                      star <= (hoverRating || rating)
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-muted-foreground"
+                    }`}
+                  />
+                </button>
+              ))}
+              {rating > 0 && (
+                <span className="text-sm text-muted-foreground self-center ml-2">{rating}/5</span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-foreground font-semibold">Suggestions d'amélioration</Label>
             <Textarea
               placeholder="Partagez vos idées, suggestions ou retours..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={suggestions}
+              onChange={(e) => setSuggestions(e.target.value)}
               className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[120px]"
               maxLength={1000}
               required
@@ -125,7 +163,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
             className="w-full gradient-button text-primary-foreground border-0"
           >
             <Send className="w-4 h-4 mr-2" />
-            {sending ? "Envoi en cours..." : "Envoyer"}
+            {sending ? "Envoi en cours..." : "Envoyer mon feedback"}
           </Button>
         </form>
       </DialogContent>
