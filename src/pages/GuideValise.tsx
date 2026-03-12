@@ -5,7 +5,7 @@ import StepProgressBar from "@/components/valise/StepProgressBar";
 import ValiseHero from "@/components/valise/ValiseHero";
 import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimation";
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
-import WeatherSection, { type WeatherInfo } from "@/components/valise/WeatherSection";
+import WeatherSection from "@/components/valise/WeatherSection";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import ActivityItems from "@/components/valise/ActivityItems";
@@ -144,26 +144,6 @@ const GuideValisePage = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
-  const [weather] = useState<WeatherInfo | null>(() => {
-    if (recommendations?.weather) {
-      return {
-        temperature: recommendations.weather.temperature,
-        conditions: recommendations.weather.current,
-        advice: [recommendations.weather.advice].filter(Boolean) as string[],
-      };
-    }
-    return {
-      temperature: "22°C",
-      humidity: "65%",
-      wind: "15 km/h",
-      conditions: "Partiellement nuageux",
-      advice: [
-        "Prévois un pull léger : nuits fraîches prévues (15-17°C)",
-        "Prévois un imperméable léger : 30% de chance de pluie",
-        "Climat tempéré : privilégie les vêtements respirants et superposables",
-      ],
-    };
-  });
 
   const handleModeChange = (mode: LuggageMode) => {
     setLuggageMode(mode);
@@ -244,7 +224,7 @@ const GuideValisePage = () => {
 
         <VoyageAnalysis tripData={tripData} destination={destination} days={days} />
 
-        <WeatherSection weather={weather} destination={destination} />
+        <WeatherSection destination={destination} />
 
         <LuggageModes activeMode={luggageMode} onSelect={handleModeChange} />
 
