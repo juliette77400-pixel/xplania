@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { useTravelContext } from "@/contexts/TravelContext";
+import { useTravelStore } from "@/stores/useTravelStore";
 import ValiseHeader from "@/components/valise/ValiseHeader";
 import StepProgressBar from "@/components/valise/StepProgressBar";
 import ValiseHero from "@/components/valise/ValiseHero";

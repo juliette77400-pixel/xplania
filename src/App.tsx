@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { TravelProvider } from "@/contexts/TravelContext";
 import Index from "./pages/Index.tsx";
 import GuideBudget from "./pages/GuideBudget.tsx";
 import GuideValise from "./pages/GuideValise.tsx";
@@ -17,17 +16,15 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <TravelProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/guide-budget" element={<GuideBudget />} />
-            <Route path="/guide-valise" element={<GuideValise />} />
-            <Route path="/guide-visa" element={<GuideVisa />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TravelProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/guide-budget" element={<GuideBudget />} />
+          <Route path="/guide-valise" element={<GuideValise />} />
+          <Route path="/guide-visa" element={<GuideVisa />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
