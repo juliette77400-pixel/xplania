@@ -20,6 +20,21 @@ const cardAnim = {
   animate: { opacity: 1, y: 0 },
 };
 
+// Helper to safely render any value as text (AI may return objects instead of strings)
+const toText = (val: unknown): string => {
+  if (typeof val === "string") return val;
+  if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (val && typeof val === "object") {
+    // Extract first string value from object
+    const values = Object.values(val);
+    for (const v of values) {
+      if (typeof v === "string") return v;
+    }
+    return JSON.stringify(val);
+  }
+  return "";
+};
+
 const activityIcons: Record<string, React.ReactNode> = {
   culture: <Landmark className="w-4 h-4 text-secondary" />,
   nature: <Trees className="w-4 h-4 text-primary" />,
