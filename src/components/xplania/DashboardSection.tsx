@@ -168,15 +168,30 @@ const DashboardSection = ({ onCreateTrip, tripData, recommendations, loading }: 
               </TabsContent>
 
               <TabsContent value="budget">
-                <GuideBudget formData={tripData} recommendations={recommendations} />
+                <GuideBudgetTab formData={tripData} recommendations={recommendations} />
+                <div className="mt-4 text-center">
+                  <Link to="/guide-budget" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+                    Voir le guide complet → 
+                  </Link>
+                </div>
               </TabsContent>
 
               <TabsContent value="visa">
-                <GuideVisa formData={tripData} recommendations={recommendations} />
+                <GuideVisaTab formData={tripData} recommendations={recommendations} />
+                <div className="mt-4 text-center">
+                  <Link to="/guide-visa" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+                    Voir le guide complet →
+                  </Link>
+                </div>
               </TabsContent>
 
               <TabsContent value="valise">
-                <GuideValise formData={tripData} recommendations={recommendations} />
+                <GuideValiseTab formData={tripData} recommendations={recommendations} />
+                <div className="mt-4 text-center">
+                  <Link to="/guide-valise" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+                    Voir le guide complet →
+                  </Link>
+                </div>
               </TabsContent>
             </Tabs>
 
