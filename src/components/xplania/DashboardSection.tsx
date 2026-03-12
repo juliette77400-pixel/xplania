@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   Wallet, FileText, Luggage, ArrowRight,
   BarChart3, ScrollText, ShoppingBag
@@ -169,14 +170,29 @@ const DashboardSection = ({ onCreateTrip, tripData, recommendations, loading }: 
 
               <TabsContent value="budget">
                 <GuideBudget formData={tripData} recommendations={recommendations} />
+                <div className="mt-4 text-center">
+                  <Link to="/guide-budget" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+                    Voir le guide complet → 
+                  </Link>
+                </div>
               </TabsContent>
 
               <TabsContent value="visa">
                 <GuideVisa formData={tripData} recommendations={recommendations} />
+                <div className="mt-4 text-center">
+                  <Link to="/guide-visa" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+                    Voir le guide complet →
+                  </Link>
+                </div>
               </TabsContent>
 
               <TabsContent value="valise">
                 <GuideValise formData={tripData} recommendations={recommendations} />
+                <div className="mt-4 text-center">
+                  <Link to="/guide-valise" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+                    Voir le guide complet →
+                  </Link>
+                </div>
               </TabsContent>
             </Tabs>
 
