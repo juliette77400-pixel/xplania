@@ -9,14 +9,12 @@ import BetaSection from "@/components/xplania/BetaSection";
 import Footer from "@/components/xplania/Footer";
 import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
-import type { TravelFormData, TravelRecommendations } from "@/types/travel";
+import { useTravelContext } from "@/contexts/TravelContext";
 
 const Index = () => {
   const [travelFormOpen, setTravelFormOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [tripData, setTripData] = useState<TravelFormData | null>(null);
-  const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
-  const [dashboardLoading, setDashboardLoading] = useState(false);
+  const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
 
   const scrollToFeedback = () => {
     const el = document.getElementById("feedback");
