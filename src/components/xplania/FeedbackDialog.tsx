@@ -24,7 +24,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !suggestions.trim() || rating === 0) {
+    if (!email.trim() || !suggestions.trim() || rating === 0) {
       toast.error("Veuillez remplir tous les champs et donner une note");
       return;
     }
@@ -36,10 +36,17 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
         "service_23bwf9g",
         "template_206dhup",
         {
-          from_name: name.trim(),
-          from_email: email.trim(),
           rating: `${rating}`,
           suggestions: suggestions.trim(),
+          problems: problems.trim(),
+          user_email: email.trim(),
+          date: new Date().toLocaleDateString("fr-FR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
           to_email: "juliettenoel.xplania@gmail.com",
         },
         "g30bYpbP1x83gUEsQ"
@@ -58,9 +65,9 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
     if (!isOpen) {
       setTimeout(() => {
         setSent(false);
-        setName("");
         setEmail("");
         setSuggestions("");
+        setProblems("");
         setRating(0);
       }, 300);
     }
@@ -96,18 +103,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">Nom</Label>
-            <Input
-              placeholder="Votre nom"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-              maxLength={100}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-foreground font-semibold">Email</Label>
+            <Label className="text-foreground font-semibold">📧 Email</Label>
             <Input
               type="email"
               placeholder="votre@email.com"
@@ -120,7 +116,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">Note</Label>
+            <Label className="text-foreground font-semibold">⭐ Note</Label>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -147,16 +143,28 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">Suggestions d'amélioration</Label>
+            <Label className="text-foreground font-semibold">💡 Suggestions d'amélioration</Label>
             <Textarea
               placeholder="Partagez vos idées, suggestions ou retours..."
               value={suggestions}
               onChange={(e) => setSuggestions(e.target.value)}
-              className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[120px]"
+              className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[100px]"
               maxLength={1000}
               required
             />
           </div>
+
+          <div className="space-y-2">
+            <Label className="text-foreground font-semibold">⚠️ Problèmes rencontrés</Label>
+            <Textarea
+              placeholder="Décrivez les bugs ou problèmes rencontrés..."
+              value={problems}
+              onChange={(e) => setProblems(e.target.value)}
+              className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[100px]"
+              maxLength={1000}
+            />
+          </div>
+
           <Button
             type="submit"
             disabled={sending}
