@@ -13,6 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
+import { heroImage, activityImage, placeThumbnail } from "@/lib/unsplash";
 
 interface Props {
   formData: TravelFormData;
