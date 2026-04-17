@@ -149,6 +149,32 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+      {/* Hero image de la destination */}
+      {formData.destination && (
+        <div className="relative h-44 sm:h-56 rounded-2xl overflow-hidden mb-2">
+          <img
+            src={heroImage(formData.destination, 1600, 600)}
+            alt={`Vue de ${formData.destination}`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
+          <div className="absolute bottom-3 left-4 right-4">
+            <p className="text-xs font-medium text-primary uppercase tracking-wide mb-1">
+              Votre destination
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+              {formData.destination}
+            </h2>
+            {formData.duration && (
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {days} jours d'aventure vous attendent
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Success banner */}
       <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/20 mb-2">
         <CheckCircle className="w-5 h-5 text-primary shrink-0" />
