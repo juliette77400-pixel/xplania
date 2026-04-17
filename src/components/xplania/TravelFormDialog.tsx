@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Sparkles } from "lucide-react";
@@ -15,34 +15,51 @@ import StepTransport from "@/components/xplania/form-steps/StepTransport";
 import StepConstraints from "@/components/xplania/form-steps/StepConstraints";
 import StepEnvironment from "@/components/xplania/form-steps/StepEnvironment";
 import StepInspirations from "@/components/xplania/form-steps/StepInspirations";
+import ModeSelector, { type PlanMode } from "@/components/xplania/form-steps/ModeSelector";
 import DashboardCards from "@/components/xplania/DashboardCards";
 import { motion, AnimatePresence } from "framer-motion";
 
-const STEP_LABELS = [
-  "Informations de base",
-  "Profil du voyageur",
-  "Objectif du voyage",
-  "Style de voyage",
-  "Budget",
-  "Hébergement",
-  "Transport",
-  "Contraintes",
-  "Environnement",
-  "Inspirations",
-];
+type StepKey =
+  | "basic"
+  | "profile"
+  | "objectives"
+  | "style"
+  | "budget"
+  | "accommodation"
+  | "transport"
+  | "constraints"
+  | "environment"
+  | "inspirations";
 
-const STEP_DESCRIPTIONS = [
-  "Où et quand souhaitez-vous partir ?",
-  "Parlez-nous de vous pour personnaliser votre voyage",
-  "Que souhaitez-vous vivre pendant ce voyage ?",
-  "Comment aimez-vous voyager ?",
-  "Définissez votre enveloppe budgétaire",
-  "Quel type de logement préférez-vous ?",
-  "Comment comptez-vous vous déplacer ?",
-  "Des besoins particuliers à prendre en compte ?",
-  "Vos préférences d'environnement et bagages",
-  "Une dernière touche d'inspiration !",
-];
+const STEP_META: Record<StepKey, { label: string; description: string }> = {
+  basic: { label: "Informations de base", description: "Où et quand souhaitez-vous partir ?" },
+  profile: { label: "Profil du voyageur", description: "Parlez-nous de vous pour personnaliser votre voyage" },
+  objectives: { label: "Objectif du voyage", description: "Que souhaitez-vous vivre pendant ce voyage ?" },
+  style: { label: "Style de voyage", description: "Comment aimez-vous voyager ?" },
+  budget: { label: "Budget", description: "Définissez votre enveloppe budgétaire" },
+  accommodation: { label: "Hébergement", description: "Quel type de logement préférez-vous ?" },
+  transport: { label: "Transport", description: "Comment comptez-vous vous déplacer ?" },
+  constraints: { label: "Contraintes", description: "Des besoins particuliers à prendre en compte ?" },
+  environment: { label: "Environnement", description: "Vos préférences d'environnement et bagages" },
+  inspirations: { label: "Inspirations", description: "Une dernière touche d'inspiration !" },
+};
+
+const MODE_STEPS: Record<PlanMode, StepKey[]> = {
+  quick: ["basic", "budget", "style"],
+  custom: ["basic", "profile", "objectives", "style", "budget", "accommodation", "inspirations"],
+  tailored: [
+    "basic",
+    "profile",
+    "objectives",
+    "style",
+    "budget",
+    "accommodation",
+    "transport",
+    "constraints",
+    "environment",
+    "inspirations",
+  ],
+};
 
 const defaultFormData: TravelFormData = {
   destination: "",
@@ -100,6 +117,7 @@ interface TravelFormDialogProps {
 }
 
 const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }: TravelFormDialogProps) => {
+  const [mode, setMode] = useState<PlanMode | null>(null);
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<TravelFormData>(defaultFormData);
   const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
@@ -113,8 +131,13 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
     setFormData((prev) => ({ ...prev, ...partial }));
   };
 
-  const totalSteps = STEP_LABELS.length;
-  const progress = Math.round(((step + 1) / totalSteps) * 100);
+  const activeSteps = useMemo<StepKey[]>(
+    () => (mode ? MODE_STEPS[mode] : []),
+    [mode],
+  );
+  const totalSteps = activeSteps.length;
+  const currentStepKey = activeSteps[step];
+  const progress = totalSteps > 0 ? Math.round(((step + 1) / totalSteps) * 100) : 0;
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -124,7 +147,6 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
     onGenerating?.(true);
 
     try {
-      // Use fetch directly for better error handling
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
@@ -135,7 +157,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
           "Authorization": `Bearer ${supabaseKey}`,
           "apikey": supabaseKey,
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify({ formData, mode }),
       });
 
       const data = await response.json();
@@ -143,11 +165,9 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
       if (!response.ok) {
         throw new Error(data?.error || `Erreur serveur (${response.status})`);
       }
-
       if (data?.error) {
         throw new Error(data.error);
       }
-
       if (!data?.recommendations) {
         throw new Error("Aucune recommandation reçue");
       }
@@ -177,6 +197,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
   const handleClose = () => {
     onOpenChange(false);
     setTimeout(() => {
+      setMode(null);
       setStep(0);
       setShowDashboard(false);
       setRecommendations(null);
@@ -235,32 +256,72 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
     );
   }
 
-  const stepComponents = [
-    <StepBasicInfo key={0} data={formData} update={updateForm} />,
-    <StepTravelerProfile key={1} data={formData} update={updateForm} />,
-    <StepObjectives key={2} data={formData} update={updateForm} />,
-    <StepTravelStyle key={3} data={formData} update={updateForm} />,
-    <StepBudget key={4} data={formData} update={updateForm} />,
-    <StepAccommodation key={5} data={formData} update={updateForm} />,
-    <StepTransport key={6} data={formData} update={updateForm} />,
-    <StepConstraints key={7} data={formData} update={updateForm} />,
-    <StepEnvironment key={8} data={formData} update={updateForm} />,
-    <StepInspirations key={9} data={formData} update={updateForm} />,
-  ];
+  // Étape 0 : sélection du mode
+  if (!mode) {
+    return (
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto glass-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-foreground">
+              Comment voulez-vous planifier ?
+            </DialogTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              Choisissez la profondeur du questionnaire qui vous convient.
+            </p>
+          </DialogHeader>
+          <div className="py-2">
+            <ModeSelector
+              onSelect={(m) => {
+                setMode(m);
+                setStep(0);
+                setDirection(1);
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  const renderStep = (key: StepKey) => {
+    switch (key) {
+      case "basic": return <StepBasicInfo data={formData} update={updateForm} />;
+      case "profile": return <StepTravelerProfile data={formData} update={updateForm} />;
+      case "objectives": return <StepObjectives data={formData} update={updateForm} />;
+      case "style": return <StepTravelStyle data={formData} update={updateForm} />;
+      case "budget": return <StepBudget data={formData} update={updateForm} />;
+      case "accommodation": return <StepAccommodation data={formData} update={updateForm} />;
+      case "transport": return <StepTransport data={formData} update={updateForm} />;
+      case "constraints": return <StepConstraints data={formData} update={updateForm} />;
+      case "environment": return <StepEnvironment data={formData} update={updateForm} />;
+      case "inspirations": return <StepInspirations data={formData} update={updateForm} />;
+    }
+  };
+
+  const currentMeta = currentStepKey ? STEP_META[currentStepKey] : { label: "", description: "" };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto glass-card border-border">
         <DialogHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <DialogTitle className="text-xl font-bold text-foreground">
-              {STEP_LABELS[step]}
+              {currentMeta.label}
             </DialogTitle>
-            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-              {step + 1}/{totalSteps}
-            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => { setMode(null); setStep(0); }}
+                className="text-xs font-medium text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+              >
+                Changer de mode
+              </button>
+              <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
+                {step + 1}/{totalSteps}
+              </span>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">{STEP_DESCRIPTIONS[step]}</p>
+          <p className="text-sm text-muted-foreground mt-1">{currentMeta.description}</p>
 
           {/* Progress bar */}
           <div className="relative mt-4">
@@ -273,9 +334,8 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
                 transition={{ duration: 0.4, ease: "easeOut" }}
               />
             </div>
-            {/* Step indicators */}
             <div className="flex justify-between mt-2">
-              {STEP_LABELS.map((label, i) => (
+              {activeSteps.map((_, i) => (
                 <div
                   key={i}
                   className="flex flex-col items-center"
@@ -296,16 +356,15 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
           </div>
         </DialogHeader>
 
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence initial={false}>
           <motion.div
-            key={step}
+            key={`${mode}-${step}`}
             initial={{ opacity: 0, x: direction * 30 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -direction * 30 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="py-4 min-h-[200px]"
           >
-            {stepComponents[step]}
+            {currentStepKey && renderStep(currentStepKey)}
           </motion.div>
         </AnimatePresence>
 
@@ -322,8 +381,8 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
 
           <div className="flex items-center gap-3">
             {step === totalSteps - 1 && (
-              <span className="text-xs text-muted-foreground hidden sm:inline flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3 text-primary inline" /> Dernière étape
+              <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3 text-primary" /> Dernière étape
               </span>
             )}
             {step < totalSteps - 1 ? (
@@ -350,5 +409,6 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
     </Dialog>
   );
 };
+
 
 export default TravelFormDialog;

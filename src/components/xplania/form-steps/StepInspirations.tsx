@@ -15,10 +15,13 @@ const StepInspirations = ({ data, update }: Props) => (
     </Label>
     <Textarea
       placeholder="Paysages, volcans, villages, plages, road trip, lieux cachés..."
-      value={data.inspirations}
+      value={data.inspirations ?? ""}
       onChange={(e) => update({ inspirations: e.target.value })}
       className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[120px]"
     />
+    <p className="text-xs text-muted-foreground">
+      Optionnel — vous pouvez laisser vide et lancer la génération directement.
+    </p>
   </div>
 );
 

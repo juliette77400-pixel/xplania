@@ -36,16 +36,22 @@ const StepBudget = ({ data, update }: Props) => {
     <div className="space-y-5">
       <div className="space-y-2">
         <Label className="text-foreground font-semibold flex items-center gap-2">
-          <Wallet className="w-4 h-4 text-primary" /> Budget approximatif (€)
+          <Wallet className="w-4 h-4 text-primary" /> Budget total du voyage (€)
         </Label>
         <Input
           type="number"
           min={0}
-          placeholder="Ex : 2000"
-          value={data.totalBudget || ""}
-          onChange={(e) => update({ totalBudget: parseInt(e.target.value) || 0 })}
+          placeholder=""
+          value={data.totalBudget ? data.totalBudget : ""}
+          onChange={(e) => {
+            const v = e.target.value;
+            update({ totalBudget: v === "" ? 0 : Math.max(0, parseInt(v) || 0) });
+          }}
           className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
         />
+        <p className="text-xs text-muted-foreground">
+          Entrez votre budget total pour ce voyage (en €).
+        </p>
         {perDay > 0 && (
           <div className="glass-card rounded-xl p-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center shrink-0">
