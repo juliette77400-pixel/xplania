@@ -151,23 +151,26 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
       {/* Hero image de la destination */}
       {formData.destination && (
-        <div className="relative h-44 sm:h-56 rounded-2xl overflow-hidden mb-2">
+        <div className="relative h-56 sm:h-72 rounded-2xl overflow-hidden mb-2 bg-muted">
           <img
-            src={heroImage(formData.destination, 1600, 600)}
+            src={heroImage(formData.destination, 1600, 720)}
             alt={`Vue de ${formData.destination}`}
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
-          <div className="absolute bottom-3 left-4 right-4">
-            <p className="text-xs font-medium text-primary uppercase tracking-wide mb-1">
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10" />
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+            <p className="text-xs font-medium text-primary uppercase tracking-wider mb-1.5">
               Votre destination
             </p>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
               {formData.destination}
             </h2>
             {formData.duration && (
-              <p className="text-sm text-muted-foreground mt-0.5">
+              <p className="text-sm text-muted-foreground mt-1">
                 {days} jours d'aventure vous attendent
               </p>
             )}
