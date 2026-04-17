@@ -30,15 +30,17 @@ const FreemiumBanner = () => {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <p className="text-sm font-bold text-foreground">
-                  Vous avez utilisé votre génération gratuite
+                  {generationsUsed >= freeQuota
+                    ? "Vous avez utilisé vos générations gratuites"
+                    : "Profitez de vos générations gratuites"}
                 </p>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary shrink-0">
                   {generationsUsed}/{freeQuota}
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-                Passez à Xplania Premium pour des voyages illimités, des itinéraires
-                ultra-personnalisés et le carnet de bord interactif.
+                Découvrez nos packs Xplania pour continuer à explorer sans limites :
+                IA, carnet de bord, guide interculturel et plus encore.
               </p>
               <div className="flex flex-wrap gap-2">
                 <Link
