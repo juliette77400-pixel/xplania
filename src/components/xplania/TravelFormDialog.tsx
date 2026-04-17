@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Sparkles } from "lucide-react";
@@ -15,6 +15,7 @@ import StepTransport from "@/components/xplania/form-steps/StepTransport";
 import StepConstraints from "@/components/xplania/form-steps/StepConstraints";
 import StepEnvironment from "@/components/xplania/form-steps/StepEnvironment";
 import StepInspirations from "@/components/xplania/form-steps/StepInspirations";
+import ModeSelector, { type PlanMode } from "@/components/xplania/form-steps/ModeSelector";
 import DashboardCards from "@/components/xplania/DashboardCards";
 import { motion, AnimatePresence } from "framer-motion";
 
