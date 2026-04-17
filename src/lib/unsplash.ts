@@ -1,6 +1,7 @@
 /**
- * Helpers d'images via Unsplash Source API (sans clé).
- * https://source.unsplash.com/<size>/?<keywords>
+ * Helpers d'images sans clé API.
+ * Utilise Picsum (placeholders fiables) avec un seed déterministe basé sur les mots-clés,
+ * car l'API source.unsplash.com a été dépréciée fin 2024 et renvoie souvent des erreurs.
  */
 
 const sanitize = (s: string) =>
@@ -9,12 +10,22 @@ const sanitize = (s: string) =>
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9 ,-]/g, "")
     .trim()
-    .replace(/\s+/g, ",");
+    .toLowerCase();
 
-/** Image principale (hero) pour une destination. */
+/** Hash simple et stable pour générer un seed numérique à partir d'une chaîne. */
+const hashSeed = (s: string): string => {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = (h << 5) - h + s.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h).toString();
+};
+
+/** Image principale (hero) pour une destination — déterministe par destination. */
 export const heroImage = (destination: string, w = 1600, h = 600) => {
-  const q = sanitize(destination || "travel,landscape");
-  return `https://source.unsplash.com/${w}x${h}/?${q},travel,landscape`;
+  const seed = hashSeed(sanitize(destination) || "travel");
+  return `https://picsum.photos/seed/${seed}/${w}/${h}`;
 };
 
 /** Vignette pour une activité ou un lieu donné. */
@@ -24,10 +35,8 @@ export const activityImage = (
   w = 400,
   h = 240,
 ) => {
-  const dest = sanitize(destination || "");
-  const q = sanitize(query || "city");
-  const keywords = [q, dest].filter(Boolean).join(",");
-  return `https://source.unsplash.com/${w}x${h}/?${keywords}`;
+  const seed = hashSeed(`${sanitize(destination)}-${sanitize(query)}` || "place");
+  return `https://picsum.photos/seed/${seed}/${w}/${h}`;
 };
 
 /** Petite vignette carrée pour un lieu/recommandation. */
