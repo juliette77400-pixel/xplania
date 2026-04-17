@@ -41,22 +41,25 @@ const TripPreview = ({ data, onResume }: Props) => {
       className="space-y-4"
     >
       {/* Hero image */}
-      <div className="relative h-40 sm:h-52 rounded-2xl overflow-hidden">
+      <div className="relative h-48 sm:h-60 rounded-2xl overflow-hidden bg-muted">
         <img
-          src={heroImage(data.destination || "voyage", 1200, 500)}
+          src={heroImage(data.destination || "voyage", 1200, 600)}
           alt={data.destination ? `Aperçu de ${data.destination}` : "Aperçu de votre voyage"}
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).style.display = "none";
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute bottom-3 left-4 right-4">
-          <div className="flex items-center gap-2 mb-1">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10" />
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <div className="flex items-center gap-2 mb-1.5">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-xs font-medium text-primary uppercase tracking-wide">
+            <span className="text-xs font-medium text-primary uppercase tracking-wider">
               Aperçu de votre voyage
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+          <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">
             {data.destination || "Destination à choisir"}
           </h3>
         </div>
