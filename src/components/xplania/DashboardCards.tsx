@@ -264,13 +264,23 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {rec.activities.map((act, i) => (
-                <div key={i} className="p-3 rounded-xl bg-muted/30 space-y-1">
-                  <div className="flex items-center gap-2">
-                    {activityIcons[String(act.type)] || <Compass className="w-4 h-4 text-primary" />}
-                    <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
+                <div key={i} className="rounded-xl bg-muted/30 overflow-hidden flex flex-col">
+                  <div className="relative h-28 w-full overflow-hidden bg-muted">
+                    <img
+                      src={activityImage(formData.destination, toText(act.name) || String(act.type), 480, 280)}
+                      alt={toText(act.name)}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
-                  <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
+                  <div className="p-3 space-y-1">
+                    <div className="flex items-center gap-2">
+                      {activityIcons[String(act.type)] || <Compass className="w-4 h-4 text-primary" />}
+                      <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
+                    <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -350,10 +360,16 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             <div className="space-y-3">
               {rec.localRecommendations.map((item, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
-                  <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full shrink-0 capitalize">
-                    {toText(item.category)}
-                  </span>
-                  <div>
+                  <img
+                    src={placeThumbnail(formData.destination, `${toText(item.category)} ${toText(item.name)}`, 96)}
+                    alt={toText(item.name)}
+                    className="w-16 h-16 rounded-lg object-cover shrink-0"
+                    loading="lazy"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <span className="inline-block text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full capitalize mb-1">
+                      {toText(item.category)}
+                    </span>
                     <p className="text-sm font-semibold text-foreground">{toText(item.name)}</p>
                     <p className="text-xs text-muted-foreground">{toText(item.description)}</p>
                   </div>
