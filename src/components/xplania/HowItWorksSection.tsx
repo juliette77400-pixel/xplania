@@ -3,20 +3,20 @@ import { motion } from "framer-motion";
 const steps = [
   {
     num: 1,
-    title: "Créer votre voyage",
-    desc: "Renseignez votre destination, vos dates et le type de voyage que vous souhaitez faire.",
+    title: "Dites-nous où vous voulez aller",
+    desc: "Destination, dates, type de voyage : on vous pose juste les bonnes questions, ni trop, ni trop peu.",
     soon: false,
   },
   {
     num: 2,
-    title: "Préparer votre voyage",
-    desc: "Accédez à votre budget estimé, aux démarches administratives et à votre valise intelligente.",
+    title: "L'IA prépare votre voyage",
+    desc: "En quelques secondes, vous recevez votre budget, votre liste de bagages et vos démarches visa, prêts à l'emploi.",
     soon: false,
   },
   {
     num: 3,
-    title: "Profiter du voyage",
-    desc: "Suivi de voyage, carnet de bord et recommandations locales arriveront prochainement.",
+    title: "Vivez le voyage sereinement",
+    desc: "Carnet de bord, suivi de voyage et recommandations en temps réel arriveront prochainement.",
     soon: true,
   },
 ];

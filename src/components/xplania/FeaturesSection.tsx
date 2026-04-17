@@ -7,25 +7,34 @@ const features = [
     num: 1,
     icon: Luggage,
     title: "Valise intelligente",
-    description: "Génération automatique d'une liste de bagages selon destination, météo et durée du séjour.",
-    benefits: ["Ne rien oublier d'essentiel", "Optimiser l'espace de vos bagages"],
+    tagline: "Une checklist sur-mesure de ce qu'il faut emporter.",
+    description:
+      "On génère automatiquement la liste de bagages adaptée à votre destination, à la météo prévue et à la durée du séjour. Adieu les oublis et les valises trop lourdes.",
+    benefits: ["Ne plus rien oublier d'essentiel", "Optimiser l'espace dans vos bagages"],
     link: "/guide-valise",
+    cta: "Préparer ma valise",
   },
   {
     num: 2,
     icon: Wallet,
     title: "Guide budget",
-    description: "Estimation du coût du voyage et suivi des dépenses.",
-    benefits: ["Éviter les mauvaises surprises financières", "Adapter le budget selon le coût de la vie local"],
+    tagline: "Estimez et suivez vos dépenses pendant le voyage.",
+    description:
+      "On estime le coût total de votre voyage selon le pays et votre style, et vous suivez vos dépenses au fil des jours pour rester dans le cadre prévu.",
+    benefits: ["Éviter les mauvaises surprises", "Adapter le budget au coût de la vie local"],
     link: "/guide-budget",
+    cta: "Estimer mon budget",
   },
   {
     num: 3,
     icon: FileText,
     title: "Guide visa & démarches",
-    description: "Checklist personnalisée des documents nécessaires pour voyager.",
-    benefits: ["Simplifier les démarches administratives", "S'assurer d'avoir tous les documents requis"],
+    tagline: "Sachez exactement quels papiers préparer avant de partir.",
+    description:
+      "On vous donne la liste précise des documents requis selon votre nationalité et votre destination : visa, passeport, vaccins, assurances.",
+    benefits: ["Simplifier les démarches administratives", "Avoir tous les documents requis le jour J"],
     link: "/guide-visa",
+    cta: "Voir mes démarches",
   },
 ];
 
@@ -41,9 +50,9 @@ const FeaturesSection = () => {
         >
           <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">Préparer son voyage</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Fonctionnalités principales pour voyager sans stress
+            Tout ce qu'il faut pour partir l'esprit tranquille
           </h2>
-          <p className="mt-3 text-muted-foreground">Fonctionnalités testées dans la bêta</p>
+          <p className="mt-3 text-muted-foreground">Trois outils simples, propulsés par l'IA, pour préparer votre voyage de A à Z</p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 mt-12">
@@ -65,7 +74,8 @@ const FeaturesSection = () => {
                 </div>
                 <h3 className="text-xl font-bold text-foreground">{f.title}</h3>
               </div>
-              <p className="mt-4 text-muted-foreground text-sm leading-relaxed">{f.description}</p>
+              <p className="mt-2 text-sm font-medium text-primary">{f.tagline}</p>
+              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{f.description}</p>
               <ul className="mt-4 space-y-2 flex-1">
                 {f.benefits.map((b) => (
                   <li key={b} className="flex items-center gap-2 text-sm text-foreground">
@@ -78,10 +88,10 @@ const FeaturesSection = () => {
                 to={f.link}
                 className="mt-6 flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all"
               >
-                Découvrir le guide
+                {f.cta}
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <p className="mt-2 text-xs text-muted-foreground">Accès instantané • Sans inscription</p>
+              <p className="mt-2 text-xs text-muted-foreground">Accès immédiat • Sans inscription</p>
             </motion.div>
           ))}
         </div>

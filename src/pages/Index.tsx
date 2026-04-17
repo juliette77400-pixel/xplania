@@ -9,6 +9,7 @@ import BetaSection from "@/components/xplania/BetaSection";
 import Footer from "@/components/xplania/Footer";
 import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
+import OnboardingDialog from "@/components/xplania/OnboardingDialog";
 import { useTravelContext } from "@/contexts/TravelContext";
 
 const Index = () => {
@@ -46,6 +47,7 @@ const Index = () => {
         onGenerating={setDashboardLoading}
       />
       <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
+      <OnboardingDialog />
     </div>
   );
 };
