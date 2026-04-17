@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/accordion";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import { heroImage, activityImage, placeThumbnail } from "@/lib/unsplash";
+import { useDestinationImage } from "@/hooks/useDestinationImage";
 
 interface Props {
   formData: TravelFormData;
@@ -126,6 +127,7 @@ const SectionItem = ({
 );
 
 const DashboardCards = ({ formData, recommendations, loading, error }: Props) => {
+  const heroSrc = useDestinationImage(formData.destination || "", 1600, 720);
   if (loading) {
     return <LoadingState destination={formData.destination || "votre destination"} />;
   }
@@ -153,7 +155,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
       {formData.destination && (
         <div className="relative h-56 sm:h-72 rounded-2xl overflow-hidden mb-2 bg-muted">
           <img
-            src={heroImage(formData.destination, 1600, 720)}
+            src={heroSrc}
             alt={`Vue de ${formData.destination}`}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
