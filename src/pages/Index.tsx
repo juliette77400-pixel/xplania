@@ -10,12 +10,23 @@ import Footer from "@/components/xplania/Footer";
 import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
 import OnboardingDialog from "@/components/xplania/OnboardingDialog";
+import QuotaReachedDialog from "@/components/xplania/QuotaReachedDialog";
 import { useTravelContext } from "@/contexts/TravelContext";
+import { hasReachedFreeQuota } from "@/stores/usePlanStore";
 
 const Index = () => {
   const [travelFormOpen, setTravelFormOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [quotaOpen, setQuotaOpen] = useState(false);
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
+
+  const handleCreateTrip = () => {
+    if (hasReachedFreeQuota()) {
+      setQuotaOpen(true);
+      return;
+    }
+    setTravelFormOpen(true);
+  };
 
   const scrollToFeedback = () => {
     const el = document.getElementById("feedback");
@@ -24,19 +35,19 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar onCreateTrip={() => setTravelFormOpen(true)} onFeedback={scrollToFeedback} />
-      <HeroSection onCreateTrip={() => setTravelFormOpen(true)} />
+      <Navbar onCreateTrip={handleCreateTrip} onFeedback={scrollToFeedback} />
+      <HeroSection onCreateTrip={handleCreateTrip} />
       <FeaturesSection />
       <HowItWorksSection />
       <BenefitsSection />
       <DashboardSection
-        onCreateTrip={() => setTravelFormOpen(true)}
+        onCreateTrip={handleCreateTrip}
         tripData={tripData}
         recommendations={recommendations}
         loading={dashboardLoading}
       />
       <BetaSection onFeedback={() => setFeedbackOpen(true)} />
-      <Footer onCreateTrip={() => setTravelFormOpen(true)} />
+      <Footer onCreateTrip={handleCreateTrip} />
       <TravelFormDialog
         open={travelFormOpen}
         onOpenChange={setTravelFormOpen}
@@ -48,6 +59,7 @@ const Index = () => {
       />
       <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
       <OnboardingDialog />
+      <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
     </div>
   );
 };
