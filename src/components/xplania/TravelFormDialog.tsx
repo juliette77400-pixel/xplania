@@ -126,6 +126,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
   const [showDashboard, setShowDashboard] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
   const [direction, setDirection] = useState(1);
+  const [previewing, setPreviewing] = useState(false);
   const { toast } = useToast();
 
   const updateForm = (partial: Partial<TravelFormData>) => {
