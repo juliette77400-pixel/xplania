@@ -15,6 +15,7 @@ import {
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import { heroImage, activityImage, placeThumbnail } from "@/lib/unsplash";
 import { useDestinationImage } from "@/hooks/useDestinationImage";
+import FreemiumBanner from "@/components/xplania/FreemiumBanner";
 
 interface Props {
   formData: TravelFormData;
@@ -151,6 +152,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+      <FreemiumBanner />
       {/* Hero image de la destination */}
       {formData.destination && (
         <div className="relative h-56 sm:h-72 rounded-2xl overflow-hidden mb-2 bg-muted">

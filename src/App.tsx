@@ -8,6 +8,7 @@ import GuideBudget from "./pages/GuideBudget.tsx";
 import GuideValise from "./pages/GuideValise.tsx";
 import GuideVisa from "./pages/GuideVisa.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Offres from "./pages/Offres.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/guide-budget" element={<GuideBudget />} />
           <Route path="/guide-valise" element={<GuideValise />} />
           <Route path="/guide-visa" element={<GuideVisa />} />
+          <Route path="/offres" element={<Offres />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
