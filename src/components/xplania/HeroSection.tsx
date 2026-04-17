@@ -85,7 +85,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           <Clock className="w-5 h-5 text-primary mt-0.5 shrink-0" />
           <div>
             <p className="text-sm font-semibold text-foreground">
-              Version bêta : nous testons actuellement trois fonctionnalités pour préparer un voyage.
+              Bêta gratuite — trois outils déjà disponibles pour préparer votre voyage :
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
               {[
