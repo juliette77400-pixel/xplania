@@ -13,6 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
+import { heroImage, activityImage, placeThumbnail } from "@/lib/unsplash";
 
 interface Props {
   formData: TravelFormData;
@@ -148,6 +149,32 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+      {/* Hero image de la destination */}
+      {formData.destination && (
+        <div className="relative h-44 sm:h-56 rounded-2xl overflow-hidden mb-2">
+          <img
+            src={heroImage(formData.destination, 1600, 600)}
+            alt={`Vue de ${formData.destination}`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
+          <div className="absolute bottom-3 left-4 right-4">
+            <p className="text-xs font-medium text-primary uppercase tracking-wide mb-1">
+              Votre destination
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+              {formData.destination}
+            </h2>
+            {formData.duration && (
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {days} jours d'aventure vous attendent
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Success banner */}
       <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/20 mb-2">
         <CheckCircle className="w-5 h-5 text-primary shrink-0" />
@@ -237,13 +264,23 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {rec.activities.map((act, i) => (
-                <div key={i} className="p-3 rounded-xl bg-muted/30 space-y-1">
-                  <div className="flex items-center gap-2">
-                    {activityIcons[String(act.type)] || <Compass className="w-4 h-4 text-primary" />}
-                    <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
+                <div key={i} className="rounded-xl bg-muted/30 overflow-hidden flex flex-col">
+                  <div className="relative h-28 w-full overflow-hidden bg-muted">
+                    <img
+                      src={activityImage(formData.destination, toText(act.name) || String(act.type), 480, 280)}
+                      alt={toText(act.name)}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
-                  <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
+                  <div className="p-3 space-y-1">
+                    <div className="flex items-center gap-2">
+                      {activityIcons[String(act.type)] || <Compass className="w-4 h-4 text-primary" />}
+                      <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
+                    <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -323,10 +360,16 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             <div className="space-y-3">
               {rec.localRecommendations.map((item, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
-                  <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full shrink-0 capitalize">
-                    {toText(item.category)}
-                  </span>
-                  <div>
+                  <img
+                    src={placeThumbnail(formData.destination, `${toText(item.category)} ${toText(item.name)}`, 96)}
+                    alt={toText(item.name)}
+                    className="w-16 h-16 rounded-lg object-cover shrink-0"
+                    loading="lazy"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <span className="inline-block text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full capitalize mb-1">
+                      {toText(item.category)}
+                    </span>
                     <p className="text-sm font-semibold text-foreground">{toText(item.name)}</p>
                     <p className="text-xs text-muted-foreground">{toText(item.description)}</p>
                   </div>

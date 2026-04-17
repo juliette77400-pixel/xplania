@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Eye, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
@@ -17,6 +17,7 @@ import StepEnvironment from "@/components/xplania/form-steps/StepEnvironment";
 import StepInspirations from "@/components/xplania/form-steps/StepInspirations";
 import ModeSelector, { type PlanMode } from "@/components/xplania/form-steps/ModeSelector";
 import DashboardCards from "@/components/xplania/DashboardCards";
+import TripPreview from "@/components/xplania/form-steps/TripPreview";
 import { motion, AnimatePresence } from "framer-motion";
 
 type StepKey =
@@ -125,6 +126,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
   const [showDashboard, setShowDashboard] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
   const [direction, setDirection] = useState(1);
+  const [previewing, setPreviewing] = useState(false);
   const { toast } = useToast();
 
   const updateForm = (partial: Partial<TravelFormData>) => {
@@ -358,42 +360,58 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
 
         <AnimatePresence initial={false}>
           <motion.div
-            key={`${mode}-${step}`}
+            key={previewing ? "preview" : `${mode}-${step}`}
             initial={{ opacity: 0, x: direction * 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="py-4 min-h-[200px]"
           >
-            {currentStepKey && renderStep(currentStepKey)}
+            {previewing ? (
+              <TripPreview data={formData} onResume={() => setPreviewing(false)} />
+            ) : (
+              currentStepKey && renderStep(currentStepKey)
+            )}
           </motion.div>
         </AnimatePresence>
 
-        <div className="flex justify-between pt-2 border-t border-border/50">
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-2 pt-2 border-t border-border/50">
           <Button
             variant="ghost"
-            onClick={goPrev}
-            disabled={step === 0}
+            onClick={previewing ? () => setPreviewing(false) : goPrev}
+            disabled={!previewing && step === 0}
             className="text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour
+            {previewing ? "Reprendre" : "Retour"}
           </Button>
 
-          <div className="flex items-center gap-3">
-            {step === totalSteps - 1 && (
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+            {step === totalSteps - 1 && !previewing && (
               <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3 text-primary" /> Dernière étape
               </span>
             )}
-            {step < totalSteps - 1 ? (
+            {!previewing && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setPreviewing(true)}
+                className="border-primary/40 text-foreground hover:bg-primary/10"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                Voir mon voyage
+              </Button>
+            )}
+            {!previewing && step < totalSteps - 1 && (
               <Button
                 onClick={goNext}
                 className="gradient-button text-primary-foreground border-0"
               >
-                Suivant
+                Continuer
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-            ) : (
+            )}
+            {!previewing && step === totalSteps - 1 && (
               <Button
                 onClick={handleGenerate}
                 disabled={generating}
