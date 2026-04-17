@@ -19,31 +19,47 @@ import ModeSelector, { type PlanMode } from "@/components/xplania/form-steps/Mod
 import DashboardCards from "@/components/xplania/DashboardCards";
 import { motion, AnimatePresence } from "framer-motion";
 
-const STEP_LABELS = [
-  "Informations de base",
-  "Profil du voyageur",
-  "Objectif du voyage",
-  "Style de voyage",
-  "Budget",
-  "Hébergement",
-  "Transport",
-  "Contraintes",
-  "Environnement",
-  "Inspirations",
-];
+type StepKey =
+  | "basic"
+  | "profile"
+  | "objectives"
+  | "style"
+  | "budget"
+  | "accommodation"
+  | "transport"
+  | "constraints"
+  | "environment"
+  | "inspirations";
 
-const STEP_DESCRIPTIONS = [
-  "Où et quand souhaitez-vous partir ?",
-  "Parlez-nous de vous pour personnaliser votre voyage",
-  "Que souhaitez-vous vivre pendant ce voyage ?",
-  "Comment aimez-vous voyager ?",
-  "Définissez votre enveloppe budgétaire",
-  "Quel type de logement préférez-vous ?",
-  "Comment comptez-vous vous déplacer ?",
-  "Des besoins particuliers à prendre en compte ?",
-  "Vos préférences d'environnement et bagages",
-  "Une dernière touche d'inspiration !",
-];
+const STEP_META: Record<StepKey, { label: string; description: string }> = {
+  basic: { label: "Informations de base", description: "Où et quand souhaitez-vous partir ?" },
+  profile: { label: "Profil du voyageur", description: "Parlez-nous de vous pour personnaliser votre voyage" },
+  objectives: { label: "Objectif du voyage", description: "Que souhaitez-vous vivre pendant ce voyage ?" },
+  style: { label: "Style de voyage", description: "Comment aimez-vous voyager ?" },
+  budget: { label: "Budget", description: "Définissez votre enveloppe budgétaire" },
+  accommodation: { label: "Hébergement", description: "Quel type de logement préférez-vous ?" },
+  transport: { label: "Transport", description: "Comment comptez-vous vous déplacer ?" },
+  constraints: { label: "Contraintes", description: "Des besoins particuliers à prendre en compte ?" },
+  environment: { label: "Environnement", description: "Vos préférences d'environnement et bagages" },
+  inspirations: { label: "Inspirations", description: "Une dernière touche d'inspiration !" },
+};
+
+const MODE_STEPS: Record<PlanMode, StepKey[]> = {
+  quick: ["basic", "budget", "style"],
+  custom: ["basic", "profile", "objectives", "style", "budget", "accommodation", "inspirations"],
+  tailored: [
+    "basic",
+    "profile",
+    "objectives",
+    "style",
+    "budget",
+    "accommodation",
+    "transport",
+    "constraints",
+    "environment",
+    "inspirations",
+  ],
+};
 
 const defaultFormData: TravelFormData = {
   destination: "",
