@@ -176,6 +176,13 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
 
       setRecommendations(data.recommendations);
       onTripGenerated?.(formData, data.recommendations);
+      // Incrément du compteur de générations (freemium)
+      try {
+        const { usePlanStore } = await import("@/stores/usePlanStore");
+        usePlanStore.getState().incrementGeneration();
+      } catch {
+        /* ignore */
+      }
 
       toast({
         title: "✨ Plan de voyage généré !",
