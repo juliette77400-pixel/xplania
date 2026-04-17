@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, MapPin, CalendarDays, Wallet, Users, Plane, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { heroImage } from "@/lib/unsplash";
+import { useDestinationImage } from "@/hooks/useDestinationImage";
 import type { TravelFormData } from "@/types/travel";
 
 interface Props {
@@ -32,6 +33,7 @@ const Field = ({
 const TripPreview = ({ data, onResume }: Props) => {
   const days = data.duration ? parseInt(data.duration) || 0 : 0;
   const perDay = days > 0 && data.totalBudget > 0 ? Math.round(data.totalBudget / days) : 0;
+  const heroSrc = useDestinationImage(data.destination || "voyage", 1200, 600);
 
   return (
     <motion.div
@@ -43,7 +45,7 @@ const TripPreview = ({ data, onResume }: Props) => {
       {/* Hero image */}
       <div className="relative h-48 sm:h-60 rounded-2xl overflow-hidden bg-muted">
         <img
-          src={heroImage(data.destination || "voyage", 1200, 600)}
+          src={heroSrc}
           alt={data.destination ? `Aperçu de ${data.destination}` : "Aperçu de votre voyage"}
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
