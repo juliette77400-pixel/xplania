@@ -12,6 +12,7 @@ import MoodFeed from "@/components/mood/MoodFeed";
 import MoodFavorites from "@/components/mood/MoodFavorites";
 import MoodMap from "@/components/mood/MoodMap";
 import MoodAmbience from "@/components/mood/MoodAmbience";
+import MoodAiAnalysis from "@/components/mood/MoodAiAnalysis";
 import MoodBadgesPanel from "@/components/mood/MoodBadgesPanel";
 import PopularMoods from "@/components/mood/PopularMoods";
 import MoodPlaceDetail from "@/components/mood/MoodPlaceDetail";
@@ -58,6 +59,10 @@ const MoodExplorer = () => {
           </div>
           <MoodAmbience mood={activeMood} />
         </div>
+
+        {activeMood && places.length > 0 && (
+          <MoodAiAnalysis mood={activeMood} energyLevel={(history[0] as any)?.energy_level ?? 50} placesCount={places.length} />
+        )}
 
         {!activeMood || places.length === 0 ? (
           <div className="grid md:grid-cols-[1fr_320px] gap-6">
