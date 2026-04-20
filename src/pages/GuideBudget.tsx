@@ -24,6 +24,7 @@ import BudgetTips from "@/components/budget/BudgetTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
 
 const GuideBudgetPage = () => {
+  useHydrateActiveTrip();
   const { tripData } = useTravelStore();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;

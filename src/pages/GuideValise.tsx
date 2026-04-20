@@ -193,6 +193,7 @@ function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): Lugga
 }
 
 const GuideValisePage = () => {
+  useHydrateActiveTrip();
   const { tripData } = useTravelStore();
   const destination = tripData?.destination || "votre destination";
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;

@@ -120,6 +120,7 @@ const SectionSkeleton = () => (
 // ── Component ──
 
 const GuideVisaPage = () => {
+  useHydrateActiveTrip();
   const { tripData } = useTravelStore();
   const contextDestination = tripData?.destination || "";
 
