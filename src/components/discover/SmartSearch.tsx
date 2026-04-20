@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Search, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Search, Loader2, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { distanceKm } from "@/lib/discover";
 import type { Place } from "@/hooks/useDiscover";
+import { searchPhoton, type GeoSuggestion } from "@/lib/geocoding";
 import { toast } from "sonner";
 import PlaceCard from "./PlaceCard";
 
@@ -19,9 +20,23 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Place[]>([]);
+  const [autocomplete, setAutocomplete] = useState<GeoSuggestion[]>([]);
+  const [showAuto, setShowAuto] = useState(false);
+  const debounceRef = useRef<number | null>(null);
+
+  // Google-Maps-like autocomplete via Photon
+  useEffect(() => {
+    if (debounceRef.current) window.clearTimeout(debounceRef.current);
+    if (q.trim().length < 2) { setAutocomplete([]); return; }
+    debounceRef.current = window.setTimeout(async () => {
+      const results = await searchPhoton(q, { lat: userPos?.lat, lng: userPos?.lng, limit: 5 });
+      setAutocomplete(results);
+    }, 250);
+  }, [q, userPos?.lat, userPos?.lng]);
 
   const run = async (text: string) => {
     if (!text.trim()) return;
+    setShowAuto(false);
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("discover-search", {
@@ -41,10 +56,38 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
 
   return (
     <div className="space-y-4">
-      <form onSubmit={(e) => { e.preventDefault(); run(q); }} className="flex gap-2">
+      <form onSubmit={(e) => { e.preventDefault(); run(q); }} className="relative flex gap-2">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Décris ce que tu cherches… (ex: brunch avec vue)" className="pl-9" />
+          <Input
+            value={q}
+            onChange={(e) => { setQ(e.target.value); setShowAuto(true); }}
+            onFocus={() => setShowAuto(true)}
+            onBlur={() => setTimeout(() => setShowAuto(false), 200)}
+            placeholder="Lieu, restaurant, activité… (ex: brunch avec vue à Paris)"
+            className="pl-9"
+          />
+          {showAuto && autocomplete.length > 0 && (
+            <div className="absolute left-0 right-0 top-full mt-1 z-50 rounded-xl border border-border bg-card shadow-xl overflow-hidden">
+              {autocomplete.map((s, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onMouseDown={(e) => { e.preventDefault(); setQ(s.label); setShowAuto(false); run(s.label); }}
+                  className="flex w-full items-start gap-2 px-3 py-2 text-left text-sm hover:bg-muted/60 border-b border-border last:border-0"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <p className="font-medium text-foreground truncate">{s.name || s.label}</p>
+                    <p className="text-[11px] text-muted-foreground truncate">
+                      {[s.city, s.country].filter(Boolean).join(", ")}
+                      {s.type && <span className="ml-1 text-primary/70">· {s.type}</span>}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         <Button type="submit" disabled={loading || !q.trim()}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Chercher"}
