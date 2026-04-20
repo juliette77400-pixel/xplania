@@ -55,11 +55,18 @@ const Discover = () => {
                 📍 En attente de ta position pour générer des recommandations…
               </div>
             )}
+            {userPos && !loading && places.length === 0 && (
+              <div className="rounded-2xl border border-border bg-card/40 p-8 text-center text-sm text-muted-foreground space-y-3">
+                <p>🔍 Aucun lieu trouvé autour de toi pour le moment.</p>
+                <p className="text-xs">Essaie la recherche pour explorer une autre zone, ou rafraîchis dans quelques secondes.</p>
+                <button onClick={refresh} className="rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">Rafraîchir</button>
+              </div>
+            )}
             <PlaceCarousel title="Pour toi" emoji="🔥" places={sections.forYou} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
             <PlaceCarousel title="Autour de toi" emoji="📍" places={sections.around} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
             <PlaceCarousel title="Hidden gems" emoji="✨" places={sections.hidden} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Food & Drinks" emoji="🍝" places={sections.food} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Experiences" emoji="🎭" places={sections.experiences} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title="Restaurants & Cafés" emoji="🍝" places={sections.food} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title="Activités & Culture" emoji="🎭" places={sections.experiences} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
             <PlaceCarousel title="Chill & Nature" emoji="🌿" places={sections.chill} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
           </TabsContent>
 
