@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import {
   Briefcase, Camera, Mountain, Umbrella, Car, Sparkles,
-  PackageOpen, Compass, Shirt
+  PackageOpen, Compass, Shirt, Building2, Gem
 } from "lucide-react";
 
 export type LuggageMode =
   | "minimaliste" | "confort" | "stylée" | "aventure"
-  | "business" | "photo" | "randonnée" | "plage" | "roadtrip";
+  | "business" | "photo" | "randonnée" | "plage" | "roadtrip"
+  | "urbain" | "luxe";
 
 interface LuggageModesProps {
   activeMode: LuggageMode;
@@ -15,16 +16,26 @@ interface LuggageModesProps {
   isLoading?: boolean;
 }
 
-const modes: { id: LuggageMode; label: string; icon: React.ReactNode; desc: string; emoji: string }[] = [
-  { id: "minimaliste", label: "Minimaliste", icon: <PackageOpen className="w-4 h-4" />, desc: "L'essentiel uniquement", emoji: "🎒" },
-  { id: "confort", label: "Confort", icon: <Sparkles className="w-4 h-4" />, desc: "Confort au quotidien", emoji: "✨" },
-  { id: "stylée", label: "Stylée", icon: <Shirt className="w-4 h-4" />, desc: "Look soigné", emoji: "👗" },
-  { id: "aventure", label: "Aventure", icon: <Compass className="w-4 h-4" />, desc: "Tout-terrain", emoji: "🧭" },
-  { id: "business", label: "Business", icon: <Briefcase className="w-4 h-4" />, desc: "Pro & élégant", emoji: "💼" },
-  { id: "photo", label: "Créateur", icon: <Camera className="w-4 h-4" />, desc: "Matériel créatif", emoji: "📸" },
-  { id: "randonnée", label: "Randonnée", icon: <Mountain className="w-4 h-4" />, desc: "Trek & nature", emoji: "🥾" },
-  { id: "plage", label: "Plage", icon: <Umbrella className="w-4 h-4" />, desc: "Soleil & sable", emoji: "🏖️" },
-  { id: "roadtrip", label: "Road Trip", icon: <Car className="w-4 h-4" />, desc: "Route & liberté", emoji: "🚗" },
+// 11 premium styles, each with a curated Unsplash image (landscape, high quality).
+const modes: {
+  id: LuggageMode;
+  label: string;
+  icon: React.ReactNode;
+  desc: string;
+  emoji: string;
+  image: string;
+}[] = [
+  { id: "minimaliste", label: "Minimaliste", icon: <PackageOpen className="w-4 h-4" />, desc: "L'essentiel uniquement", emoji: "🎒", image: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=600&q=80&auto=format&fit=crop" },
+  { id: "confort",     label: "Confort",     icon: <Sparkles className="w-4 h-4" />,    desc: "Confort au quotidien", emoji: "✨", image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=600&q=80&auto=format&fit=crop" },
+  { id: "stylée",      label: "Stylée",      icon: <Shirt className="w-4 h-4" />,       desc: "Look soigné",          emoji: "👗", image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80&auto=format&fit=crop" },
+  { id: "aventure",    label: "Aventure",    icon: <Compass className="w-4 h-4" />,     desc: "Tout-terrain",         emoji: "🧭", image: "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=600&q=80&auto=format&fit=crop" },
+  { id: "business",    label: "Business",    icon: <Briefcase className="w-4 h-4" />,   desc: "Pro & élégant",        emoji: "💼", image: "https://images.unsplash.com/photo-1521334884684-d80222895322?w=600&q=80&auto=format&fit=crop" },
+  { id: "photo",       label: "Créateur",    icon: <Camera className="w-4 h-4" />,      desc: "Matériel créatif",     emoji: "📸", image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80&auto=format&fit=crop" },
+  { id: "randonnée",   label: "Randonnée",   icon: <Mountain className="w-4 h-4" />,    desc: "Trek & nature",        emoji: "🥾", image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80&auto=format&fit=crop" },
+  { id: "plage",       label: "Plage",       icon: <Umbrella className="w-4 h-4" />,    desc: "Soleil & sable",       emoji: "🏖️", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&auto=format&fit=crop" },
+  { id: "roadtrip",    label: "Road Trip",   icon: <Car className="w-4 h-4" />,         desc: "Route & liberté",      emoji: "🚗", image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80&auto=format&fit=crop" },
+  { id: "urbain",      label: "Urbain",      icon: <Building2 className="w-4 h-4" />,   desc: "City break design",    emoji: "🏙️", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80&auto=format&fit=crop" },
+  { id: "luxe",        label: "Luxe",        icon: <Gem className="w-4 h-4" />,         desc: "Standing premium",     emoji: "💎", image: "https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=600&q=80&auto=format&fit=crop" },
 ];
 
 const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: LuggageModesProps) => (
@@ -35,10 +46,12 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
     className="space-y-4"
   >
     {/* Header */}
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between flex-wrap gap-2">
       <div>
         <h3 className="text-sm font-bold text-foreground">Type de valise</h3>
-        <p className="text-xs text-muted-foreground mt-0.5">Sélectionne pour adapter le contenu instantanément</p>
+        <p className="text-xs text-muted-foreground mt-0.5">
+          11 styles premium — sélectionne pour adapter le contenu instantanément
+        </p>
       </div>
       {suggestedMode && (
         <span className="text-[10px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-semibold animate-pulse">
@@ -47,46 +60,57 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
       )}
     </div>
 
-    {/* Horizontal scrollable pills */}
-    <div className="relative">
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1">
-        {modes.map((mode) => {
-          const isActive = activeMode === mode.id;
-          const isSuggested = suggestedMode === mode.id && !isActive;
-          return (
-            <motion.button
-              key={mode.id}
-              onClick={() => !isLoading && onSelect(mode.id)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              disabled={isLoading}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full whitespace-nowrap transition-all duration-300 border text-sm font-medium shrink-0 ${
-                isActive
-                  ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                  : isSuggested
-                  ? "bg-primary/10 border-primary/30 text-primary hover:bg-primary/20"
-                  : "bg-muted/30 border-border/50 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-              } ${isLoading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
-            >
+    {/* Grid of premium image cards */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+      {modes.map((mode) => {
+        const isActive = activeMode === mode.id;
+        const isSuggested = suggestedMode === mode.id && !isActive;
+        return (
+          <motion.button
+            key={mode.id}
+            onClick={() => !isLoading && onSelect(mode.id)}
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            disabled={isLoading}
+            className={`relative group rounded-2xl overflow-hidden text-left transition-all duration-300 border-2 ${
+              isActive
+                ? "border-primary shadow-xl shadow-primary/30 ring-2 ring-primary/40"
+                : isSuggested
+                ? "border-primary/40 shadow-lg"
+                : "border-border/40 hover:border-border"
+            } ${isLoading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
+          >
+            {/* Image */}
+            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+              <img
+                src={mode.image}
+                alt={mode.label}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
               {isSuggested && (
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+                <span className="absolute top-2 right-2 text-[9px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-bold uppercase tracking-wide animate-pulse">
+                  ✨ IA
+                </span>
               )}
-              <span className="text-base">{mode.emoji}</span>
-              {mode.icon}
-              <span>{mode.label}</span>
               {isActive && (
-                <motion.div
-                  layoutId="activePillIndicator"
-                  className="absolute inset-0 rounded-full border-2 border-primary"
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
+                <span className="absolute top-2 right-2 text-[9px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-bold uppercase tracking-wide">
+                  ✓ Actif
+                </span>
               )}
-            </motion.button>
-          );
-        })}
-      </div>
-      {/* Fade edges */}
-      <div className="pointer-events-none absolute top-0 right-0 bottom-2 w-12 bg-gradient-to-l from-background to-transparent" />
+            </div>
+            {/* Label */}
+            <div className="absolute bottom-0 left-0 right-0 p-3">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="text-base leading-none">{mode.emoji}</span>
+                <span className="text-sm font-bold text-foreground">{mode.label}</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground line-clamp-1">{mode.desc}</p>
+            </div>
+          </motion.button>
+        );
+      })}
     </div>
   </motion.div>
 );

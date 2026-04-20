@@ -53,6 +53,16 @@ const tips: Record<LuggageMode, { title: string; tip: string; emoji: string }> =
     tip: "Prévois une glacière portable pour les snacks et boissons. Un kit premier secours auto est obligatoire dans plusieurs pays.",
     emoji: "🚗",
   },
+  urbain: {
+    title: "Conseil Urbain",
+    tip: "Mise sur des sneakers stylées et confortables, une veste polyvalente et un petit sac à bandoulière anti-vol pour explorer la ville sereinement.",
+    emoji: "🏙️",
+  },
+  luxe: {
+    title: "Conseil Luxe",
+    tip: "Privilégie une valise rigide premium, des matières nobles infroissables, et une trousse de toilette en cuir. Garde toujours une tenue de soirée prête.",
+    emoji: "💎",
+  },
 };
 
 const AiTipCard = ({ mode, isLoading }: AiTipCardProps) => {
