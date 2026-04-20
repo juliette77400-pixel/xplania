@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Luggage, Wallet, FileText, ArrowRight } from "lucide-react";
+import { Luggage, Wallet, FileText, BookOpen, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -36,6 +36,17 @@ const features = [
     link: "/guide-visa",
     cta: "Voir mes démarches",
   },
+  {
+    num: 4,
+    icon: BookOpen,
+    title: "Carnet de bord",
+    tagline: "Documentez et revivez votre voyage en quelques clics.",
+    description:
+      "Notes, photos, humeurs et lieux jour par jour. L'IA transforme vos souvenirs en récit immersif, exportable en PDF et partageable en lien public.",
+    benefits: ["Garder une trace émotionnelle de chaque voyage", "Partager vos souvenirs avec vos proches"],
+    link: "/carnets",
+    cta: "Ouvrir mes carnets",
+  },
 ];
 
 const FeaturesSection = () => {
@@ -55,7 +66,7 @@ const FeaturesSection = () => {
           <p className="mt-3 text-muted-foreground">Trois outils simples, propulsés par l'IA, pour préparer votre voyage de A à Z</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6 mt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           {features.map((f, i) => (
             <motion.div
               key={f.num}

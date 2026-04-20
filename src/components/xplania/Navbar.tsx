@@ -1,4 +1,4 @@
-import { Plane, BookOpen, LogOut, LogIn } from "lucide-react";
+import { Plane, LogOut, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
