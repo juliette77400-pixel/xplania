@@ -235,7 +235,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
       )}
 
       {position?.source === "ip" && (
-        <div className="absolute bottom-3 left-3 z-[1000] text-xs px-2.5 py-1.5 rounded-md bg-amber-500/90 text-white shadow-lg">
+        <div className="absolute bottom-3 left-3 z-[1000] text-xs px-2.5 py-1.5 rounded-md bg-warning text-warning-foreground shadow-lg">
           📍 Position approximative (IP) — active le GPS pour une position précise
         </div>
       )}
