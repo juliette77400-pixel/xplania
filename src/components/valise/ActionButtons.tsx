@@ -7,16 +7,20 @@ import { toast } from "sonner";
 interface ActionButtonsProps {
   onRegenerate: (scope: "all" | "clothes" | "activities") => void;
   isRegenerating: boolean;
+  onExportPdf?: () => void;
+  onShareTrip?: () => void;
 }
 
-const ActionButtons = ({ onRegenerate, isRegenerating }: ActionButtonsProps) => {
+const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip }: ActionButtonsProps) => {
   const handleExport = () => {
-    toast.success("Checklist exportée ! 📋", { description: "Le PDF sera disponible prochainement." });
+    if (onExportPdf) return onExportPdf();
+    toast.success("Checklist exportée ! 📋");
   };
 
   const handleShare = () => {
+    if (onShareTrip) return onShareTrip();
     navigator.clipboard.writeText(window.location.href);
-    toast.success("Lien copié ! 🔗", { description: "Partagez-le avec vos compagnons de voyage." });
+    toast.success("Lien copié ! 🔗");
   };
 
   const handleSaveTemplate = () => {

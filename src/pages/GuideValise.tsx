@@ -7,6 +7,9 @@ import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimat
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
 import WeatherSection from "@/components/valise/WeatherSection";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
+import TransportSelector, { type TransportMode } from "@/components/valise/TransportSelector";
+import ShareTripDialog from "@/components/valise/ShareTripDialog";
+import { exportValisePdf } from "@/lib/valise-export";
 import AiTipCard from "@/components/valise/AiTipCard";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import ActivityItems from "@/components/valise/ActivityItems";
@@ -133,8 +136,46 @@ const modeExtras: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
   },
 };
 
-function buildCategories(mode: LuggageMode): Record<string, ChecklistItem[]> {
-  return { ...baseCategories, ...(modeExtras[mode] || {}) };
+const transportExtras: Record<TransportMode, Record<string, ChecklistItem[]>> = {
+  avion: {
+    "Spécial Avion ✈️": [
+      { name: "Liquides en flacons <100ml", description: "Sac transparent zip", checked: true },
+      { name: "Coussin cervical", description: "Pour long-courrier", checked: false },
+      { name: "Boules quies / masque", description: "Sommeil en vol", checked: true },
+      { name: "Pièce d'identité accessible", description: "Pour contrôles", checked: true },
+      { name: "Power bank <100Wh", description: "Obligatoire en cabine", checked: true },
+    ],
+  },
+  train: {
+    "Spécial Train 🚆": [
+      { name: "Billet imprimé / e-billet", description: "Présenter au contrôleur", checked: true },
+      { name: "Snacks & gourde", description: "Voiture-bar souvent chère", checked: false },
+      { name: "Livre / podcast", description: "Pour le trajet", checked: false },
+    ],
+  },
+  voiture: {
+    "Spécial Voiture 🚗": [
+      { name: "Permis & carte grise", description: "Documents obligatoires", checked: true },
+      { name: "Gilet jaune & triangle", description: "Obligatoire UE", checked: true },
+      { name: "Support téléphone GPS", description: "Navigation mains libres", checked: true },
+      { name: "Câble chargeur 12V", description: "USB-C + Lightning", checked: true },
+      { name: "Vignette / péage badge", description: "Selon pays traversés", checked: false },
+      { name: "Glacière / snacks", description: "Pause sur la route", checked: false },
+    ],
+  },
+  bateau: {
+    "Spécial Bateau 🚢": [
+      { name: "Anti mal de mer", description: "Cocculine ou Mercalm", checked: true },
+      { name: "Coupe-vent imperméable", description: "Vent en mer", checked: true },
+      { name: "Chaussures antidérapantes", description: "Ponts mouillés", checked: true },
+      { name: "Crème solaire SPF 50", description: "Réverbération de l'eau", checked: true },
+      { name: "Sac étanche", description: "Protection téléphone/papiers", checked: false },
+    ],
+  },
+};
+
+function buildCategories(mode: LuggageMode, transport: TransportMode): Record<string, ChecklistItem[]> {
+  return { ...baseCategories, ...(modeExtras[mode] || {}), ...(transportExtras[transport] || {}) };
 }
 
 function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): LuggageMode | null {
@@ -160,25 +201,36 @@ const GuideValisePage = () => {
   );
 
   const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode || "confort");
-  const [categories, setCategories] = useState(() => buildCategories(suggestedMode || "confort"));
+  const [transport, setTransport] = useState<TransportMode>("avion");
+  const [categories, setCategories] = useState(() => buildCategories(suggestedMode || "confort", "avion"));
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSwitchingMode, setIsSwitchingMode] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const { reached, consume } = useQuota("valise");
 
   const handleModeChange = useCallback(async (mode: LuggageMode) => {
     if (mode === luggageMode) return;
     setIsSwitchingMode(true);
     setLuggageMode(mode);
-    // Simulate AI analysis delay for perceived performance
-    await new Promise((r) => setTimeout(r, 1200));
-    setCategories(buildCategories(mode));
+    await new Promise((r) => setTimeout(r, 1000));
+    setCategories(buildCategories(mode, transport));
     setIsSwitchingMode(false);
     toast.success(`Mode "${mode}" activé`, { description: "La checklist a été adaptée par l'IA." });
-  }, [luggageMode]);
+  }, [luggageMode, transport]);
+
+  const handleTransportChange = useCallback(async (t: TransportMode) => {
+    if (t === transport) return;
+    setIsSwitchingMode(true);
+    setTransport(t);
+    await new Promise((r) => setTimeout(r, 800));
+    setCategories(buildCategories(luggageMode, t));
+    setIsSwitchingMode(false);
+    toast.success(`Transport "${t}" pris en compte 🧳`, { description: "Liste adaptée aux contraintes du trajet." });
+  }, [luggageMode, transport]);
 
   const toggleItem = (cat: string, idx: number) => {
     setCategories((prev) => ({
@@ -236,15 +288,20 @@ const GuideValisePage = () => {
       setIsRegenerating(true);
       toast.loading("Régénération en cours…", { id: "regen" });
       await new Promise((r) => setTimeout(r, 1800));
-      setCategories(buildCategories(luggageMode));
+      setCategories(buildCategories(luggageMode, transport));
       setIsRegenerating(false);
       toast.success(
         scope === "all" ? "Valise régénérée !" : scope === "clothes" ? "Vêtements régénérés !" : "Activités régénérées !",
         { id: "regen" }
       );
     },
-    [luggageMode]
+    [luggageMode, transport]
   );
+
+  const handleExportPdf = useCallback(() => {
+    exportValisePdf({ destination, days, mode: luggageMode, transport, categories });
+    toast.success("PDF exporté ! 📄", { description: "Téléchargement lancé." });
+  }, [destination, days, luggageMode, transport, categories]);
 
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
@@ -272,8 +329,9 @@ const GuideValisePage = () => {
 
         <WeatherSection destination={destination} />
 
-        {/* Mode selection pills + AI tip */}
+        {/* Transport + Mode selection + AI tip */}
         <div className="space-y-4">
+          <TransportSelector active={transport} onSelect={handleTransportChange} isLoading={isSwitchingMode} />
           <LuggageModes
             activeMode={luggageMode}
             onSelect={handleModeChange}
@@ -317,7 +375,19 @@ const GuideValisePage = () => {
 
         <OutfitRecommendations tripType={tripTypeLabel} destination={destination} />
 
-        <ActionButtons onRegenerate={handleRegenerate} isRegenerating={isRegenerating} />
+        <ActionButtons
+          onRegenerate={handleRegenerate}
+          isRegenerating={isRegenerating}
+          onExportPdf={handleExportPdf}
+          onShareTrip={() => setShowShare(true)}
+        />
+
+        <ShareTripDialog
+          open={showShare}
+          onOpenChange={setShowShare}
+          destination={destination}
+          days={days}
+        />
 
         <ValiseSummary totalItems={totalItems} checkedItems={checkedItems} categoriesCount={Object.keys(categories).length} />
       </div>
