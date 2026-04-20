@@ -14,6 +14,287 @@ export type Database = {
   }
   public: {
     Tables: {
+      explore_badges: {
+        Row: {
+          code: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          trip_id: string | null
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          code: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          trip_id?: string | null
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          code?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          trip_id?: string | null
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "explore_badges_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      explore_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          from_node_id: string
+          id: string
+          to_node_id: string
+          trip_id: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          edge_type?: string
+          from_node_id: string
+          id?: string
+          to_node_id: string
+          trip_id: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          from_node_id?: string
+          id?: string
+          to_node_id?: string
+          trip_id?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "explore_edges_from_node_id_fkey"
+            columns: ["from_node_id"]
+            isOneToOne: false
+            referencedRelation: "explore_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "explore_edges_to_node_id_fkey"
+            columns: ["to_node_id"]
+            isOneToOne: false
+            referencedRelation: "explore_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "explore_edges_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      explore_node_media: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          mood: string | null
+          node_id: string
+          trip_id: string
+          type: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          mood?: string | null
+          node_id: string
+          trip_id: string
+          type?: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          mood?: string | null
+          node_id?: string
+          trip_id?: string
+          type?: string
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "explore_node_media_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "explore_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "explore_node_media_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      explore_nodes: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          lat: number | null
+          level: number
+          lng: number | null
+          media_count: number
+          metadata: Json
+          name: string
+          parent_id: string | null
+          points: number
+          position_x: number | null
+          position_y: number | null
+          source: string
+          status: string
+          trip_id: string
+          type: string
+          updated_at: string
+          user_id: string
+          visited_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          lat?: number | null
+          level?: number
+          lng?: number | null
+          media_count?: number
+          metadata?: Json
+          name: string
+          parent_id?: string | null
+          points?: number
+          position_x?: number | null
+          position_y?: number | null
+          source?: string
+          status?: string
+          trip_id: string
+          type?: string
+          updated_at?: string
+          user_id: string
+          visited_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          lat?: number | null
+          level?: number
+          lng?: number | null
+          media_count?: number
+          metadata?: Json
+          name?: string
+          parent_id?: string | null
+          points?: number
+          position_x?: number | null
+          position_y?: number | null
+          source?: string
+          status?: string
+          trip_id?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+          visited_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "explore_nodes_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "explore_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "explore_nodes_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      explore_progress: {
+        Row: {
+          badges_count: number
+          cities_completed: number
+          created_at: string
+          id: string
+          last_action_at: string | null
+          nodes_total: number
+          nodes_visited: number
+          total_points: number
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          badges_count?: number
+          cities_completed?: number
+          created_at?: string
+          id?: string
+          last_action_at?: string | null
+          nodes_total?: number
+          nodes_visited?: number
+          total_points?: number
+          trip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          badges_count?: number
+          cities_completed?: number
+          created_at?: string
+          id?: string
+          last_action_at?: string | null
+          nodes_total?: number
+          nodes_visited?: number
+          total_points?: number
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "explore_progress_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_badges: {
         Row: {
           code: string
