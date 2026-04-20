@@ -123,3 +123,7 @@
     50% { box-shadow: var(--glow-purple); }
   }
 }
+
+/* Hide scrollbars on horizontal tab lists (mobile) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
