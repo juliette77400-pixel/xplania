@@ -5,3 +5,12 @@ verify_jwt = false
 
 [functions.weather]
 verify_jwt = false
+
+[functions.discover-osm]
+verify_jwt = false
+
+[functions.discover-enrich]
+verify_jwt = false
+
+[functions.discover-search]
+verify_jwt = false
