@@ -13,8 +13,10 @@ import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
 import OnboardingDialog from "@/components/xplania/OnboardingDialog";
 import QuotaReachedDialog from "@/components/xplania/QuotaReachedDialog";
+import QuickJump from "@/components/shared/QuickJump";
 import { useTravelContext } from "@/contexts/TravelContext";
 import { hasReachedFreeQuota } from "@/stores/usePlanStore";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 
 const Index = () => {
   const [travelFormOpen, setTravelFormOpen] = useState(false);
