@@ -166,6 +166,8 @@ const GuideValisePage = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSwitchingMode, setIsSwitchingMode] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const { reached, consume } = useQuota("valise");
 
   const handleModeChange = useCallback(async (mode: LuggageMode) => {
     if (mode === luggageMode) return;
