@@ -510,6 +510,152 @@ export type Database = {
           },
         ]
       }
+      mood_favorites: {
+        Row: {
+          id: string
+          note: string | null
+          place_id: string
+          saved_at: string
+          trip_id: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          note?: string | null
+          place_id: string
+          saved_at?: string
+          trip_id?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          note?: string | null
+          place_id?: string
+          saved_at?: string
+          trip_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mood_favorites_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "mood_places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mood_places: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          distance_km: number | null
+          duration_min: number | null
+          hidden_gem: boolean
+          id: string
+          image_url: string | null
+          lat: number | null
+          lng: number | null
+          metadata: Json
+          mood: string
+          name: string
+          score: number
+          selection_id: string | null
+          source: string
+          tags: string[]
+          tips: string | null
+          user_id: string
+          why_fits: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          distance_km?: number | null
+          duration_min?: number | null
+          hidden_gem?: boolean
+          id?: string
+          image_url?: string | null
+          lat?: number | null
+          lng?: number | null
+          metadata?: Json
+          mood: string
+          name: string
+          score?: number
+          selection_id?: string | null
+          source?: string
+          tags?: string[]
+          tips?: string | null
+          user_id: string
+          why_fits: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          distance_km?: number | null
+          duration_min?: number | null
+          hidden_gem?: boolean
+          id?: string
+          image_url?: string | null
+          lat?: number | null
+          lng?: number | null
+          metadata?: Json
+          mood?: string
+          name?: string
+          score?: number
+          selection_id?: string | null
+          source?: string
+          tags?: string[]
+          tips?: string | null
+          user_id?: string
+          why_fits?: string
+        }
+        Relationships: []
+      }
+      mood_selections: {
+        Row: {
+          context: Json
+          created_at: string
+          energy_level: number | null
+          free_input: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          mood: string
+          time_of_day: string | null
+          user_id: string
+          weather: string | null
+        }
+        Insert: {
+          context?: Json
+          created_at?: string
+          energy_level?: number | null
+          free_input?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          mood: string
+          time_of_day?: string | null
+          user_id: string
+          weather?: string | null
+        }
+        Update: {
+          context?: Json
+          created_at?: string
+          energy_level?: number | null
+          free_input?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          mood?: string
+          time_of_day?: string | null
+          user_id?: string
+          weather?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

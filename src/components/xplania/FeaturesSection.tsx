@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, ArrowRight } from "lucide-react";
+import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -68,6 +68,17 @@ const features = [
     benefits: ["Explorer son voyage comme un jeu vivant", "Débloquer badges et points en visitant"],
     link: "/explore",
     cta: "Lancer l'exploration",
+  },
+  {
+    num: 7,
+    icon: Heart,
+    title: "Mood Explorer",
+    tagline: "Choisis une émotion, on trouve le lieu parfait.",
+    description:
+      "Tu ne cherches pas un lieu, tu cherches une sensation. Sélectionne ton mood (chill, romantic, food, party…) et reçois des recommandations IA hyper personnalisées selon ta position, la météo et l'heure.",
+    benefits: ["Décider sans réfléchir, en 3 secondes", "Phrases émotionnelles qui te parlent vraiment"],
+    link: "/mood",
+    cta: "Trouver ma vibe",
   },
 ];
 
