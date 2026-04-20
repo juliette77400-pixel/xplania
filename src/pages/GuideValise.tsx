@@ -295,8 +295,13 @@ const GuideValisePage = () => {
         { id: "regen" }
       );
     },
-    [luggageMode]
+    [luggageMode, transport]
   );
+
+  const handleExportPdf = useCallback(() => {
+    exportValisePdf({ destination, days, mode: luggageMode, transport, categories });
+    toast.success("PDF exporté ! 📄", { description: "Téléchargement lancé." });
+  }, [destination, days, luggageMode, transport, categories]);
 
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
@@ -324,8 +329,9 @@ const GuideValisePage = () => {
 
         <WeatherSection destination={destination} />
 
-        {/* Mode selection pills + AI tip */}
+        {/* Transport + Mode selection + AI tip */}
         <div className="space-y-4">
+          <TransportSelector active={transport} onSelect={handleTransportChange} isLoading={isSwitchingMode} />
           <LuggageModes
             activeMode={luggageMode}
             onSelect={handleModeChange}
@@ -369,7 +375,19 @@ const GuideValisePage = () => {
 
         <OutfitRecommendations tripType={tripTypeLabel} destination={destination} />
 
-        <ActionButtons onRegenerate={handleRegenerate} isRegenerating={isRegenerating} />
+        <ActionButtons
+          onRegenerate={handleRegenerate}
+          isRegenerating={isRegenerating}
+          onExportPdf={handleExportPdf}
+          onShareTrip={() => setShowShare(true)}
+        />
+
+        <ShareTripDialog
+          open={showShare}
+          onOpenChange={setShowShare}
+          destination={destination}
+          days={days}
+        />
 
         <ValiseSummary totalItems={totalItems} checkedItems={checkedItems} categoriesCount={Object.keys(categories).length} />
       </div>
