@@ -10,11 +10,13 @@ type: feature
 Hub unifié de découverte locale temps réel. Catégoriel et objectif (vs Mood Explorer émotionnel).
 
 ## Architecture
-- **DB publique** : `places` (catalogue partagé OSM+IA+community, RLS lecture publique), `place_reviews` (notes 1-5 + comment), `place_lists` + `place_list_items` (RLS user-only via `owns_place_list`), `discover_notifications`
+- **DB publique** : `places` (catalogue partagé OSM+IA+community, RLS lecture publique), `place_reviews` (notes 1-5 + comment + photo, trigger `recalc_place_rating` met à jour `rating_avg`/`rating_count`), `place_lists` + `place_list_items` (RLS user-only via `owns_place_list`), `discover_notifications`
+- **Storage** : bucket public `place-reviews` (photos d'avis, upload dans `{user_id}/...`)
 - **Edge functions** :
   - `discover-osm` : Overpass API (gratuit, no-key) → upsert dedup `osm_id`
   - `discover-enrich` : Lovable AI gemini-2.5-flash + tool calling → why_fits, tags, tips, hidden_gem
   - `discover-search` : NL → filtres IA → query Postgres bbox
+- **Community** : `ReviewsSection` dans `PlaceDetailDrawer` (note/comment/photo, badge `local_voice` 🎙️ via `mood_badges` après 5 reviews — hook `usePlaceReviews`)
 
 ## Page
 - Tabs : **Pour toi** (6 carousels For You/Around/Hidden/Food/Experiences/Chill, sectionnage selon timeOfDay) | **Carte** (Leaflet markercluster) | **Recherche** (SmartSearch IA) | **Mes listes**

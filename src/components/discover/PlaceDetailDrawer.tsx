@@ -6,6 +6,8 @@ import { categoryByKey } from "@/lib/discover";
 import type { Place } from "@/hooks/useDiscover";
 import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { toast } from "sonner";
+import ReviewsSection from "./ReviewsSection";
+import { Separator } from "@/components/ui/separator";
 
 interface Props {
   place: Place | null;
@@ -78,6 +80,9 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
                 </a>
               </Button>
             </div>
+
+            <Separator className="my-2" />
+            <ReviewsSection placeId={place.id} />
           </div>
         </div>
       </DrawerContent>
