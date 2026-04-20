@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CloudSun, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { cleanCityForWeather } from "@/lib/geocoding";
 import { toast } from "sonner";
 
 export interface WeatherInfo {
@@ -28,8 +29,9 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
     setLoading(true);
     setError(null);
     try {
+      const cleanCity = cleanCityForWeather(destination);
       const { data, error: fnError } = await supabase.functions.invoke("weather", {
-        body: { city: destination },
+        body: { city: cleanCity },
       });
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
