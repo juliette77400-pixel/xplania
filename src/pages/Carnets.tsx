@@ -1,14 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BookOpen, Plus, Loader2, ArrowLeft } from "lucide-react";
+import { BookOpen, Loader2, ArrowLeft } from "lucide-react";
 import { useTrips } from "@/hooks/useTrips";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import QuickJump from "@/components/shared/QuickJump";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 
 const Carnets = () => {
   const { user, loading: authLoading } = useAuth();
   const { trips, loading } = useTrips();
+  const navigate = useNavigate();
+  const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
+
+  const openTrip = (t: typeof trips[number], target: "carnet" | "suivi" | "explore" = "carnet") => {
+    setActiveTrip({
+      tripId: t.id,
+      destination: t.destination,
+      arrivalCity: t.arrival_city,
+      departureDate: t.departure_date,
+      returnDate: t.return_date,
+    });
+    navigate(`/${target}/${t.id}`);
+  };
 
   if (!authLoading && !user) return <Navigate to="/auth" replace />;
 
@@ -36,14 +50,18 @@ const Carnets = () => {
           <div className="grid sm:grid-cols-2 gap-4">
             {trips.map((t, i) => (
               <motion.div key={t.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-                <Link to={`/carnet/${t.id}`} className="glass-card rounded-2xl p-6 block hover:scale-[1.02] transition group">
+                <button onClick={() => openTrip(t, "carnet")} className="glass-card rounded-2xl p-6 block w-full text-left hover:scale-[1.02] transition group">
                   <div className="flex items-center gap-2 mb-2"><BookOpen className="w-4 h-4 text-primary" /><span className="text-xs uppercase tracking-wider text-primary">Carnet</span></div>
                   <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition">{t.destination || "Sans destination"}</h3>
                   {t.arrival_city && <p className="text-sm text-muted-foreground">{t.arrival_city}</p>}
                   <p className="text-xs text-muted-foreground mt-2">
                     {t.departure_date} {t.return_date && `→ ${t.return_date}`}
                   </p>
-                </Link>
+                  <div className="flex gap-2 mt-3 text-xs">
+                    <span onClick={(e) => { e.stopPropagation(); openTrip(t, "suivi"); }} className="text-primary hover:underline cursor-pointer">📍 Suivi</span>
+                    <span onClick={(e) => { e.stopPropagation(); openTrip(t, "explore"); }} className="text-primary hover:underline cursor-pointer">🗺️ Map</span>
+                  </div>
+                </button>
               </motion.div>
             ))}
           </div>

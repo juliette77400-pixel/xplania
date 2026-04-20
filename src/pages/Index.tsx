@@ -13,8 +13,10 @@ import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
 import OnboardingDialog from "@/components/xplania/OnboardingDialog";
 import QuotaReachedDialog from "@/components/xplania/QuotaReachedDialog";
+import QuickJump from "@/components/shared/QuickJump";
 import { useTravelContext } from "@/contexts/TravelContext";
 import { hasReachedFreeQuota } from "@/stores/usePlanStore";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 
 const Index = () => {
   const [travelFormOpen, setTravelFormOpen] = useState(false);
@@ -23,6 +25,7 @@ const Index = () => {
   const { user } = useAuth();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
+  const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
 
   const handleCreateTrip = () => {
     if (hasReachedFreeQuota()) {
@@ -80,7 +83,16 @@ const Index = () => {
               })
               .select("id")
               .single();
-            if (trip) setCurrentTripId(trip.id);
+            if (trip) {
+              setCurrentTripId(trip.id);
+              setActiveTrip({
+                tripId: trip.id,
+                destination: data.destination,
+                arrivalCity: data.arrivalCity,
+                departureDate: data.departureDate || null,
+                returnDate: data.returnDate || null,
+              });
+            }
           }
         }}
         onGenerating={setDashboardLoading}
@@ -93,6 +105,7 @@ const Index = () => {
           📔 Ouvrir mon Carnet
         </a>
       )}
+      <QuickJump />
       <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
       <OnboardingDialog />
       <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />

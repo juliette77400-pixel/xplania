@@ -9,6 +9,7 @@ import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import { useQuota } from "@/hooks/useQuota";
+import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
@@ -23,6 +24,7 @@ import BudgetTips from "@/components/budget/BudgetTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
 
 const GuideBudgetPage = () => {
+  useHydrateActiveTrip();
   const { tripData } = useTravelStore();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;

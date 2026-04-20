@@ -11,8 +11,21 @@ const SuiviTrip = () => {
 
   useEffect(() => {
     if (!tripId) return;
-    supabase.from("trips").select("destination,arrival_city").eq("id", tripId).maybeSingle()
-      .then(({ data }) => setDestination(data?.arrival_city || data?.destination || ""));
+    supabase.from("trips").select("destination,arrival_city,departure_date,return_date").eq("id", tripId).maybeSingle()
+      .then(({ data }) => {
+        setDestination(data?.arrival_city || data?.destination || "");
+        if (data) {
+          import("@/stores/useActiveTrip").then(({ useActiveTrip }) => {
+            useActiveTrip.getState().setActiveTrip({
+              tripId,
+              destination: data.destination,
+              arrivalCity: data.arrival_city,
+              departureDate: data.departure_date,
+              returnDate: data.return_date,
+            });
+          });
+        }
+      });
   }, [tripId]);
 
   if (!tripId) return null;

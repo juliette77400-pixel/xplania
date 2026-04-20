@@ -23,6 +23,7 @@ import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import { useQuota } from "@/hooks/useQuota";
+import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
 // ── Categories data ──
 const baseCategories: Record<string, ChecklistItem[]> = {
@@ -192,6 +193,7 @@ function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): Lugga
 }
 
 const GuideValisePage = () => {
+  useHydrateActiveTrip();
   const { tripData } = useTravelStore();
   const destination = tripData?.destination || "votre destination";
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import QuickJump from "@/components/shared/QuickJump";
 import { ArrowLeft, Compass, Loader2, Sparkles, RefreshCw } from "lucide-react";
@@ -16,6 +16,7 @@ import ReplayMode from "@/components/explore/ReplayMode";
 import SuggestionsPanel from "@/components/explore/SuggestionsPanel";
 import ShareGameCard from "@/components/explore/ShareGameCard";
 import TripSummary from "@/components/explore/TripSummary";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 
 const ExploreTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
@@ -27,6 +28,19 @@ const ExploreTrip = () => {
   const trip = trips.find((t) => t.id === tripId);
   const cityNode = useMemo(() => explore.nodes.find((n) => n.level === 1) || null, [explore.nodes]);
   const selectedNode = explore.nodes.find((n) => n.id === selected) || null;
+  const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
+
+  useEffect(() => {
+    if (tripId && trip) {
+      setActiveTrip({
+        tripId,
+        destination: trip.destination,
+        arrivalCity: trip.arrival_city,
+        departureDate: trip.departure_date,
+        returnDate: trip.return_date,
+      });
+    }
+  }, [tripId, trip, setActiveTrip]);
 
   if (!authLoading && !user) return <Navigate to="/auth" replace />;
 
