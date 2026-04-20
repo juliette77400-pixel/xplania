@@ -88,6 +88,8 @@ const GuideBudgetPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <QuotaBanner tool="budget" toolLabel="Budget" />
+      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         {/* Hero */}

@@ -214,6 +214,8 @@ const GuideValisePage = () => {
   }, []);
 
   const runGeneration = useCallback(async () => {
+    if (reached) { setShowUpgrade(true); return; }
+    consume();
     setIsGenerating(true);
     setGenerationStep(0);
     for (let i = 0; i < STEPS.length; i++) {
@@ -249,6 +251,8 @@ const GuideValisePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <QuotaBanner tool="valise" toolLabel="Valise intelligente" />
+      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Valise intelligente" />
       <ValiseHeader checkedItems={checkedItems} totalItems={totalItems} />
 
       <div className="border-b border-border bg-background/60 backdrop-blur">
