@@ -173,8 +173,39 @@ Donne 6 lieux/expériences parfaitement adaptés. Inclus au moins 1 hidden_gem.`
     const args = toolCall ? JSON.parse(toolCall.function.arguments) : { places: [] };
     const places = (args.places || []) as any[];
 
+    // Helper: fetch a real Unsplash image for a place (server-side, with cache).
+    const UNSPLASH_KEY = Deno.env.get("UNSPLASH_ACCESS_KEY");
+    const imgCache = new Map<string, string | null>();
+    const fetchImage = async (query: string): Promise<string | null> => {
+      if (!UNSPLASH_KEY || !query) return null;
+      const key = query.toLowerCase().trim();
+      if (imgCache.has(key)) return imgCache.get(key)!;
+      try {
+        const r = await fetch(
+          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=portrait&per_page=1&content_filter=high`,
+          { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } },
+        );
+        if (!r.ok) { imgCache.set(key, null); return null; }
+        const j = await r.json();
+        const url = j.results?.[0]?.urls?.regular || null;
+        imgCache.set(key, url);
+        return url;
+      } catch {
+        imgCache.set(key, null);
+        return null;
+      }
+    };
+
+    // Resolve images in parallel (max ~6 places).
+    const imageUrls = await Promise.all(
+      places.map((p) => {
+        const q = `${p.name} ${p.category || finalMood}${city_hint ? " " + city_hint : ""}`.trim();
+        return fetchImage(q);
+      }),
+    );
+
     // Persist
-    const rows = places.map((p) => ({
+    const rows = places.map((p, idx) => ({
       user_id: user.id,
       selection_id: selection?.id ?? null,
       mood: finalMood,
@@ -185,7 +216,7 @@ Donne 6 lieux/expériences parfaitement adaptés. Inclus au moins 1 hidden_gem.`
       tags: Array.isArray(p.tags) ? p.tags : [],
       lat: typeof p.lat === "number" ? p.lat : null,
       lng: typeof p.lng === "number" ? p.lng : null,
-      image_url: `https://source.unsplash.com/800x1000/?${encodeURIComponent((p.tags?.[0] || p.category || finalMood) + "," + (city_hint || "travel"))}`,
+      image_url: imageUrls[idx] || null,
       distance_km: typeof p.distance_km === "number" ? p.distance_km : null,
       duration_min: typeof p.duration_min === "number" ? Math.round(p.duration_min) : null,
       tips: p.tips || null,
