@@ -96,7 +96,7 @@ export function useDiscover() {
     } finally {
       setLoading(false);
     }
-  }, [userPos, seed, weather]);
+  }, [userPos, seed, weather, fetchInBbox]);
 
   useEffect(() => { if (userPos) refresh(); }, [userPos?.lat, userPos?.lng]);
 
