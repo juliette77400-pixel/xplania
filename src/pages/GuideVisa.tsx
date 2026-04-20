@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
-import ModuleNavbar from "@/components/shared/ModuleNavbar";
+import AppNavbar from "@/components/shared/AppNavbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { countryList } from "@/lib/countries";
@@ -225,7 +225,7 @@ const GuideVisaPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ModuleNavbar />
+      <AppNavbar />
 
       <div className="container mx-auto px-4 sm:px-6 py-8 max-w-4xl space-y-8">
         {/* Hero */}

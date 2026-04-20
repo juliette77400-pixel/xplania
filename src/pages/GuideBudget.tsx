@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { RotateCcw } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
-import ModuleNavbar from "@/components/shared/ModuleNavbar";
+import AppNavbar from "@/components/shared/AppNavbar";
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
@@ -85,7 +85,7 @@ const GuideBudgetPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ModuleNavbar />
+      <AppNavbar />
 
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         {/* Hero */}
