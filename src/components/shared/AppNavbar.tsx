@@ -9,6 +9,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { getRemaining } from "@/lib/usage-quota";
 
 interface NavItem {
   to: string;
@@ -30,6 +31,7 @@ const PRIMARY: NavItem[] = [
 const MORE: NavItem[] = [
   { to: "/guide-budget", label: "Budget" },
   { to: "/guide-visa", label: "Visa & Préparatifs" },
+  { to: "/gamification", label: "Badges & Progression" },
   { to: "/offres", label: "Offres Premium" },
 ] as any;
 
@@ -111,9 +113,10 @@ const AppNavbar = () => {
           <Link
             to="/offres"
             className="hidden md:flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold text-amber-600"
-            title="3 outils gratuits — passe à Plus"
+            title="Quotas gratuits restants — Valise/Budget/Visa: 3 chacun"
           >
-            <Sparkles className="w-3 h-3" /> 3 free
+            <Sparkles className="w-3 h-3" />
+            V{getRemaining("valise")}·B{getRemaining("budget")}·Vi{getRemaining("visa")}
           </Link>
 
           {/* Mobile menu */}

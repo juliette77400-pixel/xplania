@@ -9,6 +9,9 @@ import {
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuotaBanner from "@/components/shared/QuotaBanner";
+import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import { useQuota } from "@/hooks/useQuota";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { countryList } from "@/lib/countries";
@@ -128,6 +131,8 @@ const GuideVisaPage = () => {
   const [aiError, setAiError] = useState<string | null>(null);
   const [countrySearch, setCountrySearch] = useState("");
   const [nationalitySearch, setNationalitySearch] = useState("");
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const { reached, consume } = useQuota("visa");
 
   const destinationName = useMemo(() => {
     if (!selectedDestination || selectedDestination === "none") return "votre destination";
@@ -159,6 +164,8 @@ const GuideVisaPage = () => {
       toast.error("Sélectionne une destination d'abord !");
       return;
     }
+    if (reached) { setShowUpgrade(true); return; }
+    consume();
     setIsGenerating(true);
     setGenStep(0);
     setAiError(null);
@@ -226,6 +233,8 @@ const GuideVisaPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <QuotaBanner tool="visa" toolLabel="Visa & Préparatifs" />
+      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Visa & Préparatifs" />
 
       <div className="container mx-auto px-4 sm:px-6 py-8 max-w-4xl space-y-8">
         {/* Hero */}

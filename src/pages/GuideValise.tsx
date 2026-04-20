@@ -16,6 +16,9 @@ import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuotaBanner from "@/components/shared/QuotaBanner";
+import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import { useQuota } from "@/hooks/useQuota";
 
 // ── Categories data ──
 const baseCategories: Record<string, ChecklistItem[]> = {
@@ -163,6 +166,8 @@ const GuideValisePage = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSwitchingMode, setIsSwitchingMode] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const { reached, consume } = useQuota("valise");
 
   const handleModeChange = useCallback(async (mode: LuggageMode) => {
     if (mode === luggageMode) return;
@@ -211,6 +216,8 @@ const GuideValisePage = () => {
   }, []);
 
   const runGeneration = useCallback(async () => {
+    if (reached) { setShowUpgrade(true); return; }
+    consume();
     setIsGenerating(true);
     setGenerationStep(0);
     for (let i = 0; i < STEPS.length; i++) {
@@ -246,6 +253,8 @@ const GuideValisePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <QuotaBanner tool="valise" toolLabel="Valise intelligente" />
+      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Valise intelligente" />
       <ValiseHeader checkedItems={checkedItems} totalItems={totalItems} />
 
       <div className="border-b border-border bg-background/60 backdrop-blur">

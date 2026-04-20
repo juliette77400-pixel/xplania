@@ -23,6 +23,7 @@ import Explore from "./pages/Explore.tsx";
 import ExploreTrip from "./pages/ExploreTrip.tsx";
 import MoodExplorer from "./pages/MoodExplorer.tsx";
 import Discover from "./pages/Discover.tsx";
+import Gamification from "./pages/Gamification.tsx";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/explore/:tripId" element={<ProtectedRoute><ExploreTrip /></ProtectedRoute>} />
             <Route path="/mood" element={<ProtectedRoute><MoodExplorer /></ProtectedRoute>} />
             <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
+            <Route path="/gamification" element={<ProtectedRoute><Gamification /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
