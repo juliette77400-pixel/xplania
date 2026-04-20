@@ -136,8 +136,46 @@ const modeExtras: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
   },
 };
 
-function buildCategories(mode: LuggageMode): Record<string, ChecklistItem[]> {
-  return { ...baseCategories, ...(modeExtras[mode] || {}) };
+const transportExtras: Record<TransportMode, Record<string, ChecklistItem[]>> = {
+  avion: {
+    "Spécial Avion ✈️": [
+      { name: "Liquides en flacons <100ml", description: "Sac transparent zip", checked: true },
+      { name: "Coussin cervical", description: "Pour long-courrier", checked: false },
+      { name: "Boules quies / masque", description: "Sommeil en vol", checked: true },
+      { name: "Pièce d'identité accessible", description: "Pour contrôles", checked: true },
+      { name: "Power bank <100Wh", description: "Obligatoire en cabine", checked: true },
+    ],
+  },
+  train: {
+    "Spécial Train 🚆": [
+      { name: "Billet imprimé / e-billet", description: "Présenter au contrôleur", checked: true },
+      { name: "Snacks & gourde", description: "Voiture-bar souvent chère", checked: false },
+      { name: "Livre / podcast", description: "Pour le trajet", checked: false },
+    ],
+  },
+  voiture: {
+    "Spécial Voiture 🚗": [
+      { name: "Permis & carte grise", description: "Documents obligatoires", checked: true },
+      { name: "Gilet jaune & triangle", description: "Obligatoire UE", checked: true },
+      { name: "Support téléphone GPS", description: "Navigation mains libres", checked: true },
+      { name: "Câble chargeur 12V", description: "USB-C + Lightning", checked: true },
+      { name: "Vignette / péage badge", description: "Selon pays traversés", checked: false },
+      { name: "Glacière / snacks", description: "Pause sur la route", checked: false },
+    ],
+  },
+  bateau: {
+    "Spécial Bateau 🚢": [
+      { name: "Anti mal de mer", description: "Cocculine ou Mercalm", checked: true },
+      { name: "Coupe-vent imperméable", description: "Vent en mer", checked: true },
+      { name: "Chaussures antidérapantes", description: "Ponts mouillés", checked: true },
+      { name: "Crème solaire SPF 50", description: "Réverbération de l'eau", checked: true },
+      { name: "Sac étanche", description: "Protection téléphone/papiers", checked: false },
+    ],
+  },
+};
+
+function buildCategories(mode: LuggageMode, transport: TransportMode): Record<string, ChecklistItem[]> {
+  return { ...baseCategories, ...(modeExtras[mode] || {}), ...(transportExtras[transport] || {}) };
 }
 
 function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): LuggageMode | null {
