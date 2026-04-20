@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, CircleMarker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { TripActivity } from "@/hooks/useTracking";
 import { Position } from "@/hooks/useGeolocation";
+import { Button } from "@/components/ui/button";
+import { ExternalLink, Navigation } from "lucide-react";
 
 // Fix default icon
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -34,8 +36,7 @@ const FitBounds = ({ points }: { points: [number, number][] }) => {
 };
 
 /**
- * Stable user marker — created once, only `setLatLng` afterwards.
- * This kills the "blinking" caused by React re-rendering CircleMarker on every GPS tick.
+ * Stable user marker — created once, only `setLatLng` afterwards (no flicker).
  */
 const StableUserMarker = ({ position }: { position: Position | null }) => {
   const map = useMap();
@@ -45,11 +46,9 @@ const StableUserMarker = ({ position }: { position: Position | null }) => {
 
   useEffect(() => {
     if (!position) return;
-
     const latlng: L.LatLngExpression = [position.lat, position.lng];
 
     if (!markerRef.current) {
-      // First-time creation
       accuracyRef.current = L.circle(latlng, {
         radius: Math.min(position.accuracy || 50, 200),
         color: "#3b82f6",
@@ -64,30 +63,24 @@ const StableUserMarker = ({ position }: { position: Position | null }) => {
         weight: 2,
         fillColor: "#3b82f6",
         fillOpacity: 1,
+        className: "user-marker-stable",
       }).addTo(map);
       markerRef.current.bindPopup(
         position.source === "ip" ? "Position approximative (IP)" : "Tu es ici"
       );
       map.setView(latlng, Math.max(map.getZoom(), 14), { animate: true });
     } else {
-      // Just move it — no flicker
       markerRef.current.setLatLng(latlng);
       accuracyRef.current?.setLatLng(latlng);
       accuracyRef.current?.setRadius(Math.min(position.accuracy || 50, 200));
-      // Soft recenter every ~5 updates so the map follows without yanking
       recenterCountRef.current += 1;
       if (recenterCountRef.current % 5 === 0) {
         map.panTo(latlng, { animate: true, duration: 0.8 });
       }
     }
-
-    return () => {
-      // Only cleanup on full unmount
-    };
   }, [position?.lat, position?.lng, position?.accuracy, position?.source, map]);
 
   useEffect(() => () => {
-    // Unmount cleanup
     if (markerRef.current) { map.removeLayer(markerRef.current); markerRef.current = null; }
     if (accuracyRef.current) { map.removeLayer(accuracyRef.current); accuracyRef.current = null; }
   }, [map]);
@@ -95,11 +88,52 @@ const StableUserMarker = ({ position }: { position: Position | null }) => {
   return null;
 };
 
+/** Fetch a routed polyline A→B→C using OSRM public demo (free, OSM-based). */
+async function fetchOsrmRoute(points: [number, number][]): Promise<[number, number][] | null> {
+  if (points.length < 2) return null;
+  try {
+    const coords = points.map(([lat, lng]) => `${lng},${lat}`).join(";");
+    const url = `https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = await res.json();
+    const geo = json?.routes?.[0]?.geometry?.coordinates;
+    if (!Array.isArray(geo)) return null;
+    return geo.map((c: [number, number]) => [c[1], c[0]]);
+  } catch {
+    return null;
+  }
+}
+
 const LiveMap = ({ position, activities, positions, filter, height = "500px" }: Props) => {
   const filtered = useMemo(
     () => activities.filter((a) => a.lat && a.lng && (!filter || a.category === filter)),
     [activities, filter]
   );
+
+  // Ordered planned route (day_date then position)
+  const orderedRoute = useMemo(() => {
+    const ordered = [...filtered]
+      .filter((a) => a.lat && a.lng)
+      .sort((x, y) => {
+        const d = (x.day_date || "").localeCompare(y.day_date || "");
+        return d !== 0 ? d : x.position - y.position;
+      });
+    return ordered.map((a) => [a.lat!, a.lng!] as [number, number]);
+  }, [filtered]);
+
+  const [routeLine, setRouteLine] = useState<[number, number][] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (orderedRoute.length < 2) { setRouteLine(null); return; }
+    // OSRM has a hard limit; cap to 25 waypoints
+    const capped = orderedRoute.slice(0, 25);
+    fetchOsrmRoute(capped).then((line) => {
+      if (!cancelled) setRouteLine(line);
+    });
+    return () => { cancelled = true; };
+  }, [orderedRoute.map((p) => p.join(",")).join("|")]);
 
   const initialCenter: [number, number] = position
     ? [position.lat, position.lng]
@@ -112,8 +146,17 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
     ...(position ? [[position.lat, position.lng] as [number, number]] : []),
   ];
 
+  const openExternal = (provider: "gmaps" | "osm") => {
+    if (!position) return;
+    const { lat, lng } = position;
+    const url = provider === "gmaps"
+      ? `https://www.google.com/maps?q=${lat},${lng}`
+      : `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
+    window.open(url, "_blank", "noopener");
+  };
+
   return (
-    <div className="rounded-2xl overflow-hidden border border-border" style={{ height }}>
+    <div className="relative rounded-2xl overflow-hidden border border-border" style={{ height }}>
       <MapContainer
         center={initialCenter}
         zoom={13}
@@ -126,11 +169,25 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
         />
         {!position && allPoints.length > 1 ? <FitBounds points={allPoints} /> : null}
 
+        {/* Real recorded GPS trail (cyan) */}
         {trail.length > 1 ? (
           <Polyline positions={trail} pathOptions={{ color: "#06b6d4", weight: 4, opacity: 0.7 }} />
         ) : null}
 
-        {filtered.map((a) => (
+        {/* Planned A→B route (purple, dashed when fallback to straight line) */}
+        {routeLine ? (
+          <Polyline
+            positions={routeLine}
+            pathOptions={{ color: "#a855f7", weight: 4, opacity: 0.85 }}
+          />
+        ) : orderedRoute.length > 1 ? (
+          <Polyline
+            positions={orderedRoute}
+            pathOptions={{ color: "#a855f7", weight: 3, opacity: 0.6, dashArray: "8 8" }}
+          />
+        ) : null}
+
+        {filtered.map((a, i) => (
           <CircleMarker
             key={a.id}
             center={[a.lat!, a.lng!]}
@@ -143,7 +200,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
             }}
           >
             <Popup>
-              <strong>{a.title}</strong>
+              <strong>#{i + 1} — {a.title}</strong>
               {a.description && <p className="text-xs mt-1">{a.description}</p>}
               <p className="text-xs text-muted-foreground capitalize mt-1">{a.status}</p>
             </Popup>
@@ -152,6 +209,36 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
 
         <StableUserMarker position={position} />
       </MapContainer>
+
+      {/* Floating fallback actions */}
+      {position && (
+        <div className="absolute top-3 right-3 z-[1000] flex flex-col gap-2">
+          <Button
+            size="sm"
+            variant="secondary"
+            className="shadow-lg backdrop-blur bg-background/90 hover:bg-background"
+            onClick={() => openExternal("gmaps")}
+          >
+            <Navigation className="w-3.5 h-3.5 mr-1.5" />
+            Google Maps
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            className="shadow-lg backdrop-blur bg-background/90 hover:bg-background"
+            onClick={() => openExternal("osm")}
+          >
+            <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+            OpenStreetMap
+          </Button>
+        </div>
+      )}
+
+      {position?.source === "ip" && (
+        <div className="absolute bottom-3 left-3 z-[1000] text-xs px-2.5 py-1.5 rounded-md bg-warning text-warning-foreground shadow-lg">
+          📍 Position approximative (IP) — active le GPS pour une position précise
+        </div>
+      )}
     </div>
   );
 };
