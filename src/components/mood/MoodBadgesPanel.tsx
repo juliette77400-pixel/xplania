@@ -36,6 +36,22 @@ const MoodBadgesPanel = ({ badges, context }: Props) => {
   const unlockedCount = badges.length;
   const total = MOOD_BADGES.length;
   const globalPct = Math.round((unlockedCount / total) * 100);
+  const prevOwned = useRef<Set<string>>(new Set());
+
+  // Detect newly-unlocked badges → confetti
+  useEffect(() => {
+    if (prevOwned.current.size === 0 && owned.size > 0) {
+      prevOwned.current = new Set(owned);
+      return;
+    }
+    for (const code of owned) {
+      if (!prevOwned.current.has(code)) {
+        const def = MOOD_BADGES.find((b) => b.code === code);
+        if (def) celebrateUnlock({ name: def.name, icon: def.icon, description: def.description });
+      }
+    }
+    prevOwned.current = new Set(owned);
+  }, [owned]);
 
   return (
     <TooltipProvider delayDuration={150}>
