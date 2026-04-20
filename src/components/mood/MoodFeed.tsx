@@ -9,9 +9,10 @@ interface Props {
   places: MoodPlace[];
   isFavorite: (id: string) => boolean;
   onToggleFavorite: (place: MoodPlace) => void;
+  onOpenDetails?: (place: MoodPlace) => void;
 }
 
-const MoodFeed = ({ places, isFavorite, onToggleFavorite }: Props) => {
+const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props) => {
   const [index, setIndex] = useState(0);
 
   if (places.length === 0) return null;
@@ -47,6 +48,7 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite }: Props) => {
               place={place}
               isFavorite={isFavorite(place.id)}
               onToggleFavorite={() => onToggleFavorite(place)}
+              onOpenDetails={onOpenDetails ? () => onOpenDetails(place) : undefined}
               fullscreen
             />
           </motion.div>
