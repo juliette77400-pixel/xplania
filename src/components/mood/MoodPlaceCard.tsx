@@ -1,4 +1,4 @@
-import { Heart, MapPin, Clock, Gem, Lightbulb, Navigation } from "lucide-react";
+import { Heart, MapPin, Clock, Gem, Lightbulb, Navigation, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,10 +9,11 @@ interface Props {
   place: MoodPlace;
   isFavorite: boolean;
   onToggleFavorite: () => void;
+  onOpenDetails?: () => void;
   fullscreen?: boolean;
 }
 
-const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, fullscreen }: Props) => {
+const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, fullscreen }: Props) => {
   const openMaps = () => {
     const q = place.lat && place.lng
       ? `${place.lat},${place.lng}`
@@ -97,9 +98,16 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, fullscreen }: Prop
           </div>
         )}
 
-        <Button onClick={openMaps} className="w-full" size="sm">
-          <Navigation className="w-4 h-4 mr-2" /> Y aller
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={openMaps} className="flex-1" size="sm">
+            <Navigation className="w-4 h-4 mr-2" /> Y aller
+          </Button>
+          {onOpenDetails && (
+            <Button onClick={onOpenDetails} variant="outline" size="sm" className="backdrop-blur-sm">
+              <MessageCircle className="w-4 h-4 mr-1" /> Vibes
+            </Button>
+          )}
+        </div>
       </div>
     </motion.div>
   );

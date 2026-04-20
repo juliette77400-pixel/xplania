@@ -174,8 +174,20 @@ export function useMoodExplorer() {
     setActiveMood(null);
   }, []);
 
+  // Compute badge context (distinct moods, hidden gems saved, etc.)
+  const distinctMoods = new Set(history.map((h: any) => h.mood)).size;
+  const hiddenGemsSaved = favorites.filter((f) => f.place?.hidden_gem).length;
+  const badgeContext = {
+    distinctMoods,
+    favoritesCount: favorites.length,
+    hiddenGemsSaved,
+    totalSelections: history.length,
+    reactionsCount: 0, // hydraté côté page
+  };
+
   return {
     places, favorites, history, loading, activeMood, position, weather,
     recommend, toggleFavorite, isFavorite, reset, loadFavorites,
+    badgeContext,
   };
 }

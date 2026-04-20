@@ -1,26 +1,27 @@
 ---
 name: Mood Explorer
-description: /mood feature — émotion-based recommendations with AI, swipeable feed, favorites
+description: Recommandation par état émotionnel — moods, IA, feed, carte, badges, ambiance audio, social
 type: feature
 ---
-# Mood Explorer (/mood)
 
-Phase 1 : sélection mood immersive + moteur IA + feed swipeable + favoris + historique.
+# Mood Explorer (`/mood`)
 
-## Tables
-- `mood_selections` : historique mood + contexte (lat/lng, weather, time_of_day, energy_level, free_input)
-- `mood_places` : lieux recommandés (name, why_fits émotionnel, tags[], distance, duration, hidden_gem, score, image_url Unsplash)
-- `mood_favorites` : favoris user_id+place_id unique, lien optionnel trip_id
+## Concept
+"Je ne cherche pas un lieu → je cherche une sensation."
 
-## Edge function
-`mood-recommend` : Lovable AI Gateway (gemini-2.5-flash) avec tool calling structuré → 6 lieux. Inputs : mood, free_input, energy_level, lat/lng, weather (auto via fonction `weather`), time_of_day, history (5 derniers). Persiste selection + places. Gère 429/402.
+## Phase 1
+- 7 moods (chill, explore, romantic, food, party, nature, focus) + slider énergie + texte libre + Surprise me
+- Edge function `mood-recommend` (Lovable AI Gateway, gemini-2.5-flash, tool calling) — context: météo (fonction `weather`), heure, géoloc, historique
+- Tables : `mood_selections`, `mood_places`, `mood_favorites` (RLS user-only)
+- Feed swipeable (framer-motion drag y), favoris, historique
 
-## UI
-- `MoodSelector` : 7 bulles moods (chill/explore/romantic/food/party/nature/focus) + slider énergie + textarea + "Surprise me"
-- `MoodFeed` : swipeable type TikTok (framer-motion drag vertical), boutons up/down
-- `MoodPlaceCard` : image hero, why_fits en italique gros, tags, distance/durée, tips, bouton "Y aller" (Google Maps)
-- `MoodHero` : header avec mood actif + météo + heure + position
-- `MoodFavorites` + historique cliquable (relance reco)
+## Phase 2
+- **Carte Leaflet** (`MoodMap.tsx`) avec markers émojis colorés par mood + clustering (`leaflet.markercluster`) + popups + position user
+- **Gamification** : table `mood_badges`, hook `useMoodBadges`, eval auto à chaque changement de contexte. Badges : Mood Curious (3 moods), Hidden Hunter (1 gem sauvé), Mood Master (7 moods), Collector (10 favoris), Social Soul (1 partage)
+- **Ambiance audio** (`MoodAmbience.tsx`) : 1 piste CDN Pixabay par mood, popover play/pause/volume, reset au changement de mood
+- **Social** : table `mood_reactions` (lecture publique, écriture user-only), realtime channel par place, hook `useMoodSocial` (`useMoodReactions` + `usePopularMoods`), composant `SocialReactions` (mood + emoji + comment) et `PopularMoods` (top 7 jours + derniers ressentis)
 
-## Phase 2 à venir
-Carte Leaflet, gamification (badges mood + lien explore_progress), ambiance sonore, dimension sociale.
+## Architecture
+- Hook principal : `useMoodExplorer` retourne aussi `badgeContext`
+- Page : tabs Feed | Carte | Favoris | Badges | Social + Drawer détail (card + SocialReactions)
+- Types Supabase auto-régénérés

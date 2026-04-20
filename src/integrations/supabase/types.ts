@@ -510,6 +510,36 @@ export type Database = {
           },
         ]
       }
+      mood_badges: {
+        Row: {
+          code: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          code: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          code?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mood_favorites: {
         Row: {
           id: string
@@ -611,6 +641,45 @@ export type Database = {
           tips?: string | null
           user_id?: string
           why_fits?: string
+        }
+        Relationships: []
+      }
+      mood_reactions: {
+        Row: {
+          comment: string | null
+          created_at: string
+          emoji: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          mood: string
+          place_id: string
+          place_name: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          mood: string
+          place_id: string
+          place_name?: string | null
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          mood?: string
+          place_id?: string
+          place_name?: string | null
+          user_id?: string
         }
         Relationships: []
       }
