@@ -120,12 +120,10 @@ const GamificationPage = () => {
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    (async () => {
-      // Explore nodes (scope to trip if known)
+    const run = async () => {
       let nodesQ = supabase.from("explore_nodes").select("status,type,trip_id").eq("user_id", user.id);
       if (tripId) nodesQ = nodesQ.eq("trip_id", tripId);
 
-      // Journal blocks (scope to trip's journal if known)
       let blocksQ = supabase
         .from("journal_blocks")
         .select("type,journal_id,journals!inner(trip_id)")
@@ -135,10 +133,7 @@ const GamificationPage = () => {
       const [nodesRes, blocksRes, favRes, eb, jb, mb] = await Promise.all([
         nodesQ,
         blocksQ,
-        supabase
-          .from("mood_favorites")
-          .select("place_id,mood_places!inner(hidden_gem)")
-          .eq("user_id", user.id),
+        supabase.from("mood_favorites").select("place_id,mood_places!inner(hidden_gem)").eq("user_id", user.id),
         supabase.from("explore_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
         supabase.from("journal_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
         supabase.from("mood_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
@@ -148,7 +143,6 @@ const GamificationPage = () => {
       const nodes: any[] = nodesRes.data || [];
       const blocks: any[] = blocksRes.data || [];
       const favs: any[] = favRes.data || [];
-
       const blockCount = (t: string) => blocks.filter((b) => b.type === t).length;
 
       setCounts({
@@ -165,7 +159,8 @@ const GamificationPage = () => {
         journalBadgesOwned: jb.count || 0,
         moodBadgesOwned: mb.count || 0,
       });
-    })();
+    };
+    run();
     return () => { cancelled = true; };
   }, [user, tripId]);
 
