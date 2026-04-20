@@ -95,13 +95,30 @@ const AppNavbar = () => {
         {/* Right actions */}
         <div className="flex items-center gap-1.5 shrink-0">
           {user ? (
-            <button
-              onClick={signOut}
-              className="hidden sm:flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-              title="Se déconnecter"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center rounded-full hover:ring-2 hover:ring-primary/40 transition-all">
+                <Avatar className="h-8 w-8 border border-border">
+                  <AvatarImage src={(user.user_metadata as any)?.avatar_url} />
+                  <AvatarFallback className="text-xs gradient-button text-primary-foreground">
+                    {(user.email || "X").slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">{user.email}</div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate("/app")} className="cursor-pointer">
+                  <LayoutDashboard className="w-4 h-4 mr-2" /> Mon espace
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/profil")} className="cursor-pointer">
+                  <UserIcon className="w-4 h-4 mr-2" /> Profil
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut} className="cursor-pointer text-destructive focus:text-destructive">
+                  <LogOut className="w-4 h-4 mr-2" /> Se déconnecter
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Link
               to="/auth"
