@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Luggage, Wallet, FileText, BookOpen, ArrowRight } from "lucide-react";
+import { Luggage, Wallet, FileText, BookOpen, Activity, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -47,6 +47,17 @@ const features = [
     link: "/carnets",
     cta: "Ouvrir mes carnets",
   },
+  {
+    num: 5,
+    icon: Activity,
+    title: "Suivi de Voyage",
+    tagline: "Votre compagnon en temps réel pendant le séjour.",
+    description:
+      "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon votre position, météo et humeur.",
+    benefits: ["Suivre sa progression et ses stats en direct", "Recevoir des suggestions contextuelles à proximité"],
+    link: "/suivi",
+    cta: "Activer le suivi live",
+  },
 ];
 
 const FeaturesSection = () => {
@@ -66,7 +77,7 @@ const FeaturesSection = () => {
           <p className="mt-3 text-muted-foreground">Trois outils simples, propulsés par l'IA, pour préparer votre voyage de A à Z</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-12">
           {features.map((f, i) => (
             <motion.div
               key={f.num}

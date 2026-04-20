@@ -11,6 +11,7 @@ import StoryGenerator from "@/components/journal/StoryGenerator";
 import InsightsPanel from "@/components/journal/InsightsPanel";
 import BadgesBar from "@/components/journal/BadgesBar";
 import ShareExport from "@/components/journal/ShareExport";
+import TripTracker from "@/components/tracking/TripTracker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDayLabel } from "@/lib/journal-utils";
 
@@ -69,8 +70,9 @@ const Carnet = () => {
           </div>
         ) : (
           <Tabs defaultValue="timeline">
-            <TabsList className="grid grid-cols-4 max-w-2xl mx-auto mb-6">
+            <TabsList className="grid grid-cols-5 max-w-3xl mx-auto mb-6">
               <TabsTrigger value="timeline">📅 Timeline</TabsTrigger>
+              <TabsTrigger value="live">📡 Suivi live</TabsTrigger>
               <TabsTrigger value="story">✨ Récit IA</TabsTrigger>
               <TabsTrigger value="insights">📊 Insights</TabsTrigger>
               <TabsTrigger value="share">🔗 Partager</TabsTrigger>
@@ -134,6 +136,10 @@ const Carnet = () => {
                   </AnimatePresence>
                 </div>
               </div>
+            </TabsContent>
+
+            <TabsContent value="live">
+              {tripId && <TripTracker tripId={tripId} destination={destination} />}
             </TabsContent>
 
             <TabsContent value="story">
