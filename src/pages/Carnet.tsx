@@ -13,6 +13,7 @@ import BadgesBar from "@/components/journal/BadgesBar";
 import ShareExport from "@/components/journal/ShareExport";
 import TripTracker from "@/components/tracking/TripTracker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import QuickJump from "@/components/shared/QuickJump";
 import { formatDayLabel } from "@/lib/journal-utils";
 
 const Carnet = () => {
@@ -165,6 +166,7 @@ const Carnet = () => {
           </Tabs>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };

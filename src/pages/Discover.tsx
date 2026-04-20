@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuickJump from "@/components/shared/QuickJump";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DiscoverHero from "@/components/discover/DiscoverHero";
 import PlaceCarousel from "@/components/discover/PlaceCarousel";
@@ -83,6 +84,7 @@ const Discover = () => {
           </TabsContent>
         </Tabs>
       </main>
+      <QuickJump />
 
       <PlaceDetailDrawer place={selected} onClose={() => setSelected(null)} />
     </div>

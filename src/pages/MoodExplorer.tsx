@@ -17,6 +17,7 @@ import PopularMoods from "@/components/mood/PopularMoods";
 import MoodPlaceDetail from "@/components/mood/MoodPlaceDetail";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuickJump from "@/components/shared/QuickJump";
 
 const MoodExplorer = () => {
   const { user } = useAuth();
@@ -142,6 +143,7 @@ const MoodExplorer = () => {
         onToggleFavorite={() => detailsPlace && toggleFavorite(detailsPlace)}
         onSharedReaction={() => user && getReactionsCount(user.id).then(setReactionsCount)}
       />
+      <QuickJump />
     </div>
   );
 };

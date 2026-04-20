@@ -3,6 +3,7 @@ import { ArrowLeft, Compass, Loader2, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
+import QuickJump from "@/components/shared/QuickJump";
 
 const Explore = () => {
   const { user, loading: authLoading } = useAuth();
@@ -48,6 +49,7 @@ const Explore = () => {
           </div>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };

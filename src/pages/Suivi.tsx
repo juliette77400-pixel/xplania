@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, ArrowLeft, Loader2, Activity } from "lucide-react";
 import { useTrips } from "@/hooks/useTrips";
+import QuickJump from "@/components/shared/QuickJump";
 
 const Suivi = () => {
   const { trips, loading } = useTrips();
@@ -59,6 +60,7 @@ const Suivi = () => {
           </div>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };

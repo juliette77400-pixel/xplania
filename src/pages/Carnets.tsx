@@ -4,6 +4,7 @@ import { BookOpen, Plus, Loader2, ArrowLeft } from "lucide-react";
 import { useTrips } from "@/hooks/useTrips";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import QuickJump from "@/components/shared/QuickJump";
 
 const Carnets = () => {
   const { user, loading: authLoading } = useAuth();
@@ -48,6 +49,7 @@ const Carnets = () => {
           </div>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };

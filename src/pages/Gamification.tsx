@@ -6,6 +6,7 @@ import {
   ArrowRight, Clock, Sparkles, BarChart3, Zap,
 } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuickJump from "@/components/shared/QuickJump";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
@@ -485,6 +486,7 @@ const GamificationPage = () => {
           </div>
         </section>
       </main>
+      <QuickJump />
     </div>
   );
 };
