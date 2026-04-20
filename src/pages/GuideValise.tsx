@@ -288,7 +288,7 @@ const GuideValisePage = () => {
       setIsRegenerating(true);
       toast.loading("Régénération en cours…", { id: "regen" });
       await new Promise((r) => setTimeout(r, 1800));
-      setCategories(buildCategories(luggageMode));
+      setCategories(buildCategories(luggageMode, transport));
       setIsRegenerating(false);
       toast.success(
         scope === "all" ? "Valise régénérée !" : scope === "clothes" ? "Vêtements régénérés !" : "Activités régénérées !",
