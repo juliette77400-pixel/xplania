@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, ArrowRight } from "lucide-react";
+import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -79,6 +79,17 @@ const features = [
     benefits: ["Décider sans réfléchir, en 3 secondes", "Phrases émotionnelles qui te parlent vraiment"],
     link: "/mood",
     cta: "Trouver ma vibe",
+  },
+  {
+    num: 8,
+    icon: MapPinned,
+    title: "Discover",
+    tagline: "Les meilleurs lieux locaux, autour de toi, en temps réel.",
+    description:
+      "Recommandations contextuelles basées sur ta position, l'heure et la météo. Carte interactive, hidden gems, recherche en langage naturel ('brunch avec vue') et listes personnalisées pour organiser tes coups de cœur.",
+    benefits: ["Découvrir des lieux authentiques près de toi", "Recevoir des alertes hidden gem en marchant"],
+    link: "/discover",
+    cta: "Découvrir autour de moi",
   },
 ];
 

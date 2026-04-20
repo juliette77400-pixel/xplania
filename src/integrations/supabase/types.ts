@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      discover_notifications: {
+        Row: {
+          body: string | null
+          id: string
+          metadata: Json
+          place_id: string | null
+          read_at: string | null
+          sent_at: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          id?: string
+          metadata?: Json
+          place_id?: string | null
+          read_at?: string | null
+          sent_at?: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          id?: string
+          metadata?: Json
+          place_id?: string | null
+          read_at?: string | null
+          sent_at?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discover_notifications_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       explore_badges: {
         Row: {
           code: string
@@ -725,6 +769,197 @@ export type Database = {
         }
         Relationships: []
       }
+      place_list_items: {
+        Row: {
+          added_at: string
+          id: string
+          list_id: string
+          note: string | null
+          place_id: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          id?: string
+          list_id: string
+          note?: string | null
+          place_id: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          id?: string
+          list_id?: string
+          note?: string | null
+          place_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_list_items_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "place_lists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "place_list_items_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      place_lists: {
+        Row: {
+          created_at: string
+          emoji: string | null
+          id: string
+          is_default: boolean
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          is_default?: boolean
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          is_default?: boolean
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      place_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          photo_url: string | null
+          place_id: string
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          photo_url?: string | null
+          place_id: string
+          rating: number
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          photo_url?: string | null
+          place_id?: string
+          rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_reviews_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      places: {
+        Row: {
+          address: string | null
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          hidden_gem: boolean
+          id: string
+          image_url: string | null
+          lat: number
+          lng: number
+          metadata: Json
+          name: string
+          opening_hours: Json | null
+          osm_id: string | null
+          price_level: number | null
+          rating_avg: number
+          rating_count: number
+          score: number
+          source: string
+          subcategory: string | null
+          tags: string[]
+          tips: string | null
+          updated_at: string
+          why_fits: string | null
+        }
+        Insert: {
+          address?: string | null
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          hidden_gem?: boolean
+          id?: string
+          image_url?: string | null
+          lat: number
+          lng: number
+          metadata?: Json
+          name: string
+          opening_hours?: Json | null
+          osm_id?: string | null
+          price_level?: number | null
+          rating_avg?: number
+          rating_count?: number
+          score?: number
+          source?: string
+          subcategory?: string | null
+          tags?: string[]
+          tips?: string | null
+          updated_at?: string
+          why_fits?: string | null
+        }
+        Update: {
+          address?: string | null
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          hidden_gem?: boolean
+          id?: string
+          image_url?: string | null
+          lat?: number
+          lng?: number
+          metadata?: Json
+          name?: string
+          opening_hours?: Json | null
+          osm_id?: string | null
+          price_level?: number | null
+          rating_avg?: number
+          rating_count?: number
+          score?: number
+          source?: string
+          subcategory?: string | null
+          tags?: string[]
+          tips?: string | null
+          updated_at?: string
+          why_fits?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1024,7 +1259,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      owns_place_list: {
+        Args: { _list_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
