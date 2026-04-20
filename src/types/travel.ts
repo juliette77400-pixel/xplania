@@ -1,6 +1,7 @@
 export interface TravelFormData {
   // Section 1 - Informations de base
   destination: string;
+  arrivalCity: string;
   departureLocation: string;
   departureDate: string;
   returnDate: string;

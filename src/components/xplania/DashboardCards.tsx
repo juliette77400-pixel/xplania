@@ -16,6 +16,8 @@ import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import { heroImage, activityImage, placeThumbnail } from "@/lib/unsplash";
 import { useDestinationImage } from "@/hooks/useDestinationImage";
 import FreemiumBanner from "@/components/xplania/FreemiumBanner";
+import PhotoGallery from "@/components/xplania/PhotoGallery";
+import WeatherSection from "@/components/valise/WeatherSection";
 
 interface Props {
   formData: TravelFormData;
@@ -128,7 +130,8 @@ const SectionItem = ({
 );
 
 const DashboardCards = ({ formData, recommendations, loading, error }: Props) => {
-  const heroSrc = useDestinationImage(formData.destination || "", 1600, 720);
+  const photoQuery = [formData.arrivalCity, formData.destination].filter(Boolean).join(" ").trim();
+  const heroSrc = useDestinationImage(formData.arrivalCity || formData.destination || "", 1600, 720);
   if (loading) {
     return <LoadingState destination={formData.destination || "votre destination"} />;
   }
@@ -218,20 +221,27 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           </div>
         </SectionItem>
 
-        {/* Weather */}
-        {rec.weather && (
+        {/* Weather temps réel via OpenWeatherMap */}
+        <SectionItem
+          value="weather"
+          icon={<CloudSun className="w-5 h-5 text-primary" />}
+          iconBg="bg-primary/20"
+          title="Météo en temps réel"
+          subtitle={formData.arrivalCity || formData.destination}
+        >
+          <WeatherSection destination={formData.arrivalCity || formData.destination} />
+        </SectionItem>
+
+        {/* Photos Unsplash */}
+        {photoQuery && (
           <SectionItem
-            value="weather"
-            icon={<CloudSun className="w-5 h-5 text-primary" />}
-            iconBg="bg-primary/20"
-            title={`Météo à ${formData.destination}`}
-            subtitle={toText(rec.weather.temperature)}
+            value="photos"
+            icon={<MapPin className="w-5 h-5 text-secondary" />}
+            iconBg="bg-secondary/20"
+            title={`Photos de ${formData.arrivalCity || formData.destination}`}
+            subtitle="Images réelles via Unsplash"
           >
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <p><span className="font-medium text-foreground">Actuellement :</span> {toText(rec.weather.current)}</p>
-              <p><span className="font-medium text-foreground">Prévisions :</span> {toText(rec.weather.forecast)}</p>
-              <p><span className="font-medium text-foreground">Conseil :</span> {toText(rec.weather.advice)}</p>
-            </div>
+            <PhotoGallery query={photoQuery} perPage={6} />
           </SectionItem>
         )}
 

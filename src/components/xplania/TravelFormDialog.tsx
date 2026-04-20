@@ -64,6 +64,7 @@ const MODE_STEPS: Record<PlanMode, StepKey[]> = {
 
 const defaultFormData: TravelFormData = {
   destination: "",
+  arrivalCity: "",
   departureLocation: "",
   departureDate: "",
   returnDate: "",
