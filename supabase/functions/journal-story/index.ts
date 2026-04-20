@@ -1,0 +1,80 @@
+// Generate an immersive trip story from journal data using Lovable AI
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+const TONE_PROMPTS: Record<string, string> = {
+  storytelling: "Écris un récit narratif immersif et engageant à la première personne, comme un chapitre de roman de voyage.",
+  poetic: "Écris un texte poétique, lyrique, riche en métaphores et en images sensorielles.",
+  fun: "Écris un récit fun, décontracté, plein d'humour et d'anecdotes amusantes.",
+  documentary: "Écris dans un style documentaire factuel, précis et descriptif, façon reportage.",
+};
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  try {
+    const { destination, days, tone = "storytelling" } = await req.json();
+    if (!destination || !Array.isArray(days)) {
+      return new Response(JSON.stringify({ error: "destination & days required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
+
+    const toneInstruction = TONE_PROMPTS[tone] ?? TONE_PROMPTS.storytelling;
+
+    const journalSummary = days
+      .map((d: any, i: number) => {
+        const blocks = (d.blocks || []).map((b: any) => {
+          const c = b.content || {};
+          if (b.type === "note") return `Note: ${c.text || ""}`;
+          if (b.type === "mood") return `Humeur: ${c.emoji || ""} (${c.score ?? "?"}/5)`;
+          if (b.type === "location") return `Lieu: ${c.name || ""}`;
+          if (b.type === "highlight") return `⭐ Moment fort: ${c.text || ""}`;
+          if (b.type === "photo") return `Photo: ${c.caption || "(sans légende)"}`;
+          return "";
+        }).filter(Boolean).join(" | ");
+        return `Jour ${i + 1} (${d.date}) — ${d.title || ""}\n${blocks || "(pas de souvenir)"}`;
+      })
+      .join("\n\n");
+
+    const prompt = `Voici mon voyage à ${destination}.\n\n${journalSummary}\n\nTransforme cela en un récit immersif. ${toneInstruction} Garde une longueur d'environ 400-600 mots. Pas de titres markdown, juste un texte fluide en paragraphes.`;
+
+    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          { role: "system", content: "Tu es un écrivain de voyage talentueux qui transforme des souvenirs bruts en récits captivants." },
+          { role: "user", content: prompt },
+        ],
+      }),
+    });
+
+    if (!r.ok) {
+      if (r.status === 429) return new Response(JSON.stringify({ error: "Limite atteinte, réessaie dans un instant." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (r.status === 402) return new Response(JSON.stringify({ error: "Crédits IA épuisés." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const t = await r.text();
+      console.error("AI gateway error", r.status, t);
+      return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    const data = await r.json();
+    const content = data.choices?.[0]?.message?.content || "";
+    return new Response(JSON.stringify({ content }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    console.error("journal-story error", e);
+    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown" }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+});
