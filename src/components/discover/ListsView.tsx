@@ -1,10 +1,12 @@
-import { Heart, Trash2 } from "lucide-react";
+import { Heart, Trash2, FileDown, Mail, Share2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Place } from "@/hooks/useDiscover";
 import PlaceCard from "./PlaceCard";
+import { exportListToPDF, shareListByEmail, shareListNative, copyListToClipboard } from "@/lib/discover-export";
+import { toast } from "sonner";
 
 interface Props { onSelect: (p: Place) => void; }
 
@@ -18,6 +20,15 @@ const ListsView = ({ onSelect }: Props) => {
     if (ids.length === 0) { setPlaces([]); return; }
     supabase.from("places").select("*").in("id", ids).then(({ data }) => setPlaces((data as Place[]) || []));
   }, [items]);
+
+  const handleShare = async (name: string, emoji: string | null, listPlaces: Place[]) => {
+    if (listPlaces.length === 0) return toast.error("Liste vide");
+    const ok = await shareListNative({ name, emoji, places: listPlaces });
+    if (!ok) {
+      await copyListToClipboard({ name, emoji, places: listPlaces });
+      toast.success("Liste copiée dans le presse-papier");
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -35,12 +46,31 @@ const ListsView = ({ onSelect }: Props) => {
       {lists.map((list) => {
         const listItems = items.filter((i) => i.list_id === list.id);
         const listPlaces = listItems.map((i) => places.find((p) => p.id === i.place_id)).filter(Boolean) as Place[];
+        const exportPayload = { name: list.name, emoji: list.emoji, places: listPlaces };
         return (
-          <section key={list.id} className="space-y-3">
-            <h2 className="flex items-center gap-2 text-lg font-semibold">
-              <span>{list.emoji || "📍"}</span>{list.name}
-              <span className="text-xs font-normal text-muted-foreground">({listPlaces.length})</span>
-            </h2>
+          <section key={list.id} className="space-y-3 rounded-2xl border border-border/50 bg-card/30 p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="flex items-center gap-2 text-lg font-semibold">
+                <span>{list.emoji || "📍"}</span>{list.name}
+                <span className="text-xs font-normal text-muted-foreground">({listPlaces.length})</span>
+              </h2>
+              {listPlaces.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  <Button size="sm" variant="outline" onClick={() => { exportListToPDF(exportPayload); toast.success("PDF téléchargé"); }}>
+                    <FileDown className="mr-1.5 h-3.5 w-3.5" />PDF
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => shareListByEmail(exportPayload)}>
+                    <Mail className="mr-1.5 h-3.5 w-3.5" />Email
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => handleShare(list.name, list.emoji, listPlaces)}>
+                    <Share2 className="mr-1.5 h-3.5 w-3.5" />Partager
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={async () => { await copyListToClipboard(exportPayload); toast.success("Copié"); }}>
+                    <Copy className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              )}
+            </div>
             {listPlaces.length === 0 ? (
               <p className="text-sm text-muted-foreground">Liste vide. Sauvegarde des lieux depuis la découverte.</p>
             ) : (
