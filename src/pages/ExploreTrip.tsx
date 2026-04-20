@@ -125,6 +125,7 @@ const ExploreTrip = () => {
           onSelectNode={setSelected}
         />
       </main>
+      <QuickJump />
     </div>
   );
 };
