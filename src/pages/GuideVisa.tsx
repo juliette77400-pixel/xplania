@@ -13,6 +13,7 @@ import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import { useQuota } from "@/hooks/useQuota";
+import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { countryList } from "@/lib/countries";

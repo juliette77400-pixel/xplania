@@ -23,6 +23,7 @@ import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import { useQuota } from "@/hooks/useQuota";
+import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
 // ── Categories data ──
 const baseCategories: Record<string, ChecklistItem[]> = {
