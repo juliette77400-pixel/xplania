@@ -256,6 +256,225 @@ export type Database = {
         }
         Relationships: []
       }
+      trip_activities: {
+        Row: {
+          category: string | null
+          completed_at: string | null
+          created_at: string
+          day_date: string | null
+          description: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          metadata: Json | null
+          position: number
+          scheduled_at: string | null
+          source: string
+          status: string
+          title: string
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          completed_at?: string | null
+          created_at?: string
+          day_date?: string | null
+          description?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          metadata?: Json | null
+          position?: number
+          scheduled_at?: string | null
+          source?: string
+          status?: string
+          title: string
+          trip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          completed_at?: string | null
+          created_at?: string
+          day_date?: string | null
+          description?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          metadata?: Json | null
+          position?: number
+          scheduled_at?: string | null
+          source?: string
+          status?: string
+          title?: string
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_activities_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trip_checkins: {
+        Row: {
+          activity_id: string | null
+          checked_at: string
+          distance_m: number | null
+          id: string
+          lat: number
+          lng: number
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          activity_id?: string | null
+          checked_at?: string
+          distance_m?: number | null
+          id?: string
+          lat: number
+          lng: number
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          activity_id?: string | null
+          checked_at?: string
+          distance_m?: number | null
+          id?: string
+          lat?: number
+          lng?: number
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_checkins_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "trip_activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trip_checkins_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trip_positions: {
+        Row: {
+          accuracy: number | null
+          id: string
+          lat: number
+          lng: number
+          recorded_at: string
+          speed: number | null
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          id?: string
+          lat: number
+          lng: number
+          recorded_at?: string
+          speed?: number | null
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          id?: string
+          lat?: number
+          lng?: number
+          recorded_at?: string
+          speed?: number | null
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_positions_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trip_tracking: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          is_active: boolean
+          last_lat: number | null
+          last_lng: number | null
+          last_position_at: string | null
+          settings: Json
+          share_enabled: boolean
+          share_slug: string | null
+          started_at: string | null
+          total_distance_km: number
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          is_active?: boolean
+          last_lat?: number | null
+          last_lng?: number | null
+          last_position_at?: string | null
+          settings?: Json
+          share_enabled?: boolean
+          share_slug?: string | null
+          started_at?: string | null
+          total_distance_km?: number
+          trip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          is_active?: boolean
+          last_lat?: number | null
+          last_lng?: number | null
+          last_position_at?: string | null
+          settings?: Json
+          share_enabled?: boolean
+          share_slug?: string | null
+          started_at?: string | null
+          total_distance_km?: number
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_tracking_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trips: {
         Row: {
           arrival_city: string | null
