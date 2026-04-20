@@ -130,7 +130,7 @@ const Carnet = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.25 }}
                       >
-                        <DayView day={activeDay} journalId={journal.id} onChanged={refetch} />
+                        <DayView day={activeDay} journalId={journal.id} destination={destination} onChanged={refetch} />
                       </motion.div>
                     )}
                   </AnimatePresence>
