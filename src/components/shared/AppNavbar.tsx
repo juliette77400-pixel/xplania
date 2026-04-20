@@ -11,6 +11,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getRemaining } from "@/lib/usage-quota";
+import NotificationsBell from "@/components/shared/NotificationsBell";
 
 interface NavItem {
   to: string;
@@ -94,6 +95,7 @@ const AppNavbar = () => {
 
         {/* Right actions */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {user && <NotificationsBell />}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center rounded-full hover:ring-2 hover:ring-primary/40 transition-all">

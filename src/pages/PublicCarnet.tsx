@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Loader2, BookOpen, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDayLabel } from "@/lib/journal-utils";
+import { setShareMeta } from "@/lib/seo";
 
 const PublicCarnet = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -17,6 +18,12 @@ const PublicCarnet = () => {
       const { data: j } = await supabase.from("journals").select("*").eq("public_slug", slug).eq("is_public", true).maybeSingle();
       if (!j) { setLoading(false); return; }
       setJournal(j);
+      setShareMeta({
+        title: j.title || "Carnet de voyage",
+        description: "Découvre ce carnet de voyage immersif sur Xplania.",
+        ogKind: "carnet",
+        slug: slug!,
+      });
 
       const { data: d } = await supabase.from("journal_days").select("*").eq("journal_id", j.id).order("date");
       const { data: blocks } = await supabase.from("journal_blocks").select("*").eq("journal_id", j.id).order("position");

@@ -6,6 +6,7 @@ import LiveMap from "@/components/tracking/LiveMap";
 import LiveTimeline from "@/components/tracking/LiveTimeline";
 import LiveStats from "@/components/tracking/LiveStats";
 import { TripActivity, TripTracking } from "@/hooks/useTracking";
+import { setShareMeta } from "@/lib/seo";
 
 const PublicSuivi = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -23,6 +24,12 @@ const PublicSuivi = () => {
         .eq("share_slug", slug).eq("share_enabled", true).maybeSingle();
       if (cancel || !t) { setLoading(false); return; }
       setTracking(t as TripTracking);
+      setShareMeta({
+        title: "Suivi de voyage en direct",
+        description: `Suis ce voyage en temps réel · ${Number(t.total_distance_km || 0).toFixed(1)} km parcourus`,
+        ogKind: "suivi",
+        slug: slug!,
+      });
       const [{ data: a }, { data: p }] = await Promise.all([
         supabase.from("trip_activities").select("*").eq("trip_id", t.trip_id).order("day_date").order("position"),
         supabase.from("trip_positions").select("lat,lng,recorded_at").eq("trip_id", t.trip_id).order("recorded_at"),
