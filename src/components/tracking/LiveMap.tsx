@@ -70,12 +70,12 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
           attribution='&copy; OpenStreetMap'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {!position && allPoints.length > 1 && <FitBounds points={allPoints} />}
-        {position && <Recenter pos={position} />}
+        {!position && allPoints.length > 1 ? <FitBounds points={allPoints} /> : null}
+        {position ? <Recenter pos={position} /> : null}
 
-        {trail.length > 1 && (
+        {trail.length > 1 ? (
           <Polyline positions={trail} pathOptions={{ color: "#06b6d4", weight: 4, opacity: 0.7 }} />
-        )}
+        ) : null}
 
         {filtered.map((a) => (
           <CircleMarker
@@ -97,7 +97,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
           </CircleMarker>
         ))}
 
-        {position && (
+        {position ? (
           <CircleMarker
             center={[position.lat, position.lng]}
             radius={8}
@@ -105,7 +105,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
           >
             <Popup>Tu es ici</Popup>
           </CircleMarker>
-        )}
+        ) : null}
       </MapContainer>
     </div>
   );
