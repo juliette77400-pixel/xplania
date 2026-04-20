@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { CATEGORIES, DiscoverCategory, distanceKm, timeOfDay } from "@/lib/discover";
+import { fetchUnsplashImage } from "@/lib/unsplash";
 
 export interface Place {
   id: string;
@@ -92,6 +93,32 @@ export function useDiscover() {
             }
           })
           .finally(() => { enrichingRef.current = false; });
+      }
+
+      // Hydrate missing images via Unsplash (parallel, throttled to 16 to stay
+      // within rate limits). Updates DB so future fetches keep them.
+      const noImage = withDist.filter((p) => !p.image_url).slice(0, 16);
+      if (noImage.length) {
+        Promise.all(
+          noImage.map(async (p) => {
+            const q = `${p.name} ${p.category}`.trim();
+            const img = await fetchUnsplashImage(q);
+            if (img) {
+              await supabase.from("places").update({ image_url: img }).eq("id", p.id);
+              return { id: p.id, image_url: img };
+            }
+            return null;
+          })
+        ).then((updates) => {
+          const valid = updates.filter(Boolean) as { id: string; image_url: string }[];
+          if (valid.length === 0) return;
+          setPlaces((prev) =>
+            prev.map((p) => {
+              const u = valid.find((v) => v.id === p.id);
+              return u ? { ...p, image_url: u.image_url } : p;
+            })
+          );
+        });
       }
     } finally {
       setLoading(false);

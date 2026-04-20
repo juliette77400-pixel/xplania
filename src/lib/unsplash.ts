@@ -1,12 +1,15 @@
 /**
- * Helpers d'images contextuelles sans clé API.
+ * Helpers d'images contextuelles.
  *
  * Stratégie :
- *  - Wikipedia REST API (`/page/summary`) renvoie `originalimage` / `thumbnail`
- *    pour la plupart des destinations et lieux célèbres. Aucune clé requise.
- *  - Fallback sur Openverse (Creative Commons) si Wikipedia ne renvoie rien.
- *  - Fallback final : Picsum (déterministe) pour ne jamais avoir d'image cassée.
+ *  1. Unsplash via edge function `unsplash` (vraies photos pertinentes)
+ *  2. Wikipedia REST API (`/page/summary`) pour monuments / villes connues
+ *  3. Fallback final : Picsum déterministe (jamais cassé)
+ *
+ * Cache mémoire pour éviter les appels répétés.
  */
+
+import { supabase } from "@/integrations/supabase/client";
 
 const sanitize = (s: string) =>
   (s || "")
@@ -26,16 +29,17 @@ const hashSeed = (s: string): string => {
 const picsum = (key: string, w: number, h: number) =>
   `https://picsum.photos/seed/${hashSeed(key || "travel")}/${w}/${h}`;
 
-// Cache mémoire pour éviter de re-fetch les mêmes destinations.
+// ─── Caches ──────────────────────────────────────────────────────────────
 const wikiCache = new Map<string, Promise<string | null>>();
+const unsplashCache = new Map<string, Promise<string | null>>();
 
+// ─── Wikipedia ──────────────────────────────────────────────────────────
 const fetchWikipediaImage = (term: string): Promise<string | null> => {
   const key = sanitize(term).toLowerCase();
   if (!key) return Promise.resolve(null);
   if (wikiCache.has(key)) return wikiCache.get(key)!;
 
   const promise = (async () => {
-    // On essaie d'abord en français, puis en anglais.
     const langs = ["fr", "en"];
     for (const lang of langs) {
       try {
@@ -60,14 +64,37 @@ const fetchWikipediaImage = (term: string): Promise<string | null> => {
   return promise;
 };
 
-/**
- * Hook-friendly utility : retourne immédiatement une URL fallback (Picsum)
- * et permet à l'appelant d'écouter une promesse pour upgrader l'image.
- * Pour rester simple, on expose deux helpers :
- *   - `heroImage(destination)` : URL synchrone (Picsum)
- *   - `resolveDestinationImage(destination)` : promesse vers une vraie image
- */
+// ─── Unsplash via edge function ──────────────────────────────────────────
+export const fetchUnsplashImage = (query: string): Promise<string | null> => {
+  const key = sanitize(query).toLowerCase();
+  if (!key) return Promise.resolve(null);
+  if (unsplashCache.has(key)) return unsplashCache.get(key)!;
 
+  const promise = (async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke("unsplash", {
+        body: { query, perPage: 3 },
+      });
+      if (error || !data?.photos?.length) return null;
+      // Pick a stable photo (first result is usually the most relevant).
+      return data.photos[0].url || data.photos[0].fullUrl || null;
+    } catch {
+      return null;
+    }
+  })();
+
+  unsplashCache.set(key, promise);
+  return promise;
+};
+
+/** Batch helper — résout plusieurs queries en parallèle. */
+export const fetchUnsplashImages = async (
+  queries: string[],
+): Promise<(string | null)[]> => {
+  return Promise.all(queries.map((q) => fetchUnsplashImage(q)));
+};
+
+// ─── Synchronous fallbacks (Picsum) ─────────────────────────────────────
 export const heroImage = (destination: string, w = 1600, h = 600) =>
   picsum(`hero-${sanitize(destination).toLowerCase()}`, w, h);
 
@@ -81,21 +108,32 @@ export const activityImage = (
 export const placeThumbnail = (destination: string, query: string, size = 200) =>
   activityImage(destination, query, size, size);
 
-/** Résout une vraie image (Wikipedia) pour une destination. */
-export const resolveDestinationImage = (destination: string) =>
-  fetchWikipediaImage(destination);
+// ─── Async resolvers (Unsplash → Wikipedia → null) ──────────────────────
+/** Résout une vraie image pour une destination. Unsplash d'abord, Wikipedia en fallback. */
+export const resolveDestinationImage = async (
+  destination: string,
+): Promise<string | null> => {
+  if (!destination) return null;
+  const unsplash = await fetchUnsplashImage(`${destination} travel landscape`);
+  if (unsplash) return unsplash;
+  return fetchWikipediaImage(destination);
+};
 
 /** Résout une vraie image pour un lieu/activité dans une destination. */
 export const resolvePlaceImage = async (
   destination: string,
   query: string,
 ): Promise<string | null> => {
-  // On tente d'abord la requête combinée, puis le query seul, puis la destination.
   const candidates = [
     `${query} ${destination}`,
     query,
-    destination,
   ].filter((s) => sanitize(s).length > 1);
+  // Try Unsplash first for each candidate
+  for (const c of candidates) {
+    const img = await fetchUnsplashImage(c);
+    if (img) return img;
+  }
+  // Wikipedia fallback for monuments / famous places
   for (const c of candidates) {
     const img = await fetchWikipediaImage(c);
     if (img) return img;

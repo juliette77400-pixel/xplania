@@ -85,6 +85,7 @@ serve(async (req) => {
     const systemPrompt = `Tu es un guide local émotionnel expert. Tu recommandes des lieux RÉELS et HYPER LOCAUX en fonction d'une émotion / sensation recherchée.
 Règles strictes :
 - Lieux RÉELS et localisés (utilise la position GPS et la ville)
+- DIVERSITÉ OBLIGATOIRE : mélange OBLIGATOIREMENT plusieurs types parmi {restaurant, café, bar, musée, galerie, parc, point de vue, activité, atelier, lieu insolite, expérience locale}. Pas plus de 2 lieux de la même catégorie sur 6.
 - Pour chaque lieu, écris une phrase émotionnelle "why_fits" ULTRA personnalisée qui explique pourquoi ce lieu correspond au mood (style poétique, court, percutant, en français, à la 2e personne du singulier "tu")
 - Privilégie hidden gems, lieux peu touristiques quand pertinent
 - Adapte à la météo, l'heure et l'historique
@@ -101,7 +102,7 @@ ${weather ? `Météo: ${weather}.` : ""}
 ${time_of_day ? `Moment: ${time_of_day}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
 ${historyStr}
-Donne 6 lieux/expériences parfaitement adaptés. Inclus au moins 1 hidden_gem.`;
+Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) parfaitement adaptés. Inclus au moins 1 hidden_gem et au moins 1 lieu insolite.`;
 
     const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -173,8 +174,39 @@ Donne 6 lieux/expériences parfaitement adaptés. Inclus au moins 1 hidden_gem.`
     const args = toolCall ? JSON.parse(toolCall.function.arguments) : { places: [] };
     const places = (args.places || []) as any[];
 
+    // Helper: fetch a real Unsplash image for a place (server-side, with cache).
+    const UNSPLASH_KEY = Deno.env.get("UNSPLASH_ACCESS_KEY");
+    const imgCache = new Map<string, string | null>();
+    const fetchImage = async (query: string): Promise<string | null> => {
+      if (!UNSPLASH_KEY || !query) return null;
+      const key = query.toLowerCase().trim();
+      if (imgCache.has(key)) return imgCache.get(key)!;
+      try {
+        const r = await fetch(
+          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=portrait&per_page=1&content_filter=high`,
+          { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } },
+        );
+        if (!r.ok) { imgCache.set(key, null); return null; }
+        const j = await r.json();
+        const url = j.results?.[0]?.urls?.regular || null;
+        imgCache.set(key, url);
+        return url;
+      } catch {
+        imgCache.set(key, null);
+        return null;
+      }
+    };
+
+    // Resolve images in parallel (max ~6 places).
+    const imageUrls = await Promise.all(
+      places.map((p) => {
+        const q = `${p.name} ${p.category || finalMood}${city_hint ? " " + city_hint : ""}`.trim();
+        return fetchImage(q);
+      }),
+    );
+
     // Persist
-    const rows = places.map((p) => ({
+    const rows = places.map((p, idx) => ({
       user_id: user.id,
       selection_id: selection?.id ?? null,
       mood: finalMood,
@@ -185,7 +217,7 @@ Donne 6 lieux/expériences parfaitement adaptés. Inclus au moins 1 hidden_gem.`
       tags: Array.isArray(p.tags) ? p.tags : [],
       lat: typeof p.lat === "number" ? p.lat : null,
       lng: typeof p.lng === "number" ? p.lng : null,
-      image_url: `https://source.unsplash.com/800x1000/?${encodeURIComponent((p.tags?.[0] || p.category || finalMood) + "," + (city_hint || "travel"))}`,
+      image_url: imageUrls[idx] || null,
       distance_km: typeof p.distance_km === "number" ? p.distance_km : null,
       duration_min: typeof p.duration_min === "number" ? Math.round(p.duration_min) : null,
       tips: p.tips || null,
