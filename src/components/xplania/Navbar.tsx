@@ -8,6 +8,7 @@ interface Props {
 }
 
 const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
+  const { user, signOut } = useAuth();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
@@ -25,22 +26,13 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
           <a href="/#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Comment ça marche
           </a>
-          <Link
-            to="/offres"
-            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
-          >
+          <Link to="/offres" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Offres
           </Link>
-          <Link
-            to="/carnets"
-            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium flex items-center gap-1"
-          >
+          <Link to="/carnets" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium flex items-center gap-1">
             <BookOpen className="w-4 h-4" /> Mes carnets
           </Link>
-          <button
-            onClick={onFeedback}
-            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
-          >
+          <button onClick={onFeedback} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Feedback
           </button>
         </div>
@@ -59,15 +51,16 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
               to="/auth"
               className="hidden sm:flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm px-3 py-2"
             >
-              <LogIn className="w-4 h-4" /> Se connecter
+              <LogIn className="w-4 h-4" /> Connexion
             </Link>
           )}
-        <button
-          onClick={onCreateTrip}
-          className="gradient-button px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
-        >
-          Créer mon voyage
-        </button>
+          <button
+            onClick={onCreateTrip}
+            className="gradient-button px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+          >
+            Créer mon voyage
+          </button>
+        </div>
       </div>
     </nav>
   );
