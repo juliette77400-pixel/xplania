@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Plane, Home, Compass, Heart, Map, Activity, Briefcase, BookOpen,
-  MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles,
+  MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getRemaining } from "@/lib/usage-quota";
 
 interface NavItem {
@@ -19,10 +20,10 @@ interface NavItem {
 }
 
 const PRIMARY: NavItem[] = [
-  { to: "/", label: "Home", icon: Home },
-  { to: "/discover", label: "Discover", icon: Compass },
-  { to: "/mood", label: "Mood", icon: Heart },
-  { to: "/explore", label: "Travel Map", icon: Map, premium: true },
+  { to: "/app", label: "Accueil", icon: Home },
+  { to: "/discover", label: "Découvrir", icon: Compass },
+  { to: "/mood", label: "Mood Explorer", icon: Heart },
+  { to: "/explore", label: "Carte de voyage", icon: Map, premium: true },
   { to: "/suivi", label: "Suivi de voyage", icon: Activity, premium: true },
   { to: "/guide-valise", label: "Valise", icon: Briefcase },
   { to: "/carnets", label: "Carnet", icon: BookOpen, premium: true },
