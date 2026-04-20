@@ -153,10 +153,25 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
 
   const days = formData.duration ? parseInt(formData.duration) || 7 : 7;
 
+  const formatDate = (d?: string) => {
+    if (!d) return null;
+    try {
+      const dt = new Date(d);
+      if (isNaN(dt.getTime())) return d;
+      return dt.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+    } catch {
+      return d;
+    }
+  };
+
+  const dep = formatDate(formData.departureDate);
+  const ret = formatDate(formData.returnDate);
+  const datesLabel = dep && ret ? `${dep} → ${ret}` : dep || ret || "Dates à définir";
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
       <FreemiumBanner />
-      {/* Hero image de la destination */}
+      {/* Hero image de la destination (Unsplash via useDestinationImage) */}
       {formData.destination && (
         <div className="relative h-56 sm:h-72 rounded-2xl overflow-hidden mb-2 bg-muted">
           <img
@@ -176,11 +191,18 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
               {formData.destination}
             </h2>
-            {formData.duration && (
-              <p className="text-sm text-muted-foreground mt-1">
-                {days} jours d'aventure vous attendent
-              </p>
-            )}
+            <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1.5 flex-wrap">
+              <span className="flex items-center gap-1.5">
+                <CalendarDays className="w-4 h-4" />
+                {datesLabel}
+              </span>
+              {formData.duration && (
+                <>
+                  <span>•</span>
+                  <span>{days} jours</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -201,13 +223,13 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           icon={<Compass className="w-5 h-5 text-primary-foreground" />}
           iconBg="gradient-button"
           title="Résumé de votre voyage"
-          subtitle={`${formData.destination} · ${days} jours`}
+          subtitle={`${formData.destination} · ${days} jours · ${datesLabel}`}
         >
           <div className="grid grid-cols-2 gap-3">
             {[
               { icon: <MapPin className="w-4 h-4 text-primary" />, label: "Destination", value: formData.destination },
               { icon: <Plane className="w-4 h-4 text-primary" />, label: "Départ", value: formData.departureLocation || "—" },
-              { icon: <CalendarDays className="w-4 h-4 text-primary" />, label: "Dates", value: `${formData.departureDate || "—"} → ${formData.returnDate || "—"}` },
+              { icon: <CalendarDays className="w-4 h-4 text-primary" />, label: "Dates", value: datesLabel },
               { icon: <Users className="w-4 h-4 text-primary" />, label: "Voyageur", value: formData.travelerType || "—" },
             ].map((item) => (
               <div key={item.label} className="flex items-start gap-2 p-3 rounded-xl bg-muted/50">
