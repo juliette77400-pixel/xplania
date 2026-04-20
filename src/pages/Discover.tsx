@@ -84,6 +84,7 @@ const Discover = () => {
           </TabsContent>
         </Tabs>
       </main>
+      <QuickJump />
 
       <PlaceDetailDrawer place={selected} onClose={() => setSelected(null)} />
     </div>

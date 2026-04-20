@@ -168,6 +168,7 @@ const GuideBudgetPage = () => {
           )}
         </AnimatePresence>
       </div>
+      <QuickJump />
     </div>
   );
 };

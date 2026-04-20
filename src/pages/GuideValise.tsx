@@ -392,6 +392,7 @@ const GuideValisePage = () => {
 
         <ValiseSummary totalItems={totalItems} checkedItems={checkedItems} categoriesCount={Object.keys(categories).length} />
       </div>
+      <QuickJump />
     </div>
   );
 };

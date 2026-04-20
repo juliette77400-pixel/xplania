@@ -486,6 +486,7 @@ const GamificationPage = () => {
           </div>
         </section>
       </main>
+      <QuickJump />
     </div>
   );
 };

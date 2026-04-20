@@ -143,6 +143,7 @@ const MoodExplorer = () => {
         onToggleFavorite={() => detailsPlace && toggleFavorite(detailsPlace)}
         onSharedReaction={() => user && getReactionsCount(user.id).then(setReactionsCount)}
       />
+      <QuickJump />
     </div>
   );
 };
