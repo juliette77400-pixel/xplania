@@ -1,5 +1,6 @@
-import { Plane } from "lucide-react";
+import { Plane, BookOpen, LogOut, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Props {
   onCreateTrip: () => void;
@@ -30,6 +31,12 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
           >
             Offres
           </Link>
+          <Link
+            to="/carnets"
+            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium flex items-center gap-1"
+          >
+            <BookOpen className="w-4 h-4" /> Mes carnets
+          </Link>
           <button
             onClick={onFeedback}
             className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
@@ -38,6 +45,23 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
           </button>
         </div>
 
+        <div className="flex items-center gap-2">
+          {user ? (
+            <button
+              onClick={signOut}
+              className="hidden sm:flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm px-3 py-2"
+              title="Se déconnecter"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden sm:flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm px-3 py-2"
+            >
+              <LogIn className="w-4 h-4" /> Se connecter
+            </Link>
+          )}
         <button
           onClick={onCreateTrip}
           className="gradient-button px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
