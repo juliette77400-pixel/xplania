@@ -53,17 +53,31 @@ serve(async (req) => {
       way${filter}(around:${radius},${lat},${lng});
     );out center 60;`;
 
-    const ovResp = await fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: "data=" + encodeURIComponent(query),
-    });
-    if (!ovResp.ok) {
-      const txt = await ovResp.text();
-      console.error("Overpass error", ovResp.status, txt);
-      return new Response(JSON.stringify({ error: "Overpass API error" }), { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const endpoints = [
+      "https://overpass-api.de/api/interpreter",
+      "https://overpass.kumi.systems/api/interpreter",
+      "https://overpass.openstreetmap.ru/api/interpreter",
+    ];
+    let ov: any = null;
+    let lastErr = "";
+    for (const url of endpoints) {
+      try {
+        const ovResp = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain", "User-Agent": "Xplania/1.0" },
+          body: query,
+        });
+        if (ovResp.ok) { ov = await ovResp.json(); break; }
+        lastErr = `${url} ${ovResp.status}`;
+        console.error("Overpass error", lastErr, (await ovResp.text()).slice(0, 200));
+      } catch (e) {
+        lastErr = `${url} ${e instanceof Error ? e.message : "fetch fail"}`;
+        console.error("Overpass fetch fail", lastErr);
+      }
     }
-    const ov = await ovResp.json();
+    if (!ov) {
+      return new Response(JSON.stringify({ inserted: 0, places: [], warning: "Overpass unavailable", detail: lastErr }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     const supa = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
