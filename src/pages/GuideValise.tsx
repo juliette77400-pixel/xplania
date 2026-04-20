@@ -201,25 +201,36 @@ const GuideValisePage = () => {
   );
 
   const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode || "confort");
-  const [categories, setCategories] = useState(() => buildCategories(suggestedMode || "confort"));
+  const [transport, setTransport] = useState<TransportMode>("avion");
+  const [categories, setCategories] = useState(() => buildCategories(suggestedMode || "confort", "avion"));
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSwitchingMode, setIsSwitchingMode] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const { reached, consume } = useQuota("valise");
 
   const handleModeChange = useCallback(async (mode: LuggageMode) => {
     if (mode === luggageMode) return;
     setIsSwitchingMode(true);
     setLuggageMode(mode);
-    // Simulate AI analysis delay for perceived performance
-    await new Promise((r) => setTimeout(r, 1200));
-    setCategories(buildCategories(mode));
+    await new Promise((r) => setTimeout(r, 1000));
+    setCategories(buildCategories(mode, transport));
     setIsSwitchingMode(false);
     toast.success(`Mode "${mode}" activé`, { description: "La checklist a été adaptée par l'IA." });
-  }, [luggageMode]);
+  }, [luggageMode, transport]);
+
+  const handleTransportChange = useCallback(async (t: TransportMode) => {
+    if (t === transport) return;
+    setIsSwitchingMode(true);
+    setTransport(t);
+    await new Promise((r) => setTimeout(r, 800));
+    setCategories(buildCategories(luggageMode, t));
+    setIsSwitchingMode(false);
+    toast.success(`Transport "${t}" pris en compte 🧳`, { description: "Liste adaptée aux contraintes du trajet." });
+  }, [luggageMode, transport]);
 
   const toggleItem = (cat: string, idx: number) => {
     setCategories((prev) => ({
