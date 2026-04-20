@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.discover-search]
 verify_jwt = false
+
+[functions.og-image]
+verify_jwt = false
