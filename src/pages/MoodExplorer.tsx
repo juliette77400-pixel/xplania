@@ -18,6 +18,7 @@ import PopularMoods from "@/components/mood/PopularMoods";
 import SocialReactions from "@/components/mood/SocialReactions";
 import MoodPlaceCard from "@/components/mood/MoodPlaceCard";
 import { moodByKey } from "@/lib/moods";
+import AppNavbar from "@/components/shared/AppNavbar";
 
 const MoodExplorer = () => {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ const MoodExplorer = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <AppNavbar />
       <div className="max-w-5xl mx-auto px-4 py-6 md:py-10 space-y-6">
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div className="flex-1 min-w-0">
