@@ -136,6 +136,22 @@ const modeExtras: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
       { name: "Kit premier secours auto", description: "Obligatoire dans certains pays", checked: true },
     ],
   },
+  urbain: {
+    "Essentiels city break 🏙️": [
+      { name: "Sneakers confortables", description: "Stylées et marche longue", checked: true },
+      { name: "Sac à bandoulière anti-vol", description: "Sécurise tes affaires en ville", checked: true },
+      { name: "Veste polyvalente", description: "Jour & soir", checked: true },
+      { name: "Carte de transport / app", description: "Métro, bus, vélos", checked: false },
+    ],
+  },
+  luxe: {
+    "Essentiels luxe 💎": [
+      { name: "Valise rigide premium", description: "Cabine + soute", checked: true },
+      { name: "Tenue de soirée", description: "Smoking / robe cocktail", checked: true },
+      { name: "Trousse de toilette cuir", description: "Soins haut de gamme", checked: true },
+      { name: "Bijoux discrets", description: "Coffre-fort hôtel conseillé", checked: false },
+    ],
+  },
 };
 
 const transportExtras: Record<TransportMode, Record<string, ChecklistItem[]>> = {
@@ -188,7 +204,9 @@ function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): Lugga
   if (all.includes("road") || all.includes("voiture")) return "roadtrip";
   if (all.includes("photo") || all.includes("créat")) return "photo";
   if (all.includes("aventure") || all.includes("sport")) return "aventure";
-  if (all.includes("luxe") || all.includes("confort")) return "confort";
+  if (all.includes("luxe") || all.includes("premium")) return "luxe";
+  if (all.includes("city") || all.includes("urbain") || all.includes("ville")) return "urbain";
+  if (all.includes("confort")) return "confort";
   return null;
 }
 
