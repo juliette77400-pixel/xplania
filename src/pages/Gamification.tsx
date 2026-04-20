@@ -121,33 +121,53 @@ const GamificationPage = () => {
     if (!user) return;
     let cancelled = false;
     (async () => {
-      const queries: Promise<any>[] = [];
-
       // Explore nodes (scope to trip if known)
       let nodesQ = supabase.from("explore_nodes").select("status,type,trip_id").eq("user_id", user.id);
       if (tripId) nodesQ = nodesQ.eq("trip_id", tripId);
-      queries.push(nodesQ);
 
       // Journal blocks (scope to trip's journal if known)
-      let blocksQ = supabase.from("journal_blocks").select("type,journal_id,journals!inner(trip_id)").eq("user_id", user.id);
+      let blocksQ = supabase
+        .from("journal_blocks")
+        .select("type,journal_id,journals!inner(trip_id)")
+        .eq("user_id", user.id);
       if (tripId) blocksQ = blocksQ.eq("journals.trip_id", tripId);
-      queries.push(blocksQ);
 
-      // Mood favorites + hidden gems
-      queries.push(
+      const [nodesRes, blocksRes, favRes, eb, jb, mb] = await Promise.all([
+        nodesQ,
+        blocksQ,
         supabase
           .from("mood_favorites")
           .select("place_id,mood_places!inner(hidden_gem)")
-          .eq("user_id", user.id)
-      );
-
-      // Badges owned
-      queries.push(supabase.from("explore_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id));
-      queries.push(supabase.from("journal_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id));
-      queries.push(supabase.from("mood_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id));
-
-      const [nodesRes, blocksRes, favRes, eb, jb, mb] = await Promise.all(queries);
+          .eq("user_id", user.id),
+        supabase.from("explore_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("journal_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("mood_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
+      ]);
       if (cancelled) return;
+
+      const nodes: any[] = nodesRes.data || [];
+      const blocks: any[] = blocksRes.data || [];
+      const favs: any[] = favRes.data || [];
+
+      const blockCount = (t: string) => blocks.filter((b) => b.type === t).length;
+
+      setCounts({
+        exploreVisited: nodes.filter((n) => n.status === "visited").length,
+        exploreTotal: nodes.length,
+        journalNotes: blockCount("note"),
+        journalPhotos: blockCount("photo"),
+        journalLocations: blockCount("location"),
+        journalMoods: blockCount("mood"),
+        journalHighlights: blockCount("highlight"),
+        moodFavorites: favs.length,
+        moodHiddenGems: favs.filter((f) => f.mood_places?.hidden_gem).length,
+        exploreBadgesOwned: eb.count || 0,
+        journalBadgesOwned: jb.count || 0,
+        moodBadgesOwned: mb.count || 0,
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [user, tripId]);
 
       const nodes: any[] = nodesRes.data || [];
       const blocks: any[] = blocksRes.data || [];
