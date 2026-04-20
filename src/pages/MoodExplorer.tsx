@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { useMoodExplorer, type MoodPlace } from "@/hooks/useMoodExplorer";
 import { useMoodBadges } from "@/hooks/useMoodBadges";
