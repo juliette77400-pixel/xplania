@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Luggage, Wallet, FileText, BookOpen, Activity, ArrowRight } from "lucide-react";
+import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -58,6 +58,17 @@ const features = [
     link: "/suivi",
     cta: "Activer le suivi live",
   },
+  {
+    num: 6,
+    icon: Compass,
+    title: "Travel Map",
+    tagline: "Ton voyage devient un jeu d'exploration.",
+    description:
+      "Carte interactive ramifiée, points cliquables, badges à débloquer et progression gamifiée. Chaque lieu visité te fait gagner des points et te rapproche du badge ultime de Globe Trotter.",
+    benefits: ["Explorer son voyage comme un jeu vivant", "Débloquer badges et points en visitant"],
+    link: "/explore",
+    cta: "Lancer l'exploration",
+  },
 ];
 
 const FeaturesSection = () => {
@@ -77,7 +88,7 @@ const FeaturesSection = () => {
           <p className="mt-3 text-muted-foreground">Trois outils simples, propulsés par l'IA, pour préparer votre voyage de A à Z</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {features.map((f, i) => (
             <motion.div
               key={f.num}
