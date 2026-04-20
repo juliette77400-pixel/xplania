@@ -7,6 +7,9 @@ import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimat
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
 import WeatherSection from "@/components/valise/WeatherSection";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
+import TransportSelector, { type TransportMode } from "@/components/valise/TransportSelector";
+import ShareTripDialog from "@/components/valise/ShareTripDialog";
+import { exportValisePdf } from "@/lib/valise-export";
 import AiTipCard from "@/components/valise/AiTipCard";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import ActivityItems from "@/components/valise/ActivityItems";
