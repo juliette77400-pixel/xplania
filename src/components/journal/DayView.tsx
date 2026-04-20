@@ -13,6 +13,7 @@ import { Cloud } from "lucide-react";
 interface Props {
   day: JournalDay;
   journalId: string;
+  destination?: string;
   onChanged: () => void;
 }
 
@@ -24,7 +25,7 @@ const BLOCK_TYPES = [
   { type: "highlight", label: "Moment fort", icon: Star },
 ] as const;
 
-const DayView = ({ day, journalId, onChanged }: Props) => {
+const DayView = ({ day, journalId, destination, onChanged }: Props) => {
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [title, setTitle] = useState(day.title || "");
@@ -78,7 +79,7 @@ const DayView = ({ day, journalId, onChanged }: Props) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <AnimatePresence>
           {day.blocks.map((b) => (
-            <BlockCard key={b.id} block={b} journalId={journalId} onChanged={onChanged} />
+            <BlockCard key={b.id} block={b} journalId={journalId} destination={destination} onChanged={onChanged} />
           ))}
         </AnimatePresence>
       </div>

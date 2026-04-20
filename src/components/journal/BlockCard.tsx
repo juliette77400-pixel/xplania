@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Camera, MapPin, Smile, Star, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Camera, MapPin, Star, Pencil, Trash2, Loader2, Smile, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useAuth } from "@/hooks/useAuth";
 import type { JournalBlock } from "@/hooks/useJournal";
 import { toast } from "sonner";
@@ -12,16 +13,24 @@ import { toast } from "sonner";
 interface Props {
   block: JournalBlock;
   journalId: string;
+  destination?: string;
   onChanged: () => void;
 }
 
 const MOOD_EMOJIS = ["😢", "😕", "😐", "🙂", "😄"];
+const QUICK_EMOJIS = ["✨","🌅","🌊","🍕","🍷","☕","🏖️","🏔️","🚲","🚶","📸","🎨","🎶","💃","🌸","🔥","💖","🌟","🥐","🍜"];
 
-const BlockCard = ({ block, journalId, onChanged }: Props) => {
+const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState<any>(block.content || {});
   const [uploading, setUploading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+
+  const persist = async (next: any) => {
+    setContent(next);
+    await supabase.from("journal_blocks").update({ content: next }).eq("id", block.id);
+  };
 
   const save = async () => {
     await supabase.from("journal_blocks").update({ content }).eq("id", block.id);
@@ -39,17 +48,49 @@ const BlockCard = ({ block, journalId, onChanged }: Props) => {
     setUploading(true);
     const path = `${user.id}/${journalId}/${crypto.randomUUID()}-${file.name}`;
     const { error } = await supabase.storage.from("journal-media").upload(path, file);
-    if (error) {
-      toast.error("Upload échoué");
-      setUploading(false);
-      return;
-    }
+    if (error) { toast.error("Upload échoué"); setUploading(false); return; }
     const { data: signed } = await supabase.storage.from("journal-media").createSignedUrl(path, 60 * 60 * 24 * 365);
-    const newContent = { ...content, path, url: signed?.signedUrl, caption: content.caption || "" };
-    setContent(newContent);
-    await supabase.from("journal_blocks").update({ content: newContent }).eq("id", block.id);
+    await persist({ ...content, path, url: signed?.signedUrl, caption: content.caption || "" });
     setUploading(false);
     onChanged();
+  };
+
+  const insertEmoji = (emoji: string) => {
+    const field = block.type === "highlight" ? "text" : "text";
+    const current = content[field] || "";
+    setContent({ ...content, [field]: current + emoji });
+  };
+
+  const aiEnhance = async () => {
+    if (!content.text || content.text.length < 5) {
+      toast.error("Écris au moins quelques mots avant d'enrichir avec l'IA");
+      return;
+    }
+    setAiLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("journal-story", {
+        body: {
+          destination: destination || "",
+          days: [{ date: new Date().toISOString().slice(0,10), title: "", blocks: [{ type: block.type, content }] }],
+          tone: "poetic",
+          mode: "enhance-block",
+          rawText: content.text,
+        },
+      });
+      if (error) throw error;
+      const enhanced = (data?.content || "").trim();
+      if (enhanced) {
+        const next = { ...content, text: enhanced, ai_enhanced: true };
+        setContent(next);
+        await supabase.from("journal_blocks").update({ content: next }).eq("id", block.id);
+        toast.success("Texte enrichi par l'IA ✨");
+        onChanged();
+      }
+    } catch (e: any) {
+      toast.error("Enrichissement IA indisponible");
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   const renderView = () => {
@@ -85,7 +126,12 @@ const BlockCard = ({ block, journalId, onChanged }: Props) => {
   const renderEdit = () => {
     switch (block.type) {
       case "note":
-        return <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder="Raconte ta journée…" rows={4} />;
+        return (
+          <div className="space-y-2">
+            <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder="Raconte ta journée…" rows={4} />
+            <EmojiAndAi onEmoji={insertEmoji} onAi={aiEnhance} aiLoading={aiLoading} />
+          </div>
+        );
       case "photo":
         return <Input value={content.caption || ""} onChange={(e) => setContent({ ...content, caption: e.target.value })} placeholder="Légende (optionnel)" />;
       case "location":
@@ -102,20 +148,24 @@ const BlockCard = ({ block, journalId, onChanged }: Props) => {
           </div>
         );
       case "highlight":
-        return <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder="Le meilleur moment de cette journée…" rows={3} />;
+        return (
+          <div className="space-y-2">
+            <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder="Le meilleur moment de cette journée…" rows={3} />
+            <EmojiAndAi onEmoji={insertEmoji} onAi={aiEnhance} aiLoading={aiLoading} />
+          </div>
+        );
       default:
         return null;
     }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-xl p-4 group relative"
-    >
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-xl p-4 group relative">
       <div className="flex items-start justify-between mb-2">
-        <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{block.type}</span>
+        <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1">
+          {block.type}
+          {content.ai_enhanced && <Sparkles className="w-3 h-3 text-primary" />}
+        </span>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition">
           {block.type !== "photo" && (
             <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => setEditing(!editing)}>
@@ -143,5 +193,30 @@ const BlockCard = ({ block, journalId, onChanged }: Props) => {
     </motion.div>
   );
 };
+
+const EmojiAndAi = ({ onEmoji, onAi, aiLoading }: { onEmoji: (e: string) => void; onAi: () => void; aiLoading: boolean }) => (
+  <div className="flex items-center justify-between gap-2">
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button type="button" size="sm" variant="ghost" className="text-xs">
+          <Smile className="w-3.5 h-3.5" /> Emoji
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-64 p-2">
+        <div className="grid grid-cols-8 gap-1">
+          {QUICK_EMOJIS.map((e) => (
+            <button key={e} type="button" onClick={() => onEmoji(e)} className="text-xl hover:bg-muted rounded p-1 transition">
+              {e}
+            </button>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
+    <Button type="button" size="sm" variant="ghost" className="text-xs" onClick={onAi} disabled={aiLoading}>
+      {aiLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5 text-primary" />}
+      Enrichir IA
+    </Button>
+  </div>
+);
 
 export default BlockCard;
