@@ -5,7 +5,8 @@ import "leaflet/dist/leaflet.css";
 import { TripActivity } from "@/hooks/useTracking";
 import { Position } from "@/hooks/useGeolocation";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Navigation } from "lucide-react";
+import { ExternalLink, Navigation, Sparkles } from "lucide-react";
+import { NearbyPOI, POI_COLORS, POI_LABELS } from "@/hooks/useNearbyPOI";
 
 // Fix default icon
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -23,6 +24,8 @@ interface Props {
   positions: { lat: number; lng: number }[];
   filter?: string;
   height?: string;
+  pois?: NearbyPOI[];
+  onPoiAddToCarnet?: (poi: NearbyPOI) => void;
 }
 
 const FitBounds = ({ points }: { points: [number, number][] }) => {
@@ -105,7 +108,7 @@ async function fetchOsrmRoute(points: [number, number][]): Promise<[number, numb
   }
 }
 
-const LiveMap = ({ position, activities, positions, filter, height = "500px" }: Props) => {
+const LiveMap = ({ position, activities, positions, filter, height = "500px", pois = [], onPoiAddToCarnet }: Props) => {
   const filtered = useMemo(
     () => activities.filter((a) => a.lat && a.lng && (!filter || a.category === filter)),
     [activities, filter]
@@ -203,6 +206,51 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
               <strong>#{i + 1} — {a.title}</strong>
               {a.description && <p className="text-xs mt-1">{a.description}</p>}
               <p className="text-xs text-muted-foreground capitalize mt-1">{a.status}</p>
+            </Popup>
+          </CircleMarker>
+        ))}
+
+        {/* Nearby POI from OSM Overpass */}
+        {pois.map((p) => (
+          <CircleMarker
+            key={`poi-${p.id}`}
+            center={[p.lat, p.lng]}
+            radius={6}
+            pathOptions={{
+              color: "#ffffff",
+              fillColor: POI_COLORS[p.category],
+              fillOpacity: 0.95,
+              weight: 1.5,
+            }}
+          >
+            <Popup>
+              <div className="text-sm space-y-1.5 min-w-[180px]">
+                <strong className="block">{p.name}</strong>
+                <span className="text-xs px-2 py-0.5 rounded-full inline-block" style={{ background: POI_COLORS[p.category] + "33", color: POI_COLORS[p.category] }}>
+                  {POI_LABELS[p.category]}
+                </span>
+                {p.tags["addr:street"] && (
+                  <p className="text-xs text-muted-foreground">{p.tags["addr:housenumber"] || ""} {p.tags["addr:street"]}</p>
+                )}
+                <div className="flex gap-1.5 pt-1">
+                  <a
+                    className="text-[11px] underline text-primary"
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Itinéraire ↗
+                  </a>
+                  {onPoiAddToCarnet && (
+                    <button
+                      className="text-[11px] underline text-primary ml-auto"
+                      onClick={() => onPoiAddToCarnet(p)}
+                    >
+                      + Carnet
+                    </button>
+                  )}
+                </div>
+              </div>
             </Popup>
           </CircleMarker>
         ))}

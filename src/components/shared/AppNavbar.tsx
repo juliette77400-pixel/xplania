@@ -23,7 +23,7 @@ const PRIMARY: NavItem[] = [
   { to: "/discover", label: "Discover", icon: Compass },
   { to: "/mood", label: "Mood", icon: Heart },
   { to: "/explore", label: "Travel Map", icon: Map, premium: true },
-  { to: "/suivi", label: "Tracking", icon: Activity, premium: true },
+  { to: "/suivi", label: "Suivi de voyage", icon: Activity, premium: true },
   { to: "/guide-valise", label: "Valise", icon: Briefcase },
   { to: "/carnets", label: "Carnet", icon: BookOpen, premium: true },
 ];
