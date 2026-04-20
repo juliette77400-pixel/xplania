@@ -15,7 +15,33 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { destination, days, tone = "storytelling" } = await req.json();
+    const { destination, days, tone = "storytelling", mode, rawText } = await req.json();
+
+    // Block-level enhancement mode (rewrite a single text block in poetic/elegant style)
+    if (mode === "enhance-block" && rawText) {
+      const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+      if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
+      const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            { role: "system", content: "Tu es un écrivain de voyage. Tu reformules de courtes notes brutes en un texte évocateur, sensoriel et fluide. Garde le sens, ajoute la magie. Maximum 80 mots, sans titre, sans markdown." },
+            { role: "user", content: `Contexte voyage: ${destination || "(non précisé)"}\n\nNote brute:\n${rawText}\n\nRéécris cette note de façon plus immersive et belle, à la première personne.` },
+          ],
+        }),
+      });
+      if (!r.ok) {
+        const t = await r.text();
+        console.error("enhance-block error", r.status, t);
+        return new Response(JSON.stringify({ error: "AI error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const data = await r.json();
+      const content = data.choices?.[0]?.message?.content || "";
+      return new Response(JSON.stringify({ content }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     if (!destination || !Array.isArray(days)) {
       return new Response(JSON.stringify({ error: "destination & days required" }), {
         status: 400,
