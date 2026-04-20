@@ -16,6 +16,8 @@ import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import { heroImage, activityImage, placeThumbnail } from "@/lib/unsplash";
 import { useDestinationImage } from "@/hooks/useDestinationImage";
 import FreemiumBanner from "@/components/xplania/FreemiumBanner";
+import PhotoGallery from "@/components/xplania/PhotoGallery";
+import WeatherSection from "@/components/valise/WeatherSection";
 
 interface Props {
   formData: TravelFormData;
