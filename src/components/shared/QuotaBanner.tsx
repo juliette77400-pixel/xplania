@@ -1,5 +1,5 @@
-import { Sparkles, Lock } from "lucide-react";
-import { type QuotaTool, getRemaining, getLimit } from "@/lib/usage-quota";
+import { Sparkles, Lock, Infinity as InfinityIcon } from "lucide-react";
+import { type QuotaTool, getRemaining, getLimit, isDevMode } from "@/lib/usage-quota";
 
 interface Props {
   tool: QuotaTool;
@@ -7,6 +7,19 @@ interface Props {
 }
 
 const QuotaBanner = ({ tool, toolLabel }: Props) => {
+  if (isDevMode()) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 mb-4">
+        <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5">
+          <InfinityIcon className="w-4 h-4 text-emerald-400 shrink-0" />
+          <p className="text-xs text-foreground">
+            <span className="font-semibold">Mode développeur</span> — accès illimité à {toolLabel}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const remaining = getRemaining(tool);
   const limit = getLimit(tool);
 
