@@ -21,6 +21,7 @@ import SuiviTrip from "./pages/SuiviTrip.tsx";
 import PublicSuivi from "./pages/PublicSuivi.tsx";
 import Explore from "./pages/Explore.tsx";
 import ExploreTrip from "./pages/ExploreTrip.tsx";
+import MoodExplorer from "./pages/MoodExplorer.tsx";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/suivi/public/:slug" element={<PublicSuivi />} />
             <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
             <Route path="/explore/:tripId" element={<ProtectedRoute><ExploreTrip /></ProtectedRoute>} />
+            <Route path="/mood" element={<ProtectedRoute><MoodExplorer /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
