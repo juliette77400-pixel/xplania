@@ -164,30 +164,6 @@ const GamificationPage = () => {
     return () => { cancelled = true; };
   }, [user, tripId]);
 
-      const nodes: any[] = nodesRes.data || [];
-      const blocks: any[] = blocksRes.data || [];
-      const favs: any[] = favRes.data || [];
-
-      const blockCount = (t: string) => blocks.filter((b) => b.type === t).length;
-
-      setCounts({
-        exploreVisited: nodes.filter((n) => n.status === "visited").length,
-        exploreTotal: nodes.length,
-        journalNotes: blockCount("note"),
-        journalPhotos: blockCount("photo"),
-        journalLocations: blockCount("location"),
-        journalMoods: blockCount("mood"),
-        journalHighlights: blockCount("highlight"),
-        moodFavorites: favs.length,
-        moodHiddenGems: favs.filter((f) => f.mood_places?.hidden_gem).length,
-        exploreBadgesOwned: eb.count || 0,
-        journalBadgesOwned: jb.count || 0,
-        moodBadgesOwned: mb.count || 0,
-      });
-    })();
-    return () => { cancelled = true; };
-  }, [user, tripId]);
-
   // Derived computed badges with real progress + adapted targets
   const badges = useMemo(
     () =>
