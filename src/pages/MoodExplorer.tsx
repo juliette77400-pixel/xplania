@@ -15,8 +15,7 @@ import MoodMap from "@/components/mood/MoodMap";
 import MoodAmbience from "@/components/mood/MoodAmbience";
 import MoodBadgesPanel from "@/components/mood/MoodBadgesPanel";
 import PopularMoods from "@/components/mood/PopularMoods";
-import SocialReactions from "@/components/mood/SocialReactions";
-import MoodPlaceCard from "@/components/mood/MoodPlaceCard";
+import MoodPlaceDetail from "@/components/mood/MoodPlaceDetail";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
 
@@ -65,7 +64,7 @@ const MoodExplorer = () => {
             <MoodSelector loading={loading} onSubmit={recommend} />
             <aside className="space-y-6">
               <PopularMoods onSelectMood={(m) => recommend({ mood: m as any })} />
-              <MoodBadgesPanel badges={badges} />
+              <MoodBadgesPanel badges={badges} context={{ ...badgeContext, reactionsCount }} />
             </aside>
           </div>
         ) : (
@@ -92,11 +91,11 @@ const MoodExplorer = () => {
             </TabsContent>
 
             <TabsContent value="favorites" className="mt-4">
-              <MoodFavorites favorites={favorites} onToggleFavorite={toggleFavorite} />
+              <MoodFavorites favorites={favorites} onToggleFavorite={toggleFavorite} onOpenDetails={setDetailsPlace} />
             </TabsContent>
 
             <TabsContent value="badges" className="mt-4">
-              <MoodBadgesPanel badges={badges} />
+              <MoodBadgesPanel badges={badges} context={{ ...badgeContext, reactionsCount }} />
             </TabsContent>
 
             <TabsContent value="social" className="mt-4">
@@ -137,27 +136,13 @@ const MoodExplorer = () => {
         )}
       </div>
 
-      {/* Drawer détails + social */}
-      <Drawer open={!!detailsPlace} onOpenChange={(o) => !o && setDetailsPlace(null)}>
-        <DrawerContent className="max-h-[90vh]">
-          <DrawerHeader>
-            <DrawerTitle>{detailsPlace?.name}</DrawerTitle>
-          </DrawerHeader>
-          {detailsPlace && (
-            <div className="px-4 pb-6 space-y-4 overflow-y-auto">
-              <MoodPlaceCard
-                place={detailsPlace}
-                isFavorite={isFavorite(detailsPlace.id)}
-                onToggleFavorite={() => toggleFavorite(detailsPlace)}
-              />
-              <SocialReactions
-                place={detailsPlace}
-                onShared={() => user && getReactionsCount(user.id).then(setReactionsCount)}
-              />
-            </div>
-          )}
-        </DrawerContent>
-      </Drawer>
+      <MoodPlaceDetail
+        place={detailsPlace}
+        isFavorite={detailsPlace ? isFavorite(detailsPlace.id) : false}
+        onClose={() => setDetailsPlace(null)}
+        onToggleFavorite={() => detailsPlace && toggleFavorite(detailsPlace)}
+        onSharedReaction={() => user && getReactionsCount(user.id).then(setReactionsCount)}
+      />
     </div>
   );
 };
