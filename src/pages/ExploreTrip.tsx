@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import QuickJump from "@/components/shared/QuickJump";
 import { ArrowLeft, Compass, Loader2, Sparkles, RefreshCw } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExplore } from "@/hooks/useExplore";

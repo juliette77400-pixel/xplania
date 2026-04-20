@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import TripTracker from "@/components/tracking/TripTracker";
+import QuickJump from "@/components/shared/QuickJump";
 
 const SuiviTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
