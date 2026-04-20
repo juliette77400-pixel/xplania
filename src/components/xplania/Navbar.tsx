@@ -1,4 +1,4 @@
-import { Plane, BookOpen, LogOut, LogIn } from "lucide-react";
+import { Plane, LogOut, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -28,9 +28,6 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
           </a>
           <Link to="/offres" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Offres
-          </Link>
-          <Link to="/carnets" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium flex items-center gap-1">
-            <BookOpen className="w-4 h-4" /> Mes carnets
           </Link>
           <button onClick={onFeedback} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Feedback
