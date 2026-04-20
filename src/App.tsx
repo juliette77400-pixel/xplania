@@ -16,6 +16,9 @@ import ResetPassword from "./pages/ResetPassword.tsx";
 import Carnets from "./pages/Carnets.tsx";
 import Carnet from "./pages/Carnet.tsx";
 import PublicCarnet from "./pages/PublicCarnet.tsx";
+import Suivi from "./pages/Suivi.tsx";
+import SuiviTrip from "./pages/SuiviTrip.tsx";
+import PublicSuivi from "./pages/PublicSuivi.tsx";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +40,9 @@ const App = () => (
             <Route path="/carnets" element={<ProtectedRoute><Carnets /></ProtectedRoute>} />
             <Route path="/carnet/:tripId" element={<ProtectedRoute><Carnet /></ProtectedRoute>} />
             <Route path="/carnet/public/:slug" element={<PublicCarnet />} />
+            <Route path="/suivi" element={<ProtectedRoute><Suivi /></ProtectedRoute>} />
+            <Route path="/suivi/:tripId" element={<ProtectedRoute><SuiviTrip /></ProtectedRoute>} />
+            <Route path="/suivi/public/:slug" element={<PublicSuivi />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

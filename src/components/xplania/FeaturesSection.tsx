@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Luggage, Wallet, FileText, BookOpen, ArrowRight } from "lucide-react";
+import { Luggage, Wallet, FileText, BookOpen, Activity, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -46,6 +46,17 @@ const features = [
     benefits: ["Garder une trace émotionnelle de chaque voyage", "Partager vos souvenirs avec vos proches"],
     link: "/carnets",
     cta: "Ouvrir mes carnets",
+  },
+  {
+    num: 5,
+    icon: Activity,
+    title: "Suivi de Voyage",
+    tagline: "Votre compagnon en temps réel pendant le séjour.",
+    description:
+      "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon votre position, météo et humeur.",
+    benefits: ["Suivre sa progression et ses stats en direct", "Recevoir des suggestions contextuelles à proximité"],
+    link: "/suivi",
+    cta: "Activer le suivi live",
   },
 ];
 
