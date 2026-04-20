@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, CircleMarker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -23,14 +23,6 @@ interface Props {
   height?: string;
 }
 
-const Recenter = ({ pos }: { pos: Position | null }) => {
-  const map = useMap();
-  useEffect(() => {
-    if (pos) map.setView([pos.lat, pos.lng], Math.max(map.getZoom(), 14), { animate: true });
-  }, [pos?.lat, pos?.lng]);
-  return null;
-};
-
 const FitBounds = ({ points }: { points: [number, number][] }) => {
   const map = useMap();
   useEffect(() => {
@@ -38,6 +30,68 @@ const FitBounds = ({ points }: { points: [number, number][] }) => {
       map.fitBounds(points as any, { padding: [40, 40], maxZoom: 14 });
     }
   }, [points.length]);
+  return null;
+};
+
+/**
+ * Stable user marker — created once, only `setLatLng` afterwards.
+ * This kills the "blinking" caused by React re-rendering CircleMarker on every GPS tick.
+ */
+const StableUserMarker = ({ position }: { position: Position | null }) => {
+  const map = useMap();
+  const markerRef = useRef<L.CircleMarker | null>(null);
+  const accuracyRef = useRef<L.Circle | null>(null);
+  const recenterCountRef = useRef(0);
+
+  useEffect(() => {
+    if (!position) return;
+
+    const latlng: L.LatLngExpression = [position.lat, position.lng];
+
+    if (!markerRef.current) {
+      // First-time creation
+      accuracyRef.current = L.circle(latlng, {
+        radius: Math.min(position.accuracy || 50, 200),
+        color: "#3b82f6",
+        fillColor: "#3b82f6",
+        fillOpacity: 0.08,
+        weight: 1,
+      }).addTo(map);
+
+      markerRef.current = L.circleMarker(latlng, {
+        radius: 8,
+        color: "#ffffff",
+        weight: 2,
+        fillColor: "#3b82f6",
+        fillOpacity: 1,
+      }).addTo(map);
+      markerRef.current.bindPopup(
+        position.source === "ip" ? "Position approximative (IP)" : "Tu es ici"
+      );
+      map.setView(latlng, Math.max(map.getZoom(), 14), { animate: true });
+    } else {
+      // Just move it — no flicker
+      markerRef.current.setLatLng(latlng);
+      accuracyRef.current?.setLatLng(latlng);
+      accuracyRef.current?.setRadius(Math.min(position.accuracy || 50, 200));
+      // Soft recenter every ~5 updates so the map follows without yanking
+      recenterCountRef.current += 1;
+      if (recenterCountRef.current % 5 === 0) {
+        map.panTo(latlng, { animate: true, duration: 0.8 });
+      }
+    }
+
+    return () => {
+      // Only cleanup on full unmount
+    };
+  }, [position?.lat, position?.lng, position?.accuracy, position?.source, map]);
+
+  useEffect(() => () => {
+    // Unmount cleanup
+    if (markerRef.current) { map.removeLayer(markerRef.current); markerRef.current = null; }
+    if (accuracyRef.current) { map.removeLayer(accuracyRef.current); accuracyRef.current = null; }
+  }, [map]);
+
   return null;
 };
 
@@ -71,7 +125,6 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {!position && allPoints.length > 1 ? <FitBounds points={allPoints} /> : null}
-        {position ? <Recenter pos={position} /> : null}
 
         {trail.length > 1 ? (
           <Polyline positions={trail} pathOptions={{ color: "#06b6d4", weight: 4, opacity: 0.7 }} />
@@ -97,15 +150,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px" }: 
           </CircleMarker>
         ))}
 
-        {position ? (
-          <CircleMarker
-            center={[position.lat, position.lng]}
-            radius={8}
-            pathOptions={{ color: "#3b82f6", fillColor: "#3b82f6", fillOpacity: 1, weight: 3 }}
-          >
-            <Popup>Tu es ici</Popup>
-          </CircleMarker>
-        ) : null}
+        <StableUserMarker position={position} />
       </MapContainer>
     </div>
   );

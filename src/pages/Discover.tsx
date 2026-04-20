@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ModuleNavbar from "@/components/shared/ModuleNavbar";
+import AppNavbar from "@/components/shared/AppNavbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DiscoverHero from "@/components/discover/DiscoverHero";
 import PlaceCarousel from "@/components/discover/PlaceCarousel";
@@ -28,7 +28,7 @@ const Discover = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ModuleNavbar />
+      <AppNavbar />
       <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 md:py-10">
         <DiscoverHero userPos={userPos} weather={weather} loading={loading} onRefresh={refresh} />
 

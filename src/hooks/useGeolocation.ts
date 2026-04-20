@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ipGeolocate } from "@/lib/geocoding";
 
 export type Precision = "high" | "balanced" | "low";
 
@@ -8,21 +9,34 @@ export interface Position {
   accuracy: number;
   speed: number | null;
   timestamp: number;
+  source?: "gps" | "ip";
 }
 
 interface Options {
   enabled: boolean;
   precision?: Precision;
+  /** Min ms between callbacks delivered to consumers (smoothing). */
+  throttleMs?: number;
+  /** Try IP geolocation if permission denied / unavailable. */
+  ipFallback?: boolean;
   onPosition?: (p: Position) => void;
 }
 
-export function useGeolocation({ enabled, precision = "balanced", onPosition }: Options) {
+export function useGeolocation({
+  enabled,
+  precision = "balanced",
+  throttleMs = 10000,
+  ipFallback = true,
+  onPosition,
+}: Options) {
   const [position, setPosition] = useState<Position | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [permission, setPermission] = useState<PermissionState | "unknown">("unknown");
   const watchIdRef = useRef<number | null>(null);
   const intervalRef = useRef<number | null>(null);
   const callbackRef = useRef(onPosition);
+  const lastEmitRef = useRef(0);
+  const ipTriedRef = useRef(false);
 
   useEffect(() => { callbackRef.current = onPosition; }, [onPosition]);
 
@@ -39,8 +53,10 @@ export function useGeolocation({ enabled, precision = "balanced", onPosition }: 
   }, []);
 
   useEffect(() => {
-    if (!enabled || !("geolocation" in navigator)) {
-      if (watchIdRef.current !== null) {
+    if (!enabled) return;
+
+    const cleanup = () => {
+      if (watchIdRef.current !== null && "geolocation" in navigator) {
         navigator.geolocation.clearWatch(watchIdRef.current);
         watchIdRef.current = null;
       }
@@ -48,49 +64,79 @@ export function useGeolocation({ enabled, precision = "balanced", onPosition }: 
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
-      return;
+    };
+
+    if (!("geolocation" in navigator)) {
+      // IP fallback only
+      if (ipFallback && !ipTriedRef.current) {
+        ipTriedRef.current = true;
+        ipGeolocate().then((g) => {
+          if (g) {
+            const p: Position = {
+              lat: g.lat, lng: g.lng, accuracy: 5000, speed: null,
+              timestamp: Date.now(), source: "ip",
+            };
+            setPosition(p); setError(null);
+            callbackRef.current?.(p);
+          }
+        });
+      }
+      return cleanup;
     }
 
-    const handle = (pos: GeolocationPosition) => {
-      const p: Position = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-        accuracy: pos.coords.accuracy,
-        speed: pos.coords.speed,
-        timestamp: pos.timestamp,
-      };
+    const emit = (p: Position) => {
+      const now = Date.now();
+      // Always update internal state (no flicker — see consumers using setLatLng).
       setPosition(p);
       setError(null);
-      callbackRef.current?.(p);
+      // Throttle external callback to reduce DB writes / notifications.
+      if (now - lastEmitRef.current >= throttleMs) {
+        lastEmitRef.current = now;
+        callbackRef.current?.(p);
+      }
     };
-    const err = (e: GeolocationPositionError) => setError(e.message);
+
+    const handle = (pos: GeolocationPosition) => emit({
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+      accuracy: pos.coords.accuracy,
+      speed: pos.coords.speed,
+      timestamp: pos.timestamp,
+      source: "gps",
+    });
+
+    const errCb = (e: GeolocationPositionError) => {
+      setError(e.message || "GPS indisponible");
+      // IP fallback once per session
+      if (ipFallback && !ipTriedRef.current) {
+        ipTriedRef.current = true;
+        ipGeolocate().then((g) => {
+          if (g) emit({
+            lat: g.lat, lng: g.lng, accuracy: 5000, speed: null,
+            timestamp: Date.now(), source: "ip",
+          });
+        });
+      }
+    };
 
     if (precision === "low") {
-      // poll every 60s, low accuracy
-      const tick = () => navigator.geolocation.getCurrentPosition(handle, err, {
+      const tick = () => navigator.geolocation.getCurrentPosition(handle, errCb, {
         enableHighAccuracy: false, maximumAge: 60000, timeout: 30000,
       });
       tick();
       intervalRef.current = window.setInterval(tick, 60000);
     } else {
-      watchIdRef.current = navigator.geolocation.watchPosition(handle, err, {
+      // high & balanced: use watchPosition, but inflate maximumAge so we don't
+      // re-render on every micro-update (kills marker flicker on map).
+      watchIdRef.current = navigator.geolocation.watchPosition(handle, errCb, {
         enableHighAccuracy: precision === "high",
-        maximumAge: precision === "high" ? 0 : 15000,
+        maximumAge: precision === "high" ? 5000 : 15000,
         timeout: 30000,
       });
     }
 
-    return () => {
-      if (watchIdRef.current !== null) {
-        navigator.geolocation.clearWatch(watchIdRef.current);
-        watchIdRef.current = null;
-      }
-      if (intervalRef.current !== null) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [enabled, precision]);
+    return cleanup;
+  }, [enabled, precision, throttleMs, ipFallback]);
 
   return { position, error, permission };
 }

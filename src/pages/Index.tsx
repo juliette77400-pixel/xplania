@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import Navbar from "@/components/xplania/Navbar";
+import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
 import FeaturesSection from "@/components/xplania/FeaturesSection";
 import HowItWorksSection from "@/components/xplania/HowItWorksSection";
@@ -39,7 +39,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar onCreateTrip={handleCreateTrip} onFeedback={scrollToFeedback} />
+      <AppNavbar />
+      {/* legacy hidden CTA — keep handlers wired via floating button below if needed */}
+      <div className="hidden">
+        <button onClick={handleCreateTrip}>create</button>
+        <button onClick={scrollToFeedback}>fb</button>
+      </div>
       <HeroSection onCreateTrip={handleCreateTrip} />
       <FeaturesSection />
       <HowItWorksSection />

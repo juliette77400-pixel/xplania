@@ -15,6 +15,7 @@ import OutfitRecommendations from "@/components/valise/OutfitRecommendations";
 import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
 import { toast } from "sonner";
+import AppNavbar from "@/components/shared/AppNavbar";
 
 // ── Categories data ──
 const baseCategories: Record<string, ChecklistItem[]> = {
@@ -244,6 +245,7 @@ const GuideValisePage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <AppNavbar />
       <ValiseHeader checkedItems={checkedItems} totalItems={totalItems} />
 
       <div className="border-b border-border bg-background/60 backdrop-blur">
