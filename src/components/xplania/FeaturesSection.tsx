@@ -77,7 +77,7 @@ const FeaturesSection = () => {
           <p className="mt-3 text-muted-foreground">Trois outils simples, propulsés par l'IA, pour préparer votre voyage de A à Z</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-12">
           {features.map((f, i) => (
             <motion.div
               key={f.num}
