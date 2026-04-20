@@ -1,9 +1,11 @@
+import { useEffect, useRef } from "react";
 import { Trophy, Lock, CheckCircle2 } from "lucide-react";
 import { MOOD_BADGES, type BadgeContext } from "@/lib/mood-badges";
 import type { MoodBadge } from "@/hooks/useMoodBadges";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { celebrateUnlock } from "@/lib/badges-fx";
 
 interface Props {
   badges: MoodBadge[];
