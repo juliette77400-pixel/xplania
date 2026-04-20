@@ -12,6 +12,10 @@ import ExploreMap from "@/components/explore/ExploreMap";
 import ExploreMindMap from "@/components/explore/ExploreMindMap";
 import NodeDetailDrawer from "@/components/explore/NodeDetailDrawer";
 import AddNodeDialog from "@/components/explore/AddNodeDialog";
+import ReplayMode from "@/components/explore/ReplayMode";
+import SuggestionsPanel from "@/components/explore/SuggestionsPanel";
+import ShareGameCard from "@/components/explore/ShareGameCard";
+import TripSummary from "@/components/explore/TripSummary";
 
 const ExploreTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
@@ -43,7 +47,7 @@ const ExploreTrip = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-6 max-w-6xl space-y-5">
+      <main className="relative container mx-auto px-4 py-6 max-w-7xl space-y-5">
         {explore.loading ? (
           <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
         ) : explore.nodes.length === 0 ? (
@@ -64,29 +68,51 @@ const ExploreTrip = () => {
             <ProgressHeader progress={explore.progress} cityName={cityNode?.name || trip?.destination} />
             <BadgesShowcase badges={explore.badges} />
 
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <h2 className="text-lg font-bold text-foreground">Carte d'exploration</h2>
-              <div className="flex gap-2">
-                <AddNodeDialog cityId={cityNode?.id || null} onAdd={(p) => explore.addNode(p)} />
-                <Button size="sm" variant="ghost" onClick={explore.seed} disabled={explore.seeding}>
-                  {explore.seeding ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
-                  Régénérer
-                </Button>
-              </div>
-            </div>
+            <div className="grid lg:grid-cols-[1fr_320px] gap-5">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <h2 className="text-lg font-bold text-foreground">Carte d'exploration</h2>
+                  <div className="flex gap-2">
+                    <AddNodeDialog cityId={cityNode?.id || null} onAdd={(p) => explore.addNode(p)} />
+                    <Button size="sm" variant="ghost" onClick={explore.seed} disabled={explore.seeding}>
+                      {explore.seeding ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+                      Régénérer
+                    </Button>
+                  </div>
+                </div>
 
-            <Tabs defaultValue="map">
-              <TabsList className="grid w-full sm:w-auto grid-cols-2">
-                <TabsTrigger value="map">🗺️ Carte</TabsTrigger>
-                <TabsTrigger value="mindmap">🌿 Mind-map</TabsTrigger>
-              </TabsList>
-              <TabsContent value="map" className="mt-4">
-                <ExploreMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />
-              </TabsContent>
-              <TabsContent value="mindmap" className="mt-4">
-                <ExploreMindMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />
-              </TabsContent>
-            </Tabs>
+                <Tabs defaultValue="map">
+                  <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="map">🗺️ Carte</TabsTrigger>
+                    <TabsTrigger value="mindmap">🌿 Mind-map</TabsTrigger>
+                    <TabsTrigger value="replay">▶️ Replay</TabsTrigger>
+                    <TabsTrigger value="summary">📖 Résumé</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="map" className="mt-4">
+                    <ExploreMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />
+                  </TabsContent>
+                  <TabsContent value="mindmap" className="mt-4">
+                    <ExploreMindMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />
+                  </TabsContent>
+                  <TabsContent value="replay" className="mt-4">
+                    <ReplayMode nodes={explore.nodes} edges={explore.edges} />
+                  </TabsContent>
+                  <TabsContent value="summary" className="mt-4">
+                    {tripId && <TripSummary tripId={tripId} />}
+                  </TabsContent>
+                </Tabs>
+              </div>
+
+              <aside className="space-y-4">
+                {tripId && <SuggestionsPanel tripId={tripId} cityNode={cityNode} onAdd={explore.addNode} />}
+                <ShareGameCard
+                  destination={trip?.destination || cityNode?.name}
+                  progress={explore.progress}
+                  badges={explore.badges}
+                  nodes={explore.nodes}
+                />
+              </aside>
+            </div>
           </>
         )}
 

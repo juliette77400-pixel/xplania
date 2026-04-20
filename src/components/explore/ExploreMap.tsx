@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { ExploreNode, ExploreEdge } from "@/hooks/useExplore";
 import { TYPE_COLORS, STATUS_COLORS } from "@/lib/explore-badges";
+import HeatmapLayer from "./HeatmapLayer";
+import { Flame } from "lucide-react";
 
 interface Props {
   nodes: ExploreNode[];
@@ -36,6 +38,7 @@ const FitBounds = ({ nodes }: { nodes: ExploreNode[] }) => {
 const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
   const geoNodes = useMemo(() => nodes.filter((n) => n.lat != null && n.lng != null), [nodes]);
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
+  const [heatmap, setHeatmap] = useState(false);
 
   const center: [number, number] = geoNodes.length > 0
     ? [geoNodes[0].lat!, geoNodes[0].lng!]
@@ -43,12 +46,19 @@ const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
 
   return (
     <div className="rounded-2xl overflow-hidden border border-border h-[500px] relative">
+      <button
+        onClick={() => setHeatmap((v) => !v)}
+        className={`absolute top-3 right-3 z-[400] px-3 py-1.5 rounded-full text-xs font-medium border backdrop-blur-md flex items-center gap-1.5 transition ${heatmap ? "bg-primary text-primary-foreground border-primary" : "bg-background/80 text-foreground border-border"}`}
+      >
+        <Flame className="w-3 h-3" /> Heatmap
+      </button>
       <MapContainer center={center} zoom={12} style={{ height: "100%", width: "100%", background: "hsl(220 30% 8%)" }}>
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; OSM &copy; CARTO'
         />
         <FitBounds nodes={geoNodes} />
+        {heatmap && <HeatmapLayer nodes={geoNodes} />}
         {edges.map((e) => {
           const a = nodeMap.get(e.from_node_id);
           const b = nodeMap.get(e.to_node_id);
