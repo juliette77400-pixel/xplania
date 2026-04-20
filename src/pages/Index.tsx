@@ -25,6 +25,7 @@ const Index = () => {
   const { user } = useAuth();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
+  const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
 
   const handleCreateTrip = () => {
     if (hasReachedFreeQuota()) {
@@ -82,7 +83,16 @@ const Index = () => {
               })
               .select("id")
               .single();
-            if (trip) setCurrentTripId(trip.id);
+            if (trip) {
+              setCurrentTripId(trip.id);
+              setActiveTrip({
+                tripId: trip.id,
+                destination: data.destination,
+                arrivalCity: data.arrivalCity,
+                departureDate: data.departureDate || null,
+                returnDate: data.returnDate || null,
+              });
+            }
           }
         }}
         onGenerating={setDashboardLoading}
@@ -95,6 +105,7 @@ const Index = () => {
           📔 Ouvrir mon Carnet
         </a>
       )}
+      <QuickJump />
       <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
       <OnboardingDialog />
       <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
