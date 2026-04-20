@@ -49,6 +49,7 @@ const Carnets = () => {
           </div>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };

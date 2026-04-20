@@ -49,6 +49,7 @@ const Explore = () => {
           </div>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };

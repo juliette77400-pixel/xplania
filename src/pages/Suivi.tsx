@@ -60,6 +60,7 @@ const Suivi = () => {
           </div>
         )}
       </main>
+      <QuickJump />
     </div>
   );
 };
