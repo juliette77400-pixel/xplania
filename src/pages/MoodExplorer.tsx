@@ -74,12 +74,12 @@ const MoodExplorer = () => {
           </div>
         ) : (
           <Tabs value={tab} onValueChange={setTab}>
-            <TabsList className="grid grid-cols-5 w-full">
-              <TabsTrigger value="feed"><Sparkles className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Feed</span></TabsTrigger>
-              <TabsTrigger value="map"><MapIcon className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Carte</span></TabsTrigger>
-              <TabsTrigger value="favorites"><Heart className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Favoris</span> ({favorites.length})</TabsTrigger>
-              <TabsTrigger value="badges"><Trophy className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Badges</span> ({badges.length})</TabsTrigger>
-              <TabsTrigger value="social"><Users className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Social</span></TabsTrigger>
+            <TabsList className="flex w-full overflow-x-auto sm:grid sm:grid-cols-5 no-scrollbar">
+              <TabsTrigger value="feed" className="shrink-0"><Sparkles className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Feed</span><span className="sm:hidden">Feed</span></TabsTrigger>
+              <TabsTrigger value="map" className="shrink-0"><MapIcon className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Carte</span><span className="sm:hidden">Carte</span></TabsTrigger>
+              <TabsTrigger value="favorites" className="shrink-0"><Heart className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Favoris</span><span className="sm:hidden">♥</span> ({favorites.length})</TabsTrigger>
+              <TabsTrigger value="badges" className="shrink-0"><Trophy className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Badges</span><span className="sm:hidden">🏆</span> ({badges.length})</TabsTrigger>
+              <TabsTrigger value="social" className="shrink-0"><Users className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Social</span><span className="sm:hidden">👥</span></TabsTrigger>
             </TabsList>
 
             <TabsContent value="feed" className="mt-4">
