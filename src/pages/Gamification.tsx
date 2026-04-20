@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -9,20 +10,43 @@ import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { useActiveTrip } from "@/stores/useActiveTrip";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { adaptToTripDuration, celebrateUnlock } from "@/lib/badges-fx";
+import { differenceInDays, parseISO } from "date-fns";
 
 // ── Badge Collection ──
 
 type BadgeRarity = "Commun" | "Rare" | "Épique" | "Légendaire";
 
-interface BadgeDef {
+interface BadgeMeta {
   code: string;
   name: string;
   description: string;
   icon: React.ReactNode;
+  emoji: string;
   rarity: BadgeRarity;
   bgColor: string;
-  progress: number; // 0-100
-  unlocked: boolean;
+  /** how to compute current count from live data */
+  metric: keyof BadgeCounts;
+  baseTarget: number;
+  unit: string;
+}
+
+interface BadgeCounts {
+  exploreVisited: number;
+  exploreTotal: number;
+  journalNotes: number;
+  journalPhotos: number;
+  journalLocations: number;
+  journalMoods: number;
+  journalHighlights: number;
+  moodFavorites: number;
+  moodHiddenGems: number;
+  exploreBadgesOwned: number;
+  journalBadgesOwned: number;
+  moodBadgesOwned: number;
 }
 
 const RARITY_COLORS: Record<BadgeRarity, string> = {
@@ -39,70 +63,153 @@ const RARITY_GLOW: Record<BadgeRarity, string> = {
   Légendaire: "shadow-[0_0_30px_hsl(40_95%_55%/0.25)]",
 };
 
-const BADGES: BadgeDef[] = [
-  { code: "urban", name: "Urban Explorer", description: "Explore 5 villes", icon: <MapPin className="w-7 h-7" />, rarity: "Commun", bgColor: "from-slate-500 to-slate-600", progress: 100, unlocked: true },
-  { code: "culture", name: "Culture Hunter", description: "Visite 10 lieux culturels", icon: <Landmark className="w-7 h-7" />, rarity: "Rare", bgColor: "from-blue-500 to-blue-600", progress: 80, unlocked: false },
-  { code: "local", name: "Local Insider", description: "Découvre 15 pépites locales", icon: <Star className="w-7 h-7" />, rarity: "Épique", bgColor: "from-purple-500 to-purple-600", progress: 100, unlocked: true },
-  { code: "mountain", name: "Mountain Adventurer", description: "3 randonnées complétées", icon: <Mountain className="w-7 h-7" />, rarity: "Rare", bgColor: "from-emerald-500 to-emerald-600", progress: 60, unlocked: false },
-  { code: "hidden", name: "Hidden Gems Finder", description: "Trouve 20 pépites cachées", icon: <Compass className="w-7 h-7" />, rarity: "Épique", bgColor: "from-purple-400 to-violet-500", progress: 45, unlocked: false },
-  { code: "food", name: "Food Lover", description: "Goûte 10 spécialités locales", icon: <Utensils className="w-7 h-7" />, rarity: "Commun", bgColor: "from-orange-500 to-orange-600", progress: 100, unlocked: true },
-  { code: "night", name: "Night Explorer", description: "5 sorties nocturnes", icon: <Moon className="w-7 h-7" />, rarity: "Rare", bgColor: "from-indigo-500 to-indigo-600", progress: 40, unlocked: false },
-  { code: "memory", name: "Memory Keeper", description: "Ajoute 50 souvenirs", icon: <Camera className="w-7 h-7" />, rarity: "Épique", bgColor: "from-pink-500 to-rose-500", progress: 30, unlocked: false },
-  { code: "voyageur", name: "Voyageur Master", description: "Complète toutes les missions", icon: <Award className="w-7 h-7" />, rarity: "Légendaire", bgColor: "from-amber-400 to-orange-500", progress: 25, unlocked: false },
+const BADGE_DEFS: BadgeMeta[] = [
+  { code: "urban", name: "Urban Explorer", emoji: "🗺️", description: "Explore 5 lieux", icon: <MapPin className="w-7 h-7" />, rarity: "Commun", bgColor: "from-slate-500 to-slate-600", metric: "exploreVisited", baseTarget: 5, unit: "lieux" },
+  { code: "culture", name: "Culture Hunter", emoji: "🏛️", description: "Visite 10 lieux culturels", icon: <Landmark className="w-7 h-7" />, rarity: "Rare", bgColor: "from-blue-500 to-blue-600", metric: "journalLocations", baseTarget: 10, unit: "lieux culturels" },
+  { code: "local", name: "Local Insider", emoji: "💎", description: "Découvre 5 pépites locales", icon: <Star className="w-7 h-7" />, rarity: "Épique", bgColor: "from-purple-500 to-purple-600", metric: "moodHiddenGems", baseTarget: 5, unit: "hidden gems" },
+  { code: "mountain", name: "Mountain Adventurer", emoji: "⛰️", description: "Visite 3 sites nature", icon: <Mountain className="w-7 h-7" />, rarity: "Rare", bgColor: "from-emerald-500 to-emerald-600", metric: "exploreVisited", baseTarget: 3, unit: "sites" },
+  { code: "hidden", name: "Hidden Gems Finder", emoji: "🧭", description: "Sauvegarde 10 favoris mood", icon: <Compass className="w-7 h-7" />, rarity: "Épique", bgColor: "from-purple-400 to-violet-500", metric: "moodFavorites", baseTarget: 10, unit: "favoris" },
+  { code: "food", name: "Food Lover", emoji: "🍽️", description: "Note 5 spécialités locales", icon: <Utensils className="w-7 h-7" />, rarity: "Commun", bgColor: "from-orange-500 to-orange-600", metric: "journalNotes", baseTarget: 5, unit: "notes" },
+  { code: "night", name: "Night Explorer", emoji: "🌙", description: "Partage 5 humeurs", icon: <Moon className="w-7 h-7" />, rarity: "Rare", bgColor: "from-indigo-500 to-indigo-600", metric: "journalMoods", baseTarget: 5, unit: "humeurs" },
+  { code: "memory", name: "Memory Keeper", emoji: "📷", description: "Ajoute 10 photos", icon: <Camera className="w-7 h-7" />, rarity: "Épique", bgColor: "from-pink-500 to-rose-500", metric: "journalPhotos", baseTarget: 10, unit: "photos" },
+  { code: "voyageur", name: "Voyageur Master", emoji: "🏆", description: "Débloque 10 badges au total", icon: <Award className="w-7 h-7" />, rarity: "Légendaire", bgColor: "from-amber-400 to-orange-500", metric: "exploreBadgesOwned", baseTarget: 10, unit: "badges" },
 ];
 
-// ── Daily Missions ──
-
+// ── Daily Missions (live) ──
 interface Mission {
   title: string;
   xp: number;
   icon: React.ReactNode;
   iconBg: string;
-  progress: number;
+  metric: keyof BadgeCounts;
   total: number;
   link: string;
 }
 
-const MISSIONS: Mission[] = [
-  { title: "Découvrir 1 pépite locale", xp: 50, icon: <Search className="w-5 h-5 text-white" />, iconBg: "from-cyan-400 to-cyan-500", progress: 0, total: 1, link: "/discover" },
-  { title: "Explorer un lieu culturel", xp: 75, icon: <Landmark className="w-5 h-5 text-white" />, iconBg: "from-purple-400 to-purple-500", progress: 0, total: 1, link: "/explore" },
-  { title: "Partager une émotion dans ton carnet", xp: 100, icon: <Heart className="w-5 h-5 text-white" />, iconBg: "from-pink-400 to-rose-500", progress: 0, total: 1, link: "/carnets" },
+const MISSION_DEFS: Mission[] = [
+  { title: "Sauvegarder 1 hidden gem", xp: 50, icon: <Search className="w-5 h-5 text-white" />, iconBg: "from-cyan-400 to-cyan-500", metric: "moodHiddenGems", total: 1, link: "/discover" },
+  { title: "Explorer 1 lieu culturel", xp: 75, icon: <Landmark className="w-5 h-5 text-white" />, iconBg: "from-purple-400 to-purple-500", metric: "exploreVisited", total: 1, link: "/explore" },
+  { title: "Partager 1 émotion dans ton carnet", xp: 100, icon: <Heart className="w-5 h-5 text-white" />, iconBg: "from-pink-400 to-rose-500", metric: "journalMoods", total: 1, link: "/carnets" },
 ];
 
-// ── Weekly XP Data ──
-
-const WEEKLY_XP = [
-  { day: "Lun", xp: 120 },
-  { day: "Mar", xp: 280 },
-  { day: "Mer", xp: 350 },
-  { day: "Jeu", xp: 420 },
-  { day: "Ven", xp: 200 },
-  { day: "Sam", xp: 380 },
-  { day: "Dim", xp: 150 },
-];
-
-// ── Upcoming Rewards ──
-
-interface Reward {
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  iconBg: string;
-  condition: string;
-  progress: number;
-  eta: string;
-}
-
-const REWARDS: Reward[] = [
-  { name: "Badge Voyageur Premium", description: "Accès à des expériences exclusives et recommandations VIP", icon: <Trophy className="w-6 h-6 text-white" />, iconBg: "from-amber-400 to-orange-500", condition: "15 pays visités", progress: 75, eta: "Bientôt disponible" },
-  { name: "Mode Nuit Holographique", description: "Interface futuriste avec effets lumineux et animations avancées", icon: <Moon className="w-6 h-6 text-white" />, iconBg: "from-purple-400 to-violet-500", condition: "5000 XP totaux", progress: 45, eta: "Environ 6 semaines" },
-  { name: "Niveau Explorateur Mythique", description: "Statut légendaire avec badges animés et récompenses permanentes", icon: <Zap className="w-6 h-6 text-white" />, iconBg: "from-cyan-400 to-blue-500", condition: "Niveau 15 atteint", progress: 30, eta: "Environ 7 semaines" },
-];
+// ── Weekly XP (kept as visualization, derived from real counts × XP/badge) ──
 
 const GamificationPage = () => {
-  const totalWeekXP = WEEKLY_XP.reduce((s, d) => s + d.xp, 0);
-  const avgXP = Math.round(totalWeekXP / 7);
-  const maxXP = Math.max(...WEEKLY_XP.map((d) => d.xp));
+  const { user } = useAuth();
+  const { tripId, departureDate, returnDate } = useActiveTrip();
+
+  // Adapt targets to trip duration
+  const tripDays = useMemo(() => {
+    if (departureDate && returnDate) {
+      try {
+        const d = differenceInDays(parseISO(returnDate), parseISO(departureDate)) + 1;
+        return d > 0 ? d : null;
+      } catch { return null; }
+    }
+    return null;
+  }, [departureDate, returnDate]);
+
+  const [counts, setCounts] = useState<BadgeCounts>({
+    exploreVisited: 0, exploreTotal: 0,
+    journalNotes: 0, journalPhotos: 0, journalLocations: 0, journalMoods: 0, journalHighlights: 0,
+    moodFavorites: 0, moodHiddenGems: 0,
+    exploreBadgesOwned: 0, journalBadgesOwned: 0, moodBadgesOwned: 0,
+  });
+
+  // Fetch live progress (scoped to active trip when available)
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      const queries: Promise<any>[] = [];
+
+      // Explore nodes (scope to trip if known)
+      let nodesQ = supabase.from("explore_nodes").select("status,type,trip_id").eq("user_id", user.id);
+      if (tripId) nodesQ = nodesQ.eq("trip_id", tripId);
+      queries.push(nodesQ);
+
+      // Journal blocks (scope to trip's journal if known)
+      let blocksQ = supabase.from("journal_blocks").select("type,journal_id,journals!inner(trip_id)").eq("user_id", user.id);
+      if (tripId) blocksQ = blocksQ.eq("journals.trip_id", tripId);
+      queries.push(blocksQ);
+
+      // Mood favorites + hidden gems
+      queries.push(
+        supabase
+          .from("mood_favorites")
+          .select("place_id,mood_places!inner(hidden_gem)")
+          .eq("user_id", user.id)
+      );
+
+      // Badges owned
+      queries.push(supabase.from("explore_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id));
+      queries.push(supabase.from("journal_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id));
+      queries.push(supabase.from("mood_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id));
+
+      const [nodesRes, blocksRes, favRes, eb, jb, mb] = await Promise.all(queries);
+      if (cancelled) return;
+
+      const nodes: any[] = nodesRes.data || [];
+      const blocks: any[] = blocksRes.data || [];
+      const favs: any[] = favRes.data || [];
+
+      const blockCount = (t: string) => blocks.filter((b) => b.type === t).length;
+
+      setCounts({
+        exploreVisited: nodes.filter((n) => n.status === "visited").length,
+        exploreTotal: nodes.length,
+        journalNotes: blockCount("note"),
+        journalPhotos: blockCount("photo"),
+        journalLocations: blockCount("location"),
+        journalMoods: blockCount("mood"),
+        journalHighlights: blockCount("highlight"),
+        moodFavorites: favs.length,
+        moodHiddenGems: favs.filter((f) => f.mood_places?.hidden_gem).length,
+        exploreBadgesOwned: eb.count || 0,
+        journalBadgesOwned: jb.count || 0,
+        moodBadgesOwned: mb.count || 0,
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [user, tripId]);
+
+  // Derived computed badges with real progress + adapted targets
+  const badges = useMemo(
+    () =>
+      BADGE_DEFS.map((b) => {
+        const target = adaptToTripDuration(b.baseTarget, tripDays);
+        const current = counts[b.metric];
+        const progress = Math.min(100, Math.round((current / target) * 100));
+        return { ...b, target, current, progress, unlocked: current >= target };
+      }),
+    [counts, tripDays]
+  );
+
+  // Detect newly-unlocked badges → confetti (only for unlocks happening LIVE on this page)
+  const prevUnlocked = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const nowUnlocked = new Set(badges.filter((b) => b.unlocked).map((b) => b.code));
+    if (prevUnlocked.current.size === 0 && nowUnlocked.size > 0) {
+      prevUnlocked.current = nowUnlocked;
+      return;
+    }
+    for (const code of nowUnlocked) {
+      if (!prevUnlocked.current.has(code)) {
+        const def = badges.find((b) => b.code === code);
+        if (def) celebrateUnlock({ name: def.name, icon: def.emoji, description: def.description });
+      }
+    }
+    prevUnlocked.current = nowUnlocked;
+  }, [badges]);
+
+  const missions = useMemo(
+    () => MISSION_DEFS.map((m) => ({ ...m, progress: Math.min(m.total, counts[m.metric]) })),
+    [counts]
+  );
+
+  // Real weekly XP estimate: 50 XP per badge across modules
+  const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
+  const totalXp = totalBadges * 50 + counts.exploreVisited * 20 + counts.journalNotes * 10;
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,18 +217,45 @@ const GamificationPage = () => {
 
       <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-16">
 
-        {/* ══════ BADGE COLLECTION ══════ */}
+        {/* ══════ HERO STATS ══════ */}
         <section className="text-center">
           <h1 className="text-3xl font-bold text-foreground mb-2">Collection de Badges</h1>
-          <p className="text-muted-foreground">Explore, collectionne et débloque des badges uniques</p>
+          <p className="text-muted-foreground">
+            Explore, collectionne et débloque des badges uniques
+            {tripDays != null && (
+              <span className="block text-xs mt-1 text-primary">
+                ✨ Objectifs adaptés à ton voyage de {tripDays} {tripDays === 1 ? "jour" : "jours"}
+              </span>
+            )}
+          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-            {BADGES.map((b, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 max-w-3xl mx-auto">
+            {[
+              { label: "Badges débloqués", value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
+              { label: "Lieux visités", value: counts.exploreVisited },
+              { label: "Souvenirs", value: counts.journalNotes + counts.journalPhotos },
+              { label: "XP estimés", value: totalXp.toLocaleString() },
+            ].map((s) => (
+              <div key={s.label} className="rounded-2xl bg-card border border-border p-4">
+                <p className="text-2xl font-bold gradient-text">
+                  {s.value}{s.suffix || ""}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ══════ BADGE COLLECTION (live progress) ══════ */}
+        <section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {badges.map((b, i) => (
               <motion.div
                 key={b.code}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
+                whileHover={{ y: -3 }}
                 className={cn(
                   "relative rounded-2xl border p-5 transition-all",
                   b.unlocked
@@ -129,19 +263,37 @@ const GamificationPage = () => {
                     : "border-border bg-card/40"
                 )}
               >
-                {/* Icon */}
-                <div className="flex items-start justify-between mb-3">
-                  <div className={cn(
-                    "w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center text-white",
-                    b.bgColor,
-                    !b.unlocked && "opacity-50 grayscale"
-                  )}>
+                {/* Unlock pulse ring for already-unlocked badges */}
+                {b.unlocked && (
+                  <motion.span
+                    aria-hidden
+                    className="absolute inset-0 rounded-2xl pointer-events-none"
+                    initial={{ boxShadow: "0 0 0 0 hsl(var(--primary) / 0.5)" }}
+                    animate={{ boxShadow: ["0 0 0 0 hsl(var(--primary) / 0.5)", "0 0 0 14px hsl(var(--primary) / 0)"] }}
+                    transition={{ repeat: Infinity, duration: 2.6 }}
+                  />
+                )}
+
+                <div className="flex items-start justify-between mb-3 relative">
+                  <motion.div
+                    whileHover={{ rotate: [0, -5, 5, 0] }}
+                    className={cn(
+                      "w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center text-white",
+                      b.bgColor,
+                      !b.unlocked && "opacity-50 grayscale"
+                    )}
+                  >
                     {b.icon}
-                  </div>
+                  </motion.div>
                   {b.unlocked ? (
-                    <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center"
+                    >
                       <CheckCircle className="w-4 h-4 text-white" />
-                    </div>
+                    </motion.div>
                   ) : (
                     <div className="w-7 h-7 rounded-full bg-muted/60 flex items-center justify-center">
                       <Lock className="w-3.5 h-3.5 text-muted-foreground" />
@@ -149,300 +301,189 @@ const GamificationPage = () => {
                   )}
                 </div>
 
-                {/* Name */}
                 <h3 className={cn("font-bold text-lg mb-1", b.unlocked ? "text-foreground" : "text-muted-foreground")}>
                   {b.name}
                 </h3>
+                <p className="text-xs text-muted-foreground mb-2">{b.description}</p>
 
-                {/* Rarity */}
                 <span className={cn("text-[10px] font-semibold uppercase tracking-wider border rounded-full px-2.5 py-0.5 inline-block mb-3", RARITY_COLORS[b.rarity])}>
                   {b.rarity}
                 </span>
 
-                {/* Progress */}
+                {/* Live progress bar */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
-                    <span className="text-primary">Progression</span>
-                    <span className="font-bold text-foreground">{b.progress}%</span>
+                    <span className={b.unlocked ? "text-emerald-400" : "text-primary"}>
+                      {b.unlocked ? "Débloqué" : "Progression"}
+                    </span>
+                    <span className="font-bold text-foreground tabular-nums">
+                      {b.current}/{b.target} {b.unit}
+                    </span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                  <div className="h-2 rounded-full bg-muted/40 overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${b.progress}%` }}
                       transition={{ duration: 1, delay: i * 0.05 }}
                       className={cn(
                         "h-full rounded-full",
-                        b.rarity === "Commun" && "bg-muted-foreground",
-                        b.rarity === "Rare" && "bg-blue-500",
-                        b.rarity === "Épique" && "bg-purple-500",
-                        b.rarity === "Légendaire" && "bg-gradient-to-r from-amber-400 to-orange-500",
+                        b.unlocked
+                          ? "bg-gradient-to-r from-emerald-400 to-emerald-500"
+                          : b.rarity === "Commun" && "bg-muted-foreground",
+                        !b.unlocked && b.rarity === "Rare" && "bg-blue-500",
+                        !b.unlocked && b.rarity === "Épique" && "bg-purple-500",
+                        !b.unlocked && b.rarity === "Légendaire" && "bg-gradient-to-r from-amber-400 to-orange-500",
                       )}
                     />
                   </div>
+                  {!b.unlocked && (
+                    <p className="text-[10px] text-muted-foreground/80 mt-1">
+                      Plus que <span className="font-semibold text-foreground">{Math.max(0, b.target - b.current)}</span> pour débloquer ✨
+                    </p>
+                  )}
                 </div>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* ══════ DAILY MISSIONS ══════ */}
+        {/* ══════ DAILY MISSIONS (live) ══════ */}
         <section className="text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">Missions du Jour</h2>
           <p className="text-muted-foreground mb-8">Accomplis tes missions quotidiennes et gagne de l'XP</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {MISSIONS.map((m, i) => (
-              <motion.div
-                key={m.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="rounded-2xl border border-border bg-card p-5 text-left space-y-4"
-              >
-                <div className="flex items-start justify-between">
-                  <div className={cn("w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center", m.iconBg)}>
-                    {m.icon}
-                  </div>
-                  <span className="text-xs font-bold border border-amber-500/40 text-amber-400 rounded-full px-2.5 py-1">
-                    +{m.xp} XP
-                  </span>
-                </div>
-
-                <h3 className="font-semibold text-foreground">{m.title}</h3>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-primary">Progression</span>
-                    <span className="text-foreground font-bold">{m.progress}/{m.total}</span>
-                  </div>
-                  <Progress value={(m.progress / m.total) * 100} className="h-1.5" />
-                </div>
-
-                <Link
-                  to={m.link}
-                  className="block w-full text-center rounded-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white font-semibold py-2.5 text-sm hover:opacity-90 transition-opacity"
+            {missions.map((m, i) => {
+              const done = m.progress >= m.total;
+              return (
+                <motion.div
+                  key={m.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                  className={cn(
+                    "rounded-2xl border bg-card p-5 text-left space-y-4 transition-colors",
+                    done ? "border-emerald-500/40 bg-emerald-500/5" : "border-border"
+                  )}
                 >
-                  Commencer →
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                  <div className="flex items-start justify-between">
+                    <div className={cn("w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center", m.iconBg)}>
+                      {m.icon}
+                    </div>
+                    <span className="text-xs font-bold border border-amber-500/40 text-amber-400 rounded-full px-2.5 py-1">
+                      +{m.xp} XP
+                    </span>
+                  </div>
 
-          <Link
-            to="/explore"
-            className="inline-flex items-center gap-2 mt-6 rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted/40 transition"
-          >
-            Voir toutes mes missions <ArrowRight className="w-4 h-4" />
-          </Link>
+                  <h3 className="font-semibold text-foreground">{m.title}</h3>
+
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className={done ? "text-emerald-400" : "text-primary"}>
+                        {done ? "Terminé ✓" : "Progression"}
+                      </span>
+                      <span className="text-foreground font-bold tabular-nums">{m.progress}/{m.total}</span>
+                    </div>
+                    <Progress
+                      value={(m.progress / m.total) * 100}
+                      className={cn("h-1.5", done && "[&>div]:bg-emerald-400")}
+                    />
+                  </div>
+
+                  <Link
+                    to={m.link}
+                    className={cn(
+                      "block w-full text-center rounded-xl font-semibold py-2.5 text-sm transition-opacity",
+                      done
+                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                        : "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:opacity-90"
+                    )}
+                  >
+                    {done ? "Mission accomplie ✓" : "Commencer →"}
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
         </section>
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">Ton Rythme de Progression</h2>
-          <p className="text-muted-foreground mb-8">Analyse de ton activité et de tes accomplissements</p>
+          <p className="text-muted-foreground mb-8">Aperçu de ton activité Xplania</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Weekly chart */}
             <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 text-left">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center">
                   <BarChart3 className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground">Progression hebdomadaire</h3>
-                  <p className="text-xs text-muted-foreground">XP gagnés par jour</p>
+                  <h3 className="font-bold text-foreground">Activité par module</h3>
+                  <p className="text-xs text-muted-foreground">Tes contributions actuelles</p>
                 </div>
               </div>
 
-              {/* Bar chart */}
-              <div className="flex items-end gap-3 h-40 mb-4">
-                {WEEKLY_XP.map((d, i) => (
-                  <div key={d.day} className="flex-1 flex flex-col items-center gap-2">
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: `${(d.xp / maxXP) * 100}%` }}
-                      transition={{ duration: 0.8, delay: i * 0.08 }}
-                      className="w-full rounded-lg bg-gradient-to-t from-primary/60 to-primary"
-                    />
-                    <span className="text-[10px] text-muted-foreground">{d.day}</span>
+              <div className="space-y-3">
+                {[
+                  { label: "Carnet — notes", value: counts.journalNotes, max: 20 },
+                  { label: "Carnet — photos", value: counts.journalPhotos, max: 20 },
+                  { label: "Explore — lieux visités", value: counts.exploreVisited, max: 20 },
+                  { label: "Mood — favoris", value: counts.moodFavorites, max: 15 },
+                ].map((row) => (
+                  <div key={row.label}>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="text-muted-foreground">{row.label}</span>
+                      <span className="font-bold text-foreground tabular-nums">{row.value}</span>
+                    </div>
+                    <Progress value={Math.min(100, (row.value / row.max) * 100)} className="h-1.5" />
                   </div>
                 ))}
               </div>
-
-              <div className="flex justify-between text-sm">
-                <div>
-                  <p className="text-muted-foreground text-xs">Total cette semaine</p>
-                  <p className="text-xl font-bold text-foreground">{totalWeekXP.toLocaleString()} XP</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-muted-foreground text-xs">Moyenne par jour</p>
-                  <p className="text-xl font-bold text-primary">{avgXP} XP</p>
-                </div>
-              </div>
             </div>
 
-            {/* Side cards */}
             <div className="space-y-4">
-              {/* Exploration time */}
               <div className="rounded-2xl border border-border bg-gradient-to-br from-purple-500/10 to-violet-500/5 p-5 text-left">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center">
                     <Clock className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-foreground">Temps d'exploration</h3>
+                  <h3 className="font-bold text-foreground">Voyage actif</h3>
                 </div>
-                <p className="text-xs text-muted-foreground mb-1">Temps cumulé</p>
-                <p className="text-3xl font-bold text-foreground mb-3">24.5h</p>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">Cette semaine</span>
-                  <span className="font-bold text-foreground">6.2h</span>
-                </div>
-                <Progress value={62} className="h-1.5" />
+                {tripId ? (
+                  <>
+                    <p className="text-xs text-muted-foreground mb-1">Durée</p>
+                    <p className="text-3xl font-bold text-foreground mb-3">{tripDays || "—"} j</p>
+                    <p className="text-xs text-muted-foreground">
+                      Tes objectifs sont automatiquement adaptés à la durée de ton voyage.
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Aucun voyage actif — crée ou sélectionne un voyage pour adapter tes objectifs.
+                  </p>
+                )}
               </div>
 
-              {/* Highlights */}
               <div className="rounded-2xl border border-border bg-card p-5 text-left">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
                     <Sparkles className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-foreground">Moments forts</h3>
+                  <h3 className="font-bold text-foreground">Bilan badges</h3>
                 </div>
-                <div className="space-y-3">
-                  {[
-                    { text: "Premier Badge Épique", date: "15 Nov 2024", color: "border-l-purple-500" },
-                    { text: "Niveau 5 Atteint", date: "22 Nov 2024", color: "border-l-primary" },
-                    { text: "Mission Parfaite", date: "28 Nov 2024", color: "border-l-pink-500" },
-                  ].map((h) => (
-                    <div key={h.text} className={cn("border-l-2 pl-3", h.color)}>
-                      <p className="text-sm font-semibold text-foreground">{h.text}</p>
-                      <p className="text-[10px] text-muted-foreground">{h.date}</p>
-                    </div>
-                  ))}
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Explore</span><span className="font-bold">{counts.exploreBadgesOwned}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Carnet</span><span className="font-bold">{counts.journalBadgesOwned}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Mood</span><span className="font-bold">{counts.moodBadgesOwned}</span></div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ══════ AI RECOMMENDATION ══════ */}
-        <section>
-          <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-violet-500/5 p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-5">
-              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-1">
-                <Sparkles className="w-3.5 h-3.5" /> Recommandation IA
-              </span>
-              <h2 className="text-xl font-bold text-foreground">Ta prochaine destination idéale</h2>
-              <p className="text-muted-foreground">
-                Selon ta progression, la prochaine destination idéale pour toi est <strong className="text-foreground">Lisbonne</strong>.
-                Tu débloqueras 2 badges si tu explores ce lieu.
-              </p>
-              <div className="space-y-3">
-                <div className="rounded-xl bg-card/60 border border-border p-3 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-                    <Award className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">2 badges à débloquer</p>
-                    <p className="text-xs text-muted-foreground">Ocean Spirit & Culture Hunter</p>
-                  </div>
-                </div>
-                <div className="rounded-xl bg-card/60 border border-border p-3 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">+450 XP potentiels</p>
-                    <p className="text-xs text-muted-foreground">Basé sur tes préférences</p>
-                  </div>
-                </div>
-              </div>
-              <Link
-                to="/"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold px-6 py-3 text-sm hover:opacity-90 transition-opacity"
-              >
-                Explorer maintenant <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* Destination card */}
-            <div className="rounded-2xl overflow-hidden border border-border bg-card">
-              <div className="relative h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                <span className="text-5xl">🇵🇹</span>
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-background/80 backdrop-blur-sm px-3 py-1">
-                  <MapPin className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-xs font-semibold">Lisbonne, Portugal</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-foreground mb-1">Lisbonne</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Ville côtière riche en culture et en authenticité. Parfaite pour ton profil d'explorateur.
-                </p>
-                <div className="grid grid-cols-3 gap-3 text-center">
-                  <div><p className="text-lg font-bold text-primary">12</p><p className="text-[10px] text-muted-foreground">Pépites</p></div>
-                  <div><p className="text-lg font-bold text-primary">8</p><p className="text-[10px] text-muted-foreground">Lieux</p></div>
-                  <div><p className="text-lg font-bold text-emerald-400">95%</p><p className="text-[10px] text-muted-foreground">Match</p></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ══════ UPCOMING REWARDS ══════ */}
-        <section className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Récompenses à Venir</h2>
-          <p className="text-muted-foreground mb-8">Continue ta progression pour débloquer ces récompenses exclusives</p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {REWARDS.map((r, i) => (
-              <motion.div
-                key={r.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="rounded-2xl border border-border bg-card p-5 text-left space-y-4"
-              >
-                <div className="flex items-start gap-3">
-                  <div className={cn("w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shrink-0", r.iconBg)}>
-                    {r.icon}
-                  </div>
-                  <div className="flex gap-1 mt-1">
-                    {[0, 1, 2].map((d) => (
-                      <div key={d} className="w-1.5 h-1.5 rounded-full bg-amber-500/40" />
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-bold text-foreground">{r.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{r.description}</p>
-                </div>
-                <div className="rounded-lg bg-muted/20 px-3 py-2">
-                  <p className="text-xs text-foreground">● {r.condition}</p>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-primary">Déblocage</span>
-                    <span className="font-bold text-foreground">{r.progress}%</span>
-                  </div>
-                  <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${r.progress}%` }}
-                      transition={{ duration: 1, delay: i * 0.1 }}
-                      className={cn("h-full rounded-full bg-gradient-to-r", r.iconBg)}
-                    />
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground text-center">{r.eta}</p>
-              </motion.div>
-            ))}
           </div>
         </section>
 
         {/* ══════ FINAL CTA ══════ */}
         <section className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-purple-600/30 via-violet-500/20 to-blue-600/30 border border-purple-500/20 py-16 text-center">
-          {/* Floating badges */}
           <div className="flex justify-center gap-4 mb-6">
             {[
               { bg: "from-amber-400 to-orange-500", icon: <Trophy className="w-6 h-6 text-white" /> },
@@ -462,7 +503,7 @@ const GamificationPage = () => {
 
           <p className="text-muted-foreground mb-2">Continue ton aventure et débloque des badges épiques.</p>
           <p className="text-sm text-muted-foreground/70 max-w-lg mx-auto mb-8">
-            Chaque exploration te rapproche de nouveaux niveaux, de récompenses exclusives et d'expériences inoubliables.
+            Chaque action compte : une note, une photo, une visite, un favori… tout te rapproche du prochain palier.
           </p>
 
           <Link
@@ -471,19 +512,6 @@ const GamificationPage = () => {
           >
             Poursuivre ma progression <ArrowRight className="w-4 h-4" />
           </Link>
-
-          <div className="border-t border-border/30 mt-12 pt-8 flex justify-center gap-12">
-            {[
-              { value: "10+", label: "Badges disponibles" },
-              { value: "5,000", label: "XP à gagner" },
-              { value: "∞", label: "Possibilités" },
-            ].map((s) => (
-              <div key={s.label}>
-                <p className="text-2xl font-bold text-primary">{s.value}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
-              </div>
-            ))}
-          </div>
         </section>
       </main>
       <QuickJump />
