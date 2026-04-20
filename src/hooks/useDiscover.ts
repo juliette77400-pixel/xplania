@@ -45,23 +45,36 @@ export function useDiscover() {
     await supabase.functions.invoke("discover-osm", { body: { lat: userPos.lat, lng: userPos.lng, radius: 1500, category } });
   }, [userPos]);
 
+  const fetchInBbox = useCallback(async (radiusM: number) => {
+    if (!userPos) return [];
+    const dLat = radiusM / 111000;
+    const dLng = radiusM / (111000 * Math.cos((userPos.lat * Math.PI) / 180));
+    const { data } = await supabase
+      .from("places")
+      .select("*")
+      .gte("lat", userPos.lat - dLat).lte("lat", userPos.lat + dLat)
+      .gte("lng", userPos.lng - dLng).lte("lng", userPos.lng + dLng)
+      .order("score", { ascending: false })
+      .limit(150);
+    return (data || []).map((p: any) => ({ ...p, distance_km: distanceKm(userPos, { lat: p.lat, lng: p.lng }) }));
+  }, [userPos]);
+
   const refresh = useCallback(async () => {
     if (!userPos) return;
     setLoading(true);
     try {
       // Seed once for around-you
       await seed("all");
-      // Fetch local bbox (~3km)
-      const dLat = 3000 / 111000;
-      const dLng = 3000 / (111000 * Math.cos((userPos.lat * Math.PI) / 180));
-      const { data } = await supabase
-        .from("places")
-        .select("*")
-        .gte("lat", userPos.lat - dLat).lte("lat", userPos.lat + dLat)
-        .gte("lng", userPos.lng - dLng).lte("lng", userPos.lng + dLng)
-        .order("score", { ascending: false })
-        .limit(120);
-      const withDist = (data || []).map((p: any) => ({ ...p, distance_km: distanceKm(userPos, { lat: p.lat, lng: p.lng }) }));
+      // Try progressively wider bbox until we have results (rural fallback)
+      let withDist = await fetchInBbox(3000);
+      if (withDist.length < 8) {
+        // Re-seed with bigger radius and retry
+        await supabase.functions.invoke("discover-osm", { body: { lat: userPos.lat, lng: userPos.lng, radius: 5000, category: "all" } });
+        withDist = await fetchInBbox(8000);
+      }
+      if (withDist.length < 4) {
+        withDist = await fetchInBbox(20000);
+      }
       setPlaces(withDist);
 
       // Enrich up to 12 missing why_fits
