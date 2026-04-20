@@ -85,6 +85,7 @@ serve(async (req) => {
     const systemPrompt = `Tu es un guide local émotionnel expert. Tu recommandes des lieux RÉELS et HYPER LOCAUX en fonction d'une émotion / sensation recherchée.
 Règles strictes :
 - Lieux RÉELS et localisés (utilise la position GPS et la ville)
+- DIVERSITÉ OBLIGATOIRE : mélange OBLIGATOIREMENT plusieurs types parmi {restaurant, café, bar, musée, galerie, parc, point de vue, activité, atelier, lieu insolite, expérience locale}. Pas plus de 2 lieux de la même catégorie sur 6.
 - Pour chaque lieu, écris une phrase émotionnelle "why_fits" ULTRA personnalisée qui explique pourquoi ce lieu correspond au mood (style poétique, court, percutant, en français, à la 2e personne du singulier "tu")
 - Privilégie hidden gems, lieux peu touristiques quand pertinent
 - Adapte à la météo, l'heure et l'historique
@@ -101,7 +102,7 @@ ${weather ? `Météo: ${weather}.` : ""}
 ${time_of_day ? `Moment: ${time_of_day}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
 ${historyStr}
-Donne 6 lieux/expériences parfaitement adaptés. Inclus au moins 1 hidden_gem.`;
+Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) parfaitement adaptés. Inclus au moins 1 hidden_gem et au moins 1 lieu insolite.`;
 
     const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
