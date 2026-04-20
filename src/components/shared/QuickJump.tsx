@@ -19,7 +19,7 @@ const ALL: JumpItem[] = [
   { to: "/discover",     matchPrefix: "/discover",     label: "Discover",   emoji: "🧭", icon: Compass,   color: "from-cyan-500/20 to-blue-500/20",     desc: "Lieux locaux IA" },
   { to: "/mood",         matchPrefix: "/mood",         label: "Mood",       emoji: "💫", icon: Heart,     color: "from-pink-500/20 to-purple-500/20",   desc: "Selon ton humeur" },
   { to: "/explore",      matchPrefix: "/explore",      contextual: (id) => `/explore/${id}`, label: "Travel Map", emoji: "🗺️", icon: Map,       color: "from-violet-500/20 to-indigo-500/20", desc: "Carte & badges" },
-  { to: "/suivi",        matchPrefix: "/suivi",        contextual: (id) => `/suivi/${id}`,   label: "Tracking",   emoji: "📍", icon: Activity,  color: "from-emerald-500/20 to-teal-500/20",  desc: "Suivi GPS live" },
+  { to: "/suivi",        matchPrefix: "/suivi",        contextual: (id) => `/suivi/${id}`,   label: "Suivi de voyage",   emoji: "📍", icon: Activity,  color: "from-emerald-500/20 to-teal-500/20",  desc: "Suivi GPS live" },
   { to: "/carnets",      matchPrefix: "/carnet",       contextual: (id) => `/carnet/${id}`,  label: "Carnet",     emoji: "📔", icon: BookOpen,  color: "from-amber-500/20 to-orange-500/20",  desc: "Journal voyage" },
   { to: "/guide-valise", matchPrefix: "/guide-valise", label: "Valise",     emoji: "🧳", icon: Briefcase, color: "from-rose-500/20 to-red-500/20",      desc: "Checklist intelligente" },
   { to: "/guide-budget", matchPrefix: "/guide-budget", label: "Budget",     emoji: "💰", icon: Wallet,    color: "from-yellow-500/20 to-amber-500/20",  desc: "Dépenses & alertes" },
