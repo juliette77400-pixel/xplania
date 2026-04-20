@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import ProgressHeader from "@/components/explore/ProgressHeader";
 import BadgesShowcase from "@/components/explore/BadgesShowcase";
 import ExploreMap from "@/components/explore/ExploreMap";
-import ExploreMindMap from "@/components/explore/ExploreMindMap";
 import NodeDetailDrawer from "@/components/explore/NodeDetailDrawer";
 import AddNodeDialog from "@/components/explore/AddNodeDialog";
 import ReplayMode from "@/components/explore/ReplayMode";
@@ -66,7 +65,7 @@ const ExploreTrip = () => {
         ) : (
           <>
             <ProgressHeader progress={explore.progress} cityName={cityNode?.name || trip?.destination} />
-            <BadgesShowcase badges={explore.badges} />
+            <BadgesShowcase badges={explore.badges} nodes={explore.nodes} mediaCount={explore.media.length} />
 
             <div className="grid lg:grid-cols-[1fr_320px] gap-5">
               <div className="space-y-4">
@@ -82,20 +81,16 @@ const ExploreTrip = () => {
                 </div>
 
                 <Tabs defaultValue="map">
-                  <TabsList className="grid w-full grid-cols-4">
+                  <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="map">🗺️ Carte</TabsTrigger>
-                    <TabsTrigger value="mindmap">🌿 Mind-map</TabsTrigger>
-                    <TabsTrigger value="replay">▶️ Replay</TabsTrigger>
+                    <TabsTrigger value="replay">🚇 Replay</TabsTrigger>
                     <TabsTrigger value="summary">📖 Résumé</TabsTrigger>
                   </TabsList>
                   <TabsContent value="map" className="mt-4">
                     <ExploreMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />
                   </TabsContent>
-                  <TabsContent value="mindmap" className="mt-4">
-                    <ExploreMindMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />
-                  </TabsContent>
                   <TabsContent value="replay" className="mt-4">
-                    <ReplayMode nodes={explore.nodes} edges={explore.edges} />
+                    <ReplayMode nodes={explore.nodes} />
                   </TabsContent>
                   <TabsContent value="summary" className="mt-4">
                     {tripId && <TripSummary tripId={tripId} />}
