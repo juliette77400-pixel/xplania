@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Trophy, Lock, CheckCircle2 } from "lucide-react";
 import { EXPLORE_BADGES, BADGE_CATEGORIES, RARITY_STYLES, type BadgeCategory } from "@/lib/explore-badges";
@@ -6,6 +6,7 @@ import type { ExploreBadge, ExploreNode } from "@/hooks/useExplore";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { celebrateUnlock } from "@/lib/badges-fx";
 
 interface Props {
   badges: ExploreBadge[];
@@ -16,6 +17,22 @@ interface Props {
 const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
   const owned = useMemo(() => new Set(badges.map((b) => b.code)), [badges]);
   const [active, setActive] = useState<BadgeCategory | "all">("all");
+  const prevOwned = useRef<Set<string>>(new Set());
+
+  // Detect newly-unlocked badges → confetti
+  useEffect(() => {
+    if (prevOwned.current.size === 0 && owned.size > 0) {
+      prevOwned.current = new Set(owned);
+      return;
+    }
+    for (const code of owned) {
+      if (!prevOwned.current.has(code)) {
+        const def = EXPLORE_BADGES.find((b) => b.code === code);
+        if (def) celebrateUnlock({ name: def.name, icon: def.icon, description: def.description });
+      }
+    }
+    prevOwned.current = new Set(owned);
+  }, [owned]);
 
   const filtered = active === "all" ? EXPLORE_BADGES : EXPLORE_BADGES.filter((b) => b.category === active);
   const unlockedCount = badges.length;

@@ -1,9 +1,11 @@
+import { useEffect, useRef } from "react";
 import { Trophy, Lock, CheckCircle2 } from "lucide-react";
 import { MOOD_BADGES, type BadgeContext } from "@/lib/mood-badges";
 import type { MoodBadge } from "@/hooks/useMoodBadges";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { celebrateUnlock } from "@/lib/badges-fx";
 
 interface Props {
   badges: MoodBadge[];
@@ -34,6 +36,22 @@ const MoodBadgesPanel = ({ badges, context }: Props) => {
   const unlockedCount = badges.length;
   const total = MOOD_BADGES.length;
   const globalPct = Math.round((unlockedCount / total) * 100);
+  const prevOwned = useRef<Set<string>>(new Set());
+
+  // Detect newly-unlocked badges → confetti
+  useEffect(() => {
+    if (prevOwned.current.size === 0 && owned.size > 0) {
+      prevOwned.current = new Set(owned);
+      return;
+    }
+    for (const code of owned) {
+      if (!prevOwned.current.has(code)) {
+        const def = MOOD_BADGES.find((b) => b.code === code);
+        if (def) celebrateUnlock({ name: def.name, icon: def.icon, description: def.description });
+      }
+    }
+    prevOwned.current = new Set(owned);
+  }, [owned]);
 
   return (
     <TooltipProvider delayDuration={150}>
