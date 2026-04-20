@@ -63,14 +63,28 @@ const StepBasicInfo = ({ data, update }: Props) => {
     <div className="space-y-5">
       <div className="space-y-2">
         <Label className="text-foreground font-semibold flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-primary" /> Destination
+          <MapPin className="w-4 h-4 text-primary" /> Pays / destination
         </Label>
         <Input
-          placeholder="Ex : Tokyo, Japon"
+          placeholder="Ex : Japon"
           value={data.destination}
           onChange={(e) => update({ destination: e.target.value })}
           className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-foreground font-semibold flex items-center gap-2">
+          <MapPin className="w-4 h-4 text-primary" /> Ville d'arrivée <span className="text-destructive">*</span>
+        </Label>
+        <Input
+          placeholder="Ex : Tokyo"
+          value={data.arrivalCity}
+          onChange={(e) => update({ arrivalCity: e.target.value })}
+          required
+          className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+        />
+        <p className="text-xs text-muted-foreground">Cette ville est utilisée pour la météo et les photos en temps réel.</p>
       </div>
 
       <div className="space-y-2 relative" ref={suggestionsRef}>
