@@ -33,6 +33,8 @@ const GuideBudgetPage = () => {
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
 
   const runGeneration = useCallback(async () => {
+    if (reached) { setShowUpgrade(true); return; }
+    consume();
     setIsGenerating(true);
     setGenStep(0);
     for (let i = 0; i < STEPS.length; i++) {
