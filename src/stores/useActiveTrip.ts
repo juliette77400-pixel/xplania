@@ -81,7 +81,7 @@ export async function hydrateTravelStoreFromTrip(tripId: string): Promise<void> 
   const store = useTravelStore.getState();
   store.setTripData(merged);
   if (data.recommendations) {
-    store.setRecommendations(data.recommendations as TravelRecommendations);
+    store.setRecommendations(data.recommendations as unknown as TravelRecommendations);
   }
 
   useActiveTrip.getState().setActiveTrip({
