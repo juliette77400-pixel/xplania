@@ -9,6 +9,9 @@ import {
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuotaBanner from "@/components/shared/QuotaBanner";
+import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import { useQuota } from "@/hooks/useQuota";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { countryList } from "@/lib/countries";
@@ -128,6 +131,8 @@ const GuideVisaPage = () => {
   const [aiError, setAiError] = useState<string | null>(null);
   const [countrySearch, setCountrySearch] = useState("");
   const [nationalitySearch, setNationalitySearch] = useState("");
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const { reached, consume } = useQuota("visa");
 
   const destinationName = useMemo(() => {
     if (!selectedDestination || selectedDestination === "none") return "votre destination";

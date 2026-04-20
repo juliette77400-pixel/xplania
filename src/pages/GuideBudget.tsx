@@ -5,6 +5,9 @@ import { RotateCcw } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
+import QuotaBanner from "@/components/shared/QuotaBanner";
+import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import { useQuota } from "@/hooks/useQuota";
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
@@ -29,6 +32,8 @@ const GuideBudgetPage = () => {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [categories, setCategories] = useState<BudgetCategory[]>(defaultCategories);
   const [showModify, setShowModify] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
 
