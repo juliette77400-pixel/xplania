@@ -29,9 +29,6 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
           <Link to="/offres" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Offres
           </Link>
-          <Link to="/carnets" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium flex items-center gap-1">
-            <BookOpen className="w-4 h-4" /> Mes carnets
-          </Link>
           <button onClick={onFeedback} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             Feedback
           </button>
