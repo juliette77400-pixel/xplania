@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { TrendingUp, MapPin, Smile, Star, Camera, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { JournalDay } from "@/hooks/useJournal";
@@ -16,6 +17,7 @@ interface Insights {
 }
 
 const InsightsPanel = ({ days }: Props) => {
+  const { t } = useTranslation();
   const [insights, setInsights] = useState<Insights | null>(null);
 
   useEffect(() => {
@@ -32,35 +34,35 @@ const InsightsPanel = ({ days }: Props) => {
     <div className="glass-card rounded-2xl p-6 space-y-5">
       <div className="flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-bold text-foreground">Insights de ton voyage</h3>
+        <h3 className="text-lg font-bold text-foreground">{t("j2.insightsTitle")}</h3>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="p-3 rounded-xl bg-muted/30 text-center">
           <FileText className="w-4 h-4 mx-auto text-primary" />
           <p className="text-xl font-bold text-foreground mt-1">{stats.noteCount}</p>
-          <p className="text-xs text-muted-foreground">Notes</p>
+          <p className="text-xs text-muted-foreground">{t("j2.iNotes")}</p>
         </div>
         <div className="p-3 rounded-xl bg-muted/30 text-center">
           <Camera className="w-4 h-4 mx-auto text-primary" />
           <p className="text-xl font-bold text-foreground mt-1">{stats.photoCount}</p>
-          <p className="text-xs text-muted-foreground">Photos</p>
+          <p className="text-xs text-muted-foreground">{t("j2.iPhotos")}</p>
         </div>
         <div className="p-3 rounded-xl bg-muted/30 text-center">
           <MapPin className="w-4 h-4 mx-auto text-primary" />
           <p className="text-xl font-bold text-foreground mt-1">{topLocations.length}</p>
-          <p className="text-xs text-muted-foreground">Lieux</p>
+          <p className="text-xs text-muted-foreground">{t("j2.iPlaces")}</p>
         </div>
         <div className="p-3 rounded-xl bg-muted/30 text-center">
           <Smile className="w-4 h-4 mx-auto text-primary" />
           <p className="text-xl font-bold text-foreground mt-1">{stats.daysCount}</p>
-          <p className="text-xs text-muted-foreground">Jours</p>
+          <p className="text-xs text-muted-foreground">{t("j2.iDays")}</p>
         </div>
       </div>
 
       {happiestDay && (
         <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider">Ta journée la plus heureuse</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider">{t("j2.happiestDay")}</p>
           <p className="text-lg font-semibold text-foreground mt-1">
             {happiestDay.emoji} {formatDayLabel(happiestDay.date)}
           </p>
@@ -69,7 +71,7 @@ const InsightsPanel = ({ days }: Props) => {
 
       {topLocations.length > 0 && (
         <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Lieux les plus visités</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t("j2.topPlaces")}</p>
           <div className="space-y-1.5">
             {topLocations.map((l) => (
               <div key={l.name} className="flex justify-between items-center text-sm">
@@ -83,7 +85,7 @@ const InsightsPanel = ({ days }: Props) => {
 
       {highlights.length > 0 && (
         <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Moments marquants</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t("j2.highlights")}</p>
           <div className="space-y-2">
             {highlights.slice(0, 3).map((h, i) => (
               <div key={i} className="flex gap-2 items-start">
