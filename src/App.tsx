@@ -26,12 +26,14 @@ import Discover from "./pages/Discover.tsx";
 import Gamification from "./pages/Gamification.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Profil from "./pages/Profil.tsx";
+import GoogleTranslate from "@/components/shared/GoogleTranslate";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <GoogleTranslate />
       <Toaster />
       <Sonner />
       <BrowserRouter>
