@@ -43,10 +43,10 @@ const TripTracker = ({ tripId, destination }: Props) => {
   const [weatherSummary, setWeatherSummary] = useState<string | undefined>();
   const [shareOpen, setShareOpen] = useState(false);
 
-  const precision = (t?.settings?.precision || "balanced") as "high" | "balanced" | "low";
+  const precision = (trip?.settings?.precision || "balanced") as "high" | "balanced" | "low";
 
   const geo = useGeolocation({
-    enabled: !!t?.is_active,
+    enabled: !!trip?.is_active,
     precision,
     onPosition: (p) => tracking.recordPosition(p),
   });
@@ -172,7 +172,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
       source: "ai",
     });
 
-  const shareUrl = t?.share_slug ? `${window.location.origin}/suivi/public/${t.share_slug}` : "";
+  const shareUrl = trip?.share_slug ? `${window.location.origin}/suivi/public/${t.share_slug}` : "";
 
   if (tracking.loading) {
     return <div className="text-center py-12 text-muted-foreground text-sm">Chargement…</div>;
@@ -187,7 +187,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
         <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary/80 font-semibold flex items-center gap-2 mb-2">
-              <Radio className={`w-3.5 h-3.5 ${t?.is_active ? "text-green-500 animate-pulse" : ""}`} />
+              <Radio className={`w-3.5 h-3.5 ${trip?.is_active ? "text-green-500 animate-pulse" : ""}`} />
               Suivi de voyage en direct
             </p>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
@@ -195,7 +195,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
               {destination || "Mon voyage"}
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
-              {t?.is_active
+              {trip?.is_active
                 ? `Position partagée • ${Number(t.total_distance_km || 0).toFixed(1)} km parcourus`
                 : "Active la géolocalisation pour démarrer le suivi temps réel"}
             </p>
@@ -209,12 +209,12 @@ const TripTracker = ({ tripId, destination }: Props) => {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <span className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
-              t?.is_active
+              trip?.is_active
                 ? "bg-green-500/10 text-green-500 border-green-500/30"
                 : "bg-muted text-muted-foreground border-border"
             }`}>
               <Activity className="inline w-3 h-3 mr-1" />
-              {t?.is_active ? "EN DIRECT" : "EN PAUSE"}
+              {trip?.is_active ? "EN DIRECT" : "EN PAUSE"}
             </span>
             {!isOnline && (
               <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/30">
@@ -346,7 +346,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
       <ShareTripDialog
         open={shareOpen}
         onOpenChange={setShareOpen}
-        shareEnabled={!!t?.share_enabled}
+        shareEnabled={!!trip?.share_enabled}
         shareUrl={shareUrl}
         destination={destination}
         onToggle={tracking.toggleShare}
