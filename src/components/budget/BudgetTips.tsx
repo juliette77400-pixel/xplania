@@ -1,18 +1,21 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { PiggyBank } from "lucide-react";
 
-const savingTips = [
-  { title: "Mange local", desc: "Mange local pour réduire les coûts et découvrir la vraie cuisine de ta destination.", emoji: "🍜" },
-  { title: "Transports publics", desc: "Utilise les transports publics plutôt que les taxis pour économiser jusqu'à 70%.", emoji: "🚌" },
-  { title: "Musées gratuits", desc: "Visite les musées gratuits le lundi ou profite des jours d'entrée gratuite.", emoji: "🏛️" },
-  { title: "Réservations de dernière minute", desc: "Réserve certaines activités la veille pour bénéficier de réductions jusqu'à 30%.", emoji: "🎟️" },
-  { title: "Shopping malin", desc: "Achète tes souvenirs dans les marchés locaux plutôt que dans les zones touristiques.", emoji: "🛍️" },
-  { title: "Petit-déjeuner inclus", desc: "Choisis un hébergement avec petit-déjeuner inclus pour économiser sur les repas.", emoji: "🥐" },
-  { title: "Free walking tours", desc: "Participe aux visites guidées gratuites (à pourboire) pour explorer sans te ruiner.", emoji: "🚶" },
-  { title: "Pass touristique", desc: "Achète un pass touristique si tu comptes visiter plusieurs attractions payantes.", emoji: "🎫" },
-];
+const TIP_KEYS = ["local", "transit", "museum", "lastMin", "shop", "breakfast", "walk", "pass"] as const;
+const EMOJIS: Record<(typeof TIP_KEYS)[number], string> = {
+  local: "🍜",
+  transit: "🚌",
+  museum: "🏛️",
+  lastMin: "🎟️",
+  shop: "🛍️",
+  breakfast: "🥐",
+  walk: "🚶",
+  pass: "🎫",
+};
 
 const BudgetTips = () => {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -24,24 +27,24 @@ const BudgetTips = () => {
           <PiggyBank className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">Astuces Économies</h2>
-          <p className="text-sm text-muted-foreground">Des conseils pratiques pour voyager malin et économiser</p>
+          <h2 className="text-lg font-bold text-foreground">{t("budget.tipsTitle")}</h2>
+          <p className="text-sm text-muted-foreground">{t("budget.tipsSubtitle")}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {savingTips.map((tip, i) => (
+        {TIP_KEYS.map((key, i) => (
           <motion.div
-            key={tip.title}
+            key={key}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.05 }}
             whileHover={{ scale: 1.02, y: -2 }}
             className="p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors shadow-md cursor-default"
           >
-            <span className="text-2xl block mb-2">{tip.emoji}</span>
-            <h3 className="text-sm font-bold text-foreground mb-1">{tip.title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{tip.desc}</p>
+            <span className="text-2xl block mb-2">{EMOJIS[key]}</span>
+            <h3 className="text-sm font-bold text-foreground mb-1">{t(`budget.tips.${key}.t`)}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{t(`budget.tips.${key}.d`)}</p>
           </motion.div>
         ))}
       </div>

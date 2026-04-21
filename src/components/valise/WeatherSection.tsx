@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CloudSun, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { cleanCityForWeather } from "@/lib/geocoding";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ interface WeatherSectionProps {
 }
 
 const WeatherSection = ({ destination }: WeatherSectionProps) => {
+  const { t } = useTranslation();
   const [weather, setWeather] = useState<WeatherInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,14 +48,14 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
       setWeather(data as WeatherInfo);
     } catch (e: any) {
       console.error("Weather fetch error:", e);
-      setError("Impossible de récupérer la météo");
+      setError(t("valise.weatherFetchError"));
       // Fallback data
       setWeather({
         temperature: "—",
         humidity: "—",
         wind: "—",
-        conditions: "Données indisponibles",
-        advice: ["Vérifie la météo manuellement avant ton départ"],
+        conditions: t("valise.weatherUnavailable"),
+        advice: [t("valise.weatherCheckManually")],
       });
     } finally {
       setLoading(false);
@@ -65,8 +67,8 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
   }, [destination]);
 
   const handleRefresh = () => {
-    toast.loading("Mise à jour météo…", { id: "weather" });
-    fetchWeather().then(() => toast.success("Météo mise à jour !", { id: "weather" }));
+    toast.loading(t("valise.weatherUpdating"), { id: "weather" });
+    fetchWeather().then(() => toast.success(t("valise.weatherUpdated"), { id: "weather" }));
   };
 
   return (
@@ -79,7 +81,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <CloudSun className="w-5 h-5 text-primary" />
-          <h3 className="text-base font-bold text-foreground">Mise à jour météo automatique</h3>
+          <h3 className="text-base font-bold text-foreground">{t("valise.weatherTitle")}</h3>
         </div>
         <button
           onClick={handleRefresh}
@@ -95,7 +97,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
       {loading && !weather ? (
         <div className="flex items-center gap-3 py-8 justify-center">
           <Loader2 className="w-5 h-5 text-primary animate-spin" />
-          <p className="text-sm text-muted-foreground">Chargement de la météo…</p>
+          <p className="text-sm text-muted-foreground">{t("valise.weatherLoading")}</p>
         </div>
       ) : weather ? (
         <>
@@ -121,7 +123,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Thermometer className="w-4 h-4 text-primary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Température</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherTemp")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.temperature}</p>
                 </div>
               </div>
@@ -130,7 +132,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Thermometer className="w-4 h-4 text-secondary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Ressenti</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherFeel")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.feelsLike}</p>
                 </div>
               </div>
@@ -139,7 +141,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Droplets className="w-4 h-4 text-primary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Humidité</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherHumidity")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.humidity}</p>
                 </div>
               </div>
@@ -148,7 +150,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Wind className="w-4 h-4 text-primary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Vent</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherWind")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.wind}</p>
                 </div>
               </div>
@@ -158,7 +160,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
           {weather.advice.length > 0 && (
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Conseils IA météo
+                {t("valise.weatherTipsTitle")}
               </p>
               {weather.advice.map((tip, i) => (
                 <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-primary/5">
@@ -174,7 +176,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
             className="mt-4 text-xs text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5"
           >
             <RefreshCw className="w-3 h-3" />
-            Mettre à jour selon la météo réelle
+            {t("valise.weatherRefreshCta")}
           </button>
         </>
       ) : error ? (

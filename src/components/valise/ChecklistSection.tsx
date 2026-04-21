@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle, Plus, Trash2, ChevronDown, ChevronUp, Sparkles,
@@ -65,6 +66,7 @@ const SkeletonCard = () => (
 );
 
 const ChecklistSection = ({ categories, onToggle, onAdd, onRemove, isLoading }: ChecklistSectionProps) => {
+  const { t } = useTranslation();
   const [addingTo, setAddingTo] = useState<string | null>(null);
   const [newItemName, setNewItemName] = useState("");
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -223,7 +225,7 @@ const ChecklistSection = ({ categories, onToggle, onAdd, onRemove, isLoading }: 
                           <Input
                             value={newItemName}
                             onChange={(e) => setNewItemName(e.target.value)}
-                            placeholder="Nom de l'objet…"
+                            placeholder={t("valise.checklistAddPh")}
                             className="h-9 text-sm bg-muted/30 border-border"
                             onKeyDown={(e) => e.key === "Enter" && handleAdd(category)}
                             autoFocus
@@ -247,7 +249,7 @@ const ChecklistSection = ({ categories, onToggle, onAdd, onRemove, isLoading }: 
                           whileHover={{ x: 4 }}
                           className="mt-2 flex items-center gap-2 text-xs text-primary/70 hover:text-primary transition-colors"
                         >
-                          <Plus className="w-3.5 h-3.5" /> Ajouter un objet
+                          <Plus className="w-3.5 h-3.5" /> {t("valise.checklistAddItem")}
                         </motion.button>
                       )}
                     </AnimatePresence>

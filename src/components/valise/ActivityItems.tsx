@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mountain, Umbrella, Compass, Camera, Briefcase, Car,
@@ -55,6 +56,7 @@ const activityData: Record<string, { icon: React.ReactNode; items: string[]; col
 };
 
 const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => {
+  const { t } = useTranslation();
   const [addedActivities, setAddedActivities] = useState<Set<string>>(new Set());
   const [expandedActivity, setExpandedActivity] = useState<string | null>(null);
 
@@ -63,14 +65,14 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
   if (objectives) {
     for (const obj of objectives) {
       const lower = obj.toLowerCase();
-      if (lower.includes("rando") || lower.includes("nature") || lower.includes("trek")) highlighted.add("Randonnée");
-      if (lower.includes("plage") || lower.includes("mer") || lower.includes("soleil") || lower.includes("repos")) highlighted.add("Plage");
-      if (lower.includes("ville") || lower.includes("culture") || lower.includes("musée") || lower.includes("découvrir")) highlighted.add("Ville");
-      if (lower.includes("photo") || lower.includes("créat")) highlighted.add("Photo / Création");
-      if (lower.includes("business") || lower.includes("travail") || lower.includes("professionnel")) highlighted.add("Business");
-      if (lower.includes("road") || lower.includes("voiture")) highlighted.add("Road trip");
+      if (lower.includes("rando") || lower.includes("nature") || lower.includes("trek") || lower.includes("hik")) highlighted.add("Randonnée");
+      if (lower.includes("plage") || lower.includes("mer") || lower.includes("soleil") || lower.includes("repos") || lower.includes("beach")) highlighted.add("Plage");
+      if (lower.includes("ville") || lower.includes("culture") || lower.includes("musée") || lower.includes("découvrir") || lower.includes("city") || lower.includes("museum")) highlighted.add("Ville");
+      if (lower.includes("photo") || lower.includes("créat") || lower.includes("creat")) highlighted.add("Photo / Création");
+      if (lower.includes("business") || lower.includes("travail") || lower.includes("professionnel") || lower.includes("work")) highlighted.add("Business");
+      if (lower.includes("road") || lower.includes("voiture") || lower.includes("car")) highlighted.add("Road trip");
       if (lower.includes("sport") || lower.includes("fitness")) highlighted.add("Sport / Fitness");
-      if (lower.includes("gastro") || lower.includes("cuisine") || lower.includes("restaurant")) highlighted.add("Gastronomie");
+      if (lower.includes("gastro") || lower.includes("cuisine") || lower.includes("restaurant") || lower.includes("food")) highlighted.add("Gastronomie");
     }
   }
 
@@ -83,7 +85,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
   const handleAddAll = (activity: string, items: string[]) => {
     setAddedActivities((p) => new Set(p).add(activity));
     onAddToChecklist?.(items);
-    toast.success(`${items.length} objets ajoutés à ta valise`, { description: activity });
+    toast.success(t("valise.activitiesToastAdded", { count: items.length }), { description: activity });
   };
 
   return (
@@ -94,14 +96,14 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
       className="glass-card rounded-2xl p-6"
     >
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-base font-bold text-foreground">Objets spécifiques par activité</h3>
+        <h3 className="text-base font-bold text-foreground">{t("valise.activitiesTitle")}</h3>
         {highlighted.size > 0 && (
           <span className="text-[10px] px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
-            {highlighted.size} activité{highlighted.size > 1 ? "s" : ""} détectée{highlighted.size > 1 ? "s" : ""}
+            {t("valise.activitiesDetected", { count: highlighted.size })}
           </span>
         )}
       </div>
-      <p className="text-xs text-muted-foreground mb-4">Ajoute ou retire des items selon tes activités prévues</p>
+      <p className="text-xs text-muted-foreground mb-4">{t("valise.activitiesSubtitle")}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {sortedActivities.map(([activity, { icon, items, color }]) => {
@@ -128,13 +130,13 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
                   <span className={isHighlighted ? "text-primary" : "text-muted-foreground"}>{icon}</span>
                   <div>
                     <p className="text-sm font-semibold text-foreground">{activity}</p>
-                    <p className="text-[10px] text-muted-foreground">{items.length} objets</p>
+                    <p className="text-[10px] text-muted-foreground">{t("valise.activitiesItemsCount", { count: items.length })}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {isHighlighted && !isAdded && (
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium">
-                      Recommandé
+                      {t("valise.activitiesRecommended")}
                     </span>
                   )}
                   {isAdded && <CheckCircle className="w-4 h-4 text-primary" />}
@@ -171,7 +173,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
                           className="mt-2 flex items-center gap-1.5 text-xs text-primary font-medium hover:text-primary/80 transition-colors"
                         >
                           <Plus className="w-3.5 h-3.5" />
-                          Tout ajouter à ma valise
+                          {t("valise.activitiesAddAll")}
                         </motion.button>
                       )}
                     </div>

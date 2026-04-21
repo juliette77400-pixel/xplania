@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Calendar, MapPin, User, Star, Ticket, Bus, Cloud } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
@@ -7,29 +8,30 @@ interface BudgetConfigProps {
 }
 
 const BudgetConfig = ({ tripData }: BudgetConfigProps) => {
+  const { t } = useTranslation();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
-  const style = tripData?.activityLevel || "Aventurier";
-  const comfort = tripData?.accommodationStanding || "Confortable";
+  const style = tripData?.activityLevel || t("budget.configDefaultStyle");
+  const comfort = tripData?.accommodationStanding || t("budget.configDefaultComfort");
   const activitiesCount = tripData?.objectives?.length || 8;
-  const transport = tripData?.localTransport?.[0] || "Métro & Bus";
+  const transport = tripData?.localTransport?.[0] || t("budget.configDefaultTransport");
   // Determine season from departure date
   const season = (() => {
-    if (!tripData?.departureDate) return "Basse saison";
+    if (!tripData?.departureDate) return t("budget.configLow");
     const month = new Date(tripData.departureDate).getMonth();
-    if (month >= 5 && month <= 8) return "Haute saison";
-    if (month >= 3 && month <= 4 || month >= 9 && month <= 10) return "Moyenne saison";
-    return "Basse saison";
+    if (month >= 5 && month <= 8) return t("budget.configHigh");
+    if ((month >= 3 && month <= 4) || (month >= 9 && month <= 10)) return t("budget.configMedium");
+    return t("budget.configLow");
   })();
 
   const items = [
-    { label: "Durée du voyage", value: `${days} jours`, icon: Calendar, color: "text-primary" },
-    { label: "Destination", value: destination, icon: MapPin, color: "text-pink-400" },
-    { label: "Style du voyageur", value: style, icon: User, color: "text-green-400" },
-    { label: "Niveau de confort", value: comfort, icon: Star, color: "text-yellow-400" },
-    { label: "Activités prévues", value: String(activitiesCount), icon: Ticket, color: "text-purple-400" },
-    { label: "Mode de transport", value: transport, icon: Bus, color: "text-blue-400" },
-    { label: "Saison", value: season, icon: Cloud, color: "text-orange-400" },
+    { label: t("budget.configDuration"), value: t("budget.configDays", { count: days }), icon: Calendar, color: "text-primary" },
+    { label: t("budget.configDestination"), value: destination, icon: MapPin, color: "text-pink-400" },
+    { label: t("budget.configStyle"), value: style, icon: User, color: "text-green-400" },
+    { label: t("budget.configComfort"), value: comfort, icon: Star, color: "text-yellow-400" },
+    { label: t("budget.configActivities"), value: String(activitiesCount), icon: Ticket, color: "text-purple-400" },
+    { label: t("budget.configTransport"), value: transport, icon: Bus, color: "text-blue-400" },
+    { label: t("budget.configSeason"), value: season, icon: Cloud, color: "text-orange-400" },
   ];
 
   return (
@@ -39,9 +41,9 @@ const BudgetConfig = ({ tripData }: BudgetConfigProps) => {
       transition={{ delay: 0.1 }}
       className="glass-card rounded-2xl p-6"
     >
-      <h2 className="text-lg font-bold text-foreground mb-1">Configuration IA du Budget</h2>
+      <h2 className="text-lg font-bold text-foreground mb-1">{t("budget.configTitle")}</h2>
       <p className="text-sm text-muted-foreground mb-6">
-        L'IA analyse tes préférences pour créer un budget personnalisé
+        {t("budget.configSubtitle")}
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -71,7 +73,7 @@ const BudgetConfig = ({ tripData }: BudgetConfigProps) => {
           transition={{ delay: 0.5 }}
           className="mt-4 p-3 rounded-xl bg-primary/10 border border-primary/20"
         >
-          <p className="text-xs text-muted-foreground">📝 Tes contraintes :</p>
+          <p className="text-xs text-muted-foreground">📝 {t("budget.configConstraints")}</p>
           <p className="text-sm text-foreground">{tripData.budgetDetails}</p>
         </motion.div>
       )}

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Sparkles, Wallet, TrendingUp, CreditCard } from "lucide-react";
 
 interface BudgetHeroProps {
@@ -14,13 +15,13 @@ const floatingIcons = [
 ];
 
 const BudgetHero = ({ onGenerate, isGenerating, hasGenerated }: BudgetHeroProps) => {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="relative text-center py-16 overflow-hidden"
     >
-      {/* Floating icons */}
       {floatingIcons.map((item, i) => (
         <motion.div
           key={i}
@@ -36,7 +37,6 @@ const BudgetHero = ({ onGenerate, isGenerating, hasGenerated }: BudgetHeroProps)
         </motion.div>
       ))}
 
-      {/* Badge */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -44,30 +44,27 @@ const BudgetHero = ({ onGenerate, isGenerating, hasGenerated }: BudgetHeroProps)
         className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-muted-foreground mb-6"
       >
         <Sparkles className="w-4 h-4 text-primary" />
-        Propulsé par IA Xplania
+        {t("budget.heroBadge")}
       </motion.div>
 
-      {/* Title */}
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         className="text-4xl md:text-6xl font-extrabold mb-4"
       >
-        <span className="gradient-text">Budget Intelligent</span>
+        <span className="gradient-text">{t("budget.heroTitle")}</span>
       </motion.h1>
 
-      {/* Subtitle */}
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         className="text-muted-foreground text-lg mb-8 max-w-lg mx-auto"
       >
-        Planifie, suis et optimise tes dépenses grâce à l'IA Xplania.
+        {t("budget.heroSubtitle")}
       </motion.p>
 
-      {/* CTA */}
       {!hasGenerated && (
         <motion.button
           initial={{ opacity: 0, y: 20 }}
@@ -79,7 +76,7 @@ const BudgetHero = ({ onGenerate, isGenerating, hasGenerated }: BudgetHeroProps)
           disabled={isGenerating}
           className="px-8 py-4 rounded-2xl text-lg font-bold bg-gradient-to-r from-amber-400 to-orange-500 text-background shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-shadow disabled:opacity-60"
         >
-          {isGenerating ? "Analyse en cours…" : "Créer mon budget prévisionnel"}
+          {isGenerating ? t("budget.heroAnalyzing") : t("budget.heroCta")}
         </motion.button>
       )}
     </motion.div>
