@@ -1,40 +1,41 @@
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Target, Globe, Palmtree, TreePine, Mountain, UtensilsCrossed, Users, Camera, Flame, Snail, Smile, Lightbulb, WifiOff, Footprints, Compass, Heart, Eye, Sparkles, Gem, Shield, Wallet, MapPin } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
 
-const OBJECTIVES: { label: string; icon: React.ReactNode }[] = [
-  { label: "Découvrir la culture locale", icon: <Globe className="w-4 h-4" /> },
-  { label: "Se reposer", icon: <Palmtree className="w-4 h-4" /> },
-  { label: "Explorer la nature", icon: <TreePine className="w-4 h-4" /> },
-  { label: "Aventure / sensations", icon: <Mountain className="w-4 h-4" /> },
-  { label: "Gastronomie", icon: <UtensilsCrossed className="w-4 h-4" /> },
-  { label: "Vie locale", icon: <Users className="w-4 h-4" /> },
-  { label: "Photographie", icon: <Camera className="w-4 h-4" /> },
-  { label: "Spiritualité / bien-être", icon: <Flame className="w-4 h-4" /> },
-  { label: "Voyage slow / immersion", icon: <Snail className="w-4 h-4" /> },
+const OBJECTIVES: { id: string; icon: React.ReactNode }[] = [
+  { id: "Découvrir la culture locale", icon: <Globe className="w-4 h-4" /> },
+  { id: "Se reposer", icon: <Palmtree className="w-4 h-4" /> },
+  { id: "Explorer la nature", icon: <TreePine className="w-4 h-4" /> },
+  { id: "Aventure / sensations", icon: <Mountain className="w-4 h-4" /> },
+  { id: "Gastronomie", icon: <UtensilsCrossed className="w-4 h-4" /> },
+  { id: "Vie locale", icon: <Users className="w-4 h-4" /> },
+  { id: "Photographie", icon: <Camera className="w-4 h-4" /> },
+  { id: "Spiritualité / bien-être", icon: <Flame className="w-4 h-4" /> },
+  { id: "Voyage slow / immersion", icon: <Snail className="w-4 h-4" /> },
 ];
 
-const FEELINGS: { label: string; icon: React.ReactNode }[] = [
-  { label: "Libre", icon: <Footprints className="w-4 h-4" /> },
-  { label: "Inspiré", icon: <Lightbulb className="w-4 h-4" /> },
-  { label: "Déconnecté", icon: <WifiOff className="w-4 h-4" /> },
-  { label: "Aventurier", icon: <Compass className="w-4 h-4" /> },
-  { label: "Curieux", icon: <Eye className="w-4 h-4" /> },
-  { label: "Social", icon: <Users className="w-4 h-4" /> },
-  { label: "Calme", icon: <Heart className="w-4 h-4" /> },
-  { label: "Émerveillé", icon: <Sparkles className="w-4 h-4" /> },
+const FEELINGS: { id: string; icon: React.ReactNode }[] = [
+  { id: "Libre", icon: <Footprints className="w-4 h-4" /> },
+  { id: "Inspiré", icon: <Lightbulb className="w-4 h-4" /> },
+  { id: "Déconnecté", icon: <WifiOff className="w-4 h-4" /> },
+  { id: "Aventurier", icon: <Compass className="w-4 h-4" /> },
+  { id: "Curieux", icon: <Eye className="w-4 h-4" /> },
+  { id: "Social", icon: <Users className="w-4 h-4" /> },
+  { id: "Calme", icon: <Heart className="w-4 h-4" /> },
+  { id: "Émerveillé", icon: <Sparkles className="w-4 h-4" /> },
 ];
 
-const PRIORITIES: { label: string; icon: React.ReactNode }[] = [
-  { label: "Découvrir des lieux uniques", icon: <MapPin className="w-4 h-4" /> },
-  { label: "Éviter le stress", icon: <Shield className="w-4 h-4" /> },
-  { label: "Optimiser le budget", icon: <Wallet className="w-4 h-4" /> },
-  { label: "Rencontrer des locaux", icon: <Users className="w-4 h-4" /> },
-  { label: "Vivre des expériences immersives", icon: <Globe className="w-4 h-4" /> },
-  { label: "Découvrir la culture", icon: <Gem className="w-4 h-4" /> },
-  { label: "Explorer la nature", icon: <TreePine className="w-4 h-4" /> },
-  { label: "Profiter du confort", icon: <Smile className="w-4 h-4" /> },
+const PRIORITIES: { id: string; icon: React.ReactNode }[] = [
+  { id: "Découvrir des lieux uniques", icon: <MapPin className="w-4 h-4" /> },
+  { id: "Éviter le stress", icon: <Shield className="w-4 h-4" /> },
+  { id: "Optimiser le budget", icon: <Wallet className="w-4 h-4" /> },
+  { id: "Rencontrer des locaux", icon: <Users className="w-4 h-4" /> },
+  { id: "Vivre des expériences immersives", icon: <Globe className="w-4 h-4" /> },
+  { id: "Découvrir la culture", icon: <Gem className="w-4 h-4" /> },
+  { id: "Explorer la nature", icon: <TreePine className="w-4 h-4" /> },
+  { id: "Profiter du confort", icon: <Smile className="w-4 h-4" /> },
 ];
 
 interface Props {
@@ -56,6 +57,7 @@ const IconButton = ({ selected, label, icon, onClick }: { selected: boolean; lab
 );
 
 const StepObjectives = ({ data, update }: Props) => {
+  const { t } = useTranslation();
   const toggle = (field: 'objectives' | 'feelings' | 'priorities', opt: string) => {
     const current = data[field];
     update({
@@ -67,19 +69,19 @@ const StepObjectives = ({ data, update }: Props) => {
     <div className="space-y-5">
       <div className="space-y-2">
         <Label className="text-foreground font-semibold flex items-center gap-2">
-          <Target className="w-4 h-4 text-primary" /> Objectif principal du voyage
+          <Target className="w-4 h-4 text-primary" /> {t("travelForm.fields.objective")}
         </Label>
         <div className="flex flex-wrap gap-2">
           {OBJECTIVES.map((opt) => (
-            <IconButton key={opt.label} selected={data.objectives.includes(opt.label)} label={opt.label} icon={opt.icon} onClick={() => toggle('objectives', opt.label)} />
+            <IconButton key={opt.id} selected={data.objectives.includes(opt.id)} label={t(`travelForm.options.objective.${opt.id}`)} icon={opt.icon} onClick={() => toggle('objectives', opt.id)} />
           ))}
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground font-semibold">Autre objectif</Label>
+        <Label className="text-foreground font-semibold">{t("travelForm.fields.otherObjective")}</Label>
         <Input
-          placeholder="Objectif particulier..."
+          placeholder={t("travelForm.fields.otherObjectivePh")}
           value={data.objectiveOther}
           onChange={(e) => update({ objectiveOther: e.target.value })}
           className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
@@ -87,19 +89,19 @@ const StepObjectives = ({ data, update }: Props) => {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground font-semibold">Comment voulez-vous vous sentir ?</Label>
+        <Label className="text-foreground font-semibold">{t("travelForm.fields.feelings")}</Label>
         <div className="flex flex-wrap gap-2">
           {FEELINGS.map((opt) => (
-            <IconButton key={opt.label} selected={data.feelings.includes(opt.label)} label={opt.label} icon={opt.icon} onClick={() => toggle('feelings', opt.label)} />
+            <IconButton key={opt.id} selected={data.feelings.includes(opt.id)} label={t(`travelForm.options.feeling.${opt.id}`)} icon={opt.icon} onClick={() => toggle('feelings', opt.id)} />
           ))}
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground font-semibold">Ce qui compte le plus pour vous</Label>
+        <Label className="text-foreground font-semibold">{t("travelForm.fields.priorities")}</Label>
         <div className="flex flex-wrap gap-2">
           {PRIORITIES.map((opt) => (
-            <IconButton key={opt.label} selected={data.priorities.includes(opt.label)} label={opt.label} icon={opt.icon} onClick={() => toggle('priorities', opt.label)} />
+            <IconButton key={opt.id} selected={data.priorities.includes(opt.id)} label={t(`travelForm.options.priority.${opt.id}`)} icon={opt.icon} onClick={() => toggle('priorities', opt.id)} />
           ))}
         </div>
       </div>
