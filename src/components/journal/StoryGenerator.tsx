@@ -32,8 +32,9 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
     setLoading(true);
     setStory("");
     try {
+      const locale = (typeof navigator !== "undefined" && (localStorage.getItem("xplania-lang") || navigator.language).startsWith("en")) ? "en" : "fr";
       const { data, error } = await supabase.functions.invoke("journal-story", {
-        body: { destination, days, tone },
+        body: { destination, days, tone, locale },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);

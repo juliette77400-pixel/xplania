@@ -9,7 +9,8 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { destination, nationality, duration, travelerType } = await req.json();
+    const { destination, nationality, duration, travelerType, locale = "fr" } = await req.json();
+    const isEN = locale === "en";
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -21,11 +22,22 @@ serve(async (req) => {
       });
     }
 
-    const systemPrompt = `Tu es un expert en formalités de voyage et diplomatie internationale. Tu fournis des informations précises, actualisées et pratiques sur les visas, la sécurité, la santé et les documents nécessaires pour voyager.
+    const systemPrompt = isEN
+      ? `You are an expert in travel formalities and international diplomacy. You provide accurate, up-to-date and practical information on visas, security, health and required travel documents.
+
+Reply ONLY by calling the "visa_info" tool. Do not generate any text outside the tool call. ALL string fields must be in ENGLISH.`
+      : `Tu es un expert en formalités de voyage et diplomatie internationale. Tu fournis des informations précises, actualisées et pratiques sur les visas, la sécurité, la santé et les documents nécessaires pour voyager.
 
 Réponds UNIQUEMENT en utilisant le tool "visa_info" fourni. Ne génère aucun texte en dehors de l'appel au tool.`;
 
-    const userPrompt = `Destination : ${destination}
+    const userPrompt = isEN
+      ? `Destination: ${destination}
+Traveler nationality: ${nationality || "France"}
+Stay duration: ${duration || "7"} days
+Traveler type: ${travelerType || "tourist"}
+
+Generate complete formalities information for this trip. All text in ENGLISH.`
+      : `Destination : ${destination}
 Nationalité du voyageur : ${nationality || "France"}
 Durée du séjour : ${duration || "7"} jours
 Type de voyageur : ${travelerType || "touriste"}
