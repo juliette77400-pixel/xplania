@@ -7,33 +7,35 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Plus, PenLine, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   cityId: string | null;
   onAdd: (input: { name: string; type: string; parent_id: string | null; description?: string; points?: number }) => void;
 }
 
-const TYPES = [
-  { value: "place",     label: "📍 Lieu",       points: 30 },
-  { value: "food",      label: "🍽️ Restaurant", points: 40 },
-  { value: "culture",   label: "🏛️ Culture",    points: 50 },
-  { value: "nature",    label: "🌿 Nature",     points: 40 },
-  { value: "nightlife", label: "🌙 Nuit",       points: 50 },
-  { value: "activity",  label: "🎯 Activité",   points: 60 },
-  { value: "hotel",     label: "🏨 Hôtel",      points: 20 },
-];
-
 const AddNodeDialog = ({ cityId, onAdd }: Props) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState("place");
   const [description, setDescription] = useState("");
 
+  const TYPES = [
+    { value: "place",     label: t("x2.tPlace"),     points: 30 },
+    { value: "food",      label: t("x2.tFood"),      points: 40 },
+    { value: "culture",   label: t("x2.tCulture"),   points: 50 },
+    { value: "nature",    label: t("x2.tNature"),    points: 40 },
+    { value: "nightlife", label: t("x2.tNightlife"), points: 50 },
+    { value: "activity",  label: t("x2.tActivity"),  points: 60 },
+    { value: "hotel",     label: t("x2.tHotel"),     points: 20 },
+  ];
+
   const reset = () => { setName(""); setDescription(""); setType("place"); };
 
   const submit = () => {
     if (!name.trim()) return;
-    const def = TYPES.find((t) => t.value === type);
+    const def = TYPES.find((tp) => tp.value === type);
     onAdd({
       name: name.trim(),
       type,
@@ -50,48 +52,48 @@ const AddNodeDialog = ({ cityId, onAdd }: Props) => {
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
           <Plus className="w-4 h-4 mr-2" />
-          Écrire mon voyage
+          {t("x2.writeMyTrip")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <PenLine className="w-4 h-4 text-primary" />
-            Ajoute une étape de voyage
+            {t("x2.addStep")}
           </DialogTitle>
           <DialogDescription className="text-xs">
-            Écris toi-même ton parcours, pas besoin d'IA — chaque étape ajoute des points et débloque des badges.
+            {t("x2.addStepDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="manual" className="mt-2">
           <TabsList className="grid grid-cols-2 w-full">
-            <TabsTrigger value="manual"><PenLine className="w-3.5 h-3.5 mr-1.5" /> Manuel</TabsTrigger>
-            <TabsTrigger value="tips" disabled><Sparkles className="w-3.5 h-3.5 mr-1.5" /> Conseils</TabsTrigger>
+            <TabsTrigger value="manual"><PenLine className="w-3.5 h-3.5 mr-1.5" /> {t("x2.manual")}</TabsTrigger>
+            <TabsTrigger value="tips" disabled><Sparkles className="w-3.5 h-3.5 mr-1.5" /> {t("x2.tips")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="manual" className="space-y-4 mt-4">
             <div className="space-y-1.5">
-              <Label htmlFor="node-name">Nom de l'étape *</Label>
+              <Label htmlFor="node-name">{t("x2.stepName")}</Label>
               <Input
                 id="node-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ex : Café de Flore, Sunset au Sacré-Cœur…"
+                placeholder={t("x2.stepPlaceholder")}
                 autoFocus
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label>Catégorie</Label>
+              <Label>{t("x2.category")}</Label>
               <Select value={type} onValueChange={setType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {TYPES.map((t) => (
-                    <SelectItem key={t.value} value={t.value}>
+                  {TYPES.map((tp) => (
+                    <SelectItem key={tp.value} value={tp.value}>
                       <span className="flex items-center justify-between gap-4 w-full">
-                        <span>{t.label}</span>
-                        <span className="text-xs text-muted-foreground">+{t.points} pts</span>
+                        <span>{tp.label}</span>
+                        <span className="text-xs text-muted-foreground">+{tp.points} pts</span>
                       </span>
                     </SelectItem>
                   ))}
@@ -100,19 +102,19 @@ const AddNodeDialog = ({ cityId, onAdd }: Props) => {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="node-desc">Description / souvenir</Label>
+              <Label htmlFor="node-desc">{t("x2.memoryDesc")}</Label>
               <Textarea
                 id="node-desc"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Une note, un ressenti, un détail à retenir…"
+                placeholder={t("x2.memoryDescPlaceholder")}
                 rows={3}
                 className="resize-none"
               />
             </div>
 
             <Button onClick={submit} className="w-full" disabled={!name.trim()}>
-              Ajouter (+{TYPES.find((t) => t.value === type)?.points || 30} pts)
+              {t("x2.addBtn", { pts: TYPES.find((tp) => tp.value === type)?.points || 30 })}
             </Button>
           </TabsContent>
         </Tabs>

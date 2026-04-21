@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Trophy, MapPin, Sparkles, Flag } from "lucide-react";
 import type { ExploreProgress } from "@/hooks/useExplore";
 import { Progress } from "@/components/ui/progress";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   progress: ExploreProgress | null;
@@ -9,28 +10,29 @@ interface Props {
 }
 
 const ProgressHeader = ({ progress, cityName }: Props) => {
+  const { t } = useTranslation();
   const total = progress?.nodes_total || 0;
   const visited = progress?.nodes_visited || 0;
   const pct = total > 0 ? Math.round((visited / total) * 100) : 0;
   const points = progress?.total_points || 0;
 
   const stats = [
-    { label: "Points", value: points, icon: Sparkles, color: "text-amber-400" },
-    { label: "Visités", value: `${visited}/${total}`, icon: MapPin, color: "text-emerald-400" },
-    { label: "Villes", value: progress?.cities_completed || 0, icon: Flag, color: "text-cyan-400" },
-    { label: "Badges", value: progress?.badges_count || 0, icon: Trophy, color: "text-purple-400" },
+    { label: t("x2.stPoints"), value: points, icon: Sparkles, color: "text-amber-400" },
+    { label: t("x2.stVisited"), value: `${visited}/${total}`, icon: MapPin, color: "text-emerald-400" },
+    { label: t("x2.stCities"), value: progress?.cities_completed || 0, icon: Flag, color: "text-cyan-400" },
+    { label: t("x2.stBadges"), value: progress?.badges_count || 0, icon: Trophy, color: "text-purple-400" },
   ];
 
   return (
     <div className="glass-card rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <p className="text-xs uppercase tracking-wider text-primary">Travel Map</p>
-          <h2 className="text-xl font-bold text-foreground">{cityName || "Mon voyage gamifié"}</h2>
+          <p className="text-xs uppercase tracking-wider text-primary">{t("x2.tmKicker")}</p>
+          <h2 className="text-xl font-bold text-foreground">{cityName || t("x2.myGameTrip")}</h2>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span className="font-bold text-foreground text-lg">{pct}%</span>
-          <span>exploré</span>
+          <span>{t("x2.explored")}</span>
         </div>
       </div>
 

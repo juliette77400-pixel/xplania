@@ -6,6 +6,7 @@ import type { ExploreNode, ExploreEdge } from "@/hooks/useExplore";
 import { TYPE_COLORS, STATUS_COLORS } from "@/lib/explore-badges";
 import HeatmapLayer from "./HeatmapLayer";
 import { Flame } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   nodes: ExploreNode[];
@@ -36,6 +37,7 @@ const FitBounds = ({ nodes }: { nodes: ExploreNode[] }) => {
 };
 
 const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
+  const { t } = useTranslation();
   const geoNodes = useMemo(() => nodes.filter((n) => n.lat != null && n.lng != null), [nodes]);
   const nodeMap = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
   const [heatmap, setHeatmap] = useState(false);
@@ -50,7 +52,7 @@ const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
         onClick={() => setHeatmap((v) => !v)}
         className={`absolute top-3 right-3 z-[400] px-3 py-1.5 rounded-full text-xs font-medium border backdrop-blur-md flex items-center gap-1.5 transition ${heatmap ? "bg-primary text-primary-foreground border-primary" : "bg-background/80 text-foreground border-border"}`}
       >
-        <Flame className="w-3 h-3" /> Heatmap
+        <Flame className="w-3 h-3" /> {t("x2.heatmap")}
       </button>
       <MapContainer center={center} zoom={12} style={{ height: "100%", width: "100%", background: "hsl(220 30% 8%)" }}>
         <TileLayer
@@ -90,7 +92,7 @@ const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
       {geoNodes.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
           <p className="text-sm text-muted-foreground text-center px-6">
-            Aucun point géolocalisé.<br />Utilise la vue Mind-map pour explorer la ramification.
+            {t("x2.noGeoPoints")}<br />{t("x2.useMindmap")}
           </p>
         </div>
       )}
