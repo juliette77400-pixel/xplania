@@ -1,21 +1,22 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Wallet, FileText, Briefcase, ArrowLeft } from "lucide-react";
-
-const modules = [
-  { path: "/guide-budget", label: "Budget", icon: Wallet, emoji: "💰" },
-  { path: "/guide-visa", label: "Visa & Préparatifs", icon: FileText, emoji: "📋" },
-  { path: "/guide-valise", label: "Valise", icon: Briefcase, emoji: "🧳" },
-];
 
 const ModuleNavbar = () => {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
+
+  const modules = [
+    { path: "/guide-budget", label: t("moduleNav.budget"), icon: Wallet, emoji: "💰" },
+    { path: "/guide-visa", label: t("moduleNav.visa"), icon: FileText, emoji: "📋" },
+    { path: "/guide-valise", label: t("moduleNav.valise"), icon: Briefcase, emoji: "🧳" },
+  ];
 
   return (
     <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
-          {/* Back */}
           <Link
             to="/#create"
             className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors shrink-0"
@@ -23,7 +24,6 @@ const ModuleNavbar = () => {
             <ArrowLeft className="w-4 h-4 text-foreground" />
           </Link>
 
-          {/* Module tabs */}
           <nav className="flex items-center gap-1 sm:gap-2">
             {modules.map((m) => {
               const isActive = pathname === m.path;
@@ -53,9 +53,8 @@ const ModuleNavbar = () => {
             })}
           </nav>
 
-          {/* Branding */}
           <div className="hidden sm:block text-xs text-muted-foreground">
-            Propulsé par <span className="gradient-text font-bold">Xplania</span>
+            {t("moduleNav.poweredBy")} <span className="gradient-text font-bold">Xplania</span>
           </div>
         </div>
       </div>
