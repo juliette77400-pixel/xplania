@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Plane, Home, Compass, Heart, Map, Activity, Briefcase, BookOpen,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard,
@@ -12,35 +13,37 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getRemaining } from "@/lib/usage-quota";
 import NotificationsBell from "@/components/shared/NotificationsBell";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 interface NavItem {
   to: string;
-  label: string;
+  labelKey: string;
   icon: typeof Home;
   premium?: boolean;
 }
 
 const PRIMARY: NavItem[] = [
-  { to: "/app", label: "Accueil", icon: Home },
-  { to: "/discover", label: "Découvrir", icon: Compass },
-  { to: "/mood", label: "Mood Explorer", icon: Heart },
-  { to: "/explore", label: "Carte de voyage", icon: Map, premium: true },
-  { to: "/suivi", label: "Suivi de voyage", icon: Activity, premium: true },
-  { to: "/guide-valise", label: "Valise", icon: Briefcase },
-  { to: "/carnets", label: "Carnet", icon: BookOpen, premium: true },
+  { to: "/app", labelKey: "appNav.home", icon: Home },
+  { to: "/discover", labelKey: "appNav.discover", icon: Compass },
+  { to: "/mood", labelKey: "appNav.mood", icon: Heart },
+  { to: "/explore", labelKey: "appNav.explore", icon: Map, premium: true },
+  { to: "/suivi", labelKey: "appNav.tracking", icon: Activity, premium: true },
+  { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Briefcase },
+  { to: "/carnets", labelKey: "appNav.journal", icon: BookOpen, premium: true },
 ];
 
-const MORE: NavItem[] = [
-  { to: "/guide-budget", label: "Budget" },
-  { to: "/guide-visa", label: "Visa & Préparatifs" },
-  { to: "/gamification", label: "Badges & Progression" },
-  { to: "/offres", label: "Offres Premium" },
-] as any;
+const MORE = [
+  { to: "/guide-budget", labelKey: "appNav.budget" },
+  { to: "/guide-visa", labelKey: "appNav.visa" },
+  { to: "/gamification", labelKey: "appNav.badges" },
+  { to: "/offres", labelKey: "appNav.premiumOffers" },
+];
 
 const AppNavbar = () => {
   const { user, signOut } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const isActive = (to: string) => to === "/" ? pathname === "/" : pathname.startsWith(to);
@@ -72,7 +75,7 @@ const AppNavbar = () => {
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
-                <span>{it.label}</span>
+                <span>{t(it.labelKey)}</span>
                 {it.premium && (
                   <Sparkles className="w-2.5 h-2.5 text-amber-500" />
                 )}
@@ -81,12 +84,12 @@ const AppNavbar = () => {
           })}
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60">
-              <MoreHorizontal className="w-3.5 h-3.5" /> More
+              <MoreHorizontal className="w-3.5 h-3.5" /> {t("appNav.more")}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               {MORE.map((m) => (
                 <DropdownMenuItem key={m.to} onClick={() => navigate(m.to)} className="cursor-pointer">
-                  {m.label}
+                  {t(m.labelKey)}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -95,6 +98,7 @@ const AppNavbar = () => {
 
         {/* Right actions */}
         <div className="flex items-center gap-1.5 shrink-0">
+          <LanguageSwitcher variant="minimal" />
           {user && <NotificationsBell />}
           {user ? (
             <DropdownMenu>
@@ -110,14 +114,14 @@ const AppNavbar = () => {
                 <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">{user.email}</div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/app")} className="cursor-pointer">
-                  <LayoutDashboard className="w-4 h-4 mr-2" /> Mon espace
+                  <LayoutDashboard className="w-4 h-4 mr-2" /> {t("appNav.myAccount")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate("/profil")} className="cursor-pointer">
-                  <UserIcon className="w-4 h-4 mr-2" /> Profil
+                  <UserIcon className="w-4 h-4 mr-2" /> {t("appNav.profile")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut} className="cursor-pointer text-destructive focus:text-destructive">
-                  <LogOut className="w-4 h-4 mr-2" /> Se déconnecter
+                  <LogOut className="w-4 h-4 mr-2" /> {t("appNav.logout")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -126,14 +130,14 @@ const AppNavbar = () => {
               to="/auth"
               className="hidden sm:flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground"
             >
-              <LogIn className="w-3.5 h-3.5" /> Connexion
+              <LogIn className="w-3.5 h-3.5" /> {t("appNav.login")}
             </Link>
           )}
 
           <Link
             to="/offres"
             className="hidden md:flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold text-amber-600"
-            title="Quotas gratuits restants — Valise/Budget/Visa: 3 chacun"
+            title={t("appNav.quotaTooltip")}
           >
             <Sparkles className="w-3 h-3" />
             V{getRemaining("valise")}·B{getRemaining("budget")}·Vi{getRemaining("visa")}
@@ -165,7 +169,7 @@ const AppNavbar = () => {
                       }`}
                     >
                       <Icon className="w-4 h-4" />
-                      <span>{it.label}</span>
+                      <span>{t(it.labelKey)}</span>
                       {it.premium && <Sparkles className="ml-auto w-3 h-3 text-amber-500" />}
                     </Link>
                   );
@@ -176,7 +180,7 @@ const AppNavbar = () => {
                       onClick={() => { signOut(); setOpen(false); }}
                       className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
                     >
-                      <LogOut className="w-4 h-4" /> Se déconnecter
+                      <LogOut className="w-4 h-4" /> {t("appNav.logout")}
                     </button>
                   ) : (
                     <Link
@@ -184,7 +188,7 @@ const AppNavbar = () => {
                       onClick={() => setOpen(false)}
                       className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground hover:bg-muted"
                     >
-                      <LogIn className="w-4 h-4" /> Connexion
+                      <LogIn className="w-4 h-4" /> {t("appNav.login")}
                     </Link>
                   )}
                 </div>
@@ -198,3 +202,4 @@ const AppNavbar = () => {
 };
 
 export default AppNavbar;
+

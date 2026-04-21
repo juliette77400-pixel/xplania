@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   FileText, Shield, AlertTriangle, Lightbulb, CheckCircle, Globe,
   Stethoscope, RotateCcw, Sparkles, Brain, Search, ShieldCheck,
@@ -122,6 +123,8 @@ const SectionSkeleton = () => (
 const GuideVisaPage = () => {
   useHydrateActiveTrip();
   const { tripData } = useTravelStore();
+  const { t, i18n } = useTranslation();
+  const isFr = i18n.language.startsWith("fr");
   const contextDestination = tripData?.destination || "";
 
   const [selectedDestination, setSelectedDestination] = useState(contextDestination || "none");
@@ -138,10 +141,10 @@ const GuideVisaPage = () => {
   const { reached, consume } = useQuota("visa");
 
   const destinationName = useMemo(() => {
-    if (!selectedDestination || selectedDestination === "none") return "votre destination";
+    if (!selectedDestination || selectedDestination === "none") return isFr ? "votre destination" : "your destination";
     const found = countryList.find((c) => c.code === selectedDestination);
     return found?.name || selectedDestination;
-  }, [selectedDestination]);
+  }, [selectedDestination, isFr]);
 
   const nationalityName = useMemo(() => {
     const found = countryList.find((c) => c.code === selectedNationality);
@@ -164,7 +167,7 @@ const GuideVisaPage = () => {
 
   const runGeneration = useCallback(async () => {
     if (!hasValidDestination) {
-      toast.error("Sélectionne une destination d'abord !");
+      toast.error(t("guideVisa.errSelectDest"));
       return;
     }
     if (reached) { setShowUpgrade(true); return; }
@@ -187,17 +190,17 @@ const GuideVisaPage = () => {
           nationality: nationalityName,
           duration: tripData?.duration || "7",
           travelerType: tripData?.travelerType || "touriste",
+          locale: i18n.language.startsWith("fr") ? "fr" : "en",
         },
       });
 
       await stepPromise;
 
-      if (error) throw new Error(error.message || "Erreur lors de l'appel IA");
+      if (error) throw new Error(error.message || t("guideVisa.errAi"));
       if (data?.error) throw new Error(data.error);
 
-      // Validate structure
       if (!data?.visa || !data?.security || !data?.health || !Array.isArray(data?.checklist)) {
-        throw new Error("Réponse IA incomplète. Réessayez.");
+        throw new Error(t("guideVisa.errIncomplete"));
       }
 
       setAiResult(data);
@@ -205,22 +208,22 @@ const GuideVisaPage = () => {
       await new Promise((r) => setTimeout(r, 400));
       setHasGenerated(true);
       setCheckedItems({});
-      toast.success("Formalités vérifiées par l'IA ! 📋");
+      toast.success(t("guideVisa.successToast"));
     } catch (e) {
       console.error("visa-info error:", e);
-      const msg = e instanceof Error ? e.message : "Erreur inconnue";
+      const msg = e instanceof Error ? e.message : t("guideVisa.errUnknown");
       setAiError(msg);
-      toast.error("Erreur lors de la génération", { description: msg });
+      toast.error(t("guideVisa.errToast"), { description: msg });
     } finally {
       setIsGenerating(false);
     }
-  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType]);
+  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType, t, i18n.language, reached, consume]);
 
   const handleRegenerate = useCallback(async () => {
-    toast.loading("Xplania reconsulte les autorités…", { id: "regen-visa" });
+    toast.loading(t("guideVisa.regenLoading"), { id: "regen-visa" });
     await runGeneration();
     toast.dismiss("regen-visa");
-  }, [runGeneration]);
+  }, [runGeneration, t]);
 
   const toggleCheck = (item: string) => {
     setCheckedItems((prev) => ({ ...prev, [item]: !prev[item] }));
@@ -256,9 +259,9 @@ const GuideVisaPage = () => {
             />
           </motion.div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-foreground mb-2">
-            <span className="gradient-text">Visa & Démarches Administratives</span>
+            <span className="gradient-text">{t("guideVisa.title")}</span>
           </h1>
-          <p className="text-muted-foreground">Les informations essentielles avant ton départ.</p>
+          <p className="text-muted-foreground">{t("guideVisa.subtitle")}</p>
 
           {!hasGenerated && !isGenerating && (
             <motion.button
@@ -271,7 +274,7 @@ const GuideVisaPage = () => {
               disabled={!hasValidDestination}
               className="mt-6 px-8 py-3.5 rounded-2xl font-bold text-sm bg-gradient-to-r from-secondary to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Vérifier mes besoins
+              {t("guideVisa.checkBtn")}
             </motion.button>
           )}
         </motion.div>
@@ -283,36 +286,36 @@ const GuideVisaPage = () => {
           transition={{ delay: 0.1 }}
           className="glass-card rounded-2xl p-6"
         >
-          <h2 className="text-base font-bold text-foreground mb-5 text-center">Sélectionne ta destination</h2>
+          <h2 className="text-base font-bold text-foreground mb-5 text-center">{t("guideVisa.selectDestination")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-secondary flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5" />
-                Choisir une destination
+                {t("guideVisa.destinationLabel")}
               </label>
               <Select value={selectedDestination} onValueChange={setSelectedDestination}>
                 <SelectTrigger className="bg-muted border-border text-foreground">
-                  <SelectValue placeholder="Sélectionne un pays" />
+                  <SelectValue placeholder={t("guideVisa.destinationPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px]">
                   <div className="px-2 py-1.5 sticky top-0 bg-popover z-10">
                     <input
                       type="text"
-                      placeholder="Rechercher un pays…"
+                      placeholder={t("guideVisa.searchPlaceholder")}
                       value={countrySearch}
                       onChange={(e) => setCountrySearch(e.target.value)}
                       className="w-full px-3 py-1.5 text-sm bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
                       onClick={(e) => e.stopPropagation()}
                     />
                   </div>
-                  <SelectItem value="none">— Aucune sélection —</SelectItem>
+                  <SelectItem value="none">{t("guideVisa.noneSelection")}</SelectItem>
                   {filteredCountries.map((c) => (
                     <SelectItem key={c.code} value={c.code}>
                       {c.name}
                     </SelectItem>
                   ))}
                   {filteredCountries.length === 0 && (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">Aucun pays trouvé</div>
+                    <div className="px-3 py-2 text-sm text-muted-foreground">{t("guideVisa.noCountry")}</div>
                   )}
                 </SelectContent>
               </Select>
@@ -320,17 +323,17 @@ const GuideVisaPage = () => {
             <div className="space-y-2">
               <label className="text-sm font-semibold text-secondary flex items-center gap-1.5">
                 <Flag className="w-3.5 h-3.5" />
-                Choisir ma nationalité
+                {t("guideVisa.nationalityLabel")}
               </label>
               <Select value={selectedNationality} onValueChange={setSelectedNationality}>
                 <SelectTrigger className="bg-muted border-border text-foreground">
-                  <SelectValue placeholder="Sélectionne ta nationalité" />
+                  <SelectValue placeholder={t("guideVisa.nationalityPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px]">
                   <div className="px-2 py-1.5 sticky top-0 bg-popover z-10">
                     <input
                       type="text"
-                      placeholder="Rechercher…"
+                      placeholder={t("guideVisa.searchShort")}
                       value={nationalitySearch}
                       onChange={(e) => setNationalitySearch(e.target.value)}
                       className="w-full px-3 py-1.5 text-sm bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
@@ -343,7 +346,7 @@ const GuideVisaPage = () => {
                     </SelectItem>
                   ))}
                   {filteredNationalities.length === 0 && (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">Aucun pays trouvé</div>
+                    <div className="px-3 py-2 text-sm text-muted-foreground">{t("guideVisa.noCountry")}</div>
                   )}
                 </SelectContent>
               </Select>
@@ -356,7 +359,7 @@ const GuideVisaPage = () => {
             disabled={isGenerating || !hasValidDestination}
             className="w-full mt-5 gradient-button text-primary-foreground font-bold py-3 rounded-xl transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isGenerating ? "Analyse en cours…" : "Analyser"}
+            {isGenerating ? t("guideVisa.analyzing") : t("guideVisa.analyze")}
           </motion.button>
         </motion.div>
 

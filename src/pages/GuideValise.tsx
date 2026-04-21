@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useTravelStore } from "@/stores/useTravelStore";
 import ValiseHeader from "@/components/valise/ValiseHeader";
 import StepProgressBar from "@/components/valise/StepProgressBar";
@@ -213,7 +214,9 @@ function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): Lugga
 const GuideValisePage = () => {
   useHydrateActiveTrip();
   const { tripData } = useTravelStore();
-  const destination = tripData?.destination || "votre destination";
+  const { t, i18n } = useTranslation();
+  const isFr = i18n.language.startsWith("fr");
+  const destination = tripData?.destination || (isFr ? "votre destination" : "your destination");
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;
 
   const suggestedMode = useMemo(
@@ -240,18 +243,18 @@ const GuideValisePage = () => {
     await new Promise((r) => setTimeout(r, 1000));
     setCategories(buildCategories(mode, transport));
     setIsSwitchingMode(false);
-    toast.success(`Mode "${mode}" activé`, { description: "La checklist a été adaptée par l'IA." });
-  }, [luggageMode, transport]);
+    toast.success(t("guideValise.toastModeOn", { mode }), { description: t("guideValise.toastModeOnDesc") });
+  }, [luggageMode, transport, t]);
 
-  const handleTransportChange = useCallback(async (t: TransportMode) => {
-    if (t === transport) return;
+  const handleTransportChange = useCallback(async (tr: TransportMode) => {
+    if (tr === transport) return;
     setIsSwitchingMode(true);
-    setTransport(t);
+    setTransport(tr);
     await new Promise((r) => setTimeout(r, 800));
-    setCategories(buildCategories(luggageMode, t));
+    setCategories(buildCategories(luggageMode, tr));
     setIsSwitchingMode(false);
-    toast.success(`Transport "${t}" pris en compte 🧳`, { description: "Liste adaptée aux contraintes du trajet." });
-  }, [luggageMode, transport]);
+    toast.success(t("guideValise.toastTransport", { mode: tr }), { description: t("guideValise.toastTransportDesc") });
+  }, [luggageMode, transport, t]);
 
   const toggleItem = (cat: string, idx: number) => {
     setCategories((prev) => ({
@@ -265,7 +268,7 @@ const GuideValisePage = () => {
       ...prev,
       [cat]: [...prev[cat], { name, description: "", checked: false }],
     }));
-    toast.success("Objet ajouté ✨");
+    toast.success(t("guideValise.toastItemAdded"));
   };
 
   const removeItem = (cat: string, idx: number) => {
@@ -273,7 +276,7 @@ const GuideValisePage = () => {
       ...prev,
       [cat]: prev[cat].filter((_, i) => i !== idx),
     }));
-    toast("Objet supprimé");
+    toast(t("guideValise.toastItemRemoved"));
   };
 
   const addActivityItems = useCallback((items: string[]) => {
@@ -301,28 +304,29 @@ const GuideValisePage = () => {
     await new Promise((r) => setTimeout(r, 400));
     setIsGenerating(false);
     setActiveSection(7);
-    toast.success("Valise générée ! 🧳", { description: "Checklist personnalisée prête." });
-  }, []);
+    toast.success(t("guideValise.toastValiseReady"), { description: t("guideValise.toastValiseReadyDesc") });
+  }, [t]);
 
   const handleRegenerate = useCallback(
     async (scope: "all" | "clothes" | "activities") => {
       setIsRegenerating(true);
-      toast.loading("Régénération en cours…", { id: "regen" });
+      toast.loading(t("guideValise.toastRegen"), { id: "regen" });
       await new Promise((r) => setTimeout(r, 1800));
       setCategories(buildCategories(luggageMode, transport));
       setIsRegenerating(false);
-      toast.success(
-        scope === "all" ? "Valise régénérée !" : scope === "clothes" ? "Vêtements régénérés !" : "Activités régénérées !",
-        { id: "regen" }
-      );
+      const msg =
+        scope === "all" ? t("guideValise.toastRegenAll")
+        : scope === "clothes" ? t("guideValise.toastRegenClothes")
+        : t("guideValise.toastRegenActivities");
+      toast.success(msg, { id: "regen" });
     },
-    [luggageMode, transport]
+    [luggageMode, transport, t]
   );
 
   const handleExportPdf = useCallback(() => {
     exportValisePdf({ destination, days, mode: luggageMode, transport, categories });
-    toast.success("PDF exporté ! 📄", { description: "Téléchargement lancé." });
-  }, [destination, days, luggageMode, transport, categories]);
+    toast.success(t("guideValise.toastPdf"), { description: t("guideValise.toastPdfDesc") });
+  }, [destination, days, luggageMode, transport, categories, t]);
 
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
@@ -366,8 +370,8 @@ const GuideValisePage = () => {
         <div>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-bold text-foreground">Ma checklist</h2>
-              <p className="text-xs text-muted-foreground">{checkedItems}/{totalItems} objets sélectionnés</p>
+              <h2 className="text-lg font-bold text-foreground">{t("guideValise.myChecklist")}</h2>
+              <p className="text-xs text-muted-foreground">{t("guideValise.itemsSelected", { checked: checkedItems, total: totalItems })}</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-24 h-2 rounded-full bg-muted/50 overflow-hidden">
