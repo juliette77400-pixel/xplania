@@ -1,9 +1,9 @@
-import { Play, Pause, Bell, Share2, Copy, RefreshCw, BatteryLow, Zap, Battery } from "lucide-react";
+import { Play, Pause, Bell, Share2, RefreshCw, BatteryLow, Zap, Battery } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { TripTracking } from "@/hooks/useTracking";
-import { toast } from "sonner";
+// no toast needed here
 
 interface Props {
   tracking: TripTracking | null;
@@ -23,13 +23,6 @@ const TrackingControls = ({
   onToggleShare, onOpenShare, onRequestNotifications, onSeed, notifGranted,
 }: Props) => {
   const precision = tracking?.settings?.precision || "balanced";
-  const shareUrl = tracking?.share_slug
-    ? `${window.location.origin}/suivi/public/${tracking.share_slug}` : "";
-
-  const copy = () => {
-    navigator.clipboard.writeText(shareUrl);
-    toast.success("Lien copié");
-  };
 
   return (
     <div className="glass-card rounded-2xl p-5 space-y-5">

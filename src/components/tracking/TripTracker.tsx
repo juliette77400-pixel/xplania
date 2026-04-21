@@ -70,7 +70,17 @@ const TripTracker = ({ tripId, destination }: Props) => {
   const filteredPois = filter === "all" ? pois : pois.filter((p) => p.category === filter);
 
   const aiPins = useMemo(
-    () => aiSuggestions.filter((s) => typeof s.lat === "number" && typeof s.lng === "number") as Required<AISuggestion>[],
+    () =>
+      aiSuggestions
+        .filter((s) => typeof s.lat === "number" && typeof s.lng === "number")
+        .map((s) => ({
+          title: s.title,
+          category: s.category,
+          description: s.description,
+          reason: s.reason,
+          lat: s.lat as number,
+          lng: s.lng as number,
+        })),
     [aiSuggestions]
   );
 
