@@ -17,7 +17,7 @@ const LIMITS: Record<QuotaTool, number> = {
   budget: 3,
   visa: 3,
   discover: 1,
-  mood: 1,
+  mood: 3,
   explore: 1,
   carnet: 1,
   suivi: 1,
