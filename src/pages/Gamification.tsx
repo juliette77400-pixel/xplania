@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   Trophy, Search, Landmark, Heart, MapPin, Utensils, Mountain,
   Compass, Moon, Camera, Star, Award, Lock, CheckCircle,
-  ArrowRight, Clock, Sparkles, BarChart3, Zap,
+  ArrowRight, Clock, Sparkles, BarChart3, Zap, RefreshCw,
 } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
@@ -14,9 +14,15 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { adaptToTripDuration, celebrateUnlock } from "@/lib/badges-fx";
-import { computeXp } from "@/lib/xp-levels";
+import { computeXp, getLevelProgress } from "@/lib/xp-levels";
 import XpHeader from "@/components/gamification/XpHeader";
+import Leaderboard from "@/components/gamification/Leaderboard";
+import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
+import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
 import { differenceInDays, parseISO } from "date-fns";
+
+// Persisted last-seen level → triggers fullscreen overlay on level-up
+const LEVEL_KEY = "xplania_last_level_v1";
 
 // Session-scoped guard so confetti never re-fires across remounts/refreshes
 const SEEN_BADGES_KEY = "xplania_seen_badges_v1";
