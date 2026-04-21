@@ -300,6 +300,9 @@ const GamificationPage = () => {
         {/* ══════ XP LEVEL HEADER ══════ */}
         <XpHeader xp={totalXp} />
 
+        {/* ══════ LEADERBOARD GLOBAL ══════ */}
+        <Leaderboard />
+
         {/* ══════ HERO STATS ══════ */}
         <section className="text-center">
           <h1 className="text-3xl font-bold text-foreground mb-2">Collection de Badges</h1>
