@@ -1,6 +1,8 @@
 import { Plane, LogOut, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 interface Props {
   onCreateTrip: () => void;
@@ -9,6 +11,7 @@ interface Props {
 
 const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
   const { user, signOut } = useAuth();
+  const { t } = useTranslation();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
@@ -21,25 +24,26 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
 
         <div className="hidden md:flex items-center gap-8">
           <a href="/#features" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-            Fonctionnalités
+            {t("navbar.features")}
           </a>
           <a href="/#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-            Comment ça marche
+            {t("navbar.howItWorks")}
           </a>
           <Link to="/offres" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-            Offres
+            {t("navbar.offers")}
           </Link>
           <button onClick={onFeedback} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-            Feedback
+            {t("navbar.feedback")}
           </button>
         </div>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           {user ? (
             <button
               onClick={signOut}
               className="hidden sm:flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm px-3 py-2"
-              title="Se déconnecter"
+              title={t("navbar.logout")}
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -48,14 +52,14 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
               to="/auth"
               className="hidden sm:flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm px-3 py-2"
             >
-              <LogIn className="w-4 h-4" /> Connexion
+              <LogIn className="w-4 h-4" /> {t("navbar.login")}
             </Link>
           )}
           <button
             onClick={onCreateTrip}
             className="gradient-button px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            Créer mon voyage
+            {t("navbar.createTrip")}
           </button>
         </div>
       </div>

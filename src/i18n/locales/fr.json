@@ -1,0 +1,243 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "continue": "Continuer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "send": "Envoyer",
+    "skip": "Passer",
+    "back": "Retour",
+    "letsGo": "C'est parti"
+  },
+  "lang": {
+    "switch": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "navbar": {
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment ça marche",
+    "offers": "Offres",
+    "feedback": "Feedback",
+    "login": "Connexion",
+    "logout": "Se déconnecter",
+    "createTrip": "Créer mon voyage"
+  },
+  "hero": {
+    "badge": "Bêta Privée — Accès Exclusif",
+    "titleLine1": "Voyagez sereinement,",
+    "titleLine2": "l'IA s'occupe du reste",
+    "subtitle": "Xplania est votre copilote de voyage intelligent. Budget, visas, bagages : toute la préparation centralisée en un seul endroit.",
+    "ctaCreate": "Créer mon voyage gratuitement",
+    "ctaDiscover": "Découvrir les fonctionnalités",
+    "toolsIntro": "Bêta gratuite —",
+    "toolsCount": "8 outils",
+    "toolsAvail": "déjà disponibles pour préparer et vivre ton voyage :",
+    "toolSuitcase": "Valise",
+    "toolBudget": "Budget",
+    "toolVisa": "Visa",
+    "toolJournal": "Carnet de bord",
+    "toolLive": "Suivi live",
+    "toolMap": "Travel Map",
+    "toolMood": "Mood",
+    "toolDiscover": "Discover",
+    "earlyExplorer": "Programme Early Explorer",
+    "earlyExplorerDesc": "Rejoignez la communauté de bêta-testeurs"
+  },
+  "features": {
+    "tag": "8 outils, 1 seule app",
+    "title": "Tout ce qu'il faut pour partir l'esprit tranquille",
+    "subtitle": "Huit outils propulsés par l'IA pour préparer, vivre et raconter ton voyage de A à Z",
+    "labelN": "Fonctionnalité {{n}}",
+    "noSignup": "Accès immédiat • Sans inscription",
+    "items": {
+      "valise": {
+        "title": "Valise intelligente",
+        "tagline": "Une checklist sur-mesure de ce qu'il faut emporter.",
+        "description": "On génère automatiquement la liste de bagages adaptée à votre destination, à la météo prévue et à la durée du séjour. Adieu les oublis et les valises trop lourdes.",
+        "benefit1": "Ne plus rien oublier d'essentiel",
+        "benefit2": "Optimiser l'espace dans vos bagages",
+        "cta": "Préparer ma valise"
+      },
+      "budget": {
+        "title": "Guide budget",
+        "tagline": "Estimez et suivez vos dépenses pendant le voyage.",
+        "description": "On estime le coût total de votre voyage selon le pays et votre style, et vous suivez vos dépenses au fil des jours pour rester dans le cadre prévu.",
+        "benefit1": "Éviter les mauvaises surprises",
+        "benefit2": "Adapter le budget au coût de la vie local",
+        "cta": "Estimer mon budget"
+      },
+      "visa": {
+        "title": "Guide visa & démarches",
+        "tagline": "Sachez exactement quels papiers préparer avant de partir.",
+        "description": "On vous donne la liste précise des documents requis selon votre nationalité et votre destination : visa, passeport, vaccins, assurances.",
+        "benefit1": "Simplifier les démarches administratives",
+        "benefit2": "Avoir tous les documents requis le jour J",
+        "cta": "Voir mes démarches"
+      },
+      "journal": {
+        "title": "Carnet de bord",
+        "tagline": "Documentez et revivez votre voyage en quelques clics.",
+        "description": "Notes, photos, humeurs et lieux jour par jour. L'IA transforme vos souvenirs en récit immersif, exportable en PDF et partageable en lien public.",
+        "benefit1": "Garder une trace émotionnelle de chaque voyage",
+        "benefit2": "Partager vos souvenirs avec vos proches",
+        "cta": "Ouvrir mes carnets"
+      },
+      "tracking": {
+        "title": "Suivi de Voyage",
+        "tagline": "Votre compagnon en temps réel pendant le séjour.",
+        "description": "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon votre position, météo et humeur.",
+        "benefit1": "Suivre sa progression et ses stats en direct",
+        "benefit2": "Recevoir des suggestions contextuelles à proximité",
+        "cta": "Activer le suivi live"
+      },
+      "explore": {
+        "title": "Travel Map",
+        "tagline": "Ton voyage devient un jeu d'exploration.",
+        "description": "Carte interactive ramifiée, points cliquables, badges à débloquer et progression gamifiée. Chaque lieu visité te fait gagner des points et te rapproche du badge ultime de Globe Trotter.",
+        "benefit1": "Explorer son voyage comme un jeu vivant",
+        "benefit2": "Débloquer badges et points en visitant",
+        "cta": "Lancer l'exploration"
+      },
+      "mood": {
+        "title": "Mood Explorer",
+        "tagline": "Choisis une émotion, on trouve le lieu parfait.",
+        "description": "Tu ne cherches pas un lieu, tu cherches une sensation. Sélectionne ton mood (chill, romantic, food, party…) et reçois des recommandations IA hyper personnalisées selon ta position, la météo et l'heure.",
+        "benefit1": "Décider sans réfléchir, en 3 secondes",
+        "benefit2": "Phrases émotionnelles qui te parlent vraiment",
+        "cta": "Trouver ma vibe"
+      },
+      "discover": {
+        "title": "Discover",
+        "tagline": "Les meilleurs lieux locaux, autour de toi, en temps réel.",
+        "description": "Recommandations contextuelles basées sur ta position, l'heure et la météo. Carte interactive, hidden gems, recherche en langage naturel ('brunch avec vue') et listes personnalisées pour organiser tes coups de cœur.",
+        "benefit1": "Découvrir des lieux authentiques près de toi",
+        "benefit2": "Recevoir des alertes hidden gem en marchant",
+        "cta": "Découvrir autour de moi"
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Comment fonctionne Xplania",
+    "subtitle": "Une approche simple en trois étapes pour voyager sereinement",
+    "soon": "Bientôt",
+    "step1Title": "Dites-nous où vous voulez aller",
+    "step1Desc": "Destination, dates, type de voyage : on vous pose juste les bonnes questions, ni trop, ni trop peu.",
+    "step2Title": "L'IA prépare votre voyage",
+    "step2Desc": "En quelques secondes, vous recevez votre budget, votre liste de bagages et vos démarches visa, prêts à l'emploi.",
+    "step3Title": "Vivez le voyage sereinement",
+    "step3Desc": "Carnet de bord, suivi live, mood explorer et recommandations en temps réel : tout est déjà disponible dans la bêta."
+  },
+  "benefits": {
+    "titlePart1": "Voyagez l'esprit léger,",
+    "titlePart2": "l'IA s'occupe du reste",
+    "subtitle": "Xplania n'est pas juste un site, c'est votre copilote de voyage intelligent. Nous éliminons la charge mentale du budget, des visas et des bagages pour vous laisser l'essentiel : le plaisir de découvrir.",
+    "timeTitle": "Gain de temps",
+    "timeDesc": "Ne passez plus des heures à chercher des infos contradictoires sur les visas ou le budget. Xplania centralise tout.",
+    "calmTitle": "Sérénité totale",
+    "calmDesc": "Partez avec la certitude de n'avoir rien oublié grâce à une planification intelligente et personnalisée.",
+    "controlTitle": "Contrôle absolu",
+    "controlDesc": "Gérez votre budget en temps réel avec des estimations basées sur le coût de la vie local."
+  },
+  "beta": {
+    "titlePart1": "Pourquoi participer à la",
+    "titlePart2": "bêta Xplania",
+    "subtitle": "Rejoignez une communauté exclusive de voyageurs passionnés qui façonnent le futur du voyage",
+    "feedbackTitle": "Feedback direct",
+    "feedbackDesc": "Votre retour améliore directement le produit. Chaque suggestion compte pour créer l'outil de voyage idéal.",
+    "earlyTitle": "Accès anticipé",
+    "earlyDesc": "Découvrez les nouvelles fonctionnalités avant tout le monde et testez les innovations en avant-première.",
+    "communityTitle": "Communauté exclusive",
+    "communityDesc": "Rejoignez les Early Explorers et participez à la création du futur du voyage intelligent.",
+    "shareTitle": "Partagez votre expérience",
+    "shareSubtitle": "Votre feedback est essentiel pour améliorer Xplania et créer l'outil de voyage parfait",
+    "shareCta": "Donner mon feedback"
+  },
+  "dashboard": {
+    "title": "Votre voyage en un coup d'œil",
+    "subtitle": "Un tableau de bord intuitif qui centralise toutes les informations essentielles",
+    "tabOverview": "Vue d'ensemble",
+    "tabBudget": "Budget",
+    "tabVisa": "Visa",
+    "tabSuitcase": "Valise",
+    "modifyTrip": "Modifier mon voyage",
+    "createFirstTitle": "Créez votre premier voyage",
+    "createFirstDesc": "Renseignez votre destination et vos dates pour découvrir un tableau de bord personnalisé avec budget estimé, exigences visa et recommandations bagages.",
+    "smartBudget": "Budget intelligent",
+    "requiredDocs": "Documents requis",
+    "luggageList": "Liste de bagages",
+    "createCta": "Créer mon voyage",
+    "viewFullGuide": "Voir le guide complet",
+    "budgetGuide": "Guide Budget",
+    "budgetGuideDesc": "Estimation personnalisée pour {{destination}} · {{days}} jours",
+    "totalBudget": "Budget total",
+    "perDay": "Par jour",
+    "breakdown": "Répartition détaillée",
+    "yourConstraints": "Vos contraintes budget :",
+    "visaGuide": "Guide Visa & Documents",
+    "visaGuideDesc": "Documents nécessaires pour {{destination}}",
+    "noVisaData": "Aucune donnée de documents disponible. Générez un plan de voyage pour voir les résultats.",
+    "suitcaseGuide": "Guide Valise",
+    "suitcaseGuideDesc": "Checklist personnalisée pour {{destination}} · {{days}} jours",
+    "noLuggageData": "Aucune donnée de bagages disponible. Générez un plan de voyage pour voir les résultats.",
+    "yourLuggageTypes": "Vos types de bagages :"
+  },
+  "footer": {
+    "tagline": "Votre copilote de voyage intelligent. Planifiez, préparez et vivez vos voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
+    "version": "Version 0.1 • Bêta Privée",
+    "featuresTitle": "Fonctionnalités",
+    "contactTitle": "Contact Xplania",
+    "feedbackLink": "Donner mon feedback",
+    "betaBadge": "Bêta privée en cours",
+    "betaNote": "Xplania est actuellement testé par les premiers voyageurs afin d'améliorer l'expérience.",
+    "prototype": "Xplania – Prototype bêta v0.1",
+    "copyright": "© 2026 Xplania – Programme bêta exclusif – Construit avec ❤️ pour les voyageurs"
+  },
+  "waitlist": {
+    "defaultTitle": "La version premium arrive bientôt 🚀",
+    "defaultTeaser": "Laisse ton email pour être informé en avant-première et obtenir -30% à l'ouverture.",
+    "counter": "<strong>{{count}}</strong> personnes attendent déjà",
+    "feature1": "Accès anticipé avant tout le monde",
+    "feature2": "Tarif lifetime réservé aux early adopters",
+    "feature3": "Aucun spam — 1 mail au lancement",
+    "emailPlaceholder": "ton@email.com",
+    "submitCta": "Je veux l'accès anticipé",
+    "noCard": "Pas de carte bancaire — désinscription en 1 clic.",
+    "successTitle": "Tu es sur la liste !",
+    "successDesc": "On t'écrit dès que la version premium ouvre. Promis, pas de spam 💌",
+    "continueExplore": "Continuer à explorer Xplania",
+    "invalidEmail": "Email invalide",
+    "errorGeneric": "Oups, une erreur est survenue. Réessaye.",
+    "successToast": "Tu es sur la liste 🚀"
+  },
+  "feedback": {
+    "title": "Donner mon feedback",
+    "emailLabel": "Email",
+    "emailPlaceholder": "votre@email.com",
+    "ratingLabel": "Note",
+    "suggestionsLabel": "Suggestions d'amélioration",
+    "suggestionsPlaceholder": "Partagez vos idées, suggestions ou retours...",
+    "problemsLabel": "Problèmes rencontrés",
+    "problemsPlaceholder": "Décrivez les bugs ou problèmes rencontrés...",
+    "submit": "Envoyer mon feedback",
+    "sending": "Envoi en cours...",
+    "errorRequired": "Veuillez remplir tous les champs et donner une note",
+    "errorSend": "Une erreur est survenue lors de l'envoi. Vérifiez la console.",
+    "successToast": "Merci pour votre feedback, vous contribuez à améliorer Xplania ✨",
+    "thanks": "Merci !",
+    "thanksDesc": "Merci pour votre feedback, vous contribuez à améliorer Xplania ✨"
+  },
+  "onboarding": {
+    "stepLabel": "Étape {{n}} / 3",
+    "step1Title": "Dites-nous où vous rêvez d'aller",
+    "step1Desc": "Choisissez un mode rapide, personnalisé ou sur-mesure. On s'adapte à votre envie de détail — 3 questions ou 10, c'est vous qui décidez.",
+    "step2Title": "Notre IA prépare tout pour vous",
+    "step2Desc": "En quelques secondes, on génère un itinéraire personnalisé, votre liste de bagages, le budget estimé et les démarches visa adaptées à votre destination.",
+    "step3Title": "Voyagez l'esprit léger",
+    "step3Desc": "Tout est centralisé : recommandations locales, conseils culturels, météo et budget. Vous n'avez plus qu'à profiter du voyage.",
+    "goToStep": "Aller à l'étape {{n}}"
+  }
+}

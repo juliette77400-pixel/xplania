@@ -1,99 +1,22 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const features = [
-  {
-    num: 1,
-    icon: Luggage,
-    title: "Valise intelligente",
-    tagline: "Une checklist sur-mesure de ce qu'il faut emporter.",
-    description:
-      "On génère automatiquement la liste de bagages adaptée à votre destination, à la météo prévue et à la durée du séjour. Adieu les oublis et les valises trop lourdes.",
-    benefits: ["Ne plus rien oublier d'essentiel", "Optimiser l'espace dans vos bagages"],
-    link: "/guide-valise",
-    cta: "Préparer ma valise",
-  },
-  {
-    num: 2,
-    icon: Wallet,
-    title: "Guide budget",
-    tagline: "Estimez et suivez vos dépenses pendant le voyage.",
-    description:
-      "On estime le coût total de votre voyage selon le pays et votre style, et vous suivez vos dépenses au fil des jours pour rester dans le cadre prévu.",
-    benefits: ["Éviter les mauvaises surprises", "Adapter le budget au coût de la vie local"],
-    link: "/guide-budget",
-    cta: "Estimer mon budget",
-  },
-  {
-    num: 3,
-    icon: FileText,
-    title: "Guide visa & démarches",
-    tagline: "Sachez exactement quels papiers préparer avant de partir.",
-    description:
-      "On vous donne la liste précise des documents requis selon votre nationalité et votre destination : visa, passeport, vaccins, assurances.",
-    benefits: ["Simplifier les démarches administratives", "Avoir tous les documents requis le jour J"],
-    link: "/guide-visa",
-    cta: "Voir mes démarches",
-  },
-  {
-    num: 4,
-    icon: BookOpen,
-    title: "Carnet de bord",
-    tagline: "Documentez et revivez votre voyage en quelques clics.",
-    description:
-      "Notes, photos, humeurs et lieux jour par jour. L'IA transforme vos souvenirs en récit immersif, exportable en PDF et partageable en lien public.",
-    benefits: ["Garder une trace émotionnelle de chaque voyage", "Partager vos souvenirs avec vos proches"],
-    link: "/carnets",
-    cta: "Ouvrir mes carnets",
-  },
-  {
-    num: 5,
-    icon: Activity,
-    title: "Suivi de Voyage",
-    tagline: "Votre compagnon en temps réel pendant le séjour.",
-    description:
-      "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon votre position, météo et humeur.",
-    benefits: ["Suivre sa progression et ses stats en direct", "Recevoir des suggestions contextuelles à proximité"],
-    link: "/suivi",
-    cta: "Activer le suivi live",
-  },
-  {
-    num: 6,
-    icon: Compass,
-    title: "Travel Map",
-    tagline: "Ton voyage devient un jeu d'exploration.",
-    description:
-      "Carte interactive ramifiée, points cliquables, badges à débloquer et progression gamifiée. Chaque lieu visité te fait gagner des points et te rapproche du badge ultime de Globe Trotter.",
-    benefits: ["Explorer son voyage comme un jeu vivant", "Débloquer badges et points en visitant"],
-    link: "/explore",
-    cta: "Lancer l'exploration",
-  },
-  {
-    num: 7,
-    icon: Heart,
-    title: "Mood Explorer",
-    tagline: "Choisis une émotion, on trouve le lieu parfait.",
-    description:
-      "Tu ne cherches pas un lieu, tu cherches une sensation. Sélectionne ton mood (chill, romantic, food, party…) et reçois des recommandations IA hyper personnalisées selon ta position, la météo et l'heure.",
-    benefits: ["Décider sans réfléchir, en 3 secondes", "Phrases émotionnelles qui te parlent vraiment"],
-    link: "/mood",
-    cta: "Trouver ma vibe",
-  },
-  {
-    num: 8,
-    icon: MapPinned,
-    title: "Discover",
-    tagline: "Les meilleurs lieux locaux, autour de toi, en temps réel.",
-    description:
-      "Recommandations contextuelles basées sur ta position, l'heure et la météo. Carte interactive, hidden gems, recherche en langage naturel ('brunch avec vue') et listes personnalisées pour organiser tes coups de cœur.",
-    benefits: ["Découvrir des lieux authentiques près de toi", "Recevoir des alertes hidden gem en marchant"],
-    link: "/discover",
-    cta: "Découvrir autour de moi",
-  },
-];
+const FEATURE_KEYS = [
+  { key: "valise", num: 1, icon: Luggage, link: "/guide-valise" },
+  { key: "budget", num: 2, icon: Wallet, link: "/guide-budget" },
+  { key: "visa", num: 3, icon: FileText, link: "/guide-visa" },
+  { key: "journal", num: 4, icon: BookOpen, link: "/carnets" },
+  { key: "tracking", num: 5, icon: Activity, link: "/suivi" },
+  { key: "explore", num: 6, icon: Compass, link: "/explore" },
+  { key: "mood", num: 7, icon: Heart, link: "/mood" },
+  { key: "discover", num: 8, icon: MapPinned, link: "/discover" },
+] as const;
 
 const FeaturesSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section id="features" className="py-24">
       <div className="container mx-auto px-6">
@@ -103,15 +26,15 @@ const FeaturesSection = () => {
           viewport={{ once: true }}
           className="text-center mb-4"
         >
-          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">8 outils, 1 seule app</p>
+          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">{t("features.tag")}</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Tout ce qu'il faut pour partir l'esprit tranquille
+            {t("features.title")}
           </h2>
-          <p className="mt-3 text-muted-foreground">Huit outils propulsés par l'IA pour préparer, vivre et raconter ton voyage de A à Z</p>
+          <p className="mt-3 text-muted-foreground">{t("features.subtitle")}</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-          {features.map((f, i) => (
+          {FEATURE_KEYS.map((f, i) => (
             <motion.div
               key={f.num}
               initial={{ opacity: 0, y: 30 }}
@@ -121,21 +44,21 @@ const FeaturesSection = () => {
               className="glass-card rounded-2xl p-6 flex flex-col group hover:border-primary/20 transition-colors"
             >
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Fonctionnalité {f.num}
+                {t("features.labelN", { n: f.num })}
               </span>
               <div className="flex items-center gap-3 mt-4">
                 <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center shrink-0">
                   <f.icon className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground">{f.title}</h3>
+                <h3 className="text-xl font-bold text-foreground">{t(`features.items.${f.key}.title`)}</h3>
               </div>
-              <p className="mt-2 text-sm font-medium text-primary">{f.tagline}</p>
-              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{f.description}</p>
+              <p className="mt-2 text-sm font-medium text-primary">{t(`features.items.${f.key}.tagline`)}</p>
+              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{t(`features.items.${f.key}.description`)}</p>
               <ul className="mt-4 space-y-2 flex-1">
-                {f.benefits.map((b) => (
-                  <li key={b} className="flex items-center gap-2 text-sm text-foreground">
+                {[1, 2].map((n) => (
+                  <li key={n} className="flex items-center gap-2 text-sm text-foreground">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                    {b}
+                    {t(`features.items.${f.key}.benefit${n}`)}
                   </li>
                 ))}
               </ul>
@@ -143,10 +66,10 @@ const FeaturesSection = () => {
                 to={f.link}
                 className="mt-6 flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all"
               >
-                {f.cta}
+                {t(`features.items.${f.key}.cta`)}
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <p className="mt-2 text-xs text-muted-foreground">Accès immédiat • Sans inscription</p>
+              <p className="mt-2 text-xs text-muted-foreground">{t("features.noSignup")}</p>
             </motion.div>
           ))}
         </div>

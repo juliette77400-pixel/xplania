@@ -1,25 +1,15 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Clock, Shield, BarChart3 } from "lucide-react";
 
-const benefits = [
-  {
-    icon: Clock,
-    title: "Gain de temps",
-    desc: "Ne passez plus des heures à chercher des infos contradictoires sur les visas ou le budget. Xplania centralise tout.",
-  },
-  {
-    icon: Shield,
-    title: "Sérénité totale",
-    desc: "Partez avec la certitude de n'avoir rien oublié grâce à une planification intelligente et personnalisée.",
-  },
-  {
-    icon: BarChart3,
-    title: "Contrôle absolu",
-    desc: "Gérez votre budget en temps réel avec des estimations basées sur le coût de la vie local.",
-  },
-];
-
 const BenefitsSection = () => {
+  const { t } = useTranslation();
+  const benefits = [
+    { icon: Clock, title: t("benefits.timeTitle"), desc: t("benefits.timeDesc") },
+    { icon: Shield, title: t("benefits.calmTitle"), desc: t("benefits.calmDesc") },
+    { icon: BarChart3, title: t("benefits.controlTitle"), desc: t("benefits.controlDesc") },
+  ];
+
   return (
     <section className="py-24">
       <div className="container mx-auto px-6">
@@ -30,11 +20,11 @@ const BenefitsSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Voyagez l'esprit léger,{" "}
-            <span className="gradient-text">l'IA s'occupe du reste</span>
+            {t("benefits.titlePart1")}{" "}
+            <span className="gradient-text">{t("benefits.titlePart2")}</span>
           </h2>
           <p className="mt-4 text-muted-foreground max-w-3xl mx-auto">
-            Xplania n'est pas juste un site, c'est votre copilote de voyage intelligent. Nous éliminons la charge mentale du budget, des visas et des bagages pour vous laisser l'essentiel : le plaisir de découvrir.
+            {t("benefits.subtitle")}
           </p>
         </motion.div>
 
