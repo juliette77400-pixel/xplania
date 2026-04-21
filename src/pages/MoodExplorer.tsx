@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,9 @@ import MoodPlaceDetail from "@/components/mood/MoodPlaceDetail";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
+import QuotaBanner from "@/components/shared/QuotaBanner";
+import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import { useQuota } from "@/hooks/useQuota";
 
 const MoodExplorer = () => {
   const { user } = useAuth();
@@ -31,6 +34,23 @@ const MoodExplorer = () => {
   const [tab, setTab] = useState("feed");
   const [detailsPlace, setDetailsPlace] = useState<MoodPlace | null>(null);
   const [reactionsCount, setReactionsCount] = useState(0);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+
+  const { reached, consume } = useQuota("mood");
+
+  // Premium-gated recommend: consume one quota credit per call. When exhausted,
+  // open the Upgrade dialog instead of running the recommendation.
+  const guardedRecommend: typeof recommend = useCallback(
+    (input) => {
+      if (reached) {
+        setUpgradeOpen(true);
+        return Promise.resolve();
+      }
+      consume();
+      return recommend(input);
+    },
+    [reached, consume, recommend],
+  );
 
   // Load reactions count for current user
   useEffect(() => {
@@ -48,6 +68,8 @@ const MoodExplorer = () => {
     <div className="min-h-screen bg-background">
       <AppNavbar />
       <div className="max-w-5xl mx-auto px-4 py-6 md:py-10 space-y-6">
+        <QuotaBanner tool="mood" toolLabel="Mood Explorer" />
+
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div className="flex-1 min-w-0">
             <MoodHero
@@ -66,9 +88,9 @@ const MoodExplorer = () => {
 
         {!activeMood || places.length === 0 ? (
           <div className="grid md:grid-cols-[1fr_320px] gap-6">
-            <MoodSelector loading={loading} onSubmit={recommend} />
+            <MoodSelector loading={loading} onSubmit={guardedRecommend} />
             <aside className="space-y-6">
-              <PopularMoods onSelectMood={(m) => recommend({ mood: m as any })} />
+              <PopularMoods onSelectMood={(m) => guardedRecommend({ mood: m as any })} />
               <MoodBadgesPanel badges={badges} context={{ ...badgeContext, reactionsCount }} />
             </aside>
           </div>
@@ -104,7 +126,7 @@ const MoodExplorer = () => {
             </TabsContent>
 
             <TabsContent value="social" className="mt-4">
-              <PopularMoods onSelectMood={(m) => { reset(); recommend({ mood: m as any }); }} />
+              <PopularMoods onSelectMood={(m) => { reset(); guardedRecommend({ mood: m as any }); }} />
             </TabsContent>
           </Tabs>
         )}
@@ -121,7 +143,7 @@ const MoodExplorer = () => {
                 return (
                   <button
                     key={h.id}
-                    onClick={() => recommend({ mood: h.mood, free_input: h.free_input || undefined, energy_level: h.energy_level ?? undefined })}
+                    onClick={() => guardedRecommend({ mood: h.mood, free_input: h.free_input || undefined, energy_level: h.energy_level ?? undefined })}
                     className="text-xs px-3 py-1.5 rounded-full border border-border bg-card/40 hover:border-primary/40 transition-colors"
                   >
                     {m?.emoji} {m?.label || h.mood}
@@ -149,6 +171,8 @@ const MoodExplorer = () => {
         onSharedReaction={() => user && getReactionsCount(user.id).then(setReactionsCount)}
       />
       <QuickJump />
+
+      <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} toolName="Mood Explorer" />
     </div>
   );
 };
