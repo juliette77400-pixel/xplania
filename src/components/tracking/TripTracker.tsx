@@ -297,12 +297,12 @@ const TripTracker = ({ tripId, destination }: Props) => {
             </div>
           )}
 
-          <LiveStats tracking={t} activities={displayActivities} />
+          <LiveStats tracking={trip} activities={displayActivities} />
         </div>
 
         <div className="space-y-4">
           <TrackingControls
-            tracking={t}
+            tracking={trip}
             isOnline={isOnline}
             onStart={tracking.startTracking}
             onStop={tracking.stopTracking}
