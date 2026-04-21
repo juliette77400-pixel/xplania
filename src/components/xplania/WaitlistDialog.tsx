@@ -171,6 +171,19 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
 
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder={t("waitlist.firstNamePlaceholder")}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="pl-9"
+                    maxLength={60}
+                    disabled={loading}
+                    autoComplete="given-name"
+                  />
+                </div>
+                <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     type="email"
@@ -181,7 +194,26 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
                     required
                     maxLength={255}
                     disabled={loading}
+                    autoComplete="email"
                   />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-muted-foreground pl-1">
+                    {t("waitlist.linkedinLabel")}
+                  </label>
+                  <div className="relative">
+                    <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      type="url"
+                      placeholder={t("waitlist.linkedinPlaceholder")}
+                      value={linkedin}
+                      onChange={(e) => setLinkedin(e.target.value)}
+                      className="pl-9"
+                      maxLength={255}
+                      disabled={loading}
+                      autoComplete="url"
+                    />
+                  </div>
                 </div>
                 <Button
                   type="submit"
