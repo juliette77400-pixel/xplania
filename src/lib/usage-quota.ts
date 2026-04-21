@@ -37,6 +37,15 @@ const DEV_KEY = "xplania_dev_mode";
  */
 export const isDevMode = (): boolean => {
   if (typeof window === "undefined") return false;
+  // Explicit env var bypass — highest priority
+  try {
+    if (import.meta.env?.VITE_DEV_BYPASS === "true" || import.meta.env?.VITE_DEV_BYPASS === true) {
+      return true;
+    }
+    if (import.meta.env?.DEV === true || import.meta.env?.MODE === "development") {
+      return true;
+    }
+  } catch {}
   try {
     if (localStorage.getItem(DEV_KEY) === "1") return true;
     if (localStorage.getItem(DEV_KEY) === "0") return false; // explicit opt-out
