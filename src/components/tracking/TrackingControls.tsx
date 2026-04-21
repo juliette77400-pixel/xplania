@@ -12,6 +12,7 @@ interface Props {
   onStop: () => void;
   onPrecisionChange: (p: "high" | "balanced" | "low") => void;
   onToggleShare: (enabled: boolean) => void;
+  onOpenShare?: () => void;
   onRequestNotifications: () => void;
   onSeed: () => void;
   notifGranted: boolean;
@@ -19,7 +20,7 @@ interface Props {
 
 const TrackingControls = ({
   tracking, isOnline, onStart, onStop, onPrecisionChange,
-  onToggleShare, onRequestNotifications, onSeed, notifGranted,
+  onToggleShare, onOpenShare, onRequestNotifications, onSeed, notifGranted,
 }: Props) => {
   const precision = tracking?.settings?.precision || "balanced";
   const shareUrl = tracking?.share_slug
@@ -101,11 +102,10 @@ const TrackingControls = ({
             onCheckedChange={onToggleShare}
           />
         </div>
-        {tracking?.share_enabled && shareUrl && (
-          <button onClick={copy} className="w-full text-xs text-left p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition flex items-center gap-2">
-            <Copy className="w-3 h-3 shrink-0" />
-            <span className="truncate text-muted-foreground">{shareUrl}</span>
-          </button>
+        {onOpenShare && (
+          <Button onClick={onOpenShare} variant="outline" size="sm" className="w-full">
+            <Share2 className="w-3.5 h-3.5 mr-1.5" /> QR code & lien
+          </Button>
         )}
       </div>
 
