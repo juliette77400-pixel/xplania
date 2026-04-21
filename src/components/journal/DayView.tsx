@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Plus, FileText, Camera, MapPin, Smile, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,14 +19,15 @@ interface Props {
 }
 
 const BLOCK_TYPES = [
-  { type: "note", label: "Note", icon: FileText },
-  { type: "photo", label: "Photo", icon: Camera },
-  { type: "location", label: "Lieu", icon: MapPin },
-  { type: "mood", label: "Humeur", icon: Smile },
-  { type: "highlight", label: "Moment fort", icon: Star },
+  { type: "note", labelKey: "j2.blockNote", icon: FileText },
+  { type: "photo", labelKey: "j2.blockPhoto", icon: Camera },
+  { type: "location", labelKey: "j2.blockLocation", icon: MapPin },
+  { type: "mood", labelKey: "j2.blockMood", icon: Smile },
+  { type: "highlight", labelKey: "j2.blockHighlight", icon: Star },
 ] as const;
 
 const DayView = ({ day, journalId, destination, onChanged }: Props) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [title, setTitle] = useState(day.title || "");
@@ -65,7 +67,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={saveTitle}
-          placeholder="Donne un titre à cette journée…"
+          placeholder={t("j2.giveDayTitle")}
           className="mt-1 text-2xl font-bold border-0 bg-transparent px-0 focus-visible:ring-0 text-foreground"
         />
         {day.weather && (
@@ -86,7 +88,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
 
       <div className="relative">
         <Button onClick={() => setShowMenu(!showMenu)} variant="outline" className="w-full border-dashed">
-          <Plus className="w-4 h-4" /> Ajouter un souvenir
+          <Plus className="w-4 h-4" /> {t("j2.addMemory")}
         </Button>
         <AnimatePresence>
           {showMenu && (
@@ -103,7 +105,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
                   className="flex flex-col items-center gap-1.5 p-3 rounded-lg hover:bg-primary/10 transition"
                 >
                   <b.icon className="w-5 h-5 text-primary" />
-                  <span className="text-xs text-foreground">{b.label}</span>
+                  <span className="text-xs text-foreground">{t(b.labelKey)}</span>
                 </button>
               ))}
             </motion.div>

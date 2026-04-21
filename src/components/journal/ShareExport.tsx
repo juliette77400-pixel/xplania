@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Share2, Download, Globe, Lock, Copy, Check, Mail, Loader2, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ const loadImage = (url: string): Promise<HTMLImageElement> =>
   });
 
 const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [includePhotos, setIncludePhotos] = useState(true);
@@ -34,14 +36,14 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
     const slug = val && !journal.public_slug ? crypto.randomUUID().slice(0, 8) : journal.public_slug;
     await supabase.from("journals").update({ is_public: val, public_slug: slug }).eq("id", journal.id);
     onUpdated();
-    toast.success(val ? "Carnet publié 🌍" : "Carnet repassé en privé 🔒");
+    toast.success(val ? t("j2.publishedToast") : t("j2.privateToast"));
   };
 
   const copyLink = async () => {
     if (!publicUrl) return;
     await navigator.clipboard.writeText(publicUrl);
     setCopied(true);
-    toast.success("Lien copié");
+    toast.success(t("j2.linkCopied"));
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -161,9 +163,9 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
       doc.text(`Carnet généré avec Xplania · ${new Date().toLocaleDateString("fr-FR")}`, margin, pageH - 10);
 
       doc.save(`carnet-${(destination || "voyage").toLowerCase().replace(/\s+/g, "-")}.pdf`);
-      toast.success("PDF généré ✅");
+      toast.success(t("j2.pdfReady"));
     } catch (e: any) {
-      toast.error("Erreur lors de la génération du PDF");
+      toast.error(t("j2.pdfError"));
       console.error(e);
     } finally {
       setExporting(false);
@@ -175,15 +177,15 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
       <div className="glass-card rounded-2xl p-6 space-y-4">
         <div className="flex items-center gap-2">
           <Share2 className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-bold text-foreground">Partager ton carnet</h3>
+          <h3 className="text-lg font-bold text-foreground">{t("j2.shareTitle")}</h3>
         </div>
 
         <div className="flex items-center justify-between p-3 rounded-xl bg-muted/30">
           <div className="flex items-center gap-2">
             {journal.is_public ? <Globe className="w-4 h-4 text-primary" /> : <Lock className="w-4 h-4 text-muted-foreground" />}
             <div>
-              <p className="text-sm text-foreground font-medium">Carnet {journal.is_public ? "public" : "privé"}</p>
-              <p className="text-xs text-muted-foreground">{journal.is_public ? "Toute personne avec le lien peut le voir" : "Visible uniquement par toi"}</p>
+              <p className="text-sm text-foreground font-medium">{journal.is_public ? t("j2.carnetPublic") : t("j2.carnetPrivate")}</p>
+              <p className="text-xs text-muted-foreground">{journal.is_public ? t("j2.publicHint") : t("j2.privateHint")}</p>
             </div>
           </div>
           <Switch checked={journal.is_public} onCheckedChange={togglePublic} />
@@ -193,16 +195,16 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
           <>
             <div className="flex gap-2">
               <input value={publicUrl} readOnly className="flex-1 px-3 py-2 rounded-lg bg-muted/30 text-xs text-foreground border border-border" />
-              <Button variant="outline" size="icon" onClick={copyLink} title="Copier le lien">
+              <Button variant="outline" size="icon" onClick={copyLink} title={t("j2.linkCopy")}>
                 {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
               </Button>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <Button variant="outline" onClick={shareEmail}>
-                <Mail className="w-4 h-4" /> Envoyer par email
+                <Mail className="w-4 h-4" /> {t("j2.sendEmail")}
               </Button>
               <Button variant="outline" onClick={shareNative}>
-                <Share2 className="w-4 h-4" /> Partager…
+                <Share2 className="w-4 h-4" /> {t("j2.shareDots")}
               </Button>
             </div>
           </>
@@ -220,8 +222,8 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
           <div className="flex items-center gap-2">
             <ImageIcon className="w-4 h-4 text-primary" />
             <div>
-              <p className="text-sm text-foreground font-medium">Inclure les photos</p>
-              <p className="text-xs text-muted-foreground">PDF plus lourd mais beaucoup plus beau</p>
+              <p className="text-sm text-foreground font-medium">{t("j2.includePhotos")}</p>
+              <p className="text-xs text-muted-foreground">{t("j2.photosHint")}</p>
             </div>
           </div>
           <Switch checked={includePhotos} onCheckedChange={setIncludePhotos} />
@@ -229,7 +231,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
 
         <Button className="w-full" onClick={exportPdf} disabled={exporting}>
           {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-          {exporting ? "Génération en cours…" : "Télécharger le PDF"}
+          {exporting ? t("j2.generating") : t("j2.downloadPdf")}
         </Button>
       </div>
     </div>

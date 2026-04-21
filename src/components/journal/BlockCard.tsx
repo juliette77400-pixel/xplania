@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Camera, MapPin, Star, Pencil, Trash2, Loader2, Smile, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +22,7 @@ const MOOD_EMOJIS = ["😢", "😕", "😐", "🙂", "😄"];
 const QUICK_EMOJIS = ["✨","🌅","🌊","🍕","🍷","☕","🏖️","🏔️","🚲","🚶","📸","🎨","🎶","💃","🌸","🔥","💖","🌟","🥐","🍜"];
 
 const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState<any>(block.content || {});
@@ -48,7 +50,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
     setUploading(true);
     const path = `${user.id}/${journalId}/${crypto.randomUUID()}-${file.name}`;
     const { error } = await supabase.storage.from("journal-media").upload(path, file);
-    if (error) { toast.error("Upload échoué"); setUploading(false); return; }
+    if (error) { toast.error(t("j2.uploadFail")); setUploading(false); return; }
     const { data: signed } = await supabase.storage.from("journal-media").createSignedUrl(path, 60 * 60 * 24 * 365);
     await persist({ ...content, path, url: signed?.signedUrl, caption: content.caption || "" });
     setUploading(false);
@@ -63,7 +65,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
 
   const aiEnhance = async () => {
     if (!content.text || content.text.length < 5) {
-      toast.error("Écris au moins quelques mots avant d'enrichir avec l'IA");
+      toast.error(t("j2.aiNeedWords"));
       return;
     }
     setAiLoading(true);
@@ -85,11 +87,11 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
         const next = { ...content, text: enhanced, ai_enhanced: true };
         setContent(next);
         await supabase.from("journal_blocks").update({ content: next }).eq("id", block.id);
-        toast.success("Texte enrichi par l'IA ✨");
+        toast.success(t("j2.aiSuccess"));
         onChanged();
       }
     } catch (e: any) {
-      toast.error("Enrichissement IA indisponible");
+      toast.error(t("j2.aiUnavailable"));
     } finally {
       setAiLoading(false);
     }
@@ -98,28 +100,28 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
   const renderView = () => {
     switch (block.type) {
       case "note":
-        return <p className="text-sm text-foreground whitespace-pre-wrap">{content.text || <span className="text-muted-foreground italic">Note vide…</span>}</p>;
+        return <p className="text-sm text-foreground whitespace-pre-wrap">{content.text || <span className="text-muted-foreground italic">{t("j2.emptyNote")}</span>}</p>;
       case "photo":
         return content.url ? (
           <div className="space-y-2">
-            <img src={content.url} alt={content.caption || "Souvenir"} className="rounded-lg w-full max-h-96 object-cover" />
+            <img src={content.url} alt={content.caption || t("j2.memoryAlt")} className="rounded-lg w-full max-h-96 object-cover" />
             {content.caption && <p className="text-xs text-muted-foreground italic">{content.caption}</p>}
           </div>
         ) : (
           <label className="flex flex-col items-center gap-2 py-6 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition">
             {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5 text-muted-foreground" />}
-            <span className="text-xs text-muted-foreground">Ajouter une photo</span>
+            <span className="text-xs text-muted-foreground">{t("j2.addPhoto")}</span>
             <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && uploadPhoto(e.target.files[0])} />
           </label>
         );
       case "location":
-        return <div className="flex items-center gap-2 text-sm text-foreground"><MapPin className="w-4 h-4 text-primary" />{content.name || <span className="text-muted-foreground italic">Lieu non défini</span>}</div>;
+        return <div className="flex items-center gap-2 text-sm text-foreground"><MapPin className="w-4 h-4 text-primary" />{content.name || <span className="text-muted-foreground italic">{t("j2.noPlace")}</span>}</div>;
       case "mood": {
         const idx = typeof content.score === "number" ? content.score - 1 : 2;
         return <div className="flex items-center gap-3"><span className="text-3xl">{MOOD_EMOJIS[idx] ?? "😊"}</span><span className="text-sm text-muted-foreground">{content.score ?? 3}/5</span></div>;
       }
       case "highlight":
-        return <div className="flex items-start gap-2"><Star className="w-4 h-4 text-yellow-500 fill-yellow-500 shrink-0 mt-0.5" /><p className="text-sm font-medium text-foreground">{content.text || <span className="text-muted-foreground italic">Décris ton meilleur moment…</span>}</p></div>;
+        return <div className="flex items-start gap-2"><Star className="w-4 h-4 text-yellow-500 fill-yellow-500 shrink-0 mt-0.5" /><p className="text-sm font-medium text-foreground">{content.text || <span className="text-muted-foreground italic">{t("j2.describeBest")}</span>}</p></div>;
       default:
         return <p className="text-sm text-muted-foreground">{block.type}</p>;
     }
@@ -130,14 +132,14 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
       case "note":
         return (
           <div className="space-y-2">
-            <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder="Raconte ta journée…" rows={4} />
+            <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder={t("j2.tellDay")} rows={4} />
             <EmojiAndAi onEmoji={insertEmoji} onAi={aiEnhance} aiLoading={aiLoading} />
           </div>
         );
       case "photo":
-        return <Input value={content.caption || ""} onChange={(e) => setContent({ ...content, caption: e.target.value })} placeholder="Légende (optionnel)" />;
+        return <Input value={content.caption || ""} onChange={(e) => setContent({ ...content, caption: e.target.value })} placeholder={t("j2.captionOpt")} />;
       case "location":
-        return <Input value={content.name || ""} onChange={(e) => setContent({ ...content, name: e.target.value })} placeholder="Nom du lieu" />;
+        return <Input value={content.name || ""} onChange={(e) => setContent({ ...content, name: e.target.value })} placeholder={t("j2.placeName")} />;
       case "mood":
         return (
           <div className="flex gap-2 justify-around">
@@ -152,7 +154,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
       case "highlight":
         return (
           <div className="space-y-2">
-            <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder="Le meilleur moment de cette journée…" rows={3} />
+            <Textarea value={content.text || ""} onChange={(e) => setContent({ ...content, text: e.target.value })} placeholder={t("j2.bestMoment")} rows={3} />
             <EmojiAndAi onEmoji={insertEmoji} onAi={aiEnhance} aiLoading={aiLoading} />
           </div>
         );
@@ -183,8 +185,8 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
         <div className="space-y-2">
           {renderEdit()}
           <div className="flex gap-2 justify-end">
-            <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>Annuler</Button>
-            <Button size="sm" onClick={save}>Enregistrer</Button>
+            <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>{t("j2.cancelBtn")}</Button>
+            <Button size="sm" onClick={save}>{t("j2.saveBtn")}</Button>
           </div>
         </div>
       ) : (
@@ -196,12 +198,14 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
   );
 };
 
-const EmojiAndAi = ({ onEmoji, onAi, aiLoading }: { onEmoji: (e: string) => void; onAi: () => void; aiLoading: boolean }) => (
+const EmojiAndAi = ({ onEmoji, onAi, aiLoading }: { onEmoji: (e: string) => void; onAi: () => void; aiLoading: boolean }) => {
+  const { t } = useTranslation();
+  return (
   <div className="flex items-center justify-between gap-2">
     <Popover>
       <PopoverTrigger asChild>
         <Button type="button" size="sm" variant="ghost" className="text-xs">
-          <Smile className="w-3.5 h-3.5" /> Emoji
+          <Smile className="w-3.5 h-3.5" /> {t("j2.emojiBtn")}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64 p-2">
@@ -216,9 +220,10 @@ const EmojiAndAi = ({ onEmoji, onAi, aiLoading }: { onEmoji: (e: string) => void
     </Popover>
     <Button type="button" size="sm" variant="ghost" className="text-xs" onClick={onAi} disabled={aiLoading}>
       {aiLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5 text-primary" />}
-      Enrichir IA
+      {t("j2.aiEnrich")}
     </Button>
   </div>
 );
+};
 
 export default BlockCard;

@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { BADGES } from "@/lib/journal-utils";
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [unlocked, setUnlocked] = useState<string[]>([]);
   const [justUnlocked, setJustUnlocked] = useState<string | null>(null);
@@ -40,17 +42,17 @@ const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
     const c = { note: 0, photo: 0, location: 0, mood: 0, highlight: 0 } as Record<string, number>;
     for (const d of days) for (const b of d.blocks) c[b.type] = (c[b.type] || 0) + 1;
     const defs = [
-      { code: "explorer", label: BADGES.explorer.label, current: c.location, baseTarget: 3, kind: "lieux visités" },
-      { code: "storyteller", label: BADGES.storyteller.label, current: c.note, baseTarget: 5, kind: "notes écrites" },
-      { code: "photographer", label: BADGES.photographer.label, current: c.photo, baseTarget: 10, kind: "photos ajoutées" },
-      { code: "emotional", label: BADGES.emotional.label, current: c.mood, baseTarget: 5, kind: "humeurs partagées" },
-      { code: "highlight", label: BADGES.highlight.label, current: c.highlight, baseTarget: 3, kind: "moments forts" },
+      { code: "explorer", label: BADGES.explorer.label, current: c.location, baseTarget: 3, kind: t("j2.kindLocations") },
+      { code: "storyteller", label: BADGES.storyteller.label, current: c.note, baseTarget: 5, kind: t("j2.kindNotes") },
+      { code: "photographer", label: BADGES.photographer.label, current: c.photo, baseTarget: 10, kind: t("j2.kindPhotos") },
+      { code: "emotional", label: BADGES.emotional.label, current: c.mood, baseTarget: 5, kind: t("j2.kindMoods") },
+      { code: "highlight", label: BADGES.highlight.label, current: c.highlight, baseTarget: 3, kind: t("j2.kindHighlights") },
     ].map((d) => {
       const target = adaptToTripDuration(d.baseTarget, tripDurationDays);
       return { ...d, target, ok: d.current >= target, pct: Math.min(100, Math.round((d.current / target) * 100)) };
     });
     return { counts: c, definitions: defs };
-  }, [days, tripDurationDays]);
+  }, [days, tripDurationDays, t]);
 
   // Detect unlocks → persist + celebrate
   useEffect(() => {
@@ -84,12 +86,12 @@ const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
       <div className="glass-card rounded-2xl p-5 space-y-4">
         <div className="flex items-center gap-2">
           <Trophy className="w-5 h-5 text-primary" />
-          <h3 className="font-bold text-foreground">Badges</h3>
+          <h3 className="font-bold text-foreground">{t("j2.badgesTitle")}</h3>
           <span className="text-xs text-muted-foreground">({unlockedCount}/{totalCount})</span>
           <div className="flex-1" />
           {tripDurationDays != null && (
             <span className="text-[10px] text-muted-foreground">
-              Adapté à un voyage de {tripDurationDays}j
+              {t("j2.badgesAdaptedDays", { n: tripDurationDays })}
             </span>
           )}
         </div>
@@ -172,8 +174,8 @@ const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
                   <p className="text-xs font-semibold">{def.label}</p>
                   <p className="text-[11px] text-muted-foreground mt-1">
                     {isUnlocked
-                      ? "Débloqué — bravo !"
-                      : `Plus que ${Math.max(0, def.target - def.current)} ${def.kind} pour le débloquer.`}
+                      ? t("j2.badgeUnlocked")
+                      : t("j2.badgeNeed", { n: Math.max(0, def.target - def.current), kind: def.kind })}
                   </p>
                 </TooltipContent>
               </Tooltip>

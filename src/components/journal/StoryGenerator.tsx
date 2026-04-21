@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Sparkles, Loader2, Wand2, PenLine, Save } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +22,7 @@ interface Props {
 type Mode = "ai" | "manual";
 
 const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: Props) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [mode, setMode] = useState<Mode>("ai");
   const [tone, setTone] = useState(initialTone || "storytelling");
@@ -44,10 +46,10 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
         await supabase.from("journal_stories").insert({ journal_id: journalId, user_id: user.id, tone, content });
         await supabase.from("journals").update({ tone }).eq("id", journalId);
         onSaved();
-        toast.success("Récit généré ✨");
+        toast.success(t("j2.storyGenerated"));
       }
     } catch (e: any) {
-      toast.error(e.message || "Génération impossible");
+      toast.error(e.message || t("j2.genFail"));
     } finally {
       setLoading(false);
     }
@@ -55,7 +57,7 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
 
   const saveManual = async () => {
     if (!user || !story.trim()) {
-      toast.error("Écris ton récit avant d'enregistrer");
+      toast.error(t("j2.writeBefore"));
       return;
     }
     setSaving(true);
@@ -67,9 +69,9 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
         content: story,
       });
       onSaved();
-      toast.success("Récit enregistré ✏️");
+      toast.success(t("j2.storySaved"));
     } catch (e: any) {
-      toast.error("Erreur d'enregistrement");
+      toast.error(t("j2.saveError"));
     } finally {
       setSaving(false);
     }
@@ -80,7 +82,7 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Wand2 className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-bold text-foreground">Ton récit de voyage</h3>
+          <h3 className="text-lg font-bold text-foreground">{t("j2.storyTitle")}</h3>
         </div>
 
         <div className="flex gap-1 p-1 rounded-lg bg-muted/40">
@@ -88,52 +90,52 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
             onClick={() => setMode("ai")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition ${mode === "ai" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
           >
-            <Sparkles className="w-3.5 h-3.5" /> IA
+            <Sparkles className="w-3.5 h-3.5" /> {t("j2.modeAi")}
           </button>
           <button
             onClick={() => setMode("manual")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition ${mode === "manual" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
           >
-            <PenLine className="w-3.5 h-3.5" /> Manuel
+            <PenLine className="w-3.5 h-3.5" /> {t("j2.modeManual")}
           </button>
         </div>
       </div>
 
       {mode === "ai" ? (
         <>
-          <p className="text-sm text-muted-foreground">L'IA transforme tes souvenirs en récit immersif. Choisis un ton et laisse la magie opérer.</p>
+          <p className="text-sm text-muted-foreground">{t("j2.aiHint")}</p>
           <div className="flex gap-2">
             <Select value={tone} onValueChange={setTone}>
               <SelectTrigger className="flex-1"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {TONES.map((t) => (
-                  <SelectItem key={t.value} value={t.value}>
-                    {t.label} <span className="text-xs text-muted-foreground">— {t.desc}</span>
+                {TONES.map((tn) => (
+                  <SelectItem key={tn.value} value={tn.value}>
+                    {tn.label} <span className="text-xs text-muted-foreground">— {tn.desc}</span>
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Button onClick={generate} disabled={loading}>
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-              Générer
+              {t("j2.generate")}
             </Button>
           </div>
         </>
       ) : (
         <>
-          <p className="text-sm text-muted-foreground">Écris toi-même ton récit, à ta façon. Tes mots, ton rythme.</p>
+          <p className="text-sm text-muted-foreground">{t("j2.manualHint")}</p>
           <Textarea
             value={story}
             onChange={(e) => setStory(e.target.value)}
-            placeholder="Il était une fois mon voyage à…"
+            placeholder={t("j2.manualPlaceholder")}
             rows={12}
             className="font-serif leading-relaxed"
           />
           <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground">{story.split(/\s+/).filter(Boolean).length} mots</span>
+            <span className="text-xs text-muted-foreground">{t("j2.wordsCount", { n: story.split(/\s+/).filter(Boolean).length })}</span>
             <Button onClick={saveManual} disabled={saving || !story.trim()}>
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Enregistrer
+              {t("j2.saveBtn")}
             </Button>
           </div>
         </>
