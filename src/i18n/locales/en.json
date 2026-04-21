@@ -592,5 +592,102 @@
         "description": "A final touch of inspiration!"
       }
     }
+  },
+  "common2": {
+    "home": "Home",
+    "back": "Back",
+    "loading": "Loading…",
+    "noDestination": "No destination",
+    "untitled": "Untitled"
+  },
+  "carnets": {
+    "title": "My journals",
+    "kicker": "Journal",
+    "empty": "You don't have any saved trip yet.",
+    "createFirst": "Create my first trip →",
+    "tracking": "Tracking",
+    "map": "Map"
+  },
+  "carnet": {
+    "back": "Back",
+    "notFound": "Journal not found",
+    "noDays": "No days created. Check your trip dates.",
+    "tabTimeline": "Timeline",
+    "tabLive": "Live tracking",
+    "tabStory": "AI Story",
+    "tabInsights": "Insights",
+    "tabShare": "Share",
+    "day": "Day {{n}}",
+    "memoryOne": "{{n}} memory",
+    "memoryMany": "{{n}} memories"
+  },
+  "suivi": {
+    "title": "Trip Tracking",
+    "kicker": "Travel companion",
+    "heroTitle": "Follow your trip live",
+    "heroDesc": "Live map, dynamic timeline, auto check-in and hyper-local AI suggestions.",
+    "empty": "Create a trip first to enable tracking.",
+    "createTrip": "Create my trip →",
+    "kickerCard": "Live tracking"
+  },
+  "suiviTrip": {
+    "back": "My trackings",
+    "title": "Live tracking"
+  },
+  "discoverPage": {
+    "geoDenied": "🚫 Geolocation denied. Enable it in your browser settings for precise recommendations.",
+    "tabFeed": "For you",
+    "tabMap": "Map",
+    "tabSearch": "Search",
+    "tabLists": "My lists",
+    "loadingNearby": "Loading places around you…",
+    "waitingPos": "📍 Waiting for your location to generate recommendations…",
+    "noPlaces": "🔍 No places found around you yet.",
+    "noPlacesHint": "Try search to explore another area, or refresh in a few seconds.",
+    "refresh": "Refresh",
+    "createListFirst": "Create a list first",
+    "savedIn": "Saved to {{list}}",
+    "removed": "Removed",
+    "secForYou": "For you",
+    "secAround": "Around you",
+    "secHidden": "Hidden gems",
+    "secFood": "Restaurants & Cafés",
+    "secExperiences": "Activities & Culture",
+    "secChill": "Chill & Nature"
+  },
+  "explorePage": {
+    "title": "Travel Map",
+    "h2": "Your gamified trips",
+    "subtitle": "Pick a trip to explore your interactive map and unlock badges.",
+    "empty": "No trip saved.",
+    "createFirst": "Create my first trip →",
+    "kickerCard": "Travel Map",
+    "fromDate": "Starting {{date}}"
+  },
+  "exploreTrip": {
+    "title": "Travel Map",
+    "back": "Home",
+    "emptyTitle": "Generate your travel map",
+    "emptyDesc": "We'll automatically build POIs from AI recommendations, your journal and live tracking.",
+    "generate": "Generate map",
+    "destinationLabel": "Destination: {{name}}",
+    "mapTitle": "Exploration map",
+    "regenerate": "Regenerate",
+    "tabMap": "Map",
+    "tabReplay": "Replay",
+    "tabSummary": "Summary"
+  },
+  "gamification": {
+    "heroTitle": "Badge Collection",
+    "heroSubtitle": "Explore, collect and unlock unique badges",
+    "tripAdaptedDay": "✨ Goals adapted to your {{count}}-day trip",
+    "tripAdaptedDays": "✨ Goals adapted to your {{count}}-day trip",
+    "statsBadgesUnlocked": "Badges unlocked",
+    "statsBadges": "Badges",
+    "statsPlaces": "Places visited",
+    "statsPlacesShort": "Places",
+    "statsMemories": "Memories",
+    "statsXp": "Est. XP",
+    "statsXpShort": "XP"
   }
 }

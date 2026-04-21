@@ -592,5 +592,102 @@
         "description": "Une dernière touche d'inspiration !"
       }
     }
+  },
+  "common2": {
+    "home": "Accueil",
+    "back": "Retour",
+    "loading": "Chargement…",
+    "noDestination": "Sans destination",
+    "untitled": "Sans titre"
+  },
+  "carnets": {
+    "title": "Mes carnets",
+    "kicker": "Carnet",
+    "empty": "Tu n'as pas encore de voyage enregistré.",
+    "createFirst": "Créer mon premier voyage →",
+    "tracking": "Suivi",
+    "map": "Map"
+  },
+  "carnet": {
+    "back": "Retour",
+    "notFound": "Carnet introuvable",
+    "noDays": "Aucune journée créée. Vérifie les dates de ton voyage.",
+    "tabTimeline": "Timeline",
+    "tabLive": "Suivi live",
+    "tabStory": "Récit IA",
+    "tabInsights": "Insights",
+    "tabShare": "Partager",
+    "day": "Jour {{n}}",
+    "memoryOne": "{{n}} souvenir",
+    "memoryMany": "{{n}} souvenirs"
+  },
+  "suivi": {
+    "title": "Suivi de Voyage",
+    "kicker": "Compagnon de voyage",
+    "heroTitle": "Suivez votre voyage en direct",
+    "heroDesc": "Carte live, timeline dynamique, check-in auto et suggestions IA hyper locales.",
+    "empty": "Crée d'abord un voyage pour activer le suivi.",
+    "createTrip": "Créer mon voyage →",
+    "kickerCard": "Suivi live"
+  },
+  "suiviTrip": {
+    "back": "Mes suivis",
+    "title": "Suivi live"
+  },
+  "discoverPage": {
+    "geoDenied": "🚫 Géolocalisation refusée. Active-la dans les réglages du navigateur pour des recos précises.",
+    "tabFeed": "Pour toi",
+    "tabMap": "Carte",
+    "tabSearch": "Recherche",
+    "tabLists": "Mes listes",
+    "loadingNearby": "Chargement des lieux autour de toi…",
+    "waitingPos": "📍 En attente de ta position pour générer des recommandations…",
+    "noPlaces": "🔍 Aucun lieu trouvé autour de toi pour le moment.",
+    "noPlacesHint": "Essaie la recherche pour explorer une autre zone, ou rafraîchis dans quelques secondes.",
+    "refresh": "Rafraîchir",
+    "createListFirst": "Crée une liste d'abord",
+    "savedIn": "Sauvegardé dans {{list}}",
+    "removed": "Retiré",
+    "secForYou": "Pour toi",
+    "secAround": "Autour de toi",
+    "secHidden": "Hidden gems",
+    "secFood": "Restaurants & Cafés",
+    "secExperiences": "Activités & Culture",
+    "secChill": "Chill & Nature"
+  },
+  "explorePage": {
+    "title": "Travel Map",
+    "h2": "Tes voyages gamifiés",
+    "subtitle": "Choisis un voyage pour explorer ta carte interactive et débloquer des badges.",
+    "empty": "Aucun voyage enregistré.",
+    "createFirst": "Créer mon premier voyage →",
+    "kickerCard": "Travel Map",
+    "fromDate": "À partir du {{date}}"
+  },
+  "exploreTrip": {
+    "title": "Travel Map",
+    "back": "Accueil",
+    "emptyTitle": "Génère ta carte de voyage",
+    "emptyDesc": "On va créer automatiquement les points d'intérêt à partir des recommandations IA, ton carnet et ton suivi live.",
+    "generate": "Générer la carte",
+    "destinationLabel": "Destination : {{name}}",
+    "mapTitle": "Carte d'exploration",
+    "regenerate": "Régénérer",
+    "tabMap": "Carte",
+    "tabReplay": "Replay",
+    "tabSummary": "Résumé"
+  },
+  "gamification": {
+    "heroTitle": "Collection de Badges",
+    "heroSubtitle": "Explore, collectionne et débloque des badges uniques",
+    "tripAdaptedDay": "✨ Objectifs adaptés à ton voyage de {{count}} jour",
+    "tripAdaptedDays": "✨ Objectifs adaptés à ton voyage de {{count}} jours",
+    "statsBadgesUnlocked": "Badges débloqués",
+    "statsBadges": "Badges",
+    "statsPlaces": "Lieux visités",
+    "statsPlacesShort": "Lieux",
+    "statsMemories": "Souvenirs",
+    "statsXp": "XP estimés",
+    "statsXpShort": "XP"
   }
 }
