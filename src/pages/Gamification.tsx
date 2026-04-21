@@ -608,6 +608,7 @@ const GamificationPage = () => {
         </section>
       </main>
       <QuickJump />
+      <LevelUpOverlay level={levelUp} onClose={() => setLevelUp(null)} />
     </div>
   );
 };
