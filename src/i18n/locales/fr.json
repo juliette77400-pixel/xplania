@@ -13,6 +13,12 @@
     "letsGo": "C'est parti",
     "retry": "Réessayer"
   },
+  "notifBell": {
+    "aria": "Notifications",
+    "title": "Notifications",
+    "markAll": "Tout lire",
+    "empty": "Aucune notification pour le moment."
+  },
   "lang": {
     "switch": "Langue",
     "fr": "Français",
