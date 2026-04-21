@@ -435,6 +435,17 @@ const Offres = () => {
           fonctionnalités gratuites restent accessibles pendant cette phase de test.
         </p>
       </div>
+
+      <WaitlistDialog
+        open={waitlistOpen}
+        onOpenChange={setWaitlistOpen}
+        source={waitlistPack ? `offres:pack:${waitlistPack}` : "offres:page"}
+        pack={waitlistPack}
+        title={waitlistPack ? `${waitlistPack} arrive bientôt 🚀` : "Le premium arrive bientôt 🚀"}
+        teaser={waitlistPack
+          ? `Sois le premier à débloquer le ${waitlistPack} dès l'ouverture, avec -30% en avant-première.`
+          : "Laisse ton email pour être informé du lancement et obtenir -30% en avant-première."}
+      />
     </div>
   );
 };
