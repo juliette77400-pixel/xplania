@@ -5,16 +5,18 @@ import { Slider } from "@/components/ui/slider";
 import { Play, Pause, RotateCcw, MapPin } from "lucide-react";
 import type { ExploreNode } from "@/hooks/useExplore";
 import { TYPE_COLORS } from "@/lib/explore-badges";
+import { useTranslation } from "react-i18next";
 
 interface Props { nodes: ExploreNode[]; }
 
-const formatDate = (s?: string | null) => {
-  if (!s) return "";
-  try { return new Date(s).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); }
-  catch { return ""; }
-};
-
 const ReplayMode = ({ nodes }: Props) => {
+  const { t, i18n } = useTranslation();
+  const formatDate = (s?: string | null) => {
+    if (!s) return "";
+    try { return new Date(s).toLocaleDateString(i18n.language.startsWith("fr") ? "fr-FR" : "en-US", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); }
+    catch { return ""; }
+  };
+
   const visitedSorted = useMemo(
     () => nodes
       .filter((n) => n.status === "visited" && n.visited_at)
@@ -28,8 +30,8 @@ const ReplayMode = ({ nodes }: Props) => {
 
   useEffect(() => {
     if (!playing || step >= total) return;
-    const t = setTimeout(() => setStep((s) => Math.min(s + 1, total)), 1100);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => setStep((s) => Math.min(s + 1, total)), 1100);
+    return () => clearTimeout(tm);
   }, [playing, step, total]);
 
   useEffect(() => { if (step >= total) setPlaying(false); }, [step, total]);
@@ -38,22 +40,18 @@ const ReplayMode = ({ nodes }: Props) => {
     return (
       <div className="rounded-2xl border border-border bg-card/40 p-10 text-center">
         <MapPin className="w-10 h-10 mx-auto text-muted-foreground/60 mb-3" />
-        <p className="text-sm text-muted-foreground">Visite des lieux pour rejouer ton parcours en ligne métro ✨</p>
+        <p className="text-sm text-muted-foreground">{t("x2.noVisited")}</p>
       </div>
     );
   }
 
-  // Progress percentage along the line
   const progressPct = total <= 1 ? 100 : (step / total) * 100;
 
   return (
     <div className="space-y-5">
-      {/* Metro-line visualization */}
       <div className="rounded-2xl border border-border bg-gradient-to-b from-card/60 to-card/30 p-6 md:p-8 overflow-x-auto">
         <div className="min-w-[640px] relative py-10">
-          {/* Background line (track) */}
           <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-2 rounded-full bg-muted/40" />
-          {/* Animated progress line */}
           <motion.div
             className="absolute left-6 top-1/2 -translate-y-1/2 h-2 rounded-full bg-gradient-to-r from-primary via-accent to-primary shadow-[0_0_18px_hsl(var(--primary)/0.6)]"
             initial={{ width: 0 }}
@@ -61,7 +59,6 @@ const ReplayMode = ({ nodes }: Props) => {
             transition={{ duration: 0.6, ease: "easeInOut" }}
           />
 
-          {/* Stations */}
           <div className="relative flex items-center justify-between gap-2 px-6">
             {visitedSorted.map((n, i) => {
               const reached = i < step;
@@ -69,11 +66,9 @@ const ReplayMode = ({ nodes }: Props) => {
               const color = TYPE_COLORS[n.type] || "hsl(190 90% 60%)";
               return (
                 <div key={n.id} className="flex flex-col items-center gap-2 flex-1 min-w-0">
-                  {/* Date above */}
                   <div className={`text-[10px] uppercase tracking-wide ${reached ? "text-foreground" : "text-muted-foreground/60"} h-4`}>
                     {formatDate(n.visited_at)}
                   </div>
-                  {/* Station */}
                   <motion.div
                     initial={false}
                     animate={{
@@ -98,7 +93,6 @@ const ReplayMode = ({ nodes }: Props) => {
                       />
                     )}
                   </motion.div>
-                  {/* Label below */}
                   <div className={`text-[11px] font-medium text-center max-w-[110px] truncate ${reached ? "text-foreground" : "text-muted-foreground/70"}`}>
                     {n.name}
                   </div>
@@ -110,7 +104,6 @@ const ReplayMode = ({ nodes }: Props) => {
         </div>
       </div>
 
-      {/* Current station highlight */}
       {step > 0 && step <= total && (
         <motion.div
           key={visitedSorted[step - 1]?.id}
@@ -128,7 +121,7 @@ const ReplayMode = ({ nodes }: Props) => {
             <div className="min-w-0">
               <h4 className="font-semibold text-foreground truncate">{visitedSorted[step - 1].name}</h4>
               <p className="text-xs text-muted-foreground">
-                Étape {step}/{total} · +{visitedSorted[step - 1].points} pts · {formatDate(visitedSorted[step - 1].visited_at)}
+                {step}/{total} · +{visitedSorted[step - 1].points} pts · {formatDate(visitedSorted[step - 1].visited_at)}
               </p>
               {visitedSorted[step - 1].description && (
                 <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{visitedSorted[step - 1].description}</p>
@@ -138,7 +131,6 @@ const ReplayMode = ({ nodes }: Props) => {
         </motion.div>
       )}
 
-      {/* Controls */}
       <div className="flex items-center gap-3 px-2">
         <Button size="icon" variant="outline" onClick={() => { setStep(0); setPlaying(false); }}>
           <RotateCcw className="w-4 h-4" />

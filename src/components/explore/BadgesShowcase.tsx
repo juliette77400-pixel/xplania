@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { celebrateUnlock } from "@/lib/badges-fx";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   badges: ExploreBadge[];
@@ -26,12 +27,12 @@ const saveSeen = (s: Set<string>) => {
 };
 
 const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
+  const { t } = useTranslation();
   const owned = useMemo(() => new Set(badges.map((b) => b.code)), [badges]);
   const [active, setActive] = useState<BadgeCategory | "all">("all");
   const seenBadges = useRef<Set<string>>(loadSeen());
   const hydratedRef = useRef(false);
 
-  // Detect newly-unlocked badges → confetti (session-scoped to avoid re-fires on remount)
   useEffect(() => {
     const codes = [...owned];
     if (!hydratedRef.current) {
@@ -62,12 +63,11 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
       <div className="glass-card rounded-2xl p-5 space-y-4">
         <div className="flex items-center gap-2">
           <Trophy className="w-5 h-5 text-primary" />
-          <h3 className="font-bold text-foreground">Collection de badges</h3>
+          <h3 className="font-bold text-foreground">{t("x2.badgesCollection")}</h3>
           <span className="text-xs text-muted-foreground ml-auto">{unlockedCount}/{total}</span>
         </div>
         <Progress value={Math.round((unlockedCount / total) * 100)} className="h-1.5" />
 
-        {/* Category filter chips */}
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setActive("all")}
@@ -76,7 +76,7 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
               active === "all" ? "border-primary/60 bg-primary/15 text-foreground" : "border-border bg-card/40 text-muted-foreground hover:border-border/80",
             )}
           >
-            Tous · {total}
+            {t("x2.allChip", { n: total })}
           </button>
           {BADGE_CATEGORIES.map((cat) => {
             const count = EXPLORE_BADGES.filter((b) => b.category === cat.key).length;
@@ -98,7 +98,6 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
           })}
         </div>
 
-        {/* Mini collectible grid */}
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2.5">
           {filtered.map((b) => {
             const unlocked = owned.has(b.code);
@@ -151,12 +150,12 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
                     <p className="text-xs text-muted-foreground">{b.description}</p>
                     {unlocked ? (
                       <p className="text-xs text-emerald-400 flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3" /> Débloqué
+                        <CheckCircle2 className="w-3 h-3" /> {t("x2.unlocked")}
                       </p>
                     ) : (
                       <div className="space-y-1">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="font-medium">Progression</span>
+                          <span className="font-medium">{t("x2.progress")}</span>
                           <span className="text-muted-foreground">{prog.current}/{prog.target}</span>
                         </div>
                         <Progress value={pct} className="h-1" />

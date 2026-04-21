@@ -3,6 +3,7 @@ import { Sparkles, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import type { ExploreNode } from "@/hooks/useExplore";
 
 interface Suggestion { name: string; type: string; description: string; reason: string; }
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
+  const { t } = useTranslation();
   const [items, setItems] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,7 @@ const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
       if (data?.error) throw new Error(data.error);
       setItems(data?.suggestions || []);
     } catch (e: any) {
-      toast.error(e?.message || "Échec suggestions");
+      toast.error(e?.message || t("x2.suggestFail"));
     } finally {
       setLoading(false);
     }
@@ -35,14 +37,14 @@ const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
     <div className="rounded-2xl border border-border bg-card/40 backdrop-blur-sm p-4 space-y-3">
       <div className="flex items-center justify-between gap-2">
         <h3 className="font-bold text-sm flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-primary" /> Suggestions IA
+          <Sparkles className="w-4 h-4 text-primary" /> {t("x2.suggestionsAi")}
         </h3>
         <Button size="sm" variant="outline" onClick={fetchSuggestions} disabled={loading}>
-          {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : "Suggérer"}
+          {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : t("x2.suggest")}
         </Button>
       </div>
       {items.length === 0 && !loading && (
-        <p className="text-xs text-muted-foreground">Lance l'IA pour découvrir des lieux locaux à ajouter à ton parcours.</p>
+        <p className="text-xs text-muted-foreground">{t("x2.suggestHint")}</p>
       )}
       <div className="space-y-2">
         {items.map((s, i) => (
@@ -53,7 +55,7 @@ const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
                 onAdd({ name: s.name, type: s.type, description: s.description, parent_id: cityNode?.id || null, level: 2, points: 50 });
                 setItems((prev) => prev.filter((_, idx) => idx !== i));
               }}>
-                <Plus className="w-3 h-3 mr-1" /> Ajouter
+                <Plus className="w-3 h-3 mr-1" /> {t("x2.addPlus")}
               </Button>
             </div>
             <p className="text-xs text-muted-foreground mb-1">{s.description}</p>

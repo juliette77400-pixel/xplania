@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, CheckCircle2, Camera, Trash2, Network } from "lucide-react";
 import type { ExploreNode, ExploreEdge, ExploreMedia } from "@/hooks/useExplore";
 import { TYPE_COLORS } from "@/lib/explore-badges";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   node: ExploreNode | null;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit, onDelete, onAddMedia, onSelectNode }: Props) => {
+  const { t } = useTranslation();
   const [note, setNote] = useState("");
 
   if (!node) return null;
@@ -31,6 +33,7 @@ const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit
     .filter(Boolean) as ExploreNode[];
 
   const nodeMedia = media.filter((m) => m.node_id === node.id);
+  const statusLabel = node.status === "visited" ? t("x2.visited") : node.status === "in_progress" ? t("x2.inProgress") : t("x2.todo");
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && onClose()}>
@@ -40,7 +43,7 @@ const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit
             <div className="w-3 h-3 rounded-full" style={{ background: TYPE_COLORS[node.type] }} />
             <span className="text-xs uppercase text-muted-foreground">{node.type}</span>
             <Badge variant={node.status === "visited" ? "default" : "outline"} className="ml-auto">
-              {node.status === "visited" ? "Visité" : node.status === "in_progress" ? "En cours" : "À visiter"}
+              {statusLabel}
             </Badge>
           </div>
           <SheetTitle className="text-2xl">{node.name}</SheetTitle>
@@ -52,7 +55,7 @@ const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit
             <Sparkles className="w-5 h-5 text-primary" />
             <div>
               <div className="text-lg font-bold text-foreground">+{node.points} pts</div>
-              <div className="text-xs text-muted-foreground">Niveau {node.level} • {node.source}</div>
+              <div className="text-xs text-muted-foreground">{t("x2.level", { n: node.level })} • {node.source}</div>
             </div>
             {node.lat && node.lng && (
               <div className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
@@ -65,28 +68,27 @@ const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit
           {node.status !== "visited" && (
             <Button onClick={() => onVisit(node.id)} className="w-full" size="lg">
               <CheckCircle2 className="w-4 h-4 mr-2" />
-              Marquer comme visité (+{node.points}pts)
+              {t("x2.markVisited", { pts: node.points })}
             </Button>
           )}
 
-          {/* Souvenirs */}
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Camera className="w-4 h-4 text-primary" />
-              <h4 className="font-semibold text-foreground">Souvenirs ({nodeMedia.length})</h4>
+              <h4 className="font-semibold text-foreground">{t("x2.memoriesCount", { n: nodeMedia.length })}</h4>
             </div>
             {nodeMedia.length > 0 && (
               <div className="space-y-2 mb-3">
                 {nodeMedia.map((m) => (
                   <div key={m.id} className="text-sm p-2 rounded-lg bg-muted/20">
                     {m.mood && <span className="mr-2">{m.mood}</span>}
-                    {m.caption || <em className="text-muted-foreground">Sans légende</em>}
+                    {m.caption || <em className="text-muted-foreground">{t("x2.noCaption")}</em>}
                   </div>
                 ))}
               </div>
             )}
             <Textarea
-              placeholder="Ajouter une note souvenir..."
+              placeholder={t("x2.addNote")}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               rows={2}
@@ -99,16 +101,15 @@ const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit
               disabled={!note.trim()}
               onClick={() => { onAddMedia(node.id, { type: "note", caption: note }); setNote(""); }}
             >
-              + Ajouter (+20pts)
+              {t("x2.addPlus20")}
             </Button>
           </div>
 
-          {/* Connexions */}
           {connected.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Network className="w-4 h-4 text-primary" />
-                <h4 className="font-semibold text-foreground">Lieux connectés ({connected.length})</h4>
+                <h4 className="font-semibold text-foreground">{t("x2.connected", { n: connected.length })}</h4>
               </div>
               <div className="flex flex-wrap gap-2">
                 {connected.map((c) => (
@@ -131,7 +132,7 @@ const NodeDetailDrawer = ({ node, open, onClose, allNodes, edges, media, onVisit
             className="text-destructive hover:text-destructive w-full"
           >
             <Trash2 className="w-4 h-4 mr-2" />
-            Supprimer ce point
+            {t("x2.deletePoint")}
           </Button>
         </div>
       </SheetContent>
