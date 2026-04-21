@@ -960,6 +960,36 @@ export type Database = {
         }
         Relationships: []
       }
+      premium_waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          metadata: Json
+          pack: string | null
+          source: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          metadata?: Json
+          pack?: string | null
+          source?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          metadata?: Json
+          pack?: string | null
+          source?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
