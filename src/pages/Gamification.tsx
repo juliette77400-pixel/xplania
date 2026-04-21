@@ -222,16 +222,7 @@ const GamificationPage = () => {
     [counts]
   );
 
-  // Real weekly XP estimate: 50 XP per badge across modules
-  const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
-  const totalXp = totalBadges * 50 + counts.exploreVisited * 20 + counts.journalNotes * 10;
-
-  return (
-    <div className="min-h-screen bg-background">
-      <AppNavbar />
-
-      <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-16">
-
+  // (XP computation moved below — single source of truth)
   // XP — derived from real activity counts (single source of truth)
   const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
   const totalXp = useMemo(
