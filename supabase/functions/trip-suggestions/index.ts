@@ -26,7 +26,8 @@ ${weather ? `Météo: ${weather}.` : ""}
 ${mood ? `Humeur: ${mood}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
 ${timeAvailable ? `Temps dispo: ${timeAvailable}.` : ""}
-Donne 4 suggestions actionnables maintenant : restaurants, activités spontanées, lieux peu touristiques.`;
+Donne 4 suggestions actionnables maintenant : restaurants, activités spontanées, lieux peu touristiques.
+Pour chaque suggestion, fournis lat/lng plausibles à <2km de la position actuelle (${lat}, ${lng}).`;
 
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -55,6 +56,8 @@ Donne 4 suggestions actionnables maintenant : restaurants, activités spontanée
                       description: { type: "string" },
                       reason: { type: "string" },
                       estimated_duration: { type: "string" },
+                      lat: { type: "number", description: "Latitude approximative du lieu suggéré, proche de la position fournie" },
+                      lng: { type: "number", description: "Longitude approximative du lieu suggéré, proche de la position fournie" },
                     },
                     required: ["title", "category", "description", "reason"],
                   },
