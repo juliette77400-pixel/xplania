@@ -25,8 +25,12 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchWeather = async () => {
-    if (!destination || destination === "votre destination") return;
+    if (!destination || destination === "votre destination" || destination.toLowerCase().includes("your destination")) return;
     setLoading(true);
+    setError(null);
+    try {
+      const cleanCity = cleanCityForWeather(destination);
+      if (!cleanCity || cleanCity.length < 2) return;
     setError(null);
     try {
       const cleanCity = cleanCityForWeather(destination);
