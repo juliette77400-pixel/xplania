@@ -16,8 +16,8 @@ const steps = [
   {
     num: 3,
     title: "Vivez le voyage sereinement",
-    desc: "Carnet de bord, suivi de voyage et recommandations en temps réel arriveront prochainement.",
-    soon: true,
+    desc: "Carnet de bord, suivi live, mood explorer et recommandations en temps réel : tout est déjà disponible dans la bêta.",
+    soon: false,
   },
 ];
 
