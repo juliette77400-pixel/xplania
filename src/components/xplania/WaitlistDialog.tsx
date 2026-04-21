@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Check, Rocket, Mail, Loader2 } from "lucide-react";
+import { Sparkles, Check, Rocket, Mail, Loader2, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+// Baseline so the counter never feels empty (social proof). Real signups add to it.
+const WAITLIST_BASELINE = 327;
 
 const emailSchema = z.string().trim().email("Email invalide").max(255);
 
@@ -27,6 +30,20 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
+
+  // Fetch live waitlist count when the dialog opens
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.rpc("get_waitlist_count" as never);
+      if (cancelled || error) return;
+      const real = typeof data === "number" ? data : 0;
+      setCount(WAITLIST_BASELINE + real);
+    })();
+    return () => { cancelled = true; };
+  }, [open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,6 +101,23 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
                   {teaser ?? "Laisse ton email pour être informé en avant-première et obtenir -30% à l'ouverture."}
                 </DialogDescription>
               </DialogHeader>
+
+              {count !== null && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-3 mx-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 w-fit"
+                >
+                  <Users className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-xs text-foreground">
+                    <strong className="text-primary">{count.toLocaleString("fr-FR")}</strong> personnes attendent déjà
+                  </span>
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+                  </span>
+                </motion.div>
+              )}
 
               <ul className="space-y-2 py-4">
                 {[

@@ -1289,6 +1289,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_waitlist_count: { Args: never; Returns: number }
       owns_place_list: {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
