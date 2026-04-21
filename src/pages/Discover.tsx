@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,12 +20,13 @@ const Discover = () => {
   const { lists, isSaved, toggleItem } = usePlaceLists();
   useNearbyAlerts(userPos, places);
   const [selected, setSelected] = useState<Place | null>(null);
+  const { t } = useTranslation();
 
   const defaultList = lists.find((l) => l.is_default) || lists[0];
   const handleQuickSave = async (p: Place) => {
-    if (!defaultList) return toast.error("Crée une liste d'abord");
+    if (!defaultList) return toast.error(t("discoverPage.createListFirst"));
     const added = await toggleItem(defaultList.id, p.id);
-    toast.success(added ? `Sauvegardé dans ${defaultList.emoji} ${defaultList.name}` : "Retiré");
+    toast.success(added ? t("discoverPage.savedIn", { list: `${defaultList.emoji} ${defaultList.name}` }) : t("discoverPage.removed"));
   };
 
   return (
@@ -35,40 +37,40 @@ const Discover = () => {
 
         {permission === "denied" && (
           <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-sm">
-            🚫 Géolocalisation refusée. Active-la dans les réglages du navigateur pour des recos précises.
+            {t("discoverPage.geoDenied")}
           </div>
         )}
 
         <Tabs defaultValue="feed" className="w-full">
           <TabsList className="w-full justify-start overflow-x-auto">
-            <TabsTrigger value="feed">🔥 Pour toi</TabsTrigger>
-            <TabsTrigger value="map">🗺️ Carte</TabsTrigger>
-            <TabsTrigger value="search">🔍 Recherche</TabsTrigger>
-            <TabsTrigger value="lists">❤️ Mes listes</TabsTrigger>
+            <TabsTrigger value="feed">🔥 {t("discoverPage.tabFeed")}</TabsTrigger>
+            <TabsTrigger value="map">🗺️ {t("discoverPage.tabMap")}</TabsTrigger>
+            <TabsTrigger value="search">🔍 {t("discoverPage.tabSearch")}</TabsTrigger>
+            <TabsTrigger value="lists">❤️ {t("discoverPage.tabLists")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="feed" className="space-y-8 pt-6">
             {loading && places.length === 0 && (
-              <div className="flex items-center justify-center gap-2 py-16 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" />Chargement des lieux autour de toi…</div>
+              <div className="flex items-center justify-center gap-2 py-16 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" />{t("discoverPage.loadingNearby")}</div>
             )}
             {!userPos && !loading && (
               <div className="rounded-2xl border border-border bg-card/40 p-8 text-center text-sm text-muted-foreground">
-                📍 En attente de ta position pour générer des recommandations…
+                {t("discoverPage.waitingPos")}
               </div>
             )}
             {userPos && !loading && places.length === 0 && (
               <div className="rounded-2xl border border-border bg-card/40 p-8 text-center text-sm text-muted-foreground space-y-3">
-                <p>🔍 Aucun lieu trouvé autour de toi pour le moment.</p>
-                <p className="text-xs">Essaie la recherche pour explorer une autre zone, ou rafraîchis dans quelques secondes.</p>
-                <button onClick={refresh} className="rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">Rafraîchir</button>
+                <p>{t("discoverPage.noPlaces")}</p>
+                <p className="text-xs">{t("discoverPage.noPlacesHint")}</p>
+                <button onClick={refresh} className="rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">{t("discoverPage.refresh")}</button>
               </div>
             )}
-            <PlaceCarousel title="Pour toi" emoji="🔥" places={sections.forYou} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Autour de toi" emoji="📍" places={sections.around} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Hidden gems" emoji="✨" places={sections.hidden} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Restaurants & Cafés" emoji="🍝" places={sections.food} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Activités & Culture" emoji="🎭" places={sections.experiences} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
-            <PlaceCarousel title="Chill & Nature" emoji="🌿" places={sections.chill} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title={t("discoverPage.secForYou")} emoji="🔥" places={sections.forYou} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title={t("discoverPage.secAround")} emoji="📍" places={sections.around} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title={t("discoverPage.secHidden")} emoji="✨" places={sections.hidden} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title={t("discoverPage.secFood")} emoji="🍝" places={sections.food} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title={t("discoverPage.secExperiences")} emoji="🎭" places={sections.experiences} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
+            <PlaceCarousel title={t("discoverPage.secChill")} emoji="🌿" places={sections.chill} onSelect={setSelected} isSaved={isSaved} onToggleSave={handleQuickSave} />
           </TabsContent>
 
           <TabsContent value="map" className="pt-6">

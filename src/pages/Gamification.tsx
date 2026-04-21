@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Trophy, Search, Landmark, Heart, MapPin, Utensils, Mountain,
   Compass, Moon, Camera, Star, Award, Lock, CheckCircle,
@@ -117,6 +118,7 @@ const MISSION_DEFS: Mission[] = [
 const GamificationPage = () => {
   const { user } = useAuth();
   const { tripId, departureDate, returnDate } = useActiveTrip();
+  const { t } = useTranslation();
 
   // Adapt targets to trip duration
   const tripDays = useMemo(() => {
@@ -305,22 +307,22 @@ const GamificationPage = () => {
 
         {/* ══════ HERO STATS ══════ */}
         <section className="text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Collection de Badges</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t("gamification.heroTitle")}</h1>
           <p className="text-muted-foreground">
-            Explore, collectionne et débloque des badges uniques
+            {t("gamification.heroSubtitle")}
             {tripDays != null && (
               <span className="block text-xs mt-1 text-primary">
-                ✨ Objectifs adaptés à ton voyage de {tripDays} {tripDays === 1 ? "jour" : "jours"}
+                {tripDays === 1 ? t("gamification.tripAdaptedDay", { count: tripDays }) : t("gamification.tripAdaptedDays", { count: tripDays })}
               </span>
             )}
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 max-w-3xl mx-auto">
             {[
-              { label: "Badges débloqués", short: "Badges", value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
-              { label: "Lieux visités", short: "Lieux", value: counts.exploreVisited },
-              { label: "Souvenirs", short: "Souvenirs", value: counts.journalNotes + counts.journalPhotos },
-              { label: "XP estimés", short: "XP", value: totalXp.toLocaleString() },
+              { label: t("gamification.statsBadgesUnlocked"), short: t("gamification.statsBadges"), value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
+              { label: t("gamification.statsPlaces"), short: t("gamification.statsPlacesShort"), value: counts.exploreVisited },
+              { label: t("gamification.statsMemories"), short: t("gamification.statsMemories"), value: counts.journalNotes + counts.journalPhotos },
+              { label: t("gamification.statsXp"), short: t("gamification.statsXpShort"), value: totalXp.toLocaleString() },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl bg-card border border-border p-3 sm:p-4 min-w-0">
                 <p className="text-xl sm:text-2xl font-bold gradient-text leading-tight truncate">
