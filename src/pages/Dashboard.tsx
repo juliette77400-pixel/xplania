@@ -65,6 +65,7 @@ const Dashboard = () => {
               ? t("myDashboard.tripsActive", { count: activeTrips.length })
               : t("myDashboard.noTripsCta")}
           </p>
+        </motion.div>
 
         {/* ✨ NEW (Tâche 3) — Engagement quotidien : streak + missions hebdo */}
         <section className="grid md:grid-cols-2 gap-3">
