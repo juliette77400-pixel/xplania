@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
   Check,
@@ -21,143 +22,100 @@ import WaitlistDialog from "@/components/xplania/WaitlistDialog";
 
 type BillingCycle = "monthly" | "yearly" | "season3" | "season6" | "perTrip";
 
-const BILLING_TABS: { key: BillingCycle; label: string }[] = [
-  { key: "monthly", label: "Mensuel" },
-  { key: "yearly", label: "Annuel" },
-  { key: "season3", label: "Saison 3 mois" },
-  { key: "season6", label: "Saison 6 mois" },
-  { key: "perTrip", label: "À l'usage" },
-];
+const BILLING_KEYS: BillingCycle[] = ["monthly", "yearly", "season3", "season6", "perTrip"];
 
-const SUFFIX: Record<BillingCycle, string> = {
-  monthly: "/mois",
-  yearly: "/an",
-  season3: "/3 mois",
-  season6: "/6 mois",
-  perTrip: "/voyage",
-};
-
-interface Pack {
-  id: string;
-  name: string;
+interface PackDef {
+  id: "admin" | "creatif" | "ia" | "intercultural" | "futur" | "all";
   icon: React.ReactNode;
-  tagline: string;
   premium?: boolean;
   recommended?: boolean;
-  features: string[];
+  featureKeys: string[];
   prices: Record<BillingCycle, number>;
-  yearlyNote?: string;
+  hasYearlyNote?: boolean;
 }
 
-const packs: Pack[] = [
+const packs: PackDef[] = [
   {
     id: "admin",
-    name: "Pack Administratif",
     icon: <FileText className="w-5 h-5" />,
-    tagline: "Pour voyager sereinement en gérant tout l'aspect pratique",
-    features: [
-      "Guide budget (planification et suivi des dépenses)",
-      "Guide valise intelligente (check-list adaptée à la destination)",
-      "Gestion administrative (visas, documents, formalités)",
-    ],
+    featureKeys: ["f1", "f2", "f3"],
     prices: { monthly: 5.99, yearly: 59.9, season3: 20.97, season6: 39.9, perTrip: 7.99 },
-    yearlyNote: "≈ 2 mois offerts",
+    hasYearlyNote: true,
   },
   {
     id: "creatif",
-    name: "Pack Créatif",
     icon: <Palette className="w-5 h-5" />,
-    tagline: "Pour vivre son voyage comme une expérience unique et ludique",
-    features: [
-      "Carnet de bord personnalisé (journal interactif, photos, souvenirs)",
-      "Mood Explorer (activités et lieux selon l'humeur)",
-      "Gamification avec badges (défis, succès à débloquer)",
-    ],
+    featureKeys: ["f1", "f2", "f3"],
     prices: { monthly: 5.99, yearly: 59.9, season3: 20.97, season6: 39.9, perTrip: 7.99 },
-    yearlyNote: "≈ 2 mois offerts",
+    hasYearlyNote: true,
   },
   {
     id: "ia",
-    name: "Pack IA",
     icon: <Bot className="w-5 h-5" />,
-    tagline: "Pour un accompagnement intelligent et ultra-personnalisé",
     premium: true,
-    features: [
-      "Analyse et approfondissement d'un itinéraire existant",
-      "Accompagnement destination de A à Z (planification complète par IA)",
-    ],
+    featureKeys: ["f1", "f2"],
     prices: { monthly: 11.99, yearly: 119.9, season3: 41.97, season6: 79.9, perTrip: 14.99 },
-    yearlyNote: "≈ 2 mois offerts",
+    hasYearlyNote: true,
   },
   {
     id: "intercultural",
-    name: "Pack Interculturel",
     icon: <Globe className="w-5 h-5" />,
-    tagline: "Pour voyager en respectant et comprenant la culture locale",
-    features: [
-      "Guide interculturel (codes, traditions, comportements)",
-      "Recommandations locales (agences et freelances locaux)",
-    ],
+    featureKeys: ["f1", "f2"],
     prices: { monthly: 5.99, yearly: 59.9, season3: 20.97, season6: 39.9, perTrip: 7.99 },
-    yearlyNote: "≈ 2 mois offerts",
+    hasYearlyNote: true,
   },
   {
     id: "futur",
-    name: "Pack Futur",
     icon: <Glasses className="w-5 h-5" />,
-    tagline: "Pour explorer et s'inspirer avant même de partir",
     premium: true,
-    features: [
-      "Réalité virtuelle (visites immersives en 3D avant le départ)",
-      "Réalité augmentée (informations contextuelles pendant le voyage)",
-    ],
+    featureKeys: ["f1", "f2"],
     prices: { monthly: 12.99, yearly: 129.9, season3: 45.97, season6: 85.9, perTrip: 15.99 },
-    yearlyNote: "≈ 2 mois offerts",
+    hasYearlyNote: true,
   },
   {
     id: "all",
-    name: "All Access",
     icon: <Crown className="w-5 h-5" />,
-    tagline: "Tous les packs + mises à jour exclusives",
     recommended: true,
-    features: [
-      "Accès complet aux 5 packs (Admin, Créatif, IA, Interculturel, Futur)",
-      "Mises à jour exclusives en avant-première",
-      "Économie d'environ 8€/mois par rapport à l'achat séparé",
-    ],
+    featureKeys: ["f1", "f2", "f3"],
     prices: { monthly: 24.99, yearly: 249.9, season3: 74.97, season6: 139.9, perTrip: 39.99 },
   },
 ];
 
-const doublePacks = [
-  { name: "Administratif + Créatif", price: 11.49 },
-  { name: "IA + Futur", price: 21.99 },
-  { name: "Interculturel + Créatif", price: 11.89 },
-  { name: "Administratif + IA", price: 15.79 },
-  { name: "Administratif + Futur", price: 16.79 },
-  { name: "Interculturel + IA", price: 16.29 },
-  { name: "Interculturel + Futur", price: 17.09 },
+// Bundle definitions reference pack IDs for translatable names
+const doublePacks: { ids: PackDef["id"][]; price: number }[] = [
+  { ids: ["admin", "creatif"], price: 11.49 },
+  { ids: ["ia", "futur"], price: 21.99 },
+  { ids: ["intercultural", "creatif"], price: 11.89 },
+  { ids: ["admin", "ia"], price: 15.79 },
+  { ids: ["admin", "futur"], price: 16.79 },
+  { ids: ["intercultural", "ia"], price: 16.29 },
+  { ids: ["intercultural", "futur"], price: 17.09 },
 ];
 
-const triplePacks = [
-  { name: "Administratif + Créatif + Interculturel", price: 15.99 },
-  { name: "IA + Administratif + Créatif", price: 20.49 },
-  { name: "IA + Futur + Administratif", price: 25.49 },
-  { name: "IA + Futur + Créatif", price: 25.99 },
-  { name: "IA + Futur + Interculturel", price: 25.59 },
+const triplePacks: { ids: PackDef["id"][]; price: number }[] = [
+  { ids: ["admin", "creatif", "intercultural"], price: 15.99 },
+  { ids: ["ia", "admin", "creatif"], price: 20.49 },
+  { ids: ["ia", "futur", "admin"], price: 25.49 },
+  { ids: ["ia", "futur", "creatif"], price: 25.99 },
+  { ids: ["ia", "futur", "intercultural"], price: 25.59 },
 ];
-
-const formatPrice = (n: number) =>
-  n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 
 const Offres = () => {
+  const { t, i18n } = useTranslation();
   const { tier, generationsUsed, freeQuota } = usePlanStore();
   const [billing, setBilling] = useState<BillingCycle>("monthly");
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [waitlistPack, setWaitlistPack] = useState<string | undefined>(undefined);
 
-  const openWaitlist = (packName?: string) => {
-    setWaitlistPack(packName);
+  const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-US";
+  const currency = i18n.language.startsWith("fr") ? "EUR" : "EUR";
+  const formatPrice = (n: number) =>
+    new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+
+  const packName = (id: PackDef["id"]) => t(`offres.packs.${id}.name`);
+
+  const openWaitlist = (name?: string) => {
+    setWaitlistPack(name);
     setWaitlistOpen(true);
   };
 
@@ -174,7 +132,7 @@ const Offres = () => {
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour à l'accueil
+          {t("offres.back")}
         </Link>
 
         <motion.div
@@ -183,13 +141,13 @@ const Offres = () => {
           className="text-center mb-10"
         >
           <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-primary/15 text-primary mb-3">
-            Offres Xplania
+            {t("offres.tag")}
           </span>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-            Choisissez la formule qui vous correspond
+            {t("offres.title")}
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Démarrez gratuitement, puis composez votre abonnement pack par pack.
+            {t("offres.subtitle")}
           </p>
         </motion.div>
 
@@ -204,25 +162,21 @@ const Offres = () => {
               <Sparkles className="w-5 h-5 text-foreground" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground">Gratuit</h2>
-              <p className="text-xs text-muted-foreground">Pour découvrir Xplania</p>
+              <h2 className="text-xl font-bold text-foreground">{t("offres.free")}</h2>
+              <p className="text-xs text-muted-foreground">{t("offres.freeTagline")}</p>
             </div>
             {tier === "free" && (
               <span className="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
-                Actuel
+                {t("offres.current")}
               </span>
             )}
           </div>
           <div className="my-4">
-            <span className="text-4xl font-bold text-foreground">0 €</span>
-            <span className="text-sm text-muted-foreground"> / pour toujours</span>
+            <span className="text-4xl font-bold text-foreground">{formatPrice(0)}</span>
+            <span className="text-sm text-muted-foreground"> {t("offres.forever")}</span>
           </div>
           <ul className="space-y-3 mb-5">
-            {[
-              "3 générations de voyage offertes (pour tester les 3 questionnaires)",
-              "Guides essentiels (valise, budget, visa)",
-              "Aperçu des fonctionnalités avancées",
-            ].map((f) => (
+            {[t("offres.freeFeat1"), t("offres.freeFeat2"), t("offres.freeFeat3")].map((f) => (
               <li key={f} className="flex items-start gap-3 text-sm text-foreground">
                 <span className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
@@ -232,14 +186,13 @@ const Offres = () => {
             ))}
           </ul>
 
-          {/* Generation counter */}
           <div className="rounded-xl bg-muted/50 border border-border/50 p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold text-foreground">
-                {generationsUsed} / {freeQuota} générations utilisées
+                {t("offres.generationsUsed", { used: generationsUsed, total: freeQuota })}
               </span>
               <span className="text-[10px] font-medium text-muted-foreground">
-                {Math.max(0, freeQuota - generationsUsed)} restante(s)
+                {t("offres.remainingCount", { n: Math.max(0, freeQuota - generationsUsed) })}
               </span>
             </div>
             <Progress value={usedPercent} className="h-2" />
@@ -250,39 +203,37 @@ const Offres = () => {
         <section id="tarifs" className="scroll-mt-24">
           <div className="text-center mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              Nos packs à la carte
+              {t("offres.packsTitle")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Choisissez vos packs et la durée qui vous convient.
+              {t("offres.packsSubtitle")}
             </p>
           </div>
 
-          {/* Billing tabs */}
           <div className="flex flex-wrap justify-center gap-2 mb-3">
-            {BILLING_TABS.map((tab) => (
+            {BILLING_KEYS.map((key) => (
               <button
-                key={tab.key}
-                onClick={() => setBilling(tab.key)}
+                key={key}
+                onClick={() => setBilling(key)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  billing === tab.key
+                  billing === key
                     ? "gradient-button text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {tab.label}
+                {t(`offres.billing.${key}`)}
               </button>
             ))}
           </div>
 
-          {billing === "perTrip" && (
+          {billing === "perTrip" ? (
             <p className="text-center text-xs text-muted-foreground italic mb-6 max-w-xl mx-auto">
-              Idéal pour les voyageurs occasionnels qui partent 1 à 2 fois par an.
-              Payez uniquement quand vous en avez besoin, sans engagement.
+              {t("offres.perTripNote")}
             </p>
+          ) : (
+            <div className="mb-6" />
           )}
-          {billing !== "perTrip" && <div className="mb-6" />}
 
-          {/* Pack cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {packs.map((pack, i) => (
               <motion.div
@@ -313,23 +264,23 @@ const Offres = () => {
                   <div className="flex flex-col items-end gap-1">
                     {pack.recommended && (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/30 text-primary-foreground">
-                        Recommandé
+                        {t("offres.recommended")}
                       </span>
                     )}
                     {pack.premium && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent/20 text-accent">
                         <Star className="w-2.5 h-2.5 fill-current" />
-                        Premium
+                        {t("offres.premium")}
                       </span>
                     )}
                   </div>
                 </div>
 
                 <h3 className="relative text-lg font-bold text-foreground mb-1">
-                  {pack.name}
+                  {packName(pack.id)}
                 </h3>
                 <p className="relative text-xs text-muted-foreground mb-4 min-h-[32px]">
-                  {pack.tagline}
+                  {t(`offres.packs.${pack.id}.tagline`)}
                 </p>
 
                 <div className="relative mb-4">
@@ -337,31 +288,31 @@ const Offres = () => {
                     {formatPrice(pack.prices[billing])}
                   </span>
                   <span className="text-sm text-muted-foreground">
-                    {SUFFIX[billing]}
+                    {t(`offres.suffix.${billing}`)}
                   </span>
-                  {billing === "yearly" && pack.yearlyNote && (
-                    <p className="text-[11px] text-primary mt-1">{pack.yearlyNote}</p>
+                  {billing === "yearly" && pack.hasYearlyNote && (
+                    <p className="text-[11px] text-primary mt-1">{t("offres.yearlyNote")}</p>
                   )}
                 </div>
 
                 <ul className="relative space-y-2 mb-5 flex-1">
-                  {pack.features.map((f) => (
+                  {pack.featureKeys.map((fk) => (
                     <li
-                      key={f}
+                      key={fk}
                       className="flex items-start gap-2 text-xs text-foreground"
                     >
                       <Check className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                      <span>{f}</span>
+                      <span>{t(`offres.packs.${pack.id}.${fk}`)}</span>
                     </li>
                   ))}
                 </ul>
 
                 <button
-                  onClick={() => openWaitlist(pack.name)}
+                  onClick={() => openWaitlist(packName(pack.id))}
                   className="relative w-full py-2.5 rounded-lg text-xs font-semibold gradient-button text-primary-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5"
                 >
                   <Bell className="w-3.5 h-3.5" />
-                  Notifie-moi au lancement
+                  {t("offres.notifyMe")}
                 </button>
               </motion.div>
             ))}
@@ -373,66 +324,71 @@ const Offres = () => {
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold mb-3">
               <Layers className="w-3.5 h-3.5" />
-              Économisez en combinant
+              {t("offres.comboTag")}
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              Combinez vos packs et économisez
+              {t("offres.comboTitle")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              2 packs → −15 % &nbsp;|&nbsp; 3 packs → −20 % &nbsp;|&nbsp; 4 packs → −25 %
+              {t("offres.comboSubtitle")}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-5">
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-foreground">Packs doubles</h3>
+                <h3 className="text-lg font-bold text-foreground">{t("offres.doublePacks")}</h3>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
-                  −12 à −15 %
+                  {t("offres.doubleDiscount")}
                 </span>
               </div>
               <ul className="space-y-2.5">
-                {doublePacks.map((p) => (
-                  <li
-                    key={p.name}
-                    className="flex items-center justify-between text-sm border-b border-border/30 pb-2 last:border-0 last:pb-0"
-                  >
-                    <span className="text-foreground">{p.name}</span>
-                    <span className="font-semibold text-primary whitespace-nowrap">
-                      {formatPrice(p.price)}/mois
-                    </span>
-                  </li>
-                ))}
+                {doublePacks.map((p, idx) => {
+                  const name = p.ids.map(packName).join(" + ");
+                  return (
+                    <li
+                      key={idx}
+                      className="flex items-center justify-between text-sm border-b border-border/30 pb-2 last:border-0 last:pb-0"
+                    >
+                      <span className="text-foreground">{name}</span>
+                      <span className="font-semibold text-primary whitespace-nowrap">
+                        {formatPrice(p.price)}{t("offres.perMonth")}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-foreground">Packs triples</h3>
+                <h3 className="text-lg font-bold text-foreground">{t("offres.triplePacks")}</h3>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
-                  −18 à −20 %
+                  {t("offres.tripleDiscount")}
                 </span>
               </div>
               <ul className="space-y-2.5">
-                {triplePacks.map((p) => (
-                  <li
-                    key={p.name}
-                    className="flex items-center justify-between text-sm border-b border-border/30 pb-2 last:border-0 last:pb-0"
-                  >
-                    <span className="text-foreground">{p.name}</span>
-                    <span className="font-semibold text-primary whitespace-nowrap">
-                      {formatPrice(p.price)}/mois
-                    </span>
-                  </li>
-                ))}
+                {triplePacks.map((p, idx) => {
+                  const name = p.ids.map(packName).join(" + ");
+                  return (
+                    <li
+                      key={idx}
+                      className="flex items-center justify-between text-sm border-b border-border/30 pb-2 last:border-0 last:pb-0"
+                    >
+                      <span className="text-foreground">{name}</span>
+                      <span className="font-semibold text-primary whitespace-nowrap">
+                        {formatPrice(p.price)}{t("offres.perMonth")}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
         </section>
 
         <p className="text-center text-xs text-muted-foreground mt-10">
-          Bêta en cours — les paiements ne sont pas encore actifs. Toutes les
-          fonctionnalités gratuites restent accessibles pendant cette phase de test.
+          {t("offres.betaNote")}
         </p>
       </div>
 
@@ -441,10 +397,8 @@ const Offres = () => {
         onOpenChange={setWaitlistOpen}
         source={waitlistPack ? `offres:pack:${waitlistPack}` : "offres:page"}
         pack={waitlistPack}
-        title={waitlistPack ? `${waitlistPack} arrive bientôt 🚀` : "Le premium arrive bientôt 🚀"}
-        teaser={waitlistPack
-          ? `Sois le premier à débloquer le ${waitlistPack} dès l'ouverture, avec -30% en avant-première.`
-          : "Laisse ton email pour être informé du lancement et obtenir -30% en avant-première."}
+        title={waitlistPack ? t("offres.waitlistTitlePack", { pack: waitlistPack }) : t("offres.waitlistTitleGeneric")}
+        teaser={waitlistPack ? t("offres.waitlistTeaserPack", { pack: waitlistPack }) : undefined}
       />
     </div>
   );
