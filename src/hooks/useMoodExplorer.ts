@@ -115,6 +115,7 @@ export function useMoodExplorer() {
     }
     setLoading(true);
     try {
+      const locale = (localStorage.getItem("xplania-lang") || navigator.language).startsWith("en") ? "en" : "fr";
       const { data, error } = await supabase.functions.invoke("mood-recommend", {
         body: {
           ...input,
@@ -122,6 +123,7 @@ export function useMoodExplorer() {
           lng: position?.lng,
           weather: weather || undefined,
           time_of_day: timeOfDay(),
+          locale,
         },
       });
       if (error) throw error;

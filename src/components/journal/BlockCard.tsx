@@ -68,6 +68,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
     }
     setAiLoading(true);
     try {
+      const locale = (localStorage.getItem("xplania-lang") || navigator.language).startsWith("en") ? "en" : "fr";
       const { data, error } = await supabase.functions.invoke("journal-story", {
         body: {
           destination: destination || "",
@@ -75,6 +76,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
           tone: "poetic",
           mode: "enhance-block",
           rawText: content.text,
+          locale,
         },
       });
       if (error) throw error;
