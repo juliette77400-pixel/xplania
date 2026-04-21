@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
@@ -10,6 +11,7 @@ interface QuotaReachedDialogProps {
 
 const QuotaReachedDialog = ({ open, onOpenChange }: QuotaReachedDialogProps) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSeeOffers = () => {
     onOpenChange(false);
@@ -29,23 +31,22 @@ const QuotaReachedDialog = ({ open, onOpenChange }: QuotaReachedDialogProps) => 
               <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
             <DialogTitle className="text-lg font-bold text-foreground">
-              Limite gratuite atteinte
+              {t("quotaReached.title")}
             </DialogTitle>
           </div>
         </DialogHeader>
         <p className="text-sm text-muted-foreground py-2">
-          Vous avez utilisé vos 3 générations gratuites 🎉 Passez à une formule
-          payante pour continuer à explorer sans limites.
+          {t("quotaReached.desc")}
         </p>
         <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Plus tard
+            {t("quotaReached.later")}
           </Button>
           <Button
             onClick={handleSeeOffers}
             className="gradient-button text-primary-foreground border-0"
           >
-            Voir les offres
+            {t("quotaReached.seeOffers")}
           </Button>
         </div>
       </DialogContent>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Eye, Sparkles } from "lucide-react";
@@ -32,18 +33,10 @@ type StepKey =
   | "environment"
   | "inspirations";
 
-const STEP_META: Record<StepKey, { label: string; description: string }> = {
-  basic: { label: "Informations de base", description: "Où et quand souhaitez-vous partir ?" },
-  profile: { label: "Profil du voyageur", description: "Parlez-nous de vous pour personnaliser votre voyage" },
-  objectives: { label: "Objectif du voyage", description: "Que souhaitez-vous vivre pendant ce voyage ?" },
-  style: { label: "Style de voyage", description: "Comment aimez-vous voyager ?" },
-  budget: { label: "Budget", description: "Définissez votre enveloppe budgétaire" },
-  accommodation: { label: "Hébergement", description: "Quel type de logement préférez-vous ?" },
-  transport: { label: "Transport", description: "Comment comptez-vous vous déplacer ?" },
-  constraints: { label: "Contraintes", description: "Des besoins particuliers à prendre en compte ?" },
-  environment: { label: "Environnement", description: "Vos préférences d'environnement et bagages" },
-  inspirations: { label: "Inspirations", description: "Une dernière touche d'inspiration !" },
-};
+const STEP_KEYS: StepKey[] = [
+  "basic", "profile", "objectives", "style", "budget",
+  "accommodation", "transport", "constraints", "environment", "inspirations",
+];
 
 const MODE_STEPS: Record<PlanMode, StepKey[]> = {
   quick: ["basic", "budget", "style"],
@@ -129,6 +122,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
   const [direction, setDirection] = useState(1);
   const [previewing, setPreviewing] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const updateForm = (partial: Partial<TravelFormData>) => {
     setFormData((prev) => ({ ...prev, ...partial }));
@@ -166,13 +160,13 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.error || `Erreur serveur (${response.status})`);
+        throw new Error(data?.error || t("travelForm.errorServer", { status: response.status }));
       }
       if (data?.error) {
         throw new Error(data.error);
       }
       if (!data?.recommendations) {
-        throw new Error("Aucune recommandation reçue");
+        throw new Error(t("travelForm.errorNoRecs"));
       }
 
       setRecommendations(data.recommendations);
@@ -186,15 +180,15 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
       }
 
       toast({
-        title: "✨ Plan de voyage généré !",
-        description: `Vos recommandations pour ${formData.destination} sont prêtes.`,
+        title: t("travelForm.successTitle"),
+        description: t("travelForm.successDesc", { destination: formData.destination }),
       });
     } catch (err: any) {
       console.error("Generation error:", err);
-      const message = err?.message || "Erreur inconnue. Veuillez réessayer.";
+      const message = err?.message || t("travelForm.errorGeneric");
       setAiError(message);
       toast({
-        title: "Erreur de génération",
+        title: t("travelForm.errorTitle"),
         description: message,
         variant: "destructive",
       });
@@ -238,7 +232,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
               </div>
               <div>
                 <DialogTitle className="text-2xl font-bold gradient-text">
-                  Votre plan de voyage
+                  {t("travelForm.yourPlan")}
                 </DialogTitle>
                 <p className="text-sm text-muted-foreground mt-1">{formData.destination}</p>
               </div>
@@ -257,7 +251,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
                 className="gradient-button text-primary-foreground border-0"
               >
                 <Brain className="w-4 h-4 mr-2" />
-                Réessayer
+                {t("travelForm.retry")}
               </Button>
             </div>
           )}
@@ -273,10 +267,10 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto glass-card border-border">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-foreground">
-              Comment voulez-vous planifier ?
+              {t("travelForm.modeTitle")}
             </DialogTitle>
             <p className="text-sm text-muted-foreground mt-1">
-              Choisissez la profondeur du questionnaire qui vous convient.
+              {t("travelForm.modeSubtitle")}
             </p>
           </DialogHeader>
           <div className="py-2">
@@ -308,7 +302,9 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
     }
   };
 
-  const currentMeta = currentStepKey ? STEP_META[currentStepKey] : { label: "", description: "" };
+  const currentMeta = currentStepKey
+    ? { label: t(`travelForm.steps.${currentStepKey}.label`), description: t(`travelForm.steps.${currentStepKey}.description`) }
+    : { label: "", description: "" };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -324,7 +320,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
                 onClick={() => { setMode(null); setStep(0); }}
                 className="text-xs font-medium text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
               >
-                Changer de mode
+                {t("travelForm.changeMode")}
               </button>
               <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
                 {step + 1}/{totalSteps}
@@ -390,13 +386,13 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
             className="text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {previewing ? "Reprendre" : "Retour"}
+            {previewing ? t("travelForm.resume") : t("travelForm.back")}
           </Button>
 
           <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             {step === totalSteps - 1 && !previewing && (
               <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3 text-primary" /> Dernière étape
+                <CheckCircle2 className="w-3 h-3 text-primary" /> {t("travelForm.lastStep")}
               </span>
             )}
             {!previewing && (
@@ -407,7 +403,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
                 className="border-primary/40 text-foreground hover:bg-primary/10"
               >
                 <Eye className="w-4 h-4 mr-2" />
-                Voir mon voyage
+                {t("travelForm.viewTrip")}
               </Button>
             )}
             {!previewing && step < totalSteps - 1 && (
@@ -415,7 +411,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
                 onClick={goNext}
                 className="gradient-button text-primary-foreground border-0"
               >
-                Continuer
+                {t("travelForm.continue")}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             )}
@@ -426,7 +422,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
                 className="gradient-button text-primary-foreground border-0 min-w-[200px]"
               >
                 <Brain className="w-4 h-4 mr-2" />
-                {generating ? "Analyse en cours..." : "Générer mon plan IA"}
+                {generating ? t("travelForm.generating") : t("travelForm.generate")}
               </Button>
             )}
           </div>
