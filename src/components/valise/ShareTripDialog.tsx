@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Copy, Mail, Share2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface ShareTripDialogProps {
   open: boolean;
@@ -13,23 +14,22 @@ interface ShareTripDialogProps {
 }
 
 const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: ShareTripDialogProps) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const baseUrl = window.location.origin;
-  const shareUrl = tripId
-    ? `${baseUrl}/carnet/public/${tripId}`
-    : `${baseUrl}/`;
+  const shareUrl = tripId ? `${baseUrl}/carnet/public/${tripId}` : `${baseUrl}/`;
 
-  const message = `🌍 Découvre mon voyage à ${destination} (${days} jours) sur Xplania ! Valise, budget et formalités tout-en-un. ${shareUrl}`;
+  const message = t("valise.shareMessage", { destination, days, url: shareUrl });
 
   const copy = async () => {
     await navigator.clipboard.writeText(message);
     setCopied(true);
-    toast.success("Lien copié 📋");
+    toast.success(t("valise.shareCopyToast"));
     setTimeout(() => setCopied(false), 2000);
   };
 
   const email = () => {
-    window.location.href = `mailto:?subject=${encodeURIComponent(`Mon voyage à ${destination}`)}&body=${encodeURIComponent(message)}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(t("valise.shareEmailSubject", { destination }))}&body=${encodeURIComponent(message)}`;
   };
 
   const whatsapp = () => {
@@ -39,7 +39,7 @@ const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: Shar
   const native = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: `Mon voyage à ${destination}`, text: message, url: shareUrl });
+        await navigator.share({ title: t("valise.shareEmailSubject", { destination }), text: message, url: shareUrl });
       } catch {}
     } else {
       copy();
@@ -50,10 +50,8 @@ const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: Shar
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Partager ce voyage</DialogTitle>
-          <DialogDescription>
-            Envoie ton itinéraire complet (valise, budget, formalités) à tes compagnons de voyage.
-          </DialogDescription>
+          <DialogTitle>{t("valise.shareDialogTitle")}</DialogTitle>
+          <DialogDescription>{t("valise.shareDialogDesc")}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3">
@@ -63,16 +61,16 @@ const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: Shar
 
           <div className="grid grid-cols-2 gap-2">
             <Button onClick={copy} variant="outline" className="gap-2">
-              <Copy className="w-4 h-4" /> {copied ? "Copié !" : "Copier"}
+              <Copy className="w-4 h-4" /> {copied ? t("valise.shareCopied") : t("valise.shareCopy")}
             </Button>
             <Button onClick={native} variant="outline" className="gap-2">
-              <Share2 className="w-4 h-4" /> Partager
+              <Share2 className="w-4 h-4" /> {t("valise.shareNative")}
             </Button>
             <Button onClick={email} variant="outline" className="gap-2">
-              <Mail className="w-4 h-4" /> Email
+              <Mail className="w-4 h-4" /> {t("valise.shareEmail")}
             </Button>
             <Button onClick={whatsapp} variant="outline" className="gap-2">
-              <MessageCircle className="w-4 h-4" /> WhatsApp
+              <MessageCircle className="w-4 h-4" /> {t("valise.shareWhatsApp")}
             </Button>
           </div>
         </div>

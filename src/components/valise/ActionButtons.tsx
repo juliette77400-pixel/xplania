@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import {
-  Download, Link2, Save, CheckCircle, RefreshCw, Shirt, Compass
-} from "lucide-react";
+import { Download, Link2, Save, CheckCircle, RefreshCw, Shirt, Compass } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface ActionButtonsProps {
   onRegenerate: (scope: "all" | "clothes" | "activities") => void;
@@ -12,27 +11,29 @@ interface ActionButtonsProps {
 }
 
 const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip }: ActionButtonsProps) => {
+  const { t } = useTranslation();
+
   const handleExport = () => {
     if (onExportPdf) return onExportPdf();
-    toast.success("Checklist exportée ! 📋");
+    toast.success(t("valise.toastExport"));
   };
 
   const handleShare = () => {
     if (onShareTrip) return onShareTrip();
     navigator.clipboard.writeText(window.location.href);
-    toast.success("Lien copié ! 🔗");
+    toast.success(t("valise.toastShareCopied"));
   };
 
   const handleSaveTemplate = () => {
-    toast.success("Modèle sauvegardé ! 💾", { description: "Réutilisez-le pour vos prochains voyages." });
+    toast.success(t("valise.toastTemplateSaved"), { description: t("valise.toastTemplateSavedDesc") });
   };
 
   const handleValidate = () => {
-    toast.success("Valise validée ! ✅", { description: "Vous êtes prêt pour le voyage !" });
+    toast.success(t("valise.toastValidated"), { description: t("valise.toastValidatedDesc") });
   };
 
   const handleSync = () => {
-    toast.success("Synchronisé ! 🔄", { description: "Votre valise est liée à votre itinéraire." });
+    toast.success(t("valise.toastSynced"), { description: t("valise.toastSyncedDesc") });
   };
 
   return (
@@ -42,16 +43,15 @@ const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip 
       transition={{ delay: 0.5 }}
       className="glass-card rounded-2xl p-6 space-y-4"
     >
-      <h3 className="text-base font-bold text-foreground">Actions</h3>
+      <h3 className="text-base font-bold text-foreground">{t("valise.actionsTitle")}</h3>
 
-      {/* Regeneration */}
       <div className="space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Régénérer</p>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t("valise.actionsRegenerate")}</p>
         <div className="flex flex-wrap gap-2">
           {[
-            { label: "Toute la valise", scope: "all" as const, icon: <RefreshCw className="w-4 h-4" /> },
-            { label: "Vêtements", scope: "clothes" as const, icon: <Shirt className="w-4 h-4" /> },
-            { label: "Activités", scope: "activities" as const, icon: <Compass className="w-4 h-4" /> },
+            { label: t("valise.actionAll"), scope: "all" as const, icon: <RefreshCw className="w-4 h-4" /> },
+            { label: t("valise.actionClothes"), scope: "clothes" as const, icon: <Shirt className="w-4 h-4" /> },
+            { label: t("valise.actionActivities"), scope: "activities" as const, icon: <Compass className="w-4 h-4" /> },
           ].map((btn) => (
             <button
               key={btn.scope}
@@ -65,16 +65,15 @@ const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip 
         </div>
       </div>
 
-      {/* Other actions */}
       <div className="space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Outils</p>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t("valise.actionsTools")}</p>
         <div className="flex flex-wrap gap-2">
           {[
-            { label: "Exporter ma checklist", icon: <Download className="w-4 h-4" />, action: handleExport },
-            { label: "Partager ma liste", icon: <Link2 className="w-4 h-4" />, action: handleShare },
-            { label: "Enregistrer comme modèle", icon: <Save className="w-4 h-4" />, action: handleSaveTemplate },
-            { label: "Synchroniser avec mon voyage", icon: <RefreshCw className="w-4 h-4" />, action: handleSync },
-            { label: "Valider ma valise", icon: <CheckCircle className="w-4 h-4" />, action: handleValidate },
+            { label: t("valise.actionExport"), icon: <Download className="w-4 h-4" />, action: handleExport },
+            { label: t("valise.actionShare"), icon: <Link2 className="w-4 h-4" />, action: handleShare },
+            { label: t("valise.actionTemplate"), icon: <Save className="w-4 h-4" />, action: handleSaveTemplate },
+            { label: t("valise.actionSync"), icon: <RefreshCw className="w-4 h-4" />, action: handleSync },
+            { label: t("valise.actionValidate"), icon: <CheckCircle className="w-4 h-4" />, action: handleValidate },
           ].map((btn) => (
             <button
               key={btn.label}

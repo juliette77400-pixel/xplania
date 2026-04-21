@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Plane, Train, Car, Ship } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export type TransportMode = "avion" | "train" | "voiture" | "bateau";
 
@@ -9,15 +10,15 @@ interface TransportSelectorProps {
   isLoading?: boolean;
 }
 
-export const transports: { id: TransportMode; label: string; icon: React.ReactNode; emoji: string; hint: string }[] = [
-  { id: "avion", label: "Avion", icon: <Plane className="w-4 h-4" />, emoji: "✈️", hint: "Liquides <100ml, bagage cabine" },
-  { id: "train", label: "Train", icon: <Train className="w-4 h-4" />, emoji: "🚆", hint: "Confort & flexibilité" },
-  { id: "voiture", label: "Voiture", icon: <Car className="w-4 h-4" />, emoji: "🚗", hint: "Espace illimité, route" },
-  { id: "bateau", label: "Bateau", icon: <Ship className="w-4 h-4" />, emoji: "🚢", hint: "Anti-mal de mer, soleil" },
+export const transports: { id: TransportMode; icon: React.ReactNode; emoji: string }[] = [
+  { id: "avion", icon: <Plane className="w-4 h-4" />, emoji: "✈️" },
+  { id: "train", icon: <Train className="w-4 h-4" />, emoji: "🚆" },
+  { id: "voiture", icon: <Car className="w-4 h-4" />, emoji: "🚗" },
+  { id: "bateau", icon: <Ship className="w-4 h-4" />, emoji: "🚢" },
 ];
 
 const TransportSelector = ({ active, onSelect, isLoading }: TransportSelectorProps) => {
-  const activeTransport = transports.find((t) => t.id === active);
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -27,19 +28,19 @@ const TransportSelector = ({ active, onSelect, isLoading }: TransportSelectorPro
     >
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Mode de transport</h3>
+          <h3 className="text-sm font-bold text-foreground">{t("valise.transportTitle")}</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {activeTransport?.hint}
+            {t(`valise.transports.${active}Hint`)}
           </p>
         </div>
       </div>
       <div className="grid grid-cols-4 gap-2">
-        {transports.map((t) => {
-          const isActive = active === t.id;
+        {transports.map((tr) => {
+          const isActive = active === tr.id;
           return (
             <motion.button
-              key={t.id}
-              onClick={() => !isLoading && onSelect(t.id)}
+              key={tr.id}
+              onClick={() => !isLoading && onSelect(tr.id)}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               disabled={isLoading}
@@ -49,8 +50,8 @@ const TransportSelector = ({ active, onSelect, isLoading }: TransportSelectorPro
                   : "bg-muted/30 border-border/50 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
               } ${isLoading ? "opacity-60 cursor-not-allowed" : ""}`}
             >
-              <span className="text-2xl">{t.emoji}</span>
-              <span className="text-xs font-semibold">{t.label}</span>
+              <span className="text-2xl">{tr.emoji}</span>
+              <span className="text-xs font-semibold">{t(`valise.transports.${tr.id}`)}</span>
             </motion.button>
           );
         })}
