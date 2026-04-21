@@ -232,6 +232,32 @@ const GamificationPage = () => {
 
       <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-16">
 
+  // XP — derived from real activity counts (single source of truth)
+  const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
+  const totalXp = useMemo(
+    () =>
+      computeXp({
+        exploreVisited: counts.exploreVisited,
+        journalNotes: counts.journalNotes,
+        journalPhotos: counts.journalPhotos,
+        journalLocations: counts.journalLocations,
+        journalMoods: counts.journalMoods,
+        moodFavorites: counts.moodFavorites,
+        moodHiddenGems: counts.moodHiddenGems,
+        badgesTotal: totalBadges,
+      }),
+    [counts, totalBadges],
+  );
+
+  return (
+    <div className="min-h-screen bg-background">
+      <AppNavbar />
+
+      <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-12">
+
+        {/* ══════ XP LEVEL HEADER ══════ */}
+        <XpHeader xp={totalXp} />
+
         {/* ══════ HERO STATS ══════ */}
         <section className="text-center">
           <h1 className="text-3xl font-bold text-foreground mb-2">Collection de Badges</h1>
@@ -246,16 +272,19 @@ const GamificationPage = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 max-w-3xl mx-auto">
             {[
-              { label: "Badges débloqués", value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
-              { label: "Lieux visités", value: counts.exploreVisited },
-              { label: "Souvenirs", value: counts.journalNotes + counts.journalPhotos },
-              { label: "XP estimés", value: totalXp.toLocaleString() },
+              { label: "Badges débloqués", short: "Badges", value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
+              { label: "Lieux visités", short: "Lieux", value: counts.exploreVisited },
+              { label: "Souvenirs", short: "Souvenirs", value: counts.journalNotes + counts.journalPhotos },
+              { label: "XP estimés", short: "XP", value: totalXp.toLocaleString() },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl bg-card border border-border p-4">
-                <p className="text-2xl font-bold gradient-text">
+              <div key={s.label} className="rounded-2xl bg-card border border-border p-3 sm:p-4 min-w-0">
+                <p className="text-xl sm:text-2xl font-bold gradient-text leading-tight truncate">
                   {s.value}{s.suffix || ""}
                 </p>
-                <p className="text-[11px] text-muted-foreground mt-1">{s.label}</p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 leading-tight">
+                  <span className="sm:hidden">{s.short}</span>
+                  <span className="hidden sm:inline">{s.label}</span>
+                </p>
               </div>
             ))}
           </div>
