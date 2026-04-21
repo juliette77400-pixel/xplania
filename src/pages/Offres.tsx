@@ -13,9 +13,11 @@ import {
   Glasses,
   Layers,
   Star,
+  Bell,
 } from "lucide-react";
 import { usePlanStore } from "@/stores/usePlanStore";
 import { Progress } from "@/components/ui/progress";
+import WaitlistDialog from "@/components/xplania/WaitlistDialog";
 
 type BillingCycle = "monthly" | "yearly" | "season3" | "season6" | "perTrip";
 
@@ -348,10 +350,11 @@ const Offres = () => {
                 </ul>
 
                 <button
-                  disabled
-                  className="relative w-full py-2.5 rounded-lg text-xs font-semibold bg-muted text-muted-foreground cursor-not-allowed"
+                  onClick={() => openWaitlist(pack.name)}
+                  className="relative w-full py-2.5 rounded-lg text-xs font-semibold gradient-button text-primary-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5"
                 >
-                  Bientôt disponible
+                  <Bell className="w-3.5 h-3.5" />
+                  Notifie-moi au lancement
                 </button>
               </motion.div>
             ))}
