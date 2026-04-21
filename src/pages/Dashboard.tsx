@@ -11,7 +11,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
 import { supabase } from "@/integrations/supabase/client";
-import DeleteTripButton from "@/components/shared/DeleteTripButton";
+import TripActionsMenu from "@/components/shared/TripActionsMenu";
+import StreakCard from "@/components/dashboard/StreakCard";
+import WeeklyMissionsCard from "@/components/dashboard/WeeklyMissionsCard";
+import PastTripsTrophies from "@/components/dashboard/PastTripsTrophies";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -62,7 +65,12 @@ const Dashboard = () => {
               ? t("myDashboard.tripsActive", { count: activeTrips.length })
               : t("myDashboard.noTripsCta")}
           </p>
-        </motion.div>
+
+        {/* ✨ NEW (Tâche 3) — Engagement quotidien : streak + missions hebdo */}
+        <section className="grid md:grid-cols-2 gap-3">
+          <StreakCard />
+          <WeeklyMissionsCard />
+        </section>
 
         {/* Voyages */}
         <section className="space-y-3">
@@ -112,12 +120,11 @@ const Dashboard = () => {
                       )}
                     </motion.div>
                   </Link>
-                  {/* ✨ NEW (Tâche 1) — bouton suppression sur la carte */}
+                  {/* ✨ MODIFIED (Tâche 3) — menu d'actions complet (Modifier / Dupliquer / Supprimer) */}
                   <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
-                    <DeleteTripButton
-                      tripId={tr.id}
-                      tripLabel={tr.title || tr.destination || undefined}
-                      variant="icon"
+                    <TripActionsMenu
+                      trip={tr}
+                      onChanged={() => window.location.reload()}
                       onDeleted={() => removeTrip(tr.id)}
                     />
                   </div>
