@@ -49,23 +49,24 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
     {/* Header */}
     <div className="flex items-center justify-between flex-wrap gap-2">
       <div>
-        <h3 className="text-sm font-bold text-foreground">Type de valise</h3>
+        <h3 className="text-sm font-bold text-foreground">{t("valise.modesTitle")}</h3>
         <p className="text-xs text-muted-foreground mt-0.5">
-          11 styles premium — sélectionne pour adapter le contenu instantanément
+          {t("valise.modesSubtitle")}
         </p>
       </div>
       {suggestedMode && (
         <span className="text-[10px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-semibold animate-pulse">
-          ✨ Suggestion IA : {modes.find((m) => m.id === suggestedMode)?.label}
+          {t("valise.modesAiSuggestion", { label: t(`valise.modesLabels.${suggestedMode}`) })}
         </span>
       )}
     </div>
 
-    {/* Grid of premium image cards */}
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
       {modes.map((mode) => {
         const isActive = activeMode === mode.id;
         const isSuggested = suggestedMode === mode.id && !isActive;
+        const label = t(`valise.modesLabels.${mode.id}`);
+        const desc = t(`valise.modesDesc.${mode.id}`);
         return (
           <motion.button
             key={mode.id}
@@ -81,40 +82,40 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
                 : "border-border/40 hover:border-border"
             } ${isLoading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
           >
-            {/* Image */}
             <div className="relative aspect-[4/3] overflow-hidden bg-muted">
               <img
                 src={mode.image}
-                alt={mode.label}
+                alt={label}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
               {isSuggested && (
                 <span className="absolute top-2 right-2 text-[9px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-bold uppercase tracking-wide animate-pulse">
-                  ✨ IA
+                  {t("valise.modesAi")}
                 </span>
               )}
               {isActive && (
                 <span className="absolute top-2 right-2 text-[9px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-bold uppercase tracking-wide">
-                  ✓ Actif
+                  {t("valise.modesActive")}
                 </span>
               )}
             </div>
-            {/* Label */}
             <div className="absolute bottom-0 left-0 right-0 p-3">
               <div className="flex items-center gap-1.5 mb-0.5">
                 <span className="text-base leading-none">{mode.emoji}</span>
-                <span className="text-sm font-bold text-foreground">{mode.label}</span>
+                <span className="text-sm font-bold text-foreground">{label}</span>
               </div>
-              <p className="text-[10px] text-muted-foreground line-clamp-1">{mode.desc}</p>
+              <p className="text-[10px] text-muted-foreground line-clamp-1">{desc}</p>
             </div>
           </motion.button>
         );
       })}
     </div>
   </motion.div>
-);
+  );
+};
 
 export { modes };
 export default LuggageModes;
+
