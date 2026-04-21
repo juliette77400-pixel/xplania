@@ -959,7 +959,7 @@
     "configActivities": "Planned activities",
     "configTransport": "Transport mode",
     "configSeason": "Season",
-    "configDays": "{{n}} days",
+    "configDays": "{{count}} day",
     "configHigh": "Peak season",
     "configMedium": "Mid season",
     "configLow": "Low season",
@@ -1003,7 +1003,7 @@
     "addEnable": "Enable",
     "addToastMissing": "Fill at least amount and category",
     "addToastAdded": "Expense added!",
-    "addToastAddedDesc": "{{amount}}€ in {{category}}",
+    "addToastAddedDesc": "€{{amount}} in {{category}}",
     "categories": {
       "accommodation": "Accommodation",
       "localTransport": "Local transport",
@@ -1046,13 +1046,13 @@
     "chartsByCat": "Spending by category",
     "chartsSpent": "Spent",
     "chartsAiTitle": "AI predictive analysis",
-    "chartsAiOver": "At this pace, you risk going {{n}}€ over budget. AI suggests cutting activity expenses or raising your forecast budget.",
-    "chartsAiOk": "At this pace you'll stay within budget with {{n}}€ to spare. Keep it up!",
+    "chartsAiOver": "At this pace, you risk going over budget by €{{amount}}. The AI recommends reducing activity spending or increasing your planned budget.",
+    "chartsAiOk": "At this rate, you'll stay within budget with a €{{amount}} margin. Keep going!",
     "alertsTitle": "Alerts & AI Optimization",
     "alertsSubtitle": "AI watches your spending and suggests fixes",
-    "alertsOver": "Over budget on {{cat}}!",
-    "alertsHigh": "Higher prices than expected for {{cat}}.",
-    "alertsLow": "You're under budget on {{cat}}!",
+    "alertsOver": "Budget exceeded for {{category}}!",
+    "alertsHigh": "{{category}} prices are higher than expected.",
+    "alertsLow": "You're under budget for {{category}}!",
     "alertsTipsTitle": "Tips to balance your budget",
     "alertsActivities": "Free activities",
     "alertsRestaurants": "Affordable restaurants",
@@ -1099,7 +1099,79 @@
       "s2": "Xplania is computing your optimal budget…",
       "s3": "Optimizing categories…",
       "s4": "Personal budget ready!"
-    }
+    },
+    "aiResultTitle": "AI analysis complete",
+    "aiResultPrefix": "Based on your style and destination, your optimal budget is estimated at",
+    "aiResultFor": "for",
+    "aiResultIn": "in",
+    "aiResultModify": "Edit manually",
+    "tipsParis": {
+      "activities": [
+        "Visit the Luxembourg Gardens",
+        "Walk along the Seine",
+        "Montmartre & Sacré-Cœur"
+      ],
+      "restaurants": [
+        "Le Bouillon Chartier",
+        "Marché des Enfants Rouges",
+        "Local bakeries"
+      ],
+      "transport": [
+        "Weekly Navigo Pass",
+        "Vélib' for short rides",
+        "Walk between nearby sights"
+      ],
+      "mood": [
+        "Park picnic",
+        "Free walking tour",
+        "Sunset at the Eiffel Tower"
+      ]
+    },
+    "tipsTokyo": {
+      "activities": [
+        "Free temples in Asakusa",
+        "Yoyogi Park on Sundays",
+        "Tokyo Metropolitan Government Building view"
+      ],
+      "restaurants": [
+        "Konbini (7-Eleven, Lawson)",
+        "Local ramen shops",
+        "Street markets"
+      ],
+      "transport": [
+        "Suica / Pasmo card",
+        "JR Pass for multi-city trips",
+        "Walk around neighborhoods"
+      ],
+      "mood": [
+        "Hanami in Ueno Park",
+        "Shimokitazawa district",
+        "Sunrise at Mount Takao"
+      ]
+    },
+    "tipsDefault": {
+      "activities": [
+        "Free museum visits",
+        "Public parks and gardens",
+        "Local markets"
+      ],
+      "restaurants": [
+        "Local street food",
+        "Food markets",
+        "Restaurants outside tourist areas"
+      ],
+      "transport": [
+        "Local public transit",
+        "Bike rentals",
+        "Walking"
+      ],
+      "mood": [
+        "Panoramic sunset",
+        "Authentic neighborhoods",
+        "Free cultural events"
+      ]
+    },
+    "configDays_other": "{{count}} days"
   },
   "gamification": {
     "heroTitle": "Badge Collection",

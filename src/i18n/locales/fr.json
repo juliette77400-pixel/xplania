@@ -959,7 +959,7 @@
     "configActivities": "Activités prévues",
     "configTransport": "Mode de transport",
     "configSeason": "Saison",
-    "configDays": "{{n}} jours",
+    "configDays": "{{count}} jour",
     "configHigh": "Haute saison",
     "configMedium": "Moyenne saison",
     "configLow": "Basse saison",
@@ -1046,13 +1046,13 @@
     "chartsByCat": "Dépenses par catégorie",
     "chartsSpent": "Dépensé",
     "chartsAiTitle": "Analyse prédictive IA",
-    "chartsAiOver": "Si tu maintiens ce rythme, tu risques de dépasser ton budget de {{n}}€. L'IA te recommande de réduire les dépenses activités ou d'augmenter ton budget prévisionnel.",
-    "chartsAiOk": "À ce rythme, tu resteras dans ton budget avec une marge de {{n}}€. Continue comme ça !",
+    "chartsAiOver": "Si tu maintiens ce rythme, tu risques de dépasser ton budget de {{amount}}€. L'IA te recommande de réduire les dépenses activités ou d'augmenter ton budget prévisionnel.",
+    "chartsAiOk": "À ce rythme, tu resteras dans ton budget avec une marge de {{amount}}€. Continue comme ça !",
     "alertsTitle": "Alertes & Optimisation IA",
     "alertsSubtitle": "L'IA surveille tes dépenses et te propose des solutions",
-    "alertsOver": "Dépassement du budget {{cat}} !",
-    "alertsHigh": "Prix des {{cat}} plus élevés que prévu.",
-    "alertsLow": "Tu es en dessous du budget prévu pour {{cat}} !",
+    "alertsOver": "Dépassement du budget {{category}} !",
+    "alertsHigh": "Prix des {{category}} plus élevés que prévu.",
+    "alertsLow": "Tu es en dessous du budget prévu pour {{category}} !",
     "alertsTipsTitle": "Conseils pour équilibrer ton budget",
     "alertsActivities": "Activités gratuites",
     "alertsRestaurants": "Restaurants économiques",
@@ -1099,7 +1099,79 @@
       "s2": "Xplania calcule votre budget optimal…",
       "s3": "Optimisation des catégories en cours…",
       "s4": "Budget personnalisé prêt !"
-    }
+    },
+    "aiResultTitle": "Analyse IA complétée",
+    "aiResultPrefix": "Selon ton style et ta destination, ton budget optimal est estimé à",
+    "aiResultFor": "pour",
+    "aiResultIn": "à",
+    "aiResultModify": "Modifier manuellement",
+    "tipsParis": {
+      "activities": [
+        "Visite du Jardin du Luxembourg",
+        "Balade sur les quais de Seine",
+        "Montmartre et le Sacré-Cœur"
+      ],
+      "restaurants": [
+        "Le Bouillon Chartier",
+        "Marché des Enfants Rouges",
+        "Boulangeries locales"
+      ],
+      "transport": [
+        "Pass Navigo hebdomadaire",
+        "Vélib' pour courtes distances",
+        "Marcher entre attractions proches"
+      ],
+      "mood": [
+        "Pique-nique au parc",
+        "Free walking tour",
+        "Coucher de soleil Tour Eiffel"
+      ]
+    },
+    "tipsTokyo": {
+      "activities": [
+        "Temples gratuits à Asakusa",
+        "Parc Yoyogi le dimanche",
+        "Observation depuis la mairie de Tokyo"
+      ],
+      "restaurants": [
+        "Konbini (7-Eleven, Lawson)",
+        "Ramen shops locaux",
+        "Marchés de rue"
+      ],
+      "transport": [
+        "Suica / Pasmo card",
+        "JR Pass si tu visites plusieurs villes",
+        "Marcher dans les quartiers"
+      ],
+      "mood": [
+        "Hanami au parc Ueno",
+        "Quartier Shimokitazawa",
+        "Lever de soleil au Mont Takao"
+      ]
+    },
+    "tipsDefault": {
+      "activities": [
+        "Visites de musées gratuits",
+        "Parcs et jardins publics",
+        "Marchés locaux"
+      ],
+      "restaurants": [
+        "Cuisine de rue locale",
+        "Marchés alimentaires",
+        "Restaurants hors zone touristique"
+      ],
+      "transport": [
+        "Transports publics locaux",
+        "Location de vélo",
+        "Marche à pied"
+      ],
+      "mood": [
+        "Coucher de soleil panoramique",
+        "Quartiers authentiques",
+        "Événements culturels gratuits"
+      ]
+    },
+    "configDays_other": "{{count}} jours"
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
