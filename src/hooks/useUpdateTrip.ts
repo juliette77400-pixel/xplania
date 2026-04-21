@@ -21,17 +21,23 @@ export const useUpdateTrip = () => {
       if (!user) return false;
       setUpdating(true);
       try {
-        const patch: Record<string, any> = { ...payload };
+        let duration: number | undefined;
         if (payload.departure_date && payload.return_date) {
           const d1 = new Date(payload.departure_date).getTime();
           const d2 = new Date(payload.return_date).getTime();
           if (!isNaN(d1) && !isNaN(d2) && d2 >= d1) {
-            patch.duration = Math.max(1, Math.round((d2 - d1) / 86400000) + 1);
+            duration = Math.max(1, Math.round((d2 - d1) / 86400000) + 1);
           }
         }
         const { error } = await supabase
           .from("trips")
-          .update(patch)
+          .update({
+            title: payload.title ?? undefined,
+            destination: payload.destination ?? undefined,
+            departure_date: payload.departure_date ?? undefined,
+            return_date: payload.return_date ?? undefined,
+            ...(duration !== undefined ? { duration } : {}),
+          })
           .eq("id", tripId)
           .eq("user_id", user.id);
         if (error) throw error;
