@@ -693,7 +693,10 @@
     "heroDays_other": "{{count}} days",
     "transportTitle": "Transport mode",
     "transports": {
-      "avion": "Plane", "train": "Train", "voiture": "Car", "bateau": "Boat",
+      "avion": "Plane",
+      "train": "Train",
+      "voiture": "Car",
+      "bateau": "Boat",
       "avionHint": "Liquids <100ml, cabin baggage",
       "trainHint": "Comfort & flexibility",
       "voitureHint": "Unlimited space, road",
@@ -705,20 +708,40 @@
     "modesActive": "✓ Active",
     "modesAi": "✨ AI",
     "modesLabels": {
-      "minimaliste": "Minimalist", "confort": "Comfort", "stylée": "Stylish", "aventure": "Adventure",
-      "business": "Business", "photo": "Creator", "randonnée": "Hiking", "plage": "Beach",
-      "roadtrip": "Road Trip", "urbain": "Urban", "luxe": "Luxury"
+      "minimaliste": "Minimalist",
+      "confort": "Comfort",
+      "stylée": "Stylish",
+      "aventure": "Adventure",
+      "business": "Business",
+      "photo": "Creator",
+      "randonnée": "Hiking",
+      "plage": "Beach",
+      "roadtrip": "Road Trip",
+      "urbain": "Urban",
+      "luxe": "Luxury"
     },
     "modesDesc": {
-      "minimaliste": "Bare essentials only", "confort": "Daily comfort", "stylée": "Polished look",
-      "aventure": "All-terrain", "business": "Pro & elegant", "photo": "Creative gear",
-      "randonnée": "Trek & nature", "plage": "Sun & sand", "roadtrip": "Road & freedom",
-      "urbain": "Designed city break", "luxe": "Premium standing"
+      "minimaliste": "Bare essentials only",
+      "confort": "Daily comfort",
+      "stylée": "Polished look",
+      "aventure": "All-terrain",
+      "business": "Pro & elegant",
+      "photo": "Creative gear",
+      "randonnée": "Trek & nature",
+      "plage": "Sun & sand",
+      "roadtrip": "Road & freedom",
+      "urbain": "Designed city break",
+      "luxe": "Premium standing"
     },
     "stepsBar": {
-      "s1": "Trip analysis", "s2": "Generate bag", "s3": "Weather adaptation",
-      "s4": "Cultural tips", "s5": "Add activities", "s6": "AI re-gen",
-      "s7": "Bag summary", "s8": "Final validation"
+      "s1": "Trip analysis",
+      "s2": "Generate bag",
+      "s3": "Weather adaptation",
+      "s4": "Cultural tips",
+      "s5": "Add activities",
+      "s6": "AI re-gen",
+      "s7": "Bag summary",
+      "s8": "Final validation"
     },
     "weatherTitle": "Automatic weather update",
     "weatherFetchError": "Could not fetch weather",
@@ -775,13 +798,13 @@
     "outfitsCulturalTip": "Cultural tip",
     "culturalTitle": "Cultural tips — {{destination}}",
     "activitiesTitle": "Activity-specific items",
-    "activitiesDetected": "{{n}} activity detected",
-    "activitiesDetected_other": "{{n}} activities detected",
+    "activitiesDetected": "{{count}} activity detected",
+    "activitiesDetected_other": "{{count}} activities detected",
     "activitiesSubtitle": "Add or remove items based on planned activities",
-    "activitiesItemsCount": "{{n}} items",
+    "activitiesItemsCount": "{{count}} item",
     "activitiesRecommended": "Recommended",
     "activitiesAddAll": "Add all to my suitcase",
-    "activitiesToastAdded": "{{n}} items added to your suitcase",
+    "activitiesToastAdded": "{{count}} item added to your suitcase",
     "aiTipFallbackTitle": "AI tip",
     "aiTipAnalyzing": "Xplania AI is analyzing and adapting your list…",
     "genTitle": "AI generation in progress…",
@@ -820,7 +843,9 @@
     "shareNative": "Share",
     "shareEmail": "Email",
     "shareEmailSubject": "My trip to {{destination}}",
-    "shareWhatsApp": "WhatsApp"
+    "shareWhatsApp": "WhatsApp",
+    "activitiesItemsCount_other": "{{count}} items",
+    "activitiesToastAdded_other": "{{count}} items added to your suitcase"
   },
   "budget": {
     "heroBadge": "Powered by Xplania AI",
@@ -939,14 +964,38 @@
     "tipsTitle": "Saving tips",
     "tipsSubtitle": "Practical tips to travel smart and save",
     "tips": {
-      "local": { "t": "Eat local", "d": "Eat local to cut costs and discover real cuisine at your destination." },
-      "transit": { "t": "Public transit", "d": "Use public transit instead of taxis to save up to 70%." },
-      "museum": { "t": "Free museums", "d": "Visit free museums on Mondays or take advantage of free-entry days." },
-      "lastMin": { "t": "Last-minute bookings", "d": "Book some activities the day before to get up to 30% off." },
-      "shop": { "t": "Smart shopping", "d": "Buy souvenirs at local markets rather than tourist hotspots." },
-      "breakfast": { "t": "Breakfast included", "d": "Pick a stay with breakfast included to save on meals." },
-      "walk": { "t": "Free walking tours", "d": "Join free walking tours (tip-based) to explore without breaking the bank." },
-      "pass": { "t": "City pass", "d": "Buy a city pass if you plan to visit several paid attractions." }
+      "local": {
+        "t": "Eat local",
+        "d": "Eat local to cut costs and discover real cuisine at your destination."
+      },
+      "transit": {
+        "t": "Public transit",
+        "d": "Use public transit instead of taxis to save up to 70%."
+      },
+      "museum": {
+        "t": "Free museums",
+        "d": "Visit free museums on Mondays or take advantage of free-entry days."
+      },
+      "lastMin": {
+        "t": "Last-minute bookings",
+        "d": "Book some activities the day before to get up to 30% off."
+      },
+      "shop": {
+        "t": "Smart shopping",
+        "d": "Buy souvenirs at local markets rather than tourist hotspots."
+      },
+      "breakfast": {
+        "t": "Breakfast included",
+        "d": "Pick a stay with breakfast included to save on meals."
+      },
+      "walk": {
+        "t": "Free walking tours",
+        "d": "Join free walking tours (tip-based) to explore without breaking the bank."
+      },
+      "pass": {
+        "t": "City pass",
+        "d": "Buy a city pass if you plan to visit several paid attractions."
+      }
     },
     "genSteps": {
       "s1": "Xplania is analyzing your preferences…",

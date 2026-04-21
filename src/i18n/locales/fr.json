@@ -693,7 +693,10 @@
     "heroDays_other": "{{count}} jours",
     "transportTitle": "Mode de transport",
     "transports": {
-      "avion": "Avion", "train": "Train", "voiture": "Voiture", "bateau": "Bateau",
+      "avion": "Avion",
+      "train": "Train",
+      "voiture": "Voiture",
+      "bateau": "Bateau",
       "avionHint": "Liquides <100ml, bagage cabine",
       "trainHint": "Confort & flexibilité",
       "voitureHint": "Espace illimité, route",
@@ -705,20 +708,40 @@
     "modesActive": "✓ Actif",
     "modesAi": "✨ IA",
     "modesLabels": {
-      "minimaliste": "Minimaliste", "confort": "Confort", "stylée": "Stylée", "aventure": "Aventure",
-      "business": "Business", "photo": "Créateur", "randonnée": "Randonnée", "plage": "Plage",
-      "roadtrip": "Road Trip", "urbain": "Urbain", "luxe": "Luxe"
+      "minimaliste": "Minimaliste",
+      "confort": "Confort",
+      "stylée": "Stylée",
+      "aventure": "Aventure",
+      "business": "Business",
+      "photo": "Créateur",
+      "randonnée": "Randonnée",
+      "plage": "Plage",
+      "roadtrip": "Road Trip",
+      "urbain": "Urbain",
+      "luxe": "Luxe"
     },
     "modesDesc": {
-      "minimaliste": "L'essentiel uniquement", "confort": "Confort au quotidien", "stylée": "Look soigné",
-      "aventure": "Tout-terrain", "business": "Pro & élégant", "photo": "Matériel créatif",
-      "randonnée": "Trek & nature", "plage": "Soleil & sable", "roadtrip": "Route & liberté",
-      "urbain": "City break design", "luxe": "Standing premium"
+      "minimaliste": "L'essentiel uniquement",
+      "confort": "Confort au quotidien",
+      "stylée": "Look soigné",
+      "aventure": "Tout-terrain",
+      "business": "Pro & élégant",
+      "photo": "Matériel créatif",
+      "randonnée": "Trek & nature",
+      "plage": "Soleil & sable",
+      "roadtrip": "Route & liberté",
+      "urbain": "City break design",
+      "luxe": "Standing premium"
     },
     "stepsBar": {
-      "s1": "Analyse voyage", "s2": "Génération valise", "s3": "Adaptation météo",
-      "s4": "Conseils culturels", "s5": "Ajout activités", "s6": "Régénération IA",
-      "s7": "Résumé valise", "s8": "Validation finale"
+      "s1": "Analyse voyage",
+      "s2": "Génération valise",
+      "s3": "Adaptation météo",
+      "s4": "Conseils culturels",
+      "s5": "Ajout activités",
+      "s6": "Régénération IA",
+      "s7": "Résumé valise",
+      "s8": "Validation finale"
     },
     "weatherTitle": "Mise à jour météo automatique",
     "weatherFetchError": "Impossible de récupérer la météo",
@@ -775,13 +798,13 @@
     "outfitsCulturalTip": "Conseil culturel",
     "culturalTitle": "Conseils culturels — {{destination}}",
     "activitiesTitle": "Objets spécifiques par activité",
-    "activitiesDetected": "{{n}} activité détectée",
-    "activitiesDetected_other": "{{n}} activités détectées",
+    "activitiesDetected": "{{count}} activité détectée",
+    "activitiesDetected_other": "{{count}} activités détectées",
     "activitiesSubtitle": "Ajoute ou retire des items selon tes activités prévues",
-    "activitiesItemsCount": "{{n}} objets",
+    "activitiesItemsCount": "{{count}} objet",
     "activitiesRecommended": "Recommandé",
     "activitiesAddAll": "Tout ajouter à ma valise",
-    "activitiesToastAdded": "{{n}} objets ajoutés à ta valise",
+    "activitiesToastAdded": "{{count}} objet ajouté à ta valise",
     "aiTipFallbackTitle": "Conseil IA",
     "aiTipAnalyzing": "L'IA de Xplania analyse et adapte votre liste…",
     "genTitle": "Génération IA en cours…",
@@ -820,7 +843,9 @@
     "shareNative": "Partager",
     "shareEmail": "Email",
     "shareEmailSubject": "Mon voyage à {{destination}}",
-    "shareWhatsApp": "WhatsApp"
+    "shareWhatsApp": "WhatsApp",
+    "activitiesItemsCount_other": "{{count}} objets",
+    "activitiesToastAdded_other": "{{count}} objets ajoutés à ta valise"
   },
   "budget": {
     "heroBadge": "Propulsé par IA Xplania",
@@ -939,14 +964,38 @@
     "tipsTitle": "Astuces Économies",
     "tipsSubtitle": "Des conseils pratiques pour voyager malin et économiser",
     "tips": {
-      "local": { "t": "Mange local", "d": "Mange local pour réduire les coûts et découvrir la vraie cuisine de ta destination." },
-      "transit": { "t": "Transports publics", "d": "Utilise les transports publics plutôt que les taxis pour économiser jusqu'à 70%." },
-      "museum": { "t": "Musées gratuits", "d": "Visite les musées gratuits le lundi ou profite des jours d'entrée gratuite." },
-      "lastMin": { "t": "Réservations de dernière minute", "d": "Réserve certaines activités la veille pour bénéficier de réductions jusqu'à 30%." },
-      "shop": { "t": "Shopping malin", "d": "Achète tes souvenirs dans les marchés locaux plutôt que dans les zones touristiques." },
-      "breakfast": { "t": "Petit-déjeuner inclus", "d": "Choisis un hébergement avec petit-déjeuner inclus pour économiser sur les repas." },
-      "walk": { "t": "Free walking tours", "d": "Participe aux visites guidées gratuites (à pourboire) pour explorer sans te ruiner." },
-      "pass": { "t": "Pass touristique", "d": "Achète un pass touristique si tu comptes visiter plusieurs attractions payantes." }
+      "local": {
+        "t": "Mange local",
+        "d": "Mange local pour réduire les coûts et découvrir la vraie cuisine de ta destination."
+      },
+      "transit": {
+        "t": "Transports publics",
+        "d": "Utilise les transports publics plutôt que les taxis pour économiser jusqu'à 70%."
+      },
+      "museum": {
+        "t": "Musées gratuits",
+        "d": "Visite les musées gratuits le lundi ou profite des jours d'entrée gratuite."
+      },
+      "lastMin": {
+        "t": "Réservations de dernière minute",
+        "d": "Réserve certaines activités la veille pour bénéficier de réductions jusqu'à 30%."
+      },
+      "shop": {
+        "t": "Shopping malin",
+        "d": "Achète tes souvenirs dans les marchés locaux plutôt que dans les zones touristiques."
+      },
+      "breakfast": {
+        "t": "Petit-déjeuner inclus",
+        "d": "Choisis un hébergement avec petit-déjeuner inclus pour économiser sur les repas."
+      },
+      "walk": {
+        "t": "Free walking tours",
+        "d": "Participe aux visites guidées gratuites (à pourboire) pour explorer sans te ruiner."
+      },
+      "pass": {
+        "t": "Pass touristique",
+        "d": "Achète un pass touristique si tu comptes visiter plusieurs attractions payantes."
+      }
     },
     "genSteps": {
       "s1": "Xplania analyse vos préférences…",
