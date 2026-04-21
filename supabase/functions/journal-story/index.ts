@@ -22,21 +22,24 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { destination, days, tone = "storytelling", mode, rawText } = await req.json();
+    const { destination, days, tone = "storytelling", mode, rawText, locale = "fr" } = await req.json();
+    const isEN = locale === "en";
 
-    // Block-level enhancement mode (rewrite a single text block in poetic/elegant style)
     if (mode === "enhance-block" && rawText) {
       const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
       if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
+      const sys = isEN
+        ? "You are a travel writer. Rewrite short raw notes into evocative, sensory and fluid text. Max 80 words, no title, no markdown. Reply in ENGLISH."
+        : "Tu es un écrivain de voyage. Tu reformules de courtes notes brutes en un texte évocateur, sensoriel et fluide. Garde le sens, ajoute la magie. Maximum 80 mots, sans titre, sans markdown.";
+      const usr = isEN
+        ? `Trip context: ${destination || "(unspecified)"}\n\nRaw note:\n${rawText}\n\nRewrite in a more immersive and beautiful way, first person. ENGLISH only.`
+        : `Contexte voyage: ${destination || "(non précisé)"}\n\nNote brute:\n${rawText}\n\nRéécris cette note de façon plus immersive et belle, à la première personne.`;
       const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
         headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "google/gemini-3-flash-preview",
-          messages: [
-            { role: "system", content: "Tu es un écrivain de voyage. Tu reformules de courtes notes brutes en un texte évocateur, sensoriel et fluide. Garde le sens, ajoute la magie. Maximum 80 mots, sans titre, sans markdown." },
-            { role: "user", content: `Contexte voyage: ${destination || "(non précisé)"}\n\nNote brute:\n${rawText}\n\nRéécris cette note de façon plus immersive et belle, à la première personne.` },
-          ],
+          messages: [{ role: "system", content: sys }, { role: "user", content: usr }],
         }),
       });
       if (!r.ok) {
@@ -51,14 +54,14 @@ Deno.serve(async (req) => {
 
     if (!destination || !Array.isArray(days)) {
       return new Response(JSON.stringify({ error: "destination & days required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
 
+    const TONE_PROMPTS = isEN ? TONE_PROMPTS_EN : TONE_PROMPTS_FR;
     const toneInstruction = TONE_PROMPTS[tone] ?? TONE_PROMPTS.storytelling;
 
     const journalSummary = days
@@ -66,27 +69,30 @@ Deno.serve(async (req) => {
         const blocks = (d.blocks || []).map((b: any) => {
           const c = b.content || {};
           if (b.type === "note") return `Note: ${c.text || ""}`;
-          if (b.type === "mood") return `Humeur: ${c.emoji || ""} (${c.score ?? "?"}/5)`;
-          if (b.type === "location") return `Lieu: ${c.name || ""}`;
-          if (b.type === "highlight") return `⭐ Moment fort: ${c.text || ""}`;
-          if (b.type === "photo") return `Photo: ${c.caption || "(sans légende)"}`;
+          if (b.type === "mood") return `${isEN ? "Mood" : "Humeur"}: ${c.emoji || ""} (${c.score ?? "?"}/5)`;
+          if (b.type === "location") return `${isEN ? "Place" : "Lieu"}: ${c.name || ""}`;
+          if (b.type === "highlight") return `⭐ ${isEN ? "Highlight" : "Moment fort"}: ${c.text || ""}`;
+          if (b.type === "photo") return `Photo: ${c.caption || (isEN ? "(no caption)" : "(sans légende)")}`;
           return "";
         }).filter(Boolean).join(" | ");
-        return `Jour ${i + 1} (${d.date}) — ${d.title || ""}\n${blocks || "(pas de souvenir)"}`;
+        return `${isEN ? "Day" : "Jour"} ${i + 1} (${d.date}) — ${d.title || ""}\n${blocks || (isEN ? "(no memory)" : "(pas de souvenir)")}`;
       })
       .join("\n\n");
 
-    const prompt = `Voici mon voyage à ${destination}.\n\n${journalSummary}\n\nTransforme cela en un récit immersif. ${toneInstruction} Garde une longueur d'environ 400-600 mots. Pas de titres markdown, juste un texte fluide en paragraphes.`;
+    const prompt = isEN
+      ? `Here is my trip to ${destination}.\n\n${journalSummary}\n\nTransform this into an immersive narrative. ${toneInstruction} Around 400-600 words. No markdown headers, smooth paragraphs. ENGLISH only.`
+      : `Voici mon voyage à ${destination}.\n\n${journalSummary}\n\nTransforme cela en un récit immersif. ${toneInstruction} Garde une longueur d'environ 400-600 mots. Pas de titres markdown, juste un texte fluide en paragraphes.`;
+
+    const sysStory = isEN
+      ? "You are a talented travel writer who transforms raw memories into captivating stories. Reply in ENGLISH only."
+      : "Tu es un écrivain de voyage talentueux qui transforme des souvenirs bruts en récits captivants.";
 
     const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: "Tu es un écrivain de voyage talentueux qui transforme des souvenirs bruts en récits captivants." },
-          { role: "user", content: prompt },
-        ],
+        messages: [{ role: "system", content: sysStory }, { role: "user", content: prompt }],
       }),
     });
 
