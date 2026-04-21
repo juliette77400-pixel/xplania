@@ -11,10 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
 import { supabase } from "@/integrations/supabase/client";
+import DeleteTripButton from "@/components/shared/DeleteTripButton";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { trips, loading } = useTrips();
+  const { trips, loading, removeTrip } = useTrips();
   const { t, i18n } = useTranslation();
   const [profile, setProfile] = useState<{ display_name: string | null } | null>(null);
 
