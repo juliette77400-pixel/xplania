@@ -25,7 +25,7 @@ interface NavItem {
 const PRIMARY: NavItem[] = [
   { to: "/app", labelKey: "appNav.home", icon: Home },
   { to: "/discover", labelKey: "appNav.discover", icon: Compass },
-  { to: "/mood", labelKey: "appNav.mood", icon: Heart },
+  { to: "/mood", labelKey: "appNav.mood", icon: Heart, premium: true },
   { to: "/explore", labelKey: "appNav.explore", icon: Map, premium: true },
   { to: "/suivi", labelKey: "appNav.tracking", icon: Activity, premium: true },
   { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Briefcase },

@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Plane, Star, Luggage, Wallet, FileText, MessageSquare, Sparkles, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Plane, Star, Luggage, Wallet, FileText, MessageSquare, Sparkles, Mail,
+  BookOpen, Activity, Compass, Heart, MapPinned, Trophy,
+} from "lucide-react";
 
 const stars = Array.from({ length: 40 }, (_, i) => ({
   id: i,
@@ -24,10 +28,17 @@ const Footer = (_: Props) => {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  // All Xplania feature pages — direct links to the actual product surfaces
   const featureLinks = [
-    { icon: Luggage, label: t("features.items.valise.title") },
-    { icon: Wallet, label: t("features.items.budget.title") },
-    { icon: FileText, label: t("features.items.visa.title") },
+    { icon: Luggage, label: t("features.items.valise.title"), to: "/guide-valise" },
+    { icon: Wallet, label: t("features.items.budget.title"), to: "/guide-budget" },
+    { icon: FileText, label: t("features.items.visa.title"), to: "/guide-visa" },
+    { icon: BookOpen, label: t("features.items.journal.title"), to: "/carnets" },
+    { icon: Activity, label: t("features.items.tracking.title"), to: "/suivi" },
+    { icon: Compass, label: t("features.items.explore.title"), to: "/explore" },
+    { icon: Heart, label: t("features.items.mood.title"), to: "/mood" },
+    { icon: MapPinned, label: t("features.items.discover.title"), to: "/discover" },
+    { icon: Trophy, label: t("appNav.badges"), to: "/gamification" },
   ];
 
   return (
@@ -49,8 +60,14 @@ const Footer = (_: Props) => {
       ))}
 
       <div className="relative z-10 container mx-auto px-6 pt-20 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+          {/* Brand column */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="md:col-span-4"
+          >
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center">
                 <Plane className="w-5 h-5 text-primary-foreground" />
@@ -66,21 +83,40 @@ const Footer = (_: Props) => {
             </span>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
-            <h4 className="text-sm font-bold text-foreground uppercase tracking-wider mb-5">{t("footer.featuresTitle")}</h4>
-            <ul className="space-y-3">
+          {/* All features column — direct links to each tool */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="md:col-span-5"
+          >
+            <h4 className="text-sm font-bold text-foreground uppercase tracking-wider mb-5">
+              {t("footer.featuresTitle")}
+            </h4>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
               {featureLinks.map((item) => (
-                <li key={item.label}>
-                  <a href="#features" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group">
-                    <item.icon className="w-4 h-4 group-hover:text-primary transition-colors" />
-                    {item.label}
-                  </a>
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                  >
+                    <item.icon className="w-4 h-4 group-hover:text-primary transition-colors shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </Link>
                 </li>
               ))}
             </ul>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+          {/* Contact column */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="md:col-span-3"
+          >
             <h4 className="text-sm font-bold text-foreground uppercase tracking-wider mb-5">{t("footer.contactTitle")}</h4>
             <ul className="space-y-3">
               <li>
@@ -95,11 +131,20 @@ const Footer = (_: Props) => {
               <li>
                 <a
                   href="mailto:juliettenoel.xplania@gmail.com"
+                  className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group break-all"
+                >
+                  <Mail className="w-4 h-4 group-hover:text-primary transition-colors shrink-0" />
+                  <span className="truncate">juliettenoel.xplania@gmail.com</span>
+                </a>
+              </li>
+              <li>
+                <Link
+                  to="/offres"
                   className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
                 >
-                  <Mail className="w-4 h-4 group-hover:text-primary transition-colors" />
-                  juliettenoel.xplania@gmail.com
-                </a>
+                  <Sparkles className="w-4 h-4 group-hover:text-primary transition-colors" />
+                  {t("appNav.premiumOffers")}
+                </Link>
               </li>
             </ul>
           </motion.div>

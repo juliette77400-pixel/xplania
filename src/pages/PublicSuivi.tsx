@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Activity, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import LiveMap from "@/components/tracking/LiveMap";
+import LiveMap from "@/components/tracking/SimulatedLiveMap";
 import LiveTimeline from "@/components/tracking/LiveTimeline";
 import LiveStats from "@/components/tracking/LiveStats";
 import { TripActivity, TripTracking } from "@/hooks/useTracking";
