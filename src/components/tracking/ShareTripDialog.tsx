@@ -4,6 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { Copy, QrCode, Share2, ExternalLink } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -15,10 +16,11 @@ interface Props {
 }
 
 const ShareTripDialog = ({ open, onOpenChange, shareEnabled, shareUrl, destination, onToggle }: Props) => {
+  const { t } = useTranslation();
   const copy = () => {
     if (!shareUrl) return;
     navigator.clipboard.writeText(shareUrl);
-    toast.success("Lien copié dans le presse-papier");
+    toast.success(t("trackingComp.share.linkCopied"));
   };
 
   const shareNative = async () => {
@@ -27,9 +29,10 @@ const ShareTripDialog = ({ open, onOpenChange, shareEnabled, shareUrl, destinati
       return;
     }
     try {
+      const dest = destination ? t("trackingComp.share.shareDest", { destination }) : "";
       await navigator.share({
-        title: `Suis mon voyage${destination ? ` à ${destination}` : ""} en direct`,
-        text: "Suis ma position et mon itinéraire en temps réel sur Xplania ✨",
+        title: t("trackingComp.share.shareTitle", { dest }),
+        text: t("trackingComp.share.shareText"),
         url: shareUrl,
       });
     } catch {
@@ -43,19 +46,19 @@ const ShareTripDialog = ({ open, onOpenChange, shareEnabled, shareUrl, destinati
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Share2 className="w-5 h-5 text-primary" />
-            Partager mon voyage en direct
+            {t("trackingComp.share.title")}
           </DialogTitle>
           <DialogDescription>
-            Active le partage pour que tes proches suivent ta position et ta progression en temps réel.
+            {t("trackingComp.share.desc")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5 pt-2">
           <div className="flex items-center justify-between rounded-xl border border-border p-3 bg-muted/20">
             <div>
-              <p className="text-sm font-semibold">Partage public</p>
+              <p className="text-sm font-semibold">{t("trackingComp.share.publicShare")}</p>
               <p className="text-xs text-muted-foreground">
-                {shareEnabled ? "Lien actif — visible par toute personne disposant du lien" : "Aucun lien ne fonctionne tant que désactivé"}
+                {shareEnabled ? t("trackingComp.share.linkActive") : t("trackingComp.share.linkInactive")}
               </p>
             </div>
             <Switch checked={shareEnabled} onCheckedChange={onToggle} />
@@ -85,10 +88,10 @@ const ShareTripDialog = ({ open, onOpenChange, shareEnabled, shareUrl, destinati
 
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={copy} variant="outline" size="sm">
-                  <Copy className="w-4 h-4 mr-1.5" /> Copier
+                  <Copy className="w-4 h-4 mr-1.5" /> {t("trackingComp.share.copy")}
                 </Button>
                 <Button onClick={shareNative} size="sm" className="gradient-button">
-                  <Share2 className="w-4 h-4 mr-1.5" /> Partager
+                  <Share2 className="w-4 h-4 mr-1.5" /> {t("trackingComp.share.share")}
                 </Button>
               </div>
 
@@ -98,13 +101,13 @@ const ShareTripDialog = ({ open, onOpenChange, shareEnabled, shareUrl, destinati
                 rel="noopener"
                 className="flex items-center justify-center gap-1.5 text-xs text-primary hover:underline"
               >
-                <ExternalLink className="w-3 h-3" /> Aperçu de la page publique
+                <ExternalLink className="w-3 h-3" /> {t("trackingComp.share.preview")}
               </a>
             </>
           ) : (
             <div className="flex flex-col items-center justify-center py-6 text-center text-muted-foreground">
               <QrCode className="w-12 h-12 mb-3 opacity-30" />
-              <p className="text-sm">Active le partage ci-dessus pour générer ton QR code et ton lien public.</p>
+              <p className="text-sm">{t("trackingComp.share.noShare")}</p>
             </div>
           )}
         </div>

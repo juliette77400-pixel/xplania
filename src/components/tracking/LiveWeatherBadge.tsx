@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Cloud, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { Position } from "@/hooks/useGeolocation";
 
@@ -20,6 +21,7 @@ interface Props {
 const cache = new Map<string, Weather>();
 
 const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
+  const { t } = useTranslation();
   const [weather, setWeather] = useState<Weather | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -57,7 +59,7 @@ const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
     return (
       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-muted/40 text-muted-foreground border border-border">
         <Loader2 className="w-3 h-3 animate-spin" />
-        Météo…
+        {t("trackingComp.weather.loading")}
       </span>
     );
   }
@@ -67,7 +69,7 @@ const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
   return (
     <span
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-500 border border-sky-500/30"
-      title={`Ressenti ${weather.feelsLike} • Vent ${weather.wind}`}
+      title={t("trackingComp.weather.feelsLikeWind", { feels: weather.feelsLike, wind: weather.wind })}
     >
       <img
         src={`https://openweathermap.org/img/wn/${weather.icon}.png`}

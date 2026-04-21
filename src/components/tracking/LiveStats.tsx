@@ -1,4 +1,5 @@
 import { Route, MapPin, CheckCircle, TrendingUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { TripActivity, TripTracking } from "@/hooks/useTracking";
 
 interface Props {
@@ -7,16 +8,17 @@ interface Props {
 }
 
 const LiveStats = ({ tracking, activities }: Props) => {
+  const { t } = useTranslation();
   const done = activities.filter((a) => a.status === "done").length;
   const total = activities.length;
   const progress = total ? Math.round((done / total) * 100) : 0;
   const distance = Number(tracking?.total_distance_km || 0);
 
   const stats = [
-    { icon: Route, label: "Distance", value: `${distance.toFixed(1)} km` },
-    { icon: MapPin, label: "Lieux visités", value: done },
-    { icon: CheckCircle, label: "Étapes", value: `${done}/${total}` },
-    { icon: TrendingUp, label: "Progression", value: `${progress}%` },
+    { icon: Route, label: t("trackingComp.stats.distance"), value: `${distance.toFixed(1)} km` },
+    { icon: MapPin, label: t("trackingComp.stats.placesVisited"), value: done },
+    { icon: CheckCircle, label: t("trackingComp.stats.steps"), value: `${done}/${total}` },
+    { icon: TrendingUp, label: t("trackingComp.stats.progress"), value: `${progress}%` },
   ];
 
   return (
