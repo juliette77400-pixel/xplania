@@ -7,10 +7,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import QuickJump from "@/components/shared/QuickJump";
 import { useActiveTrip } from "@/stores/useActiveTrip";
+import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 
 const Carnets = () => {
   const { user, loading: authLoading } = useAuth();
-  const { trips, loading } = useTrips();
+  const { trips, loading, removeTrip } = useTrips();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
@@ -51,10 +52,10 @@ const Carnets = () => {
         ) : (
           <div className="grid sm:grid-cols-2 gap-4">
             {trips.map((tr, i) => (
-              <motion.div key={tr.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+              <motion.div key={tr.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="relative group">
                 <button onClick={() => openTrip(tr, "carnet")} className="glass-card rounded-2xl p-6 block w-full text-left hover:scale-[1.02] transition group">
                   <div className="flex items-center gap-2 mb-2"><BookOpen className="w-4 h-4 text-primary" /><span className="text-xs uppercase tracking-wider text-primary">{t("carnets.kicker")}</span></div>
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition">{tr.destination || t("common2.noDestination")}</h3>
+                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition pr-8">{tr.destination || t("common2.noDestination")}</h3>
                   {tr.arrival_city && <p className="text-sm text-muted-foreground">{tr.arrival_city}</p>}
                   <p className="text-xs text-muted-foreground mt-2">
                     {tr.departure_date} {tr.return_date && `→ ${tr.return_date}`}
@@ -64,6 +65,15 @@ const Carnets = () => {
                     <span onClick={(e) => { e.stopPropagation(); openTrip(tr, "explore"); }} className="text-primary hover:underline cursor-pointer">🗺️ {t("carnets.map")}</span>
                   </div>
                 </button>
+                {/* ✨ NEW (Tâche 1) — bouton suppression en overlay */}
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                  <DeleteTripButton
+                    tripId={tr.id}
+                    tripLabel={tr.destination || tr.arrival_city || undefined}
+                    variant="icon"
+                    onDeleted={() => removeTrip(tr.id)}
+                  />
+                </div>
               </motion.div>
             ))}
           </div>
