@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { RotateCcw } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
@@ -26,6 +27,7 @@ import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm
 const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData } = useTravelStore();
+  const { t } = useTranslation();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
   const userBudget = tripData?.totalBudget || 820;
@@ -52,11 +54,11 @@ const GuideBudgetPage = () => {
     await new Promise((r) => setTimeout(r, 500));
     setIsGenerating(false);
     setHasGenerated(true);
-    toast.success("Budget prévisionnel généré ! 💰");
-  }, []);
+    toast.success(t("guideBudget.toastGenerated"));
+  }, [t]);
 
   const handleRegenerate = useCallback(async () => {
-    toast.loading("Xplania recalcule votre budget…", { id: "regen" });
+    toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
     setIsGenerating(true);
     setGenStep(0);
     for (let i = 0; i < STEPS.length; i++) {
@@ -71,14 +73,14 @@ const GuideBudgetPage = () => {
       }))
     );
     setIsGenerating(false);
-    toast.success("Budget recalculé !", { id: "regen" });
-  }, []);
+    toast.success(t("guideBudget.toastRecalcDone"), { id: "regen" });
+  }, [t]);
 
   const handleAiAdjust = (idx: number) => {
     setCategories((prev) =>
       prev.map((c, i) => (i === idx ? { ...c, planned: c.aiSuggested } : c))
     );
-    toast.success(`${categories[idx].key} ajusté par l'IA`);
+    toast.success(t("guideBudget.toastAdjusted", { key: categories[idx].key }));
   };
 
   const handleUpdateCategory = (idx: number, updates: Partial<BudgetCategory>) => {
@@ -133,7 +135,7 @@ const GuideBudgetPage = () => {
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold transition-colors disabled:opacity-50"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Regénérer le budget
+                  {t("guideBudget.regenerate")}
                 </motion.button>
               </div>
 
@@ -163,7 +165,7 @@ const GuideBudgetPage = () => {
                   to="/guide-visa"
                   className="gradient-button inline-flex items-center gap-2 px-6 py-3 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
                 >
-                  Continuer vers Visa & Préparatifs →
+                  {t("guideBudget.continueTo")}
                 </Link>
               </div>
             </motion.div>
