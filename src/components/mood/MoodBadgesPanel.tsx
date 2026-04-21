@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Trophy, Lock, CheckCircle2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { MOOD_BADGES, type BadgeContext } from "@/lib/mood-badges";
 import type { MoodBadge } from "@/hooks/useMoodBadges";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -10,25 +11,6 @@ import { celebrateUnlock } from "@/lib/badges-fx";
 interface Props {
   badges: MoodBadge[];
   context?: BadgeContext;
-}
-
-// Compute progress per badge based on current context
-function badgeProgress(code: string, ctx?: BadgeContext): { current: number; target: number; label: string } {
-  if (!ctx) return { current: 0, target: 1, label: "" };
-  switch (code) {
-    case "mood_curious":
-      return { current: Math.min(ctx.distinctMoods, 3), target: 3, label: `${Math.min(ctx.distinctMoods, 3)}/3 moods testés` };
-    case "mood_master":
-      return { current: Math.min(ctx.distinctMoods, 7), target: 7, label: `${Math.min(ctx.distinctMoods, 7)}/7 moods testés` };
-    case "hidden_hunter":
-      return { current: Math.min(ctx.hiddenGemsSaved, 1), target: 1, label: `${ctx.hiddenGemsSaved}/1 hidden gem sauvé` };
-    case "collector":
-      return { current: Math.min(ctx.favoritesCount, 10), target: 10, label: `${ctx.favoritesCount}/10 favoris` };
-    case "social_soul":
-      return { current: Math.min(ctx.reactionsCount, 1), target: 1, label: `${ctx.reactionsCount}/1 ressenti partagé` };
-    default:
-      return { current: 0, target: 1, label: "" };
-  }
 }
 
 const SEEN_MOOD_KEY = "xplania_seen_mood_badges_v1";
@@ -43,6 +25,26 @@ const saveSeen = (s: Set<string>) => {
 };
 
 const MoodBadgesPanel = ({ badges, context }: Props) => {
+  const { t } = useTranslation();
+
+  function badgeProgress(code: string, ctx?: BadgeContext): { current: number; target: number; label: string } {
+    if (!ctx) return { current: 0, target: 1, label: "" };
+    switch (code) {
+      case "mood_curious":
+        return { current: Math.min(ctx.distinctMoods, 3), target: 3, label: t("moodComp.badges.moodsTested", { current: Math.min(ctx.distinctMoods, 3), target: 3 }) };
+      case "mood_master":
+        return { current: Math.min(ctx.distinctMoods, 7), target: 7, label: t("moodComp.badges.moodsTested", { current: Math.min(ctx.distinctMoods, 7), target: 7 }) };
+      case "hidden_hunter":
+        return { current: Math.min(ctx.hiddenGemsSaved, 1), target: 1, label: t("moodComp.badges.hiddenGemSaved", { current: ctx.hiddenGemsSaved, target: 1 }) };
+      case "collector":
+        return { current: Math.min(ctx.favoritesCount, 10), target: 10, label: t("moodComp.badges.favs", { current: ctx.favoritesCount, target: 10 }) };
+      case "social_soul":
+        return { current: Math.min(ctx.reactionsCount, 1), target: 1, label: t("moodComp.badges.shared", { current: ctx.reactionsCount, target: 1 }) };
+      default:
+        return { current: 0, target: 1, label: "" };
+    }
+  }
+
   const owned = new Set(badges.map((b) => b.code));
   const unlockedCount = badges.length;
   const total = MOOD_BADGES.length;
@@ -50,7 +52,6 @@ const MoodBadgesPanel = ({ badges, context }: Props) => {
   const seenBadges = useRef<Set<string>>(loadSeen());
   const hydratedRef = useRef(false);
 
-  // Detect newly-unlocked badges → confetti (session-scoped, no re-fires on remount)
   useEffect(() => {
     const codes = [...owned];
     if (!hydratedRef.current) {
@@ -79,7 +80,7 @@ const MoodBadgesPanel = ({ badges, context }: Props) => {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" />
-              <h3 className="font-medium text-sm">Badges Mood</h3>
+              <h3 className="font-medium text-sm">{t("moodComp.badges.title")}</h3>
             </div>
             <span className="text-xs text-muted-foreground">{unlockedCount}/{total}</span>
           </div>
@@ -124,10 +125,10 @@ const MoodBadgesPanel = ({ badges, context }: Props) => {
                     </div>
                     <p className="text-xs text-muted-foreground">{b.description}</p>
                     {unlocked ? (
-                      <p className="text-xs text-primary flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Débloqué</p>
+                      <p className="text-xs text-primary flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> {t("moodComp.badges.unlocked")}</p>
                     ) : (
                       <div className="space-y-1">
-                        <p className="text-[11px] font-medium">Comment le débloquer :</p>
+                        <p className="text-[11px] font-medium">{t("moodComp.badges.howToUnlock")}</p>
                         <p className="text-xs">{prog.label || b.description}</p>
                         {context && (
                           <Progress value={pct} className="h-1 mt-1" />

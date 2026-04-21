@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Sparkles, Zap, Compass, Users, Moon } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { useTranslation } from "react-i18next";
 import { moodByKey } from "@/lib/moods";
 
 interface Props {
@@ -9,16 +9,12 @@ interface Props {
   placesCount: number;
 }
 
-/**
- * Figma-inspired "Analyse IA" panel — 4 dynamic gauges + summary.
- * Computes scores from active mood + energy slider for an immersive feel.
- */
 const MoodAiAnalysis = ({ mood, energyLevel, placesCount }: Props) => {
+  const { t } = useTranslation();
   if (!mood) return null;
   const m = moodByKey(mood);
   const energy = energyLevel ?? 50;
 
-  // Mood → exploration / social / rest mapping
   const explorationMap: Record<string, number> = {
     adventurous: 95, curious: 88, energetic: 85, social: 70, creative: 75,
     discovery: 90, calm: 35, romantic: 50,
@@ -37,11 +33,15 @@ const MoodAiAnalysis = ({ mood, energyLevel, placesCount }: Props) => {
   const rest = restMap[mood] ?? 40;
 
   const gauges = [
-    { label: "Énergie du moment", value: energy, icon: Zap, color: "from-yellow-500 to-orange-500", level: energy > 66 ? "Niveau élevé" : energy > 33 ? "Équilibré" : "Calme" },
-    { label: "Besoin d'exploration", value: exploration, icon: Compass, color: "from-cyan-500 to-blue-500", level: exploration > 70 ? "Très motivé(e)" : "Modéré" },
-    { label: "Ouverture sociale", value: social, icon: Users, color: "from-purple-500 to-pink-500", level: social > 70 ? "Très ouvert(e)" : social > 40 ? "Équilibré" : "Introspectif" },
-    { label: "Besoin de repos", value: rest, icon: Moon, color: "from-indigo-500 to-purple-500", level: rest > 60 ? "Important" : rest > 30 ? "Modéré" : "Minimal" },
+    { label: t("moodComp.ai.energy"), value: energy, icon: Zap, color: "from-yellow-500 to-orange-500", level: energy > 66 ? t("moodComp.ai.lvlHigh") : energy > 33 ? t("moodComp.ai.lvlBalanced") : t("moodComp.ai.lvlCalm") },
+    { label: t("moodComp.ai.exploration"), value: exploration, icon: Compass, color: "from-cyan-500 to-blue-500", level: exploration > 70 ? t("moodComp.ai.lvlMotivated") : t("moodComp.ai.lvlModerate") },
+    { label: t("moodComp.ai.social"), value: social, icon: Users, color: "from-purple-500 to-pink-500", level: social > 70 ? t("moodComp.ai.lvlOpen") : social > 40 ? t("moodComp.ai.lvlBalanced") : t("moodComp.ai.lvlIntrospective") },
+    { label: t("moodComp.ai.rest"), value: rest, icon: Moon, color: "from-indigo-500 to-purple-500", level: rest > 60 ? t("moodComp.ai.lvlImportant") : rest > 30 ? t("moodComp.ai.lvlModerate") : t("moodComp.ai.lvlMinimal") },
   ];
+
+  const moodLabel = m ? t(`moodComp.moods.${m.key}.label`, { defaultValue: m.label }).toLowerCase() : "";
+  const energyWord = energy > 60 ? t("moodComp.ai.energyHigh") : energy > 30 ? t("moodComp.ai.energyBalancedW") : t("moodComp.ai.energyCalmW");
+  const kindWord = exploration > 70 ? t("moodComp.ai.kindStimulating") : t("moodComp.ai.kindGentle");
 
   return (
     <motion.div
@@ -55,8 +55,8 @@ const MoodAiAnalysis = ({ mood, energyLevel, placesCount }: Props) => {
           <Sparkles className="w-4 h-4 text-primary-foreground" />
         </div>
         <div>
-          <h3 className="font-bold text-sm">Analyse IA en temps réel</h3>
-          <p className="text-xs text-muted-foreground">Ce que l'IA détecte de ton état</p>
+          <h3 className="font-bold text-sm">{t("moodComp.ai.title")}</h3>
+          <p className="text-xs text-muted-foreground">{t("moodComp.ai.subtitle")}</p>
         </div>
       </div>
 
@@ -92,10 +92,10 @@ const MoodAiAnalysis = ({ mood, energyLevel, placesCount }: Props) => {
       {placesCount > 0 && m && (
         <div className="pt-4 border-t border-border/50 space-y-2">
           <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary font-semibold">
-            ✨ Résumé IA
+            {t("moodComp.ai.summaryTitle")}
           </div>
           <p className="text-sm leading-relaxed">
-            Ton mood <span className="font-semibold">{m.label.toLowerCase()}</span> combiné à une énergie {energy > 60 ? "élevée" : energy > 30 ? "équilibrée" : "calme"} suggère que tu apprécierais des expériences {exploration > 70 ? "stimulantes et immersives" : "douces et contemplatives"}. L'IA a sélectionné <span className="font-bold text-primary">{placesCount} lieux</span> qui matchent ton état actuel.
+            {t("moodComp.ai.summaryText", { mood: moodLabel, energy: energyWord, kind: kindWord, count: placesCount })}
           </p>
         </div>
       )}

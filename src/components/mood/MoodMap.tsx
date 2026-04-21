@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { useTranslation } from "react-i18next";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -110,6 +111,7 @@ const MoodMap = ({ places, onSelect, userPosition }: Props) => {
     return [48.8566, 2.3522];
   }, [places, userPosition]);
 
+  const { t } = useTranslation();
   const hasGeo = places.some((p) => p.lat != null && p.lng != null);
 
   if (!hasGeo) {
@@ -117,7 +119,7 @@ const MoodMap = ({ places, onSelect, userPosition }: Props) => {
       <div className="rounded-2xl border border-border bg-card/40 backdrop-blur-sm h-[500px] flex items-center justify-center text-center px-6">
         <div className="space-y-2">
           <p className="text-2xl">🗺️</p>
-          <p className="text-sm text-muted-foreground">Aucun lieu géolocalisé pour ce mood.<br />Réessaie avec une position activée.</p>
+          <p className="text-sm text-muted-foreground">{t("moodComp.map.noGeoTitle")}<br />{t("moodComp.map.noGeoDesc")}</p>
         </div>
       </div>
     );
