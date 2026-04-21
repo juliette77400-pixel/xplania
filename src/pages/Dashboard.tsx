@@ -158,7 +158,9 @@ const Dashboard = () => {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* ✨ NEW (Tâche 3) — Trophées des voyages terminés */}
+        <PastTripsTrophies trips={trips} />
+
         <Card className="p-6 bg-gradient-to-br from-primary/10 via-card to-accent/10 border-primary/20">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>

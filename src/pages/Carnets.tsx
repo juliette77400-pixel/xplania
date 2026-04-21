@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import QuickJump from "@/components/shared/QuickJump";
 import { useActiveTrip } from "@/stores/useActiveTrip";
-import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
+import TripActionsMenu from "@/components/shared/TripActionsMenu"; // ✨ MODIFIED (Tâche 3)
 
 const Carnets = () => {
   const { user, loading: authLoading } = useAuth();
@@ -65,12 +65,11 @@ const Carnets = () => {
                     <span onClick={(e) => { e.stopPropagation(); openTrip(tr, "explore"); }} className="text-primary hover:underline cursor-pointer">🗺️ {t("carnets.map")}</span>
                   </div>
                 </button>
-                {/* ✨ NEW (Tâche 1) — bouton suppression en overlay */}
+                {/* ✨ MODIFIED (Tâche 3) — menu d'actions complet */}
                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
-                  <DeleteTripButton
-                    tripId={tr.id}
-                    tripLabel={tr.destination || tr.arrival_city || undefined}
-                    variant="icon"
+                  <TripActionsMenu
+                    trip={tr}
+                    onChanged={() => window.location.reload()}
                     onDeleted={() => removeTrip(tr.id)}
                   />
                 </div>
