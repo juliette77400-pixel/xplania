@@ -45,7 +45,9 @@ serve(async (req) => {
       budget,
       surprise = false,
       city_hint,
+      locale = "fr",
     } = body || {};
+    const isEN = locale === "en";
 
     if (!mood && !free_input && !surprise) {
       return new Response(JSON.stringify({ error: "mood ou free_input requis" }), {
@@ -77,12 +79,21 @@ serve(async (req) => {
         lng: lng ?? null,
         weather: weather || null,
         time_of_day: time_of_day || null,
-        context: { budget, surprise, city_hint },
+        context: { budget, surprise, city_hint, locale },
       })
       .select()
       .single();
 
-    const systemPrompt = `Tu es un guide local émotionnel expert. Tu recommandes des lieux RÉELS et HYPER LOCAUX en fonction d'une émotion / sensation recherchée.
+    const systemPrompt = isEN
+      ? `You are an expert local emotional guide. You recommend REAL and HYPER-LOCAL places based on a sought emotion / sensation.
+Strict rules:
+- REAL and localized places (use GPS position and city)
+- MANDATORY DIVERSITY: mix MANDATORILY several types from {restaurant, café, bar, museum, gallery, park, viewpoint, activity, workshop, unusual spot, local experience}. Max 2 places of the same category out of 6.
+- For each place, write an ULTRA personalized emotional sentence "why_fits" explaining why this place matches the mood (poetic style, short, punchy, in ENGLISH, 2nd person "you")
+- Prefer hidden gems, off-the-beaten-track places when relevant
+- Adapt to weather, time and history
+- Always reply via the function call return_mood_places. ALL text in ENGLISH.`
+      : `Tu es un guide local émotionnel expert. Tu recommandes des lieux RÉELS et HYPER LOCAUX en fonction d'une émotion / sensation recherchée.
 Règles strictes :
 - Lieux RÉELS et localisés (utilise la position GPS et la ville)
 - DIVERSITÉ OBLIGATOIRE : mélange OBLIGATOIREMENT plusieurs types parmi {restaurant, café, bar, musée, galerie, parc, point de vue, activité, atelier, lieu insolite, expérience locale}. Pas plus de 2 lieux de la même catégorie sur 6.
@@ -92,10 +103,19 @@ Règles strictes :
 - Toujours répondre via la function call return_mood_places.`;
 
     const historyStr = history?.length
-      ? `Moods récents de l'utilisateur : ${history.map(h => h.mood).join(", ")}.`
+      ? (isEN ? `Recent user moods: ${history.map(h => h.mood).join(", ")}.` : `Moods récents de l'utilisateur : ${history.map(h => h.mood).join(", ")}.`)
       : "";
 
-    const userPrompt = `Mood recherché : "${finalMood}"${free_input ? ` — précision: "${free_input}"` : ""}.
+    const userPrompt = isEN
+      ? `Mood sought: "${finalMood}"${free_input ? ` — detail: "${free_input}"` : ""}.
+${energy_level !== undefined ? `Desired energy level (0=calm, 100=energetic): ${energy_level}.` : ""}
+${lat && lng ? `Current position: ${lat}, ${lng}.` : city_hint ? `City: ${city_hint}.` : ""}
+${weather ? `Weather: ${weather}.` : ""}
+${time_of_day ? `Moment: ${time_of_day}.` : ""}
+${budget ? `Budget: ${budget}.` : ""}
+${historyStr}
+Give 6 DIVERSE places/experiences (at least 4 different categories) perfectly suited. Include at least 1 hidden_gem and at least 1 unusual place. Reply in ENGLISH.`
+      : `Mood recherché : "${finalMood}"${free_input ? ` — précision: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Niveau d'énergie souhaité (0=calme, 100=énergique): ${energy_level}.` : ""}
 ${lat && lng ? `Position actuelle: ${lat}, ${lng}.` : city_hint ? `Ville: ${city_hint}.` : ""}
 ${weather ? `Météo: ${weather}.` : ""}

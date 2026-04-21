@@ -4,11 +4,18 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const TONE_PROMPTS: Record<string, string> = {
+const TONE_PROMPTS_FR: Record<string, string> = {
   storytelling: "Écris un récit narratif immersif et engageant à la première personne, comme un chapitre de roman de voyage.",
   poetic: "Écris un texte poétique, lyrique, riche en métaphores et en images sensorielles.",
   fun: "Écris un récit fun, décontracté, plein d'humour et d'anecdotes amusantes.",
   documentary: "Écris dans un style documentaire factuel, précis et descriptif, façon reportage.",
+};
+
+const TONE_PROMPTS_EN: Record<string, string> = {
+  storytelling: "Write an immersive, engaging first-person narrative, like a chapter of a travel novel.",
+  poetic: "Write a poetic, lyrical text, rich in metaphors and sensory imagery.",
+  fun: "Write a fun, casual story full of humor and amusing anecdotes.",
+  documentary: "Write in a factual, precise documentary style, reportage-like.",
 };
 
 Deno.serve(async (req) => {
