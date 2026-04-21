@@ -2170,6 +2170,26 @@
       "badgesShort": "Badges",
       "shareTitle": "Mon voyage {{dest}}",
       "shareText": "{{pts}} pts sur Xplania ✨"
+    },
+    "tripDocs": {
+      "title": "Documents du voyage",
+      "hint": "Stockez vos billets, passeport, réservations (PDF ou images, max 10 Mo).",
+      "upload": "Ajouter",
+      "open": "Ouvrir",
+      "empty": "Aucun document pour ce voyage. Ajoutez vos billets ou réservations !",
+      "deleteTitle": "Supprimer ce document ?",
+      "deleteDesc": "Le fichier « {{name}} » sera définitivement supprimé.",
+      "types": {
+        "ticket": "Billet",
+        "passport": "Passeport",
+        "booking": "Réservation",
+        "other": "Autre"
+      }
+    },
+    "tripExport": {
+      "button": "Export PDF complet",
+      "success": "PDF généré",
+      "error": "Échec de l'export"
     }
   }
 }
