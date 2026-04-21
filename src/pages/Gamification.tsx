@@ -14,7 +14,21 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { adaptToTripDuration, celebrateUnlock } from "@/lib/badges-fx";
+import { computeXp } from "@/lib/xp-levels";
+import XpHeader from "@/components/gamification/XpHeader";
 import { differenceInDays, parseISO } from "date-fns";
+
+// Session-scoped guard so confetti never re-fires across remounts/refreshes
+const SEEN_BADGES_KEY = "xplania_seen_badges_v1";
+const loadSeen = (): Set<string> => {
+  try {
+    const raw = sessionStorage.getItem(SEEN_BADGES_KEY);
+    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch { return new Set(); }
+};
+const saveSeen = (s: Set<string>) => {
+  try { sessionStorage.setItem(SEEN_BADGES_KEY, JSON.stringify([...s])); } catch { /* noop */ }
+};
 
 // ── Badge Collection ──
 
@@ -176,21 +190,31 @@ const GamificationPage = () => {
     [counts, tripDays]
   );
 
-  // Detect newly-unlocked badges → confetti (only for unlocks happening LIVE on this page)
-  const prevUnlocked = useRef<Set<string>>(new Set());
+  // Detect newly-unlocked badges → confetti.
+  // Persist seen-badges in sessionStorage so re-mounts / data refetches do NOT re-trigger
+  // animations for badges already unlocked in this session.
+  const seenBadges = useRef<Set<string>>(loadSeen());
+  const hydratedRef = useRef(false);
   useEffect(() => {
-    const nowUnlocked = new Set(badges.filter((b) => b.unlocked).map((b) => b.code));
-    if (prevUnlocked.current.size === 0 && nowUnlocked.size > 0) {
-      prevUnlocked.current = nowUnlocked;
+    const nowUnlocked = badges.filter((b) => b.unlocked).map((b) => b.code);
+    // First data load: silently mark all current as seen (no confetti)
+    if (!hydratedRef.current) {
+      hydratedRef.current = true;
+      const merged = new Set([...seenBadges.current, ...nowUnlocked]);
+      seenBadges.current = merged;
+      saveSeen(merged);
       return;
     }
+    let changed = false;
     for (const code of nowUnlocked) {
-      if (!prevUnlocked.current.has(code)) {
+      if (!seenBadges.current.has(code)) {
         const def = badges.find((b) => b.code === code);
         if (def) celebrateUnlock({ name: def.name, icon: def.emoji, description: def.description });
+        seenBadges.current.add(code);
+        changed = true;
       }
     }
-    prevUnlocked.current = nowUnlocked;
+    if (changed) saveSeen(seenBadges.current);
   }, [badges]);
 
   const missions = useMemo(
