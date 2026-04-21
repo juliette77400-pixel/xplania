@@ -30,6 +30,20 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
+
+  // Fetch live waitlist count when the dialog opens
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.rpc("get_waitlist_count" as never);
+      if (cancelled || error) return;
+      const real = typeof data === "number" ? data : 0;
+      setCount(WAITLIST_BASELINE + real);
+    })();
+    return () => { cancelled = true; };
+  }, [open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
