@@ -119,7 +119,7 @@ async function fetchOsrmRoute(points: [number, number][]): Promise<[number, numb
   }
 }
 
-const LiveMap = ({ position, activities, positions, filter, height = "500px", pois = [], onPoiAddToCarnet }: Props) => {
+const LiveMap = ({ position, activities, positions, filter, height = "500px", pois = [], onPoiAddToCarnet, aiPins = [], onAiPinAddToCarnet }: Props) => {
   const filtered = useMemo(
     () => activities.filter((a) => a.lat && a.lng && (!filter || a.category === filter)),
     [activities, filter]
@@ -256,6 +256,54 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                     <button
                       className="text-[11px] underline text-primary ml-auto"
                       onClick={() => onPoiAddToCarnet(p)}
+                    >
+                      + Carnet
+                    </button>
+                  )}
+                </div>
+              </div>
+            </Popup>
+          </CircleMarker>
+        ))}
+
+        {/* AI suggestion pins (golden stars) */}
+        {aiPins.map((p, i) => (
+          <CircleMarker
+            key={`ai-${i}-${p.lat}-${p.lng}`}
+            center={[p.lat, p.lng]}
+            radius={9}
+            pathOptions={{
+              color: "#fbbf24",
+              fillColor: "#f59e0b",
+              fillOpacity: 0.95,
+              weight: 2.5,
+              dashArray: "2 3",
+            }}
+          >
+            <Popup>
+              <div className="text-sm space-y-1.5 min-w-[200px]">
+                <div className="flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5" style={{ color: "#f59e0b" }} />
+                  <strong>{p.title}</strong>
+                </div>
+                <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full inline-block" style={{ background: "#f59e0b22", color: "#b45309" }}>
+                  IA · {p.category}
+                </span>
+                {p.description && <p className="text-xs">{p.description}</p>}
+                {p.reason && <p className="text-xs italic text-muted-foreground">→ {p.reason}</p>}
+                <div className="flex gap-1.5 pt-1">
+                  <a
+                    className="text-[11px] underline text-primary"
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Itinéraire ↗
+                  </a>
+                  {onAiPinAddToCarnet && (
+                    <button
+                      className="text-[11px] underline text-primary ml-auto"
+                      onClick={() => onAiPinAddToCarnet(p)}
                     >
                       + Carnet
                     </button>
