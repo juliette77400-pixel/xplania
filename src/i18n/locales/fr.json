@@ -1185,5 +1185,507 @@
     "statsMemories": "Souvenirs",
     "statsXp": "XP estimés",
     "statsXpShort": "XP"
+  },
+  "discoverComp": {
+    "kicker": "Discover",
+    "tod": { "morning": "Matinée", "afternoon": "Après-midi", "evening": "Soirée", "night": "Nuit", "noon": "Midi" },
+    "heroTitleA": "Ce qu'il te faut",
+    "heroTitleB": "maintenant",
+    "heroLocOn": "Autour de toi ({{lat}}, {{lng}})",
+    "heroLocOff": "Active la géolocalisation pour des recos précises",
+    "refresh": "Actualiser",
+    "enableAlerts": "Activer les alertes",
+    "alertsActive": "Alertes actives",
+    "search": {
+      "placeholder": "Lieu, restaurant, activité… (ex: brunch avec vue à Paris)",
+      "submit": "Chercher",
+      "empty": "Aucun lieu trouvé. Essaie ailleurs ou rafraîchis 'Pour toi'.",
+      "fail": "Recherche échouée",
+      "suggestion1": "brunch avec vue",
+      "suggestion2": "café calme pour travailler",
+      "suggestion3": "restaurant local pas touristique",
+      "suggestion4": "spot sunset",
+      "suggestion5": "balade nature",
+      "suggestion6": "sortie soir authentique"
+    },
+    "card": { "save": "Sauvegarder", "remove": "Retirer", "hiddenGem": "Hidden gem" },
+    "drawer": {
+      "tipInsider": "💡 Tip insider",
+      "saved": "Sauvegardé",
+      "save": "Sauvegarder",
+      "directions": "Itinéraire",
+      "noListErr": "Crée une liste d'abord",
+      "savedTo": "Sauvegardé dans {{name}}",
+      "removed": "Retiré des favoris"
+    },
+    "reviews": {
+      "title": "Avis ({{count}})",
+      "writeReview": "Écrire un avis",
+      "cancel": "Annuler",
+      "loginPrompt": "Connecte-toi pour partager ton avis sur ce lieu.",
+      "alreadyReviewed": "✓ Tu as déjà donné ton avis sur ce lieu.",
+      "yourRating": "Ta note :",
+      "commentPlaceholder": "Partage ton expérience (optionnel, 500 car. max)…",
+      "addPhoto": "Ajouter photo",
+      "changePhoto": "Changer photo",
+      "publish": "Publier",
+      "loading": "Chargement…",
+      "empty": "Aucun avis pour le moment. Sois le premier à partager !",
+      "anonAuthor": "Voyageur",
+      "starAria": "{{count}} étoile",
+      "starsAria": "{{count}} étoiles",
+      "removePhotoAria": "Retirer photo",
+      "previewAlt": "aperçu",
+      "reviewPhotoAlt": "Photo de l'avis"
+    },
+    "lists": {
+      "newPlaceholder": "Nouvelle liste (ex: Paris food)",
+      "create": "Créer une liste",
+      "empty": "Liste vide. Sauvegarde des lieux depuis la découverte.",
+      "noListsTitle": "Crée ta première liste pour organiser tes découvertes.",
+      "emptyError": "Liste vide",
+      "copied": "Liste copiée dans le presse-papier",
+      "pdfDownloaded": "PDF téléchargé",
+      "copiedShort": "Copié",
+      "share": "Partager",
+      "email": "Email"
+    },
+    "map": { "youAreHere": "Tu es ici", "approxIp": "Position approximative (IP)" }
+  },
+  "moodComp": {
+    "hero": {
+      "kicker": "Mood Explorer",
+      "title": "Trouve ta vibe du moment",
+      "subtitle": "Une émotion → un lieu parfait.",
+      "change": "Changer"
+    },
+    "tod": { "morning": "Matin", "noon": "Midi", "afternoon": "Après-midi", "evening": "Soir", "night": "Nuit" },
+    "moods": {
+      "chill":     { "label": "Chill",     "description": "Calme, vue, slow vibes" },
+      "explore":   { "label": "Explore",   "description": "Aventure, hidden gems" },
+      "romantic":  { "label": "Romantic",  "description": "Sunset, intime, élégant" },
+      "food":      { "label": "Food",      "description": "Saveurs locales, gourmand" },
+      "party":     { "label": "Party",     "description": "Énergie, rooftop, nightlife" },
+      "nature":    { "label": "Nature",    "description": "Recharger, plein air" },
+      "focus":     { "label": "Focus",     "description": "Bosser, concentration, café" },
+      "calm":      { "label": "Calm",      "description": "Calme et apaisé" },
+      "curious":   { "label": "Curious",   "description": "Curieux et ouvert" },
+      "energetic": { "label": "Energetic", "description": "Plein d'énergie" },
+      "social":    { "label": "Social",    "description": "Avec les autres" },
+      "creative":  { "label": "Creative",  "description": "Inspiré, créatif" },
+      "adventurous":{"label": "Adventurous","description":"En quête d'aventure" },
+      "discovery": { "label": "Discovery", "description": "Envie de découvrir" }
+    },
+    "selector": {
+      "title": "Comment tu te sens ?",
+      "subtitle": "Choisis une vibe — on trouve le lieu parfait.",
+      "energyLabel": "Énergie",
+      "energyCalm": "Calme 🌙",
+      "energyBalanced": "Équilibrée ✨",
+      "energyBoost": "Boost 🔥",
+      "freeLabel": "Ou décris en une phrase (optionnel)",
+      "freePlaceholder": "ex: un endroit chill avec vue pour le sunset…",
+      "submit": "Trouve-moi des lieux",
+      "surprise": "Surprise me"
+    },
+    "feed": { "swipe": "↕ swipe", "prev": "Précédent", "next": "Suivant" },
+    "card": {
+      "favoriteAria": "Favori",
+      "go": "Y aller",
+      "vibes": "Vibes",
+      "score": "/100"
+    },
+    "favorites": {
+      "empty": "Aucun favori pour l'instant.",
+      "emptyHint": "Tape sur ❤️ sur un lieu pour le sauvegarder.",
+      "savedCount_one": "{{count}} lieu sauvegardé",
+      "savedCount_other": "{{count}} lieux sauvegardés",
+      "pdfDownloaded": "PDF téléchargé"
+    },
+    "detail": {
+      "tipInsider": "Tip insider",
+      "go": "Y aller",
+      "viewMaps": "Voir sur Maps",
+      "miniMapTitle": "Mini-carte"
+    },
+    "ambience": {
+      "moodAmbience": "Ambiance {{mood}}",
+      "play": "Jouer",
+      "pause": "Pause",
+      "enableSound": "🎧 Active le son de ton navigateur"
+    },
+    "ai": {
+      "title": "Analyse IA en temps réel",
+      "subtitle": "Ce que l'IA détecte de ton état",
+      "energy": "Énergie du moment",
+      "exploration": "Besoin d'exploration",
+      "social": "Ouverture sociale",
+      "rest": "Besoin de repos",
+      "lvlHigh": "Niveau élevé",
+      "lvlBalanced": "Équilibré",
+      "lvlCalm": "Calme",
+      "lvlMotivated": "Très motivé(e)",
+      "lvlModerate": "Modéré",
+      "lvlOpen": "Très ouvert(e)",
+      "lvlIntrospective": "Introspectif",
+      "lvlImportant": "Important",
+      "lvlMinimal": "Minimal",
+      "summaryTitle": "✨ Résumé IA",
+      "summaryText": "Ton mood {{mood}} combiné à une énergie {{energy}} suggère que tu apprécierais des expériences {{kind}}. L'IA a sélectionné {{count}} lieux qui matchent ton état actuel.",
+      "energyHigh": "élevée",
+      "energyBalancedW": "équilibrée",
+      "energyCalmW": "calme",
+      "kindStimulating": "stimulantes et immersives",
+      "kindGentle": "douces et contemplatives"
+    },
+    "badges": {
+      "title": "Badges Mood",
+      "unlocked": "Débloqué",
+      "howToUnlock": "Comment le débloquer :",
+      "progress": "Progression",
+      "moodsTested": "{{current}}/{{target}} moods testés",
+      "hiddenGemSaved": "{{current}}/{{target}} hidden gem sauvé",
+      "favs": "{{current}}/{{target}} favoris",
+      "shared": "{{current}}/{{target}} ressenti partagé"
+    },
+    "popular": {
+      "loading": "Chargement…",
+      "title7d": "Moods populaires (7 jours)",
+      "noShared": "Aucun ressenti partagé pour le moment.",
+      "recentTitle": "Derniers ressentis partagés",
+      "noRecent": "Aucune activité récente."
+    },
+    "social": {
+      "title": "People felt this here ({{count}})",
+      "share": "Partager mon ressenti",
+      "cancel": "Annuler",
+      "moodHere": "Ton mood ici",
+      "emoji": "Emoji",
+      "commentPh": "Décris en une phrase ce que tu as ressenti ici…",
+      "publish": "Publier mon ressenti",
+      "empty": "Sois le premier à partager ton ressenti ici ✨"
+    },
+    "map": {
+      "noGeoTitle": "Aucun lieu géolocalisé pour ce mood.",
+      "noGeoDesc": "Réessaie avec une position activée."
+    }
+  },
+  "trackingComp": {
+    "live": {
+      "title": "Suivi de voyage en direct",
+      "myTrip": "Mon voyage",
+      "active": "Position partagée • {{km}} km parcourus",
+      "inactive": "Active la géolocalisation pour démarrer le suivi temps réel",
+      "live": "EN DIRECT",
+      "paused": "EN PAUSE",
+      "offline": "Hors ligne",
+      "share": "Partager"
+    },
+    "filters": {
+      "all": "Tout",
+      "poiToggle": "Points d'intérêt",
+      "poisAround": "{{count}} POI autour",
+      "aiSuggestions": "✨ Suggestions IA"
+    },
+    "poi": {
+      "food": "Nourriture",
+      "culture": "Culture",
+      "nature": "Nature",
+      "shopping": "Shopping",
+      "nightlife": "Nuit",
+      "hidden_gem": "Hidden gem"
+    },
+    "map": {
+      "directions": "Itinéraire",
+      "addToCarnet": "+ Carnet",
+      "youAreHere": "Tu es ici",
+      "approxIp": "Position approximative (IP)",
+      "approxIpFull": "📍 Position approximative (IP) — active le GPS pour une position précise",
+      "ai": "IA"
+    },
+    "controls": {
+      "kicker": "Suivi en direct",
+      "active": "Actif",
+      "paused": "En pause",
+      "offline": "Hors ligne",
+      "stop": "Arrêter",
+      "start": "Démarrer",
+      "precision": "Précision GPS",
+      "precHigh": "Haute",
+      "precBalanced": "Équilibré",
+      "precLow": "Éco",
+      "notifications": "Notifications",
+      "enabled": "Activées",
+      "enable": "Activer",
+      "shareMyPos": "Partager ma position",
+      "qrLink": "QR code & lien",
+      "syncTrip": "Synchroniser depuis le voyage"
+    },
+    "stats": {
+      "distance": "Distance",
+      "placesVisited": "Lieux visités",
+      "steps": "Étapes",
+      "progress": "Progression"
+    },
+    "suggestions": {
+      "title": "Suggestions IA",
+      "suggestNow": "Suggérer maintenant",
+      "moodPh": "Humeur du moment (facultatif) — ex: tranquille, gourmand...",
+      "geoNeeded": "Active la géolocalisation d'abord",
+      "error": "Erreur",
+      "pinOnMap": "Pin sur la carte",
+      "addToCarnet": "+ Carnet",
+      "empty": "Active le suivi puis clique sur \"Suggérer maintenant\" pour des idées hyper locales."
+    },
+    "today": {
+      "title": "Focus aujourd'hui",
+      "stepsPct": "{{done}}/{{total}} étapes • {{pct}}%",
+      "nextStep": "Prochaine étape",
+      "walkMins": "{{mins}} min à pied",
+      "go": "Y aller",
+      "inProgress": "En cours",
+      "allDone": "Toutes les étapes du jour sont terminées 🎉"
+    },
+    "timeline": {
+      "noActivities": "Aucune activité. Synchronise depuis ton voyage et ton carnet.",
+      "noDate": "Sans date",
+      "stepsCount_one": "{{done}}/{{total}} étape",
+      "stepsCount_other": "{{done}}/{{total}} étapes",
+      "byFoot": "à pied",
+      "less1m": "<1 min",
+      "directions": "Itinéraire",
+      "statusAria": "Changer le statut: {{status}}"
+    },
+    "tabs": { "timeline": "📋 Timeline du voyage", "suggestions": "✨ Suggestions IA" },
+    "weather": {
+      "loading": "Météo…",
+      "feelsLikeWind": "Ressenti {{feels}} • Vent {{wind}}"
+    },
+    "share": {
+      "title": "Partager mon voyage en direct",
+      "desc": "Active le partage pour que tes proches suivent ta position et ta progression en temps réel.",
+      "publicShare": "Partage public",
+      "linkActive": "Lien actif — visible par toute personne disposant du lien",
+      "linkInactive": "Aucun lien ne fonctionne tant que désactivé",
+      "copy": "Copier",
+      "share": "Partager",
+      "preview": "Aperçu de la page publique",
+      "noShare": "Active le partage ci-dessus pour générer ton QR code et ton lien public.",
+      "linkCopied": "Lien copié dans le presse-papier",
+      "shareTitle": "Suis mon voyage{{dest}} en direct",
+      "shareDest": " à {{destination}}",
+      "shareText": "Suis ma position et mon itinéraire en temps réel sur Xplania ✨"
+    },
+    "addedTitle": "✨ \"{{title}}\" ajouté à ton carnet",
+    "addedDay": "Jour du {{day}}",
+    "addedView": "Voir",
+    "loginToCarnet": "Connecte-toi pour ajouter à ton carnet",
+    "carnetNotReady": "Carnet pas encore prêt — patiente un instant",
+    "addCarnetFail": "Impossible d'ajouter au carnet",
+    "syncedSteps": "{{count}} étapes synchronisées depuis ton voyage",
+    "synced": "{{count}} étapes synchronisées",
+    "pinPlaced_one": "{{count}} suggestion épinglée sur la carte ⭐",
+    "pinPlaced_other": "{{count}} suggestions épinglées sur la carte ⭐",
+    "loading": "Chargement…",
+    "checkInTitle": "Check-in automatique"
+  },
+  "journalComp": {
+    "day": {
+      "kicker": "{{label}}",
+      "titlePh": "Donne un titre à cette journée…",
+      "addMemory": "Ajouter un souvenir",
+      "blocks": {
+        "note": "Note",
+        "photo": "Photo",
+        "location": "Lieu",
+        "mood": "Humeur",
+        "highlight": "Moment fort"
+      }
+    },
+    "block": {
+      "uploadFail": "Upload échoué",
+      "aiNeedText": "Écris au moins quelques mots avant d'enrichir avec l'IA",
+      "aiSuccess": "Texte enrichi par l'IA ✨",
+      "aiFail": "Enrichissement IA indisponible",
+      "noteEmpty": "Note vide…",
+      "addPhoto": "Ajouter une photo",
+      "noLocation": "Lieu non défini",
+      "highlightPh": "Décris ton meilleur moment…",
+      "notePh": "Raconte ta journée…",
+      "captionPh": "Légende (optionnel)",
+      "locationPh": "Nom du lieu",
+      "highlightLong": "Le meilleur moment de cette journée…",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "emoji": "Emoji",
+      "aiEnhance": "Enrichir IA",
+      "souvenirAlt": "Souvenir",
+      "moodScore": "{{score}}/5"
+    },
+    "badges": {
+      "title": "Badges",
+      "tripAdapted": "Adapté à un voyage de {{days}}j",
+      "unlockedDone": "Débloqué — bravo !",
+      "stillNeeded": "Plus que {{count}} {{kind}} pour le débloquer.",
+      "kinds": {
+        "places": "lieux visités",
+        "notes": "notes écrites",
+        "photos": "photos ajoutées",
+        "moods": "humeurs partagées",
+        "highlights": "moments forts"
+      }
+    },
+    "insights": {
+      "title": "Insights de ton voyage",
+      "notes": "Notes",
+      "photos": "Photos",
+      "places": "Lieux",
+      "days": "Jours",
+      "happiestDay": "Ta journée la plus heureuse",
+      "topPlaces": "Lieux les plus visités",
+      "highlights": "Moments marquants"
+    },
+    "story": {
+      "title": "Ton récit de voyage",
+      "ai": "IA",
+      "manual": "Manuel",
+      "aiDesc": "L'IA transforme tes souvenirs en récit immersif. Choisis un ton et laisse la magie opérer.",
+      "manualDesc": "Écris toi-même ton récit, à ta façon. Tes mots, ton rythme.",
+      "manualPh": "Il était une fois mon voyage à…",
+      "wordsCount": "{{count}} mots",
+      "save": "Enregistrer",
+      "generate": "Générer",
+      "generated": "Récit généré ✨",
+      "saved": "Récit enregistré ✏️",
+      "needText": "Écris ton récit avant d'enregistrer",
+      "saveError": "Erreur d'enregistrement",
+      "genFail": "Génération impossible"
+    },
+    "share": {
+      "title": "Partager ton carnet",
+      "public": "Carnet public",
+      "private": "Carnet privé",
+      "publicHint": "Toute personne avec le lien peut le voir",
+      "privateHint": "Visible uniquement par toi",
+      "published": "Carnet publié 🌍",
+      "unpublished": "Carnet repassé en privé 🔒",
+      "copyLink": "Copier le lien",
+      "linkCopied": "Lien copié",
+      "sendEmail": "Envoyer par email",
+      "shareDots": "Partager…",
+      "exportTitle": "Exporter en PDF",
+      "exportDesc": "Crée un livre souvenir de ton voyage, prêt à imprimer ou à archiver.",
+      "includePhotos": "Inclure les photos",
+      "includePhotosHint": "PDF plus lourd mais beaucoup plus beau",
+      "download": "Télécharger le PDF",
+      "generating": "Génération en cours…",
+      "pdfOk": "PDF généré ✅",
+      "pdfFail": "Erreur lors de la génération du PDF",
+      "emailSubject": "Mon carnet de voyage — {{title}}",
+      "emailBody": "Salut !\n\nJ'ai envie de partager avec toi mon carnet de voyage{{dest}}.\n\nDécouvre-le ici : {{url}}\n\nÀ très vite !",
+      "linkPlaceholder": "(lien à activer)",
+      "shareText": "Mon carnet de voyage à {{destination}}",
+      "pdfMemories": "{{count}} jour de souvenirs",
+      "pdfMemoriesPlural": "{{count}} jours de souvenirs",
+      "pdfTripTo": "Voyage à {{destination}}",
+      "pdfMoodLabel": "Humeur: {{emoji}} {{score}}/5",
+      "pdfPhotoCaption": "(photo)",
+      "pdfFooter": "Carnet généré avec Xplania · {{date}}"
+    }
+  },
+  "exploreComp": {
+    "progress": {
+      "kicker": "Travel Map",
+      "myTripGamified": "Mon voyage gamifié",
+      "explored": "exploré",
+      "points": "Points",
+      "visited": "Visités",
+      "cities": "Villes",
+      "badges": "Badges"
+    },
+    "addNode": {
+      "openBtn": "Écrire mon voyage",
+      "title": "Ajoute une étape de voyage",
+      "desc": "Écris toi-même ton parcours, pas besoin d'IA — chaque étape ajoute des points et débloque des badges.",
+      "manual": "Manuel",
+      "tips": "Conseils",
+      "nameLabel": "Nom de l'étape *",
+      "namePh": "Ex : Café de Flore, Sunset au Sacré-Cœur…",
+      "category": "Catégorie",
+      "descLabel": "Description / souvenir",
+      "descPh": "Une note, un ressenti, un détail à retenir…",
+      "addPts": "Ajouter (+{{pts}} pts)",
+      "types": {
+        "place": "📍 Lieu",
+        "food": "🍽️ Restaurant",
+        "culture": "🏛️ Culture",
+        "nature": "🌿 Nature",
+        "nightlife": "🌙 Nuit",
+        "activity": "🎯 Activité",
+        "hotel": "🏨 Hôtel"
+      }
+    },
+    "drawer": {
+      "visited": "Visité",
+      "inProgress": "En cours",
+      "todo": "À visiter",
+      "level": "Niveau {{level}}",
+      "markVisited": "Marquer comme visité (+{{pts}}pts)",
+      "memories": "Souvenirs ({{count}})",
+      "noCaption": "Sans légende",
+      "addNotePh": "Ajouter une note souvenir...",
+      "addNoteBtn": "+ Ajouter (+20pts)",
+      "connected": "Lieux connectés ({{count}})",
+      "delete": "Supprimer ce point"
+    },
+    "suggestions": {
+      "title": "Suggestions IA",
+      "suggest": "Suggérer",
+      "empty": "Lance l'IA pour découvrir des lieux locaux à ajouter à ton parcours.",
+      "add": "Ajouter",
+      "fail": "Échec suggestions"
+    },
+    "badgesShow": {
+      "title": "Collection de badges",
+      "all": "Tous",
+      "unlocked": "Débloqué",
+      "progress": "Progression"
+    },
+    "replay": {
+      "empty": "Visite des lieux pour rejouer ton parcours en ligne métro ✨",
+      "stage": "Étape {{step}}/{{total}} · +{{pts}} pts · {{date}}"
+    },
+    "summary": {
+      "title": "Résumé du voyage",
+      "regenerate": "Régénérer",
+      "generate": "Générer",
+      "intro": "Génère un récit personnalisé de ton voyage à partir de tes lieux visités, badges et souvenirs.",
+      "fail": "Échec résumé",
+      "places": "Lieux visités",
+      "score": "Score",
+      "badges": "Badges",
+      "memories": "Souvenirs"
+    },
+    "share": {
+      "kicker": "Travel Map",
+      "myTrip": "Mon voyage",
+      "score": "Score",
+      "places": "Lieux visités",
+      "cities": "Villes",
+      "badges": "Badges",
+      "footer": "xplania.lovable.app — Travel as a game",
+      "downloadBtn": "Télécharger PNG",
+      "downloaded": "Carte téléchargée 🎴",
+      "pngFail": "Échec génération PNG",
+      "shareTitle": "Mon voyage {{destination}}",
+      "shareText": "{{pts}} pts sur Xplania ✨",
+      "linkCopied": "Lien copié"
+    },
+    "map": {
+      "noGeoLine1": "Aucun point géolocalisé.",
+      "noGeoLine2": "Utilise la vue Mind-map pour explorer la ramification.",
+      "heatmap": "Heatmap",
+      "popupPoints": "+{{pts}}pts • {{status}}"
+    }
   }
 }
