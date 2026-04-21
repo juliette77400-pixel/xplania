@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Check, Rocket, Mail, Loader2 } from "lucide-react";
+import { Sparkles, Check, Rocket, Mail, Loader2, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+// Baseline so the counter never feels empty (social proof). Real signups add to it.
+const WAITLIST_BASELINE = 327;
 
 const emailSchema = z.string().trim().email("Email invalide").max(255);
 
