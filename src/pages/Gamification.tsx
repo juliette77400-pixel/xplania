@@ -436,10 +436,14 @@ const GamificationPage = () => {
           </div>
         </section>
 
-        {/* ══════ DAILY MISSIONS (live) ══════ */}
+        {/* ══════ WEEKLY MISSIONS (live, reset every Monday) ══════ */}
         <section className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Missions du Jour</h2>
-          <p className="text-muted-foreground mb-8">Accomplis tes missions quotidiennes et gagne de l'XP</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Missions de la semaine</h2>
+          <p className="text-muted-foreground mb-3">Accomplis tes missions hebdo et gagne de l'XP</p>
+          <div className="inline-flex items-center gap-2 mb-8 text-xs font-semibold text-primary bg-primary/10 border border-primary/30 rounded-full px-3 py-1.5">
+            <RefreshCw className="w-3 h-3" />
+            Reset dans <span className="tabular-nums">{timeLeft}</span>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {missions.map((m, i) => {
