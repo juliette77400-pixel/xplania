@@ -370,5 +370,159 @@
     "step3Title": "Travel light-hearted",
     "step3Desc": "Everything is centralized: local tips, cultural advice, weather and budget. All you have to do is enjoy the trip.",
     "goToStep": "Go to step {{n}}"
+  },
+  "auth": {
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First name",
+    "signInCta": "Sign in",
+    "signUpCta": "Create my account",
+    "forgotPassword": "Forgot password?",
+    "confirmEmailNote": "You'll receive a confirmation email before you can sign in.",
+    "or": "or",
+    "continueGoogle": "Continue with Google",
+    "backHome": "Back to home",
+    "signupSuccess": "Check your inbox to confirm your sign-up ✉️",
+    "googleError": "Google sign-in failed",
+    "resetEmailFirst": "Enter your email first",
+    "resetSent": "Reset email sent ✉️"
+  },
+  "resetPassword": {
+    "title": "New password",
+    "subtitle": "Choose a new secure password.",
+    "newPasswordLabel": "New password",
+    "submit": "Update",
+    "verifying": "Verifying link…",
+    "success": "Password updated ✅"
+  },
+  "profil": {
+    "title": "My profile",
+    "subtitle": "Customize your Xplania space",
+    "anonymousTraveler": "Anonymous traveler",
+    "displayName": "Display name",
+    "displayNamePlaceholder": "Jane Smith",
+    "avatarUrl": "Avatar URL (optional)",
+    "save": "Save",
+    "account": "Account",
+    "logout": "Sign out",
+    "saveError": "Save failed",
+    "saveSuccess": "Profile updated ✨"
+  },
+  "notFound": {
+    "title": "Oops! Page not found",
+    "back": "Back to home"
+  },
+  "moduleNav": {
+    "budget": "Budget",
+    "visa": "Visa & Paperwork",
+    "valise": "Suitcase",
+    "poweredBy": "Powered by"
+  },
+  "quotaBanner": {
+    "devMode": "Developer mode",
+    "devUnlimited": "unlimited access to {{tool}}",
+    "exhausted": "You've used your <1>{{limit}} free generations</1> for {{tool}}.",
+    "upgrade": "Upgrade to Plus →",
+    "remainingOne": "{{remaining}}/{{limit}} free generation left for {{tool}}",
+    "remainingOther": "{{remaining}}/{{limit}} free generations left for {{tool}}"
+  },
+  "upgrade": {
+    "title": "Free quota reached 🎯",
+    "teaser": "Loved {{tool}}? Unlock unlimited access at premium launch and get -30% as an early bird."
+  },
+  "index": {
+    "openJournal": "📔 Open my Journal",
+    "tripTitle": "Trip to {{destination}}"
+  },
+  "offres": {
+    "back": "Back to home",
+    "tag": "Xplania Plans",
+    "title": "Choose the plan that fits you",
+    "subtitle": "Start free, then build your subscription pack by pack.",
+    "free": "Free",
+    "freeTagline": "To discover Xplania",
+    "current": "Current",
+    "forever": "/ forever",
+    "freeFeat1": "3 free trip generations (to try the 3 questionnaires)",
+    "freeFeat2": "Essential guides (suitcase, budget, visa)",
+    "freeFeat3": "Preview of advanced features",
+    "generationsUsed": "{{used}} / {{total}} generations used",
+    "remainingCount": "{{n}} left",
+    "packsTitle": "Our à-la-carte packs",
+    "packsSubtitle": "Pick your packs and the duration that suits you.",
+    "perTripNote": "Ideal for occasional travelers who go 1–2 times a year. Pay only when you need it, no commitment.",
+    "billing": {
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "season3": "3-month season",
+      "season6": "6-month season",
+      "perTrip": "Pay-per-trip"
+    },
+    "suffix": {
+      "monthly": "/month",
+      "yearly": "/year",
+      "season3": "/3 months",
+      "season6": "/6 months",
+      "perTrip": "/trip"
+    },
+    "yearlyNote": "≈ 2 months free",
+    "recommended": "Recommended",
+    "premium": "Premium",
+    "notifyMe": "Notify me at launch",
+    "comboTag": "Save by bundling",
+    "comboTitle": "Combine packs and save",
+    "comboSubtitle": "2 packs → −15% | 3 packs → −20% | 4 packs → −25%",
+    "doublePacks": "Double packs",
+    "doubleDiscount": "−12 to −15%",
+    "triplePacks": "Triple packs",
+    "tripleDiscount": "−18 to −20%",
+    "perMonth": "/month",
+    "betaNote": "Beta in progress — payments aren't active yet. All free features remain accessible during this testing phase.",
+    "waitlistTitlePack": "{{pack}} is coming soon 🚀",
+    "waitlistTitleGeneric": "Premium is coming soon 🚀",
+    "waitlistTeaserPack": "Be the first to unlock the {{pack}} at launch, with -30% as an early bird.",
+    "packs": {
+      "admin": {
+        "name": "Admin Pack",
+        "tagline": "Travel calmly while handling all the practical side",
+        "f1": "Budget guide (planning & expense tracking)",
+        "f2": "Smart suitcase guide (checklist tailored to your destination)",
+        "f3": "Admin handling (visas, documents, formalities)"
+      },
+      "creatif": {
+        "name": "Creative Pack",
+        "tagline": "Live your trip as a unique, playful experience",
+        "f1": "Personalized travel journal (interactive log, photos, memories)",
+        "f2": "Mood Explorer (activities and places by mood)",
+        "f3": "Gamification with badges (challenges, achievements to unlock)"
+      },
+      "ia": {
+        "name": "AI Pack",
+        "tagline": "For smart, ultra-personalized assistance",
+        "f1": "Deep analysis of an existing itinerary",
+        "f2": "End-to-end destination support (full AI-powered planning)"
+      },
+      "intercultural": {
+        "name": "Intercultural Pack",
+        "tagline": "Travel respecting and understanding local culture",
+        "f1": "Intercultural guide (codes, traditions, behaviors)",
+        "f2": "Local recommendations (local agencies and freelancers)"
+      },
+      "futur": {
+        "name": "Future Pack",
+        "tagline": "Explore and get inspired even before you leave",
+        "f1": "Virtual reality (immersive 3D tours before departure)",
+        "f2": "Augmented reality (contextual info during the trip)"
+      },
+      "all": {
+        "name": "All Access",
+        "tagline": "All packs + exclusive updates",
+        "f1": "Full access to all 5 packs (Admin, Creative, AI, Intercultural, Future)",
+        "f2": "Exclusive early-access updates",
+        "f3": "Save about €8/month vs buying separately"
+      }
+    }
   }
 }

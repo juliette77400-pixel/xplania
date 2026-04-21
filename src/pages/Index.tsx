@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -23,6 +24,7 @@ const Index = () => {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
@@ -71,7 +73,7 @@ const Index = () => {
               .from("trips")
               .insert({
                 user_id: user.id,
-                title: `Voyage à ${data.destination}`,
+                title: t("index.tripTitle", { destination: data.destination }),
                 destination: data.destination,
                 arrival_city: data.arrivalCity,
                 departure_location: data.departureLocation,
@@ -102,7 +104,7 @@ const Index = () => {
           href={`/carnet/${currentTripId}`}
           className="fixed bottom-6 right-6 gradient-button px-5 py-3 rounded-full text-primary-foreground font-semibold shadow-lg hover:scale-105 transition flex items-center gap-2 z-40"
         >
-          📔 Ouvrir mon Carnet
+          {t("index.openJournal")}
         </a>
       )}
       <QuickJump />
