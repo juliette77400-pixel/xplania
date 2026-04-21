@@ -8,15 +8,23 @@ import type { Place } from "@/hooks/useDiscover";
 import { searchPhoton, type GeoSuggestion } from "@/lib/geocoding";
 import { toast } from "sonner";
 import PlaceCard from "./PlaceCard";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   userPos: { lat: number; lng: number } | null;
   onSelect: (p: Place) => void;
 }
 
-const SUGGESTIONS = ["brunch avec vue", "café calme pour travailler", "restaurant local pas touristique", "spot sunset", "balade nature", "sortie soir authentique"];
-
 const SmartSearch = ({ userPos, onSelect }: Props) => {
+  const { t } = useTranslation();
+  const SUGGESTIONS = [
+    t("discoverComp.search.suggestion1"),
+    t("discoverComp.search.suggestion2"),
+    t("discoverComp.search.suggestion3"),
+    t("discoverComp.search.suggestion4"),
+    t("discoverComp.search.suggestion5"),
+    t("discoverComp.search.suggestion6"),
+  ];
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Place[]>([]);
@@ -46,9 +54,9 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
       const places = (data?.places || []) as Place[];
       const withDist = userPos ? places.map((p) => ({ ...p, distance_km: distanceKm(userPos, { lat: p.lat, lng: p.lng }) })) : places;
       setResults(withDist);
-      if (withDist.length === 0) toast.info("Aucun lieu trouvé. Essaie ailleurs ou rafraîchis 'Pour toi'.");
+      if (withDist.length === 0) toast.info(t("discoverComp.search.empty"));
     } catch (e: any) {
-      toast.error(e?.message || "Recherche échouée");
+      toast.error(e?.message || t("discoverComp.search.fail"));
     } finally {
       setLoading(false);
     }
@@ -64,7 +72,7 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
             onChange={(e) => { setQ(e.target.value); setShowAuto(true); }}
             onFocus={() => setShowAuto(true)}
             onBlur={() => setTimeout(() => setShowAuto(false), 200)}
-            placeholder="Lieu, restaurant, activité… (ex: brunch avec vue à Paris)"
+            placeholder={t("discoverComp.search.placeholder")}
             className="pl-9"
           />
           {showAuto && autocomplete.length > 0 && (
@@ -90,7 +98,7 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
           )}
         </div>
         <Button type="submit" disabled={loading || !q.trim()}>
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Chercher"}
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t("discoverComp.search.submit")}
         </Button>
       </form>
       <div className="flex flex-wrap gap-2">
