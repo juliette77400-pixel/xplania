@@ -31,26 +31,45 @@ function badgeProgress(code: string, ctx?: BadgeContext): { current: number; tar
   }
 }
 
+const SEEN_MOOD_KEY = "xplania_seen_mood_badges_v1";
+const loadSeen = (): Set<string> => {
+  try {
+    const raw = sessionStorage.getItem(SEEN_MOOD_KEY);
+    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch { return new Set(); }
+};
+const saveSeen = (s: Set<string>) => {
+  try { sessionStorage.setItem(SEEN_MOOD_KEY, JSON.stringify([...s])); } catch { /* noop */ }
+};
+
 const MoodBadgesPanel = ({ badges, context }: Props) => {
   const owned = new Set(badges.map((b) => b.code));
   const unlockedCount = badges.length;
   const total = MOOD_BADGES.length;
   const globalPct = Math.round((unlockedCount / total) * 100);
-  const prevOwned = useRef<Set<string>>(new Set());
+  const seenBadges = useRef<Set<string>>(loadSeen());
+  const hydratedRef = useRef(false);
 
-  // Detect newly-unlocked badges → confetti
+  // Detect newly-unlocked badges → confetti (session-scoped, no re-fires on remount)
   useEffect(() => {
-    if (prevOwned.current.size === 0 && owned.size > 0) {
-      prevOwned.current = new Set(owned);
+    const codes = [...owned];
+    if (!hydratedRef.current) {
+      hydratedRef.current = true;
+      const merged = new Set([...seenBadges.current, ...codes]);
+      seenBadges.current = merged;
+      saveSeen(merged);
       return;
     }
-    for (const code of owned) {
-      if (!prevOwned.current.has(code)) {
+    let changed = false;
+    for (const code of codes) {
+      if (!seenBadges.current.has(code)) {
         const def = MOOD_BADGES.find((b) => b.code === code);
         if (def) celebrateUnlock({ name: def.name, icon: def.icon, description: def.description });
+        seenBadges.current.add(code);
+        changed = true;
       }
     }
-    prevOwned.current = new Set(owned);
+    if (changed) saveSeen(seenBadges.current);
   }, [owned]);
 
   return (

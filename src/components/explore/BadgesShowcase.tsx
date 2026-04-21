@@ -14,24 +14,43 @@ interface Props {
   mediaCount: number;
 }
 
+const SEEN_EXPLORE_KEY = "xplania_seen_explore_badges_v1";
+const loadSeen = (): Set<string> => {
+  try {
+    const raw = sessionStorage.getItem(SEEN_EXPLORE_KEY);
+    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch { return new Set(); }
+};
+const saveSeen = (s: Set<string>) => {
+  try { sessionStorage.setItem(SEEN_EXPLORE_KEY, JSON.stringify([...s])); } catch { /* noop */ }
+};
+
 const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
   const owned = useMemo(() => new Set(badges.map((b) => b.code)), [badges]);
   const [active, setActive] = useState<BadgeCategory | "all">("all");
-  const prevOwned = useRef<Set<string>>(new Set());
+  const seenBadges = useRef<Set<string>>(loadSeen());
+  const hydratedRef = useRef(false);
 
-  // Detect newly-unlocked badges → confetti
+  // Detect newly-unlocked badges → confetti (session-scoped to avoid re-fires on remount)
   useEffect(() => {
-    if (prevOwned.current.size === 0 && owned.size > 0) {
-      prevOwned.current = new Set(owned);
+    const codes = [...owned];
+    if (!hydratedRef.current) {
+      hydratedRef.current = true;
+      const merged = new Set([...seenBadges.current, ...codes]);
+      seenBadges.current = merged;
+      saveSeen(merged);
       return;
     }
-    for (const code of owned) {
-      if (!prevOwned.current.has(code)) {
+    let changed = false;
+    for (const code of codes) {
+      if (!seenBadges.current.has(code)) {
         const def = EXPLORE_BADGES.find((b) => b.code === code);
         if (def) celebrateUnlock({ name: def.name, icon: def.icon, description: def.description });
+        seenBadges.current.add(code);
+        changed = true;
       }
     }
-    prevOwned.current = new Set(owned);
+    if (changed) saveSeen(seenBadges.current);
   }, [owned]);
 
   const filtered = active === "all" ? EXPLORE_BADGES : EXPLORE_BADGES.filter((b) => b.category === active);

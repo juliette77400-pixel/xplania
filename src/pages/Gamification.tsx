@@ -14,7 +14,21 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { adaptToTripDuration, celebrateUnlock } from "@/lib/badges-fx";
+import { computeXp } from "@/lib/xp-levels";
+import XpHeader from "@/components/gamification/XpHeader";
 import { differenceInDays, parseISO } from "date-fns";
+
+// Session-scoped guard so confetti never re-fires across remounts/refreshes
+const SEEN_BADGES_KEY = "xplania_seen_badges_v1";
+const loadSeen = (): Set<string> => {
+  try {
+    const raw = sessionStorage.getItem(SEEN_BADGES_KEY);
+    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch { return new Set(); }
+};
+const saveSeen = (s: Set<string>) => {
+  try { sessionStorage.setItem(SEEN_BADGES_KEY, JSON.stringify([...s])); } catch { /* noop */ }
+};
 
 // ── Badge Collection ──
 
@@ -176,21 +190,31 @@ const GamificationPage = () => {
     [counts, tripDays]
   );
 
-  // Detect newly-unlocked badges → confetti (only for unlocks happening LIVE on this page)
-  const prevUnlocked = useRef<Set<string>>(new Set());
+  // Detect newly-unlocked badges → confetti.
+  // Persist seen-badges in sessionStorage so re-mounts / data refetches do NOT re-trigger
+  // animations for badges already unlocked in this session.
+  const seenBadges = useRef<Set<string>>(loadSeen());
+  const hydratedRef = useRef(false);
   useEffect(() => {
-    const nowUnlocked = new Set(badges.filter((b) => b.unlocked).map((b) => b.code));
-    if (prevUnlocked.current.size === 0 && nowUnlocked.size > 0) {
-      prevUnlocked.current = nowUnlocked;
+    const nowUnlocked = badges.filter((b) => b.unlocked).map((b) => b.code);
+    // First data load: silently mark all current as seen (no confetti)
+    if (!hydratedRef.current) {
+      hydratedRef.current = true;
+      const merged = new Set([...seenBadges.current, ...nowUnlocked]);
+      seenBadges.current = merged;
+      saveSeen(merged);
       return;
     }
+    let changed = false;
     for (const code of nowUnlocked) {
-      if (!prevUnlocked.current.has(code)) {
+      if (!seenBadges.current.has(code)) {
         const def = badges.find((b) => b.code === code);
         if (def) celebrateUnlock({ name: def.name, icon: def.emoji, description: def.description });
+        seenBadges.current.add(code);
+        changed = true;
       }
     }
-    prevUnlocked.current = nowUnlocked;
+    if (changed) saveSeen(seenBadges.current);
   }, [badges]);
 
   const missions = useMemo(
@@ -198,15 +222,32 @@ const GamificationPage = () => {
     [counts]
   );
 
-  // Real weekly XP estimate: 50 XP per badge across modules
+  // (XP computation moved below — single source of truth)
+  // XP — derived from real activity counts (single source of truth)
   const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
-  const totalXp = totalBadges * 50 + counts.exploreVisited * 20 + counts.journalNotes * 10;
+  const totalXp = useMemo(
+    () =>
+      computeXp({
+        exploreVisited: counts.exploreVisited,
+        journalNotes: counts.journalNotes,
+        journalPhotos: counts.journalPhotos,
+        journalLocations: counts.journalLocations,
+        journalMoods: counts.journalMoods,
+        moodFavorites: counts.moodFavorites,
+        moodHiddenGems: counts.moodHiddenGems,
+        badgesTotal: totalBadges,
+      }),
+    [counts, totalBadges],
+  );
 
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
 
-      <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-16">
+      <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-12">
+
+        {/* ══════ XP LEVEL HEADER ══════ */}
+        <XpHeader xp={totalXp} />
 
         {/* ══════ HERO STATS ══════ */}
         <section className="text-center">
@@ -222,16 +263,19 @@ const GamificationPage = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 max-w-3xl mx-auto">
             {[
-              { label: "Badges débloqués", value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
-              { label: "Lieux visités", value: counts.exploreVisited },
-              { label: "Souvenirs", value: counts.journalNotes + counts.journalPhotos },
-              { label: "XP estimés", value: totalXp.toLocaleString() },
+              { label: "Badges débloqués", short: "Badges", value: badges.filter((b) => b.unlocked).length, suffix: `/${badges.length}` },
+              { label: "Lieux visités", short: "Lieux", value: counts.exploreVisited },
+              { label: "Souvenirs", short: "Souvenirs", value: counts.journalNotes + counts.journalPhotos },
+              { label: "XP estimés", short: "XP", value: totalXp.toLocaleString() },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl bg-card border border-border p-4">
-                <p className="text-2xl font-bold gradient-text">
+              <div key={s.label} className="rounded-2xl bg-card border border-border p-3 sm:p-4 min-w-0">
+                <p className="text-xl sm:text-2xl font-bold gradient-text leading-tight truncate">
                   {s.value}{s.suffix || ""}
                 </p>
-                <p className="text-[11px] text-muted-foreground mt-1">{s.label}</p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 leading-tight">
+                  <span className="sm:hidden">{s.short}</span>
+                  <span className="hidden sm:inline">{s.label}</span>
+                </p>
               </div>
             ))}
           </div>
