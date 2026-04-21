@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Bell, BellOff, Compass, MapPin, RefreshCw } from "lucide-react";
+import { Bell, Compass, MapPin, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNotifications } from "@/hooks/useNotifications";
 import { timeOfDay } from "@/lib/discover";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   userPos: { lat: number; lng: number } | null;
@@ -11,9 +12,8 @@ interface Props {
   onRefresh: () => void;
 }
 
-const TOD_LABEL: Record<string, string> = { morning: "Matinée", afternoon: "Après-midi", evening: "Soirée", night: "Nuit" };
-
 const DiscoverHero = ({ userPos, weather, loading, onRefresh }: Props) => {
+  const { t } = useTranslation();
   const { permission, request } = useNotifications();
   const [tod, setTod] = useState(timeOfDay());
   useEffect(() => { const i = setInterval(() => setTod(timeOfDay()), 60000); return () => clearInterval(i); }, []);
@@ -24,29 +24,29 @@ const DiscoverHero = ({ userPos, weather, loading, onRefresh }: Props) => {
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Compass className="h-3.5 w-3.5" />
-            <span>Discover</span>
+            <span>{t("discoverComp.kicker")}</span>
             <span>•</span>
-            <span>{TOD_LABEL[tod]}</span>
+            <span>{t(`discoverComp.tod.${tod}`, { defaultValue: tod })}</span>
             {weather && <><span>•</span><span>🌤 {weather}</span></>}
           </div>
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Ce qu'il te faut <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">maintenant</span>
+            {t("discoverComp.heroTitleA")} <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{t("discoverComp.heroTitleB")}</span>
           </h1>
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <MapPin className="h-3.5 w-3.5" />
-            {userPos ? `Autour de toi (${userPos.lat.toFixed(3)}, ${userPos.lng.toFixed(3)})` : "Active la géolocalisation pour des recos précises"}
+            {userPos ? t("discoverComp.heroLocOn", { lat: userPos.lat.toFixed(3), lng: userPos.lng.toFixed(3) }) : t("discoverComp.heroLocOff")}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <Button size="sm" variant="outline" onClick={onRefresh} disabled={loading || !userPos}>
-            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />Actualiser
+            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />{t("discoverComp.refresh")}
           </Button>
           {permission !== "granted" ? (
             <Button size="sm" variant="ghost" onClick={request}>
-              <Bell className="mr-2 h-4 w-4" />Activer les alertes
+              <Bell className="mr-2 h-4 w-4" />{t("discoverComp.enableAlerts")}
             </Button>
           ) : (
-            <span className="flex items-center gap-1 text-xs text-muted-foreground"><Bell className="h-3 w-3" />Alertes actives</span>
+            <span className="flex items-center gap-1 text-xs text-muted-foreground"><Bell className="h-3 w-3" />{t("discoverComp.alertsActive")}</span>
           )}
         </div>
       </div>
