@@ -153,6 +153,13 @@ const formatPrice = (n: number) =>
 const Offres = () => {
   const { tier, generationsUsed, freeQuota } = usePlanStore();
   const [billing, setBilling] = useState<BillingCycle>("monthly");
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [waitlistPack, setWaitlistPack] = useState<string | undefined>(undefined);
+
+  const openWaitlist = (packName?: string) => {
+    setWaitlistPack(packName);
+    setWaitlistOpen(true);
+  };
 
   const usedPercent = useMemo(
     () => Math.min(100, Math.round((generationsUsed / freeQuota) * 100)),
