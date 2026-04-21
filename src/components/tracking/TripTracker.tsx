@@ -274,7 +274,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
             pois={showPois ? filteredPois : []}
             onPoiAddToCarnet={handlePoiAdd}
             aiPins={aiPins}
-            onAiPinAddToCarnet={handleAiAdd}
+            onAiPinAddToCarnet={(p) => handleAiAdd({ ...p, description: p.description || "", reason: p.reason || "" })}
           />
 
           {showPois && pois.length > 0 && (
