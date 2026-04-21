@@ -5,7 +5,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Check, Rocket, Mail, Loader2, Users } from "lucide-react";
+import { Sparkles, Check, Rocket, Mail, Loader2, Users, Linkedin, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -23,7 +23,18 @@ interface Props {
 const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Props) => {
   const { t, i18n } = useTranslation();
   const emailSchema = z.string().trim().email(t("waitlist.invalidEmail")).max(255);
+  const linkedinSchema = z
+    .string()
+    .trim()
+    .max(255)
+    .regex(/^https?:\/\/(www\.)?linkedin\.com\/.+/i, t("waitlist.invalidLinkedin"))
+    .optional()
+    .or(z.literal(""));
+  const firstNameSchema = z.string().trim().max(60).optional().or(z.literal(""));
+
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [linkedin, setLinkedin] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [count, setCount] = useState<number | null>(null);
@@ -47,13 +58,38 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
       toast.error(parsed.error.issues[0].message);
       return;
     }
+    const liParsed = linkedinSchema.safeParse(linkedin);
+    if (!liParsed.success) {
+      toast.error(liParsed.error.issues[0].message);
+      return;
+    }
+    const fnParsed = firstNameSchema.safeParse(firstName);
+    if (!fnParsed.success) {
+      toast.error(fnParsed.error.issues[0].message);
+      return;
+    }
     setLoading(true);
     const { data: userData } = await supabase.auth.getUser();
+    const cleanFirstName = (fnParsed.data || "").trim();
+    const cleanLinkedin = (liParsed.data || "").trim();
+    const linkedinMessage = cleanLinkedin
+      ? t("waitlist.linkedinMessage", {
+          name: cleanFirstName || t("waitlist.linkedinFallbackName"),
+        })
+      : null;
+
     const { error } = await supabase.from("premium_waitlist").insert({
       email: parsed.data.toLowerCase(),
       source,
       pack: pack ?? null,
       user_id: userData.user?.id ?? null,
+      metadata: {
+        first_name: cleanFirstName || null,
+        linkedin_url: cleanLinkedin || null,
+        linkedin_message: linkedinMessage,
+        notify_via: cleanLinkedin ? ["email", "linkedin"] : ["email"],
+        locale: i18n.language,
+      },
     });
     setLoading(false);
 
@@ -61,13 +97,17 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
       toast.error(t("waitlist.errorGeneric"));
       return;
     }
+    if (cleanLinkedin) {
+      // Log the LinkedIn DM intent so it can be picked up by the team / a future webhook.
+      console.info("[waitlist] LinkedIn DM requested:", { linkedin: cleanLinkedin, message: linkedinMessage });
+    }
     setSuccess(true);
     toast.success(t("waitlist.successToast"));
   };
 
   const handleClose = (o: boolean) => {
     if (!o) {
-      setTimeout(() => { setSuccess(false); setEmail(""); }, 200);
+      setTimeout(() => { setSuccess(false); setEmail(""); setFirstName(""); setLinkedin(""); }, 200);
     }
     onOpenChange(o);
   };
