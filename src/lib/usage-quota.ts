@@ -37,6 +37,15 @@ const DEV_KEY = "xplania_dev_mode";
  */
 export const isDevMode = (): boolean => {
   if (typeof window === "undefined") return false;
+  // Explicit env var bypass — highest priority
+  try {
+    if (import.meta.env?.VITE_DEV_BYPASS === "true" || import.meta.env?.VITE_DEV_BYPASS === true) {
+      return true;
+    }
+    if (import.meta.env?.DEV === true || import.meta.env?.MODE === "development") {
+      return true;
+    }
+  } catch {}
   try {
     if (localStorage.getItem(DEV_KEY) === "1") return true;
     if (localStorage.getItem(DEV_KEY) === "0") return false; // explicit opt-out
@@ -98,4 +107,24 @@ if (typeof window !== "undefined") {
     reset: resetAllUsage,
     isDev: isDevMode,
   };
+
+  // Auto-reset all counters & legacy plan store when running in dev/test mode.
+  if (isDevMode()) {
+    try {
+      resetAllUsage();
+      // Also clear the legacy global generation counter and persisted plan store
+      localStorage.removeItem("xplania_generation_count");
+      const planRaw = localStorage.getItem("xplania-plan");
+      if (planRaw) {
+        try {
+          const parsed = JSON.parse(planRaw);
+          if (parsed?.state) {
+            parsed.state.generationsUsed = 0;
+            parsed.state.bannerDismissed = false;
+            localStorage.setItem("xplania-plan", JSON.stringify(parsed));
+          }
+        } catch {}
+      }
+    } catch {}
+  }
 }
