@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
@@ -22,6 +23,7 @@ const Carnet = () => {
   const { journal, days, loading, refetch } = useJournal(tripId);
   const [activeIdx, setActiveIdx] = useState(0);
   const [destination, setDestination] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!tripId) return;
@@ -53,7 +55,7 @@ const Carnet = () => {
   if (!journal) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-muted-foreground">Carnet introuvable</p>
+        <p className="text-muted-foreground">{t("carnet.notFound")}</p>
       </div>
     );
   }
@@ -67,7 +69,7 @@ const Carnet = () => {
       <header className="relative border-b border-border backdrop-blur-md bg-background/60 sticky top-0 z-30">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
-            <ArrowLeft className="w-4 h-4" /> Retour
+            <ArrowLeft className="w-4 h-4" /> {t("carnet.back")}
           </Link>
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
@@ -80,16 +82,16 @@ const Carnet = () => {
       <main className="relative container mx-auto px-4 py-8 max-w-6xl">
         {days.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-muted-foreground">Aucune journée créée. Vérifie les dates de ton voyage.</p>
+            <p className="text-muted-foreground">{t("carnet.noDays")}</p>
           </div>
         ) : (
           <Tabs defaultValue="timeline">
             <TabsList className="grid grid-cols-5 max-w-3xl mx-auto mb-6">
-              <TabsTrigger value="timeline">📅 Timeline</TabsTrigger>
-              <TabsTrigger value="live">📡 Suivi live</TabsTrigger>
-              <TabsTrigger value="story">✨ Récit IA</TabsTrigger>
-              <TabsTrigger value="insights">📊 Insights</TabsTrigger>
-              <TabsTrigger value="share">🔗 Partager</TabsTrigger>
+              <TabsTrigger value="timeline">📅 {t("carnet.tabTimeline")}</TabsTrigger>
+              <TabsTrigger value="live">📡 {t("carnet.tabLive")}</TabsTrigger>
+              <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
+              <TabsTrigger value="insights">📊 {t("carnet.tabInsights")}</TabsTrigger>
+              <TabsTrigger value="share">🔗 {t("carnet.tabShare")}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="timeline">
@@ -104,12 +106,12 @@ const Carnet = () => {
                         i === activeIdx ? "bg-primary/15 border border-primary/30" : "hover:bg-muted/50"
                       }`}
                     >
-                      <p className="text-xs text-muted-foreground">Jour {i + 1}</p>
+                      <p className="text-xs text-muted-foreground">{t("carnet.day", { n: i + 1 })}</p>
                       <p className="text-sm font-medium text-foreground capitalize">{formatDayLabel(d.date)}</p>
                       {d.title && <p className="text-xs text-muted-foreground truncate mt-0.5">{d.title}</p>}
                       <div className="flex gap-1 mt-1">
                         {d.blocks.length > 0 && (
-                          <span className="text-xs text-primary">{d.blocks.length} souvenir{d.blocks.length > 1 ? "s" : ""}</span>
+                          <span className="text-xs text-primary">{d.blocks.length > 1 ? t("carnet.memoryMany", { n: d.blocks.length }) : t("carnet.memoryOne", { n: d.blocks.length })}</span>
                         )}
                       </div>
                     </button>

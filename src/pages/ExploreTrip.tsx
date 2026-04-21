@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import QuickJump from "@/components/shared/QuickJump";
 import { ArrowLeft, Compass, Loader2, Sparkles, RefreshCw } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -24,6 +25,7 @@ const ExploreTrip = () => {
   const { trips } = useTrips();
   const explore = useExplore(tripId);
   const [selected, setSelected] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const trip = trips.find((t) => t.id === tripId);
   const cityNode = useMemo(() => explore.nodes.find((n) => n.level === 1) || null, [explore.nodes]);
@@ -51,11 +53,11 @@ const ExploreTrip = () => {
       <header className="relative border-b border-border backdrop-blur-md bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="w-4 h-4" /> Accueil
+            <ArrowLeft className="w-4 h-4" /> {t("exploreTrip.back")}
           </Link>
           <div className="flex items-center gap-2">
             <Compass className="w-5 h-5 text-primary" />
-            <h1 className="font-bold">Travel Map</h1>
+            <h1 className="font-bold">{t("exploreTrip.title")}</h1>
           </div>
           <div className="w-16" />
         </div>
@@ -67,15 +69,15 @@ const ExploreTrip = () => {
         ) : explore.nodes.length === 0 ? (
           <div className="glass-card rounded-2xl p-10 text-center">
             <Compass className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-foreground mb-2">Génère ta carte de voyage</h2>
+            <h2 className="text-xl font-bold text-foreground mb-2">{t("exploreTrip.emptyTitle")}</h2>
             <p className="text-muted-foreground mb-6 text-sm max-w-md mx-auto">
-              On va créer automatiquement les points d'intérêt à partir des recommandations IA, ton carnet et ton suivi live.
+              {t("exploreTrip.emptyDesc")}
             </p>
             <Button onClick={explore.seed} disabled={explore.seeding} size="lg">
               {explore.seeding ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
-              Générer la carte
+              {t("exploreTrip.generate")}
             </Button>
-            {trip?.destination && <p className="text-xs text-muted-foreground mt-3">Destination : {trip.destination}</p>}
+            {trip?.destination && <p className="text-xs text-muted-foreground mt-3">{t("exploreTrip.destinationLabel", { name: trip.destination })}</p>}
           </div>
         ) : (
           <>
@@ -85,21 +87,21 @@ const ExploreTrip = () => {
             <div className="grid lg:grid-cols-[1fr_320px] gap-5">
               <div className="space-y-4">
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <h2 className="text-lg font-bold text-foreground">Carte d'exploration</h2>
+                  <h2 className="text-lg font-bold text-foreground">{t("exploreTrip.mapTitle")}</h2>
                   <div className="flex gap-2">
                     <AddNodeDialog cityId={cityNode?.id || null} onAdd={(p) => explore.addNode(p)} />
                     <Button size="sm" variant="ghost" onClick={explore.seed} disabled={explore.seeding}>
                       {explore.seeding ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
-                      Régénérer
+                      {t("exploreTrip.regenerate")}
                     </Button>
                   </div>
                 </div>
 
                 <Tabs defaultValue="map">
                   <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="map">🗺️ Carte</TabsTrigger>
-                    <TabsTrigger value="replay">🚇 Replay</TabsTrigger>
-                    <TabsTrigger value="summary">📖 Résumé</TabsTrigger>
+                    <TabsTrigger value="map">🗺️ {t("exploreTrip.tabMap")}</TabsTrigger>
+                    <TabsTrigger value="replay">🚇 {t("exploreTrip.tabReplay")}</TabsTrigger>
+                    <TabsTrigger value="summary">📖 {t("exploreTrip.tabSummary")}</TabsTrigger>
                   </TabsList>
                   <TabsContent value="map" className="mt-4">
                     <ExploreMap nodes={explore.nodes} edges={explore.edges} onSelect={setSelected} />

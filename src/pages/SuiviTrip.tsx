@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import TripTracker from "@/components/tracking/TripTracker";
@@ -8,6 +9,7 @@ import QuickJump from "@/components/shared/QuickJump";
 const SuiviTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
   const [destination, setDestination] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!tripId) return;
@@ -35,11 +37,11 @@ const SuiviTrip = () => {
       <header className="border-b border-border backdrop-blur-md bg-background/60 sticky top-0 z-30">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/suivi" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="w-4 h-4" /> Mes suivis
+            <ArrowLeft className="w-4 h-4" /> {t("suiviTrip.back")}
           </Link>
           <div className="flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary" />
-            <h1 className="font-bold">Suivi live{destination && ` — ${destination}`}</h1>
+            <h1 className="font-bold">{t("suiviTrip.title")}{destination && ` — ${destination}`}</h1>
           </div>
           <div className="w-16" />
         </div>

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { BookOpen, Loader2, ArrowLeft } from "lucide-react";
 import { useTrips } from "@/hooks/useTrips";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,17 +12,18 @@ const Carnets = () => {
   const { user, loading: authLoading } = useAuth();
   const { trips, loading } = useTrips();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
 
-  const openTrip = (t: typeof trips[number], target: "carnet" | "suivi" | "explore" = "carnet") => {
+  const openTrip = (tr: typeof trips[number], target: "carnet" | "suivi" | "explore" = "carnet") => {
     setActiveTrip({
-      tripId: t.id,
-      destination: t.destination,
-      arrivalCity: t.arrival_city,
-      departureDate: t.departure_date,
-      returnDate: t.return_date,
+      tripId: tr.id,
+      destination: tr.destination,
+      arrivalCity: tr.arrival_city,
+      departureDate: tr.departure_date,
+      returnDate: tr.return_date,
     });
-    navigate(`/${target}/${t.id}`);
+    navigate(`/${target}/${tr.id}`);
   };
 
   if (!authLoading && !user) return <Navigate to="/auth" replace />;
@@ -32,8 +34,8 @@ const Carnets = () => {
 
       <header className="relative border-b border-border backdrop-blur-md bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> Accueil</Link>
-          <div className="flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /><h1 className="font-bold">Mes carnets</h1></div>
+          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> {t("common2.home")}</Link>
+          <div className="flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /><h1 className="font-bold">{t("carnets.title")}</h1></div>
           <div className="w-16" />
         </div>
       </header>
@@ -43,23 +45,23 @@ const Carnets = () => {
           <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
         ) : trips.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-muted-foreground mb-4">Tu n'as pas encore de voyage enregistré.</p>
-            <Link to="/" className="text-primary hover:underline">Créer mon premier voyage →</Link>
+            <p className="text-muted-foreground mb-4">{t("carnets.empty")}</p>
+            <Link to="/" className="text-primary hover:underline">{t("carnets.createFirst")}</Link>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 gap-4">
-            {trips.map((t, i) => (
-              <motion.div key={t.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-                <button onClick={() => openTrip(t, "carnet")} className="glass-card rounded-2xl p-6 block w-full text-left hover:scale-[1.02] transition group">
-                  <div className="flex items-center gap-2 mb-2"><BookOpen className="w-4 h-4 text-primary" /><span className="text-xs uppercase tracking-wider text-primary">Carnet</span></div>
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition">{t.destination || "Sans destination"}</h3>
-                  {t.arrival_city && <p className="text-sm text-muted-foreground">{t.arrival_city}</p>}
+            {trips.map((tr, i) => (
+              <motion.div key={tr.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+                <button onClick={() => openTrip(tr, "carnet")} className="glass-card rounded-2xl p-6 block w-full text-left hover:scale-[1.02] transition group">
+                  <div className="flex items-center gap-2 mb-2"><BookOpen className="w-4 h-4 text-primary" /><span className="text-xs uppercase tracking-wider text-primary">{t("carnets.kicker")}</span></div>
+                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition">{tr.destination || t("common2.noDestination")}</h3>
+                  {tr.arrival_city && <p className="text-sm text-muted-foreground">{tr.arrival_city}</p>}
                   <p className="text-xs text-muted-foreground mt-2">
-                    {t.departure_date} {t.return_date && `→ ${t.return_date}`}
+                    {tr.departure_date} {tr.return_date && `→ ${tr.return_date}`}
                   </p>
                   <div className="flex gap-2 mt-3 text-xs">
-                    <span onClick={(e) => { e.stopPropagation(); openTrip(t, "suivi"); }} className="text-primary hover:underline cursor-pointer">📍 Suivi</span>
-                    <span onClick={(e) => { e.stopPropagation(); openTrip(t, "explore"); }} className="text-primary hover:underline cursor-pointer">🗺️ Map</span>
+                    <span onClick={(e) => { e.stopPropagation(); openTrip(tr, "suivi"); }} className="text-primary hover:underline cursor-pointer">📍 {t("carnets.tracking")}</span>
+                    <span onClick={(e) => { e.stopPropagation(); openTrip(tr, "explore"); }} className="text-primary hover:underline cursor-pointer">🗺️ {t("carnets.map")}</span>
                   </div>
                 </button>
               </motion.div>
