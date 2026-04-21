@@ -16,6 +16,8 @@ import TripTracker from "@/components/tracking/TripTracker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuickJump from "@/components/shared/QuickJump";
 import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
+import TripDocumentsManager from "@/components/shared/TripDocumentsManager"; // ✨ NEW (Tâche 3)
+import ExportTripButton from "@/components/shared/ExportTripButton"; // ✨ NEW (Tâche 3)
 import { formatDayLabel } from "@/lib/journal-utils";
 
 const Carnet = () => {
@@ -77,8 +79,9 @@ const Carnet = () => {
             <BookOpen className="w-5 h-5 text-primary" />
             <h1 className="font-bold text-foreground">{journal.title}</h1>
           </div>
-          {/* ✨ NEW (Tâche 1) — suppression depuis le header */}
-          <div className="w-16 flex justify-end">
+          {/* ✨ NEW (Tâche 1 + Tâche 3) — export PDF + suppression */}
+          <div className="flex items-center justify-end gap-1">
+            {tripId && <ExportTripButton tripId={tripId} variant="ghost" size="sm" />}
             {tripId && (
               <DeleteTripButton
                 tripId={tripId}
@@ -98,11 +101,12 @@ const Carnet = () => {
           </div>
         ) : (
           <Tabs defaultValue="timeline">
-            <TabsList className="grid grid-cols-5 max-w-3xl mx-auto mb-6">
+            <TabsList className="grid grid-cols-3 sm:grid-cols-6 max-w-3xl mx-auto mb-6">
               <TabsTrigger value="timeline">📅 {t("carnet.tabTimeline")}</TabsTrigger>
               <TabsTrigger value="live">📡 {t("carnet.tabLive")}</TabsTrigger>
               <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
               <TabsTrigger value="insights">📊 {t("carnet.tabInsights")}</TabsTrigger>
+              <TabsTrigger value="docs">📎 {t("carnet.tabDocs", "Docs")}</TabsTrigger>
               <TabsTrigger value="share">🔗 {t("carnet.tabShare")}</TabsTrigger>
             </TabsList>
 
@@ -185,6 +189,11 @@ const Carnet = () => {
                 <InsightsPanel days={days} />
                 <BadgesBar journalId={journal.id} days={days} />
               </div>
+            </TabsContent>
+
+            {/* ✨ NEW (Tâche 3) — Onglet Documents */}
+            <TabsContent value="docs">
+              {tripId && <TripDocumentsManager tripId={tripId} />}
             </TabsContent>
 
             <TabsContent value="share">
