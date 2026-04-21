@@ -370,5 +370,159 @@
     "step3Title": "Voyagez l'esprit léger",
     "step3Desc": "Tout est centralisé : recommandations locales, conseils culturels, météo et budget. Vous n'avez plus qu'à profiter du voyage.",
     "goToStep": "Aller à l'étape {{n}}"
+  },
+  "auth": {
+    "signin": "Connexion",
+    "signup": "Inscription",
+    "email": "Email",
+    "password": "Mot de passe",
+    "firstName": "Prénom",
+    "signInCta": "Se connecter",
+    "signUpCta": "Créer mon compte",
+    "forgotPassword": "Mot de passe oublié ?",
+    "confirmEmailNote": "Tu recevras un email de confirmation avant de pouvoir te connecter.",
+    "or": "ou",
+    "continueGoogle": "Continuer avec Google",
+    "backHome": "Retour à l'accueil",
+    "signupSuccess": "Vérifie ta boîte mail pour confirmer ton inscription ✉️",
+    "googleError": "Connexion Google impossible",
+    "resetEmailFirst": "Entre d'abord ton email",
+    "resetSent": "Email de réinitialisation envoyé ✉️"
+  },
+  "resetPassword": {
+    "title": "Nouveau mot de passe",
+    "subtitle": "Choisis un nouveau mot de passe sécurisé.",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "submit": "Mettre à jour",
+    "verifying": "Vérification du lien…",
+    "success": "Mot de passe mis à jour ✅"
+  },
+  "profil": {
+    "title": "Mon profil",
+    "subtitle": "Personnalise ton espace Xplania",
+    "anonymousTraveler": "Voyageur anonyme",
+    "displayName": "Nom affiché",
+    "displayNamePlaceholder": "Marie Dubois",
+    "avatarUrl": "URL de l'avatar (optionnel)",
+    "save": "Sauvegarder",
+    "account": "Compte",
+    "logout": "Se déconnecter",
+    "saveError": "Erreur lors de la sauvegarde",
+    "saveSuccess": "Profil mis à jour ✨"
+  },
+  "notFound": {
+    "title": "Oups ! Page introuvable",
+    "back": "Retour à l'accueil"
+  },
+  "moduleNav": {
+    "budget": "Budget",
+    "visa": "Visa & Préparatifs",
+    "valise": "Valise",
+    "poweredBy": "Propulsé par"
+  },
+  "quotaBanner": {
+    "devMode": "Mode développeur",
+    "devUnlimited": "accès illimité à {{tool}}",
+    "exhausted": "Tu as utilisé tes <1>{{limit}} générations gratuites</1> pour {{tool}}.",
+    "upgrade": "Passer à Plus →",
+    "remainingOne": "{{remaining}}/{{limit}} génération gratuite restante pour {{tool}}",
+    "remainingOther": "{{remaining}}/{{limit}} générations gratuites restantes pour {{tool}}"
+  },
+  "upgrade": {
+    "title": "Quota gratuit atteint 🎯",
+    "teaser": "Tu as adoré {{tool}} ? Débloque l'accès illimité dès l'ouverture du premium et reçois -30% en avant-première."
+  },
+  "index": {
+    "openJournal": "📔 Ouvrir mon Carnet",
+    "tripTitle": "Voyage à {{destination}}"
+  },
+  "offres": {
+    "back": "Retour à l'accueil",
+    "tag": "Offres Xplania",
+    "title": "Choisissez la formule qui vous correspond",
+    "subtitle": "Démarrez gratuitement, puis composez votre abonnement pack par pack.",
+    "free": "Gratuit",
+    "freeTagline": "Pour découvrir Xplania",
+    "current": "Actuel",
+    "forever": "/ pour toujours",
+    "freeFeat1": "3 générations de voyage offertes (pour tester les 3 questionnaires)",
+    "freeFeat2": "Guides essentiels (valise, budget, visa)",
+    "freeFeat3": "Aperçu des fonctionnalités avancées",
+    "generationsUsed": "{{used}} / {{total}} générations utilisées",
+    "remainingCount": "{{n}} restante(s)",
+    "packsTitle": "Nos packs à la carte",
+    "packsSubtitle": "Choisissez vos packs et la durée qui vous convient.",
+    "perTripNote": "Idéal pour les voyageurs occasionnels qui partent 1 à 2 fois par an. Payez uniquement quand vous en avez besoin, sans engagement.",
+    "billing": {
+      "monthly": "Mensuel",
+      "yearly": "Annuel",
+      "season3": "Saison 3 mois",
+      "season6": "Saison 6 mois",
+      "perTrip": "À l'usage"
+    },
+    "suffix": {
+      "monthly": "/mois",
+      "yearly": "/an",
+      "season3": "/3 mois",
+      "season6": "/6 mois",
+      "perTrip": "/voyage"
+    },
+    "yearlyNote": "≈ 2 mois offerts",
+    "recommended": "Recommandé",
+    "premium": "Premium",
+    "notifyMe": "Notifie-moi au lancement",
+    "comboTag": "Économisez en combinant",
+    "comboTitle": "Combinez vos packs et économisez",
+    "comboSubtitle": "2 packs → −15 % | 3 packs → −20 % | 4 packs → −25 %",
+    "doublePacks": "Packs doubles",
+    "doubleDiscount": "−12 à −15 %",
+    "triplePacks": "Packs triples",
+    "tripleDiscount": "−18 à −20 %",
+    "perMonth": "/mois",
+    "betaNote": "Bêta en cours — les paiements ne sont pas encore actifs. Toutes les fonctionnalités gratuites restent accessibles pendant cette phase de test.",
+    "waitlistTitlePack": "{{pack}} arrive bientôt 🚀",
+    "waitlistTitleGeneric": "Le premium arrive bientôt 🚀",
+    "waitlistTeaserPack": "Sois le premier à débloquer le {{pack}} dès l'ouverture, avec -30% en avant-première.",
+    "packs": {
+      "admin": {
+        "name": "Pack Administratif",
+        "tagline": "Pour voyager sereinement en gérant tout l'aspect pratique",
+        "f1": "Guide budget (planification et suivi des dépenses)",
+        "f2": "Guide valise intelligente (check-list adaptée à la destination)",
+        "f3": "Gestion administrative (visas, documents, formalités)"
+      },
+      "creatif": {
+        "name": "Pack Créatif",
+        "tagline": "Pour vivre son voyage comme une expérience unique et ludique",
+        "f1": "Carnet de bord personnalisé (journal interactif, photos, souvenirs)",
+        "f2": "Mood Explorer (activités et lieux selon l'humeur)",
+        "f3": "Gamification avec badges (défis, succès à débloquer)"
+      },
+      "ia": {
+        "name": "Pack IA",
+        "tagline": "Pour un accompagnement intelligent et ultra-personnalisé",
+        "f1": "Analyse et approfondissement d'un itinéraire existant",
+        "f2": "Accompagnement destination de A à Z (planification complète par IA)"
+      },
+      "intercultural": {
+        "name": "Pack Interculturel",
+        "tagline": "Pour voyager en respectant et comprenant la culture locale",
+        "f1": "Guide interculturel (codes, traditions, comportements)",
+        "f2": "Recommandations locales (agences et freelances locaux)"
+      },
+      "futur": {
+        "name": "Pack Futur",
+        "tagline": "Pour explorer et s'inspirer avant même de partir",
+        "f1": "Réalité virtuelle (visites immersives en 3D avant le départ)",
+        "f2": "Réalité augmentée (informations contextuelles pendant le voyage)"
+      },
+      "all": {
+        "name": "All Access",
+        "tagline": "Tous les packs + mises à jour exclusives",
+        "f1": "Accès complet aux 5 packs (Admin, Créatif, IA, Interculturel, Futur)",
+        "f2": "Mises à jour exclusives en avant-première",
+        "f3": "Économie d'environ 8€/mois par rapport à l'achat séparé"
+      }
+    }
   }
 }
