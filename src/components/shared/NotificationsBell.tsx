@@ -1,16 +1,19 @@
 import { Bell, Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useInAppNotifications } from "@/hooks/useInAppNotifications";
 import { formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
+import { fr, enUS } from "date-fns/locale";
 
 const NotificationsBell = () => {
   const { items, unreadCount, markAllRead } = useInAppNotifications();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language.startsWith("fr") ? fr : enUS;
 
   return (
     <Popover>
       <PopoverTrigger
-        aria-label="Notifications"
+        aria-label={t("notifBell.aria")}
         className="relative p-2 rounded-lg hover:bg-muted transition-colors"
       >
         <Bell className="w-4 h-4 text-muted-foreground" />
@@ -22,13 +25,13 @@ const NotificationsBell = () => {
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0">
         <div className="flex items-center justify-between border-b border-border p-3">
-          <p className="text-sm font-semibold">Notifications</p>
+          <p className="text-sm font-semibold">{t("notifBell.title")}</p>
           {unreadCount > 0 && (
             <button
               onClick={markAllRead}
               className="flex items-center gap-1 text-[11px] text-primary hover:underline"
             >
-              <Check className="w-3 h-3" /> Tout lire
+              <Check className="w-3 h-3" /> {t("notifBell.markAll")}
             </button>
           )}
         </div>
@@ -36,7 +39,7 @@ const NotificationsBell = () => {
           {items.length === 0 ? (
             <div className="p-8 text-center text-sm text-muted-foreground">
               <Bell className="w-8 h-8 mx-auto mb-2 opacity-30" />
-              Aucune notification pour le moment.
+              {t("notifBell.empty")}
             </div>
           ) : (
             items.map((n) => (
@@ -56,7 +59,7 @@ const NotificationsBell = () => {
                       <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">{n.body}</p>
                     )}
                     <p className="text-[10px] text-muted-foreground mt-1">
-                      {formatDistanceToNow(new Date(n.sent_at), { addSuffix: true, locale: fr })}
+                      {formatDistanceToNow(new Date(n.sent_at), { addSuffix: true, locale })}
                     </p>
                   </div>
                 </div>
