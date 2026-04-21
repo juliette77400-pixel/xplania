@@ -25,15 +25,23 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchWeather = async () => {
-    if (!destination || destination === "votre destination") return;
+    if (!destination || destination === "votre destination" || destination.toLowerCase().includes("your destination")) return;
     setLoading(true);
     setError(null);
     try {
       const cleanCity = cleanCityForWeather(destination);
+      if (!cleanCity || cleanCity.length < 2) {
+        setLoading(false);
+        return;
+      }
       const { data, error: fnError } = await supabase.functions.invoke("weather", {
         body: { city: cleanCity },
       });
       if (fnError) throw fnError;
+      if (data?.fallback) {
+        setWeather(data as WeatherInfo);
+        return;
+      }
       if (data?.error) throw new Error(data.error);
       setWeather(data as WeatherInfo);
     } catch (e: any) {

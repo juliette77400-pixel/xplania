@@ -32,7 +32,16 @@ serve(async (req) => {
     const data = await weatherRes.json();
 
     if (!weatherRes.ok) {
-      throw new Error(`OpenWeather API error [${weatherRes.status}]: ${JSON.stringify(data)}`);
+      // City not found or other API error → return graceful fallback (200) so the UI doesn't crash.
+      console.warn(`OpenWeather ${weatherRes.status}:`, data);
+      return new Response(
+        JSON.stringify({
+          fallback: true,
+          error: weatherRes.status === 404 ? "city_not_found" : `api_error_${weatherRes.status}`,
+          advice: ["Vérifie la météo manuellement avant ton départ"],
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     const temp = Math.round(data.main.temp);
