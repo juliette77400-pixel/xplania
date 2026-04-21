@@ -18,6 +18,15 @@ L.Icon.Default.mergeOptions({
 
 const statusColor = { todo: "#94a3b8", in_progress: "#f59e0b", done: "#10b981" };
 
+export interface AIPin {
+  title: string;
+  category: string;
+  description?: string;
+  reason?: string;
+  lat: number;
+  lng: number;
+}
+
 interface Props {
   position: Position | null;
   activities: TripActivity[];
@@ -26,6 +35,8 @@ interface Props {
   height?: string;
   pois?: NearbyPOI[];
   onPoiAddToCarnet?: (poi: NearbyPOI) => void;
+  aiPins?: AIPin[];
+  onAiPinAddToCarnet?: (pin: AIPin) => void;
 }
 
 const FitBounds = ({ points }: { points: [number, number][] }) => {
