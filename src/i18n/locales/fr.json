@@ -341,6 +341,12 @@
     "successDesc": "On t'écrit dès que la version premium ouvre. Promis, pas de spam 💌",
     "continueExplore": "Continuer à explorer Xplania",
     "invalidEmail": "Email invalide",
+    "invalidLinkedin": "URL LinkedIn invalide (ex: https://linkedin.com/in/ton-profil)",
+    "firstNamePlaceholder": "Ton prénom (optionnel)",
+    "linkedinLabel": "Recevoir aussi une notification via LinkedIn (optionnel)",
+    "linkedinPlaceholder": "https://linkedin.com/in/ton-profil",
+    "linkedinFallbackName": "voyageur",
+    "linkedinMessage": "Bonjour {{name}}, vous avez demandé à être notifié(e) dès que les pass premium Xplania sont disponibles. Nous vous confirmons votre inscription sur la liste d'attente — nous reviendrons vers vous en priorité ! 🌍✨",
     "errorGeneric": "Oups, une erreur est survenue. Réessaye.",
     "successToast": "Tu es sur la liste 🚀"
   },
