@@ -1,12 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Sparkles, Brain, Calculator, TrendingUp, CheckCircle } from "lucide-react";
 
-const STEPS = [
-  { icon: Brain, label: "Xplania analyse vos préférences…" },
-  { icon: Calculator, label: "Xplania calcule votre budget optimal…" },
-  { icon: TrendingUp, label: "Optimisation des catégories en cours…" },
-  { icon: CheckCircle, label: "Budget personnalisé prêt !" },
-];
+const STEP_ICONS = [Brain, Calculator, TrendingUp, CheckCircle] as const;
+// Compatibility export — array length still used by callers as STEPS.length
+const STEPS = STEP_ICONS.map(() => null);
 
 interface Props {
   isGenerating: boolean;
@@ -14,7 +12,10 @@ interface Props {
 }
 
 const BudgetGenerationAnim = ({ isGenerating, currentStep }: Props) => {
+  const { t } = useTranslation();
   if (!isGenerating) return null;
+
+  const stepKeys = ["s1", "s2", "s3", "s4"] as const;
 
   return (
     <motion.div
@@ -32,14 +33,14 @@ const BudgetGenerationAnim = ({ isGenerating, currentStep }: Props) => {
       </motion.div>
 
       <div className="space-y-3 max-w-md mx-auto">
-        {STEPS.map((step, i) => {
+        {stepKeys.map((key, i) => {
           const isActive = i === currentStep;
           const isDone = i < currentStep;
-          const Icon = step.icon;
+          const Icon = STEP_ICONS[i];
 
           return (
             <motion.div
-              key={i}
+              key={key}
               initial={{ opacity: 0, x: -20 }}
               animate={{
                 opacity: isDone || isActive ? 1 : 0.3,
@@ -52,7 +53,7 @@ const BudgetGenerationAnim = ({ isGenerating, currentStep }: Props) => {
             >
               <Icon className={`w-5 h-5 shrink-0 ${isDone ? "text-green-400" : isActive ? "text-primary" : "text-muted-foreground"}`} />
               <span className={`text-sm font-medium ${isActive ? "text-foreground" : isDone ? "text-muted-foreground" : "text-muted-foreground/50"}`}>
-                {step.label}
+                {t(`budget.genSteps.${key}`)}
               </span>
               {isDone && <CheckCircle className="w-4 h-4 text-green-400 ml-auto" />}
             </motion.div>
@@ -64,7 +65,7 @@ const BudgetGenerationAnim = ({ isGenerating, currentStep }: Props) => {
         <motion.div
           className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
           initial={{ width: "0%" }}
-          animate={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
+          animate={{ width: `${((currentStep + 1) / stepKeys.length) * 100}%` }}
           transition={{ duration: 0.5 }}
         />
       </div>

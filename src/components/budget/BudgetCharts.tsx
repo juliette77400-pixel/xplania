@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from "recharts";
 import { TrendingUp, Calendar, PieChart } from "lucide-react";
 import type { BudgetCategory } from "./BudgetForecast";
@@ -10,20 +11,24 @@ interface Props {
 }
 
 const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
+  const { t } = useTranslation();
   const totalSpent = categories.reduce((s, c) => s + c.spent, 0);
   const usedPct = totalBudget > 0 ? Math.round((totalSpent / totalBudget) * 100) : 0;
 
   // Generate daily mock data
   const dailyData = Array.from({ length: Math.min(days, 7) }, (_, i) => ({
-    name: `Jour ${i + 1}`,
+    name: t("budget.chartsDay", { n: i + 1 }),
     amount: Math.round(30 + Math.random() * 90),
   }));
   const maxDay = dailyData.reduce((max, d) => (d.amount > max.amount ? d : max), dailyData[0]);
 
-  // Category chart data
+  // Category chart data (use translated label)
   const catData = categories
     .filter((c) => c.spent > 0)
-    .map((c) => ({ name: c.key.split(" ")[0], amount: c.spent }));
+    .map((c) => {
+      const label = t(`budget.categories.${c.key}`, { defaultValue: c.key });
+      return { name: label.split(" ")[0], amount: c.spent };
+    });
 
   const chartColors = ["hsl(185, 85%, 55%)", "hsl(270, 70%, 55%)", "hsl(142, 70%, 50%)", "hsl(38, 92%, 60%)", "hsl(330, 70%, 60%)", "hsl(48, 92%, 55%)", "hsl(0, 72%, 58%)"];
 
@@ -32,6 +37,8 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
   const daysLeft = Math.max(days - 3, 1);
   const forecast = Math.round((totalSpent / 3) * daysLeft);
 
+  const spentLabel = t("budget.chartsSpent");
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -39,16 +46,16 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
       className="glass-card rounded-2xl p-6 space-y-6"
     >
       <div>
-        <h2 className="text-lg font-bold text-foreground mb-1">Graphiques & Analyses</h2>
-        <p className="text-sm text-muted-foreground">Visualisation détaillée de tes habitudes de dépenses</p>
+        <h2 className="text-lg font-bold text-foreground mb-1">{t("budget.chartsTitle")}</h2>
+        <p className="text-sm text-muted-foreground">{t("budget.chartsSubtitle")}</p>
       </div>
 
       {/* KPI row */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Budget utilisé", value: `${usedPct}%`, icon: PieChart, highlight: usedPct > 70 },
-          { label: "Jour le plus coûteux", value: maxDay?.name || "—", icon: Calendar, highlight: false },
-          { label: `Prévision J+1 à J+${daysLeft}`, value: `${forecast}€`, icon: TrendingUp, highlight: forecast > remaining },
+          { label: t("budget.chartsUsed"), value: `${usedPct}%`, icon: PieChart, highlight: usedPct > 70 },
+          { label: t("budget.chartsMaxDay"), value: maxDay?.name || "—", icon: Calendar, highlight: false },
+          { label: t("budget.chartsForecast", { n: daysLeft }), value: `${forecast}€`, icon: TrendingUp, highlight: forecast > remaining },
         ].map((kpi, i) => (
           <motion.div
             key={kpi.label}
@@ -66,9 +73,8 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Daily */}
         <div>
-          <h3 className="text-sm font-bold text-foreground mb-3">Dépenses par jour</h3>
+          <h3 className="text-sm font-bold text-foreground mb-3">{t("budget.chartsByDay")}</h3>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dailyData}>
@@ -81,7 +87,7 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
                     borderRadius: "8px",
                     color: "hsl(210, 40%, 96%)",
                   }}
-                  formatter={(v: number) => [`${v}€`, "Dépensé"]}
+                  formatter={(v: number) => [`${v}€`, spentLabel]}
                 />
                 <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
                   {dailyData.map((_, idx) => (
@@ -93,9 +99,8 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
           </div>
         </div>
 
-        {/* Category */}
         <div>
-          <h3 className="text-sm font-bold text-foreground mb-3">Dépenses par catégorie</h3>
+          <h3 className="text-sm font-bold text-foreground mb-3">{t("budget.chartsByCat")}</h3>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={catData} layout="vertical">
@@ -108,7 +113,7 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
                     borderRadius: "8px",
                     color: "hsl(210, 40%, 96%)",
                   }}
-                  formatter={(v: number) => [`${v}€`, "Dépensé"]}
+                  formatter={(v: number) => [`${v}€`, spentLabel]}
                 />
                 <Bar dataKey="amount" radius={[0, 6, 6, 0]}>
                   {catData.map((_, idx) => (
@@ -130,12 +135,12 @@ const BudgetCharts = ({ categories, days, totalBudget }: Props) => {
       >
         <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-secondary" />
-          Analyse prédictive IA
+          {t("budget.chartsAiTitle")}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {forecast > remaining
-            ? `Si tu maintiens ce rythme, tu risques de dépasser ton budget de ${forecast - remaining}€. L'IA te recommande de réduire les dépenses activités ou d'augmenter ton budget prévisionnel.`
-            : `À ce rythme, tu resteras dans ton budget avec une marge de ${remaining - forecast}€. Continue comme ça !`}
+            ? t("budget.chartsAiOver", { amount: forecast - remaining })
+            : t("budget.chartsAiOk", { amount: remaining - forecast })}
         </p>
       </motion.div>
     </motion.div>

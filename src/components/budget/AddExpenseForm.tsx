@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Plus, Sparkles, CreditCard, Banknote, Wallet, ArrowRightLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,19 +16,20 @@ export interface Expense {
   date: string;
 }
 
-const categories = ["Hébergement", "Transports locaux", "Activités", "Nourriture", "Shopping", "Extras", "Imprévus"];
-const payments = [
-  { value: "card", label: "Carte bancaire", icon: CreditCard },
-  { value: "cash", label: "Espèces", icon: Banknote },
-  { value: "paypal", label: "PayPal", icon: Wallet },
-  { value: "transfer", label: "Virement", icon: ArrowRightLeft },
-];
+const categoryKeys = ["accommodation", "localTransport", "activities", "food", "shopping", "extras", "unexpected"] as const;
+const paymentKeys = [
+  { value: "card", icon: CreditCard },
+  { value: "cash", icon: Banknote },
+  { value: "paypal", icon: Wallet },
+  { value: "transfer", icon: ArrowRightLeft },
+] as const;
 
 interface Props {
   onAdd: (expense: Expense) => void;
 }
 
 const AddExpenseForm = ({ onAdd }: Props) => {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [payment, setPayment] = useState("");
@@ -36,7 +38,7 @@ const AddExpenseForm = ({ onAdd }: Props) => {
 
   const handleSubmit = () => {
     if (!amount || !category) {
-      toast.error("Remplis au moins le montant et la catégorie");
+      toast.error(t("budget.addToastMissing"));
       return;
     }
     onAdd({
@@ -46,7 +48,9 @@ const AddExpenseForm = ({ onAdd }: Props) => {
       comment,
       date: new Date().toISOString(),
     });
-    toast.success("Dépense ajoutée !", { description: `${amount}€ en ${category}` });
+    toast.success(t("budget.addToastAdded"), {
+      description: t("budget.addToastAddedDesc", { amount, category: t(`budget.categories.${category}`) }),
+    });
     setAmount("");
     setCategory("");
     setPayment("");
@@ -64,15 +68,14 @@ const AddExpenseForm = ({ onAdd }: Props) => {
           <Plus className="w-5 h-5 text-primary-foreground" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">Ajouter une Dépense</h2>
-          <p className="text-sm text-muted-foreground">Enregistre tes dépenses pour un suivi en temps réel</p>
+          <h2 className="text-lg font-bold text-foreground">{t("budget.addExpenseTitle")}</h2>
+          <p className="text-sm text-muted-foreground">{t("budget.addExpenseSubtitle")}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Amount */}
         <div className="space-y-2">
-          <Label className="text-foreground font-semibold">Montant</Label>
+          <Label className="text-foreground font-semibold">{t("budget.addAmount")}</Label>
           <div className="relative">
             <Input
               type="number"
@@ -85,41 +88,38 @@ const AddExpenseForm = ({ onAdd }: Props) => {
           </div>
         </div>
 
-        {/* Category */}
         <div className="space-y-2">
-          <Label className="text-foreground font-semibold">Catégorie</Label>
+          <Label className="text-foreground font-semibold">{t("budget.addCategory")}</Label>
           <Select value={category} onValueChange={setCategory}>
             <SelectTrigger className="bg-muted border-border text-foreground">
-              <SelectValue placeholder="Sélectionne une catégorie" />
+              <SelectValue placeholder={t("budget.addCategoryPh")} />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((cat) => (
-                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+              {categoryKeys.map((cat) => (
+                <SelectItem key={cat} value={cat}>{t(`budget.categories.${cat}`)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
-        {/* Payment */}
         <div className="space-y-2">
-          <Label className="text-foreground font-semibold">Moyen de paiement</Label>
+          <Label className="text-foreground font-semibold">{t("budget.addPayment")}</Label>
           <Select value={payment} onValueChange={setPayment}>
             <SelectTrigger className="bg-muted border-border text-foreground">
-              <SelectValue placeholder="Sélectionne un moyen de paiement" />
+              <SelectValue placeholder={t("budget.addPaymentPh")} />
             </SelectTrigger>
             <SelectContent>
-              {payments.map((p) => (
-                <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+              {paymentKeys.map((p) => (
+                <SelectItem key={p.value} value={p.value}>{t(`budget.payments.${p.value}`)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
-        {/* Comment */}
         <div className="space-y-2">
-          <Label className="text-foreground font-semibold">Commentaire (optionnel)</Label>
+          <Label className="text-foreground font-semibold">{t("budget.addComment")}</Label>
           <Input
-            placeholder="Ex: Dîner au restaurant"
+            placeholder={t("budget.addCommentPh")}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
@@ -133,17 +133,16 @@ const AddExpenseForm = ({ onAdd }: Props) => {
         onClick={handleSubmit}
         className="w-full mt-6 gradient-button text-primary-foreground font-bold py-3 rounded-xl transition-opacity hover:opacity-90"
       >
-        Ajouter la dépense
+        {t("budget.addCta")}
       </motion.button>
 
-      {/* Auto classify */}
       <div className="mt-4 flex items-center justify-between p-3 rounded-xl bg-muted/30">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm text-muted-foreground">Je peux classer automatiquement tes dépenses si tu veux.</span>
+          <span className="text-sm text-muted-foreground">{t("budget.addAutoClassify")}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">Activer</span>
+          <span className="text-xs text-muted-foreground">{t("budget.addEnable")}</span>
           <Switch checked={autoClassify} onCheckedChange={setAutoClassify} />
         </div>
       </div>
