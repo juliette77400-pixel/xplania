@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Camera, Loader2, Star, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -7,13 +8,14 @@ import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
+import { fr, enUS } from "date-fns/locale";
 
 interface Props {
   placeId: string;
 }
 
 const StarRating = ({ value, onChange, size = 24 }: { value: number; onChange?: (n: number) => void; size?: number }) => {
+  const { t } = useTranslation();
   const [hover, setHover] = useState(0);
   const display = hover || value;
   return (
@@ -27,7 +29,7 @@ const StarRating = ({ value, onChange, size = 24 }: { value: number; onChange?: 
           onMouseLeave={() => onChange && setHover(0)}
           onClick={() => onChange?.(n)}
           className={cn(onChange && "cursor-pointer transition-transform hover:scale-110", !onChange && "cursor-default")}
-          aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
+          aria-label={n > 1 ? t("discoverComp.reviews.starsAria", { count: n }) : t("discoverComp.reviews.starAria", { count: n })}
         >
           <Star
             className={cn(n <= display ? "fill-amber-400 text-amber-400" : "text-muted-foreground/40")}
@@ -40,6 +42,7 @@ const StarRating = ({ value, onChange, size = 24 }: { value: number; onChange?: 
 };
 
 const ReviewsSection = ({ placeId }: Props) => {
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const { reviews, loading, submitting, submit, userReview } = usePlaceReviews(placeId);
   const [rating, setRating] = useState(0);
@@ -48,6 +51,7 @@ const ReviewsSection = ({ placeId }: Props) => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const dateLocale = i18n.language?.startsWith("fr") ? fr : enUS;
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -77,37 +81,37 @@ const ReviewsSection = ({ placeId }: Props) => {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Avis ({reviews.length})
+          {t("discoverComp.reviews.title", { count: reviews.length })}
         </h3>
         {user && !userReview && (
           <Button size="sm" variant="outline" onClick={() => setOpen((v) => !v)}>
-            {open ? "Annuler" : "Écrire un avis"}
+            {open ? t("discoverComp.reviews.cancel") : t("discoverComp.reviews.writeReview")}
           </Button>
         )}
       </div>
 
       {!user && (
         <p className="rounded-lg border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
-          Connecte-toi pour partager ton avis sur ce lieu.
+          {t("discoverComp.reviews.loginPrompt")}
         </p>
       )}
 
       {user && userReview && (
         <p className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-muted-foreground">
-          ✓ Tu as déjà donné ton avis sur ce lieu.
+          {t("discoverComp.reviews.alreadyReviewed")}
         </p>
       )}
 
       {open && user && !userReview && (
         <div className="space-y-3 rounded-xl border border-border bg-card/40 p-4">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-medium">Ta note :</span>
+            <span className="text-xs font-medium">{t("discoverComp.reviews.yourRating")}</span>
             <StarRating value={rating} onChange={setRating} />
           </div>
           <Textarea
             value={comment}
             onChange={(e) => setComment(e.target.value.slice(0, 500))}
-            placeholder="Partage ton expérience (optionnel, 500 car. max)…"
+            placeholder={t("discoverComp.reviews.commentPlaceholder")}
             rows={3}
             className="resize-none"
           />
@@ -115,11 +119,11 @@ const ReviewsSection = ({ placeId }: Props) => {
             <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
             <Button size="sm" variant="outline" type="button" onClick={() => fileRef.current?.click()}>
               <Camera className="mr-2 h-4 w-4" />
-              {photo ? "Changer photo" : "Ajouter photo"}
+              {photo ? t("discoverComp.reviews.changePhoto") : t("discoverComp.reviews.addPhoto")}
             </Button>
             {photoPreview && (
               <div className="relative">
-                <img src={photoPreview} alt="aperçu" className="h-12 w-12 rounded-md object-cover" />
+                <img src={photoPreview} alt={t("discoverComp.reviews.previewAlt")} className="h-12 w-12 rounded-md object-cover" />
                 <button
                   type="button"
                   onClick={() => {
@@ -128,7 +132,7 @@ const ReviewsSection = ({ placeId }: Props) => {
                     if (fileRef.current) fileRef.current.value = "";
                   }}
                   className="absolute -right-1 -top-1 rounded-full bg-destructive p-0.5 text-destructive-foreground"
-                  aria-label="Retirer photo"
+                  aria-label={t("discoverComp.reviews.removePhotoAria")}
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -136,7 +140,7 @@ const ReviewsSection = ({ placeId }: Props) => {
             )}
             <Button size="sm" className="ml-auto" disabled={rating === 0 || submitting} onClick={handleSubmit}>
               {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Publier
+              {t("discoverComp.reviews.publish")}
             </Button>
           </div>
         </div>
@@ -144,13 +148,13 @@ const ReviewsSection = ({ placeId }: Props) => {
 
       {loading && reviews.length === 0 && (
         <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Chargement…
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t("discoverComp.reviews.loading")}
         </div>
       )}
 
       {!loading && reviews.length === 0 && (
         <p className="py-4 text-center text-xs text-muted-foreground">
-          Aucun avis pour le moment. Sois le premier à partager !
+          {t("discoverComp.reviews.empty")}
         </p>
       )}
 
@@ -165,9 +169,9 @@ const ReviewsSection = ({ placeId }: Props) => {
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="truncate text-xs font-medium">{r.author?.display_name || "Voyageur"}</p>
+                <p className="truncate text-xs font-medium">{r.author?.display_name || t("discoverComp.reviews.anonAuthor")}</p>
                 <p className="text-[10px] text-muted-foreground">
-                  {formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: fr })}
+                  {formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: dateLocale })}
                 </p>
               </div>
               <StarRating value={r.rating} size={14} />
@@ -176,7 +180,7 @@ const ReviewsSection = ({ placeId }: Props) => {
             {r.photo_url && (
               <img
                 src={r.photo_url}
-                alt="Photo de l'avis"
+                alt={t("discoverComp.reviews.reviewPhotoAlt")}
                 loading="lazy"
                 className="mt-2 max-h-48 w-full rounded-lg object-cover"
               />

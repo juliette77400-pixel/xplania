@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Sparkles, Loader2, Utensils, Mountain, Building2, ShoppingBag, Moon, Gem, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Position } from "@/hooks/useGeolocation";
@@ -30,12 +31,13 @@ interface Props {
 }
 
 const LiveSuggestions = ({ position, destination, weather, suggestions, onSuggestions, onAddToCarnet }: Props) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [mood, setMood] = useState("");
 
   const fetchSuggestions = async () => {
     if (!position) {
-      toast.error("Active la géolocalisation d'abord");
+      toast.error(t("trackingComp.suggestions.geoNeeded"));
       return;
     }
     setLoading(true);
@@ -44,7 +46,7 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
     });
     setLoading(false);
     if (error) {
-      toast.error(error.message || "Erreur");
+      toast.error(error.message || t("trackingComp.suggestions.error"));
       return;
     }
     onSuggestions(data?.suggestions || []);
@@ -54,17 +56,17 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
     <div className="glass-card rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-bold text-foreground flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-primary" /> Suggestions IA
+          <Sparkles className="w-4 h-4 text-primary" /> {t("trackingComp.suggestions.title")}
           {weather && <span className="text-xs font-normal text-muted-foreground">· {weather}</span>}
         </h3>
         <Button onClick={fetchSuggestions} disabled={loading || !position} size="sm">
-          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Suggérer maintenant"}
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("trackingComp.suggestions.suggestNow")}
         </Button>
       </div>
 
       <input
         type="text"
-        placeholder="Humeur du moment (facultatif) — ex: tranquille, gourmand..."
+        placeholder={t("trackingComp.suggestions.moodPh")}
         value={mood}
         onChange={(e) => setMood(e.target.value)}
         className="w-full text-sm px-3 py-2 rounded-lg bg-muted/30 border border-border focus:outline-none focus:border-primary"
@@ -84,7 +86,7 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
                   <div className="flex items-center gap-3 mt-2">
                     {s.lat && s.lng && (
                       <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-                        <MapPin className="w-3 h-3" /> Pin sur la carte
+                        <MapPin className="w-3 h-3" /> {t("trackingComp.suggestions.pinOnMap")}
                       </span>
                     )}
                     {onAddToCarnet && (
@@ -92,7 +94,7 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
                         onClick={() => onAddToCarnet(s)}
                         className="text-[11px] text-primary hover:underline ml-auto"
                       >
-                        + Carnet
+                        {t("trackingComp.suggestions.addToCarnet")}
                       </button>
                     )}
                   </div>
@@ -103,7 +105,7 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
         })}
         {suggestions.length === 0 && !loading && (
           <p className="text-xs text-muted-foreground text-center py-4">
-            Active le suivi puis clique sur "Suggérer maintenant" pour des idées hyper locales.
+            {t("trackingComp.suggestions.empty")}
           </p>
         )}
       </div>

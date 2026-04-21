@@ -1,5 +1,6 @@
 import { Heart, MapPin, Clock, Gem, Lightbulb, Navigation, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, fullscreen }: Props) => {
+  const { t } = useTranslation();
   const openMaps = () => {
     const q = place.lat && place.lng
       ? `${place.lat},${place.lng}`
@@ -30,7 +32,6 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
         fullscreen ? "min-h-[70vh]" : "min-h-[420px]",
       )}
     >
-      {/* Image AU-DESSUS de la description (image-first card design) */}
       <div className={cn(
         "relative w-full overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 shrink-0",
         fullscreen ? "h-[40vh]" : "h-56",
@@ -50,12 +51,11 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
 
-        {/* Top badges over image */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 z-10">
           <div className="flex flex-wrap gap-1.5">
             {place.hidden_gem && (
               <Badge className="bg-amber-500/90 text-amber-50 border-0 backdrop-blur-sm">
-                <Gem className="w-3 h-3 mr-1" /> Hidden gem
+                <Gem className="w-3 h-3 mr-1" /> {t("discoverComp.card.hiddenGem")}
               </Badge>
             )}
             {place.category && (
@@ -68,14 +68,13 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
               "rounded-full w-10 h-10 flex items-center justify-center backdrop-blur-md border transition-all",
               isFavorite ? "bg-rose-500 border-rose-400 text-white" : "bg-background/60 border-border text-foreground hover:bg-background/80",
             )}
-            aria-label="Favori"
+            aria-label={t("moodComp.card.favoriteAria")}
           >
             <Heart className={cn("w-5 h-5", isFavorite && "fill-current")} />
           </button>
         </div>
       </div>
 
-      {/* Content BELOW image */}
       <div className="p-5 space-y-3 flex-1 flex flex-col">
         <h3 className="text-2xl font-bold leading-tight">{place.name}</h3>
 
@@ -88,9 +87,9 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
         )}
 
         <div className="flex flex-wrap gap-1.5">
-          {place.tags?.slice(0, 4).map((t) => (
-            <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
-              #{t}
+          {place.tags?.slice(0, 4).map((tag) => (
+            <span key={tag} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+              #{tag}
             </span>
           ))}
         </div>
@@ -102,7 +101,7 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
           {place.duration_min != null && (
             <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {place.duration_min} min</span>
           )}
-          <span className="ml-auto font-medium text-primary">{place.score}/100</span>
+          <span className="ml-auto font-medium text-primary">{place.score}{t("moodComp.card.score")}</span>
         </div>
 
         {place.tips && (
@@ -114,11 +113,11 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
 
         <div className="flex gap-2 mt-auto pt-2">
           <Button onClick={openMaps} className="flex-1" size="sm">
-            <Navigation className="w-4 h-4 mr-2" /> Y aller
+            <Navigation className="w-4 h-4 mr-2" /> {t("moodComp.card.go")}
           </Button>
           {onOpenDetails && (
             <Button onClick={onOpenDetails} variant="outline" size="sm">
-              <MessageCircle className="w-4 h-4 mr-1" /> Vibes
+              <MessageCircle className="w-4 h-4 mr-1" /> {t("moodComp.card.vibes")}
             </Button>
           )}
         </div>

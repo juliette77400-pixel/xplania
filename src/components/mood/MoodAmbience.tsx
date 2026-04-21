@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Music, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const MoodAmbience = ({ mood }: Props) => {
+  const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(40);
@@ -18,8 +20,8 @@ const MoodAmbience = ({ mood }: Props) => {
 
   const ambience = mood ? MOOD_AMBIENCE[mood as MoodKey] : undefined;
   const moodDef = mood ? moodByKey(mood) : undefined;
+  const moodLabel = moodDef ? t(`moodComp.moods.${moodDef.key}.label`, { defaultValue: moodDef.label }) : "";
 
-  // Reset on mood change
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -68,7 +70,7 @@ const MoodAmbience = ({ mood }: Props) => {
           <span className="text-2xl">{moodDef?.emoji}</span>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-medium">{ambience.label}</div>
-            <div className="text-[11px] text-muted-foreground">Ambiance {moodDef?.label}</div>
+            <div className="text-[11px] text-muted-foreground">{t("moodComp.ambience.moodAmbience", { mood: moodLabel })}</div>
           </div>
         </div>
         <audio
@@ -80,7 +82,7 @@ const MoodAmbience = ({ mood }: Props) => {
         />
         <div className="flex items-center gap-2">
           <Button size="sm" variant="default" onClick={toggle} className="flex-1">
-            {playing ? <><Pause className="w-4 h-4 mr-1" /> Pause</> : <><Play className="w-4 h-4 mr-1" /> Jouer</>}
+            {playing ? <><Pause className="w-4 h-4 mr-1" /> {t("moodComp.ambience.pause")}</> : <><Play className="w-4 h-4 mr-1" /> {t("moodComp.ambience.play")}</>}
           </Button>
           <Button size="icon" variant="ghost" onClick={() => setMuted((m) => !m)}>
             {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -94,7 +96,7 @@ const MoodAmbience = ({ mood }: Props) => {
           disabled={muted}
         />
         <p className="text-[10px] text-muted-foreground text-center">
-          🎧 Active le son de ton navigateur
+          {t("moodComp.ambience.enableSound")}
         </p>
       </PopoverContent>
     </Popover>

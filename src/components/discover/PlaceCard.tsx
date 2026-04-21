@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, MapPin, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { categoryByKey } from "@/lib/discover";
 import type { Place } from "@/hooks/useDiscover";
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const PlaceCard = ({ place, onClick, saved, onToggleSave }: Props) => {
+  const { t } = useTranslation();
   const cat = categoryByKey(place.category);
   return (
     <motion.button
@@ -28,14 +30,14 @@ const PlaceCard = ({ place, onClick, saved, onToggleSave }: Props) => {
         )}
         {place.hidden_gem && (
           <Badge className="absolute left-2 top-2 gap-1 border-0 bg-accent text-accent-foreground">
-            <Sparkles className="h-3 w-3" /> Hidden gem
+            <Sparkles className="h-3 w-3" /> {t("discoverComp.card.hiddenGem")}
           </Badge>
         )}
         {onToggleSave && (
           <button
             onClick={(e) => { e.stopPropagation(); onToggleSave(); }}
             className="absolute right-2 top-2 grid h-9 w-9 place-items-center rounded-full bg-background/70 backdrop-blur transition hover:bg-background"
-            aria-label={saved ? "Retirer" : "Sauvegarder"}
+            aria-label={saved ? t("discoverComp.card.remove") : t("discoverComp.card.save")}
           >
             <Heart className={`h-4 w-4 ${saved ? "fill-primary text-primary" : "text-foreground"}`} />
           </button>

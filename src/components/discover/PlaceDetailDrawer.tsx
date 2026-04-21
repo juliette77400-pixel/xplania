@@ -1,4 +1,5 @@
 import { Heart, MapPin, Navigation, Sparkles, Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,15 +16,18 @@ interface Props {
 }
 
 const PlaceDetailDrawer = ({ place, onClose }: Props) => {
+  const { t } = useTranslation();
   const { lists, isSaved, toggleItem } = usePlaceLists();
   if (!place) return null;
   const cat = categoryByKey(place.category);
   const defaultList = lists.find((l) => l.is_default) || lists[0];
 
   const handleSave = async () => {
-    if (!defaultList) return toast.error("Crée une liste d'abord");
+    if (!defaultList) return toast.error(t("discoverComp.drawer.noListErr"));
     const added = await toggleItem(defaultList.id, place.id);
-    toast.success(added ? `Sauvegardé dans ${defaultList.emoji} ${defaultList.name}` : "Retiré des favoris");
+    toast.success(added
+      ? t("discoverComp.drawer.savedTo", { name: `${defaultList.emoji ?? ""} ${defaultList.name}`.trim() })
+      : t("discoverComp.drawer.removed"));
   };
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
 
@@ -37,7 +41,7 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
             )}
             {place.hidden_gem && (
               <Badge className="absolute left-3 top-3 gap-1 border-0 bg-accent text-accent-foreground">
-                <Sparkles className="h-3 w-3" /> Hidden gem
+                <Sparkles className="h-3 w-3" /> {t("discoverComp.card.hiddenGem")}
               </Badge>
             )}
           </div>
@@ -60,23 +64,23 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
             {place.address && <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />{place.address}</p>}
             {place.tips && (
               <div className="rounded-xl border border-accent/30 bg-accent/5 p-3">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-accent">💡 Tip insider</div>
+                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-accent">{t("discoverComp.drawer.tipInsider")}</div>
                 <p className="text-sm">{place.tips}</p>
               </div>
             )}
             <div className="flex flex-wrap gap-1.5">
-              {(place.tags || []).map((t) => (
-                <span key={t} className="rounded-full bg-primary/10 px-2.5 py-1 text-xs text-primary">#{t}</span>
+              {(place.tags || []).map((tag) => (
+                <span key={tag} className="rounded-full bg-primary/10 px-2.5 py-1 text-xs text-primary">#{tag}</span>
               ))}
             </div>
             <div className="grid grid-cols-2 gap-2 pt-2">
               <Button onClick={handleSave} variant={isSaved(place.id) ? "default" : "outline"}>
                 <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
-                {isSaved(place.id) ? "Sauvegardé" : "Sauvegarder"}
+                {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
               </Button>
               <Button asChild>
                 <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
-                  <Navigation className="mr-2 h-4 w-4" />Itinéraire
+                  <Navigation className="mr-2 h-4 w-4" />{t("discoverComp.drawer.directions")}
                 </a>
               </Button>
             </div>

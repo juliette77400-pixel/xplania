@@ -1,4 +1,5 @@
 import { Heart, MapPin, Clock, Gem, Lightbulb, Navigation, ExternalLink, Tag } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +18,10 @@ interface Props {
 }
 
 const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onSharedReaction }: Props) => {
+  const { t } = useTranslation();
   if (!place) return null;
   const mood = moodByKey(place.mood);
+  const moodLabel = mood ? t(`moodComp.moods.${mood.key}.label`, { defaultValue: mood.label }) : "";
 
   const mapsUrl =
     place.lat && place.lng
@@ -34,7 +37,6 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
     <Drawer open={!!place} onOpenChange={(o) => !o && onClose()}>
       <DrawerContent className="max-h-[92vh]">
         <div className="mx-auto w-full max-w-2xl overflow-y-auto">
-          {/* Hero image */}
           <div className="relative h-56 w-full overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
             {place.image_url ? (
               <img src={place.image_url} alt={place.name} className="h-full w-full object-cover" />
@@ -46,12 +48,12 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
               <div className="flex flex-wrap gap-1.5">
                 {mood && (
                   <Badge className="bg-background/70 backdrop-blur-md text-foreground border-border">
-                    {mood.emoji} {mood.label}
+                    {mood.emoji} {moodLabel}
                   </Badge>
                 )}
                 {place.hidden_gem && (
                   <Badge className="bg-amber-500/90 text-amber-50 border-0">
-                    <Gem className="w-3 h-3 mr-1" /> Hidden gem
+                    <Gem className="w-3 h-3 mr-1" /> {t("discoverComp.card.hiddenGem")}
                   </Badge>
                 )}
                 {place.category && (
@@ -68,7 +70,7 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
                     ? "bg-rose-500 border-rose-400 text-white"
                     : "bg-background/40 border-border text-foreground hover:bg-background/60",
                 )}
-                aria-label="Favori"
+                aria-label={t("moodComp.card.favoriteAria")}
               >
                 <Heart className={cn("w-5 h-5", isFavorite && "fill-current")} />
               </button>
@@ -89,7 +91,7 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
                   <Clock className="w-3 h-3" /> {place.duration_min} min
                 </span>
               )}
-              <span className="ml-auto text-primary font-semibold">{place.score}/100</span>
+              <span className="ml-auto text-primary font-semibold">{place.score}{t("moodComp.card.score")}</span>
             </div>
           </DrawerHeader>
 
@@ -107,7 +109,7 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
             {place.tips && (
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
                 <div className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-amber-500">
-                  <Lightbulb className="w-3.5 h-3.5" /> Tip insider
+                  <Lightbulb className="w-3.5 h-3.5" /> {t("moodComp.detail.tipInsider")}
                 </div>
                 <p className="text-sm">{place.tips}</p>
               </div>
@@ -116,20 +118,19 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
             {place.tags && place.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 <Tag className="w-3.5 h-3.5 text-muted-foreground self-center" />
-                {place.tags.slice(0, 8).map((t) => (
-                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
-                    #{t}
+                {place.tags.slice(0, 8).map((tag) => (
+                  <span key={tag} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                    #{tag}
                   </span>
                 ))}
               </div>
             )}
 
-            {/* Mini map */}
             {embedSrc && (
               <div className="rounded-xl overflow-hidden border border-border h-48">
                 <iframe
                   src={embedSrc}
-                  title="Mini-carte"
+                  title={t("moodComp.detail.miniMapTitle")}
                   className="w-full h-full"
                   loading="lazy"
                 />
@@ -139,12 +140,12 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
             <div className="grid grid-cols-2 gap-2">
               <Button asChild className="w-full">
                 <a href={mapsUrl} target="_blank" rel="noopener noreferrer">
-                  <Navigation className="w-4 h-4 mr-1.5" /> Y aller
+                  <Navigation className="w-4 h-4 mr-1.5" /> {t("moodComp.detail.go")}
                 </a>
               </Button>
               <Button asChild variant="outline" className="w-full">
                 <a href={searchUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="w-4 h-4 mr-1.5" /> Voir sur Maps
+                  <ExternalLink className="w-4 h-4 mr-1.5" /> {t("moodComp.detail.viewMaps")}
                 </a>
               </Button>
             </div>

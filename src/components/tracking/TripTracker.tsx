@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useTracking } from "@/hooks/useTracking";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useCheckIn } from "@/hooks/useCheckIn";
@@ -31,6 +32,7 @@ interface Props {
 const FILTERS = ["all", "food", "culture", "nature", "shopping", "nightlife", "hidden_gem"] as const;
 
 const TripTracker = ({ tripId, destination }: Props) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const tracking = useTracking(tripId);
   const { tracking: t, activities, positions } = tracking;

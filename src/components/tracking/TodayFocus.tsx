@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Target, MapPin, Navigation, CheckCircle2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { TripActivity } from "@/hooks/useTracking";
 import { Position, haversineKm } from "@/hooks/useGeolocation";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ function todayKey() {
 }
 
 const TodayFocus = ({ activities, position, onMarkInProgress }: Props) => {
+  const { t } = useTranslation();
   const { todays, next } = useMemo(() => {
     const today = todayKey();
     const todays = activities
@@ -39,14 +41,13 @@ const TodayFocus = ({ activities, position, onMarkInProgress }: Props) => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-primary" />
-          <h3 className="text-sm font-bold text-foreground">Focus aujourd'hui</h3>
+          <h3 className="text-sm font-bold text-foreground">{t("trackingComp.today.title")}</h3>
         </div>
         <span className="text-xs text-muted-foreground">
-          {done}/{todays.length} étapes • {pct}%
+          {t("trackingComp.today.stepsPct", { done, total: todays.length, pct })}
         </span>
       </div>
 
-      {/* Progress bar */}
       <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden mb-4">
         <div
           className="h-full bg-gradient-to-r from-primary to-accent transition-all"
@@ -61,13 +62,13 @@ const TodayFocus = ({ activities, position, onMarkInProgress }: Props) => {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[11px] uppercase tracking-wider text-primary/80 font-semibold">
-              Prochaine étape
+              {t("trackingComp.today.nextStep")}
             </p>
             <p className="text-sm font-semibold text-foreground truncate">{next.title}</p>
             {distKm !== null && (
               <p className="text-xs text-muted-foreground">
                 {distKm < 1 ? `${Math.round(distKm * 1000)} m` : `${distKm.toFixed(1)} km`}
-                {" · "}~{Math.max(1, Math.round((distKm / 5) * 60))} min à pied
+                {" · "}~{t("trackingComp.today.walkMins", { mins: Math.max(1, Math.round((distKm / 5) * 60)) })}
               </p>
             )}
           </div>
@@ -79,7 +80,7 @@ const TodayFocus = ({ activities, position, onMarkInProgress }: Props) => {
                 rel="noopener"
               >
                 <Button size="sm" variant="outline" className="h-8 text-xs">
-                  <Navigation className="w-3 h-3 mr-1" /> Y aller
+                  <Navigation className="w-3 h-3 mr-1" /> {t("trackingComp.today.go")}
                 </Button>
               </a>
             )}
@@ -89,14 +90,14 @@ const TodayFocus = ({ activities, position, onMarkInProgress }: Props) => {
                 className="h-8 text-xs"
                 onClick={() => onMarkInProgress(next.id)}
               >
-                <CheckCircle2 className="w-3 h-3 mr-1" /> En cours
+                <CheckCircle2 className="w-3 h-3 mr-1" /> {t("trackingComp.today.inProgress")}
               </Button>
             )}
           </div>
         </div>
       ) : (
         <p className="text-sm text-green-500 font-semibold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4" /> Toutes les étapes du jour sont terminées 🎉
+          <CheckCircle2 className="w-4 h-4" /> {t("trackingComp.today.allDone")}
         </p>
       )}
     </div>
