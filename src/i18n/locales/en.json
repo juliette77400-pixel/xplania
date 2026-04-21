@@ -1820,7 +1820,19 @@
       "downloadPng": "Download PNG",
       "cardDownloaded": "Card downloaded 🎴",
       "pngFail": "PNG generation failed",
-      "shareLinkCopied": "Link copied"
+      "shareLinkCopied": "Link copied",
+      "heatmap": "Heatmap",
+      "noGeoPoints": "No geolocated points.",
+      "useMindmap": "Use the Mind-map view to explore branches.",
+      "level": "Level {{n}}",
+      "generate": "Generate",
+      "myTrip": "My trip",
+      "score": "Score",
+      "places": "Places visited",
+      "cities": "Cities",
+      "badgesShort": "Badges",
+      "shareTitle": "My trip {{dest}}",
+      "shareText": "{{pts}} pts on Xplania ✨"
     }
   }
 }
