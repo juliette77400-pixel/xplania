@@ -53,7 +53,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
 
   const notif = useNotifications();
   useCheckIn(tripId, geo.position, activities, (a) => notif.notify("Check-in automatique", a.title));
-  const { isOnline } = useOfflineCache(tripId, t, activities);
+  const { isOnline } = useOfflineCache(tripId, trip, activities);
 
   const { pois, loading: loadingPois } = useNearbyPOI(geo.position, showPois && !!geo.position, 600);
 
@@ -87,13 +87,13 @@ const TripTracker = ({ tripId, destination }: Props) => {
   );
 
   useEffect(() => {
-    if (!tracking.loading && t && activities.length === 0) {
+    if (!tracking.loading && trip && activities.length === 0) {
       tracking.seedActivities().then((n) => {
         if (n > 0) toast.success(`${n} étapes synchronisées depuis ton voyage`);
       }).catch(() => {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tracking.loading, t]);
+  }, [tracking.loading, trip]);
 
   /**
    * S1 — Real Carnet add: resolve today's journal_day (or first day),
@@ -172,7 +172,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
       source: "ai",
     });
 
-  const shareUrl = trip?.share_slug ? `${window.location.origin}/suivi/public/${t.share_slug}` : "";
+  const shareUrl = trip?.share_slug ? `${window.location.origin}/suivi/public/${trip.share_slug}` : "";
 
   if (tracking.loading) {
     return <div className="text-center py-12 text-muted-foreground text-sm">Chargement…</div>;
@@ -196,7 +196,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
               {trip?.is_active
-                ? `Position partagée • ${Number(t.total_distance_km || 0).toFixed(1)} km parcourus`
+                ? `Position partagée • ${Number(trip?.total_distance_km || 0).toFixed(1)} km parcourus`
                 : "Active la géolocalisation pour démarrer le suivi temps réel"}
             </p>
             <div className="flex items-center gap-2 mt-3 flex-wrap">
