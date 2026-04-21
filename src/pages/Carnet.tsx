@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
@@ -15,6 +15,7 @@ import ShareExport from "@/components/journal/ShareExport";
 import TripTracker from "@/components/tracking/TripTracker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuickJump from "@/components/shared/QuickJump";
+import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 import { formatDayLabel } from "@/lib/journal-utils";
 
 const Carnet = () => {
@@ -24,6 +25,7 @@ const Carnet = () => {
   const [activeIdx, setActiveIdx] = useState(0);
   const [destination, setDestination] = useState("");
   const { t } = useTranslation();
+  const navigate = useNavigate(); // ✨ NEW (Tâche 1) — pour rediriger après suppression
 
   useEffect(() => {
     if (!tripId) return;
@@ -75,7 +77,17 @@ const Carnet = () => {
             <BookOpen className="w-5 h-5 text-primary" />
             <h1 className="font-bold text-foreground">{journal.title}</h1>
           </div>
-          <div className="w-16" />
+          {/* ✨ NEW (Tâche 1) — suppression depuis le header */}
+          <div className="w-16 flex justify-end">
+            {tripId && (
+              <DeleteTripButton
+                tripId={tripId}
+                tripLabel={destination || journal.title}
+                variant="icon"
+                onDeleted={() => navigate("/carnets", { replace: true })}
+              />
+            )}
+          </div>
         </div>
       </header>
 

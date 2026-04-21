@@ -43,7 +43,15 @@ const SuiviTrip = () => {
             <Activity className="w-5 h-5 text-primary" />
             <h1 className="font-bold">{t("suiviTrip.title")}{destination && ` — ${destination}`}</h1>
           </div>
-          <div className="w-16" />
+          {/* ✨ NEW (Tâche 1) — suppression depuis le header */}
+          <div className="w-16 flex justify-end">
+            <DeleteTripButton
+              tripId={tripId}
+              tripLabel={destination || undefined}
+              variant="icon"
+              onDeleted={() => navigate("/suivi", { replace: true })}
+            />
+          </div>
         </div>
       </header>
       <main className="container mx-auto px-4 py-6 max-w-7xl">
