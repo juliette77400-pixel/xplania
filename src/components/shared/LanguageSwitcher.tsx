@@ -31,13 +31,13 @@ const LanguageSwitcher = ({ variant = "ghost" }: Props) => {
         aria-label={t("lang.switch")}
         className={
           variant === "minimal"
-            ? "flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm transition-colors"
-            : "flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 text-sm font-medium transition-colors"
+            ? "flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm transition-colors"
+            : "flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border/60 bg-muted/30 text-foreground hover:bg-muted/60 hover:border-primary/40 text-sm font-medium transition-all"
         }
       >
-        <Globe className="w-4 h-4" />
+        <Globe className="w-4 h-4 text-primary" />
         <span className="text-base leading-none">{current.flag}</span>
-        <span className="uppercase text-xs font-semibold">{current.code}</span>
+        <span className="uppercase text-xs font-bold tracking-wide">{current.code}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[140px]">
         {LANGS.map((l) => (
