@@ -35,7 +35,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const tracking = useTracking(tripId);
-  const { tracking: t, activities, positions } = tracking;
+  const { tracking: trip, activities, positions } = tracking;
   const { journal, days, refetch: refetchJournal } = useJournal(tripId);
   const [filter, setFilter] = useState<string>("all");
   const [showPois, setShowPois] = useState(true);
