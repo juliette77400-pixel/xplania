@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   CloudSun, Thermometer, Globe, MapPin, Wallet,
   FileText, Luggage, Compass, UtensilsCrossed, Trees,
@@ -58,41 +59,44 @@ const SkeletonCard = ({ lines = 4 }: { lines?: number }) => (
   </div>
 );
 
-const LoadingState = ({ destination }: { destination: string }) => (
-  <div className="space-y-6">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="glass-card rounded-2xl p-8 text-center"
-    >
+const LoadingState = ({ destination }: { destination: string }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-6">
       <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-        className="w-12 h-12 mx-auto mb-4 rounded-xl gradient-button flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="glass-card rounded-2xl p-8 text-center"
       >
-        <Sparkles className="w-6 h-6 text-primary-foreground" />
-      </motion.div>
-      <h3 className="text-lg font-bold text-foreground mb-2">
-        Analyse en cours pour {destination}...
-      </h3>
-      <p className="text-sm text-muted-foreground max-w-md mx-auto">
-        Notre IA génère des recommandations ultra-personnalisées basées sur votre profil de voyageur.
-      </p>
-      <div className="mt-6 h-1.5 w-64 mx-auto rounded-full bg-muted overflow-hidden">
         <motion.div
-          className="h-full rounded-full"
-          style={{ background: "var(--gradient-primary)" }}
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 15, ease: "easeInOut" }}
-        />
-      </div>
-    </motion.div>
-    <SkeletonCard lines={3} />
-    <SkeletonCard lines={3} />
-    <SkeletonCard lines={4} />
-  </div>
-);
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+          className="w-12 h-12 mx-auto mb-4 rounded-xl gradient-button flex items-center justify-center"
+        >
+          <Sparkles className="w-6 h-6 text-primary-foreground" />
+        </motion.div>
+        <h3 className="text-lg font-bold text-foreground mb-2">
+          {t("travelForm.dashboard.loadingTitle", { destination })}
+        </h3>
+        <p className="text-sm text-muted-foreground max-w-md mx-auto">
+          {t("travelForm.dashboard.loadingDesc")}
+        </p>
+        <div className="mt-6 h-1.5 w-64 mx-auto rounded-full bg-muted overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ background: "var(--gradient-primary)" }}
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 15, ease: "easeInOut" }}
+          />
+        </div>
+      </motion.div>
+      <SkeletonCard lines={3} />
+      <SkeletonCard lines={3} />
+      <SkeletonCard lines={4} />
+    </div>
+  );
+};
 
 /* ─── Accordion Section Wrapper ─── */
 const SectionItem = ({
