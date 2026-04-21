@@ -1133,6 +1133,56 @@ export type Database = {
           },
         ]
       }
+      trip_documents: {
+        Row: {
+          created_at: string
+          doc_type: string
+          file_path: string
+          id: string
+          mime_type: string | null
+          name: string
+          notes: string | null
+          size_bytes: number | null
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          doc_type?: string
+          file_path: string
+          id?: string
+          mime_type?: string | null
+          name: string
+          notes?: string | null
+          size_bytes?: number | null
+          trip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          doc_type?: string
+          file_path?: string
+          id?: string
+          mime_type?: string | null
+          name?: string
+          notes?: string | null
+          size_bytes?: number | null
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_documents_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trip_positions: {
         Row: {
           accuracy: number | null
