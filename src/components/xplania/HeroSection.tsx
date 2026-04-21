@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Sparkles, ArrowRight, Clock, Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, Star } from "lucide-react";
 
 const particles = Array.from({ length: 12 }, (_, i) => ({
@@ -13,6 +14,19 @@ interface Props {
 }
 
 const HeroSection = ({ onCreateTrip }: Props) => {
+  const { t } = useTranslation();
+
+  const tools = [
+    { icon: Luggage, label: t("hero.toolSuitcase") },
+    { icon: Wallet, label: t("hero.toolBudget") },
+    { icon: FileText, label: t("hero.toolVisa") },
+    { icon: BookOpen, label: t("hero.toolJournal") },
+    { icon: Activity, label: t("hero.toolLive") },
+    { icon: Compass, label: t("hero.toolMap") },
+    { icon: Heart, label: t("hero.toolMood") },
+    { icon: MapPinned, label: t("hero.toolDiscover") },
+  ];
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden">
       {particles.map((p) => (
@@ -30,7 +44,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
         className="flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-primary mb-8"
       >
         <Sparkles className="w-4 h-4" />
-        <span>Bêta Privée — Accès Exclusif</span>
+        <span>{t("hero.badge")}</span>
       </motion.div>
 
       <motion.h1
@@ -39,9 +53,9 @@ const HeroSection = ({ onCreateTrip }: Props) => {
         transition={{ duration: 0.7, delay: 0.1 }}
         className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-center max-w-4xl leading-tight"
       >
-        Voyagez sereinement,
+        {t("hero.titleLine1")}
         <br />
-        <span className="gradient-text">l'IA s'occupe du reste</span>
+        <span className="gradient-text">{t("hero.titleLine2")}</span>
       </motion.h1>
 
       <motion.p
@@ -50,7 +64,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
         transition={{ duration: 0.6, delay: 0.25 }}
         className="mt-6 text-center text-muted-foreground text-lg max-w-2xl"
       >
-        Xplania est votre copilote de voyage intelligent. Budget, visas, bagages : toute la préparation centralisée en un seul endroit.
+        {t("hero.subtitle")}
       </motion.p>
 
       <motion.div
@@ -64,13 +78,13 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           className="gradient-button px-8 py-4 rounded-xl text-primary-foreground font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity"
         >
           <Sparkles className="w-5 h-5" />
-          Créer mon voyage gratuitement
+          {t("hero.ctaCreate")}
         </button>
         <a
           href="#features"
           className="glass-card px-8 py-4 rounded-xl text-foreground font-semibold flex items-center gap-2 hover:bg-muted transition-colors"
         >
-          Découvrir les fonctionnalités
+          {t("hero.ctaDiscover")}
           <ArrowRight className="w-5 h-5" />
         </a>
       </motion.div>
@@ -85,19 +99,10 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           <Clock className="w-5 h-5 text-primary mt-0.5 shrink-0" />
           <div className="w-full">
             <p className="text-sm font-semibold text-foreground">
-              Bêta gratuite — <span className="text-primary">8 outils</span> déjà disponibles pour préparer et vivre ton voyage :
+              {t("hero.toolsIntro")} <span className="text-primary">{t("hero.toolsCount")}</span> {t("hero.toolsAvail")}
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
-              {[
-                { icon: Luggage, label: "Valise" },
-                { icon: Wallet, label: "Budget" },
-                { icon: FileText, label: "Visa" },
-                { icon: BookOpen, label: "Carnet de bord" },
-                { icon: Activity, label: "Suivi live" },
-                { icon: Compass, label: "Travel Map" },
-                { icon: Heart, label: "Mood" },
-                { icon: MapPinned, label: "Discover" },
-              ].map((item) => (
+              {tools.map((item) => (
                 <span
                   key={item.label}
                   className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted text-xs text-foreground font-medium"
@@ -119,7 +124,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
       >
         <Star className="w-4 h-4 text-accent" />
         <span>
-          <strong className="text-foreground">Programme Early Explorer</strong> — Rejoignez la communauté de bêta-testeurs
+          <strong className="text-foreground">{t("hero.earlyExplorer")}</strong> — {t("hero.earlyExplorerDesc")}
         </span>
       </motion.div>
     </section>

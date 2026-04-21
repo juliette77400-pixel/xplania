@@ -1,5 +1,6 @@
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const FeedbackDialog = ({ open, onOpenChange }: Props) => {
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [suggestions, setSuggestions] = useState("");
   const [problems, setProblems] = useState("");
@@ -25,11 +27,12 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !suggestions.trim() || rating === 0) {
-      toast.error("Veuillez remplir tous les champs et donner une note");
+      toast.error(t("feedback.errorRequired"));
       return;
     }
 
     setSending(true);
+    const dateLocale = i18n.language.startsWith("fr") ? "fr-FR" : "en-US";
 
     try {
       await emailjs.send(
@@ -40,7 +43,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
           suggestions: suggestions.trim(),
           problems: problems.trim(),
           user_email: email.trim(),
-          date: new Date().toLocaleDateString("fr-FR", {
+          date: new Date().toLocaleDateString(dateLocale, {
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
@@ -53,11 +56,11 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
       );
       setSending(false);
       setSent(true);
-      toast.success("Merci pour votre feedback, vous contribuez à améliorer Xplania ✨");
+      toast.success(t("feedback.successToast"));
     } catch (err) {
       console.error("EmailJS error:", err);
       setSending(false);
-      toast.error("Une erreur est survenue lors de l'envoi. Vérifiez la console.");
+      toast.error(t("feedback.errorSend"));
     }
   };
 
@@ -82,9 +85,9 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
             <div className="w-16 h-16 rounded-full gradient-button flex items-center justify-center">
               <CheckCircle className="w-8 h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground">Merci !</h3>
+            <h3 className="text-xl font-bold text-foreground">{t("feedback.thanks")}</h3>
             <p className="text-sm text-muted-foreground text-center">
-              Merci pour votre feedback, vous contribuez à améliorer Xplania ✨
+              {t("feedback.thanksDesc")}
             </p>
           </div>
         </DialogContent>
@@ -98,16 +101,16 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-foreground">
             <MessageSquare className="w-5 h-5 text-primary" />
-            Donner mon feedback
+            {t("feedback.title")}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">📧 Email</Label>
+            <Label className="text-foreground font-semibold">📧 {t("feedback.emailLabel")}</Label>
             <Input
               type="email"
-              placeholder="votre@email.com"
+              placeholder={t("feedback.emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
@@ -117,7 +120,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">⭐ Note</Label>
+            <Label className="text-foreground font-semibold">⭐ {t("feedback.ratingLabel")}</Label>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -144,9 +147,9 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">💡 Suggestions d'amélioration</Label>
+            <Label className="text-foreground font-semibold">💡 {t("feedback.suggestionsLabel")}</Label>
             <Textarea
-              placeholder="Partagez vos idées, suggestions ou retours..."
+              placeholder={t("feedback.suggestionsPlaceholder")}
               value={suggestions}
               onChange={(e) => setSuggestions(e.target.value)}
               className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[100px]"
@@ -156,9 +159,9 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground font-semibold">⚠️ Problèmes rencontrés</Label>
+            <Label className="text-foreground font-semibold">⚠️ {t("feedback.problemsLabel")}</Label>
             <Textarea
-              placeholder="Décrivez les bugs ou problèmes rencontrés..."
+              placeholder={t("feedback.problemsPlaceholder")}
               value={problems}
               onChange={(e) => setProblems(e.target.value)}
               className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[100px]"
@@ -172,7 +175,7 @@ const FeedbackDialog = ({ open, onOpenChange }: Props) => {
             className="w-full gradient-button text-primary-foreground border-0"
           >
             <Send className="w-4 h-4 mr-2" />
-            {sending ? "Envoi en cours..." : "Envoyer mon feedback"}
+            {sending ? t("feedback.sending") : t("feedback.submit")}
           </Button>
         </form>
       </DialogContent>

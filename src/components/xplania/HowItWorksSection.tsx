@@ -1,27 +1,14 @@
 import { motion } from "framer-motion";
-
-const steps = [
-  {
-    num: 1,
-    title: "Dites-nous où vous voulez aller",
-    desc: "Destination, dates, type de voyage : on vous pose juste les bonnes questions, ni trop, ni trop peu.",
-    soon: false,
-  },
-  {
-    num: 2,
-    title: "L'IA prépare votre voyage",
-    desc: "En quelques secondes, vous recevez votre budget, votre liste de bagages et vos démarches visa, prêts à l'emploi.",
-    soon: false,
-  },
-  {
-    num: 3,
-    title: "Vivez le voyage sereinement",
-    desc: "Carnet de bord, suivi live, mood explorer et recommandations en temps réel : tout est déjà disponible dans la bêta.",
-    soon: false,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const HowItWorksSection = () => {
+  const { t } = useTranslation();
+  const steps = [
+    { num: 1, title: t("howItWorks.step1Title"), desc: t("howItWorks.step1Desc") },
+    { num: 2, title: t("howItWorks.step2Title"), desc: t("howItWorks.step2Desc") },
+    { num: 3, title: t("howItWorks.step3Title"), desc: t("howItWorks.step3Desc") },
+  ];
+
   return (
     <section id="how-it-works" className="py-24">
       <div className="container mx-auto px-6">
@@ -31,8 +18,8 @@ const HowItWorksSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">Comment fonctionne Xplania</h2>
-          <p className="mt-3 text-muted-foreground">Une approche simple en trois étapes pour voyager sereinement</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">{t("howItWorks.title")}</h2>
+          <p className="mt-3 text-muted-foreground">{t("howItWorks.subtitle")}</p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -49,11 +36,6 @@ const HowItWorksSection = () => {
                 {s.num}
               </div>
               <h3 className="text-xl font-bold text-foreground">{s.title}</h3>
-              {s.soon && (
-                <span className="inline-block mt-2 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-semibold">
-                  Bientôt
-                </span>
-              )}
               <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
             </motion.div>
           ))}
