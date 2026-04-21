@@ -845,7 +845,104 @@
     "shareEmailSubject": "Mon voyage à {{destination}}",
     "shareWhatsApp": "WhatsApp",
     "activitiesItemsCount_other": "{{count}} objets",
-    "activitiesToastAdded_other": "{{count}} objets ajoutés à ta valise"
+    "activitiesToastAdded_other": "{{count}} objets ajoutés à ta valise",
+    "outfits": {
+      "casualUrban": {
+        "title": "Look Casual Urbain",
+        "context": "Visite de la ville • Shopping",
+        "tags": [
+          "Ville",
+          "18-22°C",
+          "Exploration"
+        ],
+        "badge": "Détendu",
+        "items": [
+          "T-shirt coton bio",
+          "Jean slim confortable",
+          "Sneakers blanches",
+          "Sac bandoulière",
+          "Montre casual"
+        ],
+        "weatherTip": "Idéal par temps doux. Ajoute une veste légère si le vent se lève.",
+        "culturalTip": "Tenue passe-partout acceptée dans la majorité des lieux publics."
+      },
+      "elegantEvening": {
+        "title": "Tenue Soirée Élégante",
+        "context": "Dîner gastronomique • Soirée",
+        "tags": [
+          "Restaurant",
+          "20°C",
+          "Ville"
+        ],
+        "badge": "Raffiné",
+        "items": [
+          "Chemise en lin",
+          "Pantalon chino",
+          "Mocassins cuir",
+          "Montre habillée",
+          "Pochette élégante"
+        ],
+        "weatherTip": "Prévois un blazer léger : les soirées peuvent être fraîches.",
+        "culturalTip": "Certains restaurants exigent une tenue soignée. Renseigne-toi."
+      },
+      "natureExploration": {
+        "title": "Look Exploration Nature",
+        "context": "Randonnée • Découverte",
+        "tags": [
+          "Nature",
+          "Variable",
+          "Aventure"
+        ],
+        "badge": "Aventurier",
+        "items": [
+          "T-shirt technique",
+          "Pantalon convertible",
+          "Chaussures de trail",
+          "Sac à dos 20L",
+          "Casquette UV"
+        ],
+        "weatherTip": "Superpose les couches pour t'adapter aux variations de température.",
+        "culturalTip": "Certains sites naturels demandent de couvrir les épaules et genoux."
+      },
+      "beachRelax": {
+        "title": "Look Beach & Détente",
+        "context": "Plage • Bord de mer",
+        "tags": [
+          "Plage",
+          "28°C+",
+          "Relaxation"
+        ],
+        "badge": "Relax",
+        "items": [
+          "Maillot de bain",
+          "Short en lin",
+          "Chemise hawaïenne",
+          "Sandales",
+          "Lunettes polarisées"
+        ],
+        "weatherTip": "Crème solaire SPF 50 obligatoire. Hydrate-toi régulièrement.",
+        "culturalTip": "Le topless n'est pas accepté partout. Vérifie les coutumes locales."
+      },
+      "businessTravel": {
+        "title": "Look Business Travel",
+        "context": "Réunion • Conférence",
+        "tags": [
+          "Business",
+          "Intérieur",
+          "Pro"
+        ],
+        "badge": "Pro",
+        "items": [
+          "Costume ajusté",
+          "Chemise repassée",
+          "Chaussures Oxford",
+          "Cravate/foulard",
+          "Mallette"
+        ],
+        "weatherTip": "Les salles de conférence sont souvent climatisées : prévois une couche.",
+        "culturalTip": "Dans certains pays, la carte de visite se remet à deux mains."
+      }
+    }
   },
   "budget": {
     "heroBadge": "Propulsé par IA Xplania",

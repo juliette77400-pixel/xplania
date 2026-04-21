@@ -845,7 +845,104 @@
     "shareEmailSubject": "My trip to {{destination}}",
     "shareWhatsApp": "WhatsApp",
     "activitiesItemsCount_other": "{{count}} items",
-    "activitiesToastAdded_other": "{{count}} items added to your suitcase"
+    "activitiesToastAdded_other": "{{count}} items added to your suitcase",
+    "outfits": {
+      "casualUrban": {
+        "title": "Casual Urban Look",
+        "context": "City sightseeing • Shopping",
+        "tags": [
+          "City",
+          "18-22°C",
+          "Exploring"
+        ],
+        "badge": "Relaxed",
+        "items": [
+          "Organic cotton tee",
+          "Slim comfy jeans",
+          "White sneakers",
+          "Crossbody bag",
+          "Casual watch"
+        ],
+        "weatherTip": "Perfect in mild weather. Add a light jacket if it gets windy.",
+        "culturalTip": "All-purpose outfit accepted in most public places."
+      },
+      "elegantEvening": {
+        "title": "Elegant Evening Outfit",
+        "context": "Fine dining • Night out",
+        "tags": [
+          "Restaurant",
+          "20°C",
+          "City"
+        ],
+        "badge": "Refined",
+        "items": [
+          "Linen shirt",
+          "Chino pants",
+          "Leather loafers",
+          "Dress watch",
+          "Sleek clutch"
+        ],
+        "weatherTip": "Bring a light blazer — evenings can be cool.",
+        "culturalTip": "Some restaurants require smart attire. Check before you go."
+      },
+      "natureExploration": {
+        "title": "Nature Exploration Look",
+        "context": "Hiking • Discovery",
+        "tags": [
+          "Nature",
+          "Variable",
+          "Adventure"
+        ],
+        "badge": "Adventurer",
+        "items": [
+          "Technical tee",
+          "Convertible pants",
+          "Trail shoes",
+          "20L backpack",
+          "UV cap"
+        ],
+        "weatherTip": "Layer up to adapt to temperature swings.",
+        "culturalTip": "Some natural sites require covered shoulders and knees."
+      },
+      "beachRelax": {
+        "title": "Beach & Chill Look",
+        "context": "Beach • Seaside",
+        "tags": [
+          "Beach",
+          "28°C+",
+          "Relax"
+        ],
+        "badge": "Relax",
+        "items": [
+          "Swimsuit",
+          "Linen shorts",
+          "Hawaiian shirt",
+          "Sandals",
+          "Polarized sunglasses"
+        ],
+        "weatherTip": "SPF 50 sunscreen is a must. Stay hydrated.",
+        "culturalTip": "Topless isn't allowed everywhere. Check local customs."
+      },
+      "businessTravel": {
+        "title": "Business Travel Look",
+        "context": "Meeting • Conference",
+        "tags": [
+          "Business",
+          "Indoor",
+          "Pro"
+        ],
+        "badge": "Pro",
+        "items": [
+          "Tailored suit",
+          "Pressed shirt",
+          "Oxford shoes",
+          "Tie/scarf",
+          "Briefcase"
+        ],
+        "weatherTip": "Conference rooms are often air-conditioned — bring a layer.",
+        "culturalTip": "In some countries, business cards are exchanged with both hands."
+      }
+    }
   },
   "budget": {
     "heroBadge": "Powered by Xplania AI",
