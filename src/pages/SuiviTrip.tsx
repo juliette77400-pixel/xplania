@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import TripTracker from "@/components/tracking/TripTracker";
 import QuickJump from "@/components/shared/QuickJump";
+import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 
 const SuiviTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
   const [destination, setDestination] = useState("");
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!tripId) return;
@@ -43,7 +45,15 @@ const SuiviTrip = () => {
             <Activity className="w-5 h-5 text-primary" />
             <h1 className="font-bold">{t("suiviTrip.title")}{destination && ` — ${destination}`}</h1>
           </div>
-          <div className="w-16" />
+          {/* ✨ NEW (Tâche 1) — suppression depuis le header */}
+          <div className="w-16 flex justify-end">
+            <DeleteTripButton
+              tripId={tripId}
+              tripLabel={destination || undefined}
+              variant="icon"
+              onDeleted={() => navigate("/suivi", { replace: true })}
+            />
+          </div>
         </div>
       </header>
       <main className="container mx-auto px-4 py-6 max-w-7xl">

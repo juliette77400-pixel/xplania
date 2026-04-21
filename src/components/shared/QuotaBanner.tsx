@@ -1,4 +1,4 @@
-import { Sparkles, Lock, Infinity as InfinityIcon } from "lucide-react";
+import { Sparkles, Lock } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { type QuotaTool, getRemaining, getLimit, isDevMode } from "@/lib/usage-quota";
 
@@ -10,18 +10,10 @@ interface Props {
 const QuotaBanner = ({ tool, toolLabel }: Props) => {
   const { t } = useTranslation();
 
-  if (isDevMode()) {
-    return (
-      <div className="mx-auto max-w-5xl px-4 mb-4">
-        <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5">
-          <InfinityIcon className="w-4 h-4 text-emerald-400 shrink-0" />
-          <p className="text-xs text-foreground">
-            <span className="font-semibold">{t("quotaBanner.devMode")}</span> — {t("quotaBanner.devUnlimited", { tool: toolLabel })}
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // ✨ MODIFIED (Tâche — retrait mentions UI dev mode) :
+  // En mode dev/test on n'affiche AUCUN bandeau. La logique interne de bypass
+  // reste active (quotas illimités), mais elle est invisible côté utilisateur.
+  if (isDevMode()) return null;
 
   const remaining = getRemaining(tool);
   const limit = getLimit(tool);

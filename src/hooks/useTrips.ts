@@ -38,5 +38,10 @@ export const useTrips = () => {
 
   useEffect(() => { fetch(); }, [user]);
 
-  return { trips, loading, refetch: fetch };
+  // ✨ NEW (Tâche 1) — retrait optimiste local après suppression côté DB
+  const removeTrip = (tripId: string) => {
+    setTrips((prev) => prev.filter((t) => t.id !== tripId));
+  };
+
+  return { trips, loading, refetch: fetch, removeTrip };
 };

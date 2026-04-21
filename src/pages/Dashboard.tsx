@@ -11,10 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
 import { supabase } from "@/integrations/supabase/client";
+import DeleteTripButton from "@/components/shared/DeleteTripButton";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { trips, loading } = useTrips();
+  const { trips, loading, removeTrip } = useTrips();
   const { t, i18n } = useTranslation();
   const [profile, setProfile] = useState<{ display_name: string | null } | null>(null);
 
@@ -88,28 +89,39 @@ const Dashboard = () => {
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {trips.slice(0, 6).map((tr) => (
-                <Link key={tr.id} to={`/carnet/${tr.id}`}>
-                  <motion.div
-                    whileHover={{ y: -3 }}
-                    className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors h-full"
-                  >
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="font-semibold text-sm line-clamp-2">{tr.title || tr.destination || t("myDashboard.untitledTrip")}</h3>
-                      <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
-                    </div>
-                    {tr.destination && (
-                      <p className="text-xs text-muted-foreground flex items-center gap-1">
-                        <MapPin className="w-3 h-3" /> {tr.destination}
-                      </p>
-                    )}
-                    {tr.departure_date && (
-                      <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                        <Calendar className="w-3 h-3" /> {new Date(tr.departure_date).toLocaleDateString(dateLocale)}
-                        {tr.duration && <span> · {tr.duration}{isFr ? "j" : "d"}</span>}
-                      </p>
-                    )}
-                  </motion.div>
-                </Link>
+                <div key={tr.id} className="relative group">
+                  <Link to={`/carnet/${tr.id}`}>
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors h-full"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className="font-semibold text-sm line-clamp-2 pr-6">{tr.title || tr.destination || t("myDashboard.untitledTrip")}</h3>
+                        <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
+                      </div>
+                      {tr.destination && (
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                          <MapPin className="w-3 h-3" /> {tr.destination}
+                        </p>
+                      )}
+                      {tr.departure_date && (
+                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                          <Calendar className="w-3 h-3" /> {new Date(tr.departure_date).toLocaleDateString(dateLocale)}
+                          {tr.duration && <span> · {tr.duration}{isFr ? "j" : "d"}</span>}
+                        </p>
+                      )}
+                    </motion.div>
+                  </Link>
+                  {/* ✨ NEW (Tâche 1) — bouton suppression sur la carte */}
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                    <DeleteTripButton
+                      tripId={tr.id}
+                      tripLabel={tr.title || tr.destination || undefined}
+                      variant="icon"
+                      onDeleted={() => removeTrip(tr.id)}
+                    />
+                  </div>
+                </div>
               ))}
             </div>
           )}
