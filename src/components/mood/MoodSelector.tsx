@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Wand2, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const MoodSelector = ({ loading, onSubmit }: Props) => {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState<MoodKey | null>(null);
   const [freeInput, setFreeInput] = useState("");
   const [energy, setEnergy] = useState<number[]>([50]);
@@ -26,16 +28,24 @@ const MoodSelector = ({ loading, onSubmit }: Props) => {
     });
   };
 
+  const energyLabel = energy[0] < 33
+    ? t("moodComp.selector.energyCalm")
+    : energy[0] < 66
+      ? t("moodComp.selector.energyBalanced")
+      : t("moodComp.selector.energyBoost");
+
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl md:text-3xl font-bold">Comment tu te sens&nbsp;?</h2>
-        <p className="text-sm text-muted-foreground">Choisis une vibe — on trouve le lieu parfait.</p>
+        <h2 className="text-2xl md:text-3xl font-bold">{t("moodComp.selector.title")}</h2>
+        <p className="text-sm text-muted-foreground">{t("moodComp.selector.subtitle")}</p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
         {MOODS.map((m, i) => {
           const active = selected === m.key;
+          const label = t(`moodComp.moods.${m.key}.label`, { defaultValue: m.label });
+          const description = t(`moodComp.moods.${m.key}.description`, { defaultValue: m.description });
           return (
             <motion.button
               key={m.key}
@@ -54,8 +64,8 @@ const MoodSelector = ({ loading, onSubmit }: Props) => {
               )}
             >
               <div className="text-3xl mb-1">{m.emoji}</div>
-              <div className={cn("font-bold text-sm", active && m.glow)}>{m.label}</div>
-              <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{m.description}</div>
+              <div className={cn("font-bold text-sm", active && m.glow)}>{label}</div>
+              <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{description}</div>
             </motion.button>
           );
         })}
@@ -64,19 +74,19 @@ const MoodSelector = ({ loading, onSubmit }: Props) => {
       <div className="space-y-4 rounded-2xl border border-border bg-card/40 backdrop-blur-sm p-4">
         <div>
           <label className="text-xs uppercase tracking-wider text-muted-foreground mb-2 block">
-            Énergie : {energy[0] < 33 ? "Calme 🌙" : energy[0] < 66 ? "Équilibrée ✨" : "Boost 🔥"}
+            {t("moodComp.selector.energyLabel")} : {energyLabel}
           </label>
           <Slider value={energy} onValueChange={setEnergy} min={0} max={100} step={1} />
         </div>
 
         <div>
           <label className="text-xs uppercase tracking-wider text-muted-foreground mb-2 block">
-            Ou décris en une phrase (optionnel)
+            {t("moodComp.selector.freeLabel")}
           </label>
           <Textarea
             value={freeInput}
             onChange={(e) => setFreeInput(e.target.value)}
-            placeholder="ex: un endroit chill avec vue pour le sunset…"
+            placeholder={t("moodComp.selector.freePlaceholder")}
             className="min-h-[60px] resize-none"
           />
         </div>
@@ -90,7 +100,7 @@ const MoodSelector = ({ loading, onSubmit }: Props) => {
           size="lg"
         >
           {loading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Sparkles className="w-5 h-5 mr-2" />}
-          Trouve-moi des lieux
+          {t("moodComp.selector.submit")}
         </Button>
         <Button
           variant="outline"
@@ -99,7 +109,7 @@ const MoodSelector = ({ loading, onSubmit }: Props) => {
           className="h-12"
           size="lg"
         >
-          <Wand2 className="w-5 h-5 mr-2" /> Surprise me
+          <Wand2 className="w-5 h-5 mr-2" /> {t("moodComp.selector.surprise")}
         </Button>
       </div>
     </div>

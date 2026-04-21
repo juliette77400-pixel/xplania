@@ -1,4 +1,5 @@
 import { Heart, Trash2, FileDown, Mail, Share2, Copy } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import { toast } from "sonner";
 interface Props { onSelect: (p: Place) => void; }
 
 const ListsView = ({ onSelect }: Props) => {
+  const { t } = useTranslation();
   const { lists, items, toggleItem, createList } = usePlaceLists();
   const [places, setPlaces] = useState<Place[]>([]);
   const [creatingName, setCreatingName] = useState("");
@@ -22,11 +24,11 @@ const ListsView = ({ onSelect }: Props) => {
   }, [items]);
 
   const handleShare = async (name: string, emoji: string | null, listPlaces: Place[]) => {
-    if (listPlaces.length === 0) return toast.error("Liste vide");
+    if (listPlaces.length === 0) return toast.error(t("discoverComp.lists.emptyError"));
     const ok = await shareListNative({ name, emoji, places: listPlaces });
     if (!ok) {
       await copyListToClipboard({ name, emoji, places: listPlaces });
-      toast.success("Liste copiée dans le presse-papier");
+      toast.success(t("discoverComp.lists.copied"));
     }
   };
 
@@ -36,11 +38,11 @@ const ListsView = ({ onSelect }: Props) => {
         <input
           value={creatingName}
           onChange={(e) => setCreatingName(e.target.value)}
-          placeholder="Nouvelle liste (ex: Paris food)"
+          placeholder={t("discoverComp.lists.newPlaceholder")}
           className="flex-1 rounded-md border border-border bg-card px-3 py-2 text-sm"
         />
         <Button onClick={async () => { if (creatingName.trim()) { await createList(creatingName.trim()); setCreatingName(""); } }} disabled={!creatingName.trim()}>
-          Créer une liste
+          {t("discoverComp.lists.create")}
         </Button>
       </div>
       {lists.map((list) => {
@@ -56,23 +58,23 @@ const ListsView = ({ onSelect }: Props) => {
               </h2>
               {listPlaces.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
-                  <Button size="sm" variant="outline" onClick={() => { exportListToPDF(exportPayload); toast.success("PDF téléchargé"); }}>
+                  <Button size="sm" variant="outline" onClick={() => { exportListToPDF(exportPayload); toast.success(t("discoverComp.lists.pdfDownloaded")); }}>
                     <FileDown className="mr-1.5 h-3.5 w-3.5" />PDF
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => shareListByEmail(exportPayload)}>
-                    <Mail className="mr-1.5 h-3.5 w-3.5" />Email
+                    <Mail className="mr-1.5 h-3.5 w-3.5" />{t("discoverComp.lists.email")}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => handleShare(list.name, list.emoji, listPlaces)}>
-                    <Share2 className="mr-1.5 h-3.5 w-3.5" />Partager
+                    <Share2 className="mr-1.5 h-3.5 w-3.5" />{t("discoverComp.lists.share")}
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={async () => { await copyListToClipboard(exportPayload); toast.success("Copié"); }}>
+                  <Button size="sm" variant="ghost" onClick={async () => { await copyListToClipboard(exportPayload); toast.success(t("discoverComp.lists.copiedShort")); }}>
                     <Copy className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               )}
             </div>
             {listPlaces.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Liste vide. Sauvegarde des lieux depuis la découverte.</p>
+              <p className="text-sm text-muted-foreground">{t("discoverComp.lists.empty")}</p>
             ) : (
               <div className="flex gap-3 overflow-x-auto pb-2">
                 {listPlaces.map((p) => (
@@ -94,7 +96,7 @@ const ListsView = ({ onSelect }: Props) => {
       {lists.length === 0 && (
         <div className="rounded-2xl border border-border bg-card/40 p-8 text-center">
           <Heart className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">Crée ta première liste pour organiser tes découvertes.</p>
+          <p className="text-sm text-muted-foreground">{t("discoverComp.lists.noListsTitle")}</p>
         </div>
       )}
     </div>
