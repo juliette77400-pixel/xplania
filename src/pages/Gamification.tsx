@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   Trophy, Search, Landmark, Heart, MapPin, Utensils, Mountain,
   Compass, Moon, Camera, Star, Award, Lock, CheckCircle,
-  ArrowRight, Clock, Sparkles, BarChart3, Zap,
+  ArrowRight, Clock, Sparkles, BarChart3, Zap, RefreshCw,
 } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
@@ -14,9 +14,15 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { adaptToTripDuration, celebrateUnlock } from "@/lib/badges-fx";
-import { computeXp } from "@/lib/xp-levels";
+import { computeXp, getLevelProgress } from "@/lib/xp-levels";
 import XpHeader from "@/components/gamification/XpHeader";
+import Leaderboard from "@/components/gamification/Leaderboard";
+import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
+import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
 import { differenceInDays, parseISO } from "date-fns";
+
+// Persisted last-seen level → triggers fullscreen overlay on level-up
+const LEVEL_KEY = "xplania_last_level_v1";
 
 // Session-scoped guard so confetti never re-fires across remounts/refreshes
 const SEEN_BADGES_KEY = "xplania_seen_badges_v1";
@@ -217,12 +223,37 @@ const GamificationPage = () => {
     if (changed) saveSeen(seenBadges.current);
   }, [badges]);
 
+  // ── Weekly missions: snapshot baseline at week start, progress = current - baseline ──
+  const weeklyBaseline = useMemo(() => {
+    if (!user) return null;
+    const snap = ensureWeeklySnapshot({
+      moodHiddenGems: counts.moodHiddenGems,
+      exploreVisited: counts.exploreVisited,
+      journalMoods: counts.journalMoods,
+    });
+    return snap.baseline;
+    // Re-evaluate when user changes; baseline is sticky for the week.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setTick((x) => x + 1), 60_000);
+    return () => clearInterval(t);
+  }, []);
+
   const missions = useMemo(
-    () => MISSION_DEFS.map((m) => ({ ...m, progress: Math.min(m.total, counts[m.metric]) })),
-    [counts]
+    () =>
+      MISSION_DEFS.map((m) => {
+        const base = weeklyBaseline?.[m.metric] ?? 0;
+        const delta = Math.max(0, counts[m.metric] - base);
+        return { ...m, progress: Math.min(m.total, delta) };
+      }),
+    [counts, weeklyBaseline],
   );
 
-  // (XP computation moved below — single source of truth)
+  const timeLeft = useMemo(() => formatTimeLeft(), [tick]);
+
   // XP — derived from real activity counts (single source of truth)
   const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
   const totalXp = useMemo(
@@ -240,6 +271,26 @@ const GamificationPage = () => {
     [counts, totalBadges],
   );
 
+  // ── Level-up detection: compare current level vs last seen in localStorage ──
+  const [levelUp, setLevelUp] = useState<ReturnType<typeof getLevelProgress>["level"] | null>(null);
+  const levelHydrated = useRef(false);
+  useEffect(() => {
+    const currentLevel = getLevelProgress(totalXp).level;
+    const stored = Number(localStorage.getItem(LEVEL_KEY) ?? "-1");
+    // First load: silently sync, no overlay
+    if (!levelHydrated.current) {
+      levelHydrated.current = true;
+      if (stored !== currentLevel.index) {
+        localStorage.setItem(LEVEL_KEY, String(currentLevel.index));
+      }
+      return;
+    }
+    if (currentLevel.index > stored) {
+      setLevelUp(currentLevel);
+      localStorage.setItem(LEVEL_KEY, String(currentLevel.index));
+    }
+  }, [totalXp]);
+
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
@@ -248,6 +299,9 @@ const GamificationPage = () => {
 
         {/* ══════ XP LEVEL HEADER ══════ */}
         <XpHeader xp={totalXp} />
+
+        {/* ══════ LEADERBOARD GLOBAL ══════ */}
+        <Leaderboard />
 
         {/* ══════ HERO STATS ══════ */}
         <section className="text-center">
@@ -382,10 +436,14 @@ const GamificationPage = () => {
           </div>
         </section>
 
-        {/* ══════ DAILY MISSIONS (live) ══════ */}
+        {/* ══════ WEEKLY MISSIONS (live, reset every Monday) ══════ */}
         <section className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Missions du Jour</h2>
-          <p className="text-muted-foreground mb-8">Accomplis tes missions quotidiennes et gagne de l'XP</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Missions de la semaine</h2>
+          <p className="text-muted-foreground mb-3">Accomplis tes missions hebdo et gagne de l'XP</p>
+          <div className="inline-flex items-center gap-2 mb-8 text-xs font-semibold text-primary bg-primary/10 border border-primary/30 rounded-full px-3 py-1.5">
+            <RefreshCw className="w-3 h-3" />
+            Reset dans <span className="tabular-nums">{timeLeft}</span>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {missions.map((m, i) => {
@@ -550,6 +608,7 @@ const GamificationPage = () => {
         </section>
       </main>
       <QuickJump />
+      <LevelUpOverlay level={levelUp} onClose={() => setLevelUp(null)} />
     </div>
   );
 };
