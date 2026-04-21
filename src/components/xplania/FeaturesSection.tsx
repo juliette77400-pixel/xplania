@@ -103,11 +103,11 @@ const FeaturesSection = () => {
           viewport={{ once: true }}
           className="text-center mb-4"
         >
-          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">Préparer son voyage</p>
+          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">8 outils, 1 seule app</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
             Tout ce qu'il faut pour partir l'esprit tranquille
           </h2>
-          <p className="mt-3 text-muted-foreground">Trois outils simples, propulsés par l'IA, pour préparer votre voyage de A à Z</p>
+          <p className="mt-3 text-muted-foreground">Huit outils propulsés par l'IA pour préparer, vivre et raconter ton voyage de A à Z</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">

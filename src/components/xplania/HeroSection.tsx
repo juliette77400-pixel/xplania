@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Clock, Luggage, Wallet, FileText, Star } from "lucide-react";
+import { Sparkles, ArrowRight, Clock, Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, Star } from "lucide-react";
 
 const particles = Array.from({ length: 12 }, (_, i) => ({
   id: i,
@@ -83,21 +83,26 @@ const HeroSection = ({ onCreateTrip }: Props) => {
       >
         <div className="flex items-start gap-3">
           <Clock className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-          <div>
+          <div className="w-full">
             <p className="text-sm font-semibold text-foreground">
-              Bêta gratuite — trois outils déjà disponibles pour préparer votre voyage :
+              Bêta gratuite — <span className="text-primary">8 outils</span> déjà disponibles pour préparer et vivre ton voyage :
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
               {[
-                { icon: Luggage, label: "Valise intelligente" },
-                { icon: Wallet, label: "Guide budget" },
-                { icon: FileText, label: "Guide visa & démarches" },
+                { icon: Luggage, label: "Valise" },
+                { icon: Wallet, label: "Budget" },
+                { icon: FileText, label: "Visa" },
+                { icon: BookOpen, label: "Carnet de bord" },
+                { icon: Activity, label: "Suivi live" },
+                { icon: Compass, label: "Travel Map" },
+                { icon: Heart, label: "Mood" },
+                { icon: MapPinned, label: "Discover" },
               ].map((item) => (
                 <span
                   key={item.label}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted text-sm text-foreground font-medium"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted text-xs text-foreground font-medium"
                 >
-                  <item.icon className="w-4 h-4 text-primary" />
+                  <item.icon className="w-3.5 h-3.5 text-primary" />
                   {item.label}
                 </span>
               ))}
