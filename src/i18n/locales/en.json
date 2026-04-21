@@ -524,5 +524,73 @@
         "f3": "Save about €8/month vs buying separately"
       }
     }
+  },
+  "quotaReached": {
+    "title": "Free limit reached",
+    "desc": "You've used your 3 free generations 🎉 Upgrade to a paid plan to keep exploring without limits.",
+    "later": "Later",
+    "seeOffers": "See plans"
+  },
+  "travelForm": {
+    "modeTitle": "How do you want to plan?",
+    "modeSubtitle": "Pick the questionnaire depth that suits you.",
+    "changeMode": "Change mode",
+    "back": "Back",
+    "resume": "Resume",
+    "viewTrip": "View my trip",
+    "continue": "Continue",
+    "lastStep": "Last step",
+    "generate": "Generate my AI plan",
+    "generating": "Analyzing...",
+    "yourPlan": "Your travel plan",
+    "retry": "Retry",
+    "errorGeneric": "Unknown error. Please try again.",
+    "errorTitle": "Generation error",
+    "errorServer": "Server error ({{status}})",
+    "errorNoRecs": "No recommendations received",
+    "successTitle": "✨ Travel plan generated!",
+    "successDesc": "Your recommendations for {{destination}} are ready.",
+    "steps": {
+      "basic": {
+        "label": "Basic info",
+        "description": "Where and when do you want to go?"
+      },
+      "profile": {
+        "label": "Traveler profile",
+        "description": "Tell us about yourself to personalize your trip"
+      },
+      "objectives": {
+        "label": "Trip objective",
+        "description": "What do you want to experience on this trip?"
+      },
+      "style": {
+        "label": "Travel style",
+        "description": "How do you like to travel?"
+      },
+      "budget": {
+        "label": "Budget",
+        "description": "Set your budget envelope"
+      },
+      "accommodation": {
+        "label": "Accommodation",
+        "description": "What kind of stay do you prefer?"
+      },
+      "transport": {
+        "label": "Transport",
+        "description": "How do you plan to get around?"
+      },
+      "constraints": {
+        "label": "Constraints",
+        "description": "Any specific needs to consider?"
+      },
+      "environment": {
+        "label": "Environment",
+        "description": "Your environment and luggage preferences"
+      },
+      "inspirations": {
+        "label": "Inspirations",
+        "description": "A final touch of inspiration!"
+      }
+    }
   }
 }

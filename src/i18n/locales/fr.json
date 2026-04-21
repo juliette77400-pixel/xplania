@@ -524,5 +524,73 @@
         "f3": "Économie d'environ 8€/mois par rapport à l'achat séparé"
       }
     }
+  },
+  "quotaReached": {
+    "title": "Limite gratuite atteinte",
+    "desc": "Vous avez utilisé vos 3 générations gratuites 🎉 Passez à une formule payante pour continuer à explorer sans limites.",
+    "later": "Plus tard",
+    "seeOffers": "Voir les offres"
+  },
+  "travelForm": {
+    "modeTitle": "Comment voulez-vous planifier ?",
+    "modeSubtitle": "Choisissez la profondeur du questionnaire qui vous convient.",
+    "changeMode": "Changer de mode",
+    "back": "Retour",
+    "resume": "Reprendre",
+    "viewTrip": "Voir mon voyage",
+    "continue": "Continuer",
+    "lastStep": "Dernière étape",
+    "generate": "Générer mon plan IA",
+    "generating": "Analyse en cours...",
+    "yourPlan": "Votre plan de voyage",
+    "retry": "Réessayer",
+    "errorGeneric": "Erreur inconnue. Veuillez réessayer.",
+    "errorTitle": "Erreur de génération",
+    "errorServer": "Erreur serveur ({{status}})",
+    "errorNoRecs": "Aucune recommandation reçue",
+    "successTitle": "✨ Plan de voyage généré !",
+    "successDesc": "Vos recommandations pour {{destination}} sont prêtes.",
+    "steps": {
+      "basic": {
+        "label": "Informations de base",
+        "description": "Où et quand souhaitez-vous partir ?"
+      },
+      "profile": {
+        "label": "Profil du voyageur",
+        "description": "Parlez-nous de vous pour personnaliser votre voyage"
+      },
+      "objectives": {
+        "label": "Objectif du voyage",
+        "description": "Que souhaitez-vous vivre pendant ce voyage ?"
+      },
+      "style": {
+        "label": "Style de voyage",
+        "description": "Comment aimez-vous voyager ?"
+      },
+      "budget": {
+        "label": "Budget",
+        "description": "Définissez votre enveloppe budgétaire"
+      },
+      "accommodation": {
+        "label": "Hébergement",
+        "description": "Quel type de logement préférez-vous ?"
+      },
+      "transport": {
+        "label": "Transport",
+        "description": "Comment comptez-vous vous déplacer ?"
+      },
+      "constraints": {
+        "label": "Contraintes",
+        "description": "Des besoins particuliers à prendre en compte ?"
+      },
+      "environment": {
+        "label": "Environnement",
+        "description": "Vos préférences d'environnement et bagages"
+      },
+      "inspirations": {
+        "label": "Inspirations",
+        "description": "Une dernière touche d'inspiration !"
+      }
+    }
   }
 }
