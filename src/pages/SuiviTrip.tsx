@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import TripTracker from "@/components/tracking/TripTracker";
 import QuickJump from "@/components/shared/QuickJump";
+import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 
 const SuiviTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
   const [destination, setDestination] = useState("");
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!tripId) return;
