@@ -12,6 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ProfileStats from "@/components/profil/ProfileStats";
+import ProfilePreferences from "@/components/profil/ProfilePreferences";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
@@ -55,7 +57,7 @@ const Profil = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
-      <div className="container mx-auto px-4 py-6 sm:py-10 max-w-2xl space-y-6">
+      <div className="container mx-auto px-4 py-6 sm:py-10 max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">{t("profil.title")}</h1>
           <p className="text-sm text-muted-foreground">{t("profil.subtitle")}</p>
@@ -100,6 +102,9 @@ const Profil = () => {
             </Button>
           </Card>
         )}
+
+        {!loading && <ProfileStats />}
+        {!loading && <ProfilePreferences />}
 
         <Card className="p-6">
           <h2 className="font-semibold mb-3">{t("profil.account")}</h2>

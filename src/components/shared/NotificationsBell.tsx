@@ -1,14 +1,42 @@
 import { Bell, Check } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useInAppNotifications } from "@/hooks/useInAppNotifications";
+import { useNotifications } from "@/hooks/useNotifications";
+import { loadPrefs } from "@/lib/user-prefs";
+import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { fr, enUS } from "date-fns/locale";
 
 const NotificationsBell = () => {
   const { items, unreadCount, markAllRead } = useInAppNotifications();
   const { t, i18n } = useTranslation();
+  const { notify } = useNotifications();
   const locale = i18n.language.startsWith("fr") ? fr : enUS;
+  const seenIdsRef = useRef<Set<string>>(new Set());
+  const initializedRef = useRef(false);
+
+  // Surface new notifications via toast + browser push (when user opted in).
+  useEffect(() => {
+    if (!items.length) return;
+    const prefs = loadPrefs();
+    if (!initializedRef.current) {
+      items.forEach((n) => seenIdsRef.current.add(n.id));
+      initializedRef.current = true;
+      return;
+    }
+    items.forEach((n) => {
+      if (seenIdsRef.current.has(n.id)) return;
+      seenIdsRef.current.add(n.id);
+      if (!n.read_at) {
+        if (prefs.notifyInApp) {
+          toast(n.title, { description: n.body || undefined });
+        }
+        if (prefs.notifyBrowser) notify(n.title, n.body || undefined);
+      }
+    });
+  }, [items, notify]);
 
   return (
     <Popover>
