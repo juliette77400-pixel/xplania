@@ -17,6 +17,8 @@ import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 // Added: global Cmd+K search & post-signup tour
 import GlobalSearch from "@/components/shared/GlobalSearch";
 import OnboardingTour from "@/components/shared/OnboardingTour";
+// Added: global weekly missions banner
+import MissionsBanner from "@/components/shared/MissionsBanner";
 
 interface NavItem {
   to: string;

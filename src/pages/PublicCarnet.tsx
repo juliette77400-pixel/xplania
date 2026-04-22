@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Loader2, BookOpen, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDayLabel } from "@/lib/journal-utils";
-import { setShareMeta } from "@/lib/seo";
+import { setShareMeta, clearShareMeta } from "@/lib/seo";
 
 const PublicCarnet = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,12 +18,6 @@ const PublicCarnet = () => {
       const { data: j } = await supabase.from("journals").select("*").eq("public_slug", slug).eq("is_public", true).maybeSingle();
       if (!j) { setLoading(false); return; }
       setJournal(j);
-      setShareMeta({
-        title: j.title || "Carnet de voyage",
-        description: "Découvre ce carnet de voyage immersif sur Xplania.",
-        ogKind: "carnet",
-        slug: slug!,
-      });
 
       const { data: d } = await supabase.from("journal_days").select("*").eq("journal_id", j.id).order("date");
       const { data: blocks } = await supabase.from("journal_blocks").select("*").eq("journal_id", j.id).order("position");
@@ -33,8 +27,29 @@ const PublicCarnet = () => {
       const { data: s } = await supabase.from("journal_stories").select("content").eq("journal_id", j.id).order("created_at", { ascending: false }).limit(1).maybeSingle();
       if (s) setStory(s.content);
 
+      const firstNote = (blocks || []).find((b: any) => b.type === "note")?.content?.text || "";
+      const rawDesc = (s?.content || firstNote || "Découvre ce carnet de voyage immersif sur Xplania.").toString();
+      const description = rawDesc.replace(/\s+/g, " ").trim().slice(0, 155);
+
+      let author: string | undefined;
+      if (j.user_id) {
+        const { data: prof } = await supabase.from("profiles").select("display_name").eq("user_id", j.user_id).maybeSingle();
+        author = prof?.display_name || undefined;
+      }
+
+      setShareMeta({
+        title: j.title || "Carnet de voyage",
+        description,
+        ogKind: "carnet",
+        slug: slug!,
+        imageUrl: j.cover_url || undefined,
+        author,
+        publishedAt: j.created_at || undefined,
+      });
+
       setLoading(false);
     })();
+    return () => { clearShareMeta(); };
   }, [slug]);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
