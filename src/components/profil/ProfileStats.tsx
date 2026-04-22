@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getStreakDisplay } from "@/lib/streak";
-import { computeXp, getLevel } from "@/lib/xp-levels";
+import { computeXp, getLevelProgress } from "@/lib/xp-levels";
 
 interface Stats {
   trips: number;
@@ -49,14 +49,17 @@ const ProfileStats = () => {
 
       const xp = computeXp({
         exploreVisited: visited,
-        journalPhotos: photos,
         journalNotes: notes,
+        journalPhotos: photos,
+        journalLocations: 0,
         journalMoods: moods,
+        moodFavorites: 0,
+        moodHiddenGems: 0,
+        badgesTotal: totalBadges,
         placeReviews: reviews.count || 0,
         moodReactions: moodReactions.count || 0,
-        badges: totalBadges,
-      } as any);
-      const lvl = getLevel(xp).level;
+      });
+      const lvl = getLevelProgress(xp).level.index;
       const streak = getStreakDisplay().streak;
 
       setStats({
