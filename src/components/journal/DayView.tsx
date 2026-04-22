@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import BlockCard from "./BlockCard";
 import type { JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
+import { pingStreakAction } from "@/lib/streak";
 import { Input } from "@/components/ui/input";
 import { Cloud } from "lucide-react";
 
@@ -50,6 +51,8 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
       content: defaults[type] || {},
       position: day.blocks.length,
     });
+    // ✨ NEW (gamif) — toute création de bloc carnet alimente le streak
+    pingStreakAction(`journal:${type}`);
     onChanged();
   };
 

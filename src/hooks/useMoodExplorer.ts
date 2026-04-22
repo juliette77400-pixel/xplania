@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { pingStreakAction } from "@/lib/streak";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -162,6 +163,7 @@ export function useMoodExplorer() {
         return;
       }
       setFavorites((prev) => [data as any, ...prev]);
+      pingStreakAction("mood:favorite"); // ✨ NEW (gamif)
       toast.success("Sauvegardé ❤️");
     }
   }, [user, favorites]);

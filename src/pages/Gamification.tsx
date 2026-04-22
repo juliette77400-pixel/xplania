@@ -68,6 +68,9 @@ interface BadgeCounts {
   exploreBadgesOwned: number;
   journalBadgesOwned: number;
   moodBadgesOwned: number;
+  /** ✨ NEW (gamif) — contributions communautaires */
+  placeReviews: number;
+  moodReactions: number;
 }
 
 const RARITY_COLORS: Record<BadgeRarity, string> = {
@@ -136,6 +139,7 @@ const GamificationPage = () => {
     journalNotes: 0, journalPhotos: 0, journalLocations: 0, journalMoods: 0, journalHighlights: 0,
     moodFavorites: 0, moodHiddenGems: 0,
     exploreBadgesOwned: 0, journalBadgesOwned: 0, moodBadgesOwned: 0,
+    placeReviews: 0, moodReactions: 0, // ✨ NEW (gamif)
   });
 
   // Fetch live progress (scoped to active trip when available)
@@ -152,13 +156,16 @@ const GamificationPage = () => {
         .eq("user_id", user.id);
       if (tripId) blocksQ = blocksQ.eq("journals.trip_id", tripId);
 
-      const [nodesRes, blocksRes, favRes, eb, jb, mb] = await Promise.all([
+      const [nodesRes, blocksRes, favRes, eb, jb, mb, prRes, mrRes] = await Promise.all([
         nodesQ,
         blocksQ,
         supabase.from("mood_favorites").select("place_id,mood_places!inner(hidden_gem)").eq("user_id", user.id),
         supabase.from("explore_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
         supabase.from("journal_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
         supabase.from("mood_badges").select("code", { count: "exact", head: true }).eq("user_id", user.id),
+        // ✨ NEW (gamif) — XP contribution : avis + réactions mood
+        supabase.from("place_reviews").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("mood_reactions").select("id", { count: "exact", head: true }).eq("user_id", user.id),
       ]);
       if (cancelled) return;
 
@@ -180,6 +187,8 @@ const GamificationPage = () => {
         exploreBadgesOwned: eb.count || 0,
         journalBadgesOwned: jb.count || 0,
         moodBadgesOwned: mb.count || 0,
+        placeReviews: prRes.count || 0,     // ✨ NEW
+        moodReactions: mrRes.count || 0,    // ✨ NEW
       });
     };
     run();
@@ -269,6 +278,8 @@ const GamificationPage = () => {
         moodFavorites: counts.moodFavorites,
         moodHiddenGems: counts.moodHiddenGems,
         badgesTotal: totalBadges,
+        placeReviews: counts.placeReviews,     // ✨ NEW (gamif)
+        moodReactions: counts.moodReactions,   // ✨ NEW (gamif)
       }),
     [counts, totalBadges],
   );

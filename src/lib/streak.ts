@@ -35,7 +35,19 @@ const save = (s: StreakState) => {
   try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
 };
 
-/** Appelé quand l'utilisateur ouvre l'app ou réalise une action significative. */
+/**
+ * ✨ Action significative — à appeler depuis les vrais points d'engagement
+ * (note carnet, photo, mood partagé, favori, check-in, lieu visité, avis…).
+ * Le simple fait d'ouvrir le dashboard NE déclenche PLUS le streak.
+ */
+export const pingStreakAction = (source?: string): StreakState => {
+  if (source && typeof window !== "undefined") {
+    try { console.debug(`[streak] action: ${source}`); } catch {}
+  }
+  return pingStreak();
+};
+
+/** @deprecated Utiliser pingStreakAction depuis une vraie action utilisateur. */
 export const pingStreak = (): StreakState => {
   const today = todayKey();
   const cur = loadStreak();

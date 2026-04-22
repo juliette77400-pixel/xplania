@@ -2,14 +2,16 @@
 import { useEffect, useState } from "react";
 import { Flame, Trophy } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { pingStreak, getStreakDisplay, type StreakState } from "@/lib/streak";
+import { getStreakDisplay, type StreakState } from "@/lib/streak";
 
 const StreakCard = () => {
   const [s, setS] = useState<StreakState>(() => getStreakDisplay());
 
   useEffect(() => {
-    // Ping au montage : visiter le dashboard compte comme activité du jour.
-    setS(pingStreak());
+    // ✨ MODIFIED — la simple visite du dashboard ne fait plus avancer le streak.
+    // Le streak est désormais piloté par de vraies actions (note, photo, mood, favori,
+    // check-in, lieu visité, avis). On se contente de rafraîchir l'affichage.
+    setS(getStreakDisplay());
   }, []);
 
   const motivational =

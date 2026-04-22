@@ -58,17 +58,23 @@ export interface XpInputs {
   moodFavorites: number;
   moodHiddenGems: number;
   badgesTotal: number;
+  /** ✨ NEW — contributions communautaires (avis sur lieux Discover) */
+  placeReviews?: number;
+  /** ✨ NEW — réactions mood publiées (commentaires + emoji sur un lieu) */
+  moodReactions?: number;
 }
 
 export function computeXp(i: XpInputs): number {
   return (
     i.exploreVisited * 20 +
     i.journalNotes * 10 +
-    i.journalPhotos * 8 +
+    i.journalPhotos * 15 +     // ✨ MODIFIED — boost contribution photo (8 → 15)
     i.journalLocations * 12 +
     i.journalMoods * 15 +
     i.moodFavorites * 10 +
     i.moodHiddenGems * 25 +
-    i.badgesTotal * 50
+    i.badgesTotal * 50 +
+    (i.placeReviews ?? 0) * 25 +   // ✨ NEW — avis Discover
+    (i.moodReactions ?? 0) * 12    // ✨ NEW — réactions mood
   );
 }

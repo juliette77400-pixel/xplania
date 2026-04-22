@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { EXPLORE_BADGES } from "@/lib/explore-badges";
+import { pingStreakAction } from "@/lib/streak";
 
 export interface ExploreNode {
   id: string;
@@ -120,6 +121,7 @@ export const useExplore = (tripId: string | undefined) => {
       .update({ status: "visited", visited_at: new Date().toISOString() })
       .eq("id", nodeId);
     if (error) { toast.error("Échec"); return; }
+    pingStreakAction("explore:visit"); // ✨ NEW (gamif)
     toast.success("✨ Lieu visité ! Points gagnés");
   }, []);
 
@@ -127,6 +129,7 @@ export const useExplore = (tripId: string | undefined) => {
     const patch: any = { status };
     if (status === "visited") patch.visited_at = new Date().toISOString();
     await supabase.from("explore_nodes").update(patch).eq("id", nodeId);
+    if (status === "visited") pingStreakAction("explore:status-visited"); // ✨ NEW
   }, []);
 
   const addNode = useCallback(async (input: Partial<ExploreNode>) => {
