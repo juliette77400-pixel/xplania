@@ -65,6 +65,8 @@ const WeeklyMissionsCard = () => {
 
   const doneCount = items.filter((i) => i.done).length;
 
+  if (!user) return null;
+
   return (
     <Card className="p-4 space-y-3">
       <div className="flex items-center justify-between gap-2">
