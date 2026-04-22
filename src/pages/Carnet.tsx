@@ -90,8 +90,13 @@ const Carnet = () => {
             <BookOpen className="w-5 h-5 text-primary" />
             <h1 className="font-bold text-foreground">{journal.title}</h1>
           </div>
-          {/* ✨ NEW (Tâche 1 + Tâche 3) — export PDF + suppression */}
+          {/* ✨ MODIFIED (Tâche 4) — bouton Partage + export PDF + suppression */}
           <div className="flex items-center justify-end gap-1">
+            {journal && (
+              <Button variant="ghost" size="sm" onClick={() => setShareOpen(true)} title={t("shareDialog.title")}>
+                <Share2 className="w-4 h-4" />
+              </Button>
+            )}
             {tripId && <ExportTripButton tripId={tripId} variant="ghost" size="sm" />}
             {tripId && (
               <DeleteTripButton
@@ -105,7 +110,35 @@ const Carnet = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-8 max-w-6xl">
+      <main className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
+        {/* ✨ NEW (Tâche 4) — Utilities (countdown / météo / devise) si voyage à venir ou en cours */}
+        {!isTripEnded && tripMeta?.departure_date && (
+          <TripUtilitiesPanel
+            destination={destination}
+            departureDate={tripMeta.departure_date}
+            returnDate={tripMeta.return_date}
+          />
+        )}
+
+        {/* ✨ NEW (Tâche 4) — Récap de fin de voyage */}
+        {isTripEnded && (
+          <TripEndRecap
+            trip={{
+              id: tripId!,
+              title: journal.title,
+              destination,
+              arrival_city: null,
+              departure_date: tripMeta?.departure_date || null,
+              return_date: tripMeta?.return_date || null,
+              duration: days.length,
+              form_data: null,
+              recommendations: null,
+              created_at: "",
+            }}
+            onShare={() => setShareOpen(true)}
+          />
+        )}
+
         {days.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground">{t("carnet.noDays")}</p>
