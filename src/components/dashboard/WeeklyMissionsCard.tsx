@@ -63,17 +63,20 @@ const WeeklyMissionsCard = () => {
     return { ...m, progress, pct, done: progress >= m.target };
   });
 
-  if (!user) return null;
+  const doneCount = items.filter((i) => i.done).length;
 
   return (
     <Card className="p-4 space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <h2 className="text-sm font-bold flex items-center gap-2">
           <Target className="w-4 h-4 text-primary" /> Missions de la semaine
+          <span className="ml-1 inline-flex items-center justify-center rounded-full bg-primary/15 text-primary text-[10px] font-bold px-1.5 py-0.5 min-w-[26px]">
+            {doneCount}/{MISSIONS.length}
+          </span>
         </h2>
-        <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+        <Link to="/gamification" className="text-[10px] text-primary hover:underline flex items-center gap-1 shrink-0">
           <Clock className="w-3 h-3" /> {timeLeft}
-        </span>
+        </Link>
       </div>
       <div className="space-y-2.5">
         {items.map((m) => {
