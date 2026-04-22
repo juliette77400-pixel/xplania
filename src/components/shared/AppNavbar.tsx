@@ -17,6 +17,8 @@ import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 // Added: global Cmd+K search & post-signup tour
 import GlobalSearch from "@/components/shared/GlobalSearch";
 import OnboardingTour from "@/components/shared/OnboardingTour";
+// Added: global weekly missions banner
+import MissionsBanner from "@/components/shared/MissionsBanner";
 
 interface NavItem {
   to: string;
@@ -42,12 +44,15 @@ const MORE = [
   { to: "/offres", labelKey: "appNav.premiumOffers" },
 ];
 
+import { useWeeklyMissionsRemaining } from "@/hooks/useWeeklyMissionsRemaining";
+
 const AppNavbar = () => {
   const { user, signOut } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const { remaining: missionsRemaining } = useWeeklyMissionsRemaining();
 
   const isActive = (to: string) => to === "/" ? pathname === "/" : pathname.startsWith(to);
 
@@ -86,13 +91,23 @@ const AppNavbar = () => {
             );
           })}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60">
+            <DropdownMenuTrigger className="relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60">
               <MoreHorizontal className="w-3.5 h-3.5" /> {t("appNav.more")}
+              {user && missionsRemaining > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-3.5 px-1 rounded-full bg-primary text-[9px] font-bold text-primary-foreground flex items-center justify-center">
+                  {missionsRemaining}
+                </span>
+              )}
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" className="w-52">
               {MORE.map((m) => (
-                <DropdownMenuItem key={m.to} onClick={() => navigate(m.to)} className="cursor-pointer">
-                  {t(m.labelKey)}
+                <DropdownMenuItem key={m.to} onClick={() => navigate(m.to)} className="cursor-pointer flex items-center justify-between gap-2">
+                  <span>{t(m.labelKey)}</span>
+                  {m.to === "/gamification" && user && missionsRemaining > 0 && (
+                    <span className="ml-auto inline-flex items-center justify-center min-w-[18px] h-4 px-1 rounded-full bg-primary/15 text-primary text-[10px] font-bold">
+                      {missionsRemaining}
+                    </span>
+                  )}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -205,6 +220,8 @@ const AppNavbar = () => {
           </Sheet>
         </div>
       </div>
+      {/* Added: weekly missions awareness banner */}
+      <MissionsBanner />
       {/* Added: post-signup guided tour (auto-opens once per user) */}
       <OnboardingTour />
     </nav>

@@ -19,6 +19,12 @@
     "markAll": "Tout lire",
     "empty": "Aucune notification pour le moment."
   },
+  "missionsBanner": {
+    "title": "Missions de la semaine",
+    "progress": "{{done}}/{{total}} terminées",
+    "cta": "Voir les missions",
+    "dismiss": "Masquer"
+  },
   "lang": {
     "switch": "Langue",
     "fr": "Français",
@@ -452,7 +458,35 @@
     "account": "Compte",
     "logout": "Se déconnecter",
     "saveError": "Erreur lors de la sauvegarde",
-    "saveSuccess": "Profil mis à jour ✨"
+    "saveSuccess": "Profil mis à jour ✨",
+    "stats": {
+      "title": "Mes statistiques de voyageur",
+      "trips": "Voyages",
+      "badges": "Badges",
+      "level": "Niv.",
+      "streak": "Streak",
+      "km": "Km parcourus"
+    },
+    "prefs": {
+      "title": "Préférences",
+      "travelerType": "Type de voyageur",
+      "travelerTypePlaceholder": "Aventurier, famille, slow travel…",
+      "bio": "Bio courte",
+      "bioPlaceholder": "Une phrase qui te décrit en voyage",
+      "language": "Langue",
+      "currency": "Devise préférée",
+      "notifications": "Notifications",
+      "notifyInApp": "Notifications dans l'app",
+      "notifyInAppHint": "Affiche un toast quand un nouvel événement arrive",
+      "notifyBrowser": "Notifications navigateur",
+      "notifyAllowed": "Autorisées sur ce navigateur",
+      "notifyBlocked": "Bloquées — autorise-les dans les réglages du navigateur",
+      "notifyAsk": "Recevoir une alerte même quand l'onglet est fermé",
+      "notifyEnable": "Activer",
+      "notifyEnabled": "Notifications navigateur activées",
+      "notifyDenied": "Permission refusée",
+      "langChanged": "Langue mise à jour"
+    }
   },
   "notFound": {
     "title": "Oups ! Page introuvable",

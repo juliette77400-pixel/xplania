@@ -19,6 +19,12 @@
     "markAll": "Mark all as read",
     "empty": "No notifications yet."
   },
+  "missionsBanner": {
+    "title": "Weekly missions",
+    "progress": "{{done}}/{{total}} done",
+    "cta": "View missions",
+    "dismiss": "Dismiss"
+  },
   "lang": {
     "switch": "Language",
     "fr": "Français",
@@ -452,7 +458,35 @@
     "account": "Account",
     "logout": "Sign out",
     "saveError": "Save failed",
-    "saveSuccess": "Profile updated ✨"
+    "saveSuccess": "Profile updated ✨",
+    "stats": {
+      "title": "My traveler stats",
+      "trips": "Trips",
+      "badges": "Badges",
+      "level": "Lv.",
+      "streak": "Streak",
+      "km": "Km traveled"
+    },
+    "prefs": {
+      "title": "Preferences",
+      "travelerType": "Traveler type",
+      "travelerTypePlaceholder": "Adventurer, family, slow travel…",
+      "bio": "Short bio",
+      "bioPlaceholder": "One sentence about you on the road",
+      "language": "Language",
+      "currency": "Preferred currency",
+      "notifications": "Notifications",
+      "notifyInApp": "In-app notifications",
+      "notifyInAppHint": "Show a toast when a new event arrives",
+      "notifyBrowser": "Browser notifications",
+      "notifyAllowed": "Allowed on this browser",
+      "notifyBlocked": "Blocked — allow them in your browser settings",
+      "notifyAsk": "Receive alerts even when the tab is closed",
+      "notifyEnable": "Enable",
+      "notifyEnabled": "Browser notifications enabled",
+      "notifyDenied": "Permission denied",
+      "langChanged": "Language updated"
+    }
   },
   "notFound": {
     "title": "Oops! Page not found",
