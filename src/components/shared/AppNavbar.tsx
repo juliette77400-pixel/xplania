@@ -14,6 +14,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getRemaining } from "@/lib/usage-quota";
 import NotificationsBell from "@/components/shared/NotificationsBell";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
+// Added: global Cmd+K search & post-signup tour
+import GlobalSearch from "@/components/shared/GlobalSearch";
+import OnboardingTour from "@/components/shared/OnboardingTour";
 
 interface NavItem {
   to: string;
@@ -98,6 +101,11 @@ const AppNavbar = () => {
 
         {/* Right actions */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {/* Added: global search bar (Cmd+K) — bar on desktop, icon on mobile */}
+          <GlobalSearch variant="bar" />
+          <div className="md:hidden">
+            <GlobalSearch variant="icon" />
+          </div>
           <LanguageSwitcher variant="minimal" />
           {user && <NotificationsBell />}
           {user ? (
@@ -197,6 +205,8 @@ const AppNavbar = () => {
           </Sheet>
         </div>
       </div>
+      {/* Added: post-signup guided tour (auto-opens once per user) */}
+      <OnboardingTour />
     </nav>
   );
 };

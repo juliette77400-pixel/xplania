@@ -52,6 +52,38 @@
     "login": "Sign in",
     "quotaTooltip": "Free quotas left — Packing/Budget/Visa: 3 each"
   },
+  "globalSearch": {
+    "aria": "Search Xplania",
+    "placeholder": "Search…",
+    "inputPlaceholder": "Type to search a page, a tool…",
+    "empty": "No results.",
+    "groupNav": "Navigation",
+    "groupExplore": "Explore",
+    "groupTrip": "My trip",
+    "groupTools": "Tools",
+    "groupAccount": "Account"
+  },
+  "onboardingTour": {
+    "stepLabel": "Step {{n}} / {{total}}",
+    "goTo": "Go to step {{n}}",
+    "step1Title": "Welcome to Xplania ✨",
+    "step1Desc": "Your AI travel copilot. Discover in 1 minute what you can do here.",
+    "step2Title": "Discover your destination",
+    "step2Desc": "Local spots, hidden gems and interactive maps — all AI-curated for your tastes.",
+    "cta2": "Open Discover",
+    "step3Title": "Pack your bag",
+    "step3Desc": "A smart checklist tailored to the weather, duration and your travel style.",
+    "cta3": "Prepare my bag",
+    "step4Title": "Travel journal",
+    "step4Desc": "Tell your trip day by day, unlock badges and generate your story in one click.",
+    "cta4": "See my journals",
+    "step5Title": "Track and explore live",
+    "step5Desc": "Travel map, GPS tracking, badges and stats — your whole adventure in one place.",
+    "cta5": "Open the map",
+    "step6Title": "Personalize your profile",
+    "step6Desc": "Add your name and avatar for a tailored, consistent experience.",
+    "cta6": "Complete my profile"
+  },
   "hero": {
     "badge": "Private Beta — Exclusive Access",
     "titleLine1": "Travel with peace of mind,",
