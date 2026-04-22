@@ -25,6 +25,50 @@
     "cta": "View missions",
     "dismiss": "Dismiss"
   },
+  "quickJump": {
+    "title": "Continue your trip",
+    "directAccess": "— direct access without going back home",
+    "activeTrip": "Active trip:",
+    "openMyTrip": "→ open my trip",
+    "descDiscover": "AI local spots",
+    "descMood": "Match your vibe",
+    "descExplore": "Map & badges",
+    "descTracking": "Live GPS tracking",
+    "descJournal": "Travel journal",
+    "descValise": "Smart checklist",
+    "descBudget": "Spending & alerts",
+    "descVisa": "Country paperwork",
+    "labelTracking": "Live tracking",
+    "labelJournal": "Journal",
+    "labelValise": "Packing"
+  },
+  "streakCard": {
+    "daysInARow": "days in a row",
+    "day": "day",
+    "record": "best",
+    "msg0": "Kick off your adventure today to start your streak!",
+    "msg1": "Keep going, every day counts 🌱",
+    "msg3": "Great consistency, don't stop now 🔥",
+    "msg7": "You're on fire, traveler! 🚀",
+    "msg30": "Living legend of travel 👑"
+  },
+  "weeklyMissionsCard": {
+    "title": "Weekly missions",
+    "missionGem": "Save 1 local hidden gem",
+    "missionExplore": "Explore 1 place",
+    "missionMood": "Share 1 emotion"
+  },
+  "trophies": {
+    "title": "Travel trophies",
+    "adventures_one": "{{count}} adventure lived",
+    "adventures_other": "{{count}} adventures lived",
+    "labelLatest": "Most recent",
+    "labelMemory": "Memory",
+    "labelPast": "Past trip",
+    "fallbackTrip": "Trip",
+    "memoriesNote": "Your memories are kept safe.",
+    "viewAllBadges": "View all badges"
+  },
   "lang": {
     "switch": "Language",
     "fr": "Français",

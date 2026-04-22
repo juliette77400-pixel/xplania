@@ -25,6 +25,50 @@
     "cta": "Voir les missions",
     "dismiss": "Masquer"
   },
+  "quickJump": {
+    "title": "Continuer ton voyage",
+    "directAccess": "— accès direct sans retour à l'accueil",
+    "activeTrip": "Voyage actif :",
+    "openMyTrip": "→ ouvrir mon voyage",
+    "descDiscover": "Lieux locaux IA",
+    "descMood": "Selon ton humeur",
+    "descExplore": "Carte & badges",
+    "descTracking": "Suivi GPS live",
+    "descJournal": "Journal voyage",
+    "descValise": "Checklist intelligente",
+    "descBudget": "Dépenses & alertes",
+    "descVisa": "Formalités pays",
+    "labelTracking": "Suivi de voyage",
+    "labelJournal": "Carnet",
+    "labelValise": "Valise"
+  },
+  "streakCard": {
+    "daysInARow": "jours d'affilée",
+    "day": "jour",
+    "record": "record",
+    "msg0": "Lance ton aventure aujourd'hui pour démarrer ta série !",
+    "msg1": "Continue, chaque jour compte 🌱",
+    "msg3": "Belle régularité, ne lâche rien 🔥",
+    "msg7": "Tu es en feu, voyageur ! 🚀",
+    "msg30": "Légende vivante du voyage 👑"
+  },
+  "weeklyMissionsCard": {
+    "title": "Missions de la semaine",
+    "missionGem": "Sauvegarder 1 pépite locale",
+    "missionExplore": "Explorer 1 lieu",
+    "missionMood": "Partager 1 émotion"
+  },
+  "trophies": {
+    "title": "Trophées de voyage",
+    "adventures_one": "{{count}} aventure vécue",
+    "adventures_other": "{{count}} aventures vécues",
+    "labelLatest": "Plus récent",
+    "labelMemory": "Souvenir",
+    "labelPast": "Voyage passé",
+    "fallbackTrip": "Voyage",
+    "memoriesNote": "Tes souvenirs sont précieusement gardés.",
+    "viewAllBadges": "Voir tous les badges"
+  },
   "lang": {
     "switch": "Langue",
     "fr": "Français",

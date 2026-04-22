@@ -1,29 +1,28 @@
 // ✨ NEW (Tâche 3) — Carte streak quotidien sur le Dashboard.
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Flame, Trophy } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { getStreakDisplay, type StreakState } from "@/lib/streak";
 
 const StreakCard = () => {
+  const { t } = useTranslation();
   const [s, setS] = useState<StreakState>(() => getStreakDisplay());
 
   useEffect(() => {
-    // ✨ MODIFIED — la simple visite du dashboard ne fait plus avancer le streak.
-    // Le streak est désormais piloté par de vraies actions (note, photo, mood, favori,
-    // check-in, lieu visité, avis). On se contente de rafraîchir l'affichage.
     setS(getStreakDisplay());
   }, []);
 
   const motivational =
     s.streak === 0
-      ? "Lance ton aventure aujourd'hui pour démarrer ta série !"
+      ? t("streakCard.msg0")
       : s.streak < 3
-      ? "Continue, chaque jour compte 🌱"
+      ? t("streakCard.msg1")
       : s.streak < 7
-      ? "Belle régularité, ne lâche rien 🔥"
+      ? t("streakCard.msg3")
       : s.streak < 30
-      ? "Tu es en feu, voyageur ! 🚀"
-      : "Légende vivante du voyage 👑";
+      ? t("streakCard.msg7")
+      : t("streakCard.msg30");
 
   return (
     <Card className="p-4 bg-gradient-to-br from-orange-500/10 via-card to-amber-500/10 border-amber-500/20">
@@ -34,7 +33,7 @@ const StreakCard = () => {
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2 flex-wrap">
             <p className="text-2xl font-bold gradient-text leading-none">{s.streak}</p>
-            <span className="text-xs text-muted-foreground">{s.streak > 1 ? "jours d'affilée" : "jour"}</span>
+            <span className="text-xs text-muted-foreground">{s.streak > 1 ? t("streakCard.daysInARow") : t("streakCard.day")}</span>
           </div>
           <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{motivational}</p>
         </div>
@@ -44,7 +43,7 @@ const StreakCard = () => {
               <Trophy className="w-3.5 h-3.5" />
               <span className="text-xs font-bold">{s.best}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">record</p>
+            <p className="text-[10px] text-muted-foreground">{t("streakCard.record")}</p>
           </div>
         )}
       </div>
