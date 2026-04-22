@@ -101,6 +101,19 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
       // Log the LinkedIn DM intent so it can be picked up by the team / a future webhook.
       console.info("[waitlist] LinkedIn DM requested:", { linkedin: cleanLinkedin, message: linkedinMessage });
     }
+    // Fire-and-forget team notification (don't block UX if it fails).
+    supabase.functions
+      .invoke("notify-waitlist", {
+        body: {
+          email: parsed.data.toLowerCase(),
+          first_name: cleanFirstName || null,
+          linkedin_url: cleanLinkedin || null,
+          pack: pack ?? null,
+          source,
+          locale: i18n.language,
+        },
+      })
+      .catch((e) => console.warn("[waitlist] notify failed", e));
     setSuccess(true);
     toast.success(t("waitlist.successToast"));
   };
