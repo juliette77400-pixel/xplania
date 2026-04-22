@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2, Share2 } from "lucide-react";
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +18,10 @@ import QuickJump from "@/components/shared/QuickJump";
 import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 import TripDocumentsManager from "@/components/shared/TripDocumentsManager"; // ✨ NEW (Tâche 3)
 import ExportTripButton from "@/components/shared/ExportTripButton"; // ✨ NEW (Tâche 3)
+import TripUtilitiesPanel from "@/components/shared/TripUtilitiesPanel"; // ✨ NEW (Tâche 4) — countdown + météo + devise
+import TripEndRecap from "@/components/shared/TripEndRecap"; // ✨ NEW (Tâche 4) — écran fin de voyage
+import ShareCarnetDialog from "@/components/shared/ShareCarnetDialog"; // ✨ NEW (Tâche 4) — partage + QR + OG
+import { Button } from "@/components/ui/button";
 import { formatDayLabel } from "@/lib/journal-utils";
 
 const Carnet = () => {
@@ -26,6 +30,9 @@ const Carnet = () => {
   const { journal, days, loading, refetch } = useJournal(tripId);
   const [activeIdx, setActiveIdx] = useState(0);
   const [destination, setDestination] = useState("");
+  // ✨ NEW (Tâche 4) — dates pour utilities + détection fin de voyage
+  const [tripMeta, setTripMeta] = useState<{ departure_date: string | null; return_date: string | null } | null>(null);
+  const [shareOpen, setShareOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate(); // ✨ NEW (Tâche 1) — pour rediriger après suppression
 
@@ -34,6 +41,7 @@ const Carnet = () => {
     supabase.from("trips").select("destination,arrival_city,departure_date,return_date").eq("id", tripId).maybeSingle()
       .then(({ data }) => {
         setDestination(data?.destination || "");
+        setTripMeta({ departure_date: data?.departure_date || null, return_date: data?.return_date || null });
         if (data) {
           import("@/stores/useActiveTrip").then(({ useActiveTrip }) => {
             useActiveTrip.getState().setActiveTrip({
@@ -47,6 +55,9 @@ const Carnet = () => {
         }
       });
   }, [tripId]);
+
+  // ✨ NEW (Tâche 4) — voyage terminé ?
+  const isTripEnded = !!(tripMeta?.return_date && new Date(tripMeta.return_date) < new Date());
 
   if (!user) return <Navigate to="/auth" replace />;
   if (loading) {
@@ -79,8 +90,13 @@ const Carnet = () => {
             <BookOpen className="w-5 h-5 text-primary" />
             <h1 className="font-bold text-foreground">{journal.title}</h1>
           </div>
-          {/* ✨ NEW (Tâche 1 + Tâche 3) — export PDF + suppression */}
+          {/* ✨ MODIFIED (Tâche 4) — bouton Partage + export PDF + suppression */}
           <div className="flex items-center justify-end gap-1">
+            {journal && (
+              <Button variant="ghost" size="sm" onClick={() => setShareOpen(true)} title={t("shareDialog.title")}>
+                <Share2 className="w-4 h-4" />
+              </Button>
+            )}
             {tripId && <ExportTripButton tripId={tripId} variant="ghost" size="sm" />}
             {tripId && (
               <DeleteTripButton
@@ -94,7 +110,35 @@ const Carnet = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-8 max-w-6xl">
+      <main className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
+        {/* ✨ NEW (Tâche 4) — Utilities (countdown / météo / devise) si voyage à venir ou en cours */}
+        {!isTripEnded && tripMeta?.departure_date && (
+          <TripUtilitiesPanel
+            destination={destination}
+            departureDate={tripMeta.departure_date}
+            returnDate={tripMeta.return_date}
+          />
+        )}
+
+        {/* ✨ NEW (Tâche 4) — Récap de fin de voyage */}
+        {isTripEnded && (
+          <TripEndRecap
+            trip={{
+              id: tripId!,
+              title: journal.title,
+              destination,
+              arrival_city: null,
+              departure_date: tripMeta?.departure_date || null,
+              return_date: tripMeta?.return_date || null,
+              duration: days.length,
+              form_data: null,
+              recommendations: null,
+              created_at: "",
+            }}
+            onShare={() => setShareOpen(true)}
+          />
+        )}
+
         {days.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground">{t("carnet.noDays")}</p>
@@ -202,6 +246,19 @@ const Carnet = () => {
           </Tabs>
         )}
       </main>
+      {/* ✨ NEW (Tâche 4) — Dialog de partage avec QR + OG */}
+      {journal && (
+        <ShareCarnetDialog
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+          journalId={journal.id}
+          isPublic={journal.is_public}
+          publicSlug={journal.public_slug}
+          title={journal.title}
+          destination={destination}
+          onUpdated={refetch}
+        />
+      )}
       <QuickJump />
     </div>
   );

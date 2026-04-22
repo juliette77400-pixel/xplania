@@ -2222,6 +2222,60 @@
       "button": "Full PDF export",
       "success": "PDF generated",
       "error": "Export failed"
+    },
+    "countdown": {
+      "beforeDeparture": "before departure",
+      "dh": "{{d}}d {{h}}h",
+      "hm": "{{h}}h {{m}}min",
+      "minutes": "{{m}} min",
+      "daysLeft": "{{n}} days left",
+      "endingSoon": "ending soon",
+      "inProgress": "Trip in progress",
+      "finished": "Trip finished"
+    },
+    "weatherWidget": {
+      "loading": "Loading weather…",
+      "unavailable": "Weather unavailable"
+    },
+    "currency": {
+      "title": "Currency converter",
+      "swap": "Swap",
+      "source": "ECB rates (Frankfurter)",
+      "error": "Conversion unavailable"
+    },
+    "tripUtils": {
+      "kicker": "Before departure",
+      "nextTrip": "Next trip",
+      "open": "Open"
+    },
+    "tripRecap": {
+      "kicker": "🎉 Trip ended",
+      "title": "Well done, {{destination}} is in the bag!",
+      "endedOn": "Ended on",
+      "days": "Days",
+      "checkins": "Check-ins",
+      "photos": "Photos",
+      "memories": "Memories",
+      "badges": "Badges",
+      "km": "Km traveled",
+      "shareCta": "Share my journal"
+    },
+    "shareDialog": {
+      "title": "Share my journal",
+      "description": "Enable public sharing and send the link to anyone.",
+      "public": "Public journal",
+      "private": "Private journal",
+      "publicHint": "Anyone with the link can view it",
+      "privateHint": "Only visible to you",
+      "published": "Journal published",
+      "madePrivate": "Journal set to private",
+      "errorToggle": "Could not update visibility",
+      "linkCopied": "Link copied",
+      "share": "Share",
+      "downloadQr": "Download QR code",
+      "previewOg": "Share preview",
+      "ogHint": "This is the image shown on social networks",
+      "emailBody": "Hi! Check out my travel journal on Xplania:"
     }
   }
 }

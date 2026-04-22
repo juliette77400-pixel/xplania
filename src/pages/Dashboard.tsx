@@ -15,6 +15,7 @@ import TripActionsMenu from "@/components/shared/TripActionsMenu";
 import StreakCard from "@/components/dashboard/StreakCard";
 import WeeklyMissionsCard from "@/components/dashboard/WeeklyMissionsCard";
 import PastTripsTrophies from "@/components/dashboard/PastTripsTrophies";
+import NextTripUtilitiesCard from "@/components/dashboard/NextTripUtilitiesCard"; // ✨ NEW (Tâche 4)
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -66,6 +67,9 @@ const Dashboard = () => {
               : t("myDashboard.noTripsCta")}
           </p>
         </motion.div>
+
+        {/* ✨ NEW (Tâche 4) — Carte récap prochain voyage (countdown + météo) */}
+        <NextTripUtilitiesCard trips={trips} />
 
         {/* ✨ NEW (Tâche 3) — Engagement quotidien : streak + missions hebdo */}
         <section className="grid md:grid-cols-2 gap-3">

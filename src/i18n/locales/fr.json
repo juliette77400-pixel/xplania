@@ -2222,6 +2222,60 @@
       "button": "Export PDF complet",
       "success": "PDF généré",
       "error": "Échec de l'export"
+    },
+    "countdown": {
+      "beforeDeparture": "avant le départ",
+      "dh": "{{d}}j {{h}}h",
+      "hm": "{{h}}h {{m}}min",
+      "minutes": "{{m}} min",
+      "daysLeft": "{{n}} jours restants",
+      "endingSoon": "se termine bientôt",
+      "inProgress": "Voyage en cours",
+      "finished": "Voyage terminé"
+    },
+    "weatherWidget": {
+      "loading": "Météo en cours…",
+      "unavailable": "Météo indisponible"
+    },
+    "currency": {
+      "title": "Convertisseur de devise",
+      "swap": "Inverser",
+      "source": "Taux BCE (Frankfurter)",
+      "error": "Conversion indisponible"
+    },
+    "tripUtils": {
+      "kicker": "Avant le départ",
+      "nextTrip": "Prochain voyage",
+      "open": "Ouvrir"
+    },
+    "tripRecap": {
+      "kicker": "🎉 Voyage terminé",
+      "title": "Bravo, {{destination}} c'est dans la boîte !",
+      "endedOn": "Terminé le",
+      "days": "Jours",
+      "checkins": "Check-ins",
+      "photos": "Photos",
+      "memories": "Souvenirs",
+      "badges": "Badges",
+      "km": "Km parcourus",
+      "shareCta": "Partager mon carnet"
+    },
+    "shareDialog": {
+      "title": "Partager mon carnet",
+      "description": "Active le partage public et envoie le lien à qui tu veux.",
+      "public": "Carnet public",
+      "private": "Carnet privé",
+      "publicHint": "Tout le monde avec le lien peut le voir",
+      "privateHint": "Visible uniquement par toi",
+      "published": "Carnet publié",
+      "madePrivate": "Carnet repassé en privé",
+      "errorToggle": "Impossible de mettre à jour la visibilité",
+      "linkCopied": "Lien copié",
+      "share": "Partager",
+      "downloadQr": "Télécharger le QR code",
+      "previewOg": "Aperçu de la preview de partage",
+      "ogHint": "Voici l'image qui apparaîtra sur les réseaux sociaux",
+      "emailBody": "Salut ! Découvre mon carnet de voyage sur Xplania :"
     }
   }
 }
