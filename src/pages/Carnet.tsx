@@ -246,6 +246,19 @@ const Carnet = () => {
           </Tabs>
         )}
       </main>
+      {/* ✨ NEW (Tâche 4) — Dialog de partage avec QR + OG */}
+      {journal && (
+        <ShareCarnetDialog
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+          journalId={journal.id}
+          isPublic={journal.is_public}
+          publicSlug={journal.public_slug}
+          title={journal.title}
+          destination={destination}
+          onUpdated={refetch}
+        />
+      )}
       <QuickJump />
     </div>
   );
