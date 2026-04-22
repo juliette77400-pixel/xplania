@@ -27,8 +27,9 @@ const PublicCarnet = () => {
       const { data: s } = await supabase.from("journal_stories").select("content").eq("journal_id", j.id).order("created_at", { ascending: false }).limit(1).maybeSingle();
       if (s) setStory(s.content);
 
-      const firstNote = (blocks || []).find((b: any) => b.type === "note")?.content?.text || "";
-      const rawDesc = (s?.content || firstNote || "Découvre ce carnet de voyage immersif sur Xplania.").toString();
+      const firstNote = (blocks || []).find((b: any) => b.type === "note");
+      const firstNoteText = (firstNote?.content as any)?.text || "";
+      const rawDesc = (s?.content || firstNoteText || "Découvre ce carnet de voyage immersif sur Xplania.").toString();
       const description = rawDesc.replace(/\s+/g, " ").trim().slice(0, 155);
 
       let author: string | undefined;
