@@ -220,6 +220,8 @@ const AppNavbar = () => {
           </Sheet>
         </div>
       </div>
+      {/* Added: weekly missions awareness banner */}
+      <MissionsBanner />
       {/* Added: post-signup guided tour (auto-opens once per user) */}
       <OnboardingTour />
     </nav>
