@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Position, haversineKm } from "@/hooks/useGeolocation";
 import { TripActivity } from "@/hooks/useTracking";
 import { toast } from "sonner";
+import { pingStreakAction } from "@/lib/streak";
 
 const CHECKIN_RADIUS_KM = 0.1; // 100m
 const DWELL_MS = 90_000; // 1.5 min

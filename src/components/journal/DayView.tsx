@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import BlockCard from "./BlockCard";
 import type { JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
+import { pingStreakAction } from "@/lib/streak";
 import { Input } from "@/components/ui/input";
 import { Cloud } from "lucide-react";
 

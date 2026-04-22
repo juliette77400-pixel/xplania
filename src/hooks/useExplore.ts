@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { EXPLORE_BADGES } from "@/lib/explore-badges";
+import { pingStreakAction } from "@/lib/streak";
 
 export interface ExploreNode {
   id: string;
