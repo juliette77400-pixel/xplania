@@ -52,6 +52,38 @@
     "login": "Connexion",
     "quotaTooltip": "Quotas gratuits restants — Valise/Budget/Visa: 3 chacun"
   },
+  "globalSearch": {
+    "aria": "Rechercher dans Xplania",
+    "placeholder": "Rechercher…",
+    "inputPlaceholder": "Tapez pour rechercher une page, un outil…",
+    "empty": "Aucun résultat.",
+    "groupNav": "Navigation",
+    "groupExplore": "Explorer",
+    "groupTrip": "Mon voyage",
+    "groupTools": "Outils",
+    "groupAccount": "Compte"
+  },
+  "onboardingTour": {
+    "stepLabel": "Étape {{n}} / {{total}}",
+    "goTo": "Aller à l'étape {{n}}",
+    "step1Title": "Bienvenue sur Xplania ✨",
+    "step1Desc": "Votre copilote de voyage IA. Découvrez en 1 minute ce que vous pouvez faire ici.",
+    "step2Title": "Découvrez votre destination",
+    "step2Desc": "Lieux locaux, pépites cachées et cartes interactives — tout est généré par IA selon vos envies.",
+    "cta2": "Ouvrir Discover",
+    "step3Title": "Préparez votre valise",
+    "step3Desc": "Une checklist intelligente adaptée à la météo, à la durée et à votre style de voyage.",
+    "cta3": "Préparer ma valise",
+    "step4Title": "Carnet de bord",
+    "step4Desc": "Racontez votre voyage jour par jour, débloquez des badges et générez votre histoire en un clic.",
+    "cta4": "Voir mes carnets",
+    "step5Title": "Suivez et explorez en live",
+    "step5Desc": "Carte de voyage, suivi GPS, badges et statistiques — toute votre aventure réunie.",
+    "cta5": "Voir la carte",
+    "step6Title": "Personnalisez votre profil",
+    "step6Desc": "Ajoutez votre nom et votre avatar pour une expérience sur-mesure et cohérente.",
+    "cta6": "Compléter mon profil"
+  },
   "hero": {
     "badge": "Bêta Privée — Accès Exclusif",
     "titleLine1": "Voyagez sereinement,",
