@@ -1,8 +1,7 @@
 // ✨ NEW (Tâche 3) — Carte missions hebdo sur le Dashboard.
-// Réutilise la logique de Gamification (snapshot weekly + 3 missions
-// préfixées). Lecture en temps réel via Supabase.
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Target, Search, Landmark, Heart, Clock, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -16,10 +15,10 @@ interface Counts {
   journalMoods: number;
 }
 
-const MISSIONS = [
-  { key: "moodHiddenGems" as const, title: "Sauvegarder 1 pépite locale", xp: 50, icon: Search, link: "/discover", color: "from-cyan-400 to-cyan-500", target: 1 },
-  { key: "exploreVisited" as const, title: "Explorer 1 lieu", xp: 75, icon: Landmark, link: "/explore", color: "from-purple-400 to-purple-500", target: 1 },
-  { key: "journalMoods" as const, title: "Partager 1 émotion", xp: 100, icon: Heart, link: "/carnets", color: "from-pink-400 to-rose-500", target: 1 },
+const buildMissions = (t: (k: string) => string) => [
+  { key: "moodHiddenGems" as const, title: t("weeklyMissionsCard.missionGem"), xp: 50, icon: Search, link: "/discover", color: "from-cyan-400 to-cyan-500", target: 1 },
+  { key: "exploreVisited" as const, title: t("weeklyMissionsCard.missionExplore"), xp: 75, icon: Landmark, link: "/explore", color: "from-purple-400 to-purple-500", target: 1 },
+  { key: "journalMoods" as const, title: t("weeklyMissionsCard.missionMood"), xp: 100, icon: Heart, link: "/carnets", color: "from-pink-400 to-rose-500", target: 1 },
 ];
 
 const WeeklyMissionsCard = () => {
