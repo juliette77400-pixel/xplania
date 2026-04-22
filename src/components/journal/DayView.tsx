@@ -50,6 +50,8 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
       content: defaults[type] || {},
       position: day.blocks.length,
     });
+    // ✨ NEW (gamif) — toute création de bloc carnet alimente le streak
+    pingStreakAction(`journal:${type}`);
     onChanged();
   };
 

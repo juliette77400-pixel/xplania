@@ -162,6 +162,7 @@ export function useMoodExplorer() {
         return;
       }
       setFavorites((prev) => [data as any, ...prev]);
+      pingStreakAction("mood:favorite"); // ✨ NEW (gamif)
       toast.success("Sauvegardé ❤️");
     }
   }, [user, favorites]);
