@@ -100,7 +100,10 @@
     "profile": "Profile",
     "logout": "Sign out",
     "login": "Sign in",
-    "quotaTooltip": "Free quotas left — Packing/Budget/Visa: 3 each"
+    "quotaTooltip": "Free credits left to generate plans (Packing, Budget, Visa). Go Premium for unlimited.",
+    "quotaTitle": "Free credits",
+    "creditsShort": "credits",
+    "viewPlans": "See plans"
   },
   "globalSearch": {
     "aria": "Search Xplania",

@@ -100,7 +100,10 @@
     "profile": "Profil",
     "logout": "Se déconnecter",
     "login": "Connexion",
-    "quotaTooltip": "Quotas gratuits restants — Valise/Budget/Visa: 3 chacun"
+    "quotaTooltip": "Crédits gratuits restants pour générer des plans (Valise, Budget, Visa). Passe Premium pour l'illimité.",
+    "quotaTitle": "Crédits gratuits",
+    "creditsShort": "crédits",
+    "viewPlans": "Voir les offres"
   },
   "globalSearch": {
     "aria": "Rechercher dans Xplania",
