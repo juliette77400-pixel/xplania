@@ -19,10 +19,24 @@ import { useTravelContext } from "@/contexts/TravelContext";
 import { hasReachedFreeQuota } from "@/stores/usePlanStore";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 
+const DEMO_PRESET = {
+  mode: "quick" as const,
+  data: {
+    destination: "Lisbonne, Portugal",
+    arrivalCity: "Lisbonne",
+    departureLocation: "Paris",
+    duration: "4",
+    totalBudget: 800,
+    tripTypes: ["culturel", "gastronomique"],
+    travelerType: "couple",
+  },
+};
+
 const Index = () => {
   const [travelFormOpen, setTravelFormOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
   const { user } = useAuth();
   const { t } = useTranslation();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
@@ -34,6 +48,12 @@ const Index = () => {
       setQuotaOpen(true);
       return;
     }
+    setDemoMode(false);
+    setTravelFormOpen(true);
+  };
+
+  const handleDemoTrip = () => {
+    setDemoMode(true);
     setTravelFormOpen(true);
   };
 
@@ -50,7 +70,7 @@ const Index = () => {
         <button onClick={handleCreateTrip}>create</button>
         <button onClick={scrollToFeedback}>fb</button>
       </div>
-      <HeroSection onCreateTrip={handleCreateTrip} />
+      <HeroSection onCreateTrip={handleCreateTrip} onDemoTrip={handleDemoTrip} />
       <FeaturesSection />
       <HowItWorksSection />
       <BenefitsSection />
@@ -65,6 +85,7 @@ const Index = () => {
       <TravelFormDialog
         open={travelFormOpen}
         onOpenChange={setTravelFormOpen}
+        initialPreset={demoMode ? DEMO_PRESET : undefined}
         onTripGenerated={async (data, recs) => {
           setTripData(data);
           setRecommendations(recs);

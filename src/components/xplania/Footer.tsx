@@ -162,6 +162,20 @@ const Footer = (_: Props) => {
           </p>
         </motion.div>
 
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
+          <Link to="/legal/mentions" className="text-muted-foreground hover:text-primary transition-colors">
+            {t("footer.legalMentions")}
+          </Link>
+          <span className="text-muted-foreground/30">·</span>
+          <Link to="/legal/cgu" className="text-muted-foreground hover:text-primary transition-colors">
+            {t("footer.legalCgu")}
+          </Link>
+          <span className="text-muted-foreground/30">·</span>
+          <Link to="/legal/confidentialite" className="text-muted-foreground hover:text-primary transition-colors">
+            {t("footer.legalConfidentialite")}
+          </Link>
+        </div>
+
         <div className="text-center space-y-1">
           <p className="text-xs font-medium text-muted-foreground">{t("footer.prototype")}</p>
           <p className="text-xs text-muted-foreground/60">{t("footer.copyright")}</p>

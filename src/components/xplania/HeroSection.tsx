@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Sparkles, ArrowRight, Clock, Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, Star } from "lucide-react";
+import { Sparkles, ArrowRight, Clock, Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, Star, PlayCircle, Users } from "lucide-react";
 
 const particles = Array.from({ length: 12 }, (_, i) => ({
   id: i,
@@ -11,9 +11,10 @@ const particles = Array.from({ length: 12 }, (_, i) => ({
 
 interface Props {
   onCreateTrip: () => void;
+  onDemoTrip?: () => void;
 }
 
-const HeroSection = ({ onCreateTrip }: Props) => {
+const HeroSection = ({ onCreateTrip, onDemoTrip }: Props) => {
   const { t } = useTranslation();
 
   const tools = [
@@ -68,10 +69,20 @@ const HeroSection = ({ onCreateTrip }: Props) => {
       </motion.p>
 
       <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.32 }}
+        className="mt-4 flex items-center gap-2 text-sm text-muted-foreground"
+      >
+        <Users className="w-4 h-4 text-primary" />
+        <span>{t("hero.forWho")}</span>
+      </motion.div>
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="flex flex-col sm:flex-row gap-4 mt-10"
+        className="flex flex-col sm:flex-row gap-3 mt-8"
       >
         <button
           onClick={onCreateTrip}
@@ -80,12 +91,21 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           <Sparkles className="w-5 h-5" />
           {t("hero.ctaCreate")}
         </button>
+        {onDemoTrip && (
+          <button
+            onClick={onDemoTrip}
+            className="glass-card px-8 py-4 rounded-xl text-foreground font-semibold flex items-center gap-2 hover:bg-muted transition-colors border border-primary/20"
+          >
+            <PlayCircle className="w-5 h-5 text-primary" />
+            {t("hero.ctaDemo")}
+          </button>
+        )}
         <a
           href="#features"
-          className="glass-card px-8 py-4 rounded-xl text-foreground font-semibold flex items-center gap-2 hover:bg-muted transition-colors"
+          className="px-6 py-4 rounded-xl text-muted-foreground font-medium flex items-center gap-2 hover:text-foreground transition-colors"
         >
           {t("hero.ctaDiscover")}
-          <ArrowRight className="w-5 h-5" />
+          <ArrowRight className="w-4 h-4" />
         </a>
       </motion.div>
 

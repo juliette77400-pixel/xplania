@@ -100,7 +100,10 @@
     "profile": "Profile",
     "logout": "Sign out",
     "login": "Sign in",
-    "quotaTooltip": "Free quotas left — Packing/Budget/Visa: 3 each"
+    "quotaTooltip": "Free credits left to generate plans (Packing, Budget, Visa). Go Premium for unlimited.",
+    "quotaTitle": "Free credits",
+    "creditsShort": "credits",
+    "viewPlans": "See plans"
   },
   "globalSearch": {
     "aria": "Search Xplania",
@@ -140,7 +143,9 @@
     "titleLine2": "let AI handle the rest",
     "subtitle": "Xplania is your intelligent travel copilot. Budget, visas, packing — every step of your prep, centralized in one place.",
     "ctaCreate": "Plan my trip for free",
+    "ctaDemo": "See a sample trip (Lisbon)",
     "ctaDiscover": "Discover the features",
+    "forWho": "Made for curious travelers who want more than Google Maps: plan, live and tell every step of the journey.",
     "toolsIntro": "Free beta —",
     "toolsCount": "8 tools",
     "toolsAvail": "already available to plan and live your journey:",
@@ -413,7 +418,51 @@
     "betaBadge": "Private beta in progress",
     "betaNote": "Xplania is currently being tested by early travelers to refine the experience.",
     "prototype": "Xplania – Beta prototype v0.1",
-    "copyright": "© 2026 Xplania – Exclusive beta program – Built with ❤️ for travelers"
+    "copyright": "© 2026 Xplania – Exclusive beta program – Built with ❤️ for travelers",
+    "legalTitle": "Legal",
+    "legalMentions": "Legal notice",
+    "legalCgu": "Terms of use",
+    "legalConfidentialite": "Privacy policy"
+  },
+  "legal": {
+    "backHome": "Back to home",
+    "lastUpdated": "Last updated",
+    "updateDate": "April 23, 2026",
+    "contactNote": "For any question, contact us at",
+    "mentions": {
+      "title": "Legal notice",
+      "sections": [
+        { "heading": "Site publisher", "body": "Xplania is published by Juliette Noël, currently in private beta. Contact: juliettenoel.xplania@gmail.com" },
+        { "heading": "Hosting", "body": "The site is hosted on Lovable Cloud (Supabase infrastructure). URL: xplania.lovable.app" },
+        { "heading": "Intellectual property", "body": "All content (texts, visuals, logo, code) is the exclusive property of Xplania, unless otherwise stated. Any reproduction without permission is prohibited." },
+        { "heading": "Credits", "body": "Map data: © OpenStreetMap. Illustration photos: Unsplash. Icons: Lucide." },
+        { "heading": "Beta status", "body": "Xplania is currently in beta version. The service may evolve, be interrupted or modified without notice." }
+      ]
+    },
+    "cgu": {
+      "title": "Terms of use",
+      "sections": [
+        { "heading": "Purpose", "body": "These terms govern the use of Xplania, an AI-assisted travel planning platform." },
+        { "heading": "User account", "body": "Account creation is free. You agree to provide accurate information and protect your credentials. One account per person." },
+        { "heading": "Acceptable use", "body": "It is forbidden to use Xplania for: (a) illegal, hateful or harmful content, (b) spam or automated scraping, (c) any attempt to bypass quotas or security." },
+        { "heading": "Free quotas", "body": "The beta version includes a limited number of free AI generations per tool. Premium offers (coming soon) will lift these limits." },
+        { "heading": "AI-generated content", "body": "AI recommendations are provided for informational purposes. Always verify critical information (visa, health, safety) from official sources." },
+        { "heading": "Liability", "body": "Xplania cannot be held liable for losses or inconvenience related to a trip. The service is provided 'as is' during the beta phase." },
+        { "heading": "Termination", "body": "You can delete your account at any time via the Profile page. We reserve the right to suspend an account in case of violation." }
+      ]
+    },
+    "confidentialite": {
+      "title": "Privacy policy",
+      "sections": [
+        { "heading": "Data collected", "body": "We collect: email, first name (optional), profile information (avatar, language), travel data you enter, and technical logs (IP address, browser)." },
+        { "heading": "Purposes", "body": "Your data is used to: run your account, generate your AI recommendations, improve the service, send you the notifications you accept." },
+        { "heading": "Legal basis (GDPR)", "body": "Contract performance (account), legitimate interest (product improvement), consent (newsletter, notifications)." },
+        { "heading": "Subprocessors", "body": "Lovable Cloud / Supabase (hosting & database, EU), Resend (transactional email delivery), Google (OAuth authentication if you choose that option), OpenAI / Google Gemini (AI generation — data sent in anonymized form for recommendations)." },
+        { "heading": "Retention", "body": "Your data is kept as long as your account is active. Upon account deletion, it is erased within 30 days, except for legal obligations." },
+        { "heading": "Your rights", "body": "You have rights of access, rectification, erasure, objection, portability and limitation. To exercise them: juliettenoel.xplania@gmail.com" },
+        { "heading": "Cookies", "body": "Xplania only uses necessary technical cookies (authentication, language). No advertising or third-party tracking cookies during beta." }
+      ]
+    }
   },
   "waitlist": {
     "defaultTitle": "Premium is coming soon 🚀",
