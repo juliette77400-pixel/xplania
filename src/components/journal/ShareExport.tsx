@@ -48,9 +48,12 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
   };
 
   const shareEmail = () => {
-    const subject = encodeURIComponent(`Mon carnet de voyage — ${destination || journal.title}`);
+    const subject = encodeURIComponent(t("journalComp.share.emailSubject", { title: destination || journal.title }));
     const body = encodeURIComponent(
-      `Salut !\n\nJ'ai envie de partager avec toi mon carnet de voyage${destination ? ` à ${destination}` : ""}.\n\nDécouvre-le ici : ${publicUrl || "(lien à activer)"}\n\nÀ très vite !`,
+      t("journalComp.share.emailBody", {
+        dest: destination ? ` ${destination}` : "",
+        url: publicUrl || t("journalComp.share.linkPlaceholder"),
+      }),
     );
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
@@ -59,7 +62,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
     if (!publicUrl) return;
     if (navigator.share) {
       try {
-        await navigator.share({ title: journal.title, text: `Mon carnet de voyage à ${destination}`, url: publicUrl });
+        await navigator.share({ title: journal.title, text: t("journalComp.share.shareText", { destination }), url: publicUrl });
       } catch {/* cancelled */}
     } else {
       copyLink();
