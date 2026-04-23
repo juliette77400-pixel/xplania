@@ -126,6 +126,7 @@ const AppNavbar = () => {
             <GlobalSearch variant="icon" />
           </div>
           <LanguageSwitcher variant="minimal" />
+          <ThemeToggle />
           {user && <NotificationsBell />}
           {user ? (
             <DropdownMenu>
