@@ -50,7 +50,7 @@ const Index = () => {
         <button onClick={handleCreateTrip}>create</button>
         <button onClick={scrollToFeedback}>fb</button>
       </div>
-      <HeroSection onCreateTrip={handleCreateTrip} />
+      <HeroSection onCreateTrip={handleCreateTrip} onDemoTrip={handleDemoTrip} />
       <FeaturesSection />
       <HowItWorksSection />
       <BenefitsSection />
@@ -65,6 +65,7 @@ const Index = () => {
       <TravelFormDialog
         open={travelFormOpen}
         onOpenChange={setTravelFormOpen}
+        initialPreset={demoMode ? DEMO_PRESET : undefined}
         onTripGenerated={async (data, recs) => {
           setTripData(data);
           setRecommendations(recs);
