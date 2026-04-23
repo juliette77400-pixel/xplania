@@ -135,7 +135,7 @@ const MoodExplorer = () => {
         {history.length > 0 && !activeMood && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm font-medium">
-              <HistoryIcon className="w-4 h-4 text-primary" /> Tes derniers moods
+              <HistoryIcon className="w-4 h-4 text-primary" /> {t("moodComp.history.title")}
             </div>
             <div className="flex flex-wrap gap-2">
               {history.slice(0, 6).map((h: any) => {
@@ -157,7 +157,7 @@ const MoodExplorer = () => {
         {activeMood && places.length > 0 && (
           <div className="flex justify-center pt-2">
             <Button variant="ghost" size="sm" onClick={() => { reset(); setTab("feed"); }}>
-              ← Choisir un autre mood
+              {t("moodComp.history.pickAnother")}
             </Button>
           </div>
         )}
