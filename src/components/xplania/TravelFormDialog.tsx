@@ -109,12 +109,16 @@ interface TravelFormDialogProps {
   onOpenChange: (open: boolean) => void;
   onTripGenerated?: (data: TravelFormData, recs: TravelRecommendations) => void;
   onGenerating?: (loading: boolean) => void;
+  /** Optional preset to skip mode selector and pre-fill form (used by "Voir un exemple" demo CTA) */
+  initialPreset?: { mode: PlanMode; data: Partial<TravelFormData> };
 }
 
-const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }: TravelFormDialogProps) => {
-  const [mode, setMode] = useState<PlanMode | null>(null);
+const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, initialPreset }: TravelFormDialogProps) => {
+  const [mode, setMode] = useState<PlanMode | null>(initialPreset?.mode ?? null);
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<TravelFormData>(defaultFormData);
+  const [formData, setFormData] = useState<TravelFormData>(
+    initialPreset ? { ...defaultFormData, ...initialPreset.data } : defaultFormData,
+  );
   const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
   const [generating, setGenerating] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
@@ -201,12 +205,12 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating }:
   const handleClose = () => {
     onOpenChange(false);
     setTimeout(() => {
-      setMode(null);
+      setMode(initialPreset?.mode ?? null);
       setStep(0);
       setShowDashboard(false);
       setRecommendations(null);
       setAiError(null);
-      setFormData(defaultFormData);
+      setFormData(initialPreset ? { ...defaultFormData, ...initialPreset.data } : defaultFormData);
       setDirection(1);
     }, 300);
   };
