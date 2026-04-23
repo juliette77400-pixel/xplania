@@ -10,16 +10,16 @@ const VALID: LegalKey[] = ["mentions", "cgu", "confidentialite"];
 const Legal = () => {
   const { type } = useParams<{ type: string }>();
   const { t, i18n } = useTranslation();
-
-  if (!type || !VALID.includes(type as LegalKey)) {
-    return <Navigate to="/legal/mentions" replace />;
-  }
-
-  const key = type as LegalKey;
+  const isValid = !!type && VALID.includes(type as LegalKey);
+  const key = (isValid ? type : "mentions") as LegalKey;
 
   useEffect(() => {
     document.title = `${t(`legal.${key}.title`)} — Xplania`;
   }, [key, t, i18n.language]);
+
+  if (!isValid) {
+    return <Navigate to="/legal/mentions" replace />;
+  }
 
   const sections = (t(`legal.${key}.sections`, { returnObjects: true }) as Array<{ heading: string; body: string }>) || [];
 
