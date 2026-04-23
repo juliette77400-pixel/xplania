@@ -2680,7 +2680,7 @@
     },
     "q4": {
       "q": "Does it work offline?",
-      "a": "The Live Tracking module caches your map and stops so it stays usable without signal. Your journal syncs as soon as you're back on wifi."
+      "a": "Offline mode is currently in development: it will let you access your journal, tracking map and steps even without signal, with automatic sync when wifi returns. Coming soon."
     },
     "q5": {
       "q": "Can I share my trip with friends and family?",
@@ -2688,7 +2688,7 @@
     },
     "q6": {
       "q": "When does premium launch?",
-      "a": "Early 2026. Join the premium list to get early access and an exclusive launch discount reserved for beta explorers."
+      "a": "Premium plans are scheduled for late 2026 / early 2027. Join the premium list to get early access and an exclusive launch discount reserved for beta explorers."
     }
   },
   "exitIntent": {
