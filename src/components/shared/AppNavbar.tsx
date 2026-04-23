@@ -46,6 +46,7 @@ const MORE = [
   { to: "/guide-visa", labelKey: "appNav.visa" },
   { to: "/gamification", labelKey: "appNav.badges" },
   { to: "/offres", labelKey: "appNav.premiumOffers" },
+  { to: "/about", labelKey: "appNav.about" },
 ];
 
 import { useWeeklyMissionsRemaining } from "@/hooks/useWeeklyMissionsRemaining";

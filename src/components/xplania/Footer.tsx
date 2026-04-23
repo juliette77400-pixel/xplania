@@ -146,6 +146,15 @@ const Footer = (_: Props) => {
                   {t("appNav.premiumOffers")}
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/about"
+                  className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <Heart className="w-4 h-4 group-hover:text-primary transition-colors" />
+                  {t("appNav.about")}
+                </Link>
+              </li>
             </ul>
           </motion.div>
         </div>
