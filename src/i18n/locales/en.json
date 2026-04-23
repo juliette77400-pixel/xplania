@@ -2645,21 +2645,21 @@
   "testimonials": {
     "tag": "They tried it",
     "title": "What early explorers are saying",
-    "subtitle": "Honest feedback from our beta community.",
+    "subtitle": "Real feedback from beta testers — picked for their honesty.",
     "t1": {
-      "name": "Camille R.",
-      "role": "Solo trip · Lisbon",
-      "text": "Planned 4 days in 10 minutes. Suitcase, budget, hidden spots — all there. Saved me a full weekend of prep."
+      "name": "Kajinoma",
+      "role": "Beta tester · Rated 5/5",
+      "text": "Honestly I think it's perfect, it's truly a brilliant idea. Zero problems during testing."
     },
     "t2": {
-      "name": "Yanis B.",
-      "role": "Couple · Bali",
-      "text": "The travel journal blew me away. We just took photos every day, the AI stitched the story together. Perfect gift for my partner when we got back."
+      "name": "Victor V.",
+      "role": "Beta tester · Rated 5/5",
+      "text": "Works perfectly. I'd love to see a 'speed' version of the trip planner, and even more destination images in the generated guide."
     },
     "t3": {
-      "name": "Lea M.",
-      "role": "Family · Japan",
-      "text": "Live tracking reassured my whole family back home. They followed our progress without us having to send 50 messages."
+      "name": "Lequebe",
+      "role": "Traveler · Community",
+      "text": "As a traveler often overwhelmed by the flood of information, the idea of an AI powered by real data from tourism organizations really appeals to me."
     }
   },
   "faq": {
