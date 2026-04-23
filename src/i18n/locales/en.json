@@ -1,4 +1,8 @@
 {
+  "theme": {
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",
