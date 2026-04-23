@@ -2616,17 +2616,17 @@
     "subtitle": "Real feedback from beta testers — picked for their honesty.",
     "t1": {
       "name": "Kajinoma",
-      "role": "Beta tester · Rated 5/5",
+      "role": "Beta tester · ⭐ 5/5",
       "text": "Honestly I think it's perfect, it's truly a brilliant idea. Zero problems during testing."
     },
     "t2": {
       "name": "Victor V.",
-      "role": "Beta tester · Rated 5/5",
-      "text": "Works perfectly. I'd love to see a 'speed' version of the trip planner, and even more destination images in the generated guide."
+      "role": "Beta tester · ⭐ 5/5",
+      "text": "Works perfectly. I'd love to see a 'speed' version of the planner, and even more images in the generated guide."
     },
     "t3": {
       "name": "Lequebe",
-      "role": "Traveler · Community",
+      "role": "Early Explorers community",
       "text": "As a traveler often overwhelmed by the flood of information, the idea of an AI powered by real data from tourism organizations really appeals to me."
     }
   },
