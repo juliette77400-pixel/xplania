@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import { useQuota } from "@/hooks/useQuota";
 
 const MoodExplorer = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const {
     places, favorites, history, loading, activeMood, position, weather,
     recommend, toggleFavorite, isFavorite, reset, badgeContext,
