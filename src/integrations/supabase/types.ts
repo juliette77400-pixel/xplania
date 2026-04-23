@@ -1344,6 +1344,15 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      subscribe_to_waitlist: {
+        Args: {
+          _email: string
+          _metadata?: Json
+          _pack?: string
+          _source?: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

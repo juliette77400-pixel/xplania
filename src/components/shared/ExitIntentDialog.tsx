@@ -56,19 +56,24 @@ const ExitIntentDialog = () => {
     }
     setSubmitting(true);
     try {
-      // Add to premium waitlist with lead-magnet source (table already exists)
-      await supabase.from("premium_waitlist").insert({
-        email: email.trim().toLowerCase(),
-        source: "lead-magnet:exit-intent",
-        pack: "checklist-pdf",
-        metadata: { magnet: "pre-departure-checklist" },
-      });
-      // Trigger download regardless (user gets the value immediately)
+      const { data: rpcData, error } = await supabase.rpc("subscribe_to_waitlist" as never, {
+        _email: email.trim().toLowerCase(),
+        _source: "lead-magnet:exit-intent",
+        _pack: "checklist-pdf",
+        _metadata: { magnet: "pre-departure-checklist" } as never,
+      } as never);
+      const result = rpcData as { ok: boolean; reason?: string; cooldown_days?: number } | null;
+      if (error || (result && result.ok === false && result.reason !== "cooldown")) {
+        // Soft-fail: still give the PDF
+        downloadChecklistPdf();
+        setDone(true);
+        return;
+      }
+      // On cooldown OR success → still deliver the PDF (the user already opted in once)
       downloadChecklistPdf();
       setDone(true);
       toast.success(t("exitIntent.success"));
     } catch (err) {
-      // Even on insert error (duplicate, etc.), still give the PDF
       downloadChecklistPdf();
       setDone(true);
     } finally {

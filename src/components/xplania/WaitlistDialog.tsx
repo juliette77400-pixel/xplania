@@ -78,23 +78,34 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
         })
       : null;
 
-    const { error } = await supabase.from("premium_waitlist").insert({
-      email: parsed.data.toLowerCase(),
-      source,
-      pack: pack ?? null,
-      user_id: userData.user?.id ?? null,
-      metadata: {
+    const { data: rpcData, error } = await supabase.rpc("subscribe_to_waitlist" as never, {
+      _email: parsed.data.toLowerCase(),
+      _source: source,
+      _pack: pack ?? null,
+      _metadata: {
         first_name: cleanFirstName || null,
         linkedin_url: cleanLinkedin || null,
         linkedin_message: linkedinMessage,
         notify_via: cleanLinkedin ? ["email", "linkedin"] : ["email"],
         locale: i18n.language,
-      },
-    });
+        user_id: userData.user?.id ?? null,
+      } as never,
+    } as never);
     setLoading(false);
 
-    if (error && !error.message.toLowerCase().includes("duplicate")) {
+    if (error) {
       toast.error(t("waitlist.errorGeneric"));
+      return;
+    }
+    const result = rpcData as { ok: boolean; reason?: string; cooldown_days?: number } | null;
+    if (result && result.ok === false) {
+      if (result.reason === "cooldown") {
+        toast.error(t("waitlist.cooldown", { days: result.cooldown_days ?? 7 }));
+      } else if (result.reason === "invalid_email") {
+        toast.error(t("waitlist.invalidEmail"));
+      } else {
+        toast.error(t("waitlist.errorGeneric"));
+      }
       return;
     }
     if (cleanLinkedin) {
