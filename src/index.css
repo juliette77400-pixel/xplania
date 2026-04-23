@@ -5,7 +5,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root,
+  .dark {
     --background: 222 47% 6%;
     --foreground: 210 40% 96%;
 
@@ -52,6 +53,52 @@
     --glass-border: hsla(210, 40%, 96%, 0.08);
     --glow-cyan: 0 0 40px hsla(185, 85%, 55%, 0.3);
     --glow-purple: 0 0 40px hsla(270, 70%, 55%, 0.3);
+  }
+
+  .light {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 185 85% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 70% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 30% 94%;
+    --muted-foreground: 215 16% 40%;
+
+    --accent: 270 70% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 25% 88%;
+    --input: 215 25% 88%;
+    --ring: 185 85% 38%;
+
+    --sidebar-background: 210 40% 96%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 185 85% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 30% 92%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 215 25% 88%;
+    --sidebar-ring: 185 85% 38%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(270, 70%, 50%), hsl(185, 85%, 42%));
+    --gradient-hero-text: linear-gradient(135deg, hsl(270, 75%, 45%), hsl(185, 90%, 38%));
+    --glass-bg: hsla(0, 0%, 100%, 0.7);
+    --glass-border: hsla(222, 47%, 11%, 0.08);
+    --glow-cyan: 0 0 40px hsla(185, 85%, 42%, 0.18);
+    --glow-purple: 0 0 40px hsla(270, 70%, 50%, 0.18);
   }
 }
 
