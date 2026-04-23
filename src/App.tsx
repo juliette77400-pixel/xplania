@@ -27,6 +27,7 @@ import Gamification from "./pages/Gamification.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Profil from "./pages/Profil.tsx";
 import Legal from "./pages/Legal.tsx";
+import About from "./pages/About.tsx";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="/gamification" element={<ProtectedRoute><Gamification /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+            <Route path="/about" element={<About />} />
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />
             <Route path="*" element={<NotFound />} />
