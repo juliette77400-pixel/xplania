@@ -107,7 +107,57 @@
     "quotaTooltip": "Crédits gratuits restants pour générer des plans (Valise, Budget, Visa). Passe Premium pour l'illimité.",
     "quotaTitle": "Crédits gratuits",
     "creditsShort": "crédits",
-    "viewPlans": "Voir les offres"
+    "viewPlans": "Voir les offres",
+    "about": "À propos"
+  },
+  "about": {
+    "metaTitle": "À propos — Xplania, le copilote de voyage IA",
+    "metaDescription": "L'histoire derrière Xplania : une plateforme née d'une frustration de voyageuse, pensée pour rendre chaque départ plus simple, plus humain, plus inspirant.",
+    "badge": "Notre histoire",
+    "heroTitle": "Voyager sans stress, c'est aussi un droit.",
+    "heroSubtitle": "Xplania est née d'une conviction simple : préparer un voyage devrait être aussi excitant que le vivre. Voici l'histoire d'une plateforme construite par une voyageuse, pour les voyageurs.",
+    "story": {
+      "title": "Pourquoi j'ai créé Xplania",
+      "signature": "Juliette Noël, fondatrice",
+      "p1": "Pendant des années, j'ai préparé mes voyages comme tout le monde : 14 onglets ouverts, un Google Doc qui débordait, une valise toujours mal faite et un budget qui explosait à mi-parcours.",
+      "p2": "Un jour, à 3h du matin, en cherchant si j'avais besoin d'un visa pour une escale de 6h, j'ai pensé : « pourquoi personne n'a centralisé tout ça intelligemment ? ». Pas un énième blog générique. Un vrai copilote, qui connaît MA destination, MES envies, MON budget.",
+      "p3": "Xplania, c'est ça. Un assistant IA qui prépare, accompagne et garde la mémoire de tes voyages — du premier rêve jusqu'au carnet de souvenirs.",
+      "quote": "« Le voyage commence le jour où tu le décides. Pas le jour où tu pars. »"
+    },
+    "mission": {
+      "label": "Mission",
+      "title": "Rendre chaque voyage simple, juste et inoubliable.",
+      "body": "On veut démocratiser le voyage bien préparé. Que tu partes 3 jours à Lisbonne ou 3 mois en sac à dos, tu mérites les mêmes outils, la même précision et la même inspiration.",
+      "stat1": { "value": "9", "label": "outils intégrés" },
+      "stat2": { "value": "100%", "label": "destinations couvertes" },
+      "stat3": { "value": "0€", "label": "pour démarrer" },
+      "stat4": { "value": "IA", "label": "personnalisée" }
+    },
+    "values": {
+      "title": "Nos valeurs",
+      "subtitle": "Quatre principes qui guident chaque ligne de code et chaque décision produit.",
+      "items": {
+        "human": { "title": "Humain d'abord", "desc": "L'IA est un outil. La sensation de partir, c'est toi qui la vis. On reste à ta hauteur, jamais au-dessus." },
+        "smart": { "title": "Intelligent, jamais générique", "desc": "Chaque recommandation est ancrée dans TA destination, ton contexte, tes envies. Pas de copier-coller." },
+        "trust": { "title": "Sobre et transparent", "desc": "Pas de tracking publicitaire abusif, pas de faux témoignages. Ce que tu vois est ce que tu obtiens." },
+        "freedom": { "title": "Liberté de partir", "desc": "Le freemium reste utile, le premium reste honnête. Tu choisis ton rythme." }
+      }
+    },
+    "timeline": {
+      "title": "Notre parcours",
+      "items": [
+        { "year": "2024", "title": "L'idée", "desc": "Première version papier d'un planificateur IA, testée sur 3 voyages personnels." },
+        { "year": "Début 2025", "title": "Premier prototype", "desc": "Un MVP fonctionnel avec 3 outils : valise, budget, visa." },
+        { "year": "Mi-2025", "title": "Beta publique", "desc": "Lancement de Xplania avec carnet, suivi GPS, mood explorer et 9 modules intégrés." },
+        { "year": "Aujourd'hui", "title": "Vous", "desc": "Chaque feedback compte. Cette plateforme grandit avec ses voyageurs." }
+      ]
+    },
+    "cta": {
+      "title": "Prêt à préparer ton prochain voyage ?",
+      "subtitle": "Crée ton premier plan en moins de 2 minutes. Aucune carte bancaire requise.",
+      "primary": "Commencer maintenant",
+      "secondary": "Nous écrire"
+    }
   },
   "globalSearch": {
     "aria": "Rechercher dans Xplania",
