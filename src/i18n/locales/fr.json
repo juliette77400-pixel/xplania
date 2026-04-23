@@ -418,7 +418,51 @@
     "betaBadge": "Bêta privée en cours",
     "betaNote": "Xplania est actuellement testé par les premiers voyageurs afin d'améliorer l'expérience.",
     "prototype": "Xplania – Prototype bêta v0.1",
-    "copyright": "© 2026 Xplania – Programme bêta exclusif – Construit avec ❤️ pour les voyageurs"
+    "copyright": "© 2026 Xplania – Programme bêta exclusif – Construit avec ❤️ pour les voyageurs",
+    "legalTitle": "Légal",
+    "legalMentions": "Mentions légales",
+    "legalCgu": "Conditions d'utilisation",
+    "legalConfidentialite": "Politique de confidentialité"
+  },
+  "legal": {
+    "backHome": "Retour à l'accueil",
+    "lastUpdated": "Dernière mise à jour",
+    "updateDate": "23 avril 2026",
+    "contactNote": "Pour toute question, contacte-nous à",
+    "mentions": {
+      "title": "Mentions légales",
+      "sections": [
+        { "heading": "Éditeur du site", "body": "Xplania est édité par Juliette Noël, en phase bêta privée. Contact : juliettenoel.xplania@gmail.com" },
+        { "heading": "Hébergement", "body": "Le site est hébergé sur Lovable Cloud (infrastructure Supabase). URL : xplania.lovable.app" },
+        { "heading": "Propriété intellectuelle", "body": "L'ensemble des contenus (textes, visuels, logo, code) est la propriété exclusive de Xplania, sauf mention contraire. Toute reproduction sans autorisation est interdite." },
+        { "heading": "Crédits", "body": "Données cartographiques : © OpenStreetMap. Photos d'illustration : Unsplash. Icônes : Lucide." },
+        { "heading": "Statut bêta", "body": "Xplania est actuellement en version bêta. Le service peut évoluer, être interrompu ou modifié sans préavis." }
+      ]
+    },
+    "cgu": {
+      "title": "Conditions d'utilisation",
+      "sections": [
+        { "heading": "Objet", "body": "Les présentes conditions régissent l'utilisation de Xplania, plateforme d'aide à la planification de voyages assistée par IA." },
+        { "heading": "Compte utilisateur", "body": "La création d'un compte est gratuite. Tu t'engages à fournir des informations exactes et à protéger tes identifiants. Un compte par personne." },
+        { "heading": "Usage acceptable", "body": "Il est interdit d'utiliser Xplania pour : (a) du contenu illégal, haineux ou nuisible, (b) du spam ou du scraping automatisé, (c) toute tentative de contourner les quotas ou la sécurité." },
+        { "heading": "Quotas gratuits", "body": "La version bêta inclut un nombre limité de générations IA gratuites par outil. Les offres premium (à venir) lèveront ces limites." },
+        { "heading": "Contenu généré par IA", "body": "Les recommandations IA sont fournies à titre informatif. Vérifie toujours les informations critiques (visa, santé, sécurité) auprès de sources officielles." },
+        { "heading": "Responsabilité", "body": "Xplania ne saurait être tenu responsable de pertes ou désagréments liés à un voyage. Le service est fourni « en l'état » durant la phase bêta." },
+        { "heading": "Résiliation", "body": "Tu peux supprimer ton compte à tout moment via la page Profil. Nous nous réservons le droit de suspendre un compte en cas de violation des présentes." }
+      ]
+    },
+    "confidentialite": {
+      "title": "Politique de confidentialité",
+      "sections": [
+        { "heading": "Données collectées", "body": "Nous collectons : email, prénom (optionnel), informations de profil (avatar, langue), données de voyage que tu saisis, et logs techniques (adresse IP, navigateur)." },
+        { "heading": "Finalités", "body": "Tes données servent à : faire fonctionner ton compte, générer tes recommandations IA, améliorer le service, t'envoyer les notifications que tu acceptes." },
+        { "heading": "Base légale (RGPD)", "body": "Exécution du contrat (compte), intérêt légitime (amélioration produit), consentement (newsletter, notifications)." },
+        { "heading": "Sous-traitants", "body": "Lovable Cloud / Supabase (hébergement & base de données, UE), Resend (envoi d'emails transactionnels), Google (authentification OAuth si tu choisis cette option), OpenAI / Google Gemini (génération IA — données envoyées de manière anonymisée pour les recommandations)." },
+        { "heading": "Durée de conservation", "body": "Tes données sont conservées tant que ton compte est actif. À la suppression du compte, elles sont effacées sous 30 jours, sauf obligation légale." },
+        { "heading": "Tes droits", "body": "Tu disposes des droits d'accès, rectification, effacement, opposition, portabilité et limitation. Pour les exercer : juliettenoel.xplania@gmail.com" },
+        { "heading": "Cookies", "body": "Xplania utilise uniquement des cookies techniques nécessaires (authentification, langue). Aucun cookie publicitaire ou de tracking tiers en bêta." }
+      ]
+    }
   },
   "waitlist": {
     "defaultTitle": "La version premium arrive bientôt 🚀",
