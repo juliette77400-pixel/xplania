@@ -432,35 +432,92 @@
     "mentions": {
       "title": "Legal notice",
       "sections": [
-        { "heading": "Site publisher", "body": "Xplania is published by Juliette Noël, currently in private beta. Contact: juliettenoel.xplania@gmail.com" },
-        { "heading": "Hosting", "body": "The site is hosted on Lovable Cloud (Supabase infrastructure). URL: xplania.lovable.app" },
-        { "heading": "Intellectual property", "body": "All content (texts, visuals, logo, code) is the exclusive property of Xplania, unless otherwise stated. Any reproduction without permission is prohibited." },
-        { "heading": "Credits", "body": "Map data: © OpenStreetMap. Illustration photos: Unsplash. Icons: Lucide." },
-        { "heading": "Beta status", "body": "Xplania is currently in beta version. The service may evolve, be interrupted or modified without notice." }
+        {
+          "heading": "Site publisher",
+          "body": "Xplania is published by Juliette Noël, currently in private beta. Contact: juliettenoel.xplania@gmail.com"
+        },
+        {
+          "heading": "Hosting",
+          "body": "The site is hosted on Lovable Cloud (Supabase infrastructure). URL: xplania.lovable.app"
+        },
+        {
+          "heading": "Intellectual property",
+          "body": "All content (texts, visuals, logo, code) is the exclusive property of Xplania, unless otherwise stated. Any reproduction without permission is prohibited."
+        },
+        {
+          "heading": "Credits",
+          "body": "Map data: © OpenStreetMap. Illustration photos: Unsplash. Icons: Lucide."
+        },
+        {
+          "heading": "Beta status",
+          "body": "Xplania is currently in beta version. The service may evolve, be interrupted or modified without notice."
+        }
       ]
     },
     "cgu": {
       "title": "Terms of use",
       "sections": [
-        { "heading": "Purpose", "body": "These terms govern the use of Xplania, an AI-assisted travel planning platform." },
-        { "heading": "User account", "body": "Account creation is free. You agree to provide accurate information and protect your credentials. One account per person." },
-        { "heading": "Acceptable use", "body": "It is forbidden to use Xplania for: (a) illegal, hateful or harmful content, (b) spam or automated scraping, (c) any attempt to bypass quotas or security." },
-        { "heading": "Free quotas", "body": "The beta version includes a limited number of free AI generations per tool. Premium offers (coming soon) will lift these limits." },
-        { "heading": "AI-generated content", "body": "AI recommendations are provided for informational purposes. Always verify critical information (visa, health, safety) from official sources." },
-        { "heading": "Liability", "body": "Xplania cannot be held liable for losses or inconvenience related to a trip. The service is provided 'as is' during the beta phase." },
-        { "heading": "Termination", "body": "You can delete your account at any time via the Profile page. We reserve the right to suspend an account in case of violation." }
+        {
+          "heading": "Purpose",
+          "body": "These terms govern the use of Xplania, an AI-assisted travel planning platform."
+        },
+        {
+          "heading": "User account",
+          "body": "Account creation is free. You agree to provide accurate information and protect your credentials. One account per person."
+        },
+        {
+          "heading": "Acceptable use",
+          "body": "It is forbidden to use Xplania for: (a) illegal, hateful or harmful content, (b) spam or automated scraping, (c) any attempt to bypass quotas or security."
+        },
+        {
+          "heading": "Free quotas",
+          "body": "The beta version includes a limited number of free AI generations per tool. Premium offers (coming soon) will lift these limits."
+        },
+        {
+          "heading": "AI-generated content",
+          "body": "AI recommendations are provided for informational purposes. Always verify critical information (visa, health, safety) from official sources."
+        },
+        {
+          "heading": "Liability",
+          "body": "Xplania cannot be held liable for losses or inconvenience related to a trip. The service is provided 'as is' during the beta phase."
+        },
+        {
+          "heading": "Termination",
+          "body": "You can delete your account at any time via the Profile page. We reserve the right to suspend an account in case of violation."
+        }
       ]
     },
     "confidentialite": {
       "title": "Privacy policy",
       "sections": [
-        { "heading": "Data collected", "body": "We collect: email, first name (optional), profile information (avatar, language), travel data you enter, and technical logs (IP address, browser)." },
-        { "heading": "Purposes", "body": "Your data is used to: run your account, generate your AI recommendations, improve the service, send you the notifications you accept." },
-        { "heading": "Legal basis (GDPR)", "body": "Contract performance (account), legitimate interest (product improvement), consent (newsletter, notifications)." },
-        { "heading": "Subprocessors", "body": "Lovable Cloud / Supabase (hosting & database, EU), Resend (transactional email delivery), Google (OAuth authentication if you choose that option), OpenAI / Google Gemini (AI generation — data sent in anonymized form for recommendations)." },
-        { "heading": "Retention", "body": "Your data is kept as long as your account is active. Upon account deletion, it is erased within 30 days, except for legal obligations." },
-        { "heading": "Your rights", "body": "You have rights of access, rectification, erasure, objection, portability and limitation. To exercise them: juliettenoel.xplania@gmail.com" },
-        { "heading": "Cookies", "body": "Xplania only uses necessary technical cookies (authentication, language). No advertising or third-party tracking cookies during beta." }
+        {
+          "heading": "Data collected",
+          "body": "We collect: email, first name (optional), profile information (avatar, language), travel data you enter, and technical logs (IP address, browser)."
+        },
+        {
+          "heading": "Purposes",
+          "body": "Your data is used to: run your account, generate your AI recommendations, improve the service, send you the notifications you accept."
+        },
+        {
+          "heading": "Legal basis (GDPR)",
+          "body": "Contract performance (account), legitimate interest (product improvement), consent (newsletter, notifications)."
+        },
+        {
+          "heading": "Subprocessors",
+          "body": "Lovable Cloud / Supabase (hosting & database, EU), Resend (transactional email delivery), Google (OAuth authentication if you choose that option), OpenAI / Google Gemini (AI generation — data sent in anonymized form for recommendations)."
+        },
+        {
+          "heading": "Retention",
+          "body": "Your data is kept as long as your account is active. Upon account deletion, it is erased within 30 days, except for legal obligations."
+        },
+        {
+          "heading": "Your rights",
+          "body": "You have rights of access, rectification, erasure, objection, portability and limitation. To exercise them: juliettenoel.xplania@gmail.com"
+        },
+        {
+          "heading": "Cookies",
+          "body": "Xplania only uses necessary technical cookies (authentication, language). No advertising or third-party tracking cookies during beta."
+        }
       ]
     }
   },
@@ -1684,7 +1741,13 @@
   },
   "discoverComp": {
     "kicker": "Discover",
-    "tod": { "morning": "Morning", "afternoon": "Afternoon", "evening": "Evening", "night": "Night", "noon": "Noon" },
+    "tod": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening",
+      "night": "Night",
+      "noon": "Noon"
+    },
     "heroTitleA": "What you need",
     "heroTitleB": "right now",
     "heroLocOn": "Around you ({{lat}}, {{lng}})",
@@ -1704,7 +1767,11 @@
       "suggestion5": "nature walk",
       "suggestion6": "authentic night out"
     },
-    "card": { "save": "Save", "remove": "Remove", "hiddenGem": "Hidden gem" },
+    "card": {
+      "save": "Save",
+      "remove": "Remove",
+      "hiddenGem": "Hidden gem"
+    },
     "drawer": {
       "tipInsider": "💡 Insider tip",
       "saved": "Saved",
@@ -1746,7 +1813,10 @@
       "share": "Share",
       "email": "Email"
     },
-    "map": { "youAreHere": "You are here", "approxIp": "Approximate location (IP)" }
+    "map": {
+      "youAreHere": "You are here",
+      "approxIp": "Approximate location (IP)"
+    }
   },
   "moodComp": {
     "hero": {
@@ -1755,22 +1825,70 @@
       "subtitle": "An emotion → a perfect place.",
       "change": "Change"
     },
-    "tod": { "morning": "Morning", "noon": "Noon", "afternoon": "Afternoon", "evening": "Evening", "night": "Night" },
+    "tod": {
+      "morning": "Morning",
+      "noon": "Noon",
+      "afternoon": "Afternoon",
+      "evening": "Evening",
+      "night": "Night"
+    },
     "moods": {
-      "chill":     { "label": "Chill",     "description": "Calm, view, slow vibes" },
-      "explore":   { "label": "Explore",   "description": "Adventure, hidden gems" },
-      "romantic":  { "label": "Romantic",  "description": "Sunset, intimate, elegant" },
-      "food":      { "label": "Food",      "description": "Local flavors, foodie" },
-      "party":     { "label": "Party",     "description": "Energy, rooftop, nightlife" },
-      "nature":    { "label": "Nature",    "description": "Recharge, outdoors" },
-      "focus":     { "label": "Focus",     "description": "Work, focus, café" },
-      "calm":      { "label": "Calm",      "description": "Calm and soothed" },
-      "curious":   { "label": "Curious",   "description": "Curious and open" },
-      "energetic": { "label": "Energetic", "description": "Full of energy" },
-      "social":    { "label": "Social",    "description": "With others" },
-      "creative":  { "label": "Creative",  "description": "Inspired, creative" },
-      "adventurous":{"label": "Adventurous","description":"Seeking adventure" },
-      "discovery": { "label": "Discovery", "description": "Eager to discover" }
+      "chill": {
+        "label": "Chill",
+        "description": "Calm, view, slow vibes"
+      },
+      "explore": {
+        "label": "Explore",
+        "description": "Adventure, hidden gems"
+      },
+      "romantic": {
+        "label": "Romantic",
+        "description": "Sunset, intimate, elegant"
+      },
+      "food": {
+        "label": "Food",
+        "description": "Local flavors, foodie"
+      },
+      "party": {
+        "label": "Party",
+        "description": "Energy, rooftop, nightlife"
+      },
+      "nature": {
+        "label": "Nature",
+        "description": "Recharge, outdoors"
+      },
+      "focus": {
+        "label": "Focus",
+        "description": "Work, focus, café"
+      },
+      "calm": {
+        "label": "Calm",
+        "description": "Calm and soothed"
+      },
+      "curious": {
+        "label": "Curious",
+        "description": "Curious and open"
+      },
+      "energetic": {
+        "label": "Energetic",
+        "description": "Full of energy"
+      },
+      "social": {
+        "label": "Social",
+        "description": "With others"
+      },
+      "creative": {
+        "label": "Creative",
+        "description": "Inspired, creative"
+      },
+      "adventurous": {
+        "label": "Adventurous",
+        "description": "Seeking adventure"
+      },
+      "discovery": {
+        "label": "Discovery",
+        "description": "Eager to discover"
+      }
     },
     "selector": {
       "title": "How are you feeling?",
@@ -1784,7 +1902,11 @@
       "submit": "Find me places",
       "surprise": "Surprise me"
     },
-    "feed": { "swipe": "↕ swipe", "prev": "Previous", "next": "Next" },
+    "feed": {
+      "swipe": "↕ swipe",
+      "prev": "Previous",
+      "next": "Next"
+    },
     "card": {
       "favoriteAria": "Favorite",
       "go": "Go there",
@@ -1864,6 +1986,17 @@
     "map": {
       "noGeoTitle": "No geolocated places for this mood.",
       "noGeoDesc": "Try again with location enabled."
+    },
+    "tabs": {
+      "feed": "Feed",
+      "map": "Map",
+      "favorites": "Favorites",
+      "badges": "Badges",
+      "social": "Social"
+    },
+    "history": {
+      "title": "Your recent moods",
+      "pickAnother": "← Pick another mood"
     }
   },
   "trackingComp": {
@@ -1952,7 +2085,10 @@
       "directions": "Directions",
       "statusAria": "Change status: {{status}}"
     },
-    "tabs": { "timeline": "📋 Trip timeline", "suggestions": "✨ AI suggestions" },
+    "tabs": {
+      "timeline": "📋 Trip timeline",
+      "suggestions": "✨ AI suggestions"
+    },
     "weather": {
       "loading": "Weather…",
       "feelsLikeWind": "Feels like {{feels}} • Wind {{wind}}"
@@ -1983,7 +2119,13 @@
     "pinPlaced_one": "{{count}} suggestion pinned on the map ⭐",
     "pinPlaced_other": "{{count}} suggestions pinned on the map ⭐",
     "loading": "Loading…",
-    "checkInTitle": "Automatic check-in"
+    "checkInTitle": "Automatic check-in",
+    "tracker": {
+      "kicker": "Live trip tracking",
+      "myTrip": "My trip",
+      "positionShared": "Position shared • {{km}} km traveled",
+      "enableGeo": "Enable geolocation to start live tracking"
+    }
   },
   "journalComp": {
     "day": {

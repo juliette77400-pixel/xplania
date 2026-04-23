@@ -188,16 +188,16 @@ const TripTracker = ({ tripId, destination }: Props) => {
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary/80 font-semibold flex items-center gap-2 mb-2">
               <Radio className={`w-3.5 h-3.5 ${trip?.is_active ? "text-green-500 animate-pulse" : ""}`} />
-              Suivi de voyage en direct
+              {t("trackingComp.tracker.kicker")}
             </p>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
               <MapPin className="w-6 h-6 text-primary" />
-              {destination || "Mon voyage"}
+              {destination || t("trackingComp.tracker.myTrip")}
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
               {trip?.is_active
-                ? `Position partagée • ${Number(trip?.total_distance_km || 0).toFixed(1)} km parcourus`
-                : "Active la géolocalisation pour démarrer le suivi temps réel"}
+                ? t("trackingComp.tracker.positionShared", { km: Number(trip?.total_distance_km || 0).toFixed(1) })
+                : t("trackingComp.tracker.enableGeo")}
             </p>
             <div className="flex items-center gap-2 mt-3 flex-wrap">
               <LiveWeatherBadge
