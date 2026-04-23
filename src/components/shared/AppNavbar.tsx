@@ -15,6 +15,7 @@ import { getRemaining, isDevMode } from "@/lib/usage-quota";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import NotificationsBell from "@/components/shared/NotificationsBell";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 // Added: global Cmd+K search & post-signup tour
 import GlobalSearch from "@/components/shared/GlobalSearch";
 import OnboardingTour from "@/components/shared/OnboardingTour";
@@ -28,17 +29,19 @@ interface NavItem {
   premium?: boolean;
 }
 
+// Primary nav reduced to 5 core items for clarity (was 7).
+// Explore + Suitcase moved into "More" to keep the bar scannable.
 const PRIMARY: NavItem[] = [
   { to: "/app", labelKey: "appNav.home", icon: Home },
   { to: "/discover", labelKey: "appNav.discover", icon: Compass },
   { to: "/mood", labelKey: "appNav.mood", icon: Heart, premium: true },
-  { to: "/explore", labelKey: "appNav.explore", icon: Map, premium: true },
   { to: "/suivi", labelKey: "appNav.tracking", icon: Activity, premium: true },
-  { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Briefcase },
   { to: "/carnets", labelKey: "appNav.journal", icon: BookOpen, premium: true },
 ];
 
 const MORE = [
+  { to: "/explore", labelKey: "appNav.explore" },
+  { to: "/guide-valise", labelKey: "appNav.suitcase" },
   { to: "/guide-budget", labelKey: "appNav.budget" },
   { to: "/guide-visa", labelKey: "appNav.visa" },
   { to: "/gamification", labelKey: "appNav.badges" },
