@@ -128,28 +128,68 @@
       "label": "Mission",
       "title": "Make every trip simple, fair and unforgettable.",
       "body": "We want to democratize well-prepared travel. Whether you go 3 days to Lisbon or 3 months backpacking, you deserve the same tools, the same precision and the same inspiration.",
-      "stat1": { "value": "9", "label": "integrated tools" },
-      "stat2": { "value": "100%", "label": "destinations covered" },
-      "stat3": { "value": "$0", "label": "to start" },
-      "stat4": { "value": "AI", "label": "personalized" }
+      "stat1": {
+        "value": "9",
+        "label": "integrated tools"
+      },
+      "stat2": {
+        "value": "100%",
+        "label": "destinations covered"
+      },
+      "stat3": {
+        "value": "$0",
+        "label": "to start"
+      },
+      "stat4": {
+        "value": "AI",
+        "label": "personalized"
+      }
     },
     "values": {
       "title": "Our values",
       "subtitle": "Four principles that guide every line of code and every product decision.",
       "items": {
-        "human": { "title": "Human first", "desc": "AI is a tool. The feeling of leaving, you're the one who lives it. We stay at your level, never above." },
-        "smart": { "title": "Smart, never generic", "desc": "Every recommendation is grounded in YOUR destination, YOUR context, YOUR wishes. No copy-paste." },
-        "trust": { "title": "Sober and transparent", "desc": "No invasive ad tracking, no fake testimonials. What you see is what you get." },
-        "freedom": { "title": "Freedom to leave", "desc": "The free tier stays useful, the premium stays fair. You choose your pace." }
+        "human": {
+          "title": "Human first",
+          "desc": "AI is a tool. The feeling of leaving, you're the one who lives it. We stay at your level, never above."
+        },
+        "smart": {
+          "title": "Smart, never generic",
+          "desc": "Every recommendation is grounded in YOUR destination, YOUR context, YOUR wishes. No copy-paste."
+        },
+        "trust": {
+          "title": "Sober and transparent",
+          "desc": "No invasive ad tracking, no fake testimonials. What you see is what you get."
+        },
+        "freedom": {
+          "title": "Freedom to leave",
+          "desc": "The free tier stays useful, the premium stays fair. You choose your pace."
+        }
       }
     },
     "timeline": {
       "title": "Our journey",
       "items": [
-        { "year": "2024", "title": "The idea", "desc": "First paper version of an AI planner, tested on 3 personal trips." },
-        { "year": "Early 2025", "title": "First prototype", "desc": "A working MVP with 3 tools: packing, budget, visa." },
-        { "year": "Mid-2025", "title": "Public beta", "desc": "Xplania launches with journal, GPS tracking, mood explorer and 9 integrated modules." },
-        { "year": "Today", "title": "You", "desc": "Every feedback counts. This platform grows with its travelers." }
+        {
+          "year": "2024",
+          "title": "The idea",
+          "desc": "First paper version of an AI planner, tested on 3 personal trips."
+        },
+        {
+          "year": "Early 2025",
+          "title": "First prototype",
+          "desc": "A working MVP with 3 tools: packing, budget, visa."
+        },
+        {
+          "year": "Mid-2025",
+          "title": "Public beta",
+          "desc": "Xplania launches with journal, GPS tracking, mood explorer and 9 integrated modules."
+        },
+        {
+          "year": "Today",
+          "title": "You",
+          "desc": "Every feedback counts. This platform grows with its travelers."
+        }
       ]
     },
     "cta": {
@@ -596,7 +636,8 @@
     "linkedinFallbackName": "traveler",
     "linkedinMessage": "Hi {{name}}, you asked to be notified as soon as Xplania premium passes are available. We confirm your spot on the waitlist — we'll reach out to you in priority! 🌍✨",
     "errorGeneric": "Oops, something went wrong. Please try again.",
-    "successToast": "You're on the list 🚀"
+    "successToast": "You're on the list 🚀",
+    "cooldown": "This email is already registered. Try again in {{days}} days."
   },
   "feedback": {
     "title": "Give my feedback",

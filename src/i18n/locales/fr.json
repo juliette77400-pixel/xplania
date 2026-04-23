@@ -128,28 +128,68 @@
       "label": "Mission",
       "title": "Rendre chaque voyage simple, juste et inoubliable.",
       "body": "On veut démocratiser le voyage bien préparé. Que tu partes 3 jours à Lisbonne ou 3 mois en sac à dos, tu mérites les mêmes outils, la même précision et la même inspiration.",
-      "stat1": { "value": "9", "label": "outils intégrés" },
-      "stat2": { "value": "100%", "label": "destinations couvertes" },
-      "stat3": { "value": "0€", "label": "pour démarrer" },
-      "stat4": { "value": "IA", "label": "personnalisée" }
+      "stat1": {
+        "value": "9",
+        "label": "outils intégrés"
+      },
+      "stat2": {
+        "value": "100%",
+        "label": "destinations couvertes"
+      },
+      "stat3": {
+        "value": "0€",
+        "label": "pour démarrer"
+      },
+      "stat4": {
+        "value": "IA",
+        "label": "personnalisée"
+      }
     },
     "values": {
       "title": "Nos valeurs",
       "subtitle": "Quatre principes qui guident chaque ligne de code et chaque décision produit.",
       "items": {
-        "human": { "title": "Humain d'abord", "desc": "L'IA est un outil. La sensation de partir, c'est toi qui la vis. On reste à ta hauteur, jamais au-dessus." },
-        "smart": { "title": "Intelligent, jamais générique", "desc": "Chaque recommandation est ancrée dans TA destination, ton contexte, tes envies. Pas de copier-coller." },
-        "trust": { "title": "Sobre et transparent", "desc": "Pas de tracking publicitaire abusif, pas de faux témoignages. Ce que tu vois est ce que tu obtiens." },
-        "freedom": { "title": "Liberté de partir", "desc": "Le freemium reste utile, le premium reste honnête. Tu choisis ton rythme." }
+        "human": {
+          "title": "Humain d'abord",
+          "desc": "L'IA est un outil. La sensation de partir, c'est toi qui la vis. On reste à ta hauteur, jamais au-dessus."
+        },
+        "smart": {
+          "title": "Intelligent, jamais générique",
+          "desc": "Chaque recommandation est ancrée dans TA destination, ton contexte, tes envies. Pas de copier-coller."
+        },
+        "trust": {
+          "title": "Sobre et transparent",
+          "desc": "Pas de tracking publicitaire abusif, pas de faux témoignages. Ce que tu vois est ce que tu obtiens."
+        },
+        "freedom": {
+          "title": "Liberté de partir",
+          "desc": "Le freemium reste utile, le premium reste honnête. Tu choisis ton rythme."
+        }
       }
     },
     "timeline": {
       "title": "Notre parcours",
       "items": [
-        { "year": "2024", "title": "L'idée", "desc": "Première version papier d'un planificateur IA, testée sur 3 voyages personnels." },
-        { "year": "Début 2025", "title": "Premier prototype", "desc": "Un MVP fonctionnel avec 3 outils : valise, budget, visa." },
-        { "year": "Mi-2025", "title": "Beta publique", "desc": "Lancement de Xplania avec carnet, suivi GPS, mood explorer et 9 modules intégrés." },
-        { "year": "Aujourd'hui", "title": "Vous", "desc": "Chaque feedback compte. Cette plateforme grandit avec ses voyageurs." }
+        {
+          "year": "2024",
+          "title": "L'idée",
+          "desc": "Première version papier d'un planificateur IA, testée sur 3 voyages personnels."
+        },
+        {
+          "year": "Début 2025",
+          "title": "Premier prototype",
+          "desc": "Un MVP fonctionnel avec 3 outils : valise, budget, visa."
+        },
+        {
+          "year": "Mi-2025",
+          "title": "Beta publique",
+          "desc": "Lancement de Xplania avec carnet, suivi GPS, mood explorer et 9 modules intégrés."
+        },
+        {
+          "year": "Aujourd'hui",
+          "title": "Vous",
+          "desc": "Chaque feedback compte. Cette plateforme grandit avec ses voyageurs."
+        }
       ]
     },
     "cta": {
@@ -596,7 +636,8 @@
     "linkedinFallbackName": "voyageur",
     "linkedinMessage": "Bonjour {{name}}, vous avez demandé à être notifié(e) dès que les pass premium Xplania sont disponibles. Nous vous confirmons votre inscription sur la liste d'attente — nous reviendrons vers vous en priorité ! 🌍✨",
     "errorGeneric": "Oups, une erreur est survenue. Réessaye.",
-    "successToast": "Tu es sur la liste 🚀"
+    "successToast": "Tu es sur la liste 🚀",
+    "cooldown": "Cet email est déjà inscrit. Réessaie dans {{days}} jours."
   },
   "feedback": {
     "title": "Donner mon feedback",
