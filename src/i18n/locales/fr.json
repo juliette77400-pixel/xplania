@@ -111,92 +111,60 @@
     "about": "À propos"
   },
   "about": {
-    "metaTitle": "À propos — Xplania, le copilote de voyage IA",
-    "metaDescription": "L'histoire derrière Xplania : une plateforme née d'une frustration de voyageuse, pensée pour rendre chaque départ plus simple, plus humain, plus inspirant.",
+    "metaTitle": "À propos — Xplania, voyager autrement enfin",
+    "metaDescription": "Xplania centralise toute l'expérience voyage : avant, pendant et après. Découvre l'histoire et la vision derrière la plateforme.",
     "badge": "Notre histoire",
-    "heroTitle": "Voyager sans stress, c'est aussi un droit.",
-    "heroSubtitle": "Xplania est née d'une conviction simple : préparer un voyage devrait être aussi excitant que le vivre. Voici l'histoire d'une plateforme construite par une voyageuse, pour les voyageurs.",
+    "heroTitle": "Voyager autrement, enfin. 🌍",
+    "heroSubtitle": "Voyager devrait être une expérience, pas une organisation complexe. Xplania réinvente la manière de préparer, vivre et revivre ses voyages.",
     "story": {
-      "title": "Pourquoi j'ai créé Xplania",
-      "signature": "Juliette Noël, fondatrice",
-      "p1": "Pendant des années, j'ai préparé mes voyages comme tout le monde : 14 onglets ouverts, un Google Doc qui débordait, une valise toujours mal faite et un budget qui explosait à mi-parcours.",
-      "p2": "Un jour, à 3h du matin, en cherchant si j'avais besoin d'un visa pour une escale de 6h, j'ai pensé : « pourquoi personne n'a centralisé tout ça intelligemment ? ». Pas un énième blog générique. Un vrai copilote, qui connaît MA destination, MES envies, MON budget.",
-      "p3": "Xplania, c'est ça. Un assistant IA qui prépare, accompagne et garde la mémoire de tes voyages — du premier rêve jusqu'au carnet de souvenirs.",
-      "quote": "« Le voyage commence le jour où tu le décides. Pas le jour où tu pars. »"
-    },
-    "mission": {
-      "label": "Mission",
-      "title": "Rendre chaque voyage simple, juste et inoubliable.",
-      "body": "On veut démocratiser le voyage bien préparé. Que tu partes 3 jours à Lisbonne ou 3 mois en sac à dos, tu mérites les mêmes outils, la même précision et la même inspiration.",
-      "stat1": {
-        "value": "9",
-        "label": "outils intégrés"
-      },
-      "stat2": {
-        "value": "100%",
-        "label": "destinations couvertes"
-      },
-      "stat3": {
-        "value": "0€",
-        "label": "pour démarrer"
-      },
-      "stat4": {
-        "value": "IA",
-        "label": "personnalisée"
-      }
-    },
-    "values": {
-      "title": "Nos valeurs",
-      "subtitle": "Quatre principes qui guident chaque ligne de code et chaque décision produit.",
-      "items": {
-        "human": {
-          "title": "Humain d'abord",
-          "desc": "L'IA est un outil. La sensation de partir, c'est toi qui la vis. On reste à ta hauteur, jamais au-dessus."
-        },
-        "smart": {
-          "title": "Intelligent, jamais générique",
-          "desc": "Chaque recommandation est ancrée dans TA destination, ton contexte, tes envies. Pas de copier-coller."
-        },
-        "trust": {
-          "title": "Sobre et transparent",
-          "desc": "Pas de tracking publicitaire abusif, pas de faux témoignages. Ce que tu vois est ce que tu obtiens."
-        },
-        "freedom": {
-          "title": "Liberté de partir",
-          "desc": "Le freemium reste utile, le premium reste honnête. Tu choisis ton rythme."
-        }
-      }
+      "title": "Le pourquoi 💭",
+      "p1": "Voyager a toujours fait partie de moi 🌍 Mais un moment précis a tout changé.",
+      "p2": "Avant un départ à l'étranger, je me suis retrouvée avec 9 onglets ouverts : valise, budget, visa, lieux, culture, souvenirs…",
+      "p3": "Et j'ai réalisé quelque chose : on passe plus de temps à organiser le voyage qu'à le vivre.",
+      "quote": "C'est là qu'est née Xplania."
     },
     "timeline": {
       "title": "Notre parcours",
       "items": [
-        {
-          "year": "2024",
-          "title": "L'idée",
-          "desc": "Première version papier d'un planificateur IA, testée sur 3 voyages personnels."
-        },
-        {
-          "year": "Début 2025",
-          "title": "Premier prototype",
-          "desc": "Un MVP fonctionnel avec 3 outils : valise, budget, visa."
-        },
-        {
-          "year": "Mi-2025",
-          "title": "Beta publique",
-          "desc": "Lancement de Xplania avec carnet, suivi GPS, mood explorer et 9 modules intégrés."
-        },
-        {
-          "year": "Aujourd'hui",
-          "title": "Vous",
-          "desc": "Chaque feedback compte. Cette plateforme grandit avec ses voyageurs."
-        }
+        { "year": "2023", "title": "Début de la réflexion", "desc": "Premières recherches sur l'expérience voyage et les frustrations des voyageurs." },
+        { "year": "2025", "title": "Lancement bêta", "desc": "Première version bêta de Xplania ouverte aux Early Explorers." }
       ]
     },
+    "value": {
+      "tag": "Proposition de valeur",
+      "title": "Une seule plateforme, toute l'expérience ✈️",
+      "body": "Xplania est la seule plateforme qui centralise toute l'expérience voyage : avant, pendant et après, en un seul endroit."
+    },
+    "experience": {
+      "title": "Comment ça marche",
+      "subtitle": "Une expérience pensée comme un voyage, pas comme un formulaire.",
+      "steps": {
+        "s1": { "title": "Choisis ton émotion", "desc": "L'app te propose des lieux qui correspondent à ton humeur du moment." },
+        "s2": { "title": "Explore 🎮", "desc": "Chaque endroit visité devient un point sur ta carte personnelle." },
+        "s3": { "title": "Reviens 📖", "desc": "Tes souvenirs deviennent un récit illustré, prêt à être partagé." }
+      }
+    },
+    "stats": {
+      "title": "Chiffres clés",
+      "stat1": { "value": "8", "label": "outils connectés dans une seule expérience" },
+      "stat2": { "value": "Beta", "label": "communauté active d'Early Explorers" },
+      "stat3": { "value": "IA", "label": "personnalisée sur tes préférences et données touristiques" }
+    },
+    "founder": {
+      "tag": "La fondatrice",
+      "title": "Derrière Xplania, il y a Juliette 👋",
+      "bullet1": "Étudiante en double master à l'Université Catholique de Lille",
+      "bullet2": "Lauréate Pépite France (SNEE)",
+      "bullet3": "Créatrice de contenu & Top 5 Travel Bloggers FR",
+      "bullet4": "Passionnée par les expériences interculturelles",
+      "body": "Aujourd'hui, elle construit Xplania avec une ambition : transformer la manière dont on vit le voyage."
+    },
     "cta": {
-      "title": "Prêt à préparer ton prochain voyage ?",
-      "subtitle": "Crée ton premier plan en moins de 2 minutes. Aucune carte bancaire requise.",
-      "primary": "Commencer maintenant",
-      "secondary": "Nous écrire"
+      "title": "Prêt à découvrir la prochaine génération du travel ?",
+      "subtitle": "Tu es voyageur, professionnel du tourisme ou curieux ? Rejoins l'aventure.",
+      "primary": "Rejoindre la bêta",
+      "secondary": "Contacter",
+      "email": "juliettenoel.xplania@gmail.com"
     }
   },
   "globalSearch": {
