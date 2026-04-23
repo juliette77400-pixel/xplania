@@ -2550,5 +2550,70 @@
       "ogHint": "This is the image shown on social networks",
       "emailBody": "Hi! Check out my travel journal on Xplania:"
     }
+  },
+  "testimonials": {
+    "tag": "They tried it",
+    "title": "What early explorers are saying",
+    "subtitle": "Honest feedback from our beta community.",
+    "t1": {
+      "name": "Camille R.",
+      "role": "Solo trip · Lisbon",
+      "text": "Planned 4 days in 10 minutes. Suitcase, budget, hidden spots — all there. Saved me a full weekend of prep."
+    },
+    "t2": {
+      "name": "Yanis B.",
+      "role": "Couple · Bali",
+      "text": "The travel journal blew me away. We just took photos every day, the AI stitched the story together. Perfect gift for my partner when we got back."
+    },
+    "t3": {
+      "name": "Lea M.",
+      "role": "Family · Japan",
+      "text": "Live tracking reassured my whole family back home. They followed our progress without us having to send 50 messages."
+    }
+  },
+  "faq": {
+    "tag": "Frequently asked",
+    "title": "Everything you're wondering",
+    "subtitle": "Clear answers to the questions we get most often.",
+    "q1": {
+      "q": "Is Xplania free?",
+      "a": "Yes. You get 3 free trip generations to try every tool. No card required, no commitment. Paid packs arrive at public launch for heavier use."
+    },
+    "q2": {
+      "q": "What does the AI actually do?",
+      "a": "Saves you hours: it analyzes your destination, profile and preferences to generate a tailored packing list, realistic budget, local activities, visa tips, a travel story… Everything is personalized, never generic."
+    },
+    "q3": {
+      "q": "Is my data safe?",
+      "a": "Yes. EU hosting, standard encryption, no resale to third parties. You can delete your account and all your data at any time from your profile."
+    },
+    "q4": {
+      "q": "Does it work offline?",
+      "a": "The Live Tracking module caches your map and stops so it stays usable without signal. Your journal syncs as soon as you're back on wifi."
+    },
+    "q5": {
+      "q": "Can I share my trip with friends and family?",
+      "a": "Yes, for free. Public journal via link, real-time tracking share, PDF export — you choose what to make visible and to whom."
+    },
+    "q6": {
+      "q": "When does premium launch?",
+      "a": "Early 2026. Join the premium list to get early access and an exclusive launch discount reserved for beta explorers."
+    }
+  },
+  "exitIntent": {
+    "title": "Before you go…",
+    "subtitle": "Grab our ultimate pre-departure checklist. Free, instant, printable.",
+    "bullet1": "Documents, health, suitcase, home — nothing forgotten",
+    "bullet2": "A4 PDF, 5 categories, 30+ items to tick off",
+    "bullet3": "Bonus: we'll send our best travel tips by email too",
+    "emailPlaceholder": "you@email.com",
+    "cta": "Get the free checklist",
+    "sending": "Sending…",
+    "privacy": "No spam. Unsubscribe in one click.",
+    "invalidEmail": "Invalid email",
+    "success": "Checklist sent! Check your downloads.",
+    "doneTitle": "You're all set! 🎉",
+    "doneSubtitle": "Your checklist is downloading. Have a great trip!",
+    "downloadAgain": "Download again"
   }
 }
