@@ -9,6 +9,9 @@ import HowItWorksSection from "@/components/xplania/HowItWorksSection";
 import BenefitsSection from "@/components/xplania/BenefitsSection";
 import DashboardSection from "@/components/xplania/DashboardSection";
 import BetaSection from "@/components/xplania/BetaSection";
+import Testimonials from "@/components/xplania/Testimonials";
+import FaqSection from "@/components/xplania/FaqSection";
+import ExitIntentDialog from "@/components/shared/ExitIntentDialog";
 import Footer from "@/components/xplania/Footer";
 import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
@@ -80,8 +83,11 @@ const Index = () => {
         recommendations={recommendations}
         loading={dashboardLoading}
       />
+      <Testimonials />
+      <FaqSection />
       <BetaSection onFeedback={() => setFeedbackOpen(true)} />
       <Footer onCreateTrip={handleCreateTrip} />
+      <ExitIntentDialog />
       <TravelFormDialog
         open={travelFormOpen}
         onOpenChange={setTravelFormOpen}

@@ -2550,5 +2550,70 @@
       "ogHint": "Voici l'image qui apparaîtra sur les réseaux sociaux",
       "emailBody": "Salut ! Découvre mon carnet de voyage sur Xplania :"
     }
+  },
+  "testimonials": {
+    "tag": "Ils ont essayé",
+    "title": "Ce que disent les premiers explorateurs",
+    "subtitle": "Quelques retours de la communauté beta — choisis pour leur honnêteté.",
+    "t1": {
+      "name": "Camille R.",
+      "role": "Voyage solo · Lisbonne",
+      "text": "J'ai planifié 4 jours en 10 minutes. La valise, le budget, les coins planqués — tout y était. J'ai gagné un week-end entier de prep."
+    },
+    "t2": {
+      "name": "Yanis B.",
+      "role": "Couple · Bali",
+      "text": "Le carnet de bord m'a bluffé. On a juste pris des photos chaque jour, l'IA a recomposé l'histoire. Cadeau parfait pour ma copine au retour."
+    },
+    "t3": {
+      "name": "Léa M.",
+      "role": "Famille · Japon",
+      "text": "Le mode Suivi en temps réel a rassuré toute ma famille restée en France. Ils suivaient notre progression sans qu'on ait à envoyer 50 messages."
+    }
+  },
+  "faq": {
+    "tag": "Questions fréquentes",
+    "title": "Tout ce que tu te demandes",
+    "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
+    "q1": {
+      "q": "Xplania est gratuit ?",
+      "a": "Oui. Tu as 3 générations de voyage gratuites pour découvrir tous les outils. Aucune carte requise, aucun engagement. Les packs payants arrivent avec l'ouverture publique pour les usages plus intensifs."
+    },
+    "q2": {
+      "q": "À quoi sert l'IA exactement ?",
+      "a": "À te faire gagner des heures : elle analyse ta destination, ton profil et tes envies pour générer une valise adaptée, un budget réaliste, des activités locales, des conseils visa, un récit de voyage… Tout est personnalisé, jamais générique."
+    },
+    "q3": {
+      "q": "Mes données sont-elles en sécurité ?",
+      "a": "Oui. Hébergement européen, chiffrement standard, aucune revente à des tiers. Tu peux supprimer ton compte et toutes tes données à tout moment depuis ton profil."
+    },
+    "q4": {
+      "q": "Est-ce que ça marche hors connexion ?",
+      "a": "Le module Suivi de voyage met en cache ta carte et tes étapes pour rester utilisable même sans réseau. Le carnet de bord se synchronise dès que tu retrouves du wifi."
+    },
+    "q5": {
+      "q": "Puis-je partager mon voyage avec mes proches ?",
+      "a": "Oui, gratuitement. Carnet de bord public via lien, partage du suivi temps réel, export PDF — tu choisis ce que tu rends visible et à qui."
+    },
+    "q6": {
+      "q": "Quand sortent les versions premium ?",
+      "a": "Début 2026. Inscris-toi à la liste premium pour être prévenu·e en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
+    }
+  },
+  "exitIntent": {
+    "title": "Avant de partir…",
+    "subtitle": "Reçois notre checklist ultime avant départ. Gratuit, immédiat, imprimable.",
+    "bullet1": "Documents, santé, valise, maison — rien n'est oublié",
+    "bullet2": "PDF format A4, 5 catégories, 30+ points à cocher",
+    "bullet3": "Bonus : on t'envoie aussi nos meilleurs conseils par email",
+    "emailPlaceholder": "ton@email.com",
+    "cta": "Recevoir la checklist gratuite",
+    "sending": "Envoi en cours…",
+    "privacy": "Pas de spam. Désinscription en un clic.",
+    "invalidEmail": "Email invalide",
+    "success": "Checklist envoyée ! Vérifie tes téléchargements.",
+    "doneTitle": "C'est parti ! 🎉",
+    "doneSubtitle": "Ta checklist est en cours de téléchargement. Bon voyage !",
+    "downloadAgain": "Télécharger à nouveau"
   }
 }
