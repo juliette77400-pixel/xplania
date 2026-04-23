@@ -126,8 +126,16 @@
     "timeline": {
       "title": "Our journey",
       "items": [
-        { "year": "2023", "title": "First reflections", "desc": "Early research on the travel experience and traveler frustrations." },
-        { "year": "2025", "title": "Beta launch", "desc": "First beta version of Xplania opened to Early Explorers." }
+        {
+          "year": "2023",
+          "title": "First reflections",
+          "desc": "Early research on the travel experience and traveler frustrations."
+        },
+        {
+          "year": "2025",
+          "title": "Beta launch",
+          "desc": "First beta version of Xplania opened to Early Explorers."
+        }
       ]
     },
     "value": {
@@ -139,16 +147,34 @@
       "title": "How it works",
       "subtitle": "An experience designed like a journey, not a form.",
       "steps": {
-        "s1": { "title": "Pick your mood", "desc": "The app suggests places that match how you feel right now." },
-        "s2": { "title": "Explore 🎮", "desc": "Every spot you visit becomes a point on your personal map." },
-        "s3": { "title": "Come back 📖", "desc": "Your memories turn into an illustrated story, ready to share." }
+        "s1": {
+          "title": "Pick your mood",
+          "desc": "The app suggests places that match how you feel right now."
+        },
+        "s2": {
+          "title": "Explore 🎮",
+          "desc": "Every spot you visit becomes a point on your personal map."
+        },
+        "s3": {
+          "title": "Come back 📖",
+          "desc": "Your memories turn into an illustrated story, ready to share."
+        }
       }
     },
     "stats": {
       "title": "Key numbers",
-      "stat1": { "value": "8", "label": "tools connected in one experience" },
-      "stat2": { "value": "Beta", "label": "active community of Early Explorers" },
-      "stat3": { "value": "AI", "label": "personalized on your preferences and tourism data" }
+      "stat1": {
+        "value": "8",
+        "label": "tools connected in one experience"
+      },
+      "stat2": {
+        "value": "Beta",
+        "label": "active community of Early Explorers"
+      },
+      "stat3": {
+        "value": "AI",
+        "label": "personalized on your preferences and tourism data"
+      }
     },
     "founder": {
       "tag": "The founder",
@@ -2554,60 +2580,6 @@
       "button": "Full PDF export",
       "success": "PDF generated",
       "error": "Export failed"
-    },
-    "countdown": {
-      "beforeDeparture": "before departure",
-      "dh": "{{d}}d {{h}}h",
-      "hm": "{{h}}h {{m}}min",
-      "minutes": "{{m}} min",
-      "daysLeft": "{{n}} days left",
-      "endingSoon": "ending soon",
-      "inProgress": "Trip in progress",
-      "finished": "Trip finished"
-    },
-    "weatherWidget": {
-      "loading": "Loading weather…",
-      "unavailable": "Weather unavailable"
-    },
-    "currency": {
-      "title": "Currency converter",
-      "swap": "Swap",
-      "source": "ECB rates (Frankfurter)",
-      "error": "Conversion unavailable"
-    },
-    "tripUtils": {
-      "kicker": "Before departure",
-      "nextTrip": "Next trip",
-      "open": "Open"
-    },
-    "tripRecap": {
-      "kicker": "🎉 Trip ended",
-      "title": "Well done, {{destination}} is in the bag!",
-      "endedOn": "Ended on",
-      "days": "Days",
-      "checkins": "Check-ins",
-      "photos": "Photos",
-      "memories": "Memories",
-      "badges": "Badges",
-      "km": "Km traveled",
-      "shareCta": "Share my journal"
-    },
-    "shareDialog": {
-      "title": "Share my journal",
-      "description": "Enable public sharing and send the link to anyone.",
-      "public": "Public journal",
-      "private": "Private journal",
-      "publicHint": "Anyone with the link can view it",
-      "privateHint": "Only visible to you",
-      "published": "Journal published",
-      "madePrivate": "Journal set to private",
-      "errorToggle": "Could not update visibility",
-      "linkCopied": "Link copied",
-      "share": "Share",
-      "downloadQr": "Download QR code",
-      "previewOg": "Share preview",
-      "ogHint": "This is the image shown on social networks",
-      "emailBody": "Hi! Check out my travel journal on Xplania:"
     }
   },
   "testimonials": {
@@ -2689,5 +2661,59 @@
     "doneTitle": "You're all set! 🎉",
     "doneSubtitle": "Your checklist is downloading. Have a great trip!",
     "downloadAgain": "Download again"
+  },
+  "countdown": {
+    "beforeDeparture": "before departure",
+    "dh": "{{d}}d {{h}}h",
+    "hm": "{{h}}h {{m}}min",
+    "minutes": "{{m}} min",
+    "daysLeft": "{{n}} days left",
+    "endingSoon": "ending soon",
+    "inProgress": "Trip in progress",
+    "finished": "Trip finished"
+  },
+  "currency": {
+    "title": "Currency converter",
+    "swap": "Swap",
+    "source": "ECB rates (Frankfurter)",
+    "error": "Conversion unavailable"
+  },
+  "tripUtils": {
+    "kicker": "Before departure",
+    "nextTrip": "Next trip",
+    "open": "Open"
+  },
+  "tripRecap": {
+    "kicker": "🎉 Trip ended",
+    "title": "Well done, {{destination}} is in the bag!",
+    "endedOn": "Ended on",
+    "days": "Days",
+    "checkins": "Check-ins",
+    "photos": "Photos",
+    "memories": "Memories",
+    "badges": "Badges",
+    "km": "Km traveled",
+    "shareCta": "Share my journal"
+  },
+  "weatherWidget": {
+    "loading": "Loading weather…",
+    "unavailable": "Weather unavailable"
+  },
+  "shareDialog": {
+    "title": "Share my journal",
+    "description": "Enable public sharing and send the link to anyone.",
+    "public": "Public journal",
+    "private": "Private journal",
+    "publicHint": "Anyone with the link can view it",
+    "privateHint": "Only visible to you",
+    "published": "Journal published",
+    "madePrivate": "Journal set to private",
+    "errorToggle": "Could not update visibility",
+    "linkCopied": "Link copied",
+    "share": "Share",
+    "downloadQr": "Download QR code",
+    "previewOg": "Share preview",
+    "ogHint": "This is the image shown on social networks",
+    "emailBody": "Hi! Check out my travel journal on Xplania:"
   }
 }
