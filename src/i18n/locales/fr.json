@@ -2680,7 +2680,7 @@
     },
     "q4": {
       "q": "Est-ce que ça marche hors connexion ?",
-      "a": "Le module Suivi de voyage met en cache ta carte et tes étapes pour rester utilisable même sans réseau. Le carnet de bord se synchronise dès que tu retrouves du wifi."
+      "a": "Le mode hors connexion est en cours de développement : il permettra d'accéder à ton carnet, ta carte de suivi et tes étapes même sans réseau, avec synchronisation automatique au retour du wifi. Disponible prochainement."
     },
     "q5": {
       "q": "Puis-je partager mon voyage avec mes proches ?",
@@ -2688,7 +2688,7 @@
     },
     "q6": {
       "q": "Quand sortent les versions premium ?",
-      "a": "Début 2026. Inscris-toi à la liste premium pour être prévenu·e en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
+      "a": "Les offres premium sont prévues pour fin 2026 / début 2027. Inscris-toi à la liste premium pour être prévenu·e en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
     }
   },
   "exitIntent": {
