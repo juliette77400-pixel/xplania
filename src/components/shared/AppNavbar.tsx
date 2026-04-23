@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Plane, Home, Compass, Heart, Map, Activity, Briefcase, BookOpen,
-  MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard,
+  MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getRemaining } from "@/lib/usage-quota";
+import { getRemaining, isDevMode } from "@/lib/usage-quota";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import NotificationsBell from "@/components/shared/NotificationsBell";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 // Added: global Cmd+K search & post-signup tour
@@ -157,14 +158,40 @@ const AppNavbar = () => {
             </Link>
           )}
 
-          <Link
-            to="/offres"
-            className="hidden md:flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold text-amber-600"
-            title={t("appNav.quotaTooltip")}
-          >
-            <Sparkles className="w-3 h-3" />
-            V{getRemaining("valise")}·B{getRemaining("budget")}·Vi{getRemaining("visa")}
-          </Link>
+          {(() => {
+            const remVal = getRemaining("valise") + getRemaining("budget") + getRemaining("visa");
+            const dev = isDevMode();
+            const display = dev ? "∞" : remVal;
+            return (
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/offres"
+                      className="hidden md:flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-600 hover:bg-amber-500/15 transition-colors"
+                      aria-label={t("appNav.quotaTooltip")}
+                    >
+                      <Zap className="w-3 h-3" />
+                      <span>{display}</span>
+                      <span className="text-amber-600/70 font-normal">{t("appNav.creditsShort")}</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-[220px] text-xs">
+                    <p className="font-semibold mb-1">{t("appNav.quotaTitle")}</p>
+                    <p className="text-muted-foreground mb-2">{t("appNav.quotaTooltip")}</p>
+                    {!dev && (
+                      <div className="space-y-0.5 text-[11px]">
+                        <div className="flex justify-between gap-3"><span>{t("appNav.suitcase")}</span><span className="font-mono">{getRemaining("valise")}</span></div>
+                        <div className="flex justify-between gap-3"><span>{t("appNav.budget")}</span><span className="font-mono">{getRemaining("budget")}</span></div>
+                        <div className="flex justify-between gap-3"><span>{t("appNav.visa")}</span><span className="font-mono">{getRemaining("visa")}</span></div>
+                      </div>
+                    )}
+                    <p className="mt-2 text-primary font-medium">{t("appNav.viewPlans")} →</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            );
+          })()}
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
