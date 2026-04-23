@@ -5,23 +5,11 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const { t } = useTranslation();
 
-  const items = [
-    {
-      name: t("testimonials.t1.name"),
-      role: t("testimonials.t1.role"),
-      text: t("testimonials.t1.text"),
-    },
-    {
-      name: t("testimonials.t2.name"),
-      role: t("testimonials.t2.role"),
-      text: t("testimonials.t2.text"),
-    },
-    {
-      name: t("testimonials.t3.name"),
-      role: t("testimonials.t3.role"),
-      text: t("testimonials.t3.text"),
-    },
-  ];
+  const items = ["t1", "t2", "t3", "t4", "t5", "t6"].map((k) => ({
+    name: t(`testimonials.${k}.name`),
+    role: t(`testimonials.${k}.role`),
+    text: t(`testimonials.${k}.text`),
+  }));
 
   return (
     <section id="testimonials" className="py-20">
