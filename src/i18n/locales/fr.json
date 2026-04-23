@@ -2645,21 +2645,21 @@
   "testimonials": {
     "tag": "Ils ont essayé",
     "title": "Ce que disent les premiers explorateurs",
-    "subtitle": "Quelques retours de la communauté beta — choisis pour leur honnêteté.",
+    "subtitle": "Vrais retours de testeurs de la beta — sélectionnés pour leur honnêteté.",
     "t1": {
-      "name": "Camille R.",
-      "role": "Voyage solo · Lisbonne",
-      "text": "J'ai planifié 4 jours en 10 minutes. La valise, le budget, les coins planqués — tout y était. J'ai gagné un week-end entier de prep."
+      "name": "Kajinoma",
+      "role": "Testeuse beta · Note 5/5",
+      "text": "Honnêtement je trouve que c'est parfait, c'est vraiment une idée géniale. Zéro problème rencontré pendant le test."
     },
     "t2": {
-      "name": "Yanis B.",
-      "role": "Couple · Bali",
-      "text": "Le carnet de bord m'a bluffé. On a juste pris des photos chaque jour, l'IA a recomposé l'histoire. Cadeau parfait pour ma copine au retour."
+      "name": "Victor V.",
+      "role": "Testeur beta · Note 5/5",
+      "text": "Fonctionne parfaitement. J'aimerais voir une version 'speed' de la planification, et encore plus d'images des destinations dans le guide généré."
     },
     "t3": {
-      "name": "Léa M.",
-      "role": "Famille · Japon",
-      "text": "Le mode Suivi en temps réel a rassuré toute ma famille restée en France. Ils suivaient notre progression sans qu'on ait à envoyer 50 messages."
+      "name": "Lequebe",
+      "role": "Voyageur · Communauté",
+      "text": "En tant que voyageur souvent dépassé par la masse d'infos, l'idée d'une IA alimentée par des données réelles d'organismes de tourisme me séduit beaucoup."
     }
   },
   "faq": {
