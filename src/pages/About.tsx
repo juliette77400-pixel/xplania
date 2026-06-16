@@ -291,6 +291,50 @@ const About = () => {
         </div>
       </section>
 
+      {/* PIP MASCOT */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative glass-card rounded-3xl p-8 md:p-12 border border-border text-center overflow-hidden"
+          >
+            <div
+              className="absolute inset-0 opacity-20 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.5), transparent 60%)",
+              }}
+            />
+            <div className="relative">
+              <div className="relative inline-block mb-6">
+                <div
+                  className="absolute inset-0 rounded-full blur-3xl opacity-50"
+                  style={{ background: "hsl(var(--primary) / 0.4)" }}
+                />
+                <img
+                  src={pipMascot.url}
+                  alt={t("about.pip.alt")}
+                  loading="lazy"
+                  className="relative w-44 h-44 md:w-56 md:h-56 mx-auto object-contain drop-shadow-2xl"
+                />
+              </div>
+              <span className="inline-flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-3">
+                <Compass className="w-3 h-3" />
+                {t("about.pip.tag")}
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                {t("about.pip.title")}
+              </h2>
+              <p className="text-foreground/80 leading-relaxed text-lg max-w-2xl mx-auto">
+                {t("about.pip.body")}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* 8. CTA */}
       <section className="py-20">
         <div className="container mx-auto px-6 max-w-3xl">
