@@ -2,26 +2,38 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
+import { ALL_LEGAL_KEYS, getLegalPath, LegalKey } from "@/lib/legal-routes";
 
-type LegalKey = "mentions" | "cgu" | "confidentialite";
+interface Props {
+  legalKey?: LegalKey;
+}
 
-const VALID: LegalKey[] = ["mentions", "cgu", "confidentialite"];
-
-const Legal = () => {
+const Legal = ({ legalKey }: Props) => {
   const { type } = useParams<{ type: string }>();
   const { t, i18n } = useTranslation();
-  const isValid = !!type && VALID.includes(type as LegalKey);
-  const key = (isValid ? type : "mentions") as LegalKey;
+
+  // Resolve key: explicit prop wins (new dedicated routes), else legacy /legal/:type param
+  const resolved: LegalKey | null = legalKey
+    ? legalKey
+    : type && (ALL_LEGAL_KEYS as string[]).includes(type)
+      ? (type as LegalKey)
+      : null;
 
   useEffect(() => {
-    document.title = `${t(`legal.${key}.title`)} — Xplania`;
-  }, [key, t, i18n.language]);
+    if (resolved) {
+      document.title = `${t(`legal.${resolved}.title`)} — Xplania`;
+    }
+  }, [resolved, t, i18n.language]);
 
-  if (!isValid) {
-    return <Navigate to="/legal/mentions" replace />;
+  if (!resolved) {
+    return <Navigate to={getLegalPath("mentions", i18n.language)} replace />;
   }
 
-  const sections = (t(`legal.${key}.sections`, { returnObjects: true }) as Array<{ heading: string; body: string }>) || [];
+  const sections =
+    (t(`legal.${resolved}.sections`, { returnObjects: true }) as Array<{
+      heading: string;
+      body: string;
+    }>) || [];
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-16 px-4">
@@ -35,12 +47,12 @@ const Legal = () => {
         </Link>
 
         <div className="flex flex-wrap gap-2 mb-8">
-          {VALID.map((k) => (
+          {ALL_LEGAL_KEYS.map((k) => (
             <Link
               key={k}
-              to={`/legal/${k}`}
+              to={getLegalPath(k, i18n.language)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                k === key
+                k === resolved
                   ? "bg-primary/15 text-primary"
                   : "bg-muted text-muted-foreground hover:text-foreground"
               }`}
@@ -51,7 +63,9 @@ const Legal = () => {
         </div>
 
         <article className="glass-card rounded-2xl p-6 sm:p-10">
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t(`legal.${key}.title`)}</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            {t(`legal.${resolved}.title`)}
+          </h1>
           <p className="text-sm text-muted-foreground mb-8">
             {t("legal.lastUpdated")}: {t("legal.updateDate")}
           </p>
@@ -65,12 +79,29 @@ const Legal = () => {
             ))}
           </div>
 
-          <p className="mt-10 pt-6 border-t border-border text-xs text-muted-foreground">
-            {t("legal.contactNote")}{" "}
-            <a href="mailto:juliettenoel.xplania@gmail.com" className="text-primary hover:underline">
-              juliettenoel.xplania@gmail.com
-            </a>
-          </p>
+          <div className="mt-10 pt-6 border-t border-border space-y-3">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+              <span className="text-muted-foreground">{t("legal.seeAlso")}:</span>
+              {ALL_LEGAL_KEYS.filter((k) => k !== resolved).map((k) => (
+                <Link
+                  key={k}
+                  to={getLegalPath(k, i18n.language)}
+                  className="text-primary hover:underline"
+                >
+                  {t(`legal.${k}.title`)}
+                </Link>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {t("legal.contactNote")}{" "}
+              <a
+                href="mailto:juliettenoel.xplania@gmail.com"
+                className="text-primary hover:underline"
+              >
+                juliettenoel.xplania@gmail.com
+              </a>
+            </p>
+          </div>
         </article>
       </div>
     </div>
