@@ -5,6 +5,7 @@ import {
   Plane, Star, Luggage, Wallet, FileText, MessageSquare, Sparkles, Mail,
   BookOpen, Activity, Compass, Heart, MapPinned, Trophy,
 } from "lucide-react";
+import { getLegalPath } from "@/lib/legal-routes";
 
 const stars = Array.from({ length: 40 }, (_, i) => ({
   id: i,
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const Footer = (_: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const scrollToFeedback = () => {
     const el = document.getElementById("feedback");
@@ -172,15 +173,15 @@ const Footer = (_: Props) => {
         </motion.div>
 
         <div className="mb-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-          <Link to="/legal/mentions" className="text-muted-foreground hover:text-primary transition-colors">
+          <Link to={getLegalPath("mentions", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalMentions")}
           </Link>
           <span className="text-muted-foreground/30">·</span>
-          <Link to="/legal/cgu" className="text-muted-foreground hover:text-primary transition-colors">
+          <Link to={getLegalPath("cgu", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalCgu")}
           </Link>
           <span className="text-muted-foreground/30">·</span>
-          <Link to="/legal/confidentialite" className="text-muted-foreground hover:text-primary transition-colors">
+          <Link to={getLegalPath("confidentialite", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalConfidentialite")}
           </Link>
         </div>

@@ -515,96 +515,101 @@
   "legal": {
     "backHome": "Back to home",
     "lastUpdated": "Last updated",
-    "updateDate": "April 23, 2026",
-    "contactNote": "For any question, contact us at",
+    "updateDate": "June 16, 2026",
+    "contactNote": "For any question, write to us at",
+    "seeAlso": "See also",
     "mentions": {
-      "title": "Legal notice",
+      "title": "Legal Notice",
       "sections": [
         {
-          "heading": "Site publisher",
-          "body": "Xplania is published by Juliette Noël, currently in private beta. Contact: juliettenoel.xplania@gmail.com"
+          "heading": "Editor",
+          "body": "Xplania is an individual entrepreneurial project created by Juliette Noël, based in Lille, France. No registered legal entity to date.\n\nContact: juliettenoel.xplania@gmail.com\nPublication director: Juliette Noël."
         },
         {
           "heading": "Hosting",
-          "body": "The site is hosted on Lovable Cloud (Supabase infrastructure). URL: xplania.lovable.app"
+          "body": "The site is hosted by Lovable (lovable.dev). For any hosting-related request, users may contact Lovable directly."
         },
         {
-          "heading": "Intellectual property",
-          "body": "All content (texts, visuals, logo, code) is the exclusive property of Xplania, unless otherwise stated. Any reproduction without permission is prohibited."
+          "heading": "Intellectual Property",
+          "body": "All Xplania content — including texts, the Pip penguin mascot, the Xplania name and logo, visual identity and AI-generated travel recommendations — is the exclusive property of the creator. It is protected under the French Intellectual Property Code (Code de la propriété intellectuelle), which grants the same level of protection as standard copyright law in most jurisdictions.\n\nAny reproduction, representation or reuse without prior written consent is strictly forbidden."
         },
         {
-          "heading": "Credits",
-          "body": "Map data: © OpenStreetMap. Illustration photos: Unsplash. Icons: Lucide."
+          "heading": "Personal Data",
+          "body": "Xplania collects two categories of data:\n• your email address, for beta registration and account creation;\n• an approximate geolocation, used in real time to personalize destination suggestions — not stored persistently.\n\nData is collected with your consent. You may access, correct or request deletion of your data at any time by writing to juliettenoel.xplania@gmail.com. Your data is never sold or shared with third parties for commercial purposes. See the Privacy Policy for full details."
         },
         {
-          "heading": "Beta status",
-          "body": "Xplania is currently in beta version. The service may evolve, be interrupted or modified without notice."
-        }
-      ]
-    },
-    "cgu": {
-      "title": "Terms of use",
-      "sections": [
-        {
-          "heading": "Purpose",
-          "body": "These terms govern the use of Xplania, an AI-assisted travel planning platform."
+          "heading": "Cookies",
+          "body": "Xplania uses only technical cookies necessary for the site to operate and anonymous analytics cookies. No advertising or third-party tracking cookies are set without explicit consent."
         },
         {
-          "heading": "User account",
-          "body": "Account creation is free. You agree to provide accurate information and protect your credentials. One account per person."
-        },
-        {
-          "heading": "Acceptable use",
-          "body": "It is forbidden to use Xplania for: (a) illegal, hateful or harmful content, (b) spam or automated scraping, (c) any attempt to bypass quotas or security."
-        },
-        {
-          "heading": "Free quotas",
-          "body": "The beta version includes a limited number of free AI generations per tool. Premium offers (coming soon) will lift these limits."
-        },
-        {
-          "heading": "AI-generated content",
-          "body": "AI recommendations are provided for informational purposes. Always verify critical information (visa, health, safety) from official sources."
-        },
-        {
-          "heading": "Liability",
-          "body": "Xplania cannot be held liable for losses or inconvenience related to a trip. The service is provided 'as is' during the beta phase."
-        },
-        {
-          "heading": "Termination",
-          "body": "You can delete your account at any time via the Profile page. We reserve the right to suspend an account in case of violation."
+          "heading": "Applicable Law",
+          "body": "This legal notice is governed by French law. In the event of a dispute, and failing an amicable resolution, the competent courts will be those of Lille, France."
         }
       ]
     },
     "confidentialite": {
-      "title": "Privacy policy",
+      "title": "Privacy Policy",
       "sections": [
         {
-          "heading": "Data collected",
-          "body": "We collect: email, first name (optional), profile information (avatar, language), travel data you enter, and technical logs (IP address, browser)."
+          "heading": "Who we are",
+          "body": "Xplania is an individual project run by Juliette Noël, based in Lille, France.\n\nContact: juliettenoel.xplania@gmail.com"
         },
         {
-          "heading": "Purposes",
-          "body": "Your data is used to: run your account, generate your AI recommendations, improve the service, send you the notifications you accept."
+          "heading": "Data collected and why",
+          "body": "• Email address — beta registration and account creation. Legal basis: consent (GDPR art. 6.1.a). Retention: duration of the beta + 12 months after the last activity.\n\n• Approximate geolocation — used in real time to suggest relevant destinations. No precise GPS data is stored. Legal basis: consent (GDPR art. 6.1.a).\n\n• Anonymous usage analytics — pages visited, features used. No personal identifier is attached. Legal basis: legitimate interest. Retention: 24 months."
         },
         {
-          "heading": "Legal basis (GDPR)",
-          "body": "Contract performance (account), legitimate interest (product improvement), consent (newsletter, notifications)."
+          "heading": "Data access",
+          "body": "Only Juliette Noël has access to the data. Technical sub-processors: an email delivery service (for transactional emails) and Lovable (platform hosting).\n\nNo data is ever sold, rented or shared with advertisers."
         },
         {
-          "heading": "Subprocessors",
-          "body": "Lovable Cloud / Supabase (hosting & database, EU), Resend (transactional email delivery), Google (OAuth authentication if you choose that option), OpenAI / Google Gemini (AI generation — data sent in anonymized form for recommendations)."
+          "heading": "Your rights (GDPR)",
+          "body": "Under the EU General Data Protection Regulation, you have a right of access, rectification, erasure, withdrawal of consent, and the right to lodge a complaint with the French data protection authority CNIL (www.cnil.fr), which is the equivalent of the ICO or your national DPA.\n\nAll requests receive a reply within 30 days at most. Contact: juliettenoel.xplania@gmail.com."
         },
         {
-          "heading": "Retention",
-          "body": "Your data is kept as long as your account is active. Upon account deletion, it is erased within 30 days, except for legal obligations."
+          "heading": "Security",
+          "body": "All exchanges are encrypted over HTTPS. Access to the data is restricted and password-protected."
+        }
+      ]
+    },
+    "cgu": {
+      "title": "Terms of Use",
+      "sections": [
+        {
+          "heading": "Acceptance",
+          "body": "By using Xplania, you accept these Terms. The service is currently in beta, as part of the Early Explorers program."
         },
         {
-          "heading": "Your rights",
-          "body": "You have rights of access, rectification, erasure, objection, portability and limitation. To exercise them: juliettenoel.xplania@gmail.com"
+          "heading": "Service description",
+          "body": "Xplania is an AI-powered travel planning platform. It offers mood-based itineraries, a smart packing assistant, budget guides, gamified travel maps, live tracking and travel journals. Features may evolve freely during the beta."
         },
         {
-          "heading": "Cookies",
-          "body": "Xplania only uses necessary technical cookies (authentication, language). No advertising or third-party tracking cookies during beta."
+          "heading": "Beta program",
+          "body": "The service is provided free of charge during the beta. Xplania may limit access, modify features or discontinue the program at any time, without prior notice. Beta users may be invited to share feedback to help improve the product."
+        },
+        {
+          "heading": "User responsibilities",
+          "body": "You agree to use Xplania for lawful personal travel planning only. The following are forbidden: reverse engineering, copying the service, sharing your account access, or any unauthorized automated use."
+        },
+        {
+          "heading": "AI content disclaimer",
+          "body": "AI-generated recommendations are provided for informational and inspirational purposes only. They do not constitute professional travel advice.\n\nXplania cannot be held responsible for inaccuracies, changes in local conditions, visa requirements or any travel disruption. You must always verify critical information (visa, health, safety, schedules) through official sources before traveling."
+        },
+        {
+          "heading": "Intellectual property",
+          "body": "All Xplania content, visual identity and branding are protected under French law. No reproduction is allowed without prior written consent."
+        },
+        {
+          "heading": "Liability",
+          "body": "The service is provided \"as is\" during the beta, without warranty. The creator cannot be held liable for indirect or consequential damages arising from the use of the service."
+        },
+        {
+          "heading": "Modifications",
+          "body": "These Terms may be updated. Any significant change will be notified by email to registered users. Continued use of the service constitutes acceptance of the new Terms."
+        },
+        {
+          "heading": "Applicable law",
+          "body": "These Terms are governed by French law. Failing an amicable resolution, the courts of Lille, France, shall have exclusive jurisdiction."
         }
       ]
     }
