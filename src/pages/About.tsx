@@ -138,6 +138,24 @@ const About = () => {
         </div>
       </section>
 
+      {/* VISION */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="inline-block text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-5">
+              {t("about.vision.tag")}
+            </span>
+            <p className="text-2xl md:text-4xl font-bold text-foreground leading-tight max-w-3xl mx-auto">
+              {t("about.vision.statement")}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* 4. VALUE PROPOSITION */}
       <section className="py-20">
         <div className="container mx-auto px-6 max-w-3xl text-center">
@@ -248,6 +266,9 @@ const About = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
               {t("about.founder.title")}
             </h2>
+            <p className="text-foreground/90 leading-relaxed text-lg mb-8">
+              {t("about.founder.intro")}
+            </p>
             <ul className="space-y-3 mb-6">
               {founderBullets.map((b) => {
                 const Icon = b.icon;
