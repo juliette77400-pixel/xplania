@@ -60,6 +60,7 @@ const App = () => (
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
+            <Route path="/a-propos" element={<About />} />
             {/* Localized legal routes (FR + EN canonical URLs) */}
             <Route path="/mentions-legales" element={<Legal legalKey="mentions" />} />
             <Route path="/legal-notice" element={<Legal legalKey="mentions" />} />

@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Sparkles, Heart, MapPin, BookOpen, Layers, Users, Brain,
-  ArrowRight, Mail, GraduationCap, Award, PenTool, Globe2,
+  ArrowRight, Mail, GraduationCap, Award, PenTool, Globe2, Quote, Compass,
 } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import Footer from "@/components/xplania/Footer";
+import pipMascot from "@/assets/pip-mascot.png.asset.json";
 
 const About = () => {
   const { t } = useTranslation();
