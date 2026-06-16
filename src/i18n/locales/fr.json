@@ -515,63 +515,35 @@
   "legal": {
     "backHome": "Retour à l'accueil",
     "lastUpdated": "Dernière mise à jour",
-    "updateDate": "23 avril 2026",
-    "contactNote": "Pour toute question, contacte-nous à",
+    "updateDate": "16 juin 2026",
+    "contactNote": "Pour toute question, écris-nous à",
+    "seeAlso": "À lire aussi",
     "mentions": {
       "title": "Mentions légales",
       "sections": [
         {
           "heading": "Éditeur du site",
-          "body": "Xplania est édité par Juliette Noël, en phase bêta privée. Contact : juliettenoel.xplania@gmail.com"
+          "body": "Xplania est un projet entrepreneurial individuel créé par Juliette Noël, domiciliée à Lille, France. Aucune entité juridique enregistrée à ce jour.\n\nContact : juliettenoel.xplania@gmail.com\nDirectrice de la publication : Juliette Noël."
         },
         {
           "heading": "Hébergement",
-          "body": "Le site est hébergé sur Lovable Cloud (infrastructure Supabase). URL : xplania.lovable.app"
+          "body": "Le site est hébergé par Lovable (lovable.dev). Pour toute demande liée à l'hébergement, les utilisateurs peuvent contacter Lovable directement."
         },
         {
           "heading": "Propriété intellectuelle",
-          "body": "L'ensemble des contenus (textes, visuels, logo, code) est la propriété exclusive de Xplania, sauf mention contraire. Toute reproduction sans autorisation est interdite."
+          "body": "L'ensemble des contenus Xplania — y compris les textes, la mascotte Pip le pingouin, le nom et le logo Xplania, l'identité visuelle ainsi que les recommandations de voyage générées par IA — est la propriété exclusive de la créatrice, protégée au titre du Code de la propriété intellectuelle français.\n\nToute reproduction, représentation ou réutilisation sans autorisation écrite préalable est strictement interdite."
         },
         {
-          "heading": "Crédits",
-          "body": "Données cartographiques : © OpenStreetMap. Photos d'illustration : Unsplash. Icônes : Lucide."
+          "heading": "Données personnelles",
+          "body": "Xplania collecte deux catégories de données :\n• l'adresse email, pour l'inscription à la bêta et la création de compte ;\n• une géolocalisation approximative, utilisée en temps réel pour personnaliser les suggestions de destinations — sans conservation durable.\n\nLes données sont collectées avec le consentement de l'utilisateur. Tu peux à tout moment accéder à tes données, les corriger ou demander leur suppression en écrivant à juliettenoel.xplania@gmail.com. Tes données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales. Voir la Politique de confidentialité pour le détail complet."
         },
         {
-          "heading": "Statut bêta",
-          "body": "Xplania est actuellement en version bêta. Le service peut évoluer, être interrompu ou modifié sans préavis."
-        }
-      ]
-    },
-    "cgu": {
-      "title": "Conditions d'utilisation",
-      "sections": [
-        {
-          "heading": "Objet",
-          "body": "Les présentes conditions régissent l'utilisation de Xplania, plateforme d'aide à la planification de voyages assistée par IA."
+          "heading": "Cookies",
+          "body": "Xplania utilise uniquement des cookies techniques nécessaires au fonctionnement du site et des cookies d'analyse anonymes. Aucun cookie publicitaire ni de suivi tiers n'est déposé sans consentement explicite."
         },
         {
-          "heading": "Compte utilisateur",
-          "body": "La création d'un compte est gratuite. Tu t'engages à fournir des informations exactes et à protéger tes identifiants. Un compte par personne."
-        },
-        {
-          "heading": "Usage acceptable",
-          "body": "Il est interdit d'utiliser Xplania pour : (a) du contenu illégal, haineux ou nuisible, (b) du spam ou du scraping automatisé, (c) toute tentative de contourner les quotas ou la sécurité."
-        },
-        {
-          "heading": "Quotas gratuits",
-          "body": "La version bêta inclut un nombre limité de générations IA gratuites par outil. Les offres premium (à venir) lèveront ces limites."
-        },
-        {
-          "heading": "Contenu généré par IA",
-          "body": "Les recommandations IA sont fournies à titre informatif. Vérifie toujours les informations critiques (visa, santé, sécurité) auprès de sources officielles."
-        },
-        {
-          "heading": "Responsabilité",
-          "body": "Xplania ne saurait être tenu responsable de pertes ou désagréments liés à un voyage. Le service est fourni « en l'état » durant la phase bêta."
-        },
-        {
-          "heading": "Résiliation",
-          "body": "Tu peux supprimer ton compte à tout moment via la page Profil. Nous nous réservons le droit de suspendre un compte en cas de violation des présentes."
+          "heading": "Droit applicable",
+          "body": "Les présentes mentions sont régies par le droit français. En cas de litige, et à défaut de résolution amiable, les juridictions compétentes seront celles de Lille, France."
         }
       ]
     },
@@ -579,32 +551,65 @@
       "title": "Politique de confidentialité",
       "sections": [
         {
-          "heading": "Données collectées",
-          "body": "Nous collectons : email, prénom (optionnel), informations de profil (avatar, langue), données de voyage que tu saisis, et logs techniques (adresse IP, navigateur)."
+          "heading": "Qui sommes-nous",
+          "body": "Xplania est un projet individuel porté par Juliette Noël, basée à Lille, France.\n\nContact : juliettenoel.xplania@gmail.com"
         },
         {
-          "heading": "Finalités",
-          "body": "Tes données servent à : faire fonctionner ton compte, générer tes recommandations IA, améliorer le service, t'envoyer les notifications que tu acceptes."
+          "heading": "Données collectées et finalités",
+          "body": "• Adresse email — inscription à la bêta et création de compte. Base légale : consentement (RGPD art. 6.1.a). Conservation : durée de la bêta + 12 mois après la dernière activité.\n\n• Géolocalisation approximative — utilisée en temps réel pour suggérer des destinations adaptées. Aucun GPS précis n'est stocké. Base légale : consentement (RGPD art. 6.1.a).\n\n• Analyses d'usage anonymes — pages consultées, fonctionnalités utilisées. Aucun identifiant personnel n'y est associé. Base légale : intérêt légitime. Conservation : 24 mois."
         },
         {
-          "heading": "Base légale (RGPD)",
-          "body": "Exécution du contrat (compte), intérêt légitime (amélioration produit), consentement (newsletter, notifications)."
+          "heading": "Accès aux données",
+          "body": "Seule Juliette Noël a accès aux données. Sous-traitants techniques : un service d'envoi d'emails (pour les emails transactionnels) et Lovable (hébergement de la plateforme).\n\nAucune donnée n'est revendue, louée ou partagée avec des annonceurs."
         },
         {
-          "heading": "Sous-traitants",
-          "body": "Lovable Cloud / Supabase (hébergement & base de données, UE), Resend (envoi d'emails transactionnels), Google (authentification OAuth si tu choisis cette option), OpenAI / Google Gemini (génération IA — données envoyées de manière anonymisée pour les recommandations)."
+          "heading": "Tes droits (RGPD)",
+          "body": "Conformément au Règlement général sur la protection des données, tu disposes d'un droit d'accès, de rectification, d'effacement, de retrait du consentement, ainsi que d'un droit de réclamation auprès de la CNIL (www.cnil.fr).\n\nToutes les demandes reçoivent une réponse sous 30 jours maximum. Contact : juliettenoel.xplania@gmail.com."
         },
         {
-          "heading": "Durée de conservation",
-          "body": "Tes données sont conservées tant que ton compte est actif. À la suppression du compte, elles sont effacées sous 30 jours, sauf obligation légale."
+          "heading": "Sécurité",
+          "body": "Les échanges sont chiffrés via HTTPS. L'accès aux données est restreint et protégé par mot de passe."
+        }
+      ]
+    },
+    "cgu": {
+      "title": "Conditions d'utilisation",
+      "sections": [
+        {
+          "heading": "Acceptation",
+          "body": "En utilisant Xplania, tu acceptes les présentes conditions. Le service est actuellement en bêta dans le cadre du programme Early Explorers."
         },
         {
-          "heading": "Tes droits",
-          "body": "Tu disposes des droits d'accès, rectification, effacement, opposition, portabilité et limitation. Pour les exercer : juliettenoel.xplania@gmail.com"
+          "heading": "Description du service",
+          "body": "Xplania est une plateforme de planification de voyage propulsée par IA. Elle propose des itinéraires basés sur l'humeur, un assistant valise intelligent, des guides budget, des cartes de voyage gamifiées, un suivi en direct et des carnets de voyage. Les fonctionnalités peuvent évoluer librement pendant la bêta."
         },
         {
-          "heading": "Cookies",
-          "body": "Xplania utilise uniquement des cookies techniques nécessaires (authentification, langue). Aucun cookie publicitaire ou de tracking tiers en bêta."
+          "heading": "Programme bêta",
+          "body": "Le service est fourni gratuitement pendant la bêta. Xplania peut limiter l'accès, modifier des fonctionnalités ou interrompre le programme à tout moment, sans préavis. Les utilisateurs bêta peuvent être invités à partager leurs retours pour améliorer le produit."
+        },
+        {
+          "heading": "Responsabilités de l'utilisateur",
+          "body": "Tu t'engages à utiliser Xplania pour la planification de voyages personnels et licites uniquement. Sont interdits : la rétro-ingénierie, la copie du service, le partage de tes accès à ton compte, ou tout usage automatisé non autorisé."
+        },
+        {
+          "heading": "Avertissement sur le contenu IA",
+          "body": "Les recommandations générées par l'IA sont fournies à titre informatif et inspirationnel uniquement. Elles ne constituent pas un conseil professionnel de voyage.\n\nXplania ne peut être tenue responsable d'inexactitudes, de changements dans les conditions locales, des exigences de visa ou de toute perturbation de voyage. Tu dois impérativement vérifier les informations critiques (visa, santé, sécurité, horaires) auprès des sources officielles avant ton départ."
+        },
+        {
+          "heading": "Propriété intellectuelle",
+          "body": "L'ensemble des contenus, identité visuelle et marques Xplania sont protégés par le droit français. Aucune reproduction n'est autorisée sans accord écrit préalable."
+        },
+        {
+          "heading": "Responsabilité",
+          "body": "Le service est fourni « en l'état » pendant la bêta, sans garantie. La créatrice ne peut être tenue responsable des dommages indirects ou consécutifs liés à l'utilisation du service."
+        },
+        {
+          "heading": "Modifications",
+          "body": "Ces conditions peuvent être mises à jour. Tout changement significatif sera notifié par email aux utilisateurs inscrits. La poursuite de l'utilisation du service vaut acceptation des nouvelles conditions."
+        },
+        {
+          "heading": "Droit applicable",
+          "body": "Les présentes conditions sont régies par le droit français. À défaut de résolution amiable, les tribunaux de Lille, France, seront seuls compétents."
         }
       ]
     }
