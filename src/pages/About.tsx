@@ -73,27 +73,40 @@ const About = () => {
         </div>
       </section>
 
-      {/* 2. STORYTELLING */}
+      {/* 2. TRIGGER MOMENT */}
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-6 max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass-card rounded-3xl p-8 md:p-12 border border-border"
+            className="glass-card rounded-3xl p-8 md:p-12 border border-border border-l-4 border-l-primary bg-card/60"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-              {t("about.story.title")}
-            </h2>
+            <span className="inline-block text-xs font-semibold text-primary uppercase tracking-wider mb-4">
+              {t("about.trigger.tag")}
+            </span>
             <div className="space-y-5 text-foreground/90 leading-relaxed text-lg">
-              <p>{t("about.story.p1")}</p>
-              <p>{t("about.story.p2")}</p>
-              <p className="font-medium">{t("about.story.p3")}</p>
-              <p className="text-primary font-semibold text-xl pt-2">
-                {t("about.story.quote")}
-              </p>
+              <p>{t("about.trigger.body1")}</p>
+              <p>{t("about.trigger.body2")}</p>
+              <p className="font-medium text-foreground">{t("about.trigger.body3")}</p>
             </div>
           </motion.div>
+
+          <motion.figure
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="mt-10 text-center max-w-2xl mx-auto"
+          >
+            <Quote className="w-8 h-8 text-primary mx-auto mb-4 opacity-60" />
+            <blockquote className="text-2xl md:text-3xl font-medium italic text-primary leading-snug">
+              « {t("about.trigger.quote")} »
+            </blockquote>
+            <figcaption className="mt-4 text-sm text-muted-foreground">
+              {t("about.trigger.quoteAuthor")}
+            </figcaption>
+          </motion.figure>
         </div>
       </section>
 
