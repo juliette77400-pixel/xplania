@@ -60,6 +60,14 @@ const App = () => (
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
+            {/* Localized legal routes (FR + EN canonical URLs) */}
+            <Route path="/mentions-legales" element={<Legal legalKey="mentions" />} />
+            <Route path="/legal-notice" element={<Legal legalKey="mentions" />} />
+            <Route path="/politique-de-confidentialite" element={<Legal legalKey="confidentialite" />} />
+            <Route path="/privacy-policy" element={<Legal legalKey="confidentialite" />} />
+            <Route path="/conditions-utilisation" element={<Legal legalKey="cgu" />} />
+            <Route path="/terms-of-use" element={<Legal legalKey="cgu" />} />
+            {/* Legacy fallback */}
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />
             <Route path="*" element={<NotFound />} />
