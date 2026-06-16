@@ -115,13 +115,24 @@
     "metaDescription": "Xplania centralizes the entire travel experience: before, during and after. Discover the story and vision behind the platform.",
     "badge": "Our story",
     "heroTitle": "Travel differently, at last. 🌍",
-    "heroSubtitle": "Travel should be an experience, not a complex logistics project. Xplania reinvents the way you prepare, live and relive your trips.",
-    "story": {
-      "title": "The why 💭",
-      "p1": "Travel has always been part of me 🌍 But one specific moment changed everything.",
-      "p2": "Before a trip abroad, I found myself with 9 browser tabs open: packing, budget, visa, places, culture, souvenirs…",
-      "p3": "And I realized something: we spend more time organizing the trip than actually living it.",
-      "quote": "That's how Xplania was born."
+    "heroSubtitle": "We spend more time managing a trip than actually living it. I'd had enough. So I built Xplania.",
+    "trigger": {
+      "tag": "The moment it started",
+      "body1": "Before a trip to the Canary Islands, I found myself with 9 tabs open: packing list, budget, visa, places, weather, culture, transport, souvenirs, and a WhatsApp group going in every direction. I spent more time planning than actually going.",
+      "body2": "That day I realized the problem wasn't me — it was the absence of a tool that truly brings everything together.",
+      "body3": "Xplania is the answer to that frustration.",
+      "quote": "Travel should begin when you put your suitcase down — not when you start packing it.",
+      "quoteAuthor": "— Juliette, founder"
+    },
+    "pip": {
+      "tag": "Our mascot",
+      "title": "Pip, your travel companion",
+      "body": "Pip isn't just a logo. He's the embodiment of what Xplania stands for: curious, adventurous, always ready for the next discovery. Like you, Pip doesn't travel to tick boxes — he travels to feel something.",
+      "alt": "Pip, Xplania's penguin mascot, with his backpack and compass"
+    },
+    "vision": {
+      "tag": "The vision",
+      "statement": "One day, planning a trip will take 10 minutes. And you'll never forget why you left in the first place."
     },
     "timeline": {
       "title": "Our journey",
@@ -135,6 +146,11 @@
           "year": "2025",
           "title": "Beta launch",
           "desc": "First beta version of Xplania opened to Early Explorers."
+        },
+        {
+          "year": "2026+",
+          "title": "What's next",
+          "desc": "New destinations, new features, a growing community. Xplania is just getting started."
         }
       ]
     },
@@ -179,6 +195,7 @@
     "founder": {
       "tag": "The founder",
       "title": "Behind Xplania, there's Juliette 👋",
+      "intro": "My name is Juliette, I'm 22 and based in Lille, France. I've always traveled with wide eyes and a full notebook — but with the constant frustration of spending hours organizing what should be simple. Xplania was born from that contradiction: I love traveling, but I hated planning it.",
       "bullet1": "Double master's student at the Catholic University of Lille",
       "bullet2": "Pépite France laureate (SNEE)",
       "bullet3": "Content creator & Top 5 FR Travel Bloggers",

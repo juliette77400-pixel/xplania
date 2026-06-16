@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Sparkles, Heart, MapPin, BookOpen, Layers, Users, Brain,
-  ArrowRight, Mail, GraduationCap, Award, PenTool, Globe2,
+  ArrowRight, Mail, GraduationCap, Award, PenTool, Globe2, Quote, Compass,
 } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import Footer from "@/components/xplania/Footer";
+import pipMascot from "@/assets/pip-mascot.png.asset.json";
 
 const About = () => {
   const { t } = useTranslation();
@@ -72,27 +73,40 @@ const About = () => {
         </div>
       </section>
 
-      {/* 2. STORYTELLING */}
+      {/* 2. TRIGGER MOMENT */}
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-6 max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass-card rounded-3xl p-8 md:p-12 border border-border"
+            className="glass-card rounded-3xl p-8 md:p-12 border border-border border-l-4 border-l-primary bg-card/60"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-              {t("about.story.title")}
-            </h2>
+            <span className="inline-block text-xs font-semibold text-primary uppercase tracking-wider mb-4">
+              {t("about.trigger.tag")}
+            </span>
             <div className="space-y-5 text-foreground/90 leading-relaxed text-lg">
-              <p>{t("about.story.p1")}</p>
-              <p>{t("about.story.p2")}</p>
-              <p className="font-medium">{t("about.story.p3")}</p>
-              <p className="text-primary font-semibold text-xl pt-2">
-                {t("about.story.quote")}
-              </p>
+              <p>{t("about.trigger.body1")}</p>
+              <p>{t("about.trigger.body2")}</p>
+              <p className="font-medium text-foreground">{t("about.trigger.body3")}</p>
             </div>
           </motion.div>
+
+          <motion.figure
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="mt-10 text-center max-w-2xl mx-auto"
+          >
+            <Quote className="w-8 h-8 text-primary mx-auto mb-4 opacity-60" />
+            <blockquote className="text-2xl md:text-3xl font-medium italic text-primary leading-snug">
+              « {t("about.trigger.quote")} »
+            </blockquote>
+            <figcaption className="mt-4 text-sm text-muted-foreground">
+              {t("about.trigger.quoteAuthor")}
+            </figcaption>
+          </motion.figure>
         </div>
       </section>
 
@@ -121,6 +135,24 @@ const About = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* VISION */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="inline-block text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-5">
+              {t("about.vision.tag")}
+            </span>
+            <p className="text-2xl md:text-4xl font-bold text-foreground leading-tight max-w-3xl mx-auto">
+              {t("about.vision.statement")}
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -234,6 +266,9 @@ const About = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
               {t("about.founder.title")}
             </h2>
+            <p className="text-foreground/90 leading-relaxed text-lg mb-8">
+              {t("about.founder.intro")}
+            </p>
             <ul className="space-y-3 mb-6">
               {founderBullets.map((b) => {
                 const Icon = b.icon;
@@ -252,6 +287,50 @@ const About = () => {
             <p className="text-muted-foreground leading-relaxed border-t border-border pt-6">
               {t("about.founder.body")}
             </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* PIP MASCOT */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative glass-card rounded-3xl p-8 md:p-12 border border-border text-center overflow-hidden"
+          >
+            <div
+              className="absolute inset-0 opacity-20 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.5), transparent 60%)",
+              }}
+            />
+            <div className="relative">
+              <div className="relative inline-block mb-6">
+                <div
+                  className="absolute inset-0 rounded-full blur-3xl opacity-50"
+                  style={{ background: "hsl(var(--primary) / 0.4)" }}
+                />
+                <img
+                  src={pipMascot.url}
+                  alt={t("about.pip.alt")}
+                  loading="lazy"
+                  className="relative w-44 h-44 md:w-56 md:h-56 mx-auto object-contain drop-shadow-2xl"
+                />
+              </div>
+              <span className="inline-flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-3">
+                <Compass className="w-3 h-3" />
+                {t("about.pip.tag")}
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                {t("about.pip.title")}
+              </h2>
+              <p className="text-foreground/80 leading-relaxed text-lg max-w-2xl mx-auto">
+                {t("about.pip.body")}
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>

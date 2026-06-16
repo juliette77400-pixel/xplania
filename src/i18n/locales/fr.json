@@ -115,13 +115,24 @@
     "metaDescription": "Xplania centralise toute l'expérience voyage : avant, pendant et après. Découvre l'histoire et la vision derrière la plateforme.",
     "badge": "Notre histoire",
     "heroTitle": "Voyager autrement, enfin. 🌍",
-    "heroSubtitle": "Voyager devrait être une expérience, pas une organisation complexe. Xplania réinvente la manière de préparer, vivre et revivre ses voyages.",
-    "story": {
-      "title": "Le pourquoi 💭",
-      "p1": "Voyager a toujours fait partie de moi 🌍 Mais un moment précis a tout changé.",
-      "p2": "Avant un départ à l'étranger, je me suis retrouvée avec 9 onglets ouverts : valise, budget, visa, lieux, culture, souvenirs…",
-      "p3": "Et j'ai réalisé quelque chose : on passe plus de temps à organiser le voyage qu'à le vivre.",
-      "quote": "C'est là qu'est née Xplania."
+    "heroSubtitle": "On passe plus de temps à gérer un voyage qu'à le vivre. J'en avais assez. Alors j'ai construit Xplania.",
+    "trigger": {
+      "tag": "Le moment déclencheur",
+      "body1": "Avant un départ aux Îles Canaries, je me suis retrouvée avec 9 onglets ouverts : valise, budget, visa, lieux, météo, culture, transport, souvenirs, et un groupe WhatsApp qui partait dans tous les sens. J'ai passé plus de temps à préparer qu'à partir.",
+      "body2": "Ce jour-là, j'ai réalisé que le problème n'était pas moi, c'était l'absence d'un outil qui centralise vraiment tout.",
+      "body3": "Xplania, c'est la réponse à cette frustration.",
+      "quote": "Le voyage devrait commencer quand tu poses ta valise, pas quand tu la prépares.",
+      "quoteAuthor": "— Juliette, fondatrice"
+    },
+    "pip": {
+      "tag": "Notre mascotte",
+      "title": "Pip, ton compagnon de route",
+      "body": "Pip n'est pas juste un logo. C'est l'incarnation de l'esprit d'Xplania : curieux, aventurier, toujours prêt pour la prochaine découverte. Comme toi, Pip ne voyage pas pour cocher des cases — il voyage pour ressentir.",
+      "alt": "Pip, la mascotte pingouin d'Xplania, avec son sac à dos et sa boussole"
+    },
+    "vision": {
+      "tag": "La vision",
+      "statement": "Un jour, préparer un voyage prendra 10 minutes. Et tu n'oublieras plus jamais pourquoi tu es parti."
     },
     "timeline": {
       "title": "Notre parcours",
@@ -135,6 +146,11 @@
           "year": "2025",
           "title": "Lancement bêta",
           "desc": "Première version bêta de Xplania ouverte aux Early Explorers."
+        },
+        {
+          "year": "2026+",
+          "title": "La suite",
+          "desc": "Nouvelles destinations, nouvelles fonctionnalités, une communauté qui grandit. Xplania n'en est qu'au début."
         }
       ]
     },
@@ -179,6 +195,7 @@
     "founder": {
       "tag": "La fondatrice",
       "title": "Derrière Xplania, il y a Juliette 👋",
+      "intro": "Je m'appelle Juliette, j'ai 22 ans et je suis basée à Lille. J'ai toujours voyagé avec les yeux grands ouverts et le carnet plein — mais avec la frustration de passer des heures à organiser ce qui devrait être simple. Xplania est né de cette contradiction : j'adore voyager, mais je détestais le préparer.",
       "bullet1": "Étudiante en double master à l'Université Catholique de Lille",
       "bullet2": "Lauréate Pépite France (SNEE)",
       "bullet3": "Créatrice de contenu & Top 5 Travel Bloggers FR",
