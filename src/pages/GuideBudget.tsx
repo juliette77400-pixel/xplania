@@ -133,7 +133,17 @@ const GuideBudgetPage = () => {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed?.hasGenerated && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
-          setCategories(parsed.categories);
+          // Re-attach icon/color from defaults (functions don't survive JSON)
+          const rehydrated: BudgetCategory[] = parsed.categories.map((c: Partial<BudgetCategory> & { key: string }) => {
+            const def = defaultCategories.find((d) => d.key === c.key) || defaultCategories[0];
+            return {
+              ...def,
+              ...c,
+              icon: def.icon,
+              color: def.color,
+            } as BudgetCategory;
+          });
+          setCategories(rehydrated);
           setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
           setHasGenerated(true);
           setGeneratedContextKey(parsed.generatedContextKey || "");
