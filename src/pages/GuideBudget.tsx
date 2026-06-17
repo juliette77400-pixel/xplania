@@ -82,7 +82,6 @@ const GuideBudgetPage = () => {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [categories, setCategories] = useState<BudgetCategory[]>(defaultCategories);
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [showModify, setShowModify] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [regenCount, setRegenCount] = useState(0);
   const { reached, consume } = useQuota("budget");
@@ -114,21 +113,24 @@ const GuideBudgetPage = () => {
   );
 
   const runGeneration = useCallback(async () => {
+    if (isGenerating) return;
     if (reached) { setShowUpgrade(true); return; }
     consume();
     setIsGenerating(true);
     setGenStep(0);
-    for (let i = 0; i < STEPS.length; i++) {
-      await new Promise((r) => setTimeout(r, 800));
-      setGenStep(i + 1);
+    try {
+      for (let i = 0; i < STEPS.length; i++) {
+        await new Promise((r) => setTimeout(r, 450));
+        setGenStep(i + 1);
+      }
+      setCategories((prev) => recomputeAiSuggestions(prev));
+      setHasGenerated(true);
+      setRegenCount((n) => n + 1);
+      toast.success(t("guideBudget.toastGenerated"));
+    } finally {
+      setIsGenerating(false);
     }
-    await new Promise((r) => setTimeout(r, 400));
-    setCategories((prev) => recomputeAiSuggestions(prev));
-    setIsGenerating(false);
-    setHasGenerated(true);
-    setRegenCount((n) => n + 1);
-    toast.success(t("guideBudget.toastGenerated"));
-  }, [t, reached, consume, recomputeAiSuggestions]);
+  }, [t, reached, consume, recomputeAiSuggestions, isGenerating]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
@@ -155,6 +157,17 @@ const GuideBudgetPage = () => {
 
   const handleUpdateCategory = (idx: number, updates: Partial<BudgetCategory>) => {
     setCategories((prev) => prev.map((c, i) => (i === idx ? { ...c, ...updates } : c)));
+  };
+
+  const handleUpdateTotalBudget = (nextTotal: number) => {
+    setCategories((prev) => {
+      const currentTotal = prev.reduce((sum, c) => sum + c.planned, 0) || 1;
+      return prev.map((c) => ({
+        ...c,
+        planned: Math.max(0, Math.round((c.planned / currentTotal) * nextTotal)),
+      }));
+    });
+    toast.success(t("budget.aiResultTotalUpdated"));
   };
 
   const handleAddExpense = (expense: Expense) => {
@@ -229,7 +242,7 @@ const GuideBudgetPage = () => {
                 totalBudget={totalBudget}
                 days={days}
                 destination={destination}
-                onModify={() => setShowModify(!showModify)}
+                onTotalBudgetChange={handleUpdateTotalBudget}
               />
               <BudgetForecast
                 totalBudget={totalBudget}
