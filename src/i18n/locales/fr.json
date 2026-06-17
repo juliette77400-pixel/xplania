@@ -1905,6 +1905,13 @@
       "loading": "Pip réfléchit…",
       "greeting": "Salut {{name}} ! 👋 Je suis Pip, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
       "greetingNoName": "Salut ! 👋 Je suis Pip, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
+      "greetings": [
+        "Hey {{name}} ! 👋 C'est Pip. Prêt à parler budget pour {{destination}} ? Pose-moi tout ce qui te trotte dans la tête.",
+        "Salut {{name}} ! ✈️ Moi c'est Pip, ton copilote voyage. Tu te demandes si ton budget {{destination}} tient la route ? Je suis là pour t'aider.",
+        "Coucou {{name}} 🌍 Pip à l'appareil. Un doute sur une dépense, une envie de tips locaux à {{destination}} ? Lâche tout.",
+        "Yo {{name}} ! 😎 C'est Pip. On regarde ensemble ton budget pour {{destination}} ? Dis-moi ce qui te tracasse.",
+        "Hello {{name}} ! 👋 Pip ici. Que ce soit ton resto, ton transport ou ton hébergement à {{destination}}, je suis là pour t'aiguiller."
+      ],
       "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
       "expand": "Agrandir",
