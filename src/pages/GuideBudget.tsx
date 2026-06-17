@@ -162,10 +162,17 @@ const GuideBudgetPage = () => {
   const handleUpdateTotalBudget = (nextTotal: number) => {
     setCategories((prev) => {
       const currentTotal = prev.reduce((sum, c) => sum + c.planned, 0) || 1;
-      return prev.map((c) => ({
+      let allocated = 0;
+      return prev.map((c, index) => {
+        const planned = index === prev.length - 1
+          ? Math.max(0, nextTotal - allocated)
+          : Math.max(0, Math.round((c.planned / currentTotal) * nextTotal));
+        allocated += planned;
+        return {
         ...c,
-        planned: Math.max(0, Math.round((c.planned / currentTotal) * nextTotal)),
-      }));
+        planned,
+        };
+      });
     });
     toast.success(t("budget.aiResultTotalUpdated"));
   };
