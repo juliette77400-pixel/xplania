@@ -1769,6 +1769,8 @@
     "aiResultFor": "for",
     "aiResultIn": "in",
     "aiResultModify": "Edit manually",
+    "aiResultEditTotalAria": "Edit estimated total budget",
+    "aiResultTotalUpdated": "Total budget updated.",
     "tipsParis": {
       "activities": [
         "Visit the Luxembourg Gardens",
@@ -1852,6 +1854,16 @@
     "savingTipsRefresh": "Refresh",
     "savingTipsError": "Could not generate tips right now. Try again in a moment.",
     "savingTipsEmpty": "No tips available.",
+    "savingTipsFallback": {
+      "transportTitle": "Check local passes",
+      "transportBody": "In {{destination}}, always compare day or weekly transit passes before buying single tickets one by one.",
+      "foodTitle": "Eat where the city lives",
+      "foodBody": "Look for markets, bakeries and small neighborhood canteens in {{destination}} instead of streets right next to major sights.",
+      "activitiesTitle": "Reserve free time slots",
+      "activitiesBody": "Before booking, check free museums, viewpoints, parks and walking tours in {{destination}} — they can often fill half a day without touching your budget.",
+      "extrasTitle": "Keep a real buffer",
+      "extrasBody": "Set aside a small buffer for surprises in {{destination}} so you do not have to cut back on meals or key activities."
+    },
     "onboarding": {
       "title": "Pip, your budget copilot",
       "welcome": "Hi! Your budget for {{destination}} ({{days}} days) is ready. 🎉",
@@ -1859,6 +1871,12 @@
       "yes": "Yes, show me",
       "no": "I'll explore on my own",
       "suggestion": "Great! Start with your detailed forecast for {{destination}} — every line is editable and the AI suggests amounts matched to local cost of living.",
+      "focus": {
+        "forecast": "Forecast",
+        "tracker": "Expenses",
+        "charts": "Charts",
+        "tips": "Tips"
+      },
       "gotIt": "Got it!"
     }
   },

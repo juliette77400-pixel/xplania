@@ -38,6 +38,29 @@ const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categorie
   const locale = i18n.language.startsWith("en") ? "en" : "fr";
   const signature = `${destination}|${totalBudget}|${days}|${travelers}|${locale}`;
 
+  const buildFallbackTips = (): Tip[] => [
+    {
+      title: t("budget.savingTipsFallback.transportTitle"),
+      body: t("budget.savingTipsFallback.transportBody", { destination }),
+      category: "localTransport",
+    },
+    {
+      title: t("budget.savingTipsFallback.foodTitle"),
+      body: t("budget.savingTipsFallback.foodBody", { destination }),
+      category: "food",
+    },
+    {
+      title: t("budget.savingTipsFallback.activitiesTitle"),
+      body: t("budget.savingTipsFallback.activitiesBody", { destination }),
+      category: "activities",
+    },
+    {
+      title: t("budget.savingTipsFallback.extrasTitle"),
+      body: t("budget.savingTipsFallback.extrasBody", { destination }),
+      category: "extras",
+    },
+  ];
+
   const fetchTips = async () => {
     setLoading(true);
     setError(null);
@@ -50,13 +73,19 @@ const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categorie
         locale,
         categories: categories.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent })),
       };
-      const { data, error: fnError } = await supabase.functions.invoke("budget-tips", { body: payload });
+      const invokePromise = supabase.functions.invoke("budget-tips", { body: payload });
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        window.setTimeout(() => reject(new Error("budget_tips_timeout")), 12000)
+      );
+      const { data, error: fnError } = await Promise.race([invokePromise, timeoutPromise]);
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
-      setTips(Array.isArray(data?.tips) ? data.tips.slice(0, 5) : []);
+      const nextTips = Array.isArray(data?.tips) ? data.tips.slice(0, 5) : [];
+      setTips(nextTips.length > 0 ? nextTips : buildFallbackTips());
     } catch (e) {
       console.error("budget-tips failed", e);
-      setError(t("budget.savingTipsError"));
+      setTips(buildFallbackTips());
+      setError(null);
     } finally {
       setLoading(false);
     }
