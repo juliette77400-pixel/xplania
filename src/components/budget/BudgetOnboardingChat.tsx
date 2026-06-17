@@ -156,6 +156,17 @@ const BudgetOnboardingChat = ({
     }
   }, [qaHistory, qaLoading, mode]);
 
+  // Seed Pip's personalized greeting when entering QA mode with empty history
+  useEffect(() => {
+    if (mode !== "qa") return;
+    if (qaHistory.length > 0) return;
+    const greeting = firstName
+      ? t("budget.qa.greeting", { name: firstName, destination })
+      : t("budget.qa.greetingNoName", { destination });
+    setQaHistory([{ role: "assistant", content: greeting, ts: Date.now() }]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
   const closeBubble = () => {
     setOpen(false);
     try {
