@@ -104,6 +104,7 @@ const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categorie
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="glass-card rounded-2xl p-6"
+      data-budget-section="tips"
     >
       <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
         <div className="flex items-center gap-3">

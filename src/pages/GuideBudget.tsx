@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -67,7 +67,7 @@ import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } f
 
 const GuideBudgetPage = () => {
   useHydrateActiveTrip();
-  const { tripData } = useTravelStore();
+  const { tripData, recommendations } = useTravelStore();
   const { t, i18n } = useTranslation();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
@@ -84,10 +84,13 @@ const GuideBudgetPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [regenCount, setRegenCount] = useState(0);
+  const [activeBudgetSection, setActiveBudgetSection] = useState<"analysis" | "forecast" | "tracker" | "charts" | "tips">("analysis");
+  const [generatedContextKey, setGeneratedContextKey] = useState("");
   const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
+  const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
 
   const monthLabel = useMemo(() => {
     const ref = tripData?.departureDate ? new Date(tripData.departureDate) : new Date();
@@ -112,6 +115,49 @@ const GuideBudgetPage = () => {
     [destination, days, travelers, monthLabel, locale]
   );
 
+  const buildTripAwareCategories = useCallback((): BudgetCategory[] => {
+    const raw = defaultCategories.map((c) => {
+      const rec = recommendations?.budgetBreakdown?.find((item) => {
+        const name = String(item.category || "").toLowerCase();
+        if (c.key === "accommodation") return /h[eé]bergement|hotel|stay|accommodation|logement/.test(name);
+        if (c.key === "localTransport") return /transport|metro|m[eé]tro|bus|train|taxi/.test(name);
+        if (c.key === "activities") return /activit|visit|visite|museum|mus[eé]e|sortie/.test(name);
+        if (c.key === "food") return /food|repas|restaurant|nourriture|meal|gastronomie/.test(name);
+        if (c.key === "shopping") return /shopping|souvenir|achat/.test(name);
+        return /extra|impr[eé]vu|unexpected|misc/.test(name);
+      });
+      const base = typeof rec?.amount === "number" && rec.amount > 0
+        ? rec.amount
+        : suggestCategoryAmount(c.key as CategoryKey, c.planned, { destination, days, travelers });
+      return { ...c, planned: Math.max(1, Math.round(base)), spent: 0 };
+    });
+
+    const targetTotal = Number(userBudget) > 0 ? Number(userBudget) : raw.reduce((sum, c) => sum + c.planned, 0);
+    const rawTotal = raw.reduce((sum, c) => sum + c.planned, 0) || 1;
+    let allocated = 0;
+
+    return recomputeAiSuggestions(raw.map((c, index) => {
+      const planned = index === raw.length - 1
+        ? Math.max(1, Math.round(targetTotal - allocated))
+        : Math.max(1, Math.round((c.planned / rawTotal) * targetTotal));
+      allocated += planned;
+      return { ...c, planned };
+    }));
+  }, [days, destination, recommendations?.budgetBreakdown, recomputeAiSuggestions, travelers, userBudget]);
+
+  useEffect(() => {
+    if (!hasGenerated && tripData?.destination) {
+      setCategories(buildTripAwareCategories());
+    }
+  }, [buildTripAwareCategories, hasGenerated, tripData?.destination]);
+
+  useEffect(() => {
+    if (hasGenerated && generatedContextKey && generatedContextKey !== budgetContextKey) {
+      setCategories(buildTripAwareCategories());
+      setGeneratedContextKey(budgetContextKey);
+    }
+  }, [budgetContextKey, buildTripAwareCategories, generatedContextKey, hasGenerated]);
+
   const runGeneration = useCallback(async () => {
     if (isGenerating) return;
     if (reached) { setShowUpgrade(true); return; }
@@ -123,14 +169,15 @@ const GuideBudgetPage = () => {
         await new Promise((r) => setTimeout(r, 450));
         setGenStep(i + 1);
       }
-      setCategories((prev) => recomputeAiSuggestions(prev));
+      setCategories(buildTripAwareCategories());
+      setGeneratedContextKey(budgetContextKey);
       setHasGenerated(true);
       setRegenCount((n) => n + 1);
       toast.success(t("guideBudget.toastGenerated"));
     } finally {
       setIsGenerating(false);
     }
-  }, [t, reached, consume, recomputeAiSuggestions, isGenerating]);
+  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
@@ -141,11 +188,12 @@ const GuideBudgetPage = () => {
       setGenStep(i + 1);
     }
     await new Promise((r) => setTimeout(r, 300));
-    setCategories((prev) => recomputeAiSuggestions(prev));
+    setCategories(buildTripAwareCategories());
+    setGeneratedContextKey(budgetContextKey);
     setIsGenerating(false);
     setRegenCount((n) => n + 1);
     toast.success(t("guideBudget.toastRecalcDone"), { id: "regen" });
-  }, [t, recomputeAiSuggestions]);
+  }, [t, buildTripAwareCategories, budgetContextKey]);
 
   const handleAiAdjust = (idx: number) => {
     setCategories((prev) =>
@@ -200,10 +248,30 @@ const GuideBudgetPage = () => {
     });
   };
 
-  const scrollToSection = (name: "forecast" | "tracker" | "charts" | "tips") => {
+  const scrollToSection = (name: "analysis" | "forecast" | "tracker" | "charts" | "tips") => {
     const el = document.querySelector(`[data-budget-section="${name}"]`);
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  useEffect(() => {
+    if (!hasGenerated) return;
+    const sections = ["analysis", "forecast", "tracker", "charts", "tips"] as const;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        const section = visible?.target.getAttribute("data-budget-section") as typeof sections[number] | null;
+        if (section) setActiveBudgetSection(section);
+      },
+      { threshold: [0.25, 0.5, 0.75], rootMargin: "-20% 0px -45% 0px" }
+    );
+    sections.forEach((section) => {
+      const el = document.querySelector(`[data-budget-section="${section}"]`);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [hasGenerated]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -288,6 +356,9 @@ const GuideBudgetPage = () => {
           destination={destination}
           days={days}
           triggerKey={regenCount}
+          activeSection={activeBudgetSection}
+          isGenerating={isGenerating}
+          onRegenerate={handleRegenerate}
           onSuggestFocus={scrollToSection}
         />
       )}

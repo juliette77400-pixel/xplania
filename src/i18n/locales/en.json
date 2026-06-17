@@ -1872,11 +1872,27 @@
       "no": "I'll explore on my own",
       "suggestion": "Great! Start with your detailed forecast for {{destination}} — every line is editable and the AI suggests amounts matched to local cost of living.",
       "focus": {
+        "analysis": "Analysis",
         "forecast": "Forecast",
         "tracker": "Expenses",
         "charts": "Charts",
         "tips": "Tips"
       },
+      "sectionLabel": {
+        "analysis": "AI analysis",
+        "forecast": "Forecast budget",
+        "tracker": "Expense tracking",
+        "charts": "Charts",
+        "tips": "Local tips"
+      },
+      "sectionHelp": {
+        "analysis": "Here, you can edit the estimated total budget for {{destination}}. Xplania then redistributes that amount across categories so the rest of the guide updates.",
+        "forecast": "You are in the forecast: click any line amount to adjust it, or accept an AI suggestion if it better fits your trip.",
+        "tracker": "Here, you compare your planned budget with real expenses. Add an expense and the remaining budget updates automatically.",
+        "charts": "These charts turn your expenses into trends: planned vs spent, daily rhythm and overspending risk.",
+        "tips": "These tips are tied to {{destination}} and your current budget. Refresh them if you significantly change your budget."
+      },
+      "regenerate": "Regenerate budget",
       "gotIt": "Got it!"
     }
   },

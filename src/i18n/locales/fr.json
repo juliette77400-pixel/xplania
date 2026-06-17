@@ -1872,11 +1872,27 @@
       "no": "Je préfère explorer seul",
       "suggestion": "Top ! Commence par vérifier ta prévision détaillée pour {{destination}} — chaque ligne est modifiable, et l'IA propose des montants adaptés au coût de la vie local.",
       "focus": {
+        "analysis": "Analyse",
         "forecast": "Prévision",
         "tracker": "Dépenses",
         "charts": "Graphiques",
         "tips": "Astuces"
       },
+      "sectionLabel": {
+        "analysis": "Analyse IA",
+        "forecast": "Budget prévisionnel",
+        "tracker": "Suivi des dépenses",
+        "charts": "Graphiques",
+        "tips": "Astuces locales"
+      },
+      "sectionHelp": {
+        "analysis": "Ici, tu peux modifier le budget total estimé pour {{destination}}. Xplania répartit ensuite ce montant dans les catégories pour que le reste du guide se mette à jour.",
+        "forecast": "Tu es dans le prévisionnel : clique sur un montant de ligne pour l'ajuster, ou accepte une suggestion IA si elle colle mieux à ton voyage.",
+        "tracker": "Ici, tu compares ton budget prévu avec tes dépenses réelles. Ajoute une dépense et le restant se recalculera automatiquement.",
+        "charts": "Ces graphiques transforment tes dépenses en tendances : prévu vs dépensé, rythme quotidien et risque de dépassement.",
+        "tips": "Ces astuces sont liées à {{destination}} et à ton budget actuel. Tu peux les relancer si tu modifies fortement ton budget."
+      },
+      "regenerate": "Relancer la génération",
       "gotIt": "C'est parti !"
     }
   },
