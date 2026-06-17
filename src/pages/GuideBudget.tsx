@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -21,26 +21,97 @@ import BudgetForecast, { defaultCategories, type BudgetCategory } from "@/compon
 import ExpenseTracker from "@/components/budget/ExpenseTracker";
 import BudgetCharts from "@/components/budget/BudgetCharts";
 import BudgetAlerts from "@/components/budget/BudgetAlerts";
-import BudgetTips from "@/components/budget/BudgetTips";
+import BudgetSavingTips from "@/components/budget/BudgetSavingTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
+import BudgetOnboardingChat from "@/components/budget/BudgetOnboardingChat";
+import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } from "@/lib/cost-of-living";
+
+/* =============================================================================
+ * DEV NOTE — Item 6: Bank-transaction integration feasibility (research only)
+ * -----------------------------------------------------------------------------
+ * Goal: auto-import real bank transactions into Xplania expenses.
+ *
+ * Viable EU/FR providers under PSD2:
+ *   • Powens (ex-Budget Insight) — French aggregator, well-documented OAuth2/Webview
+ *     flow. Pricing per active connection. Strong coverage of FR banks.
+ *   • GoCardless Bank Account Data (ex-Nordigen) — free tier, EU-wide PSD2
+ *     coverage, 90-day end-user agreement renewals required by law.
+ *   • Tink (Visa) — premium, enterprise-grade.
+ *   • Plaid — strong in US/UK, limited FR coverage.
+ *
+ * PSD2 / DSP2 constraints:
+ *   • Strong Customer Authentication (SCA) every 90 days max.
+ *   • Cannot store user banking credentials; only access tokens.
+ *   • Must be a licensed AISP, OR rely on the provider's AISP license
+ *     (most aggregators above resell it).
+ *   • GDPR: explicit consent, right to revoke, EU data residency.
+ *
+ * Lovable stack feasibility:
+ *   • OAuth callback: Supabase Edge Function (Deno) can handle the redirect
+ *     and token exchange; tokens stored in a dedicated table with RLS.
+ *   • Polling: a cron Edge Function fetches transactions and upserts them
+ *     into a `bank_transactions` table, then the user matches them to
+ *     Xplania expenses (or auto-match by date + amount + category).
+ *   • Secrets: client_id / client_secret stored via supabase secrets
+ *     (LOVABLE_SECRET_*).
+ *
+ * Risks before shipping:
+ *   • Legal review for AISP delegation contract.
+ *   • Onboarding friction (SCA every 90 days hurts retention).
+ *   • Costs scale with active users on Powens/Tink.
+ *
+ * Decision: defer implementation. Keep manual + AI-classification as the
+ * primary flow. Re-evaluate when premium tier has paying users.
+ * =============================================================================
+ */
 
 const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData } = useTravelStore();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
   const userBudget = tripData?.totalBudget || 820;
+  const travelers = useMemo(() => {
+    const child = tripData?.childrenCount ?? 0;
+    return Math.max(1, 1 + child);
+  }, [tripData?.childrenCount]);
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [genStep, setGenStep] = useState(0);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [categories, setCategories] = useState<BudgetCategory[]>(defaultCategories);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showModify, setShowModify] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [regenCount, setRegenCount] = useState(0);
   const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
+  const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
+
+  const monthLabel = useMemo(() => {
+    const ref = tripData?.departureDate ? new Date(tripData.departureDate) : new Date();
+    return ref.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", { month: "long" });
+  }, [tripData?.departureDate, locale]);
+
+  /** Apply realistic, destination-aware AI suggestions with explanations. */
+  const recomputeAiSuggestions = useCallback(
+    (cats: BudgetCategory[]): BudgetCategory[] =>
+      cats.map((c) => {
+        const suggested = suggestCategoryAmount(c.key as CategoryKey, c.planned, {
+          destination,
+          days,
+          travelers,
+        });
+        return {
+          ...c,
+          aiSuggested: suggested,
+          aiExplanation: buildAdjustmentExplanation(c.key as CategoryKey, destination, days, monthLabel, locale),
+        };
+      }),
+    [destination, days, travelers, monthLabel, locale]
+  );
 
   const runGeneration = useCallback(async () => {
     if (reached) { setShowUpgrade(true); return; }
@@ -51,11 +122,13 @@ const GuideBudgetPage = () => {
       await new Promise((r) => setTimeout(r, 800));
       setGenStep(i + 1);
     }
-    await new Promise((r) => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 400));
+    setCategories((prev) => recomputeAiSuggestions(prev));
     setIsGenerating(false);
     setHasGenerated(true);
+    setRegenCount((n) => n + 1);
     toast.success(t("guideBudget.toastGenerated"));
-  }, [t]);
+  }, [t, reached, consume, recomputeAiSuggestions]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
@@ -65,22 +138,19 @@ const GuideBudgetPage = () => {
       await new Promise((r) => setTimeout(r, 600));
       setGenStep(i + 1);
     }
-    await new Promise((r) => setTimeout(r, 400));
-    setCategories((prev) =>
-      prev.map((c) => ({
-        ...c,
-        aiSuggested: Math.round(c.aiSuggested * (0.9 + Math.random() * 0.2)),
-      }))
-    );
+    await new Promise((r) => setTimeout(r, 300));
+    setCategories((prev) => recomputeAiSuggestions(prev));
     setIsGenerating(false);
+    setRegenCount((n) => n + 1);
     toast.success(t("guideBudget.toastRecalcDone"), { id: "regen" });
-  }, [t]);
+  }, [t, recomputeAiSuggestions]);
 
   const handleAiAdjust = (idx: number) => {
     setCategories((prev) =>
       prev.map((c, i) => (i === idx ? { ...c, planned: c.aiSuggested } : c))
     );
-    toast.success(t("guideBudget.toastAdjusted", { key: categories[idx].key }));
+    const label = t(`budget.categories.${categories[idx].key}`, { defaultValue: categories[idx].key });
+    toast.success(t("guideBudget.toastAdjusted", { key: label }));
   };
 
   const handleUpdateCategory = (idx: number, updates: Partial<BudgetCategory>) => {
@@ -88,11 +158,31 @@ const GuideBudgetPage = () => {
   };
 
   const handleAddExpense = (expense: Expense) => {
+    setExpenses((prev) => [...prev, expense]);
     setCategories((prev) =>
       prev.map((c) =>
         c.key === expense.category ? { ...c, spent: c.spent + expense.amount } : c
       )
     );
+  };
+
+  const handleRemoveExpense = (id: string) => {
+    setExpenses((prev) => {
+      const target = prev.find((e) => e.id === id);
+      if (target) {
+        setCategories((cats) =>
+          cats.map((c) =>
+            c.key === target.category ? { ...c, spent: Math.max(0, c.spent - target.amount) } : c
+          )
+        );
+      }
+      return prev.filter((e) => e.id !== id);
+    });
+  };
+
+  const scrollToSection = (name: "forecast" | "tracker" | "charts" | "tips") => {
+    const el = document.querySelector(`[data-budget-section="${name}"]`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -102,20 +192,16 @@ const GuideBudgetPage = () => {
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-        {/* Hero */}
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} />
 
-        {/* Trip summary dashboard — visible BEFORE generation */}
         {!hasGenerated && !isGenerating && (
           <TripSummaryDashboard tripData={tripData} />
         )}
 
-        {/* Generation animation */}
         <AnimatePresence>
           {isGenerating && <BudgetGenerationAnim isGenerating={isGenerating} currentStep={genStep} />}
         </AnimatePresence>
 
-        {/* Content after generation */}
         <AnimatePresence>
           {hasGenerated && !isGenerating && (
             <motion.div
@@ -123,7 +209,6 @@ const GuideBudgetPage = () => {
               animate={{ opacity: 1 }}
               className="space-y-6 pb-12"
             >
-              {/* Regenerate button */}
               <div className="flex justify-end">
                 <motion.button
                   initial={{ opacity: 0 }}
@@ -153,13 +238,18 @@ const GuideBudgetPage = () => {
                 onAiAdjust={handleAiAdjust}
                 isLoading={isGenerating}
               />
-              <ExpenseTracker categories={categories} />
-              <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} />
-              <BudgetAlerts categories={categories} destination={destination} />
-              <BudgetTips />
               <AddExpenseForm onAdd={handleAddExpense} />
+              <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
+              <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+              <BudgetAlerts categories={categories} destination={destination} />
+              <BudgetSavingTips
+                destination={destination}
+                totalBudget={totalBudget}
+                days={days}
+                travelers={travelers}
+                categories={categories}
+              />
 
-              {/* CTA */}
               <div className="flex justify-center">
                 <Link
                   to="/guide-visa"
@@ -172,6 +262,16 @@ const GuideBudgetPage = () => {
           )}
         </AnimatePresence>
       </div>
+
+      {hasGenerated && (
+        <BudgetOnboardingChat
+          destination={destination}
+          days={days}
+          triggerKey={regenCount}
+          onSuggestFocus={scrollToSection}
+        />
+      )}
+
       <QuickJump />
     </div>
   );
