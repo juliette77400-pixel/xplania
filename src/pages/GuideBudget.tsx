@@ -85,10 +85,12 @@ const GuideBudgetPage = () => {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [regenCount, setRegenCount] = useState(0);
   const [activeBudgetSection, setActiveBudgetSection] = useState<"analysis" | "forecast" | "tracker" | "charts" | "tips">("analysis");
+  const [generatedContextKey, setGeneratedContextKey] = useState("");
   const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
+  const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
 
   const monthLabel = useMemo(() => {
     const ref = tripData?.departureDate ? new Date(tripData.departureDate) : new Date();
@@ -149,6 +151,13 @@ const GuideBudgetPage = () => {
     }
   }, [buildTripAwareCategories, hasGenerated, tripData?.destination]);
 
+  useEffect(() => {
+    if (hasGenerated && generatedContextKey && generatedContextKey !== budgetContextKey) {
+      setCategories(buildTripAwareCategories());
+      setGeneratedContextKey(budgetContextKey);
+    }
+  }, [budgetContextKey, buildTripAwareCategories, generatedContextKey, hasGenerated]);
+
   const runGeneration = useCallback(async () => {
     if (isGenerating) return;
     if (reached) { setShowUpgrade(true); return; }
@@ -161,13 +170,14 @@ const GuideBudgetPage = () => {
         setGenStep(i + 1);
       }
       setCategories(buildTripAwareCategories());
+      setGeneratedContextKey(budgetContextKey);
       setHasGenerated(true);
       setRegenCount((n) => n + 1);
       toast.success(t("guideBudget.toastGenerated"));
     } finally {
       setIsGenerating(false);
     }
-  }, [t, reached, consume, buildTripAwareCategories, isGenerating]);
+  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
@@ -179,10 +189,11 @@ const GuideBudgetPage = () => {
     }
     await new Promise((r) => setTimeout(r, 300));
     setCategories(buildTripAwareCategories());
+    setGeneratedContextKey(budgetContextKey);
     setIsGenerating(false);
     setRegenCount((n) => n + 1);
     toast.success(t("guideBudget.toastRecalcDone"), { id: "regen" });
-  }, [t, buildTripAwareCategories]);
+  }, [t, buildTripAwareCategories, budgetContextKey]);
 
   const handleAiAdjust = (idx: number) => {
     setCategories((prev) =>
