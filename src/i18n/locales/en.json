@@ -1905,6 +1905,13 @@
       "loading": "Pip is thinking…",
       "greeting": "Hey {{name}}! 👋 I'm Pip, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
       "greetingNoName": "Hey! 👋 I'm Pip, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
+      "greetings": [
+        "Hey {{name}}! 👋 Pip here. Ready to talk budget for {{destination}}? Ask me anything on your mind.",
+        "Hi {{name}}! ✈️ I'm Pip, your travel copilot. Wondering if your {{destination}} budget holds up? I'm on it.",
+        "Hello {{name}} 🌍 Pip speaking. Doubt on a spend, craving local tips for {{destination}}? Lay it on me.",
+        "Yo {{name}}! 😎 Pip here. Wanna look at your {{destination}} budget together? Tell me what's bugging you.",
+        "Hey there {{name}}! 👋 Pip's in. Food, transport, stays in {{destination}} — I've got tips for all of it."
+      ],
       "emptyState": "Ask anything about your {{destination}} budget — accommodation, food, transport, overspending… I'll use your current trip data.",
       "errorAnswer": "I couldn't answer right now. Please try again in a moment.",
       "expand": "Expand",
