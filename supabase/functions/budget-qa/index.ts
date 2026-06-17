@@ -147,21 +147,7 @@ ${context}`;
       }),
     });
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: system },
-          ...recentHistory.map((m) => ({ role: m.role, content: m.content })),
-          { role: "user", content: question },
-        ],
-      }),
-    });
+
 
     if (!response.ok) {
       if (response.status === 429) {
