@@ -1903,6 +1903,8 @@
       "placeholder": "Ask anything about your budget…",
       "send": "Send",
       "loading": "Pip is thinking…",
+      "greeting": "Hey {{name}}! 👋 I'm Pip, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
+      "greetingNoName": "Hey! 👋 I'm Pip, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
       "emptyState": "Ask anything about your {{destination}} budget — accommodation, food, transport, overspending… I'll use your current trip data.",
       "errorAnswer": "I couldn't answer right now. Please try again in a moment.",
       "expand": "Expand",

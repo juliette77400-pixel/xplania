@@ -1903,6 +1903,8 @@
       "placeholder": "Pose ta question sur le budget…",
       "send": "Envoyer",
       "loading": "Pip réfléchit…",
+      "greeting": "Salut {{name}} ! 👋 Je suis Pip, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
+      "greetingNoName": "Salut ! 👋 Je suis Pip, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
       "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
       "expand": "Agrandir",
