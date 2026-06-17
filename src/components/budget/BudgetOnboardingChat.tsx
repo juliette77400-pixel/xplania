@@ -220,13 +220,18 @@ const BudgetOnboardingChat = ({
 
   const currentHelp = t(`budget.onboarding.sectionHelp.${activeSection}`, { destination, days });
 
+  const panelClass = expanded
+    ? "fixed inset-x-2 bottom-2 top-2 sm:inset-auto sm:bottom-6 sm:right-6 sm:top-[10vh] sm:w-[min(560px,calc(100vw-3rem))] sm:max-h-[80vh] z-50 glass-card rounded-2xl shadow-2xl border border-primary/30 overflow-hidden flex flex-col"
+    : "fixed bottom-6 right-6 z-50 w-[min(380px,calc(100vw-2rem))] glass-card rounded-2xl shadow-2xl border border-primary/30 overflow-hidden flex flex-col max-h-[80vh]";
+
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-50 w-[min(380px,calc(100vw-2rem))] glass-card rounded-2xl shadow-2xl border border-primary/30 overflow-hidden flex flex-col max-h-[80vh]"
+        transition={{ type: "spring", stiffness: 260, damping: 26 }}
+        className={panelClass}
       >
         <div className="flex items-center justify-between p-3 border-b border-border/50 bg-primary/10">
           <div className="flex items-center gap-2">
@@ -241,6 +246,14 @@ const BudgetOnboardingChat = ({
               className="text-[11px] font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
             >
               {mode === "guided" ? t("budget.qa.askButton") : t("budget.qa.backToGuide")}
+            </button>
+            <button
+              aria-label={expanded ? t("budget.qa.collapse") : t("budget.qa.expand")}
+              title={expanded ? t("budget.qa.collapse") : t("budget.qa.expand")}
+              onClick={toggleExpanded}
+              className="p-1 rounded-md hover:bg-muted text-muted-foreground"
+            >
+              {expanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
             <button
               aria-label={t("common.close")}
