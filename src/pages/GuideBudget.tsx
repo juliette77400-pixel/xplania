@@ -345,6 +345,9 @@ const GuideBudgetPage = () => {
           destination={destination}
           days={days}
           triggerKey={regenCount}
+          activeSection={activeBudgetSection}
+          isGenerating={isGenerating}
+          onRegenerate={handleRegenerate}
           onSuggestFocus={scrollToSection}
         />
       )}
