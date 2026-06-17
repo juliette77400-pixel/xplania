@@ -1871,6 +1871,12 @@
       "yes": "Yes, show me",
       "no": "I'll explore on my own",
       "suggestion": "Great! Start with your detailed forecast for {{destination}} — every line is editable and the AI suggests amounts matched to local cost of living.",
+      "focus": {
+        "forecast": "Forecast",
+        "tracker": "Expenses",
+        "charts": "Charts",
+        "tips": "Tips"
+      },
       "gotIt": "Got it!"
     }
   },

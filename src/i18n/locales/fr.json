@@ -1871,6 +1871,12 @@
       "yes": "Oui, montre-moi",
       "no": "Je préfère explorer seul",
       "suggestion": "Top ! Commence par vérifier ta prévision détaillée pour {{destination}} — chaque ligne est modifiable, et l'IA propose des montants adaptés au coût de la vie local.",
+      "focus": {
+        "forecast": "Prévision",
+        "tracker": "Dépenses",
+        "charts": "Graphiques",
+        "tips": "Astuces"
+      },
       "gotIt": "C'est parti !"
     }
   },
