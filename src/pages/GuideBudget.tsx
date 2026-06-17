@@ -432,7 +432,9 @@ const GuideBudgetPage = () => {
               />
               <AddExpenseForm onAdd={handleAddExpense} />
               <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
-              <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+              <div ref={chartRef}>
+                <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+              </div>
               <BudgetAlerts categories={categories} destination={destination} />
               <BudgetSavingTips
                 destination={destination}
