@@ -390,18 +390,30 @@ const GuideBudgetPage = () => {
                       : t("budget.autoSaved")}
                   </span>
                 </div>
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleRegenerate}
-                  disabled={isGenerating}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold transition-colors disabled:opacity-50"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  {t("guideBudget.regenerate")}
-                </motion.button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleExportPdf}
+                    disabled={isExporting}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-button text-primary-foreground text-sm font-semibold disabled:opacity-50"
+                  >
+                    <FileDown className="w-4 h-4" />
+                    {isExporting ? t("budget.pdf.exporting") : t("budget.pdf.exportButton")}
+                  </motion.button>
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleRegenerate}
+                    disabled={isGenerating}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold transition-colors disabled:opacity-50"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    {t("guideBudget.regenerate")}
+                  </motion.button>
+                </div>
               </div>
 
               <BudgetConfig tripData={tripData} />
