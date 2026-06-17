@@ -61,6 +61,10 @@ const BudgetOnboardingChat = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(true);
+  const [expanded, setExpanded] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("xplania-budget-chat-expanded") === "1";
+  });
   const [mode, setMode] = useState<"guided" | "qa">("guided");
   const [stage, setStage] = useState<"welcome" | "suggestion">("welcome");
   const [question, setQuestion] = useState("");
@@ -69,6 +73,16 @@ const BudgetOnboardingChat = ({
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const qaStorageKey = `${QA_HISTORY_PREFIX}::${destination}`;
+
+  const toggleExpanded = () => {
+    setExpanded((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("xplania-budget-chat-expanded", next ? "1" : "0");
+      } catch { /* ignore */ }
+      return next;
+    });
+  };
 
   const focusOptions = ["analysis", "forecast", "tracker", "charts", "tips"] as const;
   const focusIcons = {
