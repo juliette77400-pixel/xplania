@@ -1894,6 +1894,17 @@
       },
       "regenerate": "Relancer la génération",
       "gotIt": "C'est parti !"
+    },
+    "autoSaved": "Sauvegardé automatiquement",
+    "autoSavedAt": "Sauvegardé automatiquement · {{time}}",
+    "qa": {
+      "askButton": "Poser une question",
+      "backToGuide": "Retour au guide",
+      "placeholder": "Pose ta question sur le budget…",
+      "send": "Envoyer",
+      "loading": "Pip réfléchit…",
+      "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
+      "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant."
     }
   },
   "gamification": {
