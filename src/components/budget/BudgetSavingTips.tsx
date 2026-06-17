@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PiggyBank, RefreshCw, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { BudgetCategory } from "./BudgetForecast";
+import type { TravelFormData } from "@/types/travel";
 
 interface Tip {
   title: string;
@@ -17,6 +18,7 @@ interface Props {
   days: number;
   travelers: number;
   categories: BudgetCategory[];
+  tripData?: TravelFormData | null;
 }
 
 const CAT_EMOJI: Record<string, string> = {
@@ -28,7 +30,7 @@ const CAT_EMOJI: Record<string, string> = {
   extras: "✨",
 };
 
-const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categories }: Props) => {
+const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categories, tripData }: Props) => {
   const { t, i18n } = useTranslation();
   const [tips, setTips] = useState<Tip[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,9 @@ const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categorie
   const signatureRef = useRef<string>("");
 
   const locale = i18n.language.startsWith("en") ? "en" : "fr";
-  const signature = `${destination}|${totalBudget}|${days}|${travelers}|${locale}`;
+  // Signature includes destination + budget to auto-refresh when they change.
+  const breakdownSig = categories.map((c) => `${c.key}:${c.planned}`).join("/");
+  const signature = `${destination}|${totalBudget}|${days}|${travelers}|${locale}|${breakdownSig}`;
 
   const buildFallbackTips = (): Tip[] => [
     {
@@ -72,10 +76,17 @@ const BudgetSavingTips = ({ destination, totalBudget, days, travelers, categorie
         travelers,
         locale,
         categories: categories.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent })),
+        departureDate: tripData?.departureDate || "",
+        returnDate: tripData?.returnDate || "",
+        tripTypes: tripData?.tripTypes || [],
+        spendingPriorities: tripData?.spendingPriorities || [],
+        accommodationStanding: tripData?.accommodationStanding || "",
+        organization: tripData?.organization || "",
+        rhythm: tripData?.rhythm || "",
       };
       const invokePromise = supabase.functions.invoke("budget-tips", { body: payload });
       const timeoutPromise = new Promise<never>((_, reject) =>
-        window.setTimeout(() => reject(new Error("budget_tips_timeout")), 12000)
+        window.setTimeout(() => reject(new Error("budget_tips_timeout")), 15000)
       );
       const { data, error: fnError } = await Promise.race([invokePromise, timeoutPromise]);
       if (fnError) throw fnError;
