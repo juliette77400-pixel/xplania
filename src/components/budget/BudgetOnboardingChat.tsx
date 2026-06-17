@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import type { BudgetCategory } from "./BudgetForecast";
 import type { Expense } from "./AddExpenseForm";
 import type { TravelFormData } from "@/types/travel";
@@ -60,6 +61,22 @@ const BudgetOnboardingChat = ({
   onSuggestFocus,
 }: Props) => {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
+  const firstName = (() => {
+    const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
+    const candidates = [
+      meta.first_name,
+      meta.firstName,
+      meta.given_name,
+      typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
+      typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
+      user?.email ? user.email.split("@")[0] : undefined,
+    ];
+    const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
+    if (!found) return "";
+    const clean = found.trim().replace(/[._-]+/g, " ").split(" ")[0];
+    return clean.charAt(0).toUpperCase() + clean.slice(1);
+  })();
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -139,6 +156,17 @@ const BudgetOnboardingChat = ({
     }
   }, [qaHistory, qaLoading, mode]);
 
+  // Seed Pip's personalized greeting when entering QA mode with empty history
+  useEffect(() => {
+    if (mode !== "qa") return;
+    if (qaHistory.length > 0) return;
+    const greeting = firstName
+      ? t("budget.qa.greeting", { name: firstName, destination })
+      : t("budget.qa.greetingNoName", { destination });
+    setQaHistory([{ role: "assistant", content: greeting, ts: Date.now() }]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
   const closeBubble = () => {
     setOpen(false);
     try {
@@ -169,13 +197,14 @@ const BudgetOnboardingChat = ({
       const payload = {
         question: q,
         history: nextHistory.slice(-10).map(({ role, content }) => ({ role, content })),
+        firstName,
         destination,
         totalBudget,
         days,
         travelers,
         locale,
         categories: categories.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent })),
-        expenses: expenses.map((e) => ({ amount: e.amount, category: e.category })),
+        expenses: expenses.map((e) => ({ amount: e.amount, category: e.category, label: (e as { label?: string }).label, date: (e as { date?: string }).date })),
         departureDate: tripData?.departureDate || "",
         returnDate: tripData?.returnDate || "",
         tripTypes: tripData?.tripTypes || [],

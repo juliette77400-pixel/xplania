@@ -18,6 +18,7 @@ serve(async (req) => {
     const {
       question = "",
       history = [],
+      firstName = "",
       destination = "Paris",
       totalBudget = 0,
       days = 0,
@@ -41,18 +42,28 @@ serve(async (req) => {
       });
     }
 
-    const isEN = locale === "en";
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const breakdown = (categories as Array<{ key: string; planned: number; spent: number }>)
-      .map((c) => `${c.key}: planned €${c.planned}, spent €${c.spent}`)
+    type Cat = { key: string; planned: number; spent: number };
+    const cats = categories as Cat[];
+    const breakdown = cats
+      .map((c) => {
+        const remaining = (Number(c.planned) || 0) - (Number(c.spent) || 0);
+        return `${c.key}: planned €${c.planned}, spent €${c.spent}, remaining €${remaining}`;
+      })
       .join(" | ");
 
     const totalSpent = (expenses as Array<{ amount: number }>).reduce(
       (s, e) => s + (Number(e.amount) || 0),
       0
     );
+    const totalRemaining = (Number(totalBudget) || 0) - totalSpent;
+
+    const expensesList = (expenses as Array<{ amount: number; category?: string; label?: string; date?: string }>)
+      .slice(-20)
+      .map((e) => `${e.date || ""} ${e.category || ""} €${e.amount}${e.label ? ` (${e.label})` : ""}`.trim())
+      .join(" ; ") || "none";
 
     const styleBits = [
       tripTypes?.length ? `trip type: ${(tripTypes as string[]).join(", ")}` : "",
@@ -62,29 +73,39 @@ serve(async (req) => {
       rhythm ? `rhythm: ${rhythm}` : "",
     ].filter(Boolean).join(" | ");
 
-    const context = isEN
-      ? `Destination: ${destination}
-Dates: ${departureDate || "n/a"}${returnDate ? ` → ${returnDate}` : ""}
-Duration: ${days} days, ${travelers} traveler(s)
-Total budget: €${totalBudget}
-Total spent so far: €${Math.round(totalSpent)}
-Breakdown: ${breakdown || "n/a"}
-Profile: ${styleBits || "n/a"}`
-      : `Destination : ${destination}
-Dates : ${departureDate || "n/c"}${returnDate ? ` → ${returnDate}` : ""}
-Durée : ${days} jours, ${travelers} voyageur(s)
-Budget total : ${totalBudget} €
-Dépensé jusqu'ici : ${Math.round(totalSpent)} €
-Répartition : ${breakdown || "n/c"}
-Profil : ${styleBits || "n/c"}`;
-
     const today = new Date().toISOString().slice(0, 10);
-    const baseSystem = `You are Xplania's travel budget assistant. You have access to the user's full trip context that he generated: destination, travel dates, number of travelers, budget breakdown by category, and expenses already logged. Answer any budget or travel question precisely and helpfully. Be specific to the user's destination and situation. Never say you cannot answer — if unsure, give your best estimate with context. Respond in the same language the user is writing in (French or English). Keep answers concise (3-7 sentences), concrete and actionable. Reference real local prices, transit passes, neighborhoods, markets or services when relevant.
 
-CURRENT DATE: ${today}
-TRIP CONTEXT
+    const context = `USER
+First name: ${firstName || "(unknown)"}
+
+TRIP
+Destination: ${destination}
+Dates: ${departureDate || "n/a"}${returnDate ? ` → ${returnDate}` : ""}
+Duration: ${days} days
+Travelers: ${travelers}
+Profile: ${styleBits || "n/a"}
+
+BUDGET
+Total budget: €${totalBudget}
+Total spent: €${Math.round(totalSpent)}
+Total remaining: €${Math.round(totalRemaining)}
+Per category: ${breakdown || "n/a"}
+
+EXPENSES (recent)
+${expensesList}
+
+CURRENT DATE: ${today}`;
+
+    const system = `You are Pip, Xplania's personal travel copilote. You are warm, encouraging, and speak like a well-traveled friend — not a customer service bot. You always use "tu" in French and "you" in English. You use the user's first name whenever you know it (use it naturally, not in every sentence). You are enthusiastic about travel and genuinely care about helping the user make the most of their trip without stress.
+
+You have full access to the user's trip context: first name, destination, travel dates and duration, number of travelers, budget breakdown by category, expenses already logged, and remaining budget per category.
+
+You can answer any question related to: budget feasibility, daily spending pace, local prices and cost of life at destination, transport options and costs, food budget tips (local restaurants, markets, street food), free or cheap activities, currency and exchange tips, how to split costs between travelers, what to do when going over budget, and general travel advice linked to budget.
+
+You never say you cannot answer. If you are not 100% sure of something, you say so honestly but still give your best helpful estimate with context. You keep answers concise but warm — no bullet point walls, write like you're texting a friend who asked for advice. Use the occasional emoji to feel alive, but don't overdo it. Always respond in the same language the user writes in (French or English). The user's interface language is currently: ${locale}.
+
+CONTEXT
 ${context}`;
-    const system = baseSystem;
 
     const recentHistory = (history as ChatMessage[])
       .filter((m) => m && typeof m.content === "string" && (m.role === "user" || m.role === "assistant"))
