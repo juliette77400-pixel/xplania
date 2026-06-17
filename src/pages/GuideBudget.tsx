@@ -97,6 +97,10 @@ const GuideBudgetPage = () => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
+  const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
+  const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
+  const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
+
   const handleExportPdf = useCallback(async () => {
     setIsExporting(true);
     try {
@@ -105,7 +109,7 @@ const GuideBudgetPage = () => {
         tripData,
         days,
         travelers,
-        totalBudget: categories.reduce((s, c) => s + c.planned, 0) || userBudget,
+        totalBudget,
         categories,
         expenses,
         locale,
@@ -119,11 +123,8 @@ const GuideBudgetPage = () => {
     } finally {
       setIsExporting(false);
     }
-  }, [destination, tripData, days, travelers, categories, expenses, locale, userBudget, t]);
+  }, [destination, tripData, days, travelers, totalBudget, categories, expenses, locale, t]);
 
-  const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
-  const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
-  const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
 
   // Hydrate from localStorage once per storageKey
   useEffect(() => {
