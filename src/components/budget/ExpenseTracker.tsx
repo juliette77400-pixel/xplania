@@ -1,23 +1,50 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { CheckCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle, AlertTriangle, Receipt, Trash2 } from "lucide-react";
 import type { BudgetCategory } from "./BudgetForecast";
+import type { Expense } from "./AddExpenseForm";
 
 interface Props {
   categories: BudgetCategory[];
+  expenses?: Expense[];
+  onRemoveExpense?: (id: string) => void;
 }
 
-const ExpenseTracker = ({ categories }: Props) => {
-  const { t } = useTranslation();
+const ExpenseTracker = ({ categories, expenses = [], onRemoveExpense }: Props) => {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-US";
+
+  const totalPlanned = categories.reduce((s, c) => s + c.planned, 0);
+  const totalSpent = categories.reduce((s, c) => s + c.spent, 0);
+  const totalRest = totalPlanned - totalSpent;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="glass-card rounded-2xl p-6"
+      data-budget-section="tracker"
     >
       <h2 className="text-lg font-bold text-foreground mb-1">{t("budget.trackerTitle")}</h2>
       <p className="text-sm text-muted-foreground mb-6">{t("budget.trackerSubtitle")}</p>
 
+      {/* Totals */}
+      <div className="grid grid-cols-3 gap-2 mb-5">
+        <div className="p-3 rounded-xl bg-muted/40 text-center">
+          <p className="text-xs text-muted-foreground">{t("budget.trackerTotalPlanned")}</p>
+          <p className="text-lg font-bold text-foreground">{totalPlanned}€</p>
+        </div>
+        <div className="p-3 rounded-xl bg-muted/40 text-center">
+          <p className="text-xs text-muted-foreground">{t("budget.trackerTotalSpent")}</p>
+          <p className="text-lg font-bold text-foreground">{totalSpent}€</p>
+        </div>
+        <div className={`p-3 rounded-xl text-center ${totalRest < 0 ? "bg-destructive/15" : "bg-green-500/15"}`}>
+          <p className="text-xs text-muted-foreground">{t("budget.trackerTotalRest")}</p>
+          <p className={`text-lg font-bold ${totalRest < 0 ? "text-destructive" : "text-green-400"}`}>{totalRest}€</p>
+        </div>
+      </div>
+
+      {/* Per-category summary */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -33,7 +60,8 @@ const ExpenseTracker = ({ categories }: Props) => {
             {categories.map((cat, i) => {
               const rest = cat.planned - cat.spent;
               const overBudget = rest < 0;
-              const warning = cat.spent / cat.planned > 0.8 && !overBudget;
+              const ratio = cat.planned > 0 ? cat.spent / cat.planned : 0;
+              const warning = ratio > 0.8 && !overBudget;
               const Icon = cat.icon;
               const label = t(`budget.categories.${cat.key}`, { defaultValue: cat.key });
 
@@ -42,7 +70,7 @@ const ExpenseTracker = ({ categories }: Props) => {
                   key={cat.key}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
+                  transition={{ delay: i * 0.04 }}
                   className="border-b border-border/50 hover:bg-muted/30 transition-colors"
                 >
                   <td className="py-3 px-2">
@@ -78,6 +106,60 @@ const ExpenseTracker = ({ categories }: Props) => {
         </table>
       </div>
 
+      {/* Recent expenses list */}
+      <div className="mt-6">
+        <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+          <Receipt className="w-4 h-4 text-primary" />
+          {t("budget.trackerRecent", { count: expenses.length })}
+        </h3>
+        {expenses.length === 0 ? (
+          <p className="text-xs text-muted-foreground italic">{t("budget.trackerNoExpense")}</p>
+        ) : (
+          <ul className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
+            {[...expenses]
+              .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+              .map((exp) => {
+                const cat = categories.find((c) => c.key === exp.category);
+                const catLabel = t(`budget.categories.${exp.category}`, { defaultValue: exp.category });
+                const dateStr = new Date(exp.date).toLocaleDateString(locale, {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+                return (
+                  <li
+                    key={exp.id}
+                    className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors text-xs"
+                  >
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      {cat && <cat.icon className={`w-3.5 h-3.5 ${cat.color} shrink-0`} />}
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-foreground truncate">
+                          {exp.comment || catLabel}
+                        </p>
+                        <p className="text-[11px] text-muted-foreground truncate">
+                          {catLabel} · {dateStr}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-bold text-foreground">{exp.amount}€</span>
+                    {onRemoveExpense && (
+                      <button
+                        onClick={() => onRemoveExpense(exp.id)}
+                        aria-label={t("budget.trackerRemoveAria")}
+                        className="p-1 text-muted-foreground hover:text-destructive transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+          </ul>
+        )}
+      </div>
+
       <div className="mt-6">
         <h3 className="text-sm font-semibold text-foreground mb-3">{t("budget.trackerSplit")}</h3>
         <div className="flex rounded-lg overflow-hidden h-4">
@@ -94,21 +176,10 @@ const ExpenseTracker = ({ categories }: Props) => {
                 key={cat.key}
                 initial={{ width: 0 }}
                 animate={{ width: `${pct}%` }}
-                transition={{ delay: 0.5 + i * 0.08, duration: 0.6 }}
+                transition={{ delay: 0.4 + i * 0.06, duration: 0.6 }}
                 className={`${colors[i % colors.length]} h-full`}
                 title={`${label}: ${Math.round(pct)}%`}
               />
-            );
-          })}
-        </div>
-        <div className="flex flex-wrap gap-3 mt-3">
-          {categories.slice(0, 4).map((cat, i) => {
-            const colors = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
-            return (
-              <div key={cat.key} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <div className={`w-2.5 h-2.5 rounded-full ${colors[i]}`} />
-                {t(`budget.categories.${cat.key}`, { defaultValue: cat.key })}
-              </div>
             );
           })}
         </div>

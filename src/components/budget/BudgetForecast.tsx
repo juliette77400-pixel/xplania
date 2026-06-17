@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Home, Bus, Ticket, Utensils, ShoppingBag, AlertTriangle, Sparkles, Edit3 } from "lucide-react";
+import { Home, Bus, Ticket, Utensils, ShoppingBag, AlertTriangle, Sparkles, Edit3, Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 export interface BudgetCategory {
@@ -12,15 +12,17 @@ export interface BudgetCategory {
   spent: number;
   icon: React.ElementType;
   color: string;
+  /** Localized AI explanation for the current suggestion */
+  aiExplanation?: string;
 }
 
 const defaultCategories: BudgetCategory[] = [
-  { key: "accommodation", planned: 300, aiSuggested: 280, spent: 150, icon: Home, color: "text-blue-400" },
-  { key: "localTransport", planned: 80, aiSuggested: 95, spent: 65, icon: Bus, color: "text-green-400" },
-  { key: "activities", planned: 200, aiSuggested: 220, spent: 90, icon: Ticket, color: "text-purple-400" },
-  { key: "food", planned: 150, aiSuggested: 140, spent: 60, icon: Utensils, color: "text-orange-400" },
-  { key: "shopping", planned: 50, aiSuggested: 45, spent: 15, icon: ShoppingBag, color: "text-pink-400" },
-  { key: "extras", planned: 30, aiSuggested: 25, spent: 5, icon: AlertTriangle, color: "text-yellow-400" },
+  { key: "accommodation", planned: 300, aiSuggested: 280, spent: 0, icon: Home, color: "text-blue-400" },
+  { key: "localTransport", planned: 80, aiSuggested: 95, spent: 0, icon: Bus, color: "text-green-400" },
+  { key: "activities", planned: 200, aiSuggested: 220, spent: 0, icon: Ticket, color: "text-purple-400" },
+  { key: "food", planned: 150, aiSuggested: 140, spent: 0, icon: Utensils, color: "text-orange-400" },
+  { key: "shopping", planned: 50, aiSuggested: 45, spent: 0, icon: ShoppingBag, color: "text-pink-400" },
+  { key: "extras", planned: 30, aiSuggested: 25, spent: 0, icon: AlertTriangle, color: "text-yellow-400" },
   { key: "unexpected", planned: 10, aiSuggested: 15, spent: 0, icon: AlertTriangle, color: "text-red-400" },
 ];
 
@@ -43,7 +45,7 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
   };
 
   const handleSave = (idx: number) => {
-    const val = parseInt(editValue) || 0;
+    const val = Math.max(0, parseInt(editValue) || 0);
     onUpdateCategory(idx, { planned: val });
     setEditingIdx(null);
   };
@@ -53,6 +55,7 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="glass-card rounded-2xl p-6"
+      data-budget-section="forecast"
     >
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center">
@@ -81,7 +84,7 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
                 transition={{ delay: i * 0.05 }}
                 className="p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all group shadow-md"
               >
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-lg bg-muted/80 flex items-center justify-center`}>
                       <Icon className={`w-4 h-4 ${cat.color}`} />
@@ -92,21 +95,34 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
                     <div className="text-right">
                       <p className="text-xs text-muted-foreground">{t("budget.forecastPlanned")}</p>
                       {editingIdx === i ? (
-                        <input
-                          autoFocus
-                          value={editValue}
-                          onChange={(e) => setEditValue(e.target.value)}
-                          onBlur={() => handleSave(i)}
-                          onKeyDown={(e) => e.key === "Enter" && handleSave(i)}
-                          className="w-20 bg-muted border border-border rounded px-2 py-0.5 text-sm font-bold text-foreground text-right"
-                        />
+                        <div className="flex items-center gap-1">
+                          <input
+                            autoFocus
+                            type="number"
+                            min={0}
+                            value={editValue}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            onBlur={() => handleSave(i)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSave(i)}
+                            className="w-20 bg-background border border-primary rounded px-2 py-0.5 text-sm font-bold text-foreground text-right focus:outline-none focus:ring-2 focus:ring-primary"
+                            aria-label={t("budget.forecastEditAria", { category: label })}
+                          />
+                          <button
+                            onClick={() => handleSave(i)}
+                            aria-label={t("common.save")}
+                            className="p-0.5 rounded bg-primary/20 hover:bg-primary/30 text-primary"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       ) : (
                         <button
                           onClick={() => handleEdit(i)}
-                          className="text-sm font-bold text-foreground hover:text-primary transition-colors flex items-center gap-1"
+                          title={t("budget.forecastEditTitle")}
+                          className="text-sm font-bold text-foreground hover:text-primary transition-colors flex items-center gap-1 border border-dashed border-transparent hover:border-primary/40 rounded px-1.5 py-0.5"
                         >
                           {cat.planned}€
-                          <Edit3 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <Edit3 className="w-3 h-3 opacity-60" />
                         </button>
                       )}
                     </div>
@@ -121,18 +137,29 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
 
                 <Progress value={pct} className="h-1.5 mb-2" />
 
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">{t("budget.forecastPctTotal", { pct })}</span>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => onAiAdjust(i)}
-                    className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
-                  >
-                    <Sparkles className="w-3 h-3" />
-                    {t("budget.forecastAiAdjust")}
-                  </motion.button>
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <span className="text-xs text-muted-foreground">
+                    {t("budget.forecastPctTotal", { pct })} · {t("budget.forecastSpent", { amount: cat.spent })}
+                  </span>
+                  {diff !== 0 && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => onAiAdjust(i)}
+                      className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      {t("budget.forecastAiAdjust")} ({cat.aiSuggested}€)
+                    </motion.button>
+                  )}
                 </div>
+
+                {cat.aiExplanation && diff !== 0 && (
+                  <p className="text-[11px] text-muted-foreground italic mt-1.5 flex items-start gap-1">
+                    <Sparkles className="w-2.5 h-2.5 mt-0.5 text-primary/70 shrink-0" />
+                    {cat.aiExplanation}
+                  </p>
+                )}
               </motion.div>
             );
           })}
