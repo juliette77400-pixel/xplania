@@ -141,7 +141,7 @@ const BudgetOnboardingChat = ({ destination, days, triggerKey, activeSection, is
                 {t("budget.onboarding.regenerate")}
               </button>
               <button
-                onClick={close}
+                onClick={() => onSuggestFocus?.("forecast")}
                 className="w-full gradient-button text-primary-foreground text-sm font-semibold py-2 px-3 rounded-lg hover:opacity-90 transition-opacity"
               >
                 {t("budget.onboarding.gotIt")}
