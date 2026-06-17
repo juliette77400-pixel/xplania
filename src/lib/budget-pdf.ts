@@ -176,7 +176,7 @@ export async function exportBudgetPdf({
       newPageIfNeeded(14);
       const date = e.date ? new Date(e.date).toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US") : "";
       const label = t(`budget.categories.${e.category}`, { defaultValue: e.category });
-      const desc = (e.description || "").slice(0, 60);
+      const desc = (e.comment || "").slice(0, 60);
       doc.text(`${date}  ·  ${label}  ·  ${desc}`, margin, y);
       doc.text(fmt(e.amount), pageW - margin, y, { align: "right" });
       y += 13;
