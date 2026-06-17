@@ -65,6 +65,8 @@ import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } f
  * =============================================================================
  */
 
+const STORAGE_PREFIX = "xplania-budget-state";
+
 const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData, recommendations } = useTravelStore();
@@ -77,6 +79,8 @@ const GuideBudgetPage = () => {
     return Math.max(1, 1 + child);
   }, [tripData?.childrenCount]);
 
+  const storageKey = `${STORAGE_PREFIX}::${destination}::${tripData?.departureDate || "na"}`;
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [genStep, setGenStep] = useState(0);
   const [hasGenerated, setHasGenerated] = useState(false);
@@ -86,11 +90,57 @@ const GuideBudgetPage = () => {
   const [regenCount, setRegenCount] = useState(0);
   const [activeBudgetSection, setActiveBudgetSection] = useState<"analysis" | "forecast" | "tracker" | "charts" | "tips">("analysis");
   const [generatedContextKey, setGeneratedContextKey] = useState("");
+  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
+  const [hydratedFromStorage, setHydratedFromStorage] = useState(false);
   const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
+
+  // Hydrate from localStorage once per storageKey
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.hasGenerated && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
+          setCategories(parsed.categories);
+          setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
+          setHasGenerated(true);
+          setGeneratedContextKey(parsed.generatedContextKey || "");
+          setRegenCount(parsed.regenCount || 0);
+          setLastSavedAt(parsed.savedAt || null);
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    setHydratedFromStorage(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey]);
+
+  // Persist whenever state changes (auto-save), independent of focus/keyboard
+  useEffect(() => {
+    if (!hydratedFromStorage || !hasGenerated) return;
+    try {
+      const savedAt = Date.now();
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+          hasGenerated,
+          categories,
+          expenses,
+          regenCount,
+          generatedContextKey,
+          savedAt,
+        })
+      );
+      setLastSavedAt(savedAt);
+    } catch {
+      /* ignore */
+    }
+  }, [categories, expenses, hasGenerated, hydratedFromStorage, regenCount, generatedContextKey, storageKey]);
 
   const monthLabel = useMemo(() => {
     const ref = tripData?.departureDate ? new Date(tripData.departureDate) : new Date();
