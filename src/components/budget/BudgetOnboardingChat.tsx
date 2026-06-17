@@ -17,6 +17,7 @@ const BudgetOnboardingChat = ({ destination, days, triggerKey, onSuggestFocus }:
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [stage, setStage] = useState<"welcome" | "suggestion" | "closed">("welcome");
+  const focusOptions = ["forecast", "tracker", "charts", "tips"] as const;
 
   useEffect(() => {
     const key = `${STORAGE_KEY}::${triggerKey}`;
@@ -104,6 +105,17 @@ const BudgetOnboardingChat = ({ destination, days, triggerKey, onSuggestFocus }:
               <p className="text-sm text-foreground leading-relaxed">
                 {t("budget.onboarding.suggestion", { destination, days })}
               </p>
+              <div className="grid grid-cols-2 gap-2">
+                {focusOptions.map((focus) => (
+                  <button
+                    key={focus}
+                    onClick={() => onSuggestFocus?.(focus)}
+                    className="bg-muted hover:bg-muted/80 text-foreground text-xs font-semibold py-2 px-2 rounded-lg transition-colors"
+                  >
+                    {t(`budget.onboarding.focus.${focus}`)}
+                  </button>
+                ))}
+              </div>
               <button
                 onClick={close}
                 className="w-full gradient-button text-primary-foreground text-sm font-semibold py-2 px-3 rounded-lg hover:opacity-90 transition-opacity"
