@@ -187,12 +187,22 @@ const BudgetOnboardingChat = ({
   useEffect(() => {
     if (mode !== "qa") return;
     if (qaHistory.length > 0) return;
-    const greeting = firstName
-      ? t("budget.qa.greeting", { name: firstName, destination })
-      : t("budget.qa.greetingNoName", { destination });
-    setQaHistory([{ role: "assistant", content: greeting, ts: Date.now() }]);
+    // Pick a random greeting variant for variety
+    const variants = (t("budget.qa.greetings", { returnObjects: true }) as unknown);
+    const list = Array.isArray(variants) && variants.length > 0
+      ? (variants as string[])
+      : [t(firstName ? "budget.qa.greeting" : "budget.qa.greetingNoName", { name: firstName, destination })];
+    const pick = list[Math.floor(Math.random() * list.length)];
+    const filled = pick
+      .replace(/\{\{\s*name\s*\}\}/g, firstName || "")
+      .replace(/\{\{\s*destination\s*\}\}/g, destination)
+      // Clean up leftover punctuation if name is missing (e.g. "Salut  ! " → "Salut ! ")
+      .replace(/\s{2,}/g, " ")
+      .replace(/\s+([,!?.])/g, "$1")
+      .trim();
+    setQaHistory([{ role: "assistant", content: filled, ts: Date.now() }]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, firstName]);
 
   const closeBubble = () => {
     setOpen(false);
