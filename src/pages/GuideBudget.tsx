@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Check } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -65,6 +65,8 @@ import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } f
  * =============================================================================
  */
 
+const STORAGE_PREFIX = "xplania-budget-state";
+
 const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData, recommendations } = useTravelStore();
@@ -77,6 +79,8 @@ const GuideBudgetPage = () => {
     return Math.max(1, 1 + child);
   }, [tripData?.childrenCount]);
 
+  const storageKey = `${STORAGE_PREFIX}::${destination}::${tripData?.departureDate || "na"}`;
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [genStep, setGenStep] = useState(0);
   const [hasGenerated, setHasGenerated] = useState(false);
@@ -86,11 +90,57 @@ const GuideBudgetPage = () => {
   const [regenCount, setRegenCount] = useState(0);
   const [activeBudgetSection, setActiveBudgetSection] = useState<"analysis" | "forecast" | "tracker" | "charts" | "tips">("analysis");
   const [generatedContextKey, setGeneratedContextKey] = useState("");
+  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
+  const [hydratedFromStorage, setHydratedFromStorage] = useState(false);
   const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
+
+  // Hydrate from localStorage once per storageKey
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.hasGenerated && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
+          setCategories(parsed.categories);
+          setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
+          setHasGenerated(true);
+          setGeneratedContextKey(parsed.generatedContextKey || "");
+          setRegenCount(parsed.regenCount || 0);
+          setLastSavedAt(parsed.savedAt || null);
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    setHydratedFromStorage(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey]);
+
+  // Persist whenever state changes (auto-save), independent of focus/keyboard
+  useEffect(() => {
+    if (!hydratedFromStorage || !hasGenerated) return;
+    try {
+      const savedAt = Date.now();
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+          hasGenerated,
+          categories,
+          expenses,
+          regenCount,
+          generatedContextKey,
+          savedAt,
+        })
+      );
+      setLastSavedAt(savedAt);
+    } catch {
+      /* ignore */
+    }
+  }, [categories, expenses, hasGenerated, hydratedFromStorage, regenCount, generatedContextKey, storageKey]);
 
   const monthLabel = useMemo(() => {
     const ref = tripData?.departureDate ? new Date(tripData.departureDate) : new Date();
@@ -146,10 +196,11 @@ const GuideBudgetPage = () => {
   }, [days, destination, recommendations?.budgetBreakdown, recomputeAiSuggestions, travelers, userBudget]);
 
   useEffect(() => {
+    if (!hydratedFromStorage) return;
     if (!hasGenerated && tripData?.destination) {
       setCategories(buildTripAwareCategories());
     }
-  }, [buildTripAwareCategories, hasGenerated, tripData?.destination]);
+  }, [buildTripAwareCategories, hasGenerated, hydratedFromStorage, tripData?.destination]);
 
   useEffect(() => {
     if (hasGenerated && generatedContextKey && generatedContextKey !== budgetContextKey) {
@@ -297,7 +348,20 @@ const GuideBudgetPage = () => {
               animate={{ opacity: 1 }}
               className="space-y-6 pb-12"
             >
-              <div className="flex justify-end">
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Check className="w-3.5 h-3.5 text-primary" />
+                  <span>
+                    {lastSavedAt
+                      ? t("budget.autoSavedAt", {
+                          time: new Date(lastSavedAt).toLocaleTimeString(
+                            locale === "fr" ? "fr-FR" : "en-US",
+                            { hour: "2-digit", minute: "2-digit" }
+                          ),
+                        })
+                      : t("budget.autoSaved")}
+                  </span>
+                </div>
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -336,7 +400,9 @@ const GuideBudgetPage = () => {
                 days={days}
                 travelers={travelers}
                 categories={categories}
+                tripData={tripData}
               />
+
 
               <div className="flex justify-center">
                 <Link
@@ -355,6 +421,11 @@ const GuideBudgetPage = () => {
         <BudgetOnboardingChat
           destination={destination}
           days={days}
+          travelers={travelers}
+          totalBudget={totalBudget}
+          categories={categories}
+          expenses={expenses}
+          tripData={tripData}
           triggerKey={regenCount}
           activeSection={activeBudgetSection}
           isGenerating={isGenerating}
