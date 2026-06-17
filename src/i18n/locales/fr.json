@@ -1904,7 +1904,33 @@
       "send": "Envoyer",
       "loading": "Pip réfléchit…",
       "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
-      "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant."
+      "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
+      "expand": "Agrandir",
+      "collapse": "Réduire"
+    },
+    "pdf": {
+      "exportButton": "Exporter en PDF",
+      "exporting": "Export en cours…",
+      "success": "PDF téléchargé",
+      "error": "Échec de l'export PDF",
+      "title": "Budget de voyage · {{destination}}",
+      "headerSubtitle": "Rapport budget voyage",
+      "footer": "Généré par Xplania · {{date}}",
+      "destination": "Destination",
+      "dates": "Dates",
+      "duration": "Durée",
+      "days": "jours",
+      "travelers": "Voyageurs",
+      "totalBudget": "Budget total",
+      "noDates": "Non précisé",
+      "breakdown": "Répartition du budget",
+      "category": "Catégorie",
+      "planned": "Prévu",
+      "spent": "Dépensé",
+      "remaining": "Restant",
+      "chartsTitle": "Graphiques",
+      "expensesTitle": "Dépenses enregistrées",
+      "tipsTitle": "Astuces d'économie"
     }
   },
   "gamification": {

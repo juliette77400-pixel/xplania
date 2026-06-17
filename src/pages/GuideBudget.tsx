@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { RotateCcw, Check } from "lucide-react";
+import { RotateCcw, Check, FileDown } from "lucide-react";
+import { exportBudgetPdf } from "@/lib/budget-pdf";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -93,10 +94,37 @@ const GuideBudgetPage = () => {
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const [hydratedFromStorage, setHydratedFromStorage] = useState(false);
   const { reached, consume } = useQuota("budget");
+  const chartRef = useRef<HTMLDivElement | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
+
+  const handleExportPdf = useCallback(async () => {
+    setIsExporting(true);
+    try {
+      await exportBudgetPdf({
+        destination,
+        tripData,
+        days,
+        travelers,
+        totalBudget,
+        categories,
+        expenses,
+        locale,
+        chartElement: chartRef.current,
+        t,
+      });
+      toast.success(t("budget.pdf.success"));
+    } catch (e) {
+      console.error(e);
+      toast.error(t("budget.pdf.error"));
+    } finally {
+      setIsExporting(false);
+    }
+  }, [destination, tripData, days, travelers, totalBudget, categories, expenses, locale, t]);
+
 
   // Hydrate from localStorage once per storageKey
   useEffect(() => {
@@ -362,18 +390,30 @@ const GuideBudgetPage = () => {
                       : t("budget.autoSaved")}
                   </span>
                 </div>
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleRegenerate}
-                  disabled={isGenerating}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold transition-colors disabled:opacity-50"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  {t("guideBudget.regenerate")}
-                </motion.button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleExportPdf}
+                    disabled={isExporting}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-button text-primary-foreground text-sm font-semibold disabled:opacity-50"
+                  >
+                    <FileDown className="w-4 h-4" />
+                    {isExporting ? t("budget.pdf.exporting") : t("budget.pdf.exportButton")}
+                  </motion.button>
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleRegenerate}
+                    disabled={isGenerating}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold transition-colors disabled:opacity-50"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    {t("guideBudget.regenerate")}
+                  </motion.button>
+                </div>
               </div>
 
               <BudgetConfig tripData={tripData} />
@@ -392,7 +432,9 @@ const GuideBudgetPage = () => {
               />
               <AddExpenseForm onAdd={handleAddExpense} />
               <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
-              <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+              <div ref={chartRef}>
+                <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+              </div>
               <BudgetAlerts categories={categories} destination={destination} />
               <BudgetSavingTips
                 destination={destination}
