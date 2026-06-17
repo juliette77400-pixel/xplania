@@ -1835,7 +1835,32 @@
         "Free cultural events"
       ]
     },
-    "configDays_other": "{{count}} days"
+    "configDays_other": "{{count}} days",
+    "forecastEditAria": "Edit {{category}} budget",
+    "forecastEditTitle": "Click to edit",
+    "forecastSpent": "spent: €{{amount}}",
+    "trackerTotalPlanned": "Total budget",
+    "trackerTotalSpent": "Spent",
+    "trackerTotalRest": "Remaining",
+    "trackerRecent": "Recent expenses ({{count}})",
+    "trackerNoExpense": "No expenses logged yet.",
+    "trackerRemoveAria": "Remove expense",
+    "chartsPlannedVsSpent": "Planned vs Spent",
+    "chartsAiNoData": "Log your first expenses to activate AI forecasting.",
+    "savingTipsTitle": "Local saving tips",
+    "savingTipsSubtitle": "AI tips tailored to {{destination}}",
+    "savingTipsRefresh": "Refresh",
+    "savingTipsError": "Could not generate tips right now. Try again in a moment.",
+    "savingTipsEmpty": "No tips available.",
+    "onboarding": {
+      "title": "Pip, your budget copilot",
+      "welcome": "Hi! Your budget for {{destination}} ({{days}} days) is ready. 🎉",
+      "question": "Want me to walk you through the features?",
+      "yes": "Yes, show me",
+      "no": "I'll explore on my own",
+      "suggestion": "Great! Start with your detailed forecast for {{destination}} — every line is editable and the AI suggests amounts matched to local cost of living.",
+      "gotIt": "Got it!"
+    }
   },
   "gamification": {
     "heroTitle": "Badge Collection",

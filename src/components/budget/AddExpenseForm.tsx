@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
 export interface Expense {
+  id: string;
   amount: number;
   category: string;
   payment: string;
@@ -42,6 +43,7 @@ const AddExpenseForm = ({ onAdd }: Props) => {
       return;
     }
     onAdd({
+      id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `exp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       amount: parseFloat(amount),
       category,
       payment: payment || "card",

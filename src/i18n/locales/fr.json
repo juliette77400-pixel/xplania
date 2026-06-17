@@ -1835,7 +1835,32 @@
         "Événements culturels gratuits"
       ]
     },
-    "configDays_other": "{{count}} jours"
+    "configDays_other": "{{count}} jours",
+    "forecastEditAria": "Modifier le budget {{category}}",
+    "forecastEditTitle": "Clique pour modifier",
+    "forecastSpent": "dépensé : {{amount}}€",
+    "trackerTotalPlanned": "Budget total",
+    "trackerTotalSpent": "Dépensé",
+    "trackerTotalRest": "Restant",
+    "trackerRecent": "Dépenses récentes ({{count}})",
+    "trackerNoExpense": "Aucune dépense enregistrée pour l'instant.",
+    "trackerRemoveAria": "Supprimer la dépense",
+    "chartsPlannedVsSpent": "Prévu vs Dépensé",
+    "chartsAiNoData": "Ajoute tes premières dépenses pour activer la prévision IA.",
+    "savingTipsTitle": "Astuces d'économie locales",
+    "savingTipsSubtitle": "Conseils IA spécifiques à {{destination}}",
+    "savingTipsRefresh": "Rafraîchir",
+    "savingTipsError": "Impossible de générer des astuces pour l'instant. Réessaie dans un instant.",
+    "savingTipsEmpty": "Aucune astuce disponible.",
+    "onboarding": {
+      "title": "Pip, ton copilote budget",
+      "welcome": "Salut ! Ton budget pour {{destination}} ({{days}} jours) est prêt. 🎉",
+      "question": "Tu veux que je te guide à travers les fonctionnalités ?",
+      "yes": "Oui, montre-moi",
+      "no": "Je préfère explorer seul",
+      "suggestion": "Top ! Commence par vérifier ta prévision détaillée pour {{destination}} — chaque ligne est modifiable, et l'IA propose des montants adaptés au coût de la vie local.",
+      "gotIt": "C'est parti !"
+    }
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
