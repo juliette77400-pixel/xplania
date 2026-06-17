@@ -94,6 +94,32 @@ const GuideBudgetPage = () => {
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const [hydratedFromStorage, setHydratedFromStorage] = useState(false);
   const { reached, consume } = useQuota("budget");
+  const chartRef = useRef<HTMLDivElement | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExportPdf = useCallback(async () => {
+    setIsExporting(true);
+    try {
+      await exportBudgetPdf({
+        destination,
+        tripData,
+        days,
+        travelers,
+        totalBudget: categories.reduce((s, c) => s + c.planned, 0) || userBudget,
+        categories,
+        expenses,
+        locale,
+        chartElement: chartRef.current,
+        t,
+      });
+      toast.success(t("budget.pdf.success"));
+    } catch (e) {
+      console.error(e);
+      toast.error(t("budget.pdf.error"));
+    } finally {
+      setIsExporting(false);
+    }
+  }, [destination, tripData, days, travelers, categories, expenses, locale, userBudget, t]);
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
