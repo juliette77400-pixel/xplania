@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import type { BudgetCategory } from "./BudgetForecast";
 import type { Expense } from "./AddExpenseForm";
 import type { TravelFormData } from "@/types/travel";
@@ -60,6 +61,22 @@ const BudgetOnboardingChat = ({
   onSuggestFocus,
 }: Props) => {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
+  const firstName = (() => {
+    const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
+    const candidates = [
+      meta.first_name,
+      meta.firstName,
+      meta.given_name,
+      typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
+      typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
+      user?.email ? user.email.split("@")[0] : undefined,
+    ];
+    const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
+    if (!found) return "";
+    const clean = found.trim().replace(/[._-]+/g, " ").split(" ")[0];
+    return clean.charAt(0).toUpperCase() + clean.slice(1);
+  })();
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
