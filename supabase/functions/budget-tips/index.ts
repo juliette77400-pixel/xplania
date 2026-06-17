@@ -78,7 +78,7 @@ Génère 3 à 5 astuces d'économie utiles pour CE voyage et ce profil précisé
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "anthropic/claude-sonnet-4-6",
+        model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
