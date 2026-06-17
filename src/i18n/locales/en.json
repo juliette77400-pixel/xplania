@@ -1894,6 +1894,17 @@
       },
       "regenerate": "Regenerate budget",
       "gotIt": "Got it!"
+    },
+    "autoSaved": "Saved automatically",
+    "autoSavedAt": "Saved automatically · {{time}}",
+    "qa": {
+      "askButton": "Ask a question",
+      "backToGuide": "Back to guide",
+      "placeholder": "Ask anything about your budget…",
+      "send": "Send",
+      "loading": "Pip is thinking…",
+      "emptyState": "Ask anything about your {{destination}} budget — accommodation, food, transport, overspending… I'll use your current trip data.",
+      "errorAnswer": "I couldn't answer right now. Please try again in a moment."
     }
   },
   "gamification": {
