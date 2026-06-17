@@ -62,6 +62,31 @@ const BudgetOnboardingChat = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
+  const [profileName, setProfileName] = useState<string>("");
+
+  useEffect(() => {
+    if (!user?.id) {
+      setProfileName("");
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("display_name")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!cancelled && data?.display_name) setProfileName(data.display_name as string);
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
   const firstName = (() => {
     const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
     const candidates = [
@@ -70,6 +95,8 @@ const BudgetOnboardingChat = ({
       meta.given_name,
       typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
       typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
+      typeof meta.display_name === "string" ? (meta.display_name as string).split(" ")[0] : undefined,
+      profileName ? profileName.split(" ")[0] : undefined,
       user?.email ? user.email.split("@")[0] : undefined,
     ];
     const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
