@@ -36,6 +36,7 @@ const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange }:
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="glass-card rounded-2xl p-6"
+      data-budget-section="analysis"
     >
       <div className="flex items-center gap-2 mb-3">
         <Sparkles className="w-5 h-5 text-primary" />

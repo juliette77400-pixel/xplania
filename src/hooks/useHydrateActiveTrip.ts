@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
 import { useTravelStore } from "@/stores/useTravelStore";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
  * Ensures the global travel store (form + recommendations) is populated
@@ -10,10 +12,42 @@ import { useTravelStore } from "@/stores/useTravelStore";
 export const useHydrateActiveTrip = () => {
   const tripId = useActiveTrip((s) => s.tripId);
   const tripData = useTravelStore((s) => s.tripData);
+  const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
+  const { user } = useAuth();
+  const [checkedLatest, setCheckedLatest] = useState(false);
 
   useEffect(() => {
     if (tripId && !tripData?.destination) {
       hydrateTravelStoreFromTrip(tripId);
     }
   }, [tripId, tripData?.destination]);
+
+  useEffect(() => {
+    if (tripId || tripData?.destination || !user || checkedLatest) return;
+
+    let cancelled = false;
+    setCheckedLatest(true);
+    supabase
+      .from("trips")
+      .select("id, destination, arrival_city, departure_date, return_date")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (cancelled || !data?.id) return;
+        setActiveTrip({
+          tripId: data.id,
+          destination: data.destination,
+          arrivalCity: data.arrival_city,
+          departureDate: data.departure_date,
+          returnDate: data.return_date,
+        });
+        hydrateTravelStoreFromTrip(data.id);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [checkedLatest, setActiveTrip, tripData?.destination, tripId, user]);
 };
