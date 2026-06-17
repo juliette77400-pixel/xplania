@@ -1769,6 +1769,8 @@
     "aiResultFor": "pour",
     "aiResultIn": "à",
     "aiResultModify": "Modifier manuellement",
+    "aiResultEditTotalAria": "Modifier le budget total estimé",
+    "aiResultTotalUpdated": "Budget total mis à jour.",
     "tipsParis": {
       "activities": [
         "Visite du Jardin du Luxembourg",
@@ -1852,6 +1854,16 @@
     "savingTipsRefresh": "Rafraîchir",
     "savingTipsError": "Impossible de générer des astuces pour l'instant. Réessaie dans un instant.",
     "savingTipsEmpty": "Aucune astuce disponible.",
+    "savingTipsFallback": {
+      "transportTitle": "Regarde les passes locaux",
+      "transportBody": "À {{destination}}, compare toujours le pass transport à la journée ou à la semaine avant d'acheter des tickets à l'unité.",
+      "foodTitle": "Mange là où la ville vit",
+      "foodBody": "Cherche les marchés, boulangeries et petites cantines de quartier de {{destination}} plutôt que les rues collées aux monuments.",
+      "activitiesTitle": "Bloque les créneaux gratuits",
+      "activitiesBody": "Avant de réserver, vérifie les musées, points de vue, parcs et visites gratuites de {{destination}} : ils remplissent souvent une demi-journée sans toucher au budget.",
+      "extrasTitle": "Garde une vraie marge",
+      "extrasBody": "Mets de côté une petite enveloppe pour imprévus à {{destination}} afin d'éviter de rogner sur les repas ou les activités importantes."
+    },
     "onboarding": {
       "title": "Pip, ton copilote budget",
       "welcome": "Salut ! Ton budget pour {{destination}} ({{days}} jours) est prêt. 🎉",
