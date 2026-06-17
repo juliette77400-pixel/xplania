@@ -62,6 +62,31 @@ const BudgetOnboardingChat = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
+  const [profileName, setProfileName] = useState<string>("");
+
+  useEffect(() => {
+    if (!user?.id) {
+      setProfileName("");
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("display_name")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!cancelled && data?.display_name) setProfileName(data.display_name as string);
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
   const firstName = (() => {
     const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
     const candidates = [
@@ -70,6 +95,8 @@ const BudgetOnboardingChat = ({
       meta.given_name,
       typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
       typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
+      typeof meta.display_name === "string" ? (meta.display_name as string).split(" ")[0] : undefined,
+      profileName ? profileName.split(" ")[0] : undefined,
       user?.email ? user.email.split("@")[0] : undefined,
     ];
     const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
@@ -160,12 +187,22 @@ const BudgetOnboardingChat = ({
   useEffect(() => {
     if (mode !== "qa") return;
     if (qaHistory.length > 0) return;
-    const greeting = firstName
-      ? t("budget.qa.greeting", { name: firstName, destination })
-      : t("budget.qa.greetingNoName", { destination });
-    setQaHistory([{ role: "assistant", content: greeting, ts: Date.now() }]);
+    // Pick a random greeting variant for variety
+    const variants = (t("budget.qa.greetings", { returnObjects: true }) as unknown);
+    const list = Array.isArray(variants) && variants.length > 0
+      ? (variants as string[])
+      : [t(firstName ? "budget.qa.greeting" : "budget.qa.greetingNoName", { name: firstName, destination })];
+    const pick = list[Math.floor(Math.random() * list.length)];
+    const filled = pick
+      .replace(/\{\{\s*name\s*\}\}/g, firstName || "")
+      .replace(/\{\{\s*destination\s*\}\}/g, destination)
+      // Clean up leftover punctuation if name is missing (e.g. "Salut  ! " → "Salut ! ")
+      .replace(/\s{2,}/g, " ")
+      .replace(/\s+([,!?.])/g, "$1")
+      .trim();
+    setQaHistory([{ role: "assistant", content: filled, ts: Date.now() }]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, firstName]);
 
   const closeBubble = () => {
     setOpen(false);

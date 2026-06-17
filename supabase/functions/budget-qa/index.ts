@@ -99,11 +99,11 @@ CURRENT DATE: ${today}`;
     const isEN = String(locale).startsWith("en");
     const nameLine = firstName
       ? (isEN
-          ? `The user's first name is ${firstName}. Use it naturally from time to time (not every sentence).`
-          : `Le prénom de l'utilisateur est ${firstName}. Utilise-le naturellement de temps en temps (pas à chaque phrase).`)
+          ? `The user's FIRST NAME is "${firstName}". Use it naturally in your reply — opener like "Hey ${firstName}!", "Got it ${firstName}", "Honestly ${firstName}…", or mid-sentence ("…and ${firstName}, here's the thing"). Vary the form, don't paste it in every sentence, but make sure it appears at least once when it feels natural. Never write "{{name}}" literally.`
+          : `Le PRÉNOM de l'utilisateur est "${firstName}". Utilise-le de façon naturelle dans ta réponse — en intro ("Hey ${firstName} !", "Alors ${firstName}…", "Franchement ${firstName}…") ou en milieu de phrase ("…et tu sais ${firstName}, le truc c'est…"). Varie les formulations, ne le répète pas à chaque phrase, mais glisse-le au moins une fois quand c'est naturel. N'écris JAMAIS "{{name}}" littéralement.`)
       : (isEN
-          ? `You don't know the user's first name — don't invent one.`
-          : `Tu ne connais pas le prénom de l'utilisateur — n'en invente pas.`);
+          ? `You don't know the user's first name — don't invent one and don't write "{{name}}".`
+          : `Tu ne connais pas le prénom de l'utilisateur — n'en invente pas et n'écris jamais "{{name}}".`);
 
     const languageRule = isEN
       ? `ABSOLUTE LANGUAGE RULE: Reply in ENGLISH. Always address the user as "you" in a friendly, informal way (never corporate). Never use French.`
