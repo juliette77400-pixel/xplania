@@ -421,6 +421,11 @@ const GuideBudgetPage = () => {
         <BudgetOnboardingChat
           destination={destination}
           days={days}
+          travelers={travelers}
+          totalBudget={totalBudget}
+          categories={categories}
+          expenses={expenses}
+          tripData={tripData}
           triggerKey={regenCount}
           activeSection={activeBudgetSection}
           isGenerating={isGenerating}
