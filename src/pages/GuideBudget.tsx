@@ -160,14 +160,14 @@ const GuideBudgetPage = () => {
         await new Promise((r) => setTimeout(r, 450));
         setGenStep(i + 1);
       }
-      setCategories((prev) => recomputeAiSuggestions(prev));
+      setCategories(buildTripAwareCategories());
       setHasGenerated(true);
       setRegenCount((n) => n + 1);
       toast.success(t("guideBudget.toastGenerated"));
     } finally {
       setIsGenerating(false);
     }
-  }, [t, reached, consume, recomputeAiSuggestions, isGenerating]);
+  }, [t, reached, consume, buildTripAwareCategories, isGenerating]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
@@ -178,11 +178,11 @@ const GuideBudgetPage = () => {
       setGenStep(i + 1);
     }
     await new Promise((r) => setTimeout(r, 300));
-    setCategories((prev) => recomputeAiSuggestions(prev));
+    setCategories(buildTripAwareCategories());
     setIsGenerating(false);
     setRegenCount((n) => n + 1);
     toast.success(t("guideBudget.toastRecalcDone"), { id: "regen" });
-  }, [t, recomputeAiSuggestions]);
+  }, [t, buildTripAwareCategories]);
 
   const handleAiAdjust = (idx: number) => {
     setCategories((prev) =>
@@ -237,10 +237,30 @@ const GuideBudgetPage = () => {
     });
   };
 
-  const scrollToSection = (name: "forecast" | "tracker" | "charts" | "tips") => {
+  const scrollToSection = (name: "analysis" | "forecast" | "tracker" | "charts" | "tips") => {
     const el = document.querySelector(`[data-budget-section="${name}"]`);
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  useEffect(() => {
+    if (!hasGenerated) return;
+    const sections = ["analysis", "forecast", "tracker", "charts", "tips"] as const;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        const section = visible?.target.getAttribute("data-budget-section") as typeof sections[number] | null;
+        if (section) setActiveBudgetSection(section);
+      },
+      { threshold: [0.25, 0.5, 0.75], rootMargin: "-20% 0px -45% 0px" }
+    );
+    sections.forEach((section) => {
+      const el = document.querySelector(`[data-budget-section="${section}"]`);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [hasGenerated]);
 
   return (
     <div className="min-h-screen bg-background">
