@@ -348,7 +348,20 @@ const GuideBudgetPage = () => {
               animate={{ opacity: 1 }}
               className="space-y-6 pb-12"
             >
-              <div className="flex justify-end">
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Check className="w-3.5 h-3.5 text-primary" />
+                  <span>
+                    {lastSavedAt
+                      ? t("budget.autoSavedAt", {
+                          time: new Date(lastSavedAt).toLocaleTimeString(
+                            locale === "fr" ? "fr-FR" : "en-US",
+                            { hour: "2-digit", minute: "2-digit" }
+                          ),
+                        })
+                      : t("budget.autoSaved")}
+                  </span>
+                </div>
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -387,7 +400,9 @@ const GuideBudgetPage = () => {
                 days={days}
                 travelers={travelers}
                 categories={categories}
+                tripData={tripData}
               />
+
 
               <div className="flex justify-center">
                 <Link
