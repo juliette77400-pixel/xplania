@@ -196,10 +196,11 @@ const GuideBudgetPage = () => {
   }, [days, destination, recommendations?.budgetBreakdown, recomputeAiSuggestions, travelers, userBudget]);
 
   useEffect(() => {
+    if (!hydratedFromStorage) return;
     if (!hasGenerated && tripData?.destination) {
       setCategories(buildTripAwareCategories());
     }
-  }, [buildTripAwareCategories, hasGenerated, tripData?.destination]);
+  }, [buildTripAwareCategories, hasGenerated, hydratedFromStorage, tripData?.destination]);
 
   useEffect(() => {
     if (hasGenerated && generatedContextKey && generatedContextKey !== budgetContextKey) {
