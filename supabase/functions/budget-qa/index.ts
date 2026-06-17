@@ -97,7 +97,7 @@ ${context}`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "anthropic/claude-sonnet-4-6",
         messages: [
           { role: "system", content: system },
           ...recentHistory.map((m) => ({ role: m.role, content: m.content })),
