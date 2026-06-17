@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -67,7 +67,7 @@ import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } f
 
 const GuideBudgetPage = () => {
   useHydrateActiveTrip();
-  const { tripData } = useTravelStore();
+  const { tripData, recommendations } = useTravelStore();
   const { t, i18n } = useTranslation();
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
@@ -84,6 +84,7 @@ const GuideBudgetPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [regenCount, setRegenCount] = useState(0);
+  const [activeBudgetSection, setActiveBudgetSection] = useState<"analysis" | "forecast" | "tracker" | "charts" | "tips">("analysis");
   const { reached, consume } = useQuota("budget");
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
@@ -111,6 +112,42 @@ const GuideBudgetPage = () => {
       }),
     [destination, days, travelers, monthLabel, locale]
   );
+
+  const buildTripAwareCategories = useCallback((): BudgetCategory[] => {
+    const raw = defaultCategories.map((c) => {
+      const rec = recommendations?.budgetBreakdown?.find((item) => {
+        const name = String(item.category || "").toLowerCase();
+        if (c.key === "accommodation") return /h[eé]bergement|hotel|stay|accommodation|logement/.test(name);
+        if (c.key === "localTransport") return /transport|metro|m[eé]tro|bus|train|taxi/.test(name);
+        if (c.key === "activities") return /activit|visit|visite|museum|mus[eé]e|sortie/.test(name);
+        if (c.key === "food") return /food|repas|restaurant|nourriture|meal|gastronomie/.test(name);
+        if (c.key === "shopping") return /shopping|souvenir|achat/.test(name);
+        return /extra|impr[eé]vu|unexpected|misc/.test(name);
+      });
+      const base = typeof rec?.amount === "number" && rec.amount > 0
+        ? rec.amount
+        : suggestCategoryAmount(c.key as CategoryKey, c.planned, { destination, days, travelers });
+      return { ...c, planned: Math.max(1, Math.round(base)), spent: 0 };
+    });
+
+    const targetTotal = Number(userBudget) > 0 ? Number(userBudget) : raw.reduce((sum, c) => sum + c.planned, 0);
+    const rawTotal = raw.reduce((sum, c) => sum + c.planned, 0) || 1;
+    let allocated = 0;
+
+    return recomputeAiSuggestions(raw.map((c, index) => {
+      const planned = index === raw.length - 1
+        ? Math.max(1, Math.round(targetTotal - allocated))
+        : Math.max(1, Math.round((c.planned / rawTotal) * targetTotal));
+      allocated += planned;
+      return { ...c, planned };
+    }));
+  }, [days, destination, recommendations?.budgetBreakdown, recomputeAiSuggestions, travelers, userBudget]);
+
+  useEffect(() => {
+    if (!hasGenerated && tripData?.destination) {
+      setCategories(buildTripAwareCategories());
+    }
+  }, [buildTripAwareCategories, hasGenerated, tripData?.destination]);
 
   const runGeneration = useCallback(async () => {
     if (isGenerating) return;
