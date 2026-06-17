@@ -3,6 +3,7 @@ import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTri
 import { useTravelStore } from "@/stores/useTravelStore";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import type { TravelFormData } from "@/types/travel";
 
 /**
  * Ensures the global travel store (form + recommendations) is populated
@@ -11,16 +12,32 @@ import { useAuth } from "@/hooks/useAuth";
  */
 export const useHydrateActiveTrip = () => {
   const tripId = useActiveTrip((s) => s.tripId);
+  const destination = useActiveTrip((s) => s.destination);
+  const arrivalCity = useActiveTrip((s) => s.arrivalCity);
+  const departureDate = useActiveTrip((s) => s.departureDate);
+  const returnDate = useActiveTrip((s) => s.returnDate);
   const tripData = useTravelStore((s) => s.tripData);
+  const setTripData = useTravelStore((s) => s.setTripData);
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
   const { user } = useAuth();
   const [checkedLatest, setCheckedLatest] = useState(false);
 
   useEffect(() => {
     if (tripId && !tripData?.destination) {
+      if (destination) {
+        setTripData({
+          destination,
+          arrivalCity: arrivalCity || "",
+          departureLocation: "",
+          departureDate: departureDate || "",
+          returnDate: returnDate || "",
+          duration: "",
+          totalBudget: 0,
+        } as TravelFormData);
+      }
       hydrateTravelStoreFromTrip(tripId);
     }
-  }, [tripId, tripData?.destination]);
+  }, [arrivalCity, departureDate, destination, returnDate, setTripData, tripData?.destination, tripId]);
 
   useEffect(() => {
     if (tripId || tripData?.destination || !user || checkedLatest) return;
