@@ -17,6 +17,14 @@ serve(async (req) => {
       travelers = 1,
       categories = [],
       locale = "fr",
+      departureDate = "",
+      returnDate = "",
+      travelStyle = "",
+      tripTypes = [],
+      spendingPriorities = [],
+      accommodationStanding = "",
+      organization = "",
+      rhythm = "",
     } = await req.json();
 
     const isEN = locale === "en";
@@ -27,23 +35,41 @@ serve(async (req) => {
       .map((c) => `${c.key}: planned €${c.planned}, spent €${c.spent}`)
       .join(" | ");
 
+    const traveler = `${travelers} traveler${travelers > 1 ? "s" : ""}`;
+    const styleBits = [
+      tripTypes?.length ? `trip type: ${(tripTypes as string[]).join(", ")}` : "",
+      spendingPriorities?.length ? `priorities: ${(spendingPriorities as string[]).join(", ")}` : "",
+      accommodationStanding ? `accommodation standing: ${accommodationStanding}` : "",
+      organization ? `organization: ${organization}` : "",
+      rhythm ? `rhythm: ${rhythm}` : "",
+      travelStyle ? `style: ${travelStyle}` : "",
+    ].filter(Boolean).join(" | ");
+
+    const dateBits = departureDate ? `Dates: ${departureDate}${returnDate ? ` → ${returnDate}` : ""}` : "";
+
+    const guardrail = isEN
+      ? `Only suggest saving tips that are specific, verifiable, and directly relevant to the user's destination and budget categories. Avoid generic advice. Each tip MUST reference a real place, service, transport card, market, district, chain or local practice you genuinely know exists in ${destination}. If you cannot ground a tip in a verifiable local reality, do NOT include it. Prefer fewer, well-sourced tips over filler. Tailor tone and content to the traveler profile and current budget allocation.`
+      : `Ne propose que des astuces spécifiques, vérifiables et directement utiles à la destination et aux postes budgétaires de l'utilisateur. Évite les conseils génériques. Chaque astuce DOIT mentionner un vrai lieu, service, pass transport, marché, quartier, enseigne ou pratique locale que tu connais réellement à ${destination}. Si tu ne peux pas ancrer une astuce dans une réalité locale vérifiable, NE l'inclus PAS. Mieux vaut moins d'astuces, mais solides. Adapte le ton et le contenu au profil voyageur et à la répartition budgétaire actuelle.`;
+
     const system = isEN
-      ? `You are a frugal local guide who knows ${destination} intimately. You write 3 to 5 HYPER-LOCAL money-saving tips. Each tip must reference a real local name (pass, card, market, district, chain, app) when relevant. NEVER write generic advice like "cook at home" or "set a budget". Each tip 1–2 sentences. Reply ONLY via the "saving_tips" tool. Output in ENGLISH.`
-      : `Tu es un guide local frugal qui connaît parfaitement ${destination}. Tu rédiges 3 à 5 astuces d'économie HYPER-LOCALES. Chaque astuce doit mentionner un nom local réel (pass, carte, marché, quartier, enseigne, appli) quand c'est pertinent. JAMAIS de conseils génériques type "cuisiner chez soi" ou "fixer un budget". Chaque astuce fait 1 à 2 phrases. Réponds UNIQUEMENT via le tool "saving_tips". En FRANÇAIS.`;
+      ? `You are a frugal local guide who knows ${destination} intimately. You write 3 to 5 HYPER-LOCAL money-saving tips for THIS specific traveler. ${guardrail} Each tip 1–2 sentences. Reply ONLY via the "saving_tips" tool. Output in ENGLISH.`
+      : `Tu es un guide local frugal qui connaît parfaitement ${destination}. Tu rédiges 3 à 5 astuces d'économie HYPER-LOCALES pour CE voyageur précis. ${guardrail} Chaque astuce fait 1 à 2 phrases. Réponds UNIQUEMENT via le tool "saving_tips". En FRANÇAIS.`;
 
     const user = isEN
       ? `Destination: ${destination}
-Total budget: €${totalBudget}
-Duration: ${days} days, ${travelers} traveler(s)
+${dateBits}
+Total budget: €${totalBudget} (${traveler}, ${days} days)
+Traveler profile: ${styleBits || "n/a"}
 Current breakdown: ${breakdown || "none yet"}
 
-Generate 3 to 5 saving tips specifically useful for THIS trip.`
+Generate 3 to 5 saving tips specifically useful for THIS trip and profile.`
       : `Destination : ${destination}
-Budget total : ${totalBudget} €
-Durée : ${days} jours, ${travelers} voyageur(s)
+${dateBits}
+Budget total : ${totalBudget} € (${traveler}, ${days} jours)
+Profil voyageur : ${styleBits || "n/c"}
 Répartition actuelle : ${breakdown || "aucune pour l'instant"}
 
-Génère 3 à 5 astuces d'économie utiles pour CE voyage précisément.`;
+Génère 3 à 5 astuces d'économie utiles pour CE voyage et ce profil précisément.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -74,7 +100,7 @@ Génère 3 à 5 astuces d'économie utiles pour CE voyage précisément.`;
                       type: "object",
                       properties: {
                         title: { type: "string", description: "Short title (max 6 words)" },
-                        body: { type: "string", description: "1-2 sentence practical tip with a local reference" },
+                        body: { type: "string", description: "1-2 sentence practical tip with a real local reference" },
                         category: { type: "string", enum: ["accommodation", "localTransport", "activities", "food", "shopping", "extras"] },
                       },
                       required: ["title", "body", "category"],
