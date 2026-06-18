@@ -24,6 +24,8 @@ import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
 import SafetyAdvisory from "@/components/visa/SafetyAdvisory";
 import VisaPipChat from "@/components/visa/VisaPipChat";
 import CurrencyConverter from "@/components/shared/CurrencyConverter";
+import VaccinesGuide from "@/components/visa/VaccinesGuide";
+import SafetyGuide from "@/components/visa/SafetyGuide";
 
 // ── Static Data ──
 
