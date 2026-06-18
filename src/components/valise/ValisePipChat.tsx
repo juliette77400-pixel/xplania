@@ -170,6 +170,9 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<ChatMsg[]>([]);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const [online, setOnline] = useState<boolean>(() => typeof navigator === "undefined" ? true : navigator.onLine);
+  const [queueLen, setQueueLen] = useState<number>(() => readQueue().length);
+  const drainingRef = useRef(false);
 
   useEffect(() => { setCtxDest(destination); }, [destination]);
 
