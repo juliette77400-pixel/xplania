@@ -400,6 +400,20 @@ const BudgetOnboardingChat = ({
 
         {mode === "qa" && (
           <>
+            <div className="px-2 py-1.5 border-b border-border/40 flex items-center gap-1 overflow-x-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setQaHistory((prev) => [...prev, { role: "assistant", content: t("budget.qa.convertMsg"), ts: Date.now() }]);
+                  setTimeout(() => {
+                    document.getElementById("currency-converter")?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  }, 50);
+                }}
+                className="text-[11px] font-semibold px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap"
+              >
+                {t("budget.qa.convertBtn")}
+              </button>
+            </div>
             <div
               ref={scrollerRef}
               className="flex-1 overflow-y-auto p-3 space-y-2 min-h-[180px]"
@@ -424,6 +438,7 @@ const BudgetOnboardingChat = ({
                 </div>
               )}
             </div>
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
