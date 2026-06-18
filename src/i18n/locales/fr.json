@@ -1796,6 +1796,16 @@
     "activitiesRecommended": "Recommandé",
     "activitiesAddAll": "Tout ajouter à ma valise",
     "activitiesToastAdded": "{{count}} objet ajouté à ta valise",
+    "activityCategories": {
+      "hiking": { "name": "Randonnée", "items": ["Chaussures de randonnée imperméables", "Chaussettes techniques anti-ampoules", "Bâtons de marche télescopiques", "Sac à dos de day-hike 20–30L", "Gourde filtrante ou pastilles de purification", "Carte IGN / appli offline Maps", "Lampe frontale + piles de rechange", "Veste coupe-vent imperméable", "Crème solaire SPF50+", "Kit premiers secours compact", "Barres énergétiques / snacks trail"] },
+      "beach":  { "name": "Plage", "items": ["Maillot de bain (×2)", "Serviette microfibre", "Tongs / sandales", "Lunettes UV catégorie 3+", "Chapeau de plage", "Sac étanche téléphone", "Crème solaire SPF50 waterproof", "Après-soleil / aloe vera", "Paréo / sarong"] },
+      "city":   { "name": "Ville", "items": ["Chaussures confortables pour marcher toute la journée", "Veste légère (musées climatisés)", "Sac anti-pickpocket ou tote bag", "Adaptateur de voyage universel", "Plan de transport offline", "Écouteurs", "Powerbank 10 000 mAh", "Carnet de voyage", "Tenue smart-casual pour les restos", "Parapluie compact"] },
+      "photo":  { "name": "Photo / Création", "items": ["Appareil photo / objectif supplémentaire", "Cartes SD de rechange (×3 min)", "Trépied compact ou gorilla pod", "Batterie de rechange appareil", "Chargeur rapide multi-port", "Disque dur externe ou clé USB", "Chiffon de nettoyage optique", "Filtre ND (si vidéo)", "Drone si autorisé", "Carnet de notes idées contenu"] },
+      "business": { "name": "Business", "items": ["Costume / tenue pro dans housse à vêtements", "Chemises/blouses (1 par jour + 1 extra)", "Chaussures habillées dans une housse", "Cartes de visite", "Ordinateur portable + chargeur", "Adaptateur universel", "Câble HDMI", "Bloc-notes professionnel", "Stylos de qualité", "Câble de verrouillage laptop"] },
+      "roadtrip": { "name": "Road trip", "items": ["Couverture de voyage", "Oreiller de voiture gonflable", "Sac de snacks route", "Support téléphone voiture", "Câble de charge voiture", "Trousse premier secours voiture", "Triangle de signalisation", "Gilet jaune (obligatoire certains pays)", "Carte routière papier", "Jerricane d'urgence si zones isolées"] },
+      "sport":  { "name": "Sport / Fitness", "items": ["Tenue de sport respirante (×2)", "Chaussures de sport polyvalentes", "Corde à sauter légère", "Bandes de résistance", "Bouteille shaker protéines", "Serviette sport microfibre", "AirPods / écouteurs sport", "Appli fitness offline téléchargée", "Gel énergétique / BCAA", "Chaussures de piscine"] },
+      "gastro": { "name": "Gastronomie", "items": ["Guide restos locaux téléchargé offline", "Vocabulaire alimentaire dans la langue locale (allergènes !)", "Petite bouteille de sauce piquante si tu adores", "Carnet pour noter les adresses coups de cœur", "Tenue smart-casual (les bons restos refusent les shorts)", "Appli de traduction de menu"] }
+    },
     "aiTipFallbackTitle": "Conseil IA",
     "aiTips": {
       "minimaliste": { "title": "Voyage léger, esprit léger 🎒", "tip": "Limite-toi à 5 hauts et 2 bas combinables — tu peux composer 10 tenues sans surcharge. Roule plutôt que plier, et garde une pochette pour le linge sale." },
