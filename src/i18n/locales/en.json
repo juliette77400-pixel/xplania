@@ -1704,6 +1704,76 @@
       "almostReady": "One last check and you're ready ✨"
     },
     "backDashboard": "Back to dashboard",
+    "chatbot": {
+      "openLabel": "Open Pip packing",
+      "subtitle": "Your packing copilot",
+      "close": "Close",
+      "restart": "Restart",
+      "send": "Send",
+      "next": "Next",
+      "skip": "Skip",
+      "loading": "Pip is thinking…",
+      "errorAnswer": "Oops, I couldn't reply. Try again in a few seconds 🙏",
+      "placeholder": "Ask me anything about packing…",
+      "qaEmpty": "Ask me anything — packing, weather, outfits, culture, solo safety… I've got you 🎒",
+      "welcome": "Hey {{name}}! 🧳 Pip here. I'll help you pack the perfect bag — real-time weather, packing tips, outfit ideas and cultural advice. Want me to walk you through it?",
+      "welcomeYes": "Yes, guide me",
+      "welcomeNo": "I'll explore on my own",
+      "computedDays_one": "{{count}} day",
+      "computedDays_other": "{{count}} days",
+      "summary": "Great, here's what I've got:\n\n📍 Destination: {{destination}}\n📅 Duration: {{duration}}\n🧳 Luggage: {{luggage}}\n🎯 Trip type: {{tripType}}\n🎨 Activities: {{activities}}\n\nTell me what you'd like to explore first — weather, packing list, outfits, cultural tips or solo advice. You can also ask me anything 👇",
+      "steps": {
+        "destination": "Where are you heading? (Type a city or country)",
+        "dates": "When are you going? (Pick your departure and return dates, or skip)",
+        "luggage": "What are you travelling with?",
+        "tripType": "What kind of trip is this?",
+        "activities": "What activities are you planning? (Pick all that apply)",
+        "duration": "How long are you going for?"
+      },
+      "luggages": {
+        "backpack": "Backpack",
+        "cabin": "Cabin suitcase",
+        "large": "Large suitcase",
+        "sport": "Sports bag",
+        "both": "Both"
+      },
+      "tripTypes": {
+        "beach": "Beach",
+        "mountain": "Mountain",
+        "city": "City trip",
+        "nature": "Nature / Trek",
+        "business": "Business",
+        "long": "Long stay",
+        "solo": "Solo",
+        "couple": "With partner",
+        "family": "Family"
+      },
+      "activities": {
+        "swim": "Swimming",
+        "hike": "Hiking",
+        "food": "Food / Going out",
+        "culture": "Cultural visits",
+        "nightlife": "Nightlife",
+        "sport": "Sport",
+        "photo": "Photos / Content",
+        "remote": "Remote work"
+      },
+      "durations": {
+        "lt3d": "< 3 days",
+        "3to7d": "3–7 days",
+        "1to2w": "1–2 weeks",
+        "2to4w": "2–4 weeks",
+        "gt1m": "1+ month"
+      },
+      "nav": {
+        "weather": "Weather",
+        "list": "List",
+        "outfits": "Outfits",
+        "tips": "AI tips",
+        "culture": "Culture",
+        "adapt": "Adapt"
+      }
+    },
     "outfitsTitle": "Recommended outfits",
     "outfitsSubtitle": "Looks tailored to your activities, weather and cultural context",
     "outfitsViewDetails": "See details",
