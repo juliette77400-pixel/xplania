@@ -565,7 +565,10 @@
         "moderate": "modéré",
         "high": "élevé",
         "none": "nul"
-      }
+      },
+      "refresh": "Rafraîchir les infos officielles",
+      "refreshing": "Rafraîchissement…",
+      "refreshAria": "Mettre à jour les données officielles pour {{destination}}"
     },
     "vaccinesGuide": {
       "title": "💉 Vaccins & santé voyage",
