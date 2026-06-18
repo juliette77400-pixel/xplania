@@ -381,6 +381,18 @@ const GuideVisaPage = () => {
           </motion.button>
         </motion.div>
 
+        {/* Visa process stepper */}
+        <VisaProcessStepper destination={destinationName} onAskPip={askPip} />
+
+        {/* Currency converter */}
+        <section className="glass-card rounded-2xl p-6 space-y-3">
+          <h2 className="text-lg font-bold text-foreground">{t("guideVisa.currencySection.title")}</h2>
+          <CurrencyConverter destination={destinationName} />
+          <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
+        </section>
+
+
+
         {/* Generation animation */}
         <AnimatePresence>
           {isGenerating && (
