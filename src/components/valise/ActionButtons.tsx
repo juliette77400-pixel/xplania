@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Download, Link2, Save, CheckCircle, RefreshCw, Shirt, Compass } from "lucide-react";
+import { Download, Link2, Save, CheckCircle, RefreshCw, Shirt, Compass, Copy, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -8,9 +8,22 @@ interface ActionButtonsProps {
   isRegenerating: boolean;
   onExportPdf?: () => void;
   onShareTrip?: () => void;
+  onValidateAll?: () => void;
+  onResetAll?: () => void;
+  onDuplicate?: () => void;
+  onSaveTemplate?: () => void;
 }
 
-const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip }: ActionButtonsProps) => {
+const ActionButtons = ({
+  onRegenerate,
+  isRegenerating,
+  onExportPdf,
+  onShareTrip,
+  onValidateAll,
+  onResetAll,
+  onDuplicate,
+  onSaveTemplate,
+}: ActionButtonsProps) => {
   const { t } = useTranslation();
 
   const handleExport = () => {
@@ -25,15 +38,23 @@ const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip 
   };
 
   const handleSaveTemplate = () => {
+    if (onSaveTemplate) return onSaveTemplate();
     toast.success(t("valise.toastTemplateSaved"), { description: t("valise.toastTemplateSavedDesc") });
   };
 
   const handleValidate = () => {
+    if (onValidateAll) return onValidateAll();
     toast.success(t("valise.toastValidated"), { description: t("valise.toastValidatedDesc") });
   };
 
-  const handleSync = () => {
-    toast.success(t("valise.toastSynced"), { description: t("valise.toastSyncedDesc") });
+  const handleReset = () => {
+    if (onResetAll) return onResetAll();
+    toast.success(t("valise.toastReset"));
+  };
+
+  const handleDuplicate = () => {
+    if (onDuplicate) return onDuplicate();
+    toast.success(t("valise.toastDuplicated"));
   };
 
   return (
@@ -71,8 +92,9 @@ const ActionButtons = ({ onRegenerate, isRegenerating, onExportPdf, onShareTrip 
           {[
             { label: t("valise.actionExport"), icon: <Download className="w-4 h-4" />, action: handleExport },
             { label: t("valise.actionShare"), icon: <Link2 className="w-4 h-4" />, action: handleShare },
+            { label: t("valise.actionDuplicate"), icon: <Copy className="w-4 h-4" />, action: handleDuplicate },
             { label: t("valise.actionTemplate"), icon: <Save className="w-4 h-4" />, action: handleSaveTemplate },
-            { label: t("valise.actionSync"), icon: <RefreshCw className="w-4 h-4" />, action: handleSync },
+            { label: t("valise.actionReset"), icon: <RotateCcw className="w-4 h-4" />, action: handleReset },
             { label: t("valise.actionValidate"), icon: <CheckCircle className="w-4 h-4" />, action: handleValidate },
           ].map((btn) => (
             <button

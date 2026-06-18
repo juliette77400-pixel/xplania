@@ -7,18 +7,37 @@ interface ValiseSummaryProps {
   totalItems: number;
   checkedItems: number;
   categoriesCount: number;
+  remainingByCategory?: Record<string, number>;
 }
 
-const ValiseSummary = ({ totalItems, checkedItems, categoriesCount }: ValiseSummaryProps) => {
+const ValiseSummary = ({ totalItems, checkedItems, categoriesCount, remainingByCategory }: ValiseSummaryProps) => {
   const { t } = useTranslation();
   const pct = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+  const remaining = Math.max(totalItems - checkedItems, 0);
 
-  const insights = [
-    t("valise.summaryInsight1"),
-    t("valise.summaryInsight2"),
-    t("valise.summaryInsight3"),
-    t("valise.summaryInsight4"),
-  ];
+  // Dynamic insights based on actual state
+  const insights: string[] = [];
+  if (pct === 100) {
+    insights.push(t("valise.summaryDyn.allChecked"));
+  } else if (pct === 0) {
+    insights.push(t("valise.summaryDyn.empty"));
+  } else {
+    insights.push(t("valise.summaryDyn.progress", { pct, remaining }));
+  }
+  insights.push(t("valise.summaryDyn.categories", { count: categoriesCount }));
+
+  if (remainingByCategory) {
+    const topMissing = Object.entries(remainingByCategory)
+      .filter(([, n]) => n > 0)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 1);
+    if (topMissing.length > 0) {
+      insights.push(t("valise.summaryDyn.topMissing", { cat: topMissing[0][0], count: topMissing[0][1] }));
+    }
+  }
+  if (pct >= 80 && pct < 100) {
+    insights.push(t("valise.summaryDyn.almostReady"));
+  }
 
   return (
     <>
@@ -39,8 +58,8 @@ const ValiseSummary = ({ totalItems, checkedItems, categoriesCount }: ValiseSumm
           {[
             { label: t("valise.summarySelected"), value: checkedItems },
             { label: t("valise.summaryCategories"), value: categoriesCount },
-            { label: t("valise.summaryWeatherOpt"), value: `${Math.min(pct + 8, 100)}%` },
-            { label: t("valise.summaryCultural"), value: `${Math.min(pct + 5, 100)}%` },
+            { label: t("valise.summaryProgressPct"), value: `${pct}%` },
+            { label: t("valise.summaryRemaining"), value: remaining },
           ].map((s) => (
             <div key={s.label} className="p-4 rounded-xl bg-muted/50 text-center">
               <p className="text-2xl font-bold gradient-text">{s.value}</p>
@@ -59,7 +78,6 @@ const ValiseSummary = ({ totalItems, checkedItems, categoriesCount }: ValiseSumm
               </li>
             ))}
           </ul>
-          <p className="text-xs text-primary font-semibold mt-3">{t("valise.summaryConfidence")}</p>
         </div>
       </motion.div>
 
