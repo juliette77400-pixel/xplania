@@ -33,6 +33,8 @@ export interface OfficialInfo {
 const cache = new Map<string, { data: OfficialInfo; t: number }>();
 const TTL = 30 * 60 * 1000;
 
+const REFRESH_EVENT = "xplania-official-refresh";
+
 export function useOfficialInfo(destination: string | undefined, locale: "fr" | "en") {
   const [data, setData] = useState<OfficialInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -88,11 +90,33 @@ export function useOfficialInfo(destination: string | undefined, locale: "fr" | 
     fetchData(false);
   }, [fetchData]);
 
+  // Sync across instances: when another section refreshes the same destination,
+  // pick up the updated cache without re-triggering a network request.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onRefresh = (e: Event) => {
+      const detail = (e as CustomEvent<{ destination: string; locale: "fr" | "en" }>).detail;
+      if (!detail || !destination) return;
+      if (detail.destination.toLowerCase() === destination.toLowerCase() && detail.locale === locale) {
+        fetchData(false);
+      }
+    };
+    window.addEventListener(REFRESH_EVENT, onRefresh);
+    return () => window.removeEventListener(REFRESH_EVENT, onRefresh);
+  }, [destination, locale, fetchData]);
+
   const refresh = useCallback(() => {
     const key = getKey();
     if (key) cache.delete(key);
-    return fetchData(true);
-  }, [fetchData, getKey]);
+    return fetchData(true).then(() => {
+      if (typeof window !== "undefined" && destination) {
+        window.dispatchEvent(
+          new CustomEvent(REFRESH_EVENT, { detail: { destination, locale } }),
+        );
+      }
+    });
+  }, [fetchData, getKey, destination, locale]);
 
   return { data, loading, error, refresh };
 }
+
