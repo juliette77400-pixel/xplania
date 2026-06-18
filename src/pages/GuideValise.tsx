@@ -18,6 +18,7 @@ import CulturalTips from "@/components/valise/CulturalTips";
 import OutfitRecommendations from "@/components/valise/OutfitRecommendations";
 import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
+import ValisePipChat from "@/components/valise/ValisePipChat";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
@@ -446,7 +447,7 @@ const GuideValisePage = () => {
 
         <VoyageAnalysis tripData={tripData} destination={destination} days={days} />
 
-        <WeatherSection destination={destination} />
+        <div id="weather-section"><WeatherSection destination={destination} /></div>
 
         {/* Transport + Mode selection + AI tip */}
         <div className="space-y-4">
@@ -520,6 +521,7 @@ const GuideValisePage = () => {
         />
       </div>
       <QuickJump />
+      <ValisePipChat destination={destination} />
     </div>
   );
 };
