@@ -1853,6 +1853,7 @@
       }
     },
     "aiTipAnalyzing": "Xplania AI is analyzing and adapting your list…",
+    "aiTipRegenerate": "New tip",
     "genTitle": "AI generation in progress…",
     "genDone": "Done",
     "genSteps": {
