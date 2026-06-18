@@ -97,12 +97,14 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
     setNatInput("");
   };
 
-  const buildSummaryAndGo = useCallback(() => {
-    const tripLabel = t(`guideVisa.chatbot.tripTypes.${ctxTrip}`);
-    const durLabel = t(`guideVisa.chatbot.durations.${ctxDuration}`);
+  const buildSummaryAndGo = useCallback((overrides?: { trip?: string; duration?: string }) => {
+    const tripKey = overrides?.trip ?? ctxTrip;
+    const durKey = overrides?.duration ?? ctxDuration;
+    const tripLabel = tripKey ? t(`guideVisa.chatbot.tripTypes.${tripKey}`) : "";
+    const durLabel = durKey ? t(`guideVisa.chatbot.durations.${durKey}`) : "";
     const msg = t("guideVisa.chatbot.summary", {
       destination: ctxDest || (isFr ? "ta destination" : "your destination"),
-      nationality: ctxNat,
+      nationality: ctxNat || "France",
       duration: durLabel,
       tripType: tripLabel,
     });
