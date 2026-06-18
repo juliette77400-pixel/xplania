@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Syringe, ShieldCheck, Pill, AlertTriangle, ExternalLink, Loader2, BadgeCheck } from "lucide-react";
+import { Syringe, ShieldCheck, Pill, AlertTriangle, ExternalLink, Loader2, BadgeCheck, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useOfficialInfo } from "@/hooks/useOfficialInfo";
+import { cn } from "@/lib/utils";
 
 interface VaccinesGuideProps {
   destination?: string;
