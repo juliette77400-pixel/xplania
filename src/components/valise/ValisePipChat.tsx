@@ -32,7 +32,30 @@ type Stage =
 
 const STORAGE_KEY = "xplania-valise-pip-v1";
 const SEEN_KEY = "xplania-valise-pip-seen-v1";
+const QUEUE_KEY = "xplania-valise-pip-queue-v1";
 const CHAT_KIND = "valise";
+
+interface QueuedAsk {
+  tempId: string;
+  question: string;
+  payload: Record<string, unknown>;
+  createdAt: number;
+}
+
+function readQueue(): QueuedAsk[] {
+  try {
+    const raw = localStorage.getItem(QUEUE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeQueue(q: QueuedAsk[]) {
+  try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); } catch { /* */ }
+}
 
 interface PersistedState {
   history: ChatMsg[];
