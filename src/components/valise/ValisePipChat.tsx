@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
-  Backpack, Loader2, Send, X, Sparkles, RotateCcw,
+  Backpack, Loader2, Send, X, Sparkles, RotateCcw, WifiOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,6 +17,8 @@ interface ChatMsg {
   role: "user" | "assistant";
   content: string;
   ts: number;
+  pending?: boolean;
+  tempId?: string;
 }
 
 type Stage =
@@ -32,7 +34,30 @@ type Stage =
 
 const STORAGE_KEY = "xplania-valise-pip-v1";
 const SEEN_KEY = "xplania-valise-pip-seen-v1";
+const QUEUE_KEY = "xplania-valise-pip-queue-v1";
 const CHAT_KIND = "valise";
+
+interface QueuedAsk {
+  tempId: string;
+  question: string;
+  payload: Record<string, unknown>;
+  createdAt: number;
+}
+
+function readQueue(): QueuedAsk[] {
+  try {
+    const raw = localStorage.getItem(QUEUE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeQueue(q: QueuedAsk[]) {
+  try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); } catch { /* */ }
+}
 
 interface PersistedState {
   history: ChatMsg[];
@@ -145,6 +170,9 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<ChatMsg[]>([]);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const [online, setOnline] = useState<boolean>(() => typeof navigator === "undefined" ? true : navigator.onLine);
+  const [queueLen, setQueueLen] = useState<number>(() => readQueue().length);
+  const drainingRef = useRef(false);
 
   useEffect(() => { setCtxDest(destination); }, [destination]);
 
@@ -296,43 +324,128 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
     setStage("summary");
   }, [ctxDest, ctxStart, ctxEnd, ctxLuggage, ctxTrip, ctxActivities, ctxDuration, isFr, t]);
 
+  const callValiseQa = useCallback(async (payload: Record<string, unknown>) => {
+    const invokePromise = supabase.functions.invoke("valise-qa", { body: payload });
+    const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 25000));
+    const { data, error } = await Promise.race([invokePromise, timeout]);
+    if (error) throw error;
+    if (data?.error) throw new Error(data.error);
+    const answer = typeof data?.answer === "string" && data.answer.trim()
+      ? data.answer.trim()
+      : t("valise.chatbot.errorAnswer");
+    return answer;
+  }, [t]);
+
+  const enqueueAsk = useCallback((item: QueuedAsk) => {
+    const next = [...readQueue(), item];
+    writeQueue(next);
+    setQueueLen(next.length);
+  }, []);
+
+  const drainQueue = useCallback(async () => {
+    if (drainingRef.current) return;
+    if (typeof navigator !== "undefined" && !navigator.onLine) return;
+    const items = readQueue();
+    if (items.length === 0) return;
+    drainingRef.current = true;
+    try {
+      for (const item of items) {
+        try {
+          const answer = await callValiseQa(item.payload);
+          setHistory((prev) => {
+            const idx = prev.findIndex(
+              (m) => m.role === "assistant" && m.pending && m.tempId === item.tempId,
+            );
+            if (idx === -1) {
+              return [...prev, { role: "assistant", content: answer, ts: Date.now() }];
+            }
+            const copy = prev.slice();
+            copy[idx] = { role: "assistant", content: answer, ts: Date.now() };
+            return copy;
+          });
+          const remaining = readQueue().filter((q) => q.tempId !== item.tempId);
+          writeQueue(remaining);
+          setQueueLen(remaining.length);
+        } catch (e) {
+          console.error("drain valise-qa failed", e);
+          // Stop draining on first failure; will retry on next online event
+          break;
+        }
+      }
+    } finally {
+      drainingRef.current = false;
+    }
+  }, [callValiseQa]);
+
   const askPip = async (q: string) => {
     if (!q.trim() || loading) return;
-    const next: ChatMsg[] = [...history, { role: "user", content: q, ts: Date.now() }];
+    const trimmed = q.trim();
+    const tempId = `q_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const userMsg: ChatMsg = { role: "user", content: trimmed, ts: Date.now() };
+    const next: ChatMsg[] = [...history, userMsg];
     setHistory(next);
     setQuestion("");
+
+    const payload = {
+      question: trimmed,
+      history: next.slice(-10).map(({ role, content }) => ({ role, content })),
+      firstName,
+      destination: ctxDest,
+      startDate: ctxStart,
+      endDate: ctxEnd,
+      luggage: ctxLuggage,
+      tripType: ctxTrip,
+      activities: ctxActivities,
+      duration: ctxDuration,
+      locale,
+    };
+
+    const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+    if (isOffline) {
+      enqueueAsk({ tempId, question: trimmed, payload, createdAt: Date.now() });
+      setHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
+      ]);
+      return;
+    }
+
     setLoading(true);
     try {
-      const invokePromise = supabase.functions.invoke("valise-qa", {
-        body: {
-          question: q,
-          history: next.slice(-10).map(({ role, content }) => ({ role, content })),
-          firstName,
-          destination: ctxDest,
-          startDate: ctxStart,
-          endDate: ctxEnd,
-          luggage: ctxLuggage,
-          tripType: ctxTrip,
-          activities: ctxActivities,
-          duration: ctxDuration,
-          locale,
-        },
-      });
-      const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 25000));
-      const { data, error } = await Promise.race([invokePromise, timeout]);
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      const answer = typeof data?.answer === "string" && data.answer.trim()
-        ? data.answer.trim()
-        : t("valise.chatbot.errorAnswer");
+      const answer = await callValiseQa(payload);
       setHistory((prev) => [...prev, { role: "assistant", content: answer, ts: Date.now() }]);
     } catch (e) {
       console.error("valise-qa failed", e);
-      setHistory((prev) => [...prev, { role: "assistant", content: t("valise.chatbot.errorAnswer"), ts: Date.now() }]);
+      // Network/edge failure → queue for retry
+      enqueueAsk({ tempId, question: trimmed, payload, createdAt: Date.now() });
+      setHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
+      ]);
     } finally {
       setLoading(false);
     }
   };
+
+  // Online/offline listeners + auto-drain
+  useEffect(() => {
+    const handleOnline = () => {
+      setOnline(true);
+      void drainQueue();
+    };
+    const handleOffline = () => setOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    // Attempt drain on mount if we have pending items and are online
+    if (typeof navigator === "undefined" || navigator.onLine) {
+      void drainQueue();
+    }
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [drainQueue]);
+
 
   if (!open) {
     return (
@@ -370,6 +483,15 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             </div>
           </div>
           <div className="flex items-center gap-1">
+            {(!online || queueLen > 0) && (
+              <span
+                title={!online ? t("valise.chatbot.offline.indicator") : t("valise.chatbot.offline.replaying", { count: queueLen })}
+                className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-300"
+              >
+                <WifiOff className="w-3 h-3" />
+                {!online ? t("valise.chatbot.offline.short") : `↻ ${queueLen}`}
+              </span>
+            )}
             <button onClick={restart} aria-label={t("valise.chatbot.restart")} title={t("valise.chatbot.restart")}
               className="p-1.5 rounded-md hover:bg-muted text-muted-foreground">
               <RotateCcw className="w-4 h-4" />
@@ -544,8 +666,13 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
           )}
 
           {(stage === "summary" || stage === "qa") && history.map((m, i) => (
-            <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}>
+            <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"} ${m.pending ? "opacity-70 italic" : ""}`}>
               {m.content}
+              {m.pending && (
+                <span className="ml-2 inline-flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-300 align-middle">
+                  <WifiOff className="w-3 h-3" />
+                </span>
+              )}
             </div>
           ))}
 
