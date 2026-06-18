@@ -523,12 +523,30 @@
       "title": "Your visa checklist, made simple 📋",
       "reassurance": "💬 Not sure about a step? Ask Pip — no question is too basic.",
       "steps": [
-        { "title": "Check if you need a visa", "detail": "Based on your nationality and destination. Most European passports don't need a visa for short EU stays, but it's different elsewhere." },
-        { "title": "Check processing times", "detail": "Some visas take 4–8 weeks — start early! Student or long-stay visas can take even longer." },
-        { "title": "Gather your documents", "detail": "Passport valid 6 months after your return, recent ID photos, accommodation and ticket proofs, travel insurance." },
-        { "title": "Submit your application", "detail": "At the embassy, consulate or online depending on the destination. Many countries now accept 100% online applications (e-visa, ESTA, etc.)." },
-        { "title": "Receive your visa and check the dates", "detail": "Check the number of allowed entries, validity period and expiry date. A mistake can stop you boarding." },
-        { "title": "On arrival: keep your documents handy", "detail": "Paper + cloud copy of your passport, visa, insurance and bookings. Note the nearest French consulate number." }
+        {
+          "title": "Check if you need a visa",
+          "detail": "Based on your nationality and destination. Most European passports don't need a visa for short EU stays, but it's different elsewhere."
+        },
+        {
+          "title": "Check processing times",
+          "detail": "Some visas take 4–8 weeks — start early! Student or long-stay visas can take even longer."
+        },
+        {
+          "title": "Gather your documents",
+          "detail": "Passport valid 6 months after your return, recent ID photos, accommodation and ticket proofs, travel insurance."
+        },
+        {
+          "title": "Submit your application",
+          "detail": "At the embassy, consulate or online depending on the destination. Many countries now accept 100% online applications (e-visa, ESTA, etc.)."
+        },
+        {
+          "title": "Receive your visa and check the dates",
+          "detail": "Check the number of allowed entries, validity period and expiry date. A mistake can stop you boarding."
+        },
+        {
+          "title": "On arrival: keep your documents handy",
+          "detail": "Paper + cloud copy of your passport, visa, insurance and bookings. Note the nearest French consulate number."
+        }
       ]
     },
     "currencySection": {
@@ -543,10 +561,22 @@
       "emergencyTitle": "Emergency abroad:",
       "emergencyNote": "French citizens hotline, available 24/7",
       "levels": {
-        "1": { "label": "🟢 Level 1 — Normal vigilance", "summary": "According to French authorities, {{destination}} presents no particular risks for travellers. Stay alert as you would anywhere." },
-        "2": { "label": "🟡 Level 2 — Enhanced vigilance", "summary": "According to French authorities, enhanced vigilance is recommended for {{destination}}. Check the official advisory for details." },
-        "3": { "label": "🟠 Level 3 — Avoid unless necessary", "summary": "According to French authorities, travel to {{destination}} is advised against unless necessary. Check the official advisory before any trip." },
-        "4": { "label": "🔴 Level 4 — Strongly advised against", "summary": "According to French authorities, travel to {{destination}} is strongly discouraged." }
+        "1": {
+          "label": "🟢 Level 1 — Normal vigilance",
+          "summary": "According to French authorities, {{destination}} presents no particular risks for travellers. Stay alert as you would anywhere."
+        },
+        "2": {
+          "label": "🟡 Level 2 — Enhanced vigilance",
+          "summary": "According to French authorities, enhanced vigilance is recommended for {{destination}}. Check the official advisory for details."
+        },
+        "3": {
+          "label": "🟠 Level 3 — Avoid unless necessary",
+          "summary": "According to French authorities, travel to {{destination}} is advised against unless necessary. Check the official advisory before any trip."
+        },
+        "4": {
+          "label": "🔴 Level 4 — Strongly advised against",
+          "summary": "According to French authorities, travel to {{destination}} is strongly discouraged."
+        }
       },
       "solo": {
         "title": "Travelling solo — what to know",
@@ -2003,7 +2033,9 @@
       "emptyState": "Ask anything about your {{destination}} budget — accommodation, food, transport, overspending… I'll use your current trip data.",
       "errorAnswer": "I couldn't answer right now. Please try again in a moment.",
       "expand": "Expand",
-      "collapse": "Collapse"
+      "collapse": "Collapse",
+      "convertBtn": "💱 Convert",
+      "convertMsg": "Need to convert currencies? I've added a live converter just below 👇"
     },
     "pdf": {
       "exportButton": "Export as PDF",
@@ -2630,7 +2662,14 @@
     "title": "Currency converter",
     "swap": "Swap",
     "source": "ECB rates (Frankfurter)",
-    "error": "Conversion unavailable"
+    "error": "Conversion unavailable",
+    "sectionTitle": "💱 Currency converter — live rates",
+    "from": "From",
+    "to": "To",
+    "refresh": "Refresh",
+    "updatedAt": "Updated on {{datetime}}",
+    "unavailable": "Rates temporarily unavailable — try again in a moment.",
+    "disclaimer": "Rates are indicative and may differ at your bank or currency exchange."
   },
   "tripUtils": {
     "kicker": "Before departure",

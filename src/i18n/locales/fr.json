@@ -523,12 +523,30 @@
       "title": "Ta checklist visa, sans prise de tête 📋",
       "reassurance": "💬 Pas sûr·e d'une étape ? Demande à Pip — aucune question n'est trop simple.",
       "steps": [
-        { "title": "Vérifie si tu as besoin d'un visa", "detail": "Selon ta nationalité et ta destination. La plupart des passeports européens n'ont pas besoin de visa pour les courts séjours dans l'UE, mais c'est différent ailleurs." },
-        { "title": "Repère les délais", "detail": "Certains visas prennent 4 à 8 semaines — commence tôt ! Les visas étudiants ou long séjour peuvent prendre encore plus de temps." },
-        { "title": "Prépare tes documents", "detail": "Passeport valide 6 mois après ton retour, photos d'identité récentes, justificatifs d'hébergement et de billets, assurance voyage." },
-        { "title": "Dépose ta demande", "detail": "À l'ambassade, au consulat ou en ligne selon la destination. Beaucoup de pays acceptent les demandes 100% en ligne (e-visa, ESTA, etc.)." },
-        { "title": "Reçois ton visa et vérifie les dates", "detail": "Vérifie le nombre d'entrées autorisées, la durée de validité et la date d'expiration. Une erreur peut t'empêcher d'embarquer." },
-        { "title": "À l'arrivée : garde tes documents accessibles", "detail": "Copie papier + copie cloud de ton passeport, visa, assurance et réservations. Note le numéro du consulat français le plus proche." }
+        {
+          "title": "Vérifie si tu as besoin d'un visa",
+          "detail": "Selon ta nationalité et ta destination. La plupart des passeports européens n'ont pas besoin de visa pour les courts séjours dans l'UE, mais c'est différent ailleurs."
+        },
+        {
+          "title": "Repère les délais",
+          "detail": "Certains visas prennent 4 à 8 semaines — commence tôt ! Les visas étudiants ou long séjour peuvent prendre encore plus de temps."
+        },
+        {
+          "title": "Prépare tes documents",
+          "detail": "Passeport valide 6 mois après ton retour, photos d'identité récentes, justificatifs d'hébergement et de billets, assurance voyage."
+        },
+        {
+          "title": "Dépose ta demande",
+          "detail": "À l'ambassade, au consulat ou en ligne selon la destination. Beaucoup de pays acceptent les demandes 100% en ligne (e-visa, ESTA, etc.)."
+        },
+        {
+          "title": "Reçois ton visa et vérifie les dates",
+          "detail": "Vérifie le nombre d'entrées autorisées, la durée de validité et la date d'expiration. Une erreur peut t'empêcher d'embarquer."
+        },
+        {
+          "title": "À l'arrivée : garde tes documents accessibles",
+          "detail": "Copie papier + copie cloud de ton passeport, visa, assurance et réservations. Note le numéro du consulat français le plus proche."
+        }
       ]
     },
     "currencySection": {
@@ -543,10 +561,22 @@
       "emergencyTitle": "Urgence à l'étranger :",
       "emergencyNote": "Numéro des Français à l'étranger, disponible 24h/24",
       "levels": {
-        "1": { "label": "🟢 Niveau 1 — Vigilance normale", "summary": "Selon les autorités françaises, {{destination}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant·e comme partout." },
-        "2": { "label": "🟡 Niveau 2 — Vigilance renforcée", "summary": "Selon les autorités françaises, une vigilance renforcée est recommandée pour {{destination}}. Consulte la fiche officielle pour les détails." },
-        "3": { "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative", "summary": "Selon les autorités françaises, {{destination}} est déconseillé sauf raison impérative. Vérifie la fiche officielle avant tout déplacement." },
-        "4": { "label": "🔴 Niveau 4 — Formellement déconseillé", "summary": "Selon les autorités françaises, il est formellement déconseillé de se rendre à {{destination}}." }
+        "1": {
+          "label": "🟢 Niveau 1 — Vigilance normale",
+          "summary": "Selon les autorités françaises, {{destination}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant·e comme partout."
+        },
+        "2": {
+          "label": "🟡 Niveau 2 — Vigilance renforcée",
+          "summary": "Selon les autorités françaises, une vigilance renforcée est recommandée pour {{destination}}. Consulte la fiche officielle pour les détails."
+        },
+        "3": {
+          "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative",
+          "summary": "Selon les autorités françaises, {{destination}} est déconseillé sauf raison impérative. Vérifie la fiche officielle avant tout déplacement."
+        },
+        "4": {
+          "label": "🔴 Niveau 4 — Formellement déconseillé",
+          "summary": "Selon les autorités françaises, il est formellement déconseillé de se rendre à {{destination}}."
+        }
       },
       "solo": {
         "title": "Voyager seul·e — ce qu'il faut savoir",
@@ -2003,7 +2033,9 @@
       "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
       "expand": "Agrandir",
-      "collapse": "Réduire"
+      "collapse": "Réduire",
+      "convertBtn": "💱 Convertir",
+      "convertMsg": "Tu veux convertir ta devise ? J'ai ajouté un convertisseur avec les taux du jour juste en dessous 👇"
     },
     "pdf": {
       "exportButton": "Exporter en PDF",
@@ -2630,7 +2662,14 @@
     "title": "Convertisseur de devise",
     "swap": "Inverser",
     "source": "Taux BCE (Frankfurter)",
-    "error": "Conversion indisponible"
+    "error": "Conversion indisponible",
+    "sectionTitle": "💱 Convertisseur de devises — taux en temps réel",
+    "from": "Devise de départ",
+    "to": "Devise d'arrivée",
+    "refresh": "Rafraîchir",
+    "updatedAt": "Mis à jour le {{datetime}}",
+    "unavailable": "Taux temporairement indisponibles — réessaie dans quelques instants.",
+    "disclaimer": "Taux indicatifs — peuvent différer en banque ou au bureau de change."
   },
   "tripUtils": {
     "kicker": "Avant le départ",
