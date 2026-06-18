@@ -258,7 +258,9 @@ const GuideVisaPage = () => {
       <QuotaBanner tool="visa" toolLabel="Visa & Préparatifs" />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Visa & Préparatifs" />
 
-      <div className="container mx-auto px-4 sm:px-6 py-8 max-w-4xl space-y-8">
+      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-4xl space-y-6">
+        <VisaDisclaimer />
+
         {/* Hero */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-8">
           <motion.div
