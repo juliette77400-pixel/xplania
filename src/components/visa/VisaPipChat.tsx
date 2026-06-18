@@ -280,7 +280,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
               <div className="grid grid-cols-2 gap-2">
                 {DURATIONS.map((d) => (
                   <button key={d}
-                    onClick={() => { setCtxDuration(d); setTimeout(buildSummaryAndGo, 0); }}
+                    onClick={() => { setCtxDuration(d); buildSummaryAndGo({ duration: d }); }}
                     className="text-xs font-semibold py-2 px-2 rounded-lg bg-muted hover:bg-primary/15 hover:text-primary transition-colors">
                     {t(`guideVisa.chatbot.durations.${d}`)}
                   </button>
