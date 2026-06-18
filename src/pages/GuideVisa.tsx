@@ -645,6 +645,9 @@ const GuideVisaPage = () => {
                     ))}
                   </div>
                 )}
+                <p className="text-[11px] text-muted-foreground italic border-t border-border/40 pt-2 mt-3">
+                  {t("guideVisa.inlineDisclaimer")}
+                </p>
               </motion.div>
 
               {/* Dynamic Checklist */}
