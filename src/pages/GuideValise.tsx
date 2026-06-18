@@ -501,7 +501,13 @@ const GuideValisePage = () => {
 
         <CulturalTips destination={destination} />
 
-        <OutfitRecommendations tripType={tripTypeLabel} destination={destination} />
+        <OutfitRecommendations
+          tripType={tripTypeLabel}
+          destination={destination}
+          activities={tripData?.objectives}
+          luggage={luggageMode}
+          onAddToChecklist={addOutfitItems}
+        />
 
         <ActionButtons
           onRegenerate={handleRegenerate}
