@@ -6,7 +6,14 @@ interface CulturalTipsProps {
   destination: string;
 }
 
-const REGION_KEYS = ["japon", "maroc", "thailande"] as const;
+const REGION_KEYS = ["japon", "japan", "maroc", "morocco", "thailande", "thailand", "australie", "australia"] as const;
+
+const REGION_ALIASES: Record<string, string> = {
+  japan: "japon",
+  morocco: "maroc",
+  thailand: "thailande",
+  australia: "australie",
+};
 
 function findRegionKey(destination: string): string {
   const lower = destination.toLowerCase();
