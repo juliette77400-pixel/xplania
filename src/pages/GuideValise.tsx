@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useTravelStore } from "@/stores/useTravelStore";
 import ValiseHeader from "@/components/valise/ValiseHeader";
