@@ -553,6 +553,103 @@
       "title": "💱 Convertisseur de devises — taux en temps réel",
       "disclaimer": "Ces taux sont indicatifs. Ils peuvent différer en banque ou au bureau de change."
     },
+    "vaccinesGuide": {
+      "title": "💉 Vaccins & santé voyage",
+      "subtitle": "Recommandations générales selon les autorités sanitaires françaises",
+      "officialTitle": "Sources officielles à consulter",
+      "opensNewTab": "ouvre dans un nouvel onglet",
+      "disclaimer": "Ces informations sont générales. Consulte un centre de vaccinations internationales 4 à 8 semaines avant le départ pour un avis personnalisé.",
+      "disclaimerWithDest": "Ces informations sont générales pour {{destination}}. Consulte un centre de vaccinations internationales 4 à 8 semaines avant le départ.",
+      "blocks": [
+        {
+          "icon": "mandatory",
+          "title": "Vaccins obligatoires",
+          "body": "Exigés à l'entrée de certains pays (carnet de vaccination requis aux frontières).",
+          "items": [
+            "Fièvre jaune — Afrique subsaharienne, Amérique du Sud tropicale",
+            "Méningite ACYW135 — pèlerinage à La Mecque",
+            "Poliomyélite — selon recommandations OMS du moment"
+          ]
+        },
+        {
+          "icon": "recommended",
+          "title": "Vaccins recommandés",
+          "body": "Fortement conseillés selon la destination, la durée et les conditions du séjour.",
+          "items": [
+            "Hépatites A et B",
+            "Typhoïde (Asie du Sud-Est, Afrique, sous-continent indien)",
+            "Rage (séjours longs ou ruraux)",
+            "Encéphalite japonaise / à tiques selon zone"
+          ]
+        },
+        {
+          "icon": "uptodate",
+          "title": "Vaccins à jour",
+          "body": "Avant tout voyage, vérifie que tes vaccins de routine sont à jour.",
+          "items": [
+            "DTP (diphtérie–tétanos–poliomyélite)",
+            "ROR (rougeole–oreillons–rubéole)",
+            "Coqueluche, grippe saisonnière selon profil"
+          ]
+        },
+        {
+          "icon": "chemo",
+          "title": "Chimioprophylaxie",
+          "body": "Traitement préventif contre le paludisme dans les zones à risque. À discuter avec un médecin selon ta destination et la saison.",
+          "items": [
+            "Protection anti-moustiques (répulsif DEET, moustiquaire imprégnée, vêtements longs)",
+            "Traitement adapté à la zone (Malarone, doxycycline, méfloquine)"
+          ]
+        }
+      ],
+      "links": [
+        { "label": "Institut Pasteur — Centres de vaccinations", "url": "https://www.pasteur.fr/fr/centre-medical/preparer-son-voyage" },
+        { "label": "Santé publique France — Voyages", "url": "https://www.santepubliquefrance.fr/maladies-et-traumatismes/voyage" },
+        { "label": "Conseils aux voyageurs — Diplomatie", "url": "https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/" },
+        { "label": "OMS — International Travel & Health", "url": "https://www.who.int/travel-advice" }
+      ]
+    },
+    "safetyGuide": {
+      "title": "🛡️ Sécurité & vigilance",
+      "subtitle": "Repères généraux selon les autorités françaises (diplomatie.gouv.fr)",
+      "levelsTitle": "Niveaux de vigilance France-Diplomatie",
+      "levelAria": "Niveau de vigilance",
+      "risksTitle": "Risques courants à connaître",
+      "soloTitle": "Voyager seul·e",
+      "arianeTitle": "Inscris-toi sur Ariane",
+      "arianeBody": "Service gratuit du ministère de l'Europe et des Affaires étrangères : tu reçois des alertes sécurité par SMS/email et tu peux être contacté·e en cas de crise dans ton pays de destination.",
+      "arianeCta": "S'inscrire sur Ariane",
+      "emergenciesTitle": "Numéros utiles",
+      "officialCta": "Fiche officielle France-Diplomatie",
+      "opensNewTab": "ouvre dans un nouvel onglet",
+      "disclaimer": "Vérifie toujours la fiche officielle de ta destination avant de partir, les niveaux peuvent évoluer rapidement.",
+      "disclaimerWithDest": "Vérifie la fiche officielle de {{destination}} sur diplomatie.gouv.fr — les niveaux peuvent évoluer.",
+      "levels": [
+        { "label": "🟢 Niveau 1 — Vigilance normale", "description": "Pas de risque particulier. Prudence d'usage comme partout." },
+        { "label": "🟡 Niveau 2 — Vigilance renforcée", "description": "Tensions, criminalité ou risques sanitaires nécessitant plus d'attention." },
+        { "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative", "description": "Voyage déconseillé sauf nécessité absolue (professionnelle, familiale)." },
+        { "label": "🔴 Niveau 4 — Formellement déconseillé", "description": "Tout déplacement est formellement déconseillé pour ta sécurité." }
+      ],
+      "risks": [
+        { "title": "Pickpockets & vols", "body": "Aéroports, transports en commun, marchés. Garde tes affaires devant toi et duplique tes documents." },
+        { "title": "Arnaques touristiques", "body": "Faux taxis, faux guides, faux policiers. Vérifie les tarifs et utilise des apps officielles." },
+        { "title": "Risques naturels", "body": "Cyclones, séismes, inondations selon la saison. Consulte météo et alertes locales." },
+        { "title": "Risques sanitaires", "body": "Eau, alimentation, moustiques, altitude. Adapte ton comportement à la zone." }
+      ],
+      "soloTips": [
+        "Informe un proche de ton itinéraire et de tes hébergements",
+        "Partage ta position en temps réel avec une personne de confiance",
+        "Évite de circuler seul·e la nuit dans des zones inconnues",
+        "Garde une copie numérique de tes documents (cloud + email)",
+        "Repère le consulat français le plus proche dès ton arrivée"
+      ],
+      "emergencies": [
+        { "label": "Urgences européennes", "number": "112" },
+        { "label": "Crise Français à l'étranger (24/7)", "number": "+33 1 53 59 11 00" },
+        { "label": "SAMU (France)", "number": "15" },
+        { "label": "Police secours (France)", "number": "17" }
+      ]
+    },
     "safety": {
       "title": "🛡️ Sécurité & conseils aux voyageurs",
       "attribution": "Selon les autorités françaises (diplomatie.gouv.fr)",
