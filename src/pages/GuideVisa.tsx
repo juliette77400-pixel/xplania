@@ -518,10 +518,23 @@ const GuideVisaPage = () => {
                       {aiResult.visa?.cost && <span>💰 Coût : {aiResult.visa.cost}</span>}
                     </div>
                   </div>
+                  <p className="text-[11px] text-muted-foreground italic border-t border-border/40 pt-2 mt-2">
+                    {t("guideVisa.inlineDisclaimer")}
+                  </p>
                 </div>
               </motion.div>
 
-              {/* Security */}
+              {/* Safety advisory (neutral, official) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.03 }}
+                className="glass-card rounded-2xl p-6 shadow-md"
+              >
+                <SafetyAdvisory level={securityLevelNumber} destination={destinationName} isSolo={isSolo} />
+              </motion.div>
+
+              {/* Security details (AI-specific tips & zones) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
