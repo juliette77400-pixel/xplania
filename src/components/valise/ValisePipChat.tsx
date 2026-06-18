@@ -194,7 +194,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
       const remoteTs = data.updated_at ? new Date(data.updated_at).getTime() : 0;
       if (local && local.updatedAt >= remoteTs) return;
       const ctx = (data.context ?? {}) as PersistedState["ctx"];
-      const remoteHist = Array.isArray(data.history) ? (data.history as ChatMsg[]) : [];
+      const remoteHist = Array.isArray(data.history) ? (data.history as unknown as ChatMsg[]) : [];
       setHistory(remoteHist);
       setStage((data.stage as Stage) ?? "welcome");
       if (ctx.dest) setCtxDest(ctx.dest);
