@@ -1799,6 +1799,8 @@
     "culturalRegenerate": "Régénérer les conseils",
     "culturalAiBadge": "Généré par IA",
     "culturalError": "Impossible de générer les conseils, version par défaut affichée",
+    "culturalLoading": "Chargement des conseils culturels…",
+    "culturalLoaded": "Conseils culturels mis à jour.",
     "activitiesTitle": "Objets spécifiques par activité",
     "activitiesDetected": "{{count}} activité détectée",
     "activitiesDetected_other": "{{count}} activités détectées",
