@@ -19,6 +19,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { countryList } from "@/lib/countries";
 import { Skeleton } from "@/components/ui/skeleton";
+import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
+import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
+import SafetyAdvisory from "@/components/visa/SafetyAdvisory";
+import VisaPipChat from "@/components/visa/VisaPipChat";
+import CurrencyConverter from "@/components/shared/CurrencyConverter";
 
 // ── Static Data ──
 
@@ -138,7 +143,18 @@ const GuideVisaPage = () => {
   const [countrySearch, setCountrySearch] = useState("");
   const [nationalitySearch, setNationalitySearch] = useState("");
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [chatOpenSignal, setChatOpenSignal] = useState(0);
   const { reached, consume } = useQuota("visa");
+  const askPip = () => setChatOpenSignal((n) => n + 1);
+  const securityLevelNumber: 1 | 2 | 3 | 4 = (() => {
+    const lvl = aiResult?.security?.level || "safe";
+    if (lvl === "danger") return 4;
+    if (lvl === "caution") return 3;
+    if (lvl === "moderate") return 2;
+    return 1;
+  })();
+  const isSolo = (tripData?.travelerType || "").toLowerCase().includes("solo") ||
+    (tripData?.travelerType || "").toLowerCase().includes("seul");
 
   const destinationName = useMemo(() => {
     if (!selectedDestination || selectedDestination === "none") return isFr ? "votre destination" : "your destination";
@@ -242,7 +258,9 @@ const GuideVisaPage = () => {
       <QuotaBanner tool="visa" toolLabel="Visa & Préparatifs" />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Visa & Préparatifs" />
 
-      <div className="container mx-auto px-4 sm:px-6 py-8 max-w-4xl space-y-8">
+      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-4xl space-y-6">
+        <VisaDisclaimer />
+
         {/* Hero */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-8">
           <motion.div
@@ -362,6 +380,18 @@ const GuideVisaPage = () => {
             {isGenerating ? t("guideVisa.analyzing") : t("guideVisa.analyze")}
           </motion.button>
         </motion.div>
+
+        {/* Visa process stepper */}
+        <VisaProcessStepper destination={destinationName} onAskPip={askPip} />
+
+        {/* Currency converter */}
+        <section className="glass-card rounded-2xl p-6 space-y-3">
+          <h2 className="text-lg font-bold text-foreground">{t("guideVisa.currencySection.title")}</h2>
+          <CurrencyConverter destination={destinationName} />
+          <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
+        </section>
+
+
 
         {/* Generation animation */}
         <AnimatePresence>
@@ -488,10 +518,23 @@ const GuideVisaPage = () => {
                       {aiResult.visa?.cost && <span>💰 Coût : {aiResult.visa.cost}</span>}
                     </div>
                   </div>
+                  <p className="text-[11px] text-muted-foreground italic border-t border-border/40 pt-2 mt-2">
+                    {t("guideVisa.inlineDisclaimer")}
+                  </p>
                 </div>
               </motion.div>
 
-              {/* Security */}
+              {/* Safety advisory (neutral, official) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.03 }}
+                className="glass-card rounded-2xl p-6 shadow-md"
+              >
+                <SafetyAdvisory level={securityLevelNumber} destination={destinationName} isSolo={isSolo} />
+              </motion.div>
+
+              {/* Security details (AI-specific tips & zones) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -804,6 +847,11 @@ const GuideVisaPage = () => {
         </AnimatePresence>
       </div>
       <QuickJump />
+      <VisaPipChat
+        destination={destinationName}
+        nationality={nationalityName}
+        openSignal={chatOpenSignal}
+      />
     </div>
   );
 };
