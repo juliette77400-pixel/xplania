@@ -368,7 +368,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
           setQueueLen(remaining.length);
         } catch (e) {
           console.error("drain valise-qa failed", e);
-          // Stop draining on first failure; will retry on next online event
+          // Stop draining on first failure; will retry on next online event or manual retry
           break;
         }
       }
@@ -376,6 +376,11 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
       drainingRef.current = false;
     }
   }, [callValiseQa]);
+
+  const retryNow = () => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) return;
+    void drainQueue();
+  };
 
   const askPip = async (q: string) => {
     if (!q.trim() || loading) return;
