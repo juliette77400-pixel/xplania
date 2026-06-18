@@ -143,14 +143,11 @@ const OutfitRecommendations = ({ tripType, destination }: OutfitRecommendationsP
                   </DialogTitle>
                 </DialogHeader>
 
-                <div className="relative h-48 rounded-xl overflow-hidden mt-2">
-                  <img
-                    src={selectedOutfit.imageUrl}
-                    alt={data.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
-                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-lg bg-primary/20 backdrop-blur text-primary text-xs font-bold">
+                <div className={`relative h-48 rounded-xl overflow-hidden mt-2 bg-gradient-to-br ${selectedOutfit.gradient} flex items-center justify-center`}>
+                  <span className="text-7xl drop-shadow-xl select-none" aria-hidden="true">
+                    {selectedOutfit.emoji}
+                  </span>
+                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-lg bg-white/20 backdrop-blur text-white text-xs font-bold border border-white/20">
                     {data.badge}
                   </span>
                 </div>
