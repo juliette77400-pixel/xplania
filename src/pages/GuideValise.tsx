@@ -18,6 +18,7 @@ import CulturalTips from "@/components/valise/CulturalTips";
 import OutfitRecommendations from "@/components/valise/OutfitRecommendations";
 import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
+import ValisePipChat from "@/components/valise/ValisePipChat";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
