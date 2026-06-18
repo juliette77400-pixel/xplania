@@ -1714,6 +1714,12 @@
       "skip": "Skip",
       "loading": "Pip is thinking…",
       "errorAnswer": "Oops, I couldn't reply. Try again in a few seconds 🙏",
+      "offline": {
+        "indicator": "You're offline — your questions are saved and will be sent as soon as you're back online.",
+        "short": "Offline",
+        "queued": "📡 You're offline. I've queued your question and will answer as soon as the connection is back.",
+        "replaying": "Sending… ({{count}} pending)"
+      },
       "placeholder": "Ask me anything about packing…",
       "qaEmpty": "Ask me anything — packing, weather, outfits, culture, solo safety… I've got you 🎒",
       "welcome": "Hey {{name}}! 🧳 Pip here. I'll help you pack the perfect bag — real-time weather, packing tips, outfit ideas and cultural advice. Want me to walk you through it?",
