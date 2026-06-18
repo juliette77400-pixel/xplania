@@ -324,43 +324,128 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
     setStage("summary");
   }, [ctxDest, ctxStart, ctxEnd, ctxLuggage, ctxTrip, ctxActivities, ctxDuration, isFr, t]);
 
+  const callValiseQa = useCallback(async (payload: Record<string, unknown>) => {
+    const invokePromise = supabase.functions.invoke("valise-qa", { body: payload });
+    const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 25000));
+    const { data, error } = await Promise.race([invokePromise, timeout]);
+    if (error) throw error;
+    if (data?.error) throw new Error(data.error);
+    const answer = typeof data?.answer === "string" && data.answer.trim()
+      ? data.answer.trim()
+      : t("valise.chatbot.errorAnswer");
+    return answer;
+  }, [t]);
+
+  const enqueueAsk = useCallback((item: QueuedAsk) => {
+    const next = [...readQueue(), item];
+    writeQueue(next);
+    setQueueLen(next.length);
+  }, []);
+
+  const drainQueue = useCallback(async () => {
+    if (drainingRef.current) return;
+    if (typeof navigator !== "undefined" && !navigator.onLine) return;
+    const items = readQueue();
+    if (items.length === 0) return;
+    drainingRef.current = true;
+    try {
+      for (const item of items) {
+        try {
+          const answer = await callValiseQa(item.payload);
+          setHistory((prev) => {
+            const idx = prev.findIndex(
+              (m) => m.role === "assistant" && m.pending && m.tempId === item.tempId,
+            );
+            if (idx === -1) {
+              return [...prev, { role: "assistant", content: answer, ts: Date.now() }];
+            }
+            const copy = prev.slice();
+            copy[idx] = { role: "assistant", content: answer, ts: Date.now() };
+            return copy;
+          });
+          const remaining = readQueue().filter((q) => q.tempId !== item.tempId);
+          writeQueue(remaining);
+          setQueueLen(remaining.length);
+        } catch (e) {
+          console.error("drain valise-qa failed", e);
+          // Stop draining on first failure; will retry on next online event
+          break;
+        }
+      }
+    } finally {
+      drainingRef.current = false;
+    }
+  }, [callValiseQa]);
+
   const askPip = async (q: string) => {
     if (!q.trim() || loading) return;
-    const next: ChatMsg[] = [...history, { role: "user", content: q, ts: Date.now() }];
+    const trimmed = q.trim();
+    const tempId = `q_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const userMsg: ChatMsg = { role: "user", content: trimmed, ts: Date.now() };
+    const next: ChatMsg[] = [...history, userMsg];
     setHistory(next);
     setQuestion("");
+
+    const payload = {
+      question: trimmed,
+      history: next.slice(-10).map(({ role, content }) => ({ role, content })),
+      firstName,
+      destination: ctxDest,
+      startDate: ctxStart,
+      endDate: ctxEnd,
+      luggage: ctxLuggage,
+      tripType: ctxTrip,
+      activities: ctxActivities,
+      duration: ctxDuration,
+      locale,
+    };
+
+    const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+    if (isOffline) {
+      enqueueAsk({ tempId, question: trimmed, payload, createdAt: Date.now() });
+      setHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
+      ]);
+      return;
+    }
+
     setLoading(true);
     try {
-      const invokePromise = supabase.functions.invoke("valise-qa", {
-        body: {
-          question: q,
-          history: next.slice(-10).map(({ role, content }) => ({ role, content })),
-          firstName,
-          destination: ctxDest,
-          startDate: ctxStart,
-          endDate: ctxEnd,
-          luggage: ctxLuggage,
-          tripType: ctxTrip,
-          activities: ctxActivities,
-          duration: ctxDuration,
-          locale,
-        },
-      });
-      const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 25000));
-      const { data, error } = await Promise.race([invokePromise, timeout]);
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      const answer = typeof data?.answer === "string" && data.answer.trim()
-        ? data.answer.trim()
-        : t("valise.chatbot.errorAnswer");
+      const answer = await callValiseQa(payload);
       setHistory((prev) => [...prev, { role: "assistant", content: answer, ts: Date.now() }]);
     } catch (e) {
       console.error("valise-qa failed", e);
-      setHistory((prev) => [...prev, { role: "assistant", content: t("valise.chatbot.errorAnswer"), ts: Date.now() }]);
+      // Network/edge failure → queue for retry
+      enqueueAsk({ tempId, question: trimmed, payload, createdAt: Date.now() });
+      setHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
+      ]);
     } finally {
       setLoading(false);
     }
   };
+
+  // Online/offline listeners + auto-drain
+  useEffect(() => {
+    const handleOnline = () => {
+      setOnline(true);
+      void drainQueue();
+    };
+    const handleOffline = () => setOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    // Attempt drain on mount if we have pending items and are online
+    if (typeof navigator === "undefined" || navigator.onLine) {
+      void drainQueue();
+    }
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [drainQueue]);
+
 
   if (!open) {
     return (
