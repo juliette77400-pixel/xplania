@@ -1336,9 +1336,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      mood_reactions_public: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          emoji: string | null
+          id: string | null
+          mood: string | null
+          place_id: string | null
+          place_name: string | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          emoji?: string | null
+          id?: string | null
+          mood?: string | null
+          place_id?: string | null
+          place_name?: string | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          emoji?: string | null
+          id?: string | null
+          mood?: string | null
+          place_id?: string | null
+          place_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      get_public_display_name: { Args: { _user_id: string }; Returns: string }
       get_waitlist_count: { Args: never; Returns: number }
       owns_place_list: {
         Args: { _list_id: string; _user_id: string }

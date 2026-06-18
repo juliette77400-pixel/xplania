@@ -34,8 +34,8 @@ const PublicCarnet = () => {
 
       let author: string | undefined;
       if (j.user_id) {
-        const { data: prof } = await supabase.from("profiles").select("display_name").eq("user_id", j.user_id).maybeSingle();
-        author = prof?.display_name || undefined;
+        const { data: name } = await supabase.rpc("get_public_display_name", { _user_id: j.user_id });
+        author = (name as string | null) || undefined;
       }
 
       setShareMeta({

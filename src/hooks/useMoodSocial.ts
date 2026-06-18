@@ -30,8 +30,8 @@ export function useMoodReactions(placeId?: string) {
   const load = useCallback(async () => {
     if (!placeId) return;
     setLoading(true);
-    const { data } = await supabase
-      .from("mood_reactions")
+    const { data } = await (supabase as any)
+      .from("mood_reactions_public")
       .select("*")
       .eq("place_id", placeId)
       .order("created_at", { ascending: false })
@@ -102,8 +102,8 @@ export function usePopularMoods() {
     setLoading(true);
     // Get recent reactions (last 7 days)
     const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data } = await supabase
-      .from("mood_reactions")
+    const { data } = await (supabase as any)
+      .from("mood_reactions_public")
       .select("*")
       .gte("created_at", since)
       .order("created_at", { ascending: false })
