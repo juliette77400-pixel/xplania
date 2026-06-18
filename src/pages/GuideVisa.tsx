@@ -847,6 +847,11 @@ const GuideVisaPage = () => {
         </AnimatePresence>
       </div>
       <QuickJump />
+      <VisaPipChat
+        destination={destinationName}
+        nationality={nationalityName}
+        openSignal={chatOpenSignal}
+      />
     </div>
   );
 };
