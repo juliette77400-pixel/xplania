@@ -489,13 +489,15 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
           </div>
           <div className="flex items-center gap-1">
             {(!online || queueLen > 0) && (
-              <span
-                title={!online ? t("valise.chatbot.offline.indicator") : t("valise.chatbot.offline.replaying", { count: queueLen })}
-                className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-300"
+              <button
+                onClick={retryNow}
+                title={!online ? t("valise.chatbot.offline.retryNow") : t("valise.chatbot.offline.replaying", { count: queueLen })}
+                aria-label={!online ? t("valise.chatbot.offline.retryNow") : t("valise.chatbot.offline.replaying", { count: queueLen })}
+                className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition-colors"
               >
                 <WifiOff className="w-3 h-3" />
                 {!online ? t("valise.chatbot.offline.short") : `↻ ${queueLen}`}
-              </span>
+              </button>
             )}
             <button onClick={restart} aria-label={t("valise.chatbot.restart")} title={t("valise.chatbot.restart")}
               className="p-1.5 rounded-md hover:bg-muted text-muted-foreground">
