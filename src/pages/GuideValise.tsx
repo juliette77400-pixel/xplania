@@ -313,17 +313,25 @@ const GuideValisePage = () => {
     toast(t("guideValise.toastItemRemoved"));
   };
 
-  const addActivityItems = useCallback((items: string[]) => {
+  const addItemsToCategory = useCallback((catName: string, items: string[]) => {
     setCategories((prev) => {
-      const catName = "Ajoutés par activité";
       const existing = prev[catName] || [];
       const newItems: ChecklistItem[] = items
-        .filter((item) => !existing.some((e) => e.name === item))
+        .filter((item) => !existing.some((e) => e.name.toLowerCase() === item.toLowerCase()))
         .map((name) => ({ name, description: "", checked: false }));
       if (newItems.length === 0) return prev;
       return { ...prev, [catName]: [...existing, ...newItems] };
     });
   }, []);
+
+  const addActivityItems = useCallback((items: string[]) => {
+    addItemsToCategory("Ajoutés par activité", items);
+  }, [addItemsToCategory]);
+
+  const addOutfitItems = useCallback((items: string[]) => {
+    addItemsToCategory("Tenues recommandées", items);
+  }, [addItemsToCategory]);
+
 
   const runGeneration = useCallback(async () => {
     if (reached) { setShowUpgrade(true); return; }
