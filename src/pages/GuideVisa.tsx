@@ -21,7 +21,7 @@ import { countryList } from "@/lib/countries";
 import { Skeleton } from "@/components/ui/skeleton";
 import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
 import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
-import SafetyAdvisory from "@/components/visa/SafetyAdvisory";
+
 import VisaPipChat from "@/components/visa/VisaPipChat";
 import CurrencyConverter from "@/components/shared/CurrencyConverter";
 import VaccinesGuide from "@/components/visa/VaccinesGuide";
