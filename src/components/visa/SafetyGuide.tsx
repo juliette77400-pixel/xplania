@@ -1,32 +1,33 @@
 import { motion } from "framer-motion";
-import { ShieldAlert, MapPinned, UserCheck, Phone, ExternalLink, AlertTriangle } from "lucide-react";
+import { ShieldAlert, MapPinned, UserCheck, Phone, ExternalLink, AlertTriangle, Loader2, BadgeCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useOfficialInfo } from "@/hooks/useOfficialInfo";
 
 interface SafetyGuideProps {
   destination?: string;
 }
 
+const levelColors = [
+  "bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400",
+  "bg-yellow-500/10 border-yellow-500/30 text-yellow-600 dark:text-yellow-400",
+  "bg-orange-500/10 border-orange-500/30 text-orange-600 dark:text-orange-400",
+  "bg-destructive/10 border-destructive/30 text-destructive",
+];
+
 const SafetyGuide = ({ destination }: SafetyGuideProps) => {
-  const { t } = useTranslation();
-  const levels = t("guideVisa.safetyGuide.levels", { returnObjects: true }) as Array<{
-    label: string;
-    description: string;
-  }>;
-  const risks = t("guideVisa.safetyGuide.risks", { returnObjects: true }) as Array<{
-    title: string;
-    body: string;
-  }>;
+  const { t, i18n } = useTranslation();
+  const locale: "fr" | "en" = i18n.language.startsWith("fr") ? "fr" : "en";
+  const { data: official, loading } = useOfficialInfo(destination, locale);
+  const live = official?.safety;
+
+  const levels = t("guideVisa.safetyGuide.levels", { returnObjects: true }) as Array<{ label: string; description: string }>;
+  const risks = t("guideVisa.safetyGuide.risks", { returnObjects: true }) as Array<{ title: string; body: string }>;
   const soloTips = t("guideVisa.safetyGuide.soloTips", { returnObjects: true }) as string[];
-  const emergencies = t("guideVisa.safetyGuide.emergencies", { returnObjects: true }) as Array<{
-    label: string;
-    number: string;
-  }>;
-  const levelColors = [
-    "bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400",
-    "bg-yellow-500/10 border-yellow-500/30 text-yellow-600 dark:text-yellow-400",
-    "bg-orange-500/10 border-orange-500/30 text-orange-600 dark:text-orange-400",
-    "bg-destructive/10 border-destructive/30 text-destructive",
-  ];
+  const emergencies = t("guideVisa.safetyGuide.emergencies", { returnObjects: true }) as Array<{ label: string; number: string }>;
+
+  const checkedAt = official?.lastChecked
+    ? new Date(official.lastChecked).toLocaleTimeString(locale === "fr" ? "fr-FR" : "en-US", { hour: "2-digit", minute: "2-digit" })
+    : null;
 
   return (
     <motion.section
@@ -35,23 +36,75 @@ const SafetyGuide = ({ destination }: SafetyGuideProps) => {
       className="glass-card rounded-2xl p-6 shadow-md space-y-5"
       aria-labelledby="safety-guide-title"
     >
-      <header className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center" aria-hidden="true">
-          <ShieldAlert className="w-5 h-5 text-secondary" />
+      <header className="flex items-start justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center" aria-hidden="true">
+            <ShieldAlert className="w-5 h-5 text-secondary" />
+          </div>
+          <div>
+            <h2 id="safety-guide-title" className="text-lg font-bold text-foreground">
+              {t("guideVisa.safetyGuide.title")}
+            </h2>
+            <p className="text-xs text-muted-foreground">{t("guideVisa.safetyGuide.subtitle")}</p>
+          </div>
         </div>
-        <div>
-          <h2 id="safety-guide-title" className="text-lg font-bold text-foreground">
-            {t("guideVisa.safetyGuide.title")}
-          </h2>
-          <p className="text-xs text-muted-foreground">{t("guideVisa.safetyGuide.subtitle")}</p>
-        </div>
+        {loading && destination && (
+          <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground" aria-live="polite">
+            <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" />
+            {t("guideVisa.officialCheck.checking")}
+          </span>
+        )}
+        {live && checkedAt && (
+          <span
+            className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20"
+            aria-label={t("guideVisa.officialCheck.verifiedAria", { time: checkedAt })}
+          >
+            <BadgeCheck className="w-3.5 h-3.5" aria-hidden="true" />
+            {t("guideVisa.officialCheck.verifiedAt", { time: checkedAt })}
+          </span>
+        )}
       </header>
 
-      {/* Levels */}
+      {/* Live official advisory for the selected destination */}
+      {live && (
+        <div
+          className={`p-4 rounded-xl border space-y-2 ${levelColors[Math.min(Math.max(live.level, 1), 4) - 1]}`}
+          aria-live="polite"
+          role="region"
+          aria-label={t("guideVisa.officialCheck.liveFor", { destination: official?.destination || destination })}
+        >
+          <p className="text-xs font-bold">
+            {t("guideVisa.officialCheck.liveFor", { destination: official?.destination || destination })}
+          </p>
+          <p className="text-sm font-bold">{live.level_label}</p>
+          <p className="text-xs text-foreground/80">{live.summary}</p>
+          {live.zones_to_avoid && live.zones_to_avoid.length > 0 && (
+            <div className="pt-1">
+              <p className="text-xs font-semibold mb-1">⚠️ {t("guideVisa.zonesAvoid")}</p>
+              <ul className="space-y-0.5">
+                {live.zones_to_avoid.map((z, i) => (
+                  <li key={i} className="text-xs text-foreground/80">• {z}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {live.source_url && (
+            <a
+              href={live.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs hover:underline pt-1"
+            >
+              {t("guideVisa.officialCheck.viewSource", { source: live.source })}
+              <ExternalLink className="w-3 h-3" aria-hidden="true" />
+            </a>
+          )}
+        </div>
+      )}
+
+      {/* Levels reference */}
       <div>
-        <h3 className="text-sm font-bold text-foreground mb-2">
-          {t("guideVisa.safetyGuide.levelsTitle")}
-        </h3>
+        <h3 className="text-sm font-bold text-foreground mb-2">{t("guideVisa.safetyGuide.levelsTitle")}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {levels.map((l, i) => (
             <div
@@ -103,13 +156,9 @@ const SafetyGuide = ({ destination }: SafetyGuideProps) => {
       <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-2">
         <div className="flex items-center gap-2">
           <MapPinned className="w-4 h-4 text-primary" aria-hidden="true" />
-          <h3 className="text-sm font-bold text-foreground">
-            {t("guideVisa.safetyGuide.arianeTitle")}
-          </h3>
+          <h3 className="text-sm font-bold text-foreground">{t("guideVisa.safetyGuide.arianeTitle")}</h3>
         </div>
-        <p className="text-xs text-muted-foreground">
-          {t("guideVisa.safetyGuide.arianeBody")}
-        </p>
+        <p className="text-xs text-muted-foreground">{t("guideVisa.safetyGuide.arianeBody")}</p>
         <a
           href="https://pastel.diplomatie.gouv.fr/fildariane/dyn/public/login.html"
           target="_blank"
