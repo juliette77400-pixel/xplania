@@ -25,6 +25,7 @@ import BudgetAlerts from "@/components/budget/BudgetAlerts";
 import BudgetSavingTips from "@/components/budget/BudgetSavingTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
 import BudgetOnboardingChat from "@/components/budget/BudgetOnboardingChat";
+import CurrencyConverter from "@/components/shared/CurrencyConverter";
 import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } from "@/lib/cost-of-living";
 
 /* =============================================================================
