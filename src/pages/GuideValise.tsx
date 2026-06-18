@@ -520,6 +520,7 @@ const GuideValisePage = () => {
         />
       </div>
       <QuickJump />
+      <ValisePipChat destination={destination} />
     </div>
   );
 };
