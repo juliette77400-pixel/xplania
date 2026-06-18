@@ -769,6 +769,39 @@ export type Database = {
         }
         Relationships: []
       }
+      pip_chat_sessions: {
+        Row: {
+          context: Json
+          created_at: string
+          history: Json
+          id: string
+          kind: string
+          stage: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context?: Json
+          created_at?: string
+          history?: Json
+          id?: string
+          kind: string
+          stage?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context?: Json
+          created_at?: string
+          history?: Json
+          id?: string
+          kind?: string
+          stage?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       place_list_items: {
         Row: {
           added_at: string

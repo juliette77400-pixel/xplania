@@ -31,6 +31,39 @@ type Stage =
   | "qa";
 
 const STORAGE_KEY = "xplania-valise-pip-v1";
+const SEEN_KEY = "xplania-valise-pip-seen-v1";
+const CHAT_KIND = "valise";
+
+interface PersistedState {
+  history: ChatMsg[];
+  stage: Stage;
+  ctx: {
+    dest: string;
+    start: string;
+    end: string;
+    luggage: string;
+    trip: string;
+    activities: string[];
+    duration: string;
+  };
+  updatedAt: number;
+}
+
+function readLocalState(): PersistedState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as PersistedState;
+    if (!parsed || !Array.isArray(parsed.history)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalState(state: PersistedState) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* */ }
+}
 
 const LUGGAGES = [
   { key: "backpack", emoji: "🎒" },
@@ -126,18 +159,113 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
     if (scrollerRef.current) scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
   }, [history, loading, stage]);
 
+  // Hydration: localStorage first (instant), then merge DB if logged in (most recent wins)
+  const hydratedRef = useRef(false);
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    const local = readLocalState();
+    if (local) {
+      setHistory(local.history);
+      setStage(local.stage);
+      setCtxDest(local.ctx.dest || destination);
+      setCtxStart(local.ctx.start);
+      setCtxEnd(local.ctx.end);
+      setCtxLuggage(local.ctx.luggage);
+      setCtxTrip(local.ctx.trip);
+      setCtxActivities(local.ctx.activities ?? []);
+      setCtxDuration(local.ctx.duration);
+    }
+    hydratedRef.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("pip_chat_sessions")
+        .select("history, context, stage, updated_at")
+        .eq("user_id", user.id)
+        .eq("kind", CHAT_KIND)
+        .maybeSingle();
+      if (cancelled || error || !data) return;
+      const local = readLocalState();
+      const remoteTs = data.updated_at ? new Date(data.updated_at).getTime() : 0;
+      if (local && local.updatedAt >= remoteTs) return;
+      const ctx = (data.context ?? {}) as PersistedState["ctx"];
+      const remoteHist = Array.isArray(data.history) ? (data.history as unknown as ChatMsg[]) : [];
+      setHistory(remoteHist);
+      setStage((data.stage as Stage) ?? "welcome");
+      if (ctx.dest) setCtxDest(ctx.dest);
+      setCtxStart(ctx.start ?? "");
+      setCtxEnd(ctx.end ?? "");
+      setCtxLuggage(ctx.luggage ?? "");
+      setCtxTrip(ctx.trip ?? "");
+      setCtxActivities(ctx.activities ?? []);
+      setCtxDuration(ctx.duration ?? "");
+    })();
+    return () => { cancelled = true; };
+  }, [user]);
+
+  // Persist to localStorage + debounced DB sync
+  const saveTimerRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    const state: PersistedState = {
+      history,
+      stage,
+      ctx: {
+        dest: ctxDest, start: ctxStart, end: ctxEnd,
+        luggage: ctxLuggage, trip: ctxTrip,
+        activities: ctxActivities, duration: ctxDuration,
+      },
+      updatedAt: Date.now(),
+    };
+    writeLocalState(state);
+    if (!user) return;
+    if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = window.setTimeout(() => {
+      supabase
+        .from("pip_chat_sessions")
+        .upsert(
+          {
+            user_id: user.id,
+            kind: CHAT_KIND,
+            history: state.history as unknown as never,
+            context: state.ctx as unknown as never,
+            stage: state.stage,
+          },
+          { onConflict: "user_id,kind" },
+        )
+        .then(({ error }) => { if (error) console.error("pip_chat_sessions upsert failed", error); });
+    }, 800);
+    return () => {
+      if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
+    };
+  }, [history, stage, ctxDest, ctxStart, ctxEnd, ctxLuggage, ctxTrip, ctxActivities, ctxDuration, user]);
+
   const closeChat = () => {
     setOpen(false);
-    try { localStorage.setItem(STORAGE_KEY, "1"); } catch { /* */ }
+    try { localStorage.setItem(SEEN_KEY, "1"); } catch { /* */ }
   };
 
-  const restart = () => {
+  const restart = async () => {
     setStage("welcome");
     setHistory([]);
     setCtxStart(""); setCtxEnd(""); setCtxLuggage(""); setCtxTrip("");
     setCtxActivities([]); setCtxDuration("");
     setDestInput(""); setStartInput(""); setEndInput("");
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* */ }
+    if (user) {
+      await supabase
+        .from("pip_chat_sessions")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("kind", CHAT_KIND);
+    }
   };
+
 
   const toggleActivity = (key: string) => {
     setCtxActivities((prev) =>
