@@ -86,7 +86,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
 
           return (
             <motion.div
-              key={activity}
+              key={key}
               layout
               whileHover={{ scale: 1.01 }}
               className={`rounded-xl overflow-hidden border transition-colors ${
@@ -96,9 +96,9 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
               }`}
             >
               <button
-                onClick={() => setExpandedActivity(isExpanded ? null : activity)}
+                onClick={() => setExpandedActivity(isExpanded ? null : key)}
                 className="w-full p-4 flex items-center justify-between text-left"
-              >
+              ></button>
                 <div className="flex items-center gap-3">
                   <span className={isHighlighted ? "text-primary" : "text-muted-foreground"}>{icon}</span>
                   <div>
