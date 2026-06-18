@@ -553,6 +553,20 @@
       "title": "💱 Currency converter — live rates",
       "disclaimer": "Rates are indicative. They may differ at your bank or currency exchange."
     },
+    "officialCheck": {
+      "checking": "Checking with official authorities…",
+      "verifiedAt": "Verified at {{time}}",
+      "verifiedAria": "Information verified at {{time}} against official sources",
+      "liveFor": "Up-to-date data for {{destination}}",
+      "viewSource": "View source: {{source}} →",
+      "malariaRisk": "Malaria risk: {{level}}",
+      "risk": {
+        "low": "low",
+        "moderate": "moderate",
+        "high": "high",
+        "none": "none"
+      }
+    },
     "vaccinesGuide": {
       "title": "💉 Vaccines & travel health",
       "subtitle": "General recommendations from French health authorities",
