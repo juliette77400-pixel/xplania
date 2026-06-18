@@ -27,6 +27,7 @@ import Gamification from "./pages/Gamification.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Profil from "./pages/Profil.tsx";
 import Legal from "./pages/Legal.tsx";
+import Trust from "./pages/Trust.tsx";
 import About from "./pages/About.tsx";
 
 const queryClient = new QueryClient();
@@ -68,6 +69,8 @@ const App = () => (
             <Route path="/privacy-policy" element={<Legal legalKey="confidentialite" />} />
             <Route path="/conditions-utilisation" element={<Legal legalKey="cgu" />} />
             <Route path="/terms-of-use" element={<Legal legalKey="cgu" />} />
+            <Route path="/trust" element={<Trust />} />
+            <Route path="/securite" element={<Trust />} />
             {/* Legacy fallback */}
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />
