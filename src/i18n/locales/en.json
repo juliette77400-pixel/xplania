@@ -1797,6 +1797,51 @@
     "activitiesAddAll": "Add all to my suitcase",
     "activitiesToastAdded": "{{count}} item added to your suitcase",
     "aiTipFallbackTitle": "AI tip",
+    "aiTips": {
+      "minimaliste": { "title": "Light bag, light mind 🎒", "tip": "Stick to 5 tops and 2 bottoms that all mix — you can build 10 outfits without bulk. Roll instead of folding, and keep a pouch for dirty laundry." },
+      "confort": { "title": "Comfort first ✨", "tip": "Slip a pashmina shawl into your carry-on: it doubles as a pillow, blanket, and extra layer on planes or in cold restaurants." },
+      "stylée": { "title": "Style without compromise 👗", "tip": "Pick a 3-colour palette max (e.g. beige, black, white) so everything matches. One pair of dressy shoes is enough if it's versatile." },
+      "aventure": { "title": "Ready for the unexpected 🧭", "tip": "Favor technical quick-dry fabrics. A headlamp, whistle and compact first-aid kit change everything when things go sideways." },
+      "business": { "title": "Sharp and unflappable 💼", "tip": "Roll shirts around a cardboard tube or t-shirt to avoid creases. Keep a suit bag for arrival and a pocket stain-remover handy." },
+      "photo": { "title": "Capture every moment 📸", "tip": "Pack multiple SD cards (3+) rather than one big one — if one fails you don't lose everything. Store spare batteries in a rigid case." },
+      "randonnée": { "title": "Light on the trail 🥾", "tip": "Break in your hiking boots before the trip — never a first day in fresh ones. Pack anti-blister socks in double." },
+      "plage": { "title": "Sand, sun, calm 🏖️", "tip": "Bring 2 swimsuits so you can alternate while one dries. A reef-safe SPF50 sunscreen protects both your skin and the coral." },
+      "roadtrip": { "title": "The road is yours 🚗", "tip": "Prep an \"easy-access\" bag with snacks, car charger, earphones, and sunglasses — no rummaging in the boot at every stop." },
+      "urbain": { "title": "At ease in the city 🏙️", "tip": "Comfortable shoes are non-negotiable: you'll walk 15–20 km/day. A small anti-pickpocket crossbody bag keeps your papers safe on transit." },
+      "luxe": { "title": "Exceptional travel 💎", "tip": "A shoe bag and a rigid jewellery pouch make a huge difference. Keep one full backup outfit in carry-on in case your checked bag is delayed." }
+    },
+    "culturalTips": {
+      "default": {
+        "dress": { "title": "👗 Dress code", "text": "Match your outfit to the context (places of worship, upscale restaurants, local markets). When in doubt, cover shoulders and knees. A light scarf in your bag rescues most situations." },
+        "customs": { "title": "🙏 Local customs", "text": "Observe then mimic: greetings, tipping, queueing, tone of voice. Learning \"hello\", \"thank you\", \"please\" in the local language opens every door." },
+        "avoid": { "title": "⚠️ What to avoid", "text": "Don't photograph people without asking, especially children and religious sites. Avoid sensitive political topics and comparisons with your home country." },
+        "behavior": { "title": "💬 Local behaviour", "text": "Be patient with the local pace, smile, greet shopkeepers when entering a store. Discretion in public is appreciated almost everywhere." }
+      },
+      "japon": {
+        "dress": { "title": "👗 Dress code", "text": "Neat and modest. Avoid tank tops/short shorts in temples. Clean intact socks: you'll take your shoes off often (temples, ryokans, some restaurants)." },
+        "customs": { "title": "🙏 Local customs", "text": "Greet with a bow, no cheek kisses. No tipping — it's frowned upon. Hand and receive objects with both hands. Silence in public transport, phones on silent." },
+        "avoid": { "title": "⚠️ What to avoid", "text": "Never stick chopsticks upright in rice (funeral ritual). Don't blow your nose in public. No visible tattoos at onsen unless explicitly allowed." },
+        "behavior": { "title": "💬 Local behaviour", "text": "Useful words: Konnichiwa (hello), Arigatō (thanks), Sumimasen (excuse me/sorry). Always queue. Sort your own trash." }
+      },
+      "maroc": {
+        "dress": { "title": "👗 Dress code", "text": "Cover shoulders and knees in the medina and religious sites. Prefer linen and light cotton. A scarf is useful (mosques, sun, desert wind)." },
+        "customs": { "title": "🙏 Local customs", "text": "Bargaining is expected (start at ~40% of the asking price), always with a smile. Eat and hand things with the right hand only. Accept mint tea when offered." },
+        "avoid": { "title": "⚠️ What to avoid", "text": "Don't photograph people without consent (often paid). Don't enter mosques if you're not Muslim (except Hassan II in Casablanca). Avoid alcohol in public outside hotels." },
+        "behavior": { "title": "💬 Local behaviour", "text": "Useful words: Salam (hello), Shukran (thanks), La shukran (no thanks). Be patient with souk solicitations — a firm, smiling \"no thanks\" is enough." }
+      },
+      "thailande": {
+        "dress": { "title": "👗 Dress code", "text": "Shoulders, stomach and knees covered in temples (mandatory). Remove shoes and hat before entering. Casual elsewhere, but avoid very short outfits in cities." },
+        "customs": { "title": "🙏 Local customs", "text": "Wai (palms together at chest) to greet. Absolute respect for the royal family and Buddha. Never touch anyone's head, not even a child's." },
+        "avoid": { "title": "⚠️ What to avoid", "text": "Don't point feet at a person or a Buddha statue. No criticism of the monarchy (criminal offence). No selfies with your back to a Buddha." },
+        "behavior": { "title": "💬 Local behaviour", "text": "Useful words: Sawasdee (hello), Khop khun (thanks), Mai pen rai (no worries). A smile defuses everything. Stay calm — losing face is heavily frowned upon." }
+      },
+      "australie": {
+        "dress": { "title": "👗 Dress code", "text": "Very casual day-to-day — shorts, flip-flops, t-shirts everywhere. In cities at night, smart-casual at nicer restaurants (no flip-flops). Favor breathable UV-protective fabrics: the sun is harsh." },
+        "customs": { "title": "🙏 Local customs", "text": "Aussies are direct and warm — call people by first name from the first meeting. The BBQ is sacred: always offer to bring something. Queueing is strictly respected." },
+        "avoid": { "title": "⚠️ What to avoid", "text": "Don't joke about Aboriginal peoples or their history. Don't touch or photograph Aboriginal sacred sites without permission. Don't leave food unattended — kookaburras and seagulls literally steal sandwiches." },
+        "behavior": { "title": "💬 Local behaviour", "text": "Useful words: G'day (casual hi), No worries, Arvo (afternoon), Brekkie (breakfast), Cheers (thanks/bye). SPF50+ sunscreen daily, even on cloudy days." }
+      }
+    },
     "aiTipAnalyzing": "Xplania AI is analyzing and adapting your list…",
     "genTitle": "AI generation in progress…",
     "genDone": "Done",

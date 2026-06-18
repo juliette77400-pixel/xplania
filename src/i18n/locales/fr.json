@@ -1797,6 +1797,51 @@
     "activitiesAddAll": "Tout ajouter à ma valise",
     "activitiesToastAdded": "{{count}} objet ajouté à ta valise",
     "aiTipFallbackTitle": "Conseil IA",
+    "aiTips": {
+      "minimaliste": { "title": "Voyage léger, esprit léger 🎒", "tip": "Limite-toi à 5 hauts et 2 bas combinables — tu peux composer 10 tenues sans surcharge. Roule plutôt que plier, et garde une pochette pour le linge sale." },
+      "confort": { "title": "Le confort avant tout ✨", "tip": "Glisse un châle pashmina dans ton bagage cabine : il sert d'oreiller, de couverture, de couche supplémentaire en avion ou en restaurant climatisé." },
+      "stylée": { "title": "Style sans compromis 👗", "tip": "Choisis une palette de 3 couleurs maximum (ex: beige, noir, blanc) pour que tout se combine. Une paire de chaussures habillées suffit si elle est polyvalente." },
+      "aventure": { "title": "Prête pour l'inattendu 🧭", "tip": "Privilégie les matières techniques séchage rapide. Une lampe frontale, un sifflet et une trousse de premiers secours compacte changent tout en cas d'imprévu." },
+      "business": { "title": "Pro et impeccable 💼", "tip": "Roule tes chemises autour d'un tube en carton ou d'un t-shirt pour éviter les plis. Garde un costume housse pour l'arrivée et un kit détachant de poche." },
+      "photo": { "title": "Capturer chaque instant 📸", "tip": "Multiplie les cartes SD (3 minimum) plutôt qu'une seule grande — si l'une lâche, tu ne perds pas tout. Range les batteries dans un étui rigide à part." },
+      "randonnée": { "title": "Léger sur le sentier 🥾", "tip": "Casse tes chaussures de rando avant le départ — pas une seule sortie le premier jour avec des neuves. Emporte des chaussettes anti-ampoules en double." },
+      "plage": { "title": "Sable, soleil, sérénité 🏖️", "tip": "Prends 2 maillots pour pouvoir alterner pendant que l'autre sèche. Une crème solaire SPF50 reef-safe protège ta peau et les coraux." },
+      "roadtrip": { "title": "La route est à toi 🚗", "tip": "Prépare un sac \"accessible\" avec snacks, chargeur voiture, écouteurs et lunettes de soleil — sans avoir à fouiller le coffre à chaque arrêt." },
+      "urbain": { "title": "À l'aise dans la ville 🏙️", "tip": "Chaussures confortables non négociables : tu marcheras 15–20 km/jour. Un petit sac anti-pickpocket en bandoulière sécurise tes papiers en métro." },
+      "luxe": { "title": "Voyage d'exception 💎", "tip": "Une housse à chaussures et une pochette à bijoux rigide changent tout. Garde un set tenue de rechange en cabine — au cas où ta valise prend du retard." }
+    },
+    "culturalTips": {
+      "default": {
+        "dress": { "title": "👗 Code vestimentaire", "text": "Adapte ta tenue au contexte (lieu de culte, restaurant chic, marché local). En cas de doute, opte pour des épaules et genoux couverts. Une écharpe légère dans le sac dépanne partout." },
+        "customs": { "title": "🙏 Coutumes locales", "text": "Observe puis imite : façon de saluer, pourboires, file d'attente, ton de voix. Apprendre \"bonjour\", \"merci\", \"s'il te plaît\" dans la langue locale ouvre toutes les portes." },
+        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne photographie pas les personnes sans demander, surtout enfants et lieux religieux. Évite les sujets politiques sensibles et les comparaisons avec ton pays d'origine." },
+        "behavior": { "title": "💬 Comportements locaux", "text": "Sois patient·e avec le rythme local, souris, dis bonjour en entrant dans un commerce. La discrétion en public est appréciée presque partout." }
+      },
+      "japon": {
+        "dress": { "title": "👗 Code vestimentaire", "text": "Tenue soignée et discrète. Évite débardeurs/shorts très courts dans les temples. Chaussettes propres et sans trou : tu te déchausses très souvent (temples, ryokans, certains restos)." },
+        "customs": { "title": "🙏 Coutumes locales", "text": "Salut par inclinaison, pas de bise. Pas de pourboire — c'est mal vu. Reçois et tends les objets à deux mains. Silence dans les transports, mode silencieux obligatoire." },
+        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne plante jamais tes baguettes verticalement dans le riz (rituel funéraire). Pas de mouchage en public. Pas de tatouages visibles aux onsen sauf indication contraire." },
+        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : Konnichiwa (bonjour), Arigatō (merci), Sumimasen (pardon/excuse-moi). Toujours faire la queue. Trier ses déchets soi-même." }
+      },
+      "maroc": {
+        "dress": { "title": "👗 Code vestimentaire", "text": "Épaules et genoux couverts en médina et lieux religieux. Préfère lin et coton léger. Foulard utile pour les femmes (mosquées, soleil, vent du désert)." },
+        "customs": { "title": "🙏 Coutumes locales", "text": "Le marchandage est attendu (commence à 40 % du prix annoncé), toujours avec sourire. Mange et tends la main droite uniquement. Accepte le thé à la menthe si offert." },
+        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne photographie pas les gens sans accord (souvent payant). N'entre pas dans les mosquées si tu n'es pas musulman·e (sauf Hassan II à Casablanca). Évite l'alcool en public hors hôtels." },
+        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : Salam (bonjour), Shukran (merci), La shukran (non merci). Patience avec les sollicitations dans les souks — un \"non merci\" ferme et souriant suffit." }
+      },
+      "thailande": {
+        "dress": { "title": "👗 Code vestimentaire", "text": "Épaules, ventre et genoux couverts dans les temples (obligatoire). Retire chaussures et chapeau avant d'entrer. Tenue décontractée ailleurs, mais éviter le très court en ville." },
+        "customs": { "title": "🙏 Coutumes locales", "text": "Wai (paumes jointes devant la poitrine) pour saluer. Respect absolu de la famille royale et de Bouddha. Ne touche jamais la tête de quelqu'un, même un enfant." },
+        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne pointe pas les pieds vers une personne ou une statue de Bouddha. Pas de critique de la royauté (délit pénal). Pas de selfies dos à un Bouddha." },
+        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : Sawasdee (bonjour), Khop khun (merci), Mai pen rai (pas de souci). Le sourire désamorce tout. Garde ton calme — perdre la face est très mal vu." }
+      },
+      "australie": {
+        "dress": { "title": "👗 Code vestimentaire", "text": "Très décontracté au quotidien — short, tongs, t-shirt partout. En ville le soir, smart-casual dans les bons restos (pas de tongs). Privilégie tissus respirants UV-protecteurs : le soleil tape fort." },
+        "customs": { "title": "🙏 Coutumes locales", "text": "Les Australiens sont directs et chaleureux — appelle les gens par leur prénom dès la première rencontre. Le BBQ est sacré : propose toujours d'apporter quelque chose. File d'attente strictement respectée." },
+        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne plaisante pas sur les peuples aborigènes ou leur histoire. Ne touche ni ne photographie de sites sacrés Aborigènes sans permission. Ne laisse pas de nourriture accessible — kookaburras et mouettes te volent ton sandwich." },
+        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : G'day (bonjour décontracté), No worries (pas de souci), Arvo (après-midi), Brekkie (petit-déj), Cheers (merci/santé). Crème solaire SPF50+ obligatoire, même par temps couvert." }
+      }
+    },
     "aiTipAnalyzing": "L'IA de Xplania analyse et adapte votre liste…",
     "genTitle": "Génération IA en cours…",
     "genDone": "Terminé",
