@@ -12,47 +12,17 @@ interface ActivityItemsProps {
   onAddToChecklist?: (items: string[]) => void;
 }
 
-const activityData: Record<string, { icon: React.ReactNode; items: string[]; color: string }> = {
-  "Randonnée": {
-    icon: <Mountain className="w-5 h-5" />,
-    color: "from-green-500/20 to-emerald-500/10",
-    items: ["Chaussures de randonnée", "Sac à dos étanche", "Gourde réutilisable", "Bâtons de marche", "Lampe frontale", "Couverture de survie"],
-  },
-  "Plage": {
-    icon: <Umbrella className="w-5 h-5" />,
-    color: "from-cyan-500/20 to-blue-500/10",
-    items: ["Maillot de bain (×2)", "Serviette microfibre", "Tongs / sandales", "Lunettes UV catégorie 3+", "Chapeau de plage", "Sac étanche téléphone"],
-  },
-  "Ville": {
-    icon: <Compass className="w-5 h-5" />,
-    color: "from-violet-500/20 to-purple-500/10",
-    items: ["Chaussures de marche confortables", "Sac bandoulière anti-vol", "Bouteille d'eau portable", "Plan / carte hors-ligne", "Batterie externe"],
-  },
-  "Photo / Création": {
-    icon: <Camera className="w-5 h-5" />,
-    color: "from-orange-500/20 to-amber-500/10",
-    items: ["Appareil photo + objectifs", "Batteries supplémentaires (×3)", "Cartes mémoire (128Go+)", "Trépied léger", "Filtre ND / polarisant", "Housse pluie objectif"],
-  },
-  "Business": {
-    icon: <Briefcase className="w-5 h-5" />,
-    color: "from-slate-500/20 to-gray-500/10",
-    items: ["Tenue formelle complète", "Chaussures élégantes", "Ordinateur portable + chargeur", "Pochette à documents", "Cravate / accessoire formel", "Stylo premium"],
-  },
-  "Road trip": {
-    icon: <Car className="w-5 h-5" />,
-    color: "from-rose-500/20 to-pink-500/10",
-    items: ["Snacks et boissons", "Kit de premiers secours", "Adaptateurs allume-cigare", "Couverture de voyage", "Oreiller de voyage", "Câble AUX / Bluetooth"],
-  },
-  "Sport / Fitness": {
-    icon: <Dumbbell className="w-5 h-5" />,
-    color: "from-red-500/20 to-orange-500/10",
-    items: ["Tenue de sport", "Baskets running", "Bandes élastiques", "Gourde sport", "Écouteurs sport"],
-  },
-  "Gastronomie": {
-    icon: <Utensils className="w-5 h-5" />,
-    color: "from-amber-500/20 to-yellow-500/10",
-    items: ["Carnet de notes", "Médicaments digestion", "Guide culinaire local", "Sac isotherme (pour ramener)"],
-  },
+type ActivityKey = "hiking" | "beach" | "city" | "photo" | "business" | "roadtrip" | "sport" | "gastro";
+
+const activityMeta: Record<ActivityKey, { icon: React.ReactNode; color: string; matchers: string[] }> = {
+  hiking:   { icon: <Mountain className="w-5 h-5" />,  color: "from-green-500/20 to-emerald-500/10",  matchers: ["rando", "nature", "trek", "hik", "mountain"] },
+  beach:    { icon: <Umbrella className="w-5 h-5" />,  color: "from-cyan-500/20 to-blue-500/10",      matchers: ["plage", "mer", "soleil", "repos", "beach", "swim"] },
+  city:     { icon: <Compass className="w-5 h-5" />,   color: "from-violet-500/20 to-purple-500/10",  matchers: ["ville", "culture", "musée", "découvrir", "city", "museum"] },
+  photo:    { icon: <Camera className="w-5 h-5" />,    color: "from-orange-500/20 to-amber-500/10",   matchers: ["photo", "créat", "creat"] },
+  business: { icon: <Briefcase className="w-5 h-5" />, color: "from-slate-500/20 to-gray-500/10",     matchers: ["business", "travail", "professionnel", "work"] },
+  roadtrip: { icon: <Car className="w-5 h-5" />,       color: "from-rose-500/20 to-pink-500/10",      matchers: ["road", "voiture", "car"] },
+  sport:    { icon: <Dumbbell className="w-5 h-5" />,  color: "from-red-500/20 to-orange-500/10",     matchers: ["sport", "fitness"] },
+  gastro:   { icon: <Utensils className="w-5 h-5" />,  color: "from-amber-500/20 to-yellow-500/10",   matchers: ["gastro", "cuisine", "restaurant", "food"] },
 };
 
 const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => {
