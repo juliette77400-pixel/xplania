@@ -30,32 +30,35 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
   const [addedActivities, setAddedActivities] = useState<Set<string>>(new Set());
   const [expandedActivity, setExpandedActivity] = useState<string | null>(null);
 
+  // Build localized activities array from i18n + meta
+  const activities = (Object.keys(activityMeta) as ActivityKey[]).map((key) => {
+    const meta = activityMeta[key];
+    const name = t(`valise.activityCategories.${key}.name`);
+    const items = t(`valise.activityCategories.${key}.items`, { returnObjects: true }) as string[];
+    return { key, name, items: Array.isArray(items) ? items : [], ...meta };
+  });
+
   // Highlight activities matching user objectives
-  const highlighted = new Set<string>();
+  const highlighted = new Set<ActivityKey>();
   if (objectives) {
     for (const obj of objectives) {
       const lower = obj.toLowerCase();
-      if (lower.includes("rando") || lower.includes("nature") || lower.includes("trek") || lower.includes("hik")) highlighted.add("Randonnée");
-      if (lower.includes("plage") || lower.includes("mer") || lower.includes("soleil") || lower.includes("repos") || lower.includes("beach")) highlighted.add("Plage");
-      if (lower.includes("ville") || lower.includes("culture") || lower.includes("musée") || lower.includes("découvrir") || lower.includes("city") || lower.includes("museum")) highlighted.add("Ville");
-      if (lower.includes("photo") || lower.includes("créat") || lower.includes("creat")) highlighted.add("Photo / Création");
-      if (lower.includes("business") || lower.includes("travail") || lower.includes("professionnel") || lower.includes("work")) highlighted.add("Business");
-      if (lower.includes("road") || lower.includes("voiture") || lower.includes("car")) highlighted.add("Road trip");
-      if (lower.includes("sport") || lower.includes("fitness")) highlighted.add("Sport / Fitness");
-      if (lower.includes("gastro") || lower.includes("cuisine") || lower.includes("restaurant") || lower.includes("food")) highlighted.add("Gastronomie");
+      for (const a of activities) {
+        if (a.matchers.some((m) => lower.includes(m))) highlighted.add(a.key);
+      }
     }
   }
 
-  const sortedActivities = Object.entries(activityData).sort(([a], [b]) => {
-    const aH = highlighted.has(a) ? -1 : 0;
-    const bH = highlighted.has(b) ? -1 : 0;
+  const sortedActivities = [...activities].sort((a, b) => {
+    const aH = highlighted.has(a.key) ? -1 : 0;
+    const bH = highlighted.has(b.key) ? -1 : 0;
     return aH - bH;
   });
 
-  const handleAddAll = (activity: string, items: string[]) => {
-    setAddedActivities((p) => new Set(p).add(activity));
+  const handleAddAll = (activityName: string, key: ActivityKey, items: string[]) => {
+    setAddedActivities((p) => new Set(p).add(key));
     onAddToChecklist?.(items);
-    toast.success(t("valise.activitiesToastAdded", { count: items.length }), { description: activity });
+    toast.success(t("valise.activitiesToastAdded", { count: items.length }), { description: activityName });
   };
 
   return (
@@ -76,10 +79,10 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
       <p className="text-xs text-muted-foreground mb-4">{t("valise.activitiesSubtitle")}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {sortedActivities.map(([activity, { icon, items, color }]) => {
-          const isHighlighted = highlighted.has(activity);
-          const isAdded = addedActivities.has(activity);
-          const isExpanded = expandedActivity === activity;
+        {sortedActivities.map(({ key, name: activity, items, icon, color }) => {
+          const isHighlighted = highlighted.has(key);
+          const isAdded = addedActivities.has(key);
+          const isExpanded = expandedActivity === key;
 
           return (
             <motion.div
