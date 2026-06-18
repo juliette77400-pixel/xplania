@@ -456,6 +456,9 @@ const GuideBudgetPage = () => {
                 tripData={tripData}
               />
 
+              <CurrencyConverter destination={destination} />
+
+
 
               <div className="flex justify-center">
                 <Link
