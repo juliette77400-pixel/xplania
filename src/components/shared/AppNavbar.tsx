@@ -200,7 +200,7 @@ const AppNavbar = () => {
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger className="lg:hidden p-2 rounded-lg hover:bg-muted">
+            <SheetTrigger aria-label={t("appNav.openMenu")} className="lg:hidden p-2 rounded-lg hover:bg-muted">
               <Menu className="w-5 h-5" />
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] p-0">

@@ -1,0 +1,21 @@
+# Xplania
+
+> AI travel companion that plans, budgets, packs, tracks and journals your trips. Personalized recommendations, live trip tracking, public sharing and beautiful travel journals — built for travelers, not generic trip databases.
+
+Xplania combines several travel tools in one app: an AI trip planner, a smart packing guide, a budget guide with currency conversion, a visa & vaccines guide that pulls from official sources, a live trip tracker, a mood-based explorer and a travel journal you can publish as a public page.
+
+## Pages
+
+- [Home](/): Product overview, features, FAQ and signup.
+- [Budget guide](/guide-budget): Build a realistic per-day budget with AI tips and a live currency converter.
+- [Packing guide](/guide-valise): Generate a smart packing list adapted to destination, weather and trip style.
+- [Visa & vaccines guide](/guide-visa): Visa formalities, vaccines and safety advisories synthesized from official sources (France Diplomatie, Institut Pasteur, WHO).
+- [Plans & pricing](/offres): Free quota, premium packs and launch waitlist.
+- [About](/about): What Xplania is, who it's for and the team behind it.
+- [Trust & security](/trust): How Xplania protects user data, opt-in sharing model and security contact.
+
+## Legal
+
+- [Privacy policy](/privacy-policy): What data is collected and how it is used.
+- [Terms of use](/terms-of-use): Rules for using the service.
+- [Legal notice](/legal-notice): Publisher and hosting information.
