@@ -1799,6 +1799,8 @@
     "culturalRegenerate": "Regenerate tips",
     "culturalAiBadge": "AI generated",
     "culturalError": "Could not generate tips, showing defaults",
+    "culturalLoading": "Loading cultural tips…",
+    "culturalLoaded": "Cultural tips updated.",
     "activitiesTitle": "Activity-specific items",
     "activitiesDetected": "{{count}} activity detected",
     "activitiesDetected_other": "{{count}} activities detected",
