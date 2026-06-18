@@ -142,7 +142,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
                         <motion.button
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          onClick={() => handleAddAll(activity, items)}
+                          onClick={() => handleAddAll(activity, key, items)}
                           className="mt-2 flex items-center gap-1.5 text-xs text-primary font-medium hover:text-primary/80 transition-colors"
                         >
                           <Plus className="w-3.5 h-3.5" />
