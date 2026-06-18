@@ -40,6 +40,7 @@ const categoryIcons: Record<string, { icon: LucideIcon; color: string }> = {
   "Essentiels plage": { icon: Droplets, color: "text-cyan-400" },
   "Essentiels road trip": { icon: Compass, color: "text-rose-400" },
   "Ajoutés par activité": { icon: Dumbbell, color: "text-violet-400" },
+  "Tenues recommandées": { icon: Shirt, color: "text-pink-400" },
 };
 
 const getIcon = (category: string) => {
