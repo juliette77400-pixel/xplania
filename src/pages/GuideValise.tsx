@@ -499,7 +499,7 @@ const GuideValisePage = () => {
 
         <ActivityItems objectives={tripData?.objectives} onAddToChecklist={addActivityItems} />
 
-        <CulturalTips destination={destination} />
+        <CulturalTips destination={destination} tripType={tripTypeLabel} />
 
         <OutfitRecommendations
           tripType={tripTypeLabel}
