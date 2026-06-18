@@ -236,6 +236,39 @@ const GuideValisePage = () => {
   const [showShare, setShowShare] = useState(false);
   const { reached, consume } = useQuota("valise");
 
+  // ── Persistence (localStorage) ─────────────────────────────
+  const storageKey = useMemo(
+    () => `valise:state:v1:${destination}:${luggageMode}:${transport}`,
+    [destination, luggageMode, transport],
+  );
+  const hydratedRef = useRef<string | null>(null);
+
+  // Hydrate when key changes
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Record<string, ChecklistItem[]>;
+        if (parsed && typeof parsed === "object") {
+          setCategories(parsed);
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    hydratedRef.current = storageKey;
+  }, [storageKey]);
+
+  // Save on change (after hydration for this key)
+  useEffect(() => {
+    if (hydratedRef.current !== storageKey) return;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(categories));
+    } catch {
+      /* ignore quota errors */
+    }
+  }, [categories, storageKey]);
+
   const handleModeChange = useCallback(async (mode: LuggageMode) => {
     if (mode === luggageMode) return;
     setIsSwitchingMode(true);
