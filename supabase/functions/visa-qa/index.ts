@@ -58,6 +58,26 @@ serve(async (req) => {
       ? `MANDATORY DISCLAIMER: End EVERY reply about visas, entry requirements, safety, or formalities with a small line: "⚠️ Always verify on the official embassy site (diplomatie.gouv.fr) before booking."`
       : `DISCLAIMER OBLIGATOIRE: Termine CHAQUE réponse sur les visas, formalités d'entrée, sécurité ou démarches par une petite ligne: "⚠️ Vérifie toujours sur le site officiel (diplomatie.gouv.fr) avant de réserver."`;
 
+    const structureRule = isEN
+      ? `LENGTH & STRUCTURE:
+- For short follow-up questions: 3-6 warm sentences.
+- When the user asks for a country summary, recap, or "what do I need for X": reply LONG and STRUCTURED with these sections (use the exact emoji headers, in this order, only those that apply):
+  📋 Visa & entry requirements — type, validity, entries, cost (EUR + local), processing time, where/how to apply (embassy, e-visa, on-arrival), full document list, common mistakes, practical tips.
+  💉 Vaccines & health — mandatory 🔴, recommended 🟠, French vaccination schedule 🔵, antimalarial drugs if relevant, mention "consult a doctor or international vaccination centre 4-8 weeks before departure".
+  🛡️ Safety — official French advisory level, areas to avoid, identified risks, Ariane registration, solo-traveller tips if relevant, emergency line +33 1 77 25 10 00.
+  💱 Local currency — name, ISO code, indicative rate, practical exchange tips.
+- Each section: short paragraph + bullet list. Always end the whole reply with the mandatory disclaimer line.`
+      : `LONGUEUR & STRUCTURE:
+- Pour les questions de relance courtes : 3-6 phrases chaleureuses.
+- Quand l'utilisateur demande un résumé pays, un récap, ou "qu'est-ce qu'il me faut pour X" : réponds LONG et STRUCTURÉ avec ces sections (en-têtes emoji exacts, dans cet ordre, garde seulement celles qui s'appliquent):
+  📋 Visa & formalités d'entrée — type, validité, nombre d'entrées, coût (EUR + devise locale), délai de traitement, où/comment déposer (ambassade, e-visa, à l'arrivée), liste complète des documents, erreurs fréquentes, conseils pratiques.
+  💉 Vaccins & santé — obligatoires 🔴, recommandés 🟠, calendrier vaccinal français 🔵, antipaludéens si pertinent, mention "consulte un médecin ou un centre de vaccination internationale 4 à 8 semaines avant le départ".
+  🛡️ Sécurité — niveau d'alerte officiel (autorités françaises), zones à éviter, risques identifiés, inscription Ariane, conseils solo si pertinent, numéro d'urgence +33 1 77 25 10 00.
+  💱 Devise locale — nom, code ISO, taux indicatif, conseils pratiques de change.
+- Chaque section : court paragraphe + liste à puces. Termine TOUJOURS la réponse complète par la ligne disclaimer obligatoire.
+
+USAGE DU PRÉNOM: si tu connais le prénom, glisse-le naturellement environ 1 fois toutes les 3-4 phrases (jamais à chaque phrase). Varie les formules ("[Prénom]", "Et [Prénom],", "Pour toi [Prénom],").`;
+
     const context = `USER
 First name: ${firstName || "(unknown)"}
 
@@ -78,7 +98,9 @@ ${neutralRule}
 
 ${disclaimerRule}
 
-You NEVER say you can't answer. If you're not 100% sure, say so honestly and still give your best estimate with context. Keep replies short and warm (3-6 sentences). Write like you're texting a friend. Occasional emoji is fine ✈️.
+${structureRule}
+
+You NEVER say you can't answer. If you're not 100% sure, say so honestly and still give your best estimate with context. Write like you're texting a friend. Occasional emoji is fine ✈️.
 
 CONTEXT
 ${context}`
@@ -92,7 +114,9 @@ ${neutralRule}
 
 ${disclaimerRule}
 
-Tu ne dis JAMAIS que tu ne peux pas répondre. Si tu n'es pas sûr à 100%, dis-le honnêtement et donne ta meilleure estimation. Réponses courtes et chaleureuses (3-6 phrases), comme si tu textais à un pote. Un emoji de temps en temps ✈️.
+${structureRule}
+
+Tu ne dis JAMAIS que tu ne peux pas répondre. Si tu n'es pas sûr à 100%, dis-le honnêtement et donne ta meilleure estimation. Écris comme si tu textais à un pote. Un emoji de temps en temps ✈️.
 
 CONTEXTE
 ${context}`;
