@@ -1718,7 +1718,8 @@
         "indicator": "Tu es hors ligne — tes questions sont enregistrées et seront envoyées dès le retour de la connexion.",
         "short": "Hors ligne",
         "queued": "📡 Tu es hors ligne. J'ai mis ta question en file d'attente — je répondrai dès que la connexion revient.",
-        "replaying": "Envoi en cours… ({{count}} en attente)"
+        "replaying": "Envoi en cours… ({{count}} en attente)",
+        "retryNow": "Réessayer maintenant"
       },
       "placeholder": "Pose-moi toutes tes questions sur ta valise…",
       "qaEmpty": "Pose-moi une question — packing, météo, tenues, culture, sécurité solo… j'ai tout ce qu'il faut 🎒",
