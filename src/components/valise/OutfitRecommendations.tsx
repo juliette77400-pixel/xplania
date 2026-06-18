@@ -11,7 +11,8 @@ import {
 
 interface Outfit {
   id: string;
-  imageUrl: string;
+  gradient: string; // tailwind gradient classes
+  emoji: string;
 }
 
 interface OutfitRecommendationsProps {
@@ -20,11 +21,11 @@ interface OutfitRecommendationsProps {
 }
 
 const allOutfits: Outfit[] = [
-  { id: "casualUrban", imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" },
-  { id: "elegantEvening", imageUrl: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80" },
-  { id: "natureExploration", imageUrl: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&q=80" },
-  { id: "beachRelax", imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" },
-  { id: "businessTravel", imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80" },
+  { id: "casualUrban",       gradient: "from-violet-600 via-indigo-700 to-slate-900", emoji: "👟🧥" },
+  { id: "elegantEvening",    gradient: "from-fuchsia-600 via-purple-700 to-rose-900", emoji: "👗✨" },
+  { id: "natureExploration", gradient: "from-emerald-500 via-teal-700 to-slate-900",  emoji: "🥾🌲" },
+  { id: "beachRelax",        gradient: "from-cyan-400 via-sky-600 to-blue-900",       emoji: "👙🌴" },
+  { id: "businessTravel",    gradient: "from-slate-600 via-slate-800 to-zinc-900",    emoji: "👔💼" },
 ];
 
 // Map trip types to relevant outfit IDs
