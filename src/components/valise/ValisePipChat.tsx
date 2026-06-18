@@ -666,8 +666,13 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
           )}
 
           {(stage === "summary" || stage === "qa") && history.map((m, i) => (
-            <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}>
+            <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"} ${m.pending ? "opacity-70 italic" : ""}`}>
               {m.content}
+              {m.pending && (
+                <span className="ml-2 inline-flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-300 align-middle">
+                  <WifiOff className="w-3 h-3" />
+                </span>
+              )}
             </div>
           ))}
 
