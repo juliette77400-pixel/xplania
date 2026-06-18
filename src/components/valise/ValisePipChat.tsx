@@ -31,6 +31,39 @@ type Stage =
   | "qa";
 
 const STORAGE_KEY = "xplania-valise-pip-v1";
+const SEEN_KEY = "xplania-valise-pip-seen-v1";
+const CHAT_KIND = "valise";
+
+interface PersistedState {
+  history: ChatMsg[];
+  stage: Stage;
+  ctx: {
+    dest: string;
+    start: string;
+    end: string;
+    luggage: string;
+    trip: string;
+    activities: string[];
+    duration: string;
+  };
+  updatedAt: number;
+}
+
+function readLocalState(): PersistedState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as PersistedState;
+    if (!parsed || !Array.isArray(parsed.history)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalState(state: PersistedState) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* */ }
+}
 
 const LUGGAGES = [
   { key: "backpack", emoji: "🎒" },
