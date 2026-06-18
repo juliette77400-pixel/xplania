@@ -361,8 +361,69 @@ const GuideValisePage = () => {
     toast.success(t("guideValise.toastPdf"), { description: t("guideValise.toastPdfDesc") });
   }, [destination, days, luggageMode, transport, categories, t]);
 
+  const handleValidateAll = useCallback(() => {
+    setCategories((prev) => {
+      const next: Record<string, ChecklistItem[]> = {};
+      for (const [cat, items] of Object.entries(prev)) {
+        next[cat] = items.map((i) => ({ ...i, checked: true }));
+      }
+      return next;
+    });
+    toast.success(t("valise.toastValidated"), { description: t("valise.toastValidatedDesc") });
+  }, [t]);
+
+  const handleResetAll = useCallback(() => {
+    setCategories((prev) => {
+      const next: Record<string, ChecklistItem[]> = {};
+      for (const [cat, items] of Object.entries(prev)) {
+        next[cat] = items.map((i) => ({ ...i, checked: false }));
+      }
+      return next;
+    });
+    toast.success(t("valise.toastReset"));
+  }, [t]);
+
+  const handleDuplicate = useCallback(async () => {
+    const lines: string[] = [`🧳 ${destination} — ${days}j`, ""];
+    for (const [cat, items] of Object.entries(categories)) {
+      lines.push(`▸ ${cat}`);
+      for (const it of items) {
+        lines.push(`  ${it.checked ? "[x]" : "[ ]"} ${it.name}${it.description ? ` — ${it.description}` : ""}`);
+      }
+      lines.push("");
+    }
+    const text = lines.join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success(t("valise.toastDuplicated"));
+    } catch {
+      toast.error(t("valise.toastDuplicateError"));
+    }
+  }, [categories, destination, days, t]);
+
+  const handleSaveTemplate = useCallback(() => {
+    try {
+      const key = "valise:templates:v1";
+      const raw = localStorage.getItem(key);
+      const list = raw ? (JSON.parse(raw) as Array<{ id: string; name: string; savedAt: number; categories: Record<string, ChecklistItem[]> }>) : [];
+      const name = `${destination} · ${luggageMode}`;
+      list.unshift({ id: `tpl_${Date.now()}`, name, savedAt: Date.now(), categories });
+      localStorage.setItem(key, JSON.stringify(list.slice(0, 20)));
+      toast.success(t("valise.toastTemplateSaved"), { description: t("valise.toastTemplateSavedDesc") });
+    } catch {
+      toast.error(t("valise.toastTemplateError"));
+    }
+  }, [destination, luggageMode, categories, t]);
+
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
+  const remainingByCategory = useMemo(() => {
+    const out: Record<string, number> = {};
+    for (const [cat, items] of Object.entries(categories)) {
+      out[cat] = items.filter((i) => !i.checked).length;
+    }
+    return out;
+  }, [categories]);
   const tripTypeLabel = tripData?.tripTypes?.[0] || tripData?.objectives?.[0] || "";
 
   return (
