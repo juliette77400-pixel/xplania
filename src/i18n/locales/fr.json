@@ -1714,6 +1714,12 @@
       "skip": "Passer",
       "loading": "Pip réfléchit…",
       "errorAnswer": "Oups, je n'ai pas pu répondre. Réessaie dans quelques secondes 🙏",
+      "offline": {
+        "indicator": "Tu es hors ligne — tes questions sont enregistrées et seront envoyées dès le retour de la connexion.",
+        "short": "Hors ligne",
+        "queued": "📡 Tu es hors ligne. J'ai mis ta question en file d'attente — je répondrai dès que la connexion revient.",
+        "replaying": "Envoi en cours… ({{count}} en attente)"
+      },
       "placeholder": "Pose-moi toutes tes questions sur ta valise…",
       "qaEmpty": "Pose-moi une question — packing, météo, tenues, culture, sécurité solo… j'ai tout ce qu'il faut 🎒",
       "welcome": "Salut {{name}} ! 🧳 C'est Pip. Je t'aide à préparer ta valise parfaite — météo en temps réel, conseils de packing, tenues adaptées et astuces culturelles. Je te guide étape par étape ?",
