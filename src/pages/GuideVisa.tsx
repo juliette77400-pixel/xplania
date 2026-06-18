@@ -393,6 +393,14 @@ const GuideVisaPage = () => {
           <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
         </section>
 
+        {/* Enriched vaccines guide (official sources) */}
+        <VaccinesGuide destination={hasValidDestination ? destinationName : undefined} />
+
+        {/* Enriched safety guide (France-Diplomatie levels, Ariane, emergencies) */}
+        <SafetyGuide destination={hasValidDestination ? destinationName : undefined} />
+
+
+
 
 
         {/* Generation animation */}
