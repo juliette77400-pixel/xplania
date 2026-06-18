@@ -98,7 +98,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
               <button
                 onClick={() => setExpandedActivity(isExpanded ? null : key)}
                 className="w-full p-4 flex items-center justify-between text-left"
-              ></button>
+              >
                 <div className="flex items-center gap-3">
                   <span className={isHighlighted ? "text-primary" : "text-muted-foreground"}>{icon}</span>
                   <div>
