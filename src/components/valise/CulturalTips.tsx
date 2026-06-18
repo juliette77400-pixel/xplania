@@ -18,7 +18,7 @@ const REGION_ALIASES: Record<string, string> = {
 function findRegionKey(destination: string): string {
   const lower = destination.toLowerCase();
   for (const key of REGION_KEYS) {
-    if (lower.includes(key)) return key;
+    if (lower.includes(key)) return REGION_ALIASES[key] ?? key;
   }
   return "default";
 }
