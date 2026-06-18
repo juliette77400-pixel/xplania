@@ -553,6 +553,103 @@
       "title": "💱 Currency converter — live rates",
       "disclaimer": "Rates are indicative. They may differ at your bank or currency exchange."
     },
+    "vaccinesGuide": {
+      "title": "💉 Vaccines & travel health",
+      "subtitle": "General recommendations from French health authorities",
+      "officialTitle": "Official sources to check",
+      "opensNewTab": "opens in a new tab",
+      "disclaimer": "This is general information. See an international vaccination centre 4–8 weeks before departure for personal advice.",
+      "disclaimerWithDest": "This is general information for {{destination}}. See an international vaccination centre 4–8 weeks before departure.",
+      "blocks": [
+        {
+          "icon": "mandatory",
+          "title": "Mandatory vaccines",
+          "body": "Required at the border by some countries (vaccination certificate needed).",
+          "items": [
+            "Yellow fever — sub-Saharan Africa, tropical South America",
+            "Meningitis ACYW135 — pilgrimage to Mecca",
+            "Polio — per current WHO recommendations"
+          ]
+        },
+        {
+          "icon": "recommended",
+          "title": "Recommended vaccines",
+          "body": "Strongly advised depending on destination, length and conditions of stay.",
+          "items": [
+            "Hepatitis A and B",
+            "Typhoid (Southeast Asia, Africa, Indian subcontinent)",
+            "Rabies (long or rural stays)",
+            "Japanese / tick-borne encephalitis where relevant"
+          ]
+        },
+        {
+          "icon": "uptodate",
+          "title": "Routine vaccines up to date",
+          "body": "Before any trip, make sure your routine vaccines are current.",
+          "items": [
+            "DTP (diphtheria–tetanus–polio)",
+            "MMR (measles–mumps–rubella)",
+            "Pertussis, seasonal flu depending on profile"
+          ]
+        },
+        {
+          "icon": "chemo",
+          "title": "Chemoprophylaxis",
+          "body": "Preventive treatment against malaria in risk zones. Discuss with a doctor based on destination and season.",
+          "items": [
+            "Mosquito protection (DEET repellent, treated net, long clothing)",
+            "Treatment suited to the zone (Malarone, doxycycline, mefloquine)"
+          ]
+        }
+      ],
+      "links": [
+        { "label": "Institut Pasteur — Vaccination centres", "url": "https://www.pasteur.fr/en/medical-center/preparing-your-trip" },
+        { "label": "Santé publique France — Travel", "url": "https://www.santepubliquefrance.fr/maladies-et-traumatismes/voyage" },
+        { "label": "France-Diplomatie — Travel advice", "url": "https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/" },
+        { "label": "WHO — International Travel & Health", "url": "https://www.who.int/travel-advice" }
+      ]
+    },
+    "safetyGuide": {
+      "title": "🛡️ Safety & vigilance",
+      "subtitle": "General guidance from French authorities (diplomatie.gouv.fr)",
+      "levelsTitle": "France-Diplomatie vigilance levels",
+      "levelAria": "Vigilance level",
+      "risksTitle": "Common risks to know",
+      "soloTitle": "Travelling solo",
+      "arianeTitle": "Register on Ariane",
+      "arianeBody": "Free service from the French Ministry for Europe and Foreign Affairs: you receive safety alerts by SMS/email and can be contacted in case of crisis in your destination country.",
+      "arianeCta": "Register on Ariane",
+      "emergenciesTitle": "Useful numbers",
+      "officialCta": "Official France-Diplomatie page",
+      "opensNewTab": "opens in a new tab",
+      "disclaimer": "Always check the official advisory for your destination before leaving — levels can change quickly.",
+      "disclaimerWithDest": "Check the official France-Diplomatie advisory for {{destination}} — levels can change quickly.",
+      "levels": [
+        { "label": "🟢 Level 1 — Normal vigilance", "description": "No particular risk. Standard caution as anywhere else." },
+        { "label": "🟡 Level 2 — Enhanced vigilance", "description": "Tensions, crime or health risks requiring more attention." },
+        { "label": "🟠 Level 3 — Avoid unless essential", "description": "Travel advised against unless absolutely necessary." },
+        { "label": "🔴 Level 4 — Strongly discouraged", "description": "All travel is strongly discouraged for your safety." }
+      ],
+      "risks": [
+        { "title": "Pickpockets & theft", "body": "Airports, public transport, markets. Keep belongings in front and duplicate your documents." },
+        { "title": "Tourist scams", "body": "Fake taxis, fake guides, fake police. Check prices and use official apps." },
+        { "title": "Natural hazards", "body": "Cyclones, earthquakes, floods depending on season. Check weather and local alerts." },
+        { "title": "Health risks", "body": "Water, food, mosquitoes, altitude. Adapt your behaviour to the area." }
+      ],
+      "soloTips": [
+        "Share your itinerary and accommodation with someone you trust",
+        "Share your live location with a trusted contact",
+        "Avoid walking alone at night in unfamiliar areas",
+        "Keep a digital copy of your documents (cloud + email)",
+        "Locate the nearest French consulate as soon as you arrive"
+      ],
+      "emergencies": [
+        { "label": "European emergency", "number": "112" },
+        { "label": "French Crisis Centre abroad (24/7)", "number": "+33 1 53 59 11 00" },
+        { "label": "SAMU (France)", "number": "15" },
+        { "label": "Police (France)", "number": "17" }
+      ]
+    },
     "safety": {
       "title": "🛡️ Safety & travel advisories",
       "attribution": "According to French authorities (diplomatie.gouv.fr)",
