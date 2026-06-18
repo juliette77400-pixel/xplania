@@ -143,7 +143,18 @@ const GuideVisaPage = () => {
   const [countrySearch, setCountrySearch] = useState("");
   const [nationalitySearch, setNationalitySearch] = useState("");
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [chatOpenSignal, setChatOpenSignal] = useState(0);
   const { reached, consume } = useQuota("visa");
+  const askPip = () => setChatOpenSignal((n) => n + 1);
+  const securityLevelNumber: 1 | 2 | 3 | 4 = (() => {
+    const lvl = aiResult?.security?.level || "safe";
+    if (lvl === "danger") return 4;
+    if (lvl === "caution") return 3;
+    if (lvl === "moderate") return 2;
+    return 1;
+  })();
+  const isSolo = (tripData?.travelerType || "").toLowerCase().includes("solo") ||
+    (tripData?.travelerType || "").toLowerCase().includes("seul");
 
   const destinationName = useMemo(() => {
     if (!selectedDestination || selectedDestination === "none") return isFr ? "votre destination" : "your destination";
