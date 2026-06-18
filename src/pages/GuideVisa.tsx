@@ -24,6 +24,8 @@ import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
 import SafetyAdvisory from "@/components/visa/SafetyAdvisory";
 import VisaPipChat from "@/components/visa/VisaPipChat";
 import CurrencyConverter from "@/components/shared/CurrencyConverter";
+import VaccinesGuide from "@/components/visa/VaccinesGuide";
+import SafetyGuide from "@/components/visa/SafetyGuide";
 
 // ── Static Data ──
 
@@ -390,6 +392,14 @@ const GuideVisaPage = () => {
           <CurrencyConverter destination={destinationName} />
           <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
         </section>
+
+        {/* Enriched vaccines guide (official sources) */}
+        <VaccinesGuide destination={hasValidDestination ? destinationName : undefined} />
+
+        {/* Enriched safety guide (France-Diplomatie levels, Ariane, emergencies) */}
+        <SafetyGuide destination={hasValidDestination ? destinationName : undefined} />
+
+
 
 
 
