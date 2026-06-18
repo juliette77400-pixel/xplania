@@ -17,6 +17,8 @@ interface ChatMsg {
   role: "user" | "assistant";
   content: string;
   ts: number;
+  pending?: boolean;
+  tempId?: string;
 }
 
 type Stage =
