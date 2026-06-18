@@ -446,7 +446,7 @@ const GuideValisePage = () => {
 
         <VoyageAnalysis tripData={tripData} destination={destination} days={days} />
 
-        <WeatherSection destination={destination} />
+        <div id="weather-section"><WeatherSection destination={destination} /></div>
 
         {/* Transport + Mode selection + AI tip */}
         <div className="space-y-4">
