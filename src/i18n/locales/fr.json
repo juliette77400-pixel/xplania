@@ -553,6 +553,20 @@
       "title": "💱 Convertisseur de devises — taux en temps réel",
       "disclaimer": "Ces taux sont indicatifs. Ils peuvent différer en banque ou au bureau de change."
     },
+    "officialCheck": {
+      "checking": "Vérification auprès des autorités…",
+      "verifiedAt": "Vérifié à {{time}}",
+      "verifiedAria": "Informations vérifiées à {{time}} via les sources officielles",
+      "liveFor": "Données à jour pour {{destination}}",
+      "viewSource": "Voir la source : {{source}} →",
+      "malariaRisk": "Risque paludisme : {{level}}",
+      "risk": {
+        "low": "faible",
+        "moderate": "modéré",
+        "high": "élevé",
+        "none": "nul"
+      }
+    },
     "vaccinesGuide": {
       "title": "💉 Vaccins & santé voyage",
       "subtitle": "Recommandations générales selon les autorités sanitaires françaises",
