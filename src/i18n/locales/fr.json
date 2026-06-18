@@ -1853,6 +1853,7 @@
       }
     },
     "aiTipAnalyzing": "L'IA de Xplania analyse et adapte votre liste…",
+    "aiTipRegenerate": "Nouveau conseil",
     "genTitle": "Génération IA en cours…",
     "genDone": "Terminé",
     "genSteps": {
