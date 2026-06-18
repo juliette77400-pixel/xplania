@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { ShieldAlert, MapPinned, UserCheck, Phone, ExternalLink, AlertTriangle, Loader2, BadgeCheck } from "lucide-react";
+import { ShieldAlert, MapPinned, UserCheck, Phone, ExternalLink, AlertTriangle, Loader2, BadgeCheck, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useOfficialInfo } from "@/hooks/useOfficialInfo";
+import { cn } from "@/lib/utils";
 
 interface SafetyGuideProps {
   destination?: string;
