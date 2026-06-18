@@ -11,7 +11,7 @@ interface VaccinesGuideProps {
 const VaccinesGuide = ({ destination }: VaccinesGuideProps) => {
   const { t, i18n } = useTranslation();
   const locale: "fr" | "en" = i18n.language.startsWith("fr") ? "fr" : "en";
-  const { data: official, loading } = useOfficialInfo(destination, locale);
+  const { data: official, loading, refresh } = useOfficialInfo(destination, locale);
   const live = official?.vaccines;
 
   const blocks = t("guideVisa.vaccinesGuide.blocks", { returnObjects: true }) as Array<{
@@ -55,21 +55,33 @@ const VaccinesGuide = ({ destination }: VaccinesGuideProps) => {
             <p className="text-xs text-muted-foreground">{t("guideVisa.vaccinesGuide.subtitle")}</p>
           </div>
         </div>
-        {loading && destination && (
-          <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground" aria-live="polite">
-            <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" />
-            {t("guideVisa.officialCheck.checking")}
-          </span>
-        )}
-        {live && checkedAt && (
-          <span
-            className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20"
-            aria-label={t("guideVisa.officialCheck.verifiedAria", { time: checkedAt })}
+        <div className="flex flex-col items-end gap-2">
+          {loading && destination && (
+            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground" aria-live="polite">
+              <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" />
+              {t("guideVisa.officialCheck.checking")}
+            </span>
+          )}
+          {live && checkedAt && (
+            <span
+              className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20"
+              aria-label={t("guideVisa.officialCheck.verifiedAria", { time: checkedAt })}
+            >
+              <BadgeCheck className="w-3.5 h-3.5" aria-hidden="true" />
+              {t("guideVisa.officialCheck.verifiedAt", { time: checkedAt })}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={() => refresh()}
+            disabled={loading || !destination}
+            aria-label={destination ? t("guideVisa.officialCheck.refreshAria", { destination }) : t("guideVisa.officialCheck.refresh")}
+            className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <BadgeCheck className="w-3.5 h-3.5" aria-hidden="true" />
-            {t("guideVisa.officialCheck.verifiedAt", { time: checkedAt })}
-          </span>
-        )}
+            <RefreshCw className={cn("w-3 h-3", loading && "animate-spin")} aria-hidden="true" />
+            {loading ? t("guideVisa.officialCheck.refreshing") : t("guideVisa.officialCheck.refresh")}
+          </button>
+        </div>
       </header>
 
       {/* Live official data for this destination */}
