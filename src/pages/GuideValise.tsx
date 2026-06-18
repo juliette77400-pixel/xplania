@@ -499,6 +499,10 @@ const GuideValisePage = () => {
           isRegenerating={isRegenerating}
           onExportPdf={handleExportPdf}
           onShareTrip={() => setShowShare(true)}
+          onValidateAll={handleValidateAll}
+          onResetAll={handleResetAll}
+          onDuplicate={handleDuplicate}
+          onSaveTemplate={handleSaveTemplate}
         />
 
         <ShareTripDialog
@@ -508,7 +512,12 @@ const GuideValisePage = () => {
           days={days}
         />
 
-        <ValiseSummary totalItems={totalItems} checkedItems={checkedItems} categoriesCount={Object.keys(categories).length} />
+        <ValiseSummary
+          totalItems={totalItems}
+          checkedItems={checkedItems}
+          categoriesCount={Object.keys(categories).length}
+          remainingByCategory={remainingByCategory}
+        />
       </div>
       <QuickJump />
     </div>
