@@ -512,7 +512,95 @@
     "touristPolice": "👮 Police touristique",
     "generalDocsTitle": "Documents généraux à préparer",
     "alertsTitle": "Alertes importantes",
-    "tipsTitle": "Conseils pratiques"
+    "tipsTitle": "Conseils pratiques",
+    "inlineDisclaimer": "ℹ️ Vérifie toujours ces informations sur le site officiel de l'ambassade (diplomatie.gouv.fr).",
+    "disclaimer": {
+      "title": "⚠️ Avis important —",
+      "body": "Les informations fournies par Xplania sont données à titre indicatif et peuvent ne pas refléter les dernières exigences d'entrée en vigueur. Consulte toujours le site officiel de l'ambassade ou du consulat français pour ta destination avant de voyager.",
+      "cta": "Site officiel de l'ambassade"
+    },
+    "stepper": {
+      "title": "Ta checklist visa, sans prise de tête 📋",
+      "reassurance": "💬 Pas sûr·e d'une étape ? Demande à Pip — aucune question n'est trop simple.",
+      "steps": [
+        { "title": "Vérifie si tu as besoin d'un visa", "detail": "Selon ta nationalité et ta destination. La plupart des passeports européens n'ont pas besoin de visa pour les courts séjours dans l'UE, mais c'est différent ailleurs." },
+        { "title": "Repère les délais", "detail": "Certains visas prennent 4 à 8 semaines — commence tôt ! Les visas étudiants ou long séjour peuvent prendre encore plus de temps." },
+        { "title": "Prépare tes documents", "detail": "Passeport valide 6 mois après ton retour, photos d'identité récentes, justificatifs d'hébergement et de billets, assurance voyage." },
+        { "title": "Dépose ta demande", "detail": "À l'ambassade, au consulat ou en ligne selon la destination. Beaucoup de pays acceptent les demandes 100% en ligne (e-visa, ESTA, etc.)." },
+        { "title": "Reçois ton visa et vérifie les dates", "detail": "Vérifie le nombre d'entrées autorisées, la durée de validité et la date d'expiration. Une erreur peut t'empêcher d'embarquer." },
+        { "title": "À l'arrivée : garde tes documents accessibles", "detail": "Copie papier + copie cloud de ton passeport, visa, assurance et réservations. Note le numéro du consulat français le plus proche." }
+      ]
+    },
+    "currencySection": {
+      "title": "💱 Convertisseur de devises — taux en temps réel",
+      "disclaimer": "Ces taux sont indicatifs. Ils peuvent différer en banque ou au bureau de change."
+    },
+    "safety": {
+      "title": "🛡️ Sécurité & conseils aux voyageurs",
+      "attribution": "Selon les autorités françaises (diplomatie.gouv.fr)",
+      "officialLink": "Voir la fiche officielle →",
+      "consulate": "Trouver le consulat français le plus proche",
+      "emergencyTitle": "Urgence à l'étranger :",
+      "emergencyNote": "Numéro des Français à l'étranger, disponible 24h/24",
+      "levels": {
+        "1": { "label": "🟢 Niveau 1 — Vigilance normale", "summary": "Selon les autorités françaises, {{destination}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant·e comme partout." },
+        "2": { "label": "🟡 Niveau 2 — Vigilance renforcée", "summary": "Selon les autorités françaises, une vigilance renforcée est recommandée pour {{destination}}. Consulte la fiche officielle pour les détails." },
+        "3": { "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative", "summary": "Selon les autorités françaises, {{destination}} est déconseillé sauf raison impérative. Vérifie la fiche officielle avant tout déplacement." },
+        "4": { "label": "🔴 Niveau 4 — Formellement déconseillé", "summary": "Selon les autorités françaises, il est formellement déconseillé de se rendre à {{destination}}." }
+      },
+      "solo": {
+        "title": "Voyager seul·e — ce qu'il faut savoir",
+        "tips": [
+          "Informe toujours un proche de ton itinéraire et de tes hébergements",
+          "Partage ta position en temps réel avec une personne de confiance",
+          "Vérifie les zones à éviter selon les conseils officiels",
+          "Note les numéros d'urgence locaux et l'adresse du consulat français",
+          "Rejoins des groupes de voyageur·euses solo sur des forums dédiés"
+        ]
+      }
+    },
+    "chatbot": {
+      "openLabel": "Ouvrir Pip, ton copilote visa",
+      "subtitle": "Ton copilote visa",
+      "close": "Fermer",
+      "restart": "Recommencer",
+      "welcome": "Salut ! 🌍 C'est Pip. Je t'aide à comprendre les visas, la sécurité et les formalités d'entrée — sans prise de tête. Je te guide étape par étape ?",
+      "welcomeYes": "✨ Oui, guide-moi",
+      "welcomeNo": "Je préfère explorer seul·e",
+      "steps": {
+        "destination": "Où tu pars ? (tape un pays)",
+        "nationality": "Tu voyages avec quel passeport ?",
+        "tripType": "Quel type de voyage ?",
+        "duration": "Combien de temps tu restes ?"
+      },
+      "tripTypes": {
+        "tourism": "Tourisme",
+        "business": "Business",
+        "studies": "Études",
+        "couple": "En couple",
+        "solo": "Seul·e",
+        "family": "Famille"
+      },
+      "durations": {
+        "lt7": "< 7 jours",
+        "1to3w": "1–3 semaines",
+        "1to3m": "1–3 mois",
+        "gt3m": "+ de 3 mois"
+      },
+      "summary": "Voilà ce que j'ai trouvé pour {{destination}} avec un passeport {{nationality}}, {{duration}}, {{tripType}} 🎉\n\nPose-moi toutes tes questions, ou utilise les raccourcis en haut pour aller direct au process visa, à la sécurité ou à l'ambassade.",
+      "placeholder": "Pose-moi toutes tes questions sur les visas et formalités…",
+      "send": "Envoyer",
+      "loading": "Pip réfléchit…",
+      "errorAnswer": "Oups, j'ai un petit bug. Reformule ta question et je réessaie tout de suite 🙏",
+      "qaEmpty": "Pose-moi une question — visa, sécurité, démarches, change… je suis là.",
+      "disclaimer": "⚠️ Vérifie toujours sur le site officiel avant de réserver.",
+      "nav": {
+        "process": "Process",
+        "convert": "Convertir",
+        "safety": "Sécurité",
+        "embassy": "Ambassade"
+      }
+    }
   },
   "footer": {
     "tagline": "Votre copilote de voyage intelligent. Planifiez, préparez et vivez vos voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
