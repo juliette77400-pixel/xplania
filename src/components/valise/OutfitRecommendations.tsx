@@ -11,7 +11,8 @@ import {
 
 interface Outfit {
   id: string;
-  imageUrl: string;
+  gradient: string; // tailwind gradient classes
+  emoji: string;
 }
 
 interface OutfitRecommendationsProps {
@@ -20,11 +21,11 @@ interface OutfitRecommendationsProps {
 }
 
 const allOutfits: Outfit[] = [
-  { id: "casualUrban", imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" },
-  { id: "elegantEvening", imageUrl: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80" },
-  { id: "natureExploration", imageUrl: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&q=80" },
-  { id: "beachRelax", imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" },
-  { id: "businessTravel", imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80" },
+  { id: "casualUrban",       gradient: "from-violet-600 via-indigo-700 to-slate-900", emoji: "👟🧥" },
+  { id: "elegantEvening",    gradient: "from-fuchsia-600 via-purple-700 to-rose-900", emoji: "👗✨" },
+  { id: "natureExploration", gradient: "from-emerald-500 via-teal-700 to-slate-900",  emoji: "🥾🌲" },
+  { id: "beachRelax",        gradient: "from-cyan-400 via-sky-600 to-blue-900",       emoji: "👙🌴" },
+  { id: "businessTravel",    gradient: "from-slate-600 via-slate-800 to-zinc-900",    emoji: "👔💼" },
 ];
 
 // Map trip types to relevant outfit IDs
@@ -92,18 +93,14 @@ const OutfitRecommendations = ({ tripType, destination }: OutfitRecommendationsP
                 whileTap={{ scale: 0.98 }}
                 className="glass-card rounded-2xl overflow-hidden group text-left cursor-pointer"
               >
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={outfit.imageUrl}
-                    alt={data.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-primary/20 backdrop-blur-md text-primary text-[10px] font-bold uppercase tracking-wider">
+                <div className={`relative h-44 overflow-hidden bg-gradient-to-br ${outfit.gradient} flex items-center justify-center`}>
+                  <span className="text-6xl drop-shadow-lg select-none" aria-hidden="true">
+                    {outfit.emoji}
+                  </span>
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider border border-white/20">
                     {data.badge}
                   </span>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/40 backdrop-blur-sm">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
                     <span className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold">
                       <Eye className="w-3.5 h-3.5" /> {t("valise.outfitsViewDetails")}
                     </span>
@@ -146,14 +143,11 @@ const OutfitRecommendations = ({ tripType, destination }: OutfitRecommendationsP
                   </DialogTitle>
                 </DialogHeader>
 
-                <div className="relative h-48 rounded-xl overflow-hidden mt-2">
-                  <img
-                    src={selectedOutfit.imageUrl}
-                    alt={data.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
-                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-lg bg-primary/20 backdrop-blur text-primary text-xs font-bold">
+                <div className={`relative h-48 rounded-xl overflow-hidden mt-2 bg-gradient-to-br ${selectedOutfit.gradient} flex items-center justify-center`}>
+                  <span className="text-7xl drop-shadow-xl select-none" aria-hidden="true">
+                    {selectedOutfit.emoji}
+                  </span>
+                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-lg bg-white/20 backdrop-blur text-white text-xs font-bold border border-white/20">
                     {data.badge}
                   </span>
                 </div>

@@ -1796,6 +1796,16 @@
     "activitiesRecommended": "Recommended",
     "activitiesAddAll": "Add all to my suitcase",
     "activitiesToastAdded": "{{count}} item added to your suitcase",
+    "activityCategories": {
+      "hiking": { "name": "Hiking", "items": ["Waterproof hiking boots", "Anti-blister technical socks", "Telescopic trekking poles", "20–30L day pack", "Filtered water bottle or purification tablets", "Offline / IGN map", "Headlamp + spare batteries", "Waterproof windbreaker", "SPF50+ sunscreen", "Compact first aid kit", "Energy bars / trail snacks"] },
+      "beach":  { "name": "Beach", "items": ["Swimsuit (×2)", "Microfibre towel", "Flip-flops / sandals", "Category 3+ UV sunglasses", "Beach hat", "Waterproof phone pouch", "Waterproof SPF50 sunscreen", "After-sun / aloe vera", "Sarong"] },
+      "city":   { "name": "City", "items": ["Comfortable walking shoes", "Light jacket (museums are cold)", "Anti-theft bag or tote", "Universal travel adapter", "Offline transport map", "Earphones", "10,000mAh powerbank", "Travel journal", "Smart-casual outfit for restaurants", "Compact umbrella"] },
+      "photo":  { "name": "Photo / Creation", "items": ["Camera / spare lens", "Spare SD cards (×3 min)", "Compact tripod or gorilla pod", "Spare camera battery", "Multi-port fast charger", "External hard drive or USB stick", "Optical cleaning cloth", "ND filter (for video)", "Drone if permitted", "Notebook for content ideas"] },
+      "business": { "name": "Business", "items": ["Suit / pro outfit in garment bag", "Shirts/blouses (1 per day + 1 extra)", "Dress shoes in dust bag", "Business cards", "Laptop + charger", "Universal adapter", "HDMI cable", "Professional notebook", "Quality pens", "Laptop lock cable"] },
+      "roadtrip": { "name": "Road trip", "items": ["Travel blanket", "Inflatable car pillow", "Road snack bag", "Phone car mount", "Car charger cable", "Car first aid kit", "Warning triangle", "Hi-vis vest (required in some countries)", "Paper road map", "Emergency fuel canister if remote"] },
+      "sport":  { "name": "Sport / Fitness", "items": ["Breathable sports outfit (×2)", "Versatile sport shoes", "Lightweight jump rope", "Resistance bands", "Protein shaker bottle", "Microfibre sports towel", "AirPods / sport earphones", "Offline fitness app downloaded", "Energy gel / BCAAs", "Pool shoes"] },
+      "gastro": { "name": "Gastronomy", "items": ["Offline local restaurant guide", "Food vocabulary in local language (allergens!)", "Small hot sauce bottle if you're a fan", "Notebook for favourite addresses", "Smart-casual outfit (good restaurants refuse shorts)", "Menu translation app"] }
+    },
     "aiTipFallbackTitle": "AI tip",
     "aiTips": {
       "minimaliste": { "title": "Light bag, light mind 🎒", "tip": "Stick to 5 tops and 2 bottoms that all mix — you can build 10 outfits without bulk. Roll instead of folding, and keep a pouch for dirty laundry." },
@@ -1843,6 +1853,7 @@
       }
     },
     "aiTipAnalyzing": "Xplania AI is analyzing and adapting your list…",
+    "aiTipRegenerate": "New tip",
     "genTitle": "AI generation in progress…",
     "genDone": "Done",
     "genSteps": {

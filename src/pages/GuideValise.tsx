@@ -458,7 +458,7 @@ const GuideValisePage = () => {
             suggestedMode={suggestedMode}
             isLoading={isSwitchingMode}
           />
-          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} />
+          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} destination={destination} />
         </div>
 
         {/* Dashboard checklist cards */}

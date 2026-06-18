@@ -12,47 +12,17 @@ interface ActivityItemsProps {
   onAddToChecklist?: (items: string[]) => void;
 }
 
-const activityData: Record<string, { icon: React.ReactNode; items: string[]; color: string }> = {
-  "Randonnée": {
-    icon: <Mountain className="w-5 h-5" />,
-    color: "from-green-500/20 to-emerald-500/10",
-    items: ["Chaussures de randonnée", "Sac à dos étanche", "Gourde réutilisable", "Bâtons de marche", "Lampe frontale", "Couverture de survie"],
-  },
-  "Plage": {
-    icon: <Umbrella className="w-5 h-5" />,
-    color: "from-cyan-500/20 to-blue-500/10",
-    items: ["Maillot de bain (×2)", "Serviette microfibre", "Tongs / sandales", "Lunettes UV catégorie 3+", "Chapeau de plage", "Sac étanche téléphone"],
-  },
-  "Ville": {
-    icon: <Compass className="w-5 h-5" />,
-    color: "from-violet-500/20 to-purple-500/10",
-    items: ["Chaussures de marche confortables", "Sac bandoulière anti-vol", "Bouteille d'eau portable", "Plan / carte hors-ligne", "Batterie externe"],
-  },
-  "Photo / Création": {
-    icon: <Camera className="w-5 h-5" />,
-    color: "from-orange-500/20 to-amber-500/10",
-    items: ["Appareil photo + objectifs", "Batteries supplémentaires (×3)", "Cartes mémoire (128Go+)", "Trépied léger", "Filtre ND / polarisant", "Housse pluie objectif"],
-  },
-  "Business": {
-    icon: <Briefcase className="w-5 h-5" />,
-    color: "from-slate-500/20 to-gray-500/10",
-    items: ["Tenue formelle complète", "Chaussures élégantes", "Ordinateur portable + chargeur", "Pochette à documents", "Cravate / accessoire formel", "Stylo premium"],
-  },
-  "Road trip": {
-    icon: <Car className="w-5 h-5" />,
-    color: "from-rose-500/20 to-pink-500/10",
-    items: ["Snacks et boissons", "Kit de premiers secours", "Adaptateurs allume-cigare", "Couverture de voyage", "Oreiller de voyage", "Câble AUX / Bluetooth"],
-  },
-  "Sport / Fitness": {
-    icon: <Dumbbell className="w-5 h-5" />,
-    color: "from-red-500/20 to-orange-500/10",
-    items: ["Tenue de sport", "Baskets running", "Bandes élastiques", "Gourde sport", "Écouteurs sport"],
-  },
-  "Gastronomie": {
-    icon: <Utensils className="w-5 h-5" />,
-    color: "from-amber-500/20 to-yellow-500/10",
-    items: ["Carnet de notes", "Médicaments digestion", "Guide culinaire local", "Sac isotherme (pour ramener)"],
-  },
+type ActivityKey = "hiking" | "beach" | "city" | "photo" | "business" | "roadtrip" | "sport" | "gastro";
+
+const activityMeta: Record<ActivityKey, { icon: React.ReactNode; color: string; matchers: string[] }> = {
+  hiking:   { icon: <Mountain className="w-5 h-5" />,  color: "from-green-500/20 to-emerald-500/10",  matchers: ["rando", "nature", "trek", "hik", "mountain"] },
+  beach:    { icon: <Umbrella className="w-5 h-5" />,  color: "from-cyan-500/20 to-blue-500/10",      matchers: ["plage", "mer", "soleil", "repos", "beach", "swim"] },
+  city:     { icon: <Compass className="w-5 h-5" />,   color: "from-violet-500/20 to-purple-500/10",  matchers: ["ville", "culture", "musée", "découvrir", "city", "museum"] },
+  photo:    { icon: <Camera className="w-5 h-5" />,    color: "from-orange-500/20 to-amber-500/10",   matchers: ["photo", "créat", "creat"] },
+  business: { icon: <Briefcase className="w-5 h-5" />, color: "from-slate-500/20 to-gray-500/10",     matchers: ["business", "travail", "professionnel", "work"] },
+  roadtrip: { icon: <Car className="w-5 h-5" />,       color: "from-rose-500/20 to-pink-500/10",      matchers: ["road", "voiture", "car"] },
+  sport:    { icon: <Dumbbell className="w-5 h-5" />,  color: "from-red-500/20 to-orange-500/10",     matchers: ["sport", "fitness"] },
+  gastro:   { icon: <Utensils className="w-5 h-5" />,  color: "from-amber-500/20 to-yellow-500/10",   matchers: ["gastro", "cuisine", "restaurant", "food"] },
 };
 
 const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => {
@@ -60,32 +30,35 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
   const [addedActivities, setAddedActivities] = useState<Set<string>>(new Set());
   const [expandedActivity, setExpandedActivity] = useState<string | null>(null);
 
+  // Build localized activities array from i18n + meta
+  const activities = (Object.keys(activityMeta) as ActivityKey[]).map((key) => {
+    const meta = activityMeta[key];
+    const name = t(`valise.activityCategories.${key}.name`);
+    const items = t(`valise.activityCategories.${key}.items`, { returnObjects: true }) as string[];
+    return { key, name, items: Array.isArray(items) ? items : [], ...meta };
+  });
+
   // Highlight activities matching user objectives
-  const highlighted = new Set<string>();
+  const highlighted = new Set<ActivityKey>();
   if (objectives) {
     for (const obj of objectives) {
       const lower = obj.toLowerCase();
-      if (lower.includes("rando") || lower.includes("nature") || lower.includes("trek") || lower.includes("hik")) highlighted.add("Randonnée");
-      if (lower.includes("plage") || lower.includes("mer") || lower.includes("soleil") || lower.includes("repos") || lower.includes("beach")) highlighted.add("Plage");
-      if (lower.includes("ville") || lower.includes("culture") || lower.includes("musée") || lower.includes("découvrir") || lower.includes("city") || lower.includes("museum")) highlighted.add("Ville");
-      if (lower.includes("photo") || lower.includes("créat") || lower.includes("creat")) highlighted.add("Photo / Création");
-      if (lower.includes("business") || lower.includes("travail") || lower.includes("professionnel") || lower.includes("work")) highlighted.add("Business");
-      if (lower.includes("road") || lower.includes("voiture") || lower.includes("car")) highlighted.add("Road trip");
-      if (lower.includes("sport") || lower.includes("fitness")) highlighted.add("Sport / Fitness");
-      if (lower.includes("gastro") || lower.includes("cuisine") || lower.includes("restaurant") || lower.includes("food")) highlighted.add("Gastronomie");
+      for (const a of activities) {
+        if (a.matchers.some((m) => lower.includes(m))) highlighted.add(a.key);
+      }
     }
   }
 
-  const sortedActivities = Object.entries(activityData).sort(([a], [b]) => {
-    const aH = highlighted.has(a) ? -1 : 0;
-    const bH = highlighted.has(b) ? -1 : 0;
+  const sortedActivities = [...activities].sort((a, b) => {
+    const aH = highlighted.has(a.key) ? -1 : 0;
+    const bH = highlighted.has(b.key) ? -1 : 0;
     return aH - bH;
   });
 
-  const handleAddAll = (activity: string, items: string[]) => {
-    setAddedActivities((p) => new Set(p).add(activity));
+  const handleAddAll = (activityName: string, key: ActivityKey, items: string[]) => {
+    setAddedActivities((p) => new Set(p).add(key));
     onAddToChecklist?.(items);
-    toast.success(t("valise.activitiesToastAdded", { count: items.length }), { description: activity });
+    toast.success(t("valise.activitiesToastAdded", { count: items.length }), { description: activityName });
   };
 
   return (
@@ -106,14 +79,14 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
       <p className="text-xs text-muted-foreground mb-4">{t("valise.activitiesSubtitle")}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {sortedActivities.map(([activity, { icon, items, color }]) => {
-          const isHighlighted = highlighted.has(activity);
-          const isAdded = addedActivities.has(activity);
-          const isExpanded = expandedActivity === activity;
+        {sortedActivities.map(({ key, name: activity, items, icon, color }) => {
+          const isHighlighted = highlighted.has(key);
+          const isAdded = addedActivities.has(key);
+          const isExpanded = expandedActivity === key;
 
           return (
             <motion.div
-              key={activity}
+              key={key}
               layout
               whileHover={{ scale: 1.01 }}
               className={`rounded-xl overflow-hidden border transition-colors ${
@@ -123,7 +96,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
               }`}
             >
               <button
-                onClick={() => setExpandedActivity(isExpanded ? null : activity)}
+                onClick={() => setExpandedActivity(isExpanded ? null : key)}
                 className="w-full p-4 flex items-center justify-between text-left"
               >
                 <div className="flex items-center gap-3">
@@ -169,7 +142,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
                         <motion.button
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          onClick={() => handleAddAll(activity, items)}
+                          onClick={() => handleAddAll(activity, key, items)}
                           className="mt-2 flex items-center gap-1.5 text-xs text-primary font-medium hover:text-primary/80 transition-colors"
                         >
                           <Plus className="w-3.5 h-3.5" />
