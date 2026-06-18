@@ -1718,7 +1718,8 @@
         "indicator": "You're offline — your questions are saved and will be sent as soon as you're back online.",
         "short": "Offline",
         "queued": "📡 You're offline. I've queued your question and will answer as soon as the connection is back.",
-        "replaying": "Sending… ({{count}} pending)"
+        "replaying": "Sending… ({{count}} pending)",
+        "retryNow": "Retry now"
       },
       "placeholder": "Ask me anything about packing…",
       "qaEmpty": "Ask me anything — packing, weather, outfits, culture, solo safety… I've got you 🎒",
