@@ -93,18 +93,14 @@ const OutfitRecommendations = ({ tripType, destination }: OutfitRecommendationsP
                 whileTap={{ scale: 0.98 }}
                 className="glass-card rounded-2xl overflow-hidden group text-left cursor-pointer"
               >
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={outfit.imageUrl}
-                    alt={data.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-primary/20 backdrop-blur-md text-primary text-[10px] font-bold uppercase tracking-wider">
+                <div className={`relative h-44 overflow-hidden bg-gradient-to-br ${outfit.gradient} flex items-center justify-center`}>
+                  <span className="text-6xl drop-shadow-lg select-none" aria-hidden="true">
+                    {outfit.emoji}
+                  </span>
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider border border-white/20">
                     {data.badge}
                   </span>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/40 backdrop-blur-sm">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
                     <span className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold">
                       <Eye className="w-3.5 h-3.5" /> {t("valise.outfitsViewDetails")}
                     </span>
