@@ -124,45 +124,74 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
   };
 
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.45 }}
       className="glass-card rounded-2xl p-6"
+      aria-labelledby="cultural-tips-title"
+      aria-busy={isFetching}
     >
       <div className="flex items-start justify-between gap-3 mb-4 flex-wrap">
         <div className="flex items-center gap-3">
-          <Globe className="w-5 h-5 text-primary" />
-          <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+          <Globe className="w-5 h-5 text-primary" aria-hidden="true" />
+          <h3
+            id="cultural-tips-title"
+            className="text-base font-bold text-foreground flex items-center gap-2"
+          >
             {t("valise.culturalTitle", { destination })}
             {aiTips && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/15 text-primary text-[10px] font-semibold">
-                <Sparkles className="w-3 h-3" /> {t("valise.culturalAiBadge")}
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/15 text-primary text-[10px] font-semibold"
+                aria-label={t("valise.culturalAiBadge")}
+              >
+                <Sparkles className="w-3 h-3" aria-hidden="true" /> {t("valise.culturalAiBadge")}
               </span>
             )}
           </h3>
         </div>
         {!isPlaceholderDest && (
           <button
+            type="button"
             onClick={() => fetchTips(true)}
             disabled={isFetching}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/40 hover:bg-muted/60 text-xs font-medium text-foreground transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/40 hover:bg-muted/60 text-xs font-medium text-foreground transition-colors disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             aria-label={t("valise.culturalRegenerate")}
+            aria-controls="cultural-tips-list"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? "animate-spin" : ""}`} />
-            {t("valise.culturalRegenerate")}
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isFetching ? "animate-spin" : ""}`}
+              aria-hidden="true"
+            />
+            <span>{t("valise.culturalRegenerate")}</span>
           </button>
         )}
       </div>
 
+      <p className="sr-only" aria-live="polite" role="status">
+        {isFetching
+          ? t("valise.culturalLoading", { defaultValue: "Loading cultural tips…" })
+          : hadError
+            ? t("valise.culturalError")
+            : aiTips
+              ? t("valise.culturalLoaded", { defaultValue: "Cultural tips updated." })
+              : ""}
+      </p>
+
       {hadError && (
-        <p className="text-xs text-amber-500/90 mb-3">{t("valise.culturalError")}</p>
+        <p className="text-xs text-amber-500/90 mb-3" role="alert">
+          {t("valise.culturalError")}
+        </p>
       )}
 
       {isFetching && !aiTips ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+          role="status"
+          aria-label={t("valise.culturalLoading", { defaultValue: "Loading cultural tips…" })}
+        >
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="p-4 rounded-xl bg-muted/30 space-y-2">
+            <div key={i} className="p-4 rounded-xl bg-muted/30 space-y-2" aria-hidden="true">
               <Skeleton className="h-4 w-2/5" />
               <Skeleton className="h-3 w-full" />
               <Skeleton className="h-3 w-4/5" />
@@ -170,23 +199,40 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <ul
+          id="cultural-tips-list"
+          role="list"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0"
+        >
           {TIP_KEYS.map((key) => {
             const { title, text } = resolveTip(key);
+            const headingId = `cultural-tip-${key}-title`;
             return (
-              <div key={key} className="p-4 rounded-xl bg-muted/30">
+              <li
+                key={key}
+                tabIndex={0}
+                aria-labelledby={headingId}
+                aria-describedby={`${headingId}-desc`}
+                className="p-4 rounded-xl bg-muted/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-primary">{ICONS[key]}</span>
-                  <p className="text-sm font-semibold text-foreground">{title}</p>
+                  <span className="text-primary" aria-hidden="true">{ICONS[key]}</span>
+                  <p id={headingId} className="text-sm font-semibold text-foreground">{title}</p>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{text}</p>
-              </div>
+                <p
+                  id={`${headingId}-desc`}
+                  className="text-xs text-muted-foreground leading-relaxed"
+                >
+                  {text}
+                </p>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
-    </motion.div>
+    </motion.section>
   );
 };
+
 
 export default CulturalTips;
