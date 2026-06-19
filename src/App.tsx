@@ -24,6 +24,7 @@ import ExploreTrip from "./pages/ExploreTrip.tsx";
 import MoodExplorer from "./pages/MoodExplorer.tsx";
 import Discover from "./pages/Discover.tsx";
 import Gamification from "./pages/Gamification.tsx";
+import AdminBadges from "./pages/AdminBadges.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Profil from "./pages/Profil.tsx";
 import Legal from "./pages/Legal.tsx";
