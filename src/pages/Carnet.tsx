@@ -265,9 +265,32 @@ const Carnet = () => {
           onUpdated={refetch}
         />
       )}
+      <SocialShareDialogWrapper
+        open={socialOpen}
+        onOpenChange={setSocialOpen}
+        tripId={tripId!}
+        destination={destination}
+        title={journal.title}
+        day={activeDay}
+      />
       <QuickJump />
     </div>
   );
 };
 
 export default Carnet;
+
+// Small wrapper to inject the journal cover into SocialShareDialog without prop drilling above
+const SocialShareDialogWrapper = ({ open, onOpenChange, tripId, destination, title, day }: any) => {
+  const { cover } = useJournalCover(tripId, destination);
+  return (
+    <SocialShareDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      destination={destination}
+      title={title}
+      cover={cover}
+      day={day}
+    />
+  );
+};
