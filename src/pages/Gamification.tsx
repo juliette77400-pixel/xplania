@@ -21,6 +21,7 @@ import Leaderboard from "@/components/gamification/Leaderboard";
 import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
 import GamCatalog from "@/components/gamification/GamCatalog";
 import MissionsPanel from "@/components/gamification/MissionsPanel";
+import ClaimHistoryPanel from "@/components/gamification/ClaimHistoryPanel";
 import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
 import { differenceInDays, parseISO } from "date-fns";
 
@@ -358,6 +359,9 @@ const GamificationPage = () => {
 
         {/* ══════ MISSIONS PERSONNALISÉES (catalogue Xplania, par catégories préférées) ══════ */}
         <MissionsPanel />
+
+        {/* ══════ HISTORIQUE DES RÉCLAMATIONS ══════ */}
+        <ClaimHistoryPanel />
 
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}

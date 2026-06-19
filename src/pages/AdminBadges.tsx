@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, CheckCircle2, XCircle, MapPin, Image as ImageIcon, FileText, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import VerificationSettingsPanel from "@/components/gamification/VerificationSettingsPanel";
 
 type ClaimRow = {
   id: string;
@@ -146,6 +147,8 @@ export default function AdminBadges() {
             ))}
           </div>
         </div>
+
+        <VerificationSettingsPanel />
 
         {loading ? (
           <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin inline text-primary" /></div>

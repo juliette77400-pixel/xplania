@@ -614,6 +614,39 @@ export type Database = {
         }
         Relationships: []
       }
+      gam_verification_settings: {
+        Row: {
+          ai_auto_reject_threshold: number
+          ai_auto_validate_threshold: number
+          created_at: string
+          exif_auto_validate: boolean
+          force_manual_review: boolean
+          geo_auto_validate: boolean
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          ai_auto_reject_threshold?: number
+          ai_auto_validate_threshold?: number
+          created_at?: string
+          exif_auto_validate?: boolean
+          force_manual_review?: boolean
+          geo_auto_validate?: boolean
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_auto_reject_threshold?: number
+          ai_auto_validate_threshold?: number
+          created_at?: string
+          exif_auto_validate?: boolean
+          force_manual_review?: boolean
+          geo_auto_validate?: boolean
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       journal_badges: {
         Row: {
           code: string
