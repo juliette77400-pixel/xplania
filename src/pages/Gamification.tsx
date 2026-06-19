@@ -22,6 +22,7 @@ import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
 import GamCatalog from "@/components/gamification/GamCatalog";
 import MissionsPanel from "@/components/gamification/MissionsPanel";
 import ClaimHistoryPanel from "@/components/gamification/ClaimHistoryPanel";
+import UserNotificationHistory from "@/components/gamification/UserNotificationHistory";
 import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
 import { differenceInDays, parseISO } from "date-fns";
 
@@ -362,6 +363,9 @@ const GamificationPage = () => {
 
         {/* ══════ HISTORIQUE DES RÉCLAMATIONS ══════ */}
         <ClaimHistoryPanel />
+
+        {/* ══════ HISTORIQUE DES NOTIFICATIONS ══════ */}
+        <UserNotificationHistory />
 
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
