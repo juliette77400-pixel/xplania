@@ -1569,7 +1569,55 @@
     "day": "Day {{n}}",
     "memoryOne": "{{n}} memory",
     "memoryMany": "{{n}} memories",
-    "tabPages": "Pages"
+    "tabPages": "Pages",
+    "onboarding": {
+      "title": "Pip, your journal companion",
+      "welcome": "Hey! Your {{destination}} journal ({{days}} days) is ready to fill in. 📖✨",
+      "question": "Want me to walk you through the pages and features?",
+      "yes": "Yes, show me",
+      "no": "I'll explore on my own",
+      "focus": {
+        "timeline": "Pages",
+        "story": "AI Story",
+        "insights": "Stats",
+        "docs": "Docs",
+        "share": "Share"
+      },
+      "sectionLabel": {
+        "timeline": "Journal pages",
+        "story": "AI Story",
+        "insights": "Stats & badges",
+        "docs": "Documents",
+        "share": "Share & export"
+      },
+      "sectionHelp": {
+        "timeline": "You're on the chronological pages. Pick a day on the left, then add blocks: note, photo, location, mood, audio, highlight. The more you log, the richer your {{destination}} journal becomes.",
+        "story": "Here the AI turns your blocks into a real travel story. Pick a tone, let the AI choose, or use \"My Style\" to mimic your own voice.",
+        "insights": "Your {{destination}} stats and badges: top locations, dominant moods, happiest day. Add more blocks to unlock more badges.",
+        "docs": "Pin tickets, PDFs and receipts to a specific day. Everything stays where it belongs, when you need it.",
+        "share": "Turn on the public link, generate 1080×1920 Instagram cards, or export your journal to PDF to keep it forever."
+      }
+    },
+    "qa": {
+      "askButton": "Ask a question",
+      "backToGuide": "Back to guide",
+      "placeholder": "Ask anything about your journal…",
+      "send": "Send",
+      "loading": "Pip is thinking…",
+      "greeting": "Hey {{name}}! 👋 I'm Pip, your journal companion for {{destination}}. Want memory ideas, help generating your story, or stuck on a feature? I've got you.",
+      "greetingNoName": "Hey! 👋 I'm Pip, your journal companion for {{destination}}. Want memory ideas, help generating your story, or stuck on a feature? I've got you.",
+      "greetings": [
+        "Hey {{name}}! 📖 Pip here. Ready to bring your {{destination}} journal to life? Ask me anything.",
+        "Hi {{name}}! ✨ I'm Pip, your journal buddy. Not sure what to log today for {{destination}}? I'll help.",
+        "Hello {{name}} 🌍 Pip speaking. Question on your story, photos, or sharing? Lay it on me.",
+        "Yo {{name}}! 😎 Pip here. Let's make your {{destination}} journal unforgettable together.",
+        "Hey there {{name}}! 👋 Pip's in. Block ideas, writing prompts, PDF export — just ask."
+      ],
+      "emptyState": "Ask anything about your {{destination}} journal — what to log, how to generate your story, how to share, how to pin a document… I know your journal inside out.",
+      "errorAnswer": "I couldn't answer right now. Please try again in a moment.",
+      "expand": "Expand",
+      "collapse": "Collapse"
+    }
   },
   "suivi": {
     "title": "Trip Tracking",
