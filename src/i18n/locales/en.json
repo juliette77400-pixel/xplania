@@ -2733,6 +2733,28 @@
       "privateDesc": "No leaderboard shown, only your own progress.",
       "saved": "Mode saved ✓",
       "saveError": "Couldn't save."
+    },
+    "notifications": {
+      "title": "My notification history",
+      "subtitle": "Every notification sent when your badge claims are reviewed.",
+      "date": "Date",
+      "channelHeader": "Channel",
+      "transition": "Transition",
+      "statusHeader": "Status",
+      "details": "Details",
+      "empty": "No notifications recorded.",
+      "channel": {
+        "all": "All channels",
+        "in_app": "In-app",
+        "email": "Email"
+      },
+      "status": {
+        "all": "All statuses",
+        "sent": "Sent",
+        "skipped": "Skipped",
+        "queued": "Queued",
+        "error": "Error"
+      }
     }
   },
   "discoverComp": {
