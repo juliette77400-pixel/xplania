@@ -15,13 +15,12 @@ type ClaimRow = {
   user_id: string;
   badge_id: string;
   status: "in_progress" | "submitted" | "validated" | "rejected";
-  proof_method: "geo" | "photo" | "ticket" | "manual" | null;
-  proof_lat: number | null;
-  proof_lng: number | null;
-  proof_photo_url: string | null;
-  proof_ticket_url: string | null;
-  ai_verdict: any;
-  notes: string | null;
+  proof_type: string | null;
+  proof_url: string | null;
+  geo_lat: number | null;
+  geo_lng: number | null;
+  ai_analysis: any;
+  review_reason: string | null;
   submitted_at: string | null;
   created_at: string;
   gam_badges?: { name_fr: string; name_en: string; points: number; category_id: string };
@@ -36,9 +35,8 @@ export default function AdminBadges() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"submitted" | "validated" | "rejected" | "all">("submitted");
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
-  const [notesDraft, setNotesDraft] = useState<Record<string, string>>({});
+  const [reasonDraft, setReasonDraft] = useState<Record<string, string>>({});
 
-  // Check admin role
   useEffect(() => {
     if (!user) return;
     supabase
@@ -57,7 +55,7 @@ export default function AdminBadges() {
       .select("*, gam_badges(name_fr,name_en,points,category_id)")
       .order("submitted_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false });
-    if (filter !== "all") q = q.eq("status", filter);
+    if (filter !== "all") q = q.eq("status", filter as any);
     const { data, error } = await q;
     if (error) {
       toast.error(error.message);
@@ -65,7 +63,6 @@ export default function AdminBadges() {
       return;
     }
     const rows = (data || []) as any as ClaimRow[];
-    // Resolve display names
     const userIds = Array.from(new Set(rows.map((r) => r.user_id)));
     if (userIds.length) {
       const { data: profs } = await supabase
@@ -76,14 +73,11 @@ export default function AdminBadges() {
       rows.forEach((r) => (r.profiles = { display_name: map.get(r.user_id) ?? null }));
     }
     setClaims(rows);
-    // Sign storage urls
     const urls: Record<string, string> = {};
     for (const r of rows) {
-      for (const path of [r.proof_photo_url, r.proof_ticket_url]) {
-        if (path && !urls[path]) {
-          const { data: s } = await supabase.storage.from("badge-proofs").createSignedUrl(path, 600);
-          if (s?.signedUrl) urls[path] = s.signedUrl;
-        }
+      if (r.proof_url && !urls[r.proof_url]) {
+        const { data: s } = await supabase.storage.from("badge-proofs").createSignedUrl(r.proof_url, 600);
+        if (s?.signedUrl) urls[r.proof_url] = s.signedUrl;
       }
     }
     setSignedUrls(urls);
@@ -96,14 +90,14 @@ export default function AdminBadges() {
   }, [isAdmin, filter]);
 
   const decide = async (claim: ClaimRow, status: "validated" | "rejected") => {
-    const notes = notesDraft[claim.id] ?? claim.notes ?? "";
+    const reason = reasonDraft[claim.id] ?? claim.review_reason ?? "";
     const { error } = await supabase
       .from("gam_badge_claims")
       .update({
         status,
-        notes,
-        validated_at: status === "validated" ? new Date().toISOString() : null,
-        validator_id: user!.id,
+        review_reason: reason || null,
+        reviewed_at: new Date().toISOString(),
+        reviewed_by: user!.id,
       })
       .eq("id", claim.id);
     if (error) return toast.error(error.message);
@@ -144,7 +138,7 @@ export default function AdminBadges() {
             <h1 className="text-2xl font-bold">Validation des badges</h1>
             <p className="text-sm text-muted-foreground">Modère les réclamations soumises par les voyageurs.</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {(["submitted", "validated", "rejected", "all"] as const).map((f) => (
               <Button key={f} size="sm" variant={filter === f ? "default" : "outline"} onClick={() => setFilter(f)}>
                 {f === "submitted" ? "En attente" : f === "validated" ? "Validés" : f === "rejected" ? "Rejetés" : "Tous"}
@@ -175,47 +169,42 @@ export default function AdminBadges() {
                   </Badge>
                 </div>
 
-                <div className="text-xs text-muted-foreground flex items-center gap-2">
-                  {c.proof_method === "geo" && <MapPin className="w-3.5 h-3.5" />}
-                  {c.proof_method === "photo" && <ImageIcon className="w-3.5 h-3.5" />}
-                  {c.proof_method === "ticket" && <FileText className="w-3.5 h-3.5" />}
-                  Méthode : <span className="text-foreground font-medium">{c.proof_method ?? "—"}</span>
+                <div className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                  {c.proof_type === "geo" && <MapPin className="w-3.5 h-3.5" />}
+                  {c.proof_type === "photo" && <ImageIcon className="w-3.5 h-3.5" />}
+                  {c.proof_type === "ticket" && <FileText className="w-3.5 h-3.5" />}
+                  Méthode : <span className="text-foreground font-medium">{c.proof_type ?? "—"}</span>
                   {c.submitted_at && <> · Soumis {new Date(c.submitted_at).toLocaleDateString()}</>}
                 </div>
 
-                {c.proof_lat !== null && c.proof_lng !== null && (
+                {c.geo_lat !== null && c.geo_lng !== null && (
                   <a
-                    href={`https://www.openstreetmap.org/?mlat=${c.proof_lat}&mlon=${c.proof_lng}#map=16/${c.proof_lat}/${c.proof_lng}`}
+                    href={`https://www.openstreetmap.org/?mlat=${c.geo_lat}&mlon=${c.geo_lng}#map=16/${c.geo_lat}/${c.geo_lng}`}
                     target="_blank"
                     rel="noreferrer"
                     className="text-xs text-primary hover:underline inline-flex items-center gap-1"
                   >
                     <MapPin className="w-3 h-3" />
-                    {c.proof_lat.toFixed(5)}, {c.proof_lng.toFixed(5)} ↗
+                    {c.geo_lat.toFixed(5)}, {c.geo_lng.toFixed(5)} ↗
                   </a>
                 )}
 
-                {c.proof_photo_url && signedUrls[c.proof_photo_url] && (
-                  <a href={signedUrls[c.proof_photo_url]} target="_blank" rel="noreferrer" className="block">
-                    <img src={signedUrls[c.proof_photo_url]} alt="Preuve photo" className="rounded-lg border border-border max-h-48 object-cover w-full" />
-                  </a>
-                )}
-                {c.proof_ticket_url && signedUrls[c.proof_ticket_url] && (
-                  <a href={signedUrls[c.proof_ticket_url]} target="_blank" rel="noreferrer" className="block">
-                    <img src={signedUrls[c.proof_ticket_url]} alt="Preuve ticket" className="rounded-lg border border-border max-h-48 object-cover w-full" />
+                {c.proof_url && signedUrls[c.proof_url] && (
+                  <a href={signedUrls[c.proof_url]} target="_blank" rel="noreferrer" className="block">
+                    <img src={signedUrls[c.proof_url]} alt="Preuve" className="rounded-lg border border-border max-h-48 object-cover w-full" />
                   </a>
                 )}
 
-                {c.ai_verdict && (
+                {c.ai_analysis && (
                   <pre className="text-[10px] bg-muted/40 rounded p-2 overflow-x-auto max-h-32">
-                    {JSON.stringify(c.ai_verdict, null, 2)}
+                    {JSON.stringify(c.ai_analysis, null, 2)}
                   </pre>
                 )}
 
                 <Textarea
-                  placeholder="Notes de modération (optionnel)"
-                  value={notesDraft[c.id] ?? c.notes ?? ""}
-                  onChange={(e) => setNotesDraft((p) => ({ ...p, [c.id]: e.target.value }))}
+                  placeholder="Motif de validation/rejet (optionnel)"
+                  value={reasonDraft[c.id] ?? c.review_reason ?? ""}
+                  onChange={(e) => setReasonDraft((p) => ({ ...p, [c.id]: e.target.value }))}
                   className="text-xs min-h-[60px]"
                 />
 
