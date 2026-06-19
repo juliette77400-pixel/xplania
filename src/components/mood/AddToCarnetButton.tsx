@@ -132,6 +132,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
         type: "mood",
         position: count ?? 0,
         content: {
+          title,
           mood,
           mood_label: m?.label ?? null,
           mood_emoji: m?.emoji ?? null,
@@ -143,7 +144,15 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
       });
       if (bErr) throw bErr;
 
-      toast.success(t("moodComp.carnet.success"));
+      const trip = trips.find((tr) => tr.id === tripId);
+      toast.success(
+        t("moodComp.carnet.successDetail", {
+          destination: trip?.destination || trip?.title || t("moodComp.carnet.journalFallback"),
+          emoji: m?.emoji ?? "🎭",
+          mood: m?.label ?? mood ?? "",
+          count: placesCount,
+        })
+      );
       setOpen(false);
     } catch (e: any) {
       console.error(e);
