@@ -287,6 +287,7 @@ const CarnetOnboardingChat = ({
         const { error } = await supabase.from("journal_blocks").insert({
           day_id: targetDay.id,
           journal_id: journalId,
+          user_id: user.id,
           type: "note",
           content: { text: content },
           position: nextPos,
