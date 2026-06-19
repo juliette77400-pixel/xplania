@@ -606,18 +606,51 @@ const CarnetOnboardingChat = ({
                   >
                     {m.content}
                   </div>
-                  {m.role === "assistant" && i > 0 && (
+                  {m.role === "assistant" && i > 0 && previewIdx !== i && (
                     <button
-                      onClick={() => handleInsert(i, m.content)}
+                      onClick={() => { setPreviewIdx(i); setPreviewContent(m.content); }}
                       disabled={insertingIdx === i}
                       className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50"
                       title={t("carnet.qa.insertHint")}
                     >
-                      {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
-                      {activeSection === "story"
-                        ? t("carnet.qa.insertStory")
-                        : t("carnet.qa.insertNote", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                      <Pencil className="w-3 h-3" />
+                      {t("carnet.qa.previewInsert")}
                     </button>
+                  )}
+                  {m.role === "assistant" && previewIdx === i && (
+                    <div className="mt-2 w-full max-w-[95%] rounded-lg border border-primary/30 bg-background/60 p-2 space-y-2">
+                      <div className="text-[10px] font-semibold text-primary uppercase tracking-wide">
+                        {t("carnet.qa.previewTitle", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                      </div>
+                      <textarea
+                        value={previewContent}
+                        onChange={(e) => setPreviewContent(e.target.value)}
+                        rows={Math.min(10, Math.max(3, previewContent.split("\n").length + 1))}
+                        className="w-full text-sm rounded-md bg-muted/40 px-2 py-1.5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      />
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => { setPreviewIdx(null); setPreviewContent(""); }}
+                          className="text-[11px] font-semibold px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-foreground"
+                        >
+                          {t("carnet.qa.previewCancel")}
+                        </button>
+                        <button
+                          onClick={async () => {
+                            await handleInsert(i, previewContent);
+                            setPreviewIdx(null);
+                            setPreviewContent("");
+                          }}
+                          disabled={insertingIdx === i || !previewContent.trim()}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-md gradient-button text-primary-foreground disabled:opacity-50"
+                        >
+                          {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+                          {activeSection === "story"
+                            ? t("carnet.qa.insertStory")
+                            : t("carnet.qa.insertNote", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               ))}
