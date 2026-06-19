@@ -2685,6 +2685,56 @@
     "statsXp": "Est. XP",
     "statsXpShort": "XP"
   },
+  "gam": {
+    "catalog": {
+      "title": "Xplania Catalog",
+      "subtitle": "260 badges to unlock by proving your adventures (geo, photo or ticket).",
+      "all": "All",
+      "points": "{{n}} validated points",
+      "validated": "{{n}} validated",
+      "pending": "{{n}} pending",
+      "empty": "No badges in this category.",
+      "noPrefsTitle": "No category selected",
+      "noPrefsDesc": "Pick your interests in your profile to personalize your collection. For now, you see all badges."
+    },
+    "claim": {
+      "chooseProof": "How do you want to prove this mission?",
+      "proofGeo": "Geo check-in",
+      "proofGeoDesc": "We verify you're on site.",
+      "proofPhoto": "Photo proof",
+      "proofPhotoDesc": "Take a picture on site.",
+      "proofTicket": "Ticket or receipt",
+      "proofTicketDesc": "We analyze your ticket with AI.",
+      "uploadLabel": "Pick or take a photo",
+      "submit": "Submit my proof",
+      "submitted": "Proof sent — waiting for validation 🚀",
+      "validated": "Badge already validated ✓",
+      "pending": "Your proof is being reviewed. You'll be notified once validated.",
+      "rejected": "Proof rejected",
+      "geoFailed": "Couldn't get your position. Try with a photo.",
+      "photoRequired": "Please add a photo to submit.",
+      "error": "Something went wrong."
+    },
+    "prefs": {
+      "title": "My interests",
+      "subtitle": "Pick badge categories that inspire you. You can change anytime.",
+      "selected": "{{n}} category(ies) selected",
+      "saved": "Preferences saved ✓",
+      "saveError": "Couldn't save."
+    },
+    "visibility": {
+      "title": "Competition mode",
+      "subtitle": "Choose how you appear in the Globe Trotter leaderboard.",
+      "public": "Public",
+      "publicDesc": "You see and are visible with your name and avatar.",
+      "anonymized": "Anonymized",
+      "anonymizedDesc": "You see your rank, but other travelers are anonymous — and so are you.",
+      "private": "Private / Solo",
+      "privateDesc": "No leaderboard shown, only your own progress.",
+      "saved": "Mode saved ✓",
+      "saveError": "Couldn't save."
+    }
+  },
   "discoverComp": {
     "kicker": "Discover",
     "tod": {
