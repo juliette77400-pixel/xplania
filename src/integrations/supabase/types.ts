@@ -535,6 +535,7 @@ export type Database = {
           id: string
           scope: Database["public"]["Enums"]["gam_mission_scope"]
           start_date: string
+          user_id: string | null
         }
         Insert: {
           active?: boolean
@@ -544,6 +545,7 @@ export type Database = {
           id?: string
           scope: Database["public"]["Enums"]["gam_mission_scope"]
           start_date?: string
+          user_id?: string | null
         }
         Update: {
           active?: boolean
@@ -553,6 +555,7 @@ export type Database = {
           id?: string
           scope?: Database["public"]["Enums"]["gam_mission_scope"]
           start_date?: string
+          user_id?: string | null
         }
         Relationships: [
           {

@@ -70,8 +70,16 @@ const BadgeClaimDialog = ({ badge, open, onOpenChange }: Props) => {
         proof_url = path;
       }
 
-      await submitClaim(badge.id, { proof_type: proofType, proof_url, geo_lat, geo_lng });
-      toast.success(t("gam.claim.submitted"));
+      const created = await submitClaim(badge.id, { proof_type: proofType, proof_url, geo_lat, geo_lng });
+      // Fire-and-await automatic verification (geo → EXIF → AI). Soft-fail: claim stays "submitted" for admin review.
+      try {
+        const { data: vr } = await supabase.functions.invoke("gam-verify-claim", { body: { claim_id: created.id } });
+        if (vr?.status === "validated") toast.success(t("gam.claim.autoValidated", { defaultValue: "Badge validé automatiquement 🎉" }));
+        else if (vr?.status === "rejected") toast.error(t("gam.claim.autoRejected", { defaultValue: "Preuve insuffisante — réessaie avec une meilleure preuve." }));
+        else toast.success(t("gam.claim.submitted"));
+      } catch {
+        toast.success(t("gam.claim.submitted"));
+      }
       await refetch();
       onOpenChange(false);
       setPhoto(null);
