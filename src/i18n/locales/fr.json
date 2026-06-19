@@ -3118,12 +3118,16 @@
       "dialogTitle": "Ajouter au carnet de bord",
       "dialogDesc": "Note ce moment dans un de tes voyages.",
       "pickTrip": "Choisis un voyage",
+      "title": "Titre",
+      "titlePh": "ex: 🌿 Chill à Lisbonne",
       "note": "Note",
       "prefillIntro": "Moment {{mood}} — Mood Explorer",
       "cancel": "Annuler",
       "save": "Enregistrer",
       "saving": "Enregistrement…",
       "success": "Ajouté au carnet ✨",
+      "successDetail": "Ajouté au carnet de {{destination}} : {{emoji}} {{mood}} ({{count}} lieux)",
+      "journalFallback": "carnet",
       "error": "Impossible d'ajouter au carnet",
       "noTrips": "Crée un voyage pour utiliser cette fonction."
     }
