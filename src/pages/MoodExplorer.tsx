@@ -93,7 +93,41 @@ const MoodExplorer = () => {
 
         {!activeMood || places.length === 0 ? (
           <div className="grid md:grid-cols-[1fr_320px] gap-6">
-            <MoodSelector loading={loading} onSubmit={guardedRecommend} />
+            <div className="space-y-6">
+              {mode === "entry" && (
+                <MoodEntryCards
+                  disabled={loading}
+                  onPickPip={() => setMode("pip")}
+                  onPickForm={() => setMode("form")}
+                  onPickSolo={() =>
+                    guardedRecommend({
+                      mood: "chill",
+                      free_input:
+                        "Solo walk near me, calm, about 1h, walking distance",
+                      energy_level: 25,
+                    })
+                  }
+                />
+              )}
+              {mode === "pip" && (
+                <MoodPipChat
+                  loading={loading}
+                  onClose={() => setMode("entry")}
+                  onSubmit={guardedRecommend}
+                />
+              )}
+              {mode === "form" && (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setMode("entry")}
+                    className="text-xs text-muted-foreground hover:text-primary underline-offset-4 hover:underline"
+                  >
+                    ← {t("moodComp.entry.title")}
+                  </button>
+                  <MoodSelector loading={loading} onSubmit={guardedRecommend} />
+                </div>
+              )}
+            </div>
             <aside className="space-y-6">
               <PopularMoods onSelectMood={(m) => guardedRecommend({ mood: m as any })} />
               <MoodBadgesPanel badges={badges} context={{ ...badgeContext, reactionsCount }} />
