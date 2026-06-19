@@ -499,6 +499,23 @@ const CarnetOnboardingChat = ({
 
         {mode === "qa" && (
           <>
+            {showContext && (
+              <div className="border-b border-border/40 bg-muted/30 px-3 py-2 text-[11px] text-foreground space-y-1">
+                <div className="flex items-center gap-1.5 font-semibold text-primary">
+                  <Info className="w-3 h-3" /> {t("carnet.qa.contextTitle")}
+                </div>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-muted-foreground">
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxDestination")}:</span> {destination || "—"}</div>
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxTab")}:</span> {t(`carnet.onboarding.focus.${activeSection}`)}</div>
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxDays")}:</span> {ctx.filledDays}/{days.length}</div>
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxBlocks")}:</span> {ctx.totalBlocks}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxActiveDay")}:</span> {activeDay ? `${formatDayLabel(activeDay.date)} (${activeDay.blocks?.length || 0})` : "—"}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxTypes")}:</span> {Object.entries(ctx.blocksByType).map(([k,v])=>`${k}:${v}`).join(", ") || "—"}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxLocations")}:</span> {ctx.locations.slice(0,6).join(", ") || "—"}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxMoods")}:</span> {ctx.moods.slice(-6).join(", ") || "—"}</div>
+                </div>
+              </div>
+            )}
             <div
               ref={scrollerRef}
               className="flex-1 overflow-y-auto p-3 space-y-2 min-h-[180px]"
@@ -509,11 +526,25 @@ const CarnetOnboardingChat = ({
                 </div>
               )}
               {qaHistory.map((m, i) => (
-                <div
-                  key={i}
-                  className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[90%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}
-                >
-                  {m.content}
+                <div key={i} className={`flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}>
+                  <div
+                    className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[90%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground" : "bg-muted/50 text-foreground"}`}
+                  >
+                    {m.content}
+                  </div>
+                  {m.role === "assistant" && i > 0 && (
+                    <button
+                      onClick={() => handleInsert(i, m.content)}
+                      disabled={insertingIdx === i}
+                      className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50"
+                      title={t("carnet.qa.insertHint")}
+                    >
+                      {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+                      {activeSection === "story"
+                        ? t("carnet.qa.insertStory")
+                        : t("carnet.qa.insertNote", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                    </button>
+                  )}
                 </div>
               ))}
               {qaLoading && (
@@ -523,6 +554,7 @@ const CarnetOnboardingChat = ({
                 </div>
               )}
             </div>
+
 
             <form
               onSubmit={(e) => { e.preventDefault(); askQuestion(); }}
