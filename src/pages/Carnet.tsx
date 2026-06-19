@@ -311,6 +311,19 @@ const Carnet = () => {
         title={journal.title}
         day={activeDay}
       />
+      <CarnetOnboardingChat
+        tripId={tripId!}
+        destination={destination}
+        days={days}
+        activeSection={activeTab}
+        activeDay={activeDay}
+        hasStory={false}
+        isPublic={!!journal?.is_public}
+        tripEnded={isTripEnded}
+        departureDate={tripMeta?.departure_date || null}
+        returnDate={tripMeta?.return_date || null}
+        onSuggestFocus={(s) => setActiveTab(s)}
+      />
       <QuickJump />
     </div>
   );
