@@ -112,13 +112,24 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
           placeholder={t("j2.giveDayTitle")}
           className="mt-1 text-2xl font-bold border-0 bg-transparent px-0 focus-visible:ring-0 text-foreground"
         />
-        {day.weather && (
-          <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-            <Cloud className="w-3 h-3" />
-            {(day.weather.condition || "")} {day.weather.temp ? `· ${day.weather.temp}°C` : ""}
-          </div>
-        )}
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          {day.weather ? (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Cloud className="w-3 h-3" />
+              {(day.weather.condition || "")} {day.weather.temp ? `· ${day.weather.temp}°C` : ""}
+            </div>
+          ) : (
+            <Button size="sm" variant="ghost" className="text-xs h-7" onClick={fetchWeather} disabled={weatherLoading}>
+              {weatherLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <CloudSun className="w-3 h-3" />}
+              {t("j2.weatherBtn")}
+            </Button>
+          )}
+          <Button size="sm" variant="ghost" className="text-xs h-7" onClick={fillLocation}>
+            <MapPin className="w-3 h-3" /> {t("j2.locationBtn")}
+          </Button>
+        </div>
       </div>
+
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <AnimatePresence>
@@ -138,7 +149,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="absolute top-full mt-2 left-0 right-0 grid grid-cols-2 sm:grid-cols-5 gap-2 glass-card rounded-xl p-3 z-20"
+              className="absolute top-full mt-2 left-0 right-0 grid grid-cols-2 sm:grid-cols-6 gap-2 glass-card rounded-xl p-3 z-20"
             >
               {BLOCK_TYPES.map((b) => (
                 <button
