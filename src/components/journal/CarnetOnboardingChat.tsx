@@ -13,7 +13,14 @@ import {
   Minimize2,
   Send,
   X,
+  Info,
+  Plus,
+  FileDown,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import jsPDF from "jspdf";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { JournalDay } from "@/hooks/useJournal";
