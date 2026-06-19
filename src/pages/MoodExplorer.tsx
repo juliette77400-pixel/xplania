@@ -48,6 +48,7 @@ const MoodExplorer = () => {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [mode, setMode] = useState<"entry" | "pip" | "form">("entry");
   const [ratingOpen, setRatingOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { log: logMoodEntry } = useMoodEntries();
   const lastLoggedSessionRef = useRef<string | null>(null);
 
