@@ -3129,6 +3129,9 @@
       "successDetail": "Ajouté au carnet de {{destination}} : {{emoji}} {{mood}} ({{count}} lieux)",
       "journalFallback": "carnet",
       "error": "Impossible d'ajouter au carnet",
+      "errorDesc": "Vérifie ta connexion et réessaie.",
+      "errorHint": "Une erreur est survenue. Vérifie ta connexion et réessaie.",
+      "retry": "Réessayer",
       "noTrips": "Crée un voyage pour utiliser cette fonction."
     }
   },
