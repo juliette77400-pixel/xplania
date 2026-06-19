@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2, Share2 } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2, Share2, RefreshCw, Sparkles, ImageDown } from "lucide-react";
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
