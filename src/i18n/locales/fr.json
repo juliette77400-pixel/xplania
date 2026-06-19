@@ -1685,6 +1685,20 @@
     "backToEntry": "← Changer de catégorie",
     "showingFor": "Tu explores :"
   },
+  "discoverFilters": {
+    "distance": "Distance",
+    "hiddenOnly": "Pépites",
+    "any": "Toutes",
+    "sort": "Trier",
+    "sort_near": "Proche",
+    "sort_rating": "Note",
+    "sort_score": "Pertinence",
+    "reset": "Réinitialiser",
+    "results": "{{count}} lieu(x) correspondants"
+  },
+  "discoverMap": {
+    "recenter": "Recentrer sur ma position"
+  },
   "discoverEntry": {
     "kicker": "Découverte",
     "title": "Qu'as-tu envie de découvrir ?",
