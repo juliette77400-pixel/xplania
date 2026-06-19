@@ -14,6 +14,7 @@ serve(async (req) => {
       destination = "",
       tripType = "",
       locale = "fr",
+      variation = 0,
     } = await req.json();
 
     if (!destination || typeof destination !== "string") {
@@ -27,31 +28,56 @@ serve(async (req) => {
 
     const isEN = String(locale).startsWith("en");
 
+    const ANGLES_FR = [
+      "Adopte l'angle d'un local qui accueille un ami : confidences pratiques, anecdotes vécues, lieux nommément cités.",
+      "Adopte l'angle d'un guide culturel expérimenté : règles non écrites, gestes précis, vocabulaire local utile.",
+      "Adopte l'angle d'un voyageur qui a déjà commis des impairs : exemples concrets d'erreurs et comment les éviter.",
+      "Adopte l'angle d'un anthropologue de terrain : nuances régionales, contexte historique court, rituels précis.",
+      "Adopte l'angle d'un photographe / créateur de contenu : ce qui se fait et ne se fait PAS quand on photographie sur place.",
+    ];
+    const ANGLES_EN = [
+      "Take the angle of a local welcoming a friend: practical insider tips, lived anecdotes, named places.",
+      "Take the angle of a seasoned cultural guide: unwritten rules, precise gestures, useful local words.",
+      "Take the angle of a respectful traveler who has made mistakes: concrete examples of faux-pas and how to avoid them.",
+      "Take the angle of a field anthropologist: regional nuances, short historical context, precise rituals.",
+      "Take the angle of a content creator / photographer: what is OK and what is NOT when photographing on site.",
+    ];
+    const v = Number.isFinite(Number(variation)) ? Math.abs(Math.floor(Number(variation))) : 0;
+    const angle = (isEN ? ANGLES_EN : ANGLES_FR)[v % (isEN ? ANGLES_EN.length : ANGLES_FR.length)];
+
     const system = isEN
-      ? `You are a cultural travel advisor for Xplania. Generate 4 SHORT, CONCRETE cultural tips STRICTLY localized to the destination (real local customs, dress codes, etiquette and behaviors — NEVER generic).
+      ? `You are a cultural travel advisor for Xplania. Generate 4 SHORT, CONCRETE cultural tips STRICTLY localized to the destination.
+HARD REQUIREMENTS:
+- Mention at least one REAL local place, neighborhood, monument or local word per tip when relevant (e.g. "in Gion district", "at Fushimi Inari", "say 'sumimasen'").
+- Cite concrete numbers when meaningful (typical tip %, opening hours, ticket prices in local currency, dress-code thresholds).
+- NEVER produce generic advice that could apply to any country.
+- Each text: 2 sentences max, concrete and actionable.
+- Titles: 3-5 words, specific (not "Be respectful").
+${angle}
 Return ONLY a JSON object with this exact shape:
 {"tips":{"dress":{"title":"...","text":"..."},"customs":{"title":"...","text":"..."},"avoid":{"title":"...","text":"..."},"behavior":{"title":"...","text":"..."}}}
-- dress: how to dress on site (climate + cultural norms).
-- customs: 2-3 essential local customs to know.
-- avoid: 2-3 concrete things to absolutely avoid.
-- behavior: positive behaviors expected by locals.
-- Title: 3-5 words. Text: 1-2 sentences, concrete.
 NO markdown, NO commentary, JSON only.`
-      : `Tu es conseiller culturel voyage pour Xplania. Génère 4 conseils culturels COURTS et CONCRETS, STRICTEMENT localisés à la destination (vraies coutumes, dress code, étiquette, comportements locaux — JAMAIS générique).
+      : `Tu es conseiller culturel voyage pour Xplania. Génère 4 conseils culturels COURTS et CONCRETS, STRICTEMENT localisés à la destination.
+EXIGENCES IMPÉRATIVES :
+- Mentionne au moins un VRAI nom de lieu, quartier, monument ou mot local pertinent dans chaque conseil (ex. "dans le quartier de Gion", "à Fushimi Inari", "dites 'sumimasen'").
+- Cite des chiffres concrets quand pertinent (% de pourboire, horaires, prix en devise locale, seuils de dress code).
+- JAMAIS de conseil générique qui pourrait s'appliquer à n'importe quel pays.
+- Chaque texte : 2 phrases max, concret et actionnable.
+- Titres : 3-5 mots, spécifiques (pas "Soyez respectueux").
+${angle}
 Retourne UNIQUEMENT un objet JSON de cette forme exacte :
 {"tips":{"dress":{"title":"...","text":"..."},"customs":{"title":"...","text":"..."},"avoid":{"title":"...","text":"..."},"behavior":{"title":"...","text":"..."}}}
-- dress : comment s'habiller sur place (climat + normes culturelles).
-- customs : 2-3 coutumes locales essentielles à connaître.
-- avoid : 2-3 choses concrètes à absolument éviter.
-- behavior : comportements positifs attendus par les locaux.
-- Titre : 3-5 mots. Texte : 1-2 phrases, concret.
 PAS de markdown, PAS de commentaire, uniquement le JSON.`;
 
     const user = isEN
       ? `Destination: ${destination}
-Trip type: ${tripType || "(unknown)"}`
+Trip type: ${tripType || "(unknown)"}
+Variation seed: ${v} (produce a result clearly different from previous variations).`
       : `Destination : ${destination}
-Type de voyage : ${tripType || "(inconnu)"}`;
+Type de voyage : ${tripType || "(inconnu)"}
+Graine de variation : ${v} (produis un résultat clairement différent des variations précédentes).`;
+
+    console.log("[valise-cultural-tips] generating", { destination, tripType, locale: isEN ? "en" : "fr", variation: v });
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -65,11 +91,14 @@ Type de voyage : ${tripType || "(inconnu)"}`;
           { role: "system", content: system },
           { role: "user", content: user },
         ],
+        temperature: 0.95,
         response_format: { type: "json_object" },
       }),
     });
 
     if (!response.ok) {
+      const txt = await response.text();
+      console.error("[valise-cultural-tips] AI gateway error", response.status, txt);
       if (response.status === 429) {
         return new Response(JSON.stringify({ error: "rate_limited" }), {
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -80,9 +109,7 @@ Type de voyage : ${tripType || "(inconnu)"}`;
           status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      const txt = await response.text();
-      console.error("AI gateway error", response.status, txt);
-      throw new Error(`AI gateway ${response.status}`);
+      throw new Error(`AI gateway ${response.status}: ${txt.slice(0, 200)}`);
     }
 
     const data = await response.json();
@@ -104,11 +131,15 @@ Type de voyage : ${tripType || "(inconnu)"}`;
       };
     }
 
+    if (!tips.dress.text || !tips.customs.text) {
+      console.error("[valise-cultural-tips] empty tips after parse", { raw: raw.slice(0, 400) });
+    }
+
     return new Response(JSON.stringify({ tips }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error("valise-cultural-tips error", e);
+    console.error("[valise-cultural-tips] error", e instanceof Error ? e.stack || e.message : e);
     return new Response(
       JSON.stringify({ error: e instanceof Error ? e.message : "unknown" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }

@@ -85,6 +85,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
   const [aiOutfits, setAiOutfits] = useState<Outfit[] | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [hadError, setHadError] = useState(false);
+  const [variation, setVariation] = useState(0);
 
   const lang = (i18n.language || "fr").startsWith("en") ? "en" : "fr";
 
@@ -97,7 +98,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
     [lang, destination, tripType]
   );
 
-  const fetchOutfits = useCallback(async (force = false) => {
+  const fetchOutfits = useCallback(async (force = false, variationSeed = 0) => {
     if (isPlaceholderDest) return;
     if (!force) {
       const cached = readCache(cacheKey);
@@ -113,28 +114,44 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
           activities: activities || [],
           luggage: luggage || "",
           locale: lang,
+          variation: variationSeed,
         },
       });
-      if (error) throw error;
+      if (error) {
+        console.error("[OutfitRecommendations] invoke error", { message: error.message, name: error.name, context: (error as any).context });
+        throw error;
+      }
+      if ((data as any)?.error) {
+        console.error("[OutfitRecommendations] server error payload", data);
+        throw new Error((data as any).error);
+      }
       const outfits = (data?.outfits || []) as Outfit[];
       if (outfits.length > 0) {
         const enriched = outfits.map((o, i) => ({ ...o, id: o.id || `ai-${i}`, ai: true }));
         setAiOutfits(enriched);
         writeCache(cacheKey, enriched);
       } else {
+        console.error("[OutfitRecommendations] empty outfits response", data);
         setHadError(true);
       }
     } catch (e) {
-      console.error("valise-outfits fetch error", e);
+      console.error("[OutfitRecommendations] fetch error", e);
       setHadError(true);
     } finally {
       setIsFetching(false);
     }
   }, [cacheKey, destination, tripType, activities, luggage, lang, isPlaceholderDest]);
 
+  const handleRegenerate = useCallback(() => {
+    const next = variation + 1;
+    setVariation(next);
+    fetchOutfits(true, next);
+  }, [variation, fetchOutfits]);
+
   useEffect(() => {
     setAiOutfits(null);
-    if (!isPlaceholderDest) fetchOutfits(false);
+    setVariation(0);
+    if (!isPlaceholderDest) fetchOutfits(false, 0);
   }, [cacheKey, isPlaceholderDest, fetchOutfits]);
 
   // Resolve outfit data: AI first, else fallback to i18n
@@ -192,7 +209,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
           </div>
           {!isPlaceholderDest && (
             <button
-              onClick={() => fetchOutfits(true)}
+              onClick={handleRegenerate}
               disabled={isFetching}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/40 hover:bg-muted/60 text-xs font-medium text-foreground transition-colors disabled:opacity-50"
               aria-label={t("valise.outfitsRegenerate")}
