@@ -137,6 +137,8 @@ const Discover = () => {
           </div>
         )}
 
+        <DiscoverFiltersBar value={filters} onChange={setFilters} resultCount={filteredPlaces.length} />
+
         <Tabs defaultValue="feed" className="w-full">
           <TabsList className="w-full justify-start overflow-x-auto">
             <TabsTrigger value="feed">🔥 {t("discoverPage.tabFeed")}</TabsTrigger>
