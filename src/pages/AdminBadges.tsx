@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import VerificationSettingsPanel from "@/components/gamification/VerificationSettingsPanel";
 import NotificationSettingsPanel from "@/components/gamification/NotificationSettingsPanel";
 import AdminAuditPanel from "@/components/gamification/AdminAuditPanel";
+import NotificationLogPanel from "@/components/gamification/NotificationLogPanel";
 
 type ClaimRow = {
   id: string;
@@ -153,6 +154,7 @@ export default function AdminBadges() {
         <VerificationSettingsPanel />
         <NotificationSettingsPanel />
         <AdminAuditPanel />
+        <NotificationLogPanel />
 
         {loading ? (
           <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin inline text-primary" /></div>
