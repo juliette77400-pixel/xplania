@@ -3129,6 +3129,9 @@
       "successDetail": "Added to {{destination}} journal: {{emoji}} {{mood}} ({{count}} places)",
       "journalFallback": "journal",
       "error": "Could not save to journal",
+      "errorDesc": "Check your connection and try again.",
+      "errorHint": "Something went wrong. Check your connection and try again.",
+      "retry": "Retry",
       "noTrips": "Create a trip to use this feature."
     }
   },
