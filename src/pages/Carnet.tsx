@@ -26,6 +26,8 @@ import { useJournalCover } from "@/hooks/useJournalCover";
 import { Button } from "@/components/ui/button";
 import { Image as ImageIcon } from "lucide-react";
 import { formatDayLabel } from "@/lib/journal-utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 const Carnet = () => {
   const { tripId } = useParams<{ tripId: string }>();
