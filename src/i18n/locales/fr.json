@@ -2738,9 +2738,9 @@
       "title": "Historique de mes notifications",
       "subtitle": "Chaque notification envoyée lors d'une décision sur tes réclamations de badges.",
       "date": "Date",
-      "channel": "Canal",
+      "channelHeader": "Canal",
       "transition": "Transition",
-      "status": "Statut",
+      "statusHeader": "Statut",
       "details": "Détails",
       "empty": "Aucune notification enregistrée.",
       "channel": {
