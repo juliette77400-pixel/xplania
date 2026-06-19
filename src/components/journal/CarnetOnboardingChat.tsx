@@ -566,6 +566,28 @@ const CarnetOnboardingChat = ({
                   <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxLocations")}:</span> {ctx.locations.slice(0,6).join(", ") || "—"}</div>
                   <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxMoods")}:</span> {ctx.moods.slice(-6).join(", ") || "—"}</div>
                 </div>
+                {ctx.blocksDetail.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-border/40">
+                    <div className="text-foreground font-medium mb-1">{t("carnet.qa.ctxBlocksDetail")} ({ctx.blocksDetail.length})</div>
+                    <div className="max-h-28 overflow-y-auto space-y-0.5 pr-1">
+                      {ctx.blocksDetail.slice(0, 40).map((b, i) => (
+                        <div key={i} className="text-[10px] text-muted-foreground">
+                          <span className="text-primary font-mono">[{b.type}]</span> <span className="text-foreground">{b.day}</span>
+                          {b.preview ? <span> · {b.preview}</span> : null}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={copyPayload}
+                    className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
+                  >
+                    {payloadCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {payloadCopied ? t("carnet.qa.payloadCopied") : t("carnet.qa.copyPayload")}
+                  </button>
+                </div>
               </div>
             )}
             <div
