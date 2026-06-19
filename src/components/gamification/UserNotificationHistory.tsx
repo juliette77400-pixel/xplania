@@ -98,9 +98,9 @@ export default function UserNotificationHistory() {
               <thead className="text-left text-muted-foreground bg-muted/30">
                 <tr className="border-b border-border">
                   <th className="py-3 px-4">{t("gam.notifications.date")}</th>
-                  <th className="py-3 px-4">{t("gam.notifications.channel")}</th>
+                  <th className="py-3 px-4">{t("gam.notifications.channelHeader")}</th>
                   <th className="py-3 px-4">{t("gam.notifications.transition")}</th>
-                  <th className="py-3 px-4">{t("gam.notifications.status")}</th>
+                  <th className="py-3 px-4">{t("gam.notifications.statusHeader")}</th>
                   <th className="py-3 px-4">{t("gam.notifications.details")}</th>
                 </tr>
               </thead>
