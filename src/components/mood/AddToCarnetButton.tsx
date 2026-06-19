@@ -124,6 +124,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
         .eq("day_id", day!.id);
 
       const { error: bErr } = await supabase.from("journal_blocks").insert({
+        journal_id: j!.id,
         day_id: day!.id,
         user_id: user.id,
         type: "mood",
