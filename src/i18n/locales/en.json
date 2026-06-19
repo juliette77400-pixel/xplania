@@ -2887,6 +2887,35 @@
         "full": "Full day"
       }
     },
+    "tabs": {
+      "tracker": "Tracker"
+    },
+    "tracker": {
+      "title": "My mood tracker",
+      "subtitle": "How your mood evolves over time.",
+      "logMood": "Just log my mood",
+      "loading": "Loading…",
+      "empty": "No data for this period. Log a mood or start a moment to begin.",
+      "delete": "Delete",
+      "period": {
+        "week": "Week",
+        "month": "Month",
+        "all": "All"
+      },
+      "col": {
+        "date": "Date",
+        "mood": "Mood",
+        "rating": "Rating",
+        "note": "Note"
+      }
+    },
+    "rating": {
+      "title": "How did it go?",
+      "subtitle": "Rate this moment with an emoji, add a word if you like.",
+      "notePh": "A few words… (optional)",
+      "skip": "Later",
+      "save": "Save"
+    },
     "hero": {
       "kicker": "Mood Explorer",
       "title": "Find your vibe right now",
