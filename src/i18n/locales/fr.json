@@ -1681,7 +1681,60 @@
     "secHidden": "Hidden gems",
     "secFood": "Restaurants & Cafés",
     "secExperiences": "Activités & Culture",
-    "secChill": "Chill & Nature"
+    "secChill": "Chill & Nature",
+    "backToEntry": "← Changer de catégorie",
+    "showingFor": "Tu explores :"
+  },
+  "discoverEntry": {
+    "kicker": "Découverte",
+    "title": "Qu'as-tu envie de découvrir ?",
+    "subtitle": "Choisis une catégorie pour voir les lieux autour de toi, ou laisse Pip te guider.",
+    "optionACategory": "Choisis une catégorie",
+    "optionBPip": "Pas sûr·e de ce que tu cherches ?",
+    "pipDescription": "Pip te pose 2-3 questions courtes pour viser juste.",
+    "askPip": "Demander à Pip",
+    "seePlaces": "Voir les lieux",
+    "selectedCount": "{{count}} sélectionnée·s",
+    "tapHint": "Tape une catégorie (ou double-tape pour y aller direct)",
+    "soloShortcut": "Juste une balade en solo, maintenant",
+    "cat": {
+      "gastronomie": "Gastronomie",
+      "nature": "Nature & Plein air",
+      "culture": "Culture & Patrimoine",
+      "vie_nocturne": "Vie nocturne",
+      "shopping": "Shopping",
+      "sport": "Sport & Activités",
+      "bien_etre": "Bien-être",
+      "pepites": "Pépites cachées",
+      "tout": "Tout afficher"
+    }
+  },
+  "discoverPip": {
+    "title": "Pip Découverte",
+    "aroundYou": "Autour de toi",
+    "activeTrip": "Autour de ta destination",
+    "greeting": "Salut ! 🧭 C'est Pip. T'as envie de découvrir quoi aujourd'hui ?",
+    "askCategory": "Choisis une ou plusieurs catégories, ou dis-moi en quelques mots ce qui te tente.",
+    "askCompany": "Tu y vas avec qui ?",
+    "askDistance": "Tu veux rester près d'ici, ou tu peux bouger ?",
+    "confirmCategory": "Valider ({{count}})",
+    "inputPh": "Écris à Pip…",
+    "fallback": "Pas sûr d'avoir compris — tape sur une catégorie pour commencer.",
+    "soloAck": "Compris — juste toi, maintenant. Je te montre ce qu'il y a autour.",
+    "recap": "Trouvé. Je t'affiche : {{cats}}, près de toi.",
+    "showResults": "Affiche-moi ça",
+    "adjust": "Je veux ajuster",
+    "company": {
+      "solo": "Seule",
+      "duo": "En duo",
+      "group": "En groupe",
+      "family": "En famille"
+    },
+    "distance": {
+      "close": "À deux pas",
+      "medium": "Je peux me déplacer un peu",
+      "any": "Peu importe la distance"
+    }
   },
   "explorePage": {
     "title": "Travel Map",
