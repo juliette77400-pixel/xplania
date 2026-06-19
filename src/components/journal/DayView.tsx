@@ -168,6 +168,11 @@ const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Pr
           )}
         </AnimatePresence>
       </div>
+
+      {/* ✨ Documents épinglés à cette page du carnet */}
+      {tripId && (
+        <TripDocumentsManager tripId={tripId} dayId={day.id} days={allDays} compact />
+      )}
     </div>
   );
 };
