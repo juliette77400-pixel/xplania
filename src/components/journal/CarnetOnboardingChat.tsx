@@ -16,6 +16,9 @@ import {
   Info,
   Plus,
   FileDown,
+  Copy,
+  Check,
+  Pencil,
 } from "lucide-react";
 import jsPDF from "jspdf";
 import { toast } from "sonner";
