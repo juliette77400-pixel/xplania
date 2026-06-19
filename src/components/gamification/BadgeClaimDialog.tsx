@@ -116,27 +116,50 @@ const BadgeClaimDialog = ({ badge, open, onOpenChange }: Props) => {
             <p className="text-xs italic text-primary">🎁 {reward}</p>
           )}
 
-          {alreadyValidated && (
-            <div className="flex items-center gap-2 text-emerald-500 text-sm font-medium">
-              <CheckCircle2 className="w-4 h-4" /> {t("gam.claim.validated")}
-            </div>
-          )}
-
-          {alreadySubmitted && (
-            <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3 text-xs text-amber-600 dark:text-amber-400">
-              {t("gam.claim.pending")}
-            </div>
-          )}
-
-          {badge.status === "rejected" && badge.claim?.review_reason && (
-            <div className="rounded-lg border border-red-500/40 bg-red-500/5 p-3 text-xs text-red-500 flex gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <div>
-                <p className="font-semibold">{t("gam.claim.rejected")}</p>
-                <p>{badge.claim.review_reason}</p>
+          {badge.claim && (() => {
+            const lang = (isFr ? "fr" : "en") as "fr" | "en";
+            const s = statusLabel(badge.claim.status, lang);
+            const steps = explainClaim(badge.claim.ai_analysis as any, lang);
+            const toneClass =
+              s.tone === "ok" ? "border-emerald-500/40 bg-emerald-500/5 text-emerald-600 dark:text-emerald-400"
+              : s.tone === "bad" ? "border-red-500/40 bg-red-500/5 text-red-500"
+              : s.tone === "wait" ? "border-amber-500/40 bg-amber-500/5 text-amber-600 dark:text-amber-400"
+              : "border-border bg-card text-muted-foreground";
+            return (
+              <div className={`rounded-lg border p-3 text-xs space-y-2 ${toneClass}`}>
+                <div className="flex items-center gap-2 font-semibold text-sm">
+                  {s.tone === "ok" ? <CheckCircle2 className="w-4 h-4" />
+                    : s.tone === "bad" ? <AlertCircle className="w-4 h-4" />
+                    : <AlertCircle className="w-4 h-4" />}
+                  {s.label}
+                </div>
+                {alreadySubmitted && (
+                  <p>{isFr
+                    ? "Un modérateur va examiner ta preuve sous peu. Tu seras notifié(e) du verdict."
+                    : "A moderator will review your proof shortly. You'll be notified of the verdict."}</p>
+                )}
+                {steps.length > 0 && (
+                  <ul className="space-y-1 text-foreground">
+                    {steps.map((st, i) => (
+                      <li key={i} className="flex gap-1">
+                        <span>{st.ok ? "✓" : "•"}</span>
+                        <span>
+                          <span className="font-medium">{st.label}</span>
+                          {st.detail && <span className="text-muted-foreground"> — {st.detail}</span>}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {badge.claim.review_reason && (
+                  <p className="text-foreground">
+                    <span className="font-semibold">{isFr ? "Motif" : "Reason"} :</span> {badge.claim.review_reason}
+                  </p>
+                )}
               </div>
-            </div>
-          )}
+            );
+          })()}
+
 
           {!alreadyValidated && !alreadySubmitted && (
             <>
