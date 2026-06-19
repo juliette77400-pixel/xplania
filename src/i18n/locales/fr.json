@@ -2888,7 +2888,11 @@
       }
     },
     "tabs": {
-      "tracker": "Suivi"
+      "feed": "Feed",
+      "map": "Carte",
+      "favorites": "Favoris",
+      "badges": "Badges",
+      "social": "Social"
     },
     "tracker": {
       "title": "Mon suivi d'humeurs",
@@ -3084,16 +3088,44 @@
       "noGeoTitle": "Aucun lieu géolocalisé pour ce mood.",
       "noGeoDesc": "Réessaie avec une position activée."
     },
-    "tabs": {
-      "feed": "Feed",
-      "map": "Carte",
-      "favorites": "Favoris",
-      "badges": "Badges",
-      "social": "Social"
-    },
     "history": {
       "title": "Tes derniers moods",
       "pickAnother": "← Choisir un autre mood"
+    },
+    "wheel": {
+      "aria": "Sélecteur visuel d'humeur",
+      "title": "Roue des humeurs",
+      "subtitle": "Touche une part pour choisir, puis ajuste ton énergie.",
+      "pick": "Choisis",
+      "energy": "Énergie",
+      "generate": "✨ Générer mon moment",
+      "loading": "…",
+      "or": "ou"
+    },
+    "share": {
+      "button": "Partager",
+      "title": "Partager mon moment",
+      "story": "Story",
+      "square": "Carré",
+      "shareBtn": "Partager",
+      "downloadBtn": "Télécharger",
+      "downloaded": "Image téléchargée",
+      "error": "Impossible de générer l'image",
+      "placesFound": "lieux trouvés"
+    },
+    "carnet": {
+      "button": "Ajouter au carnet",
+      "dialogTitle": "Ajouter au carnet de bord",
+      "dialogDesc": "Note ce moment dans un de tes voyages.",
+      "pickTrip": "Choisis un voyage",
+      "note": "Note",
+      "prefillIntro": "Moment {{mood}} — Mood Explorer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "success": "Ajouté au carnet ✨",
+      "error": "Impossible d'ajouter au carnet",
+      "noTrips": "Crée un voyage pour utiliser cette fonction."
     }
   },
   "trackingComp": {

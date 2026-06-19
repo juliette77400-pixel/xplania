@@ -2888,7 +2888,11 @@
       }
     },
     "tabs": {
-      "tracker": "Tracker"
+      "feed": "Feed",
+      "map": "Map",
+      "favorites": "Favorites",
+      "badges": "Badges",
+      "social": "Social"
     },
     "tracker": {
       "title": "My mood tracker",
@@ -3084,16 +3088,44 @@
       "noGeoTitle": "No geolocated places for this mood.",
       "noGeoDesc": "Try again with location enabled."
     },
-    "tabs": {
-      "feed": "Feed",
-      "map": "Map",
-      "favorites": "Favorites",
-      "badges": "Badges",
-      "social": "Social"
-    },
     "history": {
       "title": "Your recent moods",
       "pickAnother": "← Pick another mood"
+    },
+    "wheel": {
+      "aria": "Visual mood picker",
+      "title": "Mood wheel",
+      "subtitle": "Tap a slice to pick, then tune your energy.",
+      "pick": "Pick",
+      "energy": "Energy",
+      "generate": "✨ Generate my moment",
+      "loading": "…",
+      "or": "or"
+    },
+    "share": {
+      "button": "Share",
+      "title": "Share my moment",
+      "story": "Story",
+      "square": "Square",
+      "shareBtn": "Share",
+      "downloadBtn": "Download",
+      "downloaded": "Image downloaded",
+      "error": "Could not generate image",
+      "placesFound": "places found"
+    },
+    "carnet": {
+      "button": "Add to journal",
+      "dialogTitle": "Add to travel journal",
+      "dialogDesc": "Save this moment into one of your trips.",
+      "pickTrip": "Pick a trip",
+      "note": "Note",
+      "prefillIntro": "{{mood}} moment — Mood Explorer",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving…",
+      "success": "Added to journal ✨",
+      "error": "Could not save to journal",
+      "noTrips": "Create a trip to use this feature."
     }
   },
   "trackingComp": {
