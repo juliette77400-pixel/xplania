@@ -16,8 +16,6 @@ import {
   Info,
   Plus,
   FileDown,
-  ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 import jsPDF from "jspdf";
 import { toast } from "sonner";
