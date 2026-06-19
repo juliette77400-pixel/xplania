@@ -20,6 +20,7 @@ import XpHeader from "@/components/gamification/XpHeader";
 import Leaderboard from "@/components/gamification/Leaderboard";
 import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
 import GamCatalog from "@/components/gamification/GamCatalog";
+import MissionsPanel from "@/components/gamification/MissionsPanel";
 import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
 import { differenceInDays, parseISO } from "date-fns";
 
