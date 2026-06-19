@@ -112,10 +112,14 @@ const CarnetOnboardingChat = ({
   const [qaHistory, setQaHistory] = useState<ChatMsg[]>([]);
   const [showContext, setShowContext] = useState(false);
   const [insertingIdx, setInsertingIdx] = useState<number | null>(null);
+  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
+  const [previewContent, setPreviewContent] = useState("");
+  const [payloadCopied, setPayloadCopied] = useState(false);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
-  const qaStorageKey = `${QA_HISTORY_PREFIX}::${tripId}`;
-  const triggerKey = tripId;
+  // Persist conversation per trip AND per active tab so each section keeps its own thread
+  const qaStorageKey = `${QA_HISTORY_PREFIX}::${tripId}::${activeSection}`;
+  const triggerKey = `${tripId}::${activeSection}`;
 
   // Aggregated context (shared by inspector + edge function payload)
   const ctx = (() => {
