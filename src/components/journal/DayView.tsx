@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Plus, FileText, Camera, MapPin, Smile, Star } from "lucide-react";
+import { Plus, FileText, Camera, MapPin, Smile, Star, Mic, CloudSun, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,6 +11,7 @@ import { formatDayLabel } from "@/lib/journal-utils";
 import { pingStreakAction } from "@/lib/streak";
 import { Input } from "@/components/ui/input";
 import { Cloud } from "lucide-react";
+import { toast } from "sonner";
 
 interface Props {
   day: JournalDay;
@@ -25,6 +26,7 @@ const BLOCK_TYPES = [
   { type: "location", labelKey: "j2.blockLocation", icon: MapPin },
   { type: "mood", labelKey: "j2.blockMood", icon: Smile },
   { type: "highlight", labelKey: "j2.blockHighlight", icon: Star },
+  { type: "audio", labelKey: "j2.blockAudio", icon: Mic },
 ] as const;
 
 const DayView = ({ day, journalId, destination, onChanged }: Props) => {
@@ -32,6 +34,42 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [title, setTitle] = useState(day.title || "");
+  const [weatherLoading, setWeatherLoading] = useState(false);
+
+  const fetchWeather = async () => {
+    if (!navigator.geolocation) { toast.error(t("j2.geoUnavailable")); return; }
+    setWeatherLoading(true);
+    try {
+      const pos = await new Promise<GeolocationPosition>((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000 }));
+      const { data, error } = await supabase.functions.invoke("weather-now", {
+        body: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+      });
+      if (error) throw error;
+      const w = data || {};
+      await supabase.from("journal_days").update({ weather: w }).eq("id", day.id);
+      toast.success(t("j2.weatherSaved"));
+      onChanged();
+    } catch (e: any) {
+      toast.error(t("j2.weatherFail"));
+    } finally { setWeatherLoading(false); }
+  };
+
+  const fillLocation = async () => {
+    if (!navigator.geolocation || !user) { toast.error(t("j2.geoUnavailable")); return; }
+    try {
+      const pos = await new Promise<GeolocationPosition>((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000 }));
+      await supabase.from("journal_blocks").insert({
+        day_id: day.id,
+        journal_id: journalId,
+        user_id: user.id,
+        type: "location",
+        content: { name: `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`, lat: pos.coords.latitude, lng: pos.coords.longitude },
+        position: day.blocks.length,
+      });
+      pingStreakAction("journal:location");
+      onChanged();
+    } catch { toast.error(t("j2.geoUnavailable")); }
+  };
 
   const addBlock = async (type: string) => {
     if (!user) return;
@@ -42,6 +80,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
       location: { name: "" },
       mood: { score: 3, emoji: "😐" },
       highlight: { text: "" },
+      audio: {},
     };
     await supabase.from("journal_blocks").insert({
       day_id: day.id,
