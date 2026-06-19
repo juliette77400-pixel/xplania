@@ -148,6 +148,8 @@ export default function AdminBadges() {
           </div>
         </div>
 
+        <VerificationSettingsPanel />
+
         {loading ? (
           <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin inline text-primary" /></div>
         ) : claims.length === 0 ? (
