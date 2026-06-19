@@ -360,6 +360,9 @@ const GamificationPage = () => {
         {/* ══════ MISSIONS PERSONNALISÉES (catalogue Xplania, par catégories préférées) ══════ */}
         <MissionsPanel />
 
+        {/* ══════ HISTORIQUE DES RÉCLAMATIONS ══════ */}
+        <ClaimHistoryPanel />
+
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
