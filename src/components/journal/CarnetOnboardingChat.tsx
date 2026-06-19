@@ -358,6 +358,7 @@ const CarnetOnboardingChat = ({
     }
   };
 
+  if (!open) {
     return (
       <button
         onClick={() => setOpen(true)}
