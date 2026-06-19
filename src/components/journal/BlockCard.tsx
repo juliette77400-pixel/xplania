@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useAuth } from "@/hooks/useAuth";
 import type { JournalBlock } from "@/hooks/useJournal";
 import { toast } from "sonner";
+import AudioRecorder from "./AudioRecorder";
 
 interface Props {
   block: JournalBlock;
@@ -122,6 +123,12 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
       }
       case "highlight":
         return <div className="flex items-start gap-2"><Star className="w-4 h-4 text-yellow-500 fill-yellow-500 shrink-0 mt-0.5" /><p className="text-sm font-medium text-foreground">{content.text || <span className="text-muted-foreground italic">{t("j2.describeBest")}</span>}</p></div>;
+      case "audio":
+        return content.url ? (
+          <audio controls src={content.url} className="w-full" />
+        ) : (
+          <AudioRecorder journalId={journalId} blockId={block.id} initialUrl={null} onSaved={onChanged} />
+        );
       default:
         return <p className="text-sm text-muted-foreground">{block.type}</p>;
     }
@@ -171,7 +178,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
           {content.ai_enhanced && <Sparkles className="w-3 h-3 text-primary" />}
         </span>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition">
-          {block.type !== "photo" && (
+          {block.type !== "photo" && block.type !== "audio" && (
             <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => setEditing(!editing)}>
               <Pencil className="w-3.5 h-3.5" />
             </Button>
@@ -190,7 +197,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
           </div>
         </div>
       ) : (
-        <div onClick={() => block.type !== "photo" && setEditing(true)} className={block.type !== "photo" ? "cursor-text" : ""}>
+        <div onClick={() => block.type !== "photo" && block.type !== "audio" && setEditing(true)} className={block.type !== "photo" && block.type !== "audio" ? "cursor-text" : ""}>
           {renderView()}
         </div>
       )}
