@@ -10,6 +10,7 @@ import { Loader2, CheckCircle2, XCircle, MapPin, Image as ImageIcon, FileText, S
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import VerificationSettingsPanel from "@/components/gamification/VerificationSettingsPanel";
+import NotificationSettingsPanel from "@/components/gamification/NotificationSettingsPanel";
 import AdminAuditPanel from "@/components/gamification/AdminAuditPanel";
 
 type ClaimRow = {
