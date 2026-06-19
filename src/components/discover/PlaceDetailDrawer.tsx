@@ -1,4 +1,5 @@
-import { Heart, MapPin, Navigation, Sparkles, Star } from "lucide-react";
+import { useState } from "react";
+import { CalendarPlus, Heart, MapPin, Navigation, Sparkles, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { toast } from "sonner";
 import ReviewsSection from "./ReviewsSection";
 import { Separator } from "@/components/ui/separator";
+import AddToItineraryDialog from "./AddToItineraryDialog";
 
 interface Props {
   place: Place | null;
