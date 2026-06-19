@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, Bell, Mail, RefreshCw } from "lucide-react";
+import { Loader2, Bell, Mail } from "lucide-react";
 import { Database } from "@/integrations/supabase/types";
 
 type LogRow = Database["public"]["Tables"]["gam_notification_log"]["Row"];
