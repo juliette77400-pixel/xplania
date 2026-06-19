@@ -1402,6 +1402,68 @@ export type Database = {
     }
     Functions: {
       get_public_display_name: { Args: { _user_id: string }; Returns: string }
+      get_public_trip_activities: {
+        Args: { _slug: string }
+        Returns: {
+          category: string | null
+          completed_at: string | null
+          created_at: string
+          day_date: string | null
+          description: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          metadata: Json | null
+          position: number
+          scheduled_at: string | null
+          source: string
+          status: string
+          title: string
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "trip_activities"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      get_public_trip_positions: {
+        Args: { _slug: string }
+        Returns: {
+          lat: number
+          lng: number
+          recorded_at: string
+        }[]
+      }
+      get_public_trip_tracking: {
+        Args: { _slug: string }
+        Returns: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          is_active: boolean
+          last_lat: number | null
+          last_lng: number | null
+          last_position_at: string | null
+          settings: Json
+          share_enabled: boolean
+          share_slug: string | null
+          started_at: string | null
+          total_distance_km: number
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "trip_tracking"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_waitlist_count: { Args: never; Returns: number }
       owns_place_list: {
         Args: { _list_id: string; _user_id: string }
