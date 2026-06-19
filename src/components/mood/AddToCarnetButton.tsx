@@ -40,6 +40,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
   const m = mood ? moodByKey(mood) : null;
   const [open, setOpen] = useState(false);
   const [tripId, setTripId] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [saving, setSaving] = useState(false);
 
@@ -49,9 +50,10 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
 
   useEffect(() => {
     if (!open) return;
-    const base = `${m?.emoji ?? "🎭"} ${t("moodComp.carnet.prefillIntro", {
+    setTitle(`${m?.emoji ?? "🎭"} ${m?.label ?? mood ?? ""}`);
+    const base = t("moodComp.carnet.prefillIntro", {
       mood: m?.label ?? mood ?? "",
-    })}`;
+    });
     const place = topPlace?.name ? `\n📍 ${topPlace.name}` : "";
     setNote(`${base}${place}`);
   }, [open, mood, topPlace?.name]);
