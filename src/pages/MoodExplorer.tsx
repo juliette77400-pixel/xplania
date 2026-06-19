@@ -17,6 +17,8 @@ import MoodAiAnalysis from "@/components/mood/MoodAiAnalysis";
 import MoodBadgesPanel from "@/components/mood/MoodBadgesPanel";
 import PopularMoods from "@/components/mood/PopularMoods";
 import MoodPlaceDetail from "@/components/mood/MoodPlaceDetail";
+import MoodEntryCards from "@/components/mood/MoodEntryCards";
+import MoodPipChat from "@/components/mood/MoodPipChat";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
