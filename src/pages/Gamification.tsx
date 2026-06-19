@@ -364,6 +364,9 @@ const GamificationPage = () => {
         {/* ══════ HISTORIQUE DES RÉCLAMATIONS ══════ */}
         <ClaimHistoryPanel />
 
+        {/* ══════ HISTORIQUE DES NOTIFICATIONS ══════ */}
+        <UserNotificationHistory />
+
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
