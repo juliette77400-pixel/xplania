@@ -1,4 +1,5 @@
-import { Heart, MapPin, Navigation, Sparkles, Star } from "lucide-react";
+import { useState } from "react";
+import { CalendarPlus, Heart, MapPin, Navigation, Sparkles, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { toast } from "sonner";
 import ReviewsSection from "./ReviewsSection";
 import { Separator } from "@/components/ui/separator";
+import AddToItineraryDialog from "./AddToItineraryDialog";
 
 interface Props {
   place: Place | null;
@@ -18,6 +20,7 @@ interface Props {
 const PlaceDetailDrawer = ({ place, onClose }: Props) => {
   const { t } = useTranslation();
   const { lists, isSaved, toggleItem } = usePlaceLists();
+  const [itineraryOpen, setItineraryOpen] = useState(false);
   if (!place) return null;
   const cat = categoryByKey(place.category);
   const defaultList = lists.find((l) => l.is_default) || lists[0];
@@ -78,18 +81,23 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
                 <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
                 {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
               </Button>
-              <Button asChild>
+              <Button asChild variant="outline">
                 <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
                   <Navigation className="mr-2 h-4 w-4" />{t("discoverComp.drawer.directions")}
                 </a>
               </Button>
             </div>
+            <Button className="w-full" onClick={() => setItineraryOpen(true)}>
+              <CalendarPlus className="mr-2 h-4 w-4" />
+              {t("discoverComp.drawer.addToItinerary")}
+            </Button>
 
             <Separator className="my-2" />
             <ReviewsSection placeId={place.id} />
           </div>
         </div>
       </DrawerContent>
+      <AddToItineraryDialog place={place} open={itineraryOpen} onClose={() => setItineraryOpen(false)} />
     </Drawer>
   );
 };

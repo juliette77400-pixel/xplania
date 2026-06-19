@@ -2864,7 +2864,27 @@
       "directions": "Itinéraire",
       "noListErr": "Crée une liste d'abord",
       "savedTo": "Sauvegardé dans {{name}}",
-      "removed": "Retiré des favoris"
+      "removed": "Retiré des favoris",
+      "addToItinerary": "Ajouter à mon itinéraire"
+    },
+    "itinerary": {
+      "title": "Ajouter à mon itinéraire",
+      "subtitle": "Ajoute « {{name}} » à un de tes voyages.",
+      "trip": "Voyage",
+      "pickTrip": "Choisis un voyage",
+      "untitled": "Voyage sans titre",
+      "day": "Jour",
+      "dayPlaceholder": "Choisis un jour",
+      "dayNone": "Non planifié",
+      "noDates": "Ce voyage n'a pas encore de dates — l'activité sera ajoutée sans jour.",
+      "noteLabel": "Note (optionnel)",
+      "notePlaceholder": "Réservation, horaire, conseil…",
+      "cancel": "Annuler",
+      "confirm": "Ajouter",
+      "added": "Ajouté à {{trip}} ✓",
+      "errAdd": "Impossible d'ajouter ce lieu. Réessaie.",
+      "loginRequired": "Connecte-toi pour ajouter des lieux à un voyage.",
+      "noTrip": "Tu n'as pas encore de voyage. Crée-en un depuis l'accueil."
     },
     "reviews": {
       "title": "Avis ({{count}})",
