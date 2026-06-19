@@ -22,6 +22,10 @@ import MoodEntryCards from "@/components/mood/MoodEntryCards";
 import MoodPipChat from "@/components/mood/MoodPipChat";
 import MoodTrackerPanel from "@/components/mood/MoodTrackerPanel";
 import MoodRatingDialog from "@/components/mood/MoodRatingDialog";
+import MoodWheel from "@/components/mood/MoodWheel";
+import MoodShareCard from "@/components/mood/MoodShareCard";
+import AddToCarnetButton from "@/components/mood/AddToCarnetButton";
+import { Share2 } from "lucide-react";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
@@ -44,6 +48,7 @@ const MoodExplorer = () => {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [mode, setMode] = useState<"entry" | "pip" | "form">("entry");
   const [ratingOpen, setRatingOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { log: logMoodEntry } = useMoodEntries();
   const lastLoggedSessionRef = useRef<string | null>(null);
 
@@ -159,6 +164,10 @@ const MoodExplorer = () => {
                   >
                     ← {t("moodComp.entry.title")}
                   </button>
+                  <MoodWheel loading={loading} onSubmit={guardedRecommend} />
+                  <div className="text-center text-xs text-muted-foreground uppercase tracking-wider py-2">
+                    {t("moodComp.wheel.or")}
+                  </div>
                   <MoodSelector loading={loading} onSubmit={guardedRecommend} />
                 </div>
               )}
@@ -234,7 +243,15 @@ const MoodExplorer = () => {
         )}
 
         {activeMood && places.length > 0 && (
-          <div className="flex justify-center pt-2">
+          <div className="flex flex-wrap gap-2 justify-center pt-2">
+            <Button variant="outline" size="sm" onClick={() => setShareOpen(true)}>
+              <Share2 className="w-4 h-4 mr-2" /> {t("moodComp.share.button")}
+            </Button>
+            <AddToCarnetButton
+              mood={activeMood}
+              topPlace={places[0] ? { name: places[0].name, address: (places[0] as any).address } : null}
+              placesCount={places.length}
+            />
             <Button variant="ghost" size="sm" onClick={() => { reset(); setTab("feed"); }}>
               {t("moodComp.history.pickAnother")}
             </Button>
@@ -253,6 +270,14 @@ const MoodExplorer = () => {
 
       <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} toolName="Mood Explorer" />
       <MoodRatingDialog open={ratingOpen} onOpenChange={setRatingOpen} onSubmit={handleRatingSubmit} />
+      <MoodShareCard
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        mood={activeMood}
+        placesCount={places.length}
+        topPlaceName={places[0]?.name ?? null}
+        city={(position as any)?.city ?? null}
+      />
     </div>
   );
 };
