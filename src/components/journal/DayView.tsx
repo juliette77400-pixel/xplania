@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import BlockCard from "./BlockCard";
+import TripDocumentsManager from "@/components/shared/TripDocumentsManager";
 import type { JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
 import { pingStreakAction } from "@/lib/streak";
@@ -17,6 +18,8 @@ interface Props {
   day: JournalDay;
   journalId: string;
   destination?: string;
+  tripId?: string;
+  allDays?: { id: string; date: string; title?: string | null }[];
   onChanged: () => void;
 }
 
