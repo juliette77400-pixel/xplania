@@ -72,13 +72,14 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
   const [aiTips, setAiTips] = useState<AiTips | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [hadError, setHadError] = useState(false);
+  const [variation, setVariation] = useState(0);
 
   const cacheKey = useMemo(
     () => `${lang}:${(destination || "").toLowerCase().trim()}:${(tripType || "").toLowerCase().trim()}`,
     [lang, destination, tripType]
   );
 
-  const fetchTips = useCallback(async (force = false) => {
+  const fetchTips = useCallback(async (force = false, variationSeed = 0) => {
     if (isPlaceholderDest) return;
     if (!force) {
       const cached = readCache(cacheKey);
@@ -88,23 +89,37 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
     setHadError(false);
     try {
       const { data, error } = await supabase.functions.invoke("valise-cultural-tips", {
-        body: { destination, tripType: tripType || "", locale: lang },
+        body: { destination, tripType: tripType || "", locale: lang, variation: variationSeed },
       });
-      if (error) throw error;
+      if (error) {
+        console.error("[CulturalTips] invoke error", { message: error.message, name: error.name, context: (error as any).context });
+        throw error;
+      }
+      if ((data as any)?.error) {
+        console.error("[CulturalTips] server error payload", data);
+        throw new Error((data as any).error);
+      }
       const tips = data?.tips as AiTips | undefined;
       if (tips && tips.dress && tips.dress.text) {
         setAiTips(tips);
         writeCache(cacheKey, tips);
       } else {
+        console.error("[CulturalTips] empty tips response", data);
         setHadError(true);
       }
     } catch (e) {
-      console.error("valise-cultural-tips fetch error", e);
+      console.error("[CulturalTips] fetch error", e);
       setHadError(true);
     } finally {
       setIsFetching(false);
     }
   }, [cacheKey, destination, tripType, lang, isPlaceholderDest]);
+
+  const handleRegenerate = useCallback(() => {
+    const next = variation + 1;
+    setVariation(next);
+    fetchTips(true, next);
+  }, [variation, fetchTips]);
 
   useEffect(() => {
     setAiTips(null);
