@@ -1,11 +1,12 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users } from "lucide-react";
+import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users, LineChart as LineChartIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useMoodExplorer, type MoodPlace } from "@/hooks/useMoodExplorer";
 import { useMoodBadges } from "@/hooks/useMoodBadges";
 import { getReactionsCount } from "@/hooks/useMoodSocial";
+import { useMoodEntries } from "@/hooks/useMoodEntries";
 import { useAuth } from "@/hooks/useAuth";
 import MoodHero from "@/components/mood/MoodHero";
 import MoodSelector from "@/components/mood/MoodSelector";
@@ -19,6 +20,8 @@ import PopularMoods from "@/components/mood/PopularMoods";
 import MoodPlaceDetail from "@/components/mood/MoodPlaceDetail";
 import MoodEntryCards from "@/components/mood/MoodEntryCards";
 import MoodPipChat from "@/components/mood/MoodPipChat";
+import MoodTrackerPanel from "@/components/mood/MoodTrackerPanel";
+import MoodRatingDialog from "@/components/mood/MoodRatingDialog";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
@@ -40,6 +43,9 @@ const MoodExplorer = () => {
   const [reactionsCount, setReactionsCount] = useState(0);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [mode, setMode] = useState<"entry" | "pip" | "form">("entry");
+  const [ratingOpen, setRatingOpen] = useState(false);
+  const { log: logMoodEntry } = useMoodEntries();
+  const lastLoggedSessionRef = useRef<string | null>(null);
 
   const { reached, consume } = useQuota("mood");
 
@@ -68,6 +74,35 @@ const MoodExplorer = () => {
     if (!user) return;
     evaluate({ ...badgeContext, reactionsCount });
   }, [user, badgeContext.distinctMoods, badgeContext.favoritesCount, badgeContext.hiddenGemsSaved, badgeContext.totalSelections, reactionsCount, evaluate]);
+
+  // After a generation lands (activeMood + places), open the rating popup once per session
+  useEffect(() => {
+    if (!activeMood || places.length === 0) return;
+    const sessionKey = (history[0] as any)?.id || `${activeMood}-${places.length}`;
+    if (lastLoggedSessionRef.current === sessionKey) return;
+    lastLoggedSessionRef.current = sessionKey;
+    // Auto-log a session entry (no rating yet) so the tracker reflects activity
+    void logMoodEntry({
+      mood_tags: [activeMood],
+      mood_selection_id: (history[0] as any)?.id ?? null,
+      source: "mood_explorer",
+    });
+    // Open the rating popup shortly after, so users can rate the moment
+    const t = window.setTimeout(() => setRatingOpen(true), 1200);
+    return () => window.clearTimeout(t);
+  }, [activeMood, places.length, history, logMoodEntry]);
+
+  const handleRatingSubmit = async (rating: number, note: string) => {
+    if (!activeMood) return;
+    await logMoodEntry({
+      mood_tags: [activeMood],
+      satisfaction_rating: rating,
+      note: note || null,
+      mood_selection_id: (history[0] as any)?.id ?? null,
+      source: "mood_explorer_rating",
+    });
+  };
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -135,10 +170,11 @@ const MoodExplorer = () => {
           </div>
         ) : (
           <Tabs value={tab} onValueChange={setTab}>
-            <TabsList className="flex w-full overflow-x-auto sm:grid sm:grid-cols-5 no-scrollbar">
+            <TabsList className="flex w-full overflow-x-auto sm:grid sm:grid-cols-6 no-scrollbar">
               <TabsTrigger value="feed" className="shrink-0"><Sparkles className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Feed</span><span className="sm:hidden">Feed</span></TabsTrigger>
               <TabsTrigger value="map" className="shrink-0"><MapIcon className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Carte</span><span className="sm:hidden">Carte</span></TabsTrigger>
               <TabsTrigger value="favorites" className="shrink-0"><Heart className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Favoris</span><span className="sm:hidden">♥</span> ({favorites.length})</TabsTrigger>
+              <TabsTrigger value="tracker" className="shrink-0"><LineChartIcon className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">{t("moodComp.tabs.tracker")}</span><span className="sm:hidden">📈</span></TabsTrigger>
               <TabsTrigger value="badges" className="shrink-0"><Trophy className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Badges</span><span className="sm:hidden">🏆</span> ({badges.length})</TabsTrigger>
               <TabsTrigger value="social" className="shrink-0"><Users className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Social</span><span className="sm:hidden">👥</span></TabsTrigger>
             </TabsList>
@@ -158,6 +194,10 @@ const MoodExplorer = () => {
 
             <TabsContent value="favorites" className="mt-4">
               <MoodFavorites favorites={favorites} onToggleFavorite={toggleFavorite} onOpenDetails={setDetailsPlace} />
+            </TabsContent>
+
+            <TabsContent value="tracker" className="mt-4">
+              <MoodTrackerPanel />
             </TabsContent>
 
             <TabsContent value="badges" className="mt-4">
@@ -212,6 +252,7 @@ const MoodExplorer = () => {
       <QuickJump />
 
       <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} toolName="Mood Explorer" />
+      <MoodRatingDialog open={ratingOpen} onOpenChange={setRatingOpen} onSubmit={handleRatingSubmit} />
     </div>
   );
 };
