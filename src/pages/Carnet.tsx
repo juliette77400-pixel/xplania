@@ -39,8 +39,23 @@ const Carnet = () => {
   const [tripMeta, setTripMeta] = useState<{ departure_date: string | null; return_date: string | null } | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
+  const [regenLoading, setRegenLoading] = useState(false);
   const { t } = useTranslation();
-  const navigate = useNavigate(); // ✨ NEW (Tâche 1) — pour rediriger après suppression
+  const navigate = useNavigate();
+  const { regenerate: regenerateCover } = useJournalCover(tripId || "", destination);
+
+  const handleRegenCover = async (mode: "unsplash" | "ai") => {
+    if (!destination || regenLoading) return;
+    setRegenLoading(true);
+    try {
+      await regenerateCover(mode);
+      toast.success(t("cover.regenerated"));
+    } catch {
+      toast.error(t("cover.regenFail"));
+    } finally {
+      setRegenLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!tripId) return;
