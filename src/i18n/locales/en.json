@@ -1639,7 +1639,14 @@
       "insertedNote": "Added to page “{{day}}”.",
       "insertedStory": "Reply added as story.",
       "insertNoDay": "No day selected for insertion.",
-      "insertFail": "Insertion failed."
+      "insertFail": "Insertion failed.",
+      "ctxBlocksDetail": "Blocks sent",
+      "copyPayload": "Copy payload",
+      "payloadCopied": "Payload copied",
+      "payloadCopyFail": "Could not copy payload.",
+      "previewInsert": "Preview & insert",
+      "previewTitle": "Edit before inserting into {{section}}",
+      "previewCancel": "Cancel"
     }
   },
   "suivi": {

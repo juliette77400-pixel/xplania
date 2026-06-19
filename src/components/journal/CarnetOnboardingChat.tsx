@@ -16,6 +16,9 @@ import {
   Info,
   Plus,
   FileDown,
+  Copy,
+  Check,
+  Pencil,
 } from "lucide-react";
 import jsPDF from "jspdf";
 import { toast } from "sonner";
@@ -109,10 +112,14 @@ const CarnetOnboardingChat = ({
   const [qaHistory, setQaHistory] = useState<ChatMsg[]>([]);
   const [showContext, setShowContext] = useState(false);
   const [insertingIdx, setInsertingIdx] = useState<number | null>(null);
+  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
+  const [previewContent, setPreviewContent] = useState("");
+  const [payloadCopied, setPayloadCopied] = useState(false);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
-  const qaStorageKey = `${QA_HISTORY_PREFIX}::${tripId}`;
-  const triggerKey = tripId;
+  // Persist conversation per trip AND per active tab so each section keeps its own thread
+  const qaStorageKey = `${QA_HISTORY_PREFIX}::${tripId}::${activeSection}`;
+  const triggerKey = `${tripId}::${activeSection}`;
 
   // Aggregated context (shared by inspector + edge function payload)
   const ctx = (() => {
@@ -121,12 +128,25 @@ const CarnetOnboardingChat = ({
     const blocksByType: Record<string, number> = {};
     const locationsSet = new Set<string>();
     const moods: string[] = [];
+    const blocksDetail: Array<{ day: string; type: string; preview: string }> = [];
     for (const d of days) {
+      const dayLabel = formatDayLabel(d.date);
       for (const b of d.blocks || []) {
         blocksByType[b.type] = (blocksByType[b.type] || 0) + 1;
         const c = (b.content || {}) as Record<string, unknown>;
         if (b.type === "location" && typeof c.name === "string") locationsSet.add(c.name);
         if (b.type === "mood" && typeof c.label === "string") moods.push(c.label);
+        const preview =
+          (typeof c.text === "string" && c.text) ||
+          (typeof c.name === "string" && c.name) ||
+          (typeof c.label === "string" && c.label) ||
+          (typeof c.title === "string" && c.title) ||
+          "";
+        blocksDetail.push({
+          day: dayLabel,
+          type: b.type,
+          preview: String(preview).slice(0, 80),
+        });
       }
     }
     return {
@@ -134,8 +154,42 @@ const CarnetOnboardingChat = ({
       blocksByType,
       locations: Array.from(locationsSet),
       moods,
+      blocksDetail,
     };
   })();
+
+  // Payload that will be (or was) sent to the edge function — shown in the context inspector
+  const inspectablePayload = {
+    firstName,
+    destination,
+    days: days.length,
+    filledDays: ctx.filledDays,
+    totalBlocks: ctx.totalBlocks,
+    blocksByType: ctx.blocksByType,
+    blocks: ctx.blocksDetail,
+    locations: ctx.locations,
+    moods: ctx.moods,
+    activeSection,
+    activeDayLabel: activeDay ? formatDayLabel(activeDay.date) : "",
+    activeDayBlocks: activeDay?.blocks?.length || 0,
+    hasStory: !!hasStory,
+    isPublic: !!isPublic,
+    tripEnded: !!tripEnded,
+    departureDate: departureDate || "",
+    returnDate: returnDate || "",
+    locale,
+  };
+
+  const copyPayload = async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(inspectablePayload, null, 2));
+      setPayloadCopied(true);
+      toast.success(t("carnet.qa.payloadCopied"));
+      setTimeout(() => setPayloadCopied(false), 1500);
+    } catch {
+      toast.error(t("carnet.qa.payloadCopyFail"));
+    }
+  };
 
   const toggleExpanded = () => {
     setExpanded((prev) => {
@@ -512,6 +566,28 @@ const CarnetOnboardingChat = ({
                   <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxLocations")}:</span> {ctx.locations.slice(0,6).join(", ") || "—"}</div>
                   <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxMoods")}:</span> {ctx.moods.slice(-6).join(", ") || "—"}</div>
                 </div>
+                {ctx.blocksDetail.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-border/40">
+                    <div className="text-foreground font-medium mb-1">{t("carnet.qa.ctxBlocksDetail")} ({ctx.blocksDetail.length})</div>
+                    <div className="max-h-28 overflow-y-auto space-y-0.5 pr-1">
+                      {ctx.blocksDetail.slice(0, 40).map((b, i) => (
+                        <div key={i} className="text-[10px] text-muted-foreground">
+                          <span className="text-primary font-mono">[{b.type}]</span> <span className="text-foreground">{b.day}</span>
+                          {b.preview ? <span> · {b.preview}</span> : null}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={copyPayload}
+                    className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
+                  >
+                    {payloadCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {payloadCopied ? t("carnet.qa.payloadCopied") : t("carnet.qa.copyPayload")}
+                  </button>
+                </div>
               </div>
             )}
             <div
@@ -530,18 +606,51 @@ const CarnetOnboardingChat = ({
                   >
                     {m.content}
                   </div>
-                  {m.role === "assistant" && i > 0 && (
+                  {m.role === "assistant" && i > 0 && previewIdx !== i && (
                     <button
-                      onClick={() => handleInsert(i, m.content)}
+                      onClick={() => { setPreviewIdx(i); setPreviewContent(m.content); }}
                       disabled={insertingIdx === i}
                       className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50"
                       title={t("carnet.qa.insertHint")}
                     >
-                      {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
-                      {activeSection === "story"
-                        ? t("carnet.qa.insertStory")
-                        : t("carnet.qa.insertNote", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                      <Pencil className="w-3 h-3" />
+                      {t("carnet.qa.previewInsert")}
                     </button>
+                  )}
+                  {m.role === "assistant" && previewIdx === i && (
+                    <div className="mt-2 w-full max-w-[95%] rounded-lg border border-primary/30 bg-background/60 p-2 space-y-2">
+                      <div className="text-[10px] font-semibold text-primary uppercase tracking-wide">
+                        {t("carnet.qa.previewTitle", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                      </div>
+                      <textarea
+                        value={previewContent}
+                        onChange={(e) => setPreviewContent(e.target.value)}
+                        rows={Math.min(10, Math.max(3, previewContent.split("\n").length + 1))}
+                        className="w-full text-sm rounded-md bg-muted/40 px-2 py-1.5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      />
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => { setPreviewIdx(null); setPreviewContent(""); }}
+                          className="text-[11px] font-semibold px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-foreground"
+                        >
+                          {t("carnet.qa.previewCancel")}
+                        </button>
+                        <button
+                          onClick={async () => {
+                            await handleInsert(i, previewContent);
+                            setPreviewIdx(null);
+                            setPreviewContent("");
+                          }}
+                          disabled={insertingIdx === i || !previewContent.trim()}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-md gradient-button text-primary-foreground disabled:opacity-50"
+                        >
+                          {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+                          {activeSection === "story"
+                            ? t("carnet.qa.insertStory")
+                            : t("carnet.qa.insertNote", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               ))}

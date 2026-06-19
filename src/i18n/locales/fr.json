@@ -1639,7 +1639,14 @@
       "insertedNote": "Ajouté à la page « {{day}} ».",
       "insertedStory": "Réponse ajoutée comme récit.",
       "insertNoDay": "Aucun jour sélectionné pour l'insertion.",
-      "insertFail": "Échec de l'insertion."
+      "insertFail": "Échec de l'insertion.",
+      "ctxBlocksDetail": "Blocs envoyés",
+      "copyPayload": "Copier le payload",
+      "payloadCopied": "Payload copié",
+      "payloadCopyFail": "Impossible de copier le payload.",
+      "previewInsert": "Aperçu & insérer",
+      "previewTitle": "Modifier avant d'insérer dans {{section}}",
+      "previewCancel": "Annuler"
     }
   },
   "suivi": {
