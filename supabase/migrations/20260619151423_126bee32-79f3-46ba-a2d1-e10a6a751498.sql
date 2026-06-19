@@ -1,0 +1,2 @@
+DROP POLICY IF EXISTS "Anyone can view current missions" ON public.gam_current_missions;
+CREATE POLICY "Public can view global missions" ON public.gam_current_missions FOR SELECT TO anon USING (user_id IS NULL);
