@@ -75,6 +75,35 @@ const MoodExplorer = () => {
     evaluate({ ...badgeContext, reactionsCount });
   }, [user, badgeContext.distinctMoods, badgeContext.favoritesCount, badgeContext.hiddenGemsSaved, badgeContext.totalSelections, reactionsCount, evaluate]);
 
+  // After a generation lands (activeMood + places), open the rating popup once per session
+  useEffect(() => {
+    if (!activeMood || places.length === 0) return;
+    const sessionKey = (history[0] as any)?.id || `${activeMood}-${places.length}`;
+    if (lastLoggedSessionRef.current === sessionKey) return;
+    lastLoggedSessionRef.current = sessionKey;
+    // Auto-log a session entry (no rating yet) so the tracker reflects activity
+    void logMoodEntry({
+      mood_tags: [activeMood],
+      mood_selection_id: (history[0] as any)?.id ?? null,
+      source: "mood_explorer",
+    });
+    // Open the rating popup shortly after, so users can rate the moment
+    const t = window.setTimeout(() => setRatingOpen(true), 1200);
+    return () => window.clearTimeout(t);
+  }, [activeMood, places.length, history, logMoodEntry]);
+
+  const handleRatingSubmit = async (rating: number, note: string) => {
+    if (!activeMood) return;
+    await logMoodEntry({
+      mood_tags: [activeMood],
+      satisfaction_rating: rating,
+      note: note || null,
+      mood_selection_id: (history[0] as any)?.id ?? null,
+      source: "mood_explorer_rating",
+    });
+  };
+
+
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
