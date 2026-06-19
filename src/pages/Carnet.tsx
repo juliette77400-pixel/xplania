@@ -12,16 +12,19 @@ import StoryGenerator from "@/components/journal/StoryGenerator";
 import InsightsPanel from "@/components/journal/InsightsPanel";
 import BadgesBar from "@/components/journal/BadgesBar";
 import ShareExport from "@/components/journal/ShareExport";
-import TripTracker from "@/components/tracking/TripTracker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuickJump from "@/components/shared/QuickJump";
-import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
-import TripDocumentsManager from "@/components/shared/TripDocumentsManager"; // ✨ NEW (Tâche 3)
-import ExportTripButton from "@/components/shared/ExportTripButton"; // ✨ NEW (Tâche 3)
-import TripUtilitiesPanel from "@/components/shared/TripUtilitiesPanel"; // ✨ NEW (Tâche 4) — countdown + météo + devise
-import TripEndRecap from "@/components/shared/TripEndRecap"; // ✨ NEW (Tâche 4) — écran fin de voyage
-import ShareCarnetDialog from "@/components/shared/ShareCarnetDialog"; // ✨ NEW (Tâche 4) — partage + QR + OG
+import DeleteTripButton from "@/components/shared/DeleteTripButton";
+import TripDocumentsManager from "@/components/shared/TripDocumentsManager";
+import ExportTripButton from "@/components/shared/ExportTripButton";
+import TripUtilitiesPanel from "@/components/shared/TripUtilitiesPanel";
+import TripEndRecap from "@/components/shared/TripEndRecap";
+import ShareCarnetDialog from "@/components/shared/ShareCarnetDialog";
+import SocialShareDialog from "@/components/journal/SocialShareDialog";
+import PagePdfExportButton from "@/components/journal/PagePdfExportButton";
+import { useJournalCover } from "@/hooks/useJournalCover";
 import { Button } from "@/components/ui/button";
+import { Image as ImageIcon } from "lucide-react";
 import { formatDayLabel } from "@/lib/journal-utils";
 
 const Carnet = () => {
@@ -33,6 +36,7 @@ const Carnet = () => {
   // ✨ NEW (Tâche 4) — dates pour utilities + détection fin de voyage
   const [tripMeta, setTripMeta] = useState<{ departure_date: string | null; return_date: string | null } | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
+  const [socialOpen, setSocialOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate(); // ✨ NEW (Tâche 1) — pour rediriger après suppression
 
@@ -145,9 +149,8 @@ const Carnet = () => {
           </div>
         ) : (
           <Tabs defaultValue="timeline">
-            <TabsList className="grid grid-cols-3 sm:grid-cols-6 max-w-3xl mx-auto mb-6">
-              <TabsTrigger value="timeline">📅 {t("carnet.tabTimeline")}</TabsTrigger>
-              <TabsTrigger value="live">📡 {t("carnet.tabLive")}</TabsTrigger>
+            <TabsList className="grid grid-cols-3 sm:grid-cols-5 max-w-3xl mx-auto mb-6">
+              <TabsTrigger value="timeline">📖 {t("carnet.tabPages")}</TabsTrigger>
               <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
               <TabsTrigger value="insights">📊 {t("carnet.tabInsights")}</TabsTrigger>
               <TabsTrigger value="docs">📎 {t("carnet.tabDocs", "Docs")}</TabsTrigger>
@@ -180,7 +183,7 @@ const Carnet = () => {
 
                 {/* Day content */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <button
                       onClick={() => setActiveIdx(Math.max(0, activeIdx - 1))}
                       disabled={activeIdx === 0}
@@ -189,13 +192,19 @@ const Carnet = () => {
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <span className="text-xs text-muted-foreground">{activeIdx + 1} / {days.length}</span>
-                    <button
-                      onClick={() => setActiveIdx(Math.min(days.length - 1, activeIdx + 1))}
-                      disabled={activeIdx === days.length - 1}
-                      className="p-2 rounded-lg disabled:opacity-30 hover:bg-muted/50"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {activeDay && <PagePdfExportButton day={activeDay} destination={destination} />}
+                      <Button size="sm" variant="outline" onClick={() => setSocialOpen(true)}>
+                        <ImageIcon className="w-4 h-4" /> {t("social.btnShort")}
+                      </Button>
+                      <button
+                        onClick={() => setActiveIdx(Math.min(days.length - 1, activeIdx + 1))}
+                        disabled={activeIdx === days.length - 1}
+                        className="p-2 rounded-lg disabled:opacity-30 hover:bg-muted/50"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                   <AnimatePresence mode="wait">
                     {activeDay && (
@@ -214,9 +223,6 @@ const Carnet = () => {
               </div>
             </TabsContent>
 
-            <TabsContent value="live">
-              {tripId && <TripTracker tripId={tripId} destination={destination} />}
-            </TabsContent>
 
             <TabsContent value="story">
               <StoryGenerator
@@ -259,9 +265,32 @@ const Carnet = () => {
           onUpdated={refetch}
         />
       )}
+      <SocialShareDialogWrapper
+        open={socialOpen}
+        onOpenChange={setSocialOpen}
+        tripId={tripId!}
+        destination={destination}
+        title={journal.title}
+        day={activeDay}
+      />
       <QuickJump />
     </div>
   );
 };
 
 export default Carnet;
+
+// Small wrapper to inject the journal cover into SocialShareDialog without prop drilling above
+const SocialShareDialogWrapper = ({ open, onOpenChange, tripId, destination, title, day }: any) => {
+  const { cover } = useJournalCover(tripId, destination);
+  return (
+    <SocialShareDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      destination={destination}
+      title={title}
+      cover={cover}
+      day={day}
+    />
+  );
+};

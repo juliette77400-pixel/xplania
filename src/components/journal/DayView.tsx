@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Plus, FileText, Camera, MapPin, Smile, Star } from "lucide-react";
+import { Plus, FileText, Camera, MapPin, Smile, Star, Mic, CloudSun, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,6 +11,7 @@ import { formatDayLabel } from "@/lib/journal-utils";
 import { pingStreakAction } from "@/lib/streak";
 import { Input } from "@/components/ui/input";
 import { Cloud } from "lucide-react";
+import { toast } from "sonner";
 
 interface Props {
   day: JournalDay;
@@ -25,6 +26,7 @@ const BLOCK_TYPES = [
   { type: "location", labelKey: "j2.blockLocation", icon: MapPin },
   { type: "mood", labelKey: "j2.blockMood", icon: Smile },
   { type: "highlight", labelKey: "j2.blockHighlight", icon: Star },
+  { type: "audio", labelKey: "j2.blockAudio", icon: Mic },
 ] as const;
 
 const DayView = ({ day, journalId, destination, onChanged }: Props) => {
@@ -32,6 +34,42 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [title, setTitle] = useState(day.title || "");
+  const [weatherLoading, setWeatherLoading] = useState(false);
+
+  const fetchWeather = async () => {
+    if (!navigator.geolocation) { toast.error(t("j2.geoUnavailable")); return; }
+    setWeatherLoading(true);
+    try {
+      const pos = await new Promise<GeolocationPosition>((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000 }));
+      const { data, error } = await supabase.functions.invoke("weather-now", {
+        body: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+      });
+      if (error) throw error;
+      const w = data || {};
+      await supabase.from("journal_days").update({ weather: w }).eq("id", day.id);
+      toast.success(t("j2.weatherSaved"));
+      onChanged();
+    } catch (e: any) {
+      toast.error(t("j2.weatherFail"));
+    } finally { setWeatherLoading(false); }
+  };
+
+  const fillLocation = async () => {
+    if (!navigator.geolocation || !user) { toast.error(t("j2.geoUnavailable")); return; }
+    try {
+      const pos = await new Promise<GeolocationPosition>((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000 }));
+      await supabase.from("journal_blocks").insert({
+        day_id: day.id,
+        journal_id: journalId,
+        user_id: user.id,
+        type: "location",
+        content: { name: `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`, lat: pos.coords.latitude, lng: pos.coords.longitude },
+        position: day.blocks.length,
+      });
+      pingStreakAction("journal:location");
+      onChanged();
+    } catch { toast.error(t("j2.geoUnavailable")); }
+  };
 
   const addBlock = async (type: string) => {
     if (!user) return;
@@ -42,6 +80,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
       location: { name: "" },
       mood: { score: 3, emoji: "😐" },
       highlight: { text: "" },
+      audio: {},
     };
     await supabase.from("journal_blocks").insert({
       day_id: day.id,
@@ -73,13 +112,24 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
           placeholder={t("j2.giveDayTitle")}
           className="mt-1 text-2xl font-bold border-0 bg-transparent px-0 focus-visible:ring-0 text-foreground"
         />
-        {day.weather && (
-          <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-            <Cloud className="w-3 h-3" />
-            {(day.weather.condition || "")} {day.weather.temp ? `· ${day.weather.temp}°C` : ""}
-          </div>
-        )}
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          {day.weather ? (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Cloud className="w-3 h-3" />
+              {(day.weather.condition || "")} {day.weather.temp ? `· ${day.weather.temp}°C` : ""}
+            </div>
+          ) : (
+            <Button size="sm" variant="ghost" className="text-xs h-7" onClick={fetchWeather} disabled={weatherLoading}>
+              {weatherLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <CloudSun className="w-3 h-3" />}
+              {t("j2.weatherBtn")}
+            </Button>
+          )}
+          <Button size="sm" variant="ghost" className="text-xs h-7" onClick={fillLocation}>
+            <MapPin className="w-3 h-3" /> {t("j2.locationBtn")}
+          </Button>
+        </div>
       </div>
+
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <AnimatePresence>
@@ -99,7 +149,7 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="absolute top-full mt-2 left-0 right-0 grid grid-cols-2 sm:grid-cols-5 gap-2 glass-card rounded-xl p-3 z-20"
+              className="absolute top-full mt-2 left-0 right-0 grid grid-cols-2 sm:grid-cols-6 gap-2 glass-card rounded-xl p-3 z-20"
             >
               {BLOCK_TYPES.map((b) => (
                 <button

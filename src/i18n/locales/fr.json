@@ -621,10 +621,22 @@
         }
       ],
       "links": [
-        { "label": "Institut Pasteur — Centres de vaccinations", "url": "https://www.pasteur.fr/fr/centre-medical/preparer-son-voyage" },
-        { "label": "Santé publique France — Voyages", "url": "https://www.santepubliquefrance.fr/maladies-et-traumatismes/voyage" },
-        { "label": "Conseils aux voyageurs — Diplomatie", "url": "https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/" },
-        { "label": "OMS — International Travel & Health", "url": "https://www.who.int/travel-advice" }
+        {
+          "label": "Institut Pasteur — Centres de vaccinations",
+          "url": "https://www.pasteur.fr/fr/centre-medical/preparer-son-voyage"
+        },
+        {
+          "label": "Santé publique France — Voyages",
+          "url": "https://www.santepubliquefrance.fr/maladies-et-traumatismes/voyage"
+        },
+        {
+          "label": "Conseils aux voyageurs — Diplomatie",
+          "url": "https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/"
+        },
+        {
+          "label": "OMS — International Travel & Health",
+          "url": "https://www.who.int/travel-advice"
+        }
       ]
     },
     "safetyGuide": {
@@ -643,16 +655,40 @@
       "disclaimer": "Vérifie toujours la fiche officielle de ta destination avant de partir, les niveaux peuvent évoluer rapidement.",
       "disclaimerWithDest": "Vérifie la fiche officielle de {{destination}} sur diplomatie.gouv.fr — les niveaux peuvent évoluer.",
       "levels": [
-        { "label": "🟢 Niveau 1 — Vigilance normale", "description": "Pas de risque particulier. Prudence d'usage comme partout." },
-        { "label": "🟡 Niveau 2 — Vigilance renforcée", "description": "Tensions, criminalité ou risques sanitaires nécessitant plus d'attention." },
-        { "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative", "description": "Voyage déconseillé sauf nécessité absolue (professionnelle, familiale)." },
-        { "label": "🔴 Niveau 4 — Formellement déconseillé", "description": "Tout déplacement est formellement déconseillé pour ta sécurité." }
+        {
+          "label": "🟢 Niveau 1 — Vigilance normale",
+          "description": "Pas de risque particulier. Prudence d'usage comme partout."
+        },
+        {
+          "label": "🟡 Niveau 2 — Vigilance renforcée",
+          "description": "Tensions, criminalité ou risques sanitaires nécessitant plus d'attention."
+        },
+        {
+          "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative",
+          "description": "Voyage déconseillé sauf nécessité absolue (professionnelle, familiale)."
+        },
+        {
+          "label": "🔴 Niveau 4 — Formellement déconseillé",
+          "description": "Tout déplacement est formellement déconseillé pour ta sécurité."
+        }
       ],
       "risks": [
-        { "title": "Pickpockets & vols", "body": "Aéroports, transports en commun, marchés. Garde tes affaires devant toi et duplique tes documents." },
-        { "title": "Arnaques touristiques", "body": "Faux taxis, faux guides, faux policiers. Vérifie les tarifs et utilise des apps officielles." },
-        { "title": "Risques naturels", "body": "Cyclones, séismes, inondations selon la saison. Consulte météo et alertes locales." },
-        { "title": "Risques sanitaires", "body": "Eau, alimentation, moustiques, altitude. Adapte ton comportement à la zone." }
+        {
+          "title": "Pickpockets & vols",
+          "body": "Aéroports, transports en commun, marchés. Garde tes affaires devant toi et duplique tes documents."
+        },
+        {
+          "title": "Arnaques touristiques",
+          "body": "Faux taxis, faux guides, faux policiers. Vérifie les tarifs et utilise des apps officielles."
+        },
+        {
+          "title": "Risques naturels",
+          "body": "Cyclones, séismes, inondations selon la saison. Consulte météo et alertes locales."
+        },
+        {
+          "title": "Risques sanitaires",
+          "body": "Eau, alimentation, moustiques, altitude. Adapte ton comportement à la zone."
+        }
       ],
       "soloTips": [
         "Informe un proche de ton itinéraire et de tes hébergements",
@@ -662,10 +698,22 @@
         "Repère le consulat français le plus proche dès ton arrivée"
       ],
       "emergencies": [
-        { "label": "Urgences européennes", "number": "112" },
-        { "label": "Crise Français à l'étranger (24/7)", "number": "+33 1 53 59 11 00" },
-        { "label": "SAMU (France)", "number": "15" },
-        { "label": "Police secours (France)", "number": "17" }
+        {
+          "label": "Urgences européennes",
+          "number": "112"
+        },
+        {
+          "label": "Crise Français à l'étranger (24/7)",
+          "number": "+33 1 53 59 11 00"
+        },
+        {
+          "label": "SAMU (France)",
+          "number": "15"
+        },
+        {
+          "label": "Police secours (France)",
+          "number": "17"
+        }
       ]
     },
     "safety": {
@@ -1503,7 +1551,9 @@
     "empty": "Tu n'as pas encore de voyage enregistré.",
     "createFirst": "Créer mon premier voyage →",
     "tracking": "Suivi",
-    "map": "Map"
+    "map": "Map",
+    "heroTitle": "Tes carnets de voyage",
+    "heroDesc": "Chaque voyage devient un carnet : couverture inspirée, pages, photos, émotions. Ouvre-en un pour continuer."
   },
   "carnet": {
     "back": "Retour",
@@ -1516,7 +1566,8 @@
     "tabShare": "Partager",
     "day": "Jour {{n}}",
     "memoryOne": "{{n}} souvenir",
-    "memoryMany": "{{n}} souvenirs"
+    "memoryMany": "{{n}} souvenirs",
+    "tabPages": "Pages"
   },
   "suivi": {
     "title": "Suivi de Voyage",
@@ -1810,59 +1861,260 @@
     "activitiesAddAll": "Tout ajouter à ma valise",
     "activitiesToastAdded": "{{count}} objet ajouté à ta valise",
     "activityCategories": {
-      "hiking": { "name": "Randonnée", "items": ["Chaussures de randonnée imperméables", "Chaussettes techniques anti-ampoules", "Bâtons de marche télescopiques", "Sac à dos de day-hike 20–30L", "Gourde filtrante ou pastilles de purification", "Carte IGN / appli offline Maps", "Lampe frontale + piles de rechange", "Veste coupe-vent imperméable", "Crème solaire SPF50+", "Kit premiers secours compact", "Barres énergétiques / snacks trail"] },
-      "beach":  { "name": "Plage", "items": ["Maillot de bain (×2)", "Serviette microfibre", "Tongs / sandales", "Lunettes UV catégorie 3+", "Chapeau de plage", "Sac étanche téléphone", "Crème solaire SPF50 waterproof", "Après-soleil / aloe vera", "Paréo / sarong"] },
-      "city":   { "name": "Ville", "items": ["Chaussures confortables pour marcher toute la journée", "Veste légère (musées climatisés)", "Sac anti-pickpocket ou tote bag", "Adaptateur de voyage universel", "Plan de transport offline", "Écouteurs", "Powerbank 10 000 mAh", "Carnet de voyage", "Tenue smart-casual pour les restos", "Parapluie compact"] },
-      "photo":  { "name": "Photo / Création", "items": ["Appareil photo / objectif supplémentaire", "Cartes SD de rechange (×3 min)", "Trépied compact ou gorilla pod", "Batterie de rechange appareil", "Chargeur rapide multi-port", "Disque dur externe ou clé USB", "Chiffon de nettoyage optique", "Filtre ND (si vidéo)", "Drone si autorisé", "Carnet de notes idées contenu"] },
-      "business": { "name": "Business", "items": ["Costume / tenue pro dans housse à vêtements", "Chemises/blouses (1 par jour + 1 extra)", "Chaussures habillées dans une housse", "Cartes de visite", "Ordinateur portable + chargeur", "Adaptateur universel", "Câble HDMI", "Bloc-notes professionnel", "Stylos de qualité", "Câble de verrouillage laptop"] },
-      "roadtrip": { "name": "Road trip", "items": ["Couverture de voyage", "Oreiller de voiture gonflable", "Sac de snacks route", "Support téléphone voiture", "Câble de charge voiture", "Trousse premier secours voiture", "Triangle de signalisation", "Gilet jaune (obligatoire certains pays)", "Carte routière papier", "Jerricane d'urgence si zones isolées"] },
-      "sport":  { "name": "Sport / Fitness", "items": ["Tenue de sport respirante (×2)", "Chaussures de sport polyvalentes", "Corde à sauter légère", "Bandes de résistance", "Bouteille shaker protéines", "Serviette sport microfibre", "AirPods / écouteurs sport", "Appli fitness offline téléchargée", "Gel énergétique / BCAA", "Chaussures de piscine"] },
-      "gastro": { "name": "Gastronomie", "items": ["Guide restos locaux téléchargé offline", "Vocabulaire alimentaire dans la langue locale (allergènes !)", "Petite bouteille de sauce piquante si tu adores", "Carnet pour noter les adresses coups de cœur", "Tenue smart-casual (les bons restos refusent les shorts)", "Appli de traduction de menu"] }
+      "hiking": {
+        "name": "Randonnée",
+        "items": [
+          "Chaussures de randonnée imperméables",
+          "Chaussettes techniques anti-ampoules",
+          "Bâtons de marche télescopiques",
+          "Sac à dos de day-hike 20–30L",
+          "Gourde filtrante ou pastilles de purification",
+          "Carte IGN / appli offline Maps",
+          "Lampe frontale + piles de rechange",
+          "Veste coupe-vent imperméable",
+          "Crème solaire SPF50+",
+          "Kit premiers secours compact",
+          "Barres énergétiques / snacks trail"
+        ]
+      },
+      "beach": {
+        "name": "Plage",
+        "items": [
+          "Maillot de bain (×2)",
+          "Serviette microfibre",
+          "Tongs / sandales",
+          "Lunettes UV catégorie 3+",
+          "Chapeau de plage",
+          "Sac étanche téléphone",
+          "Crème solaire SPF50 waterproof",
+          "Après-soleil / aloe vera",
+          "Paréo / sarong"
+        ]
+      },
+      "city": {
+        "name": "Ville",
+        "items": [
+          "Chaussures confortables pour marcher toute la journée",
+          "Veste légère (musées climatisés)",
+          "Sac anti-pickpocket ou tote bag",
+          "Adaptateur de voyage universel",
+          "Plan de transport offline",
+          "Écouteurs",
+          "Powerbank 10 000 mAh",
+          "Carnet de voyage",
+          "Tenue smart-casual pour les restos",
+          "Parapluie compact"
+        ]
+      },
+      "photo": {
+        "name": "Photo / Création",
+        "items": [
+          "Appareil photo / objectif supplémentaire",
+          "Cartes SD de rechange (×3 min)",
+          "Trépied compact ou gorilla pod",
+          "Batterie de rechange appareil",
+          "Chargeur rapide multi-port",
+          "Disque dur externe ou clé USB",
+          "Chiffon de nettoyage optique",
+          "Filtre ND (si vidéo)",
+          "Drone si autorisé",
+          "Carnet de notes idées contenu"
+        ]
+      },
+      "business": {
+        "name": "Business",
+        "items": [
+          "Costume / tenue pro dans housse à vêtements",
+          "Chemises/blouses (1 par jour + 1 extra)",
+          "Chaussures habillées dans une housse",
+          "Cartes de visite",
+          "Ordinateur portable + chargeur",
+          "Adaptateur universel",
+          "Câble HDMI",
+          "Bloc-notes professionnel",
+          "Stylos de qualité",
+          "Câble de verrouillage laptop"
+        ]
+      },
+      "roadtrip": {
+        "name": "Road trip",
+        "items": [
+          "Couverture de voyage",
+          "Oreiller de voiture gonflable",
+          "Sac de snacks route",
+          "Support téléphone voiture",
+          "Câble de charge voiture",
+          "Trousse premier secours voiture",
+          "Triangle de signalisation",
+          "Gilet jaune (obligatoire certains pays)",
+          "Carte routière papier",
+          "Jerricane d'urgence si zones isolées"
+        ]
+      },
+      "sport": {
+        "name": "Sport / Fitness",
+        "items": [
+          "Tenue de sport respirante (×2)",
+          "Chaussures de sport polyvalentes",
+          "Corde à sauter légère",
+          "Bandes de résistance",
+          "Bouteille shaker protéines",
+          "Serviette sport microfibre",
+          "AirPods / écouteurs sport",
+          "Appli fitness offline téléchargée",
+          "Gel énergétique / BCAA",
+          "Chaussures de piscine"
+        ]
+      },
+      "gastro": {
+        "name": "Gastronomie",
+        "items": [
+          "Guide restos locaux téléchargé offline",
+          "Vocabulaire alimentaire dans la langue locale (allergènes !)",
+          "Petite bouteille de sauce piquante si tu adores",
+          "Carnet pour noter les adresses coups de cœur",
+          "Tenue smart-casual (les bons restos refusent les shorts)",
+          "Appli de traduction de menu"
+        ]
+      }
     },
     "aiTipFallbackTitle": "Conseil IA",
     "aiTips": {
-      "minimaliste": { "title": "Voyage léger, esprit léger 🎒", "tip": "Limite-toi à 5 hauts et 2 bas combinables — tu peux composer 10 tenues sans surcharge. Roule plutôt que plier, et garde une pochette pour le linge sale." },
-      "confort": { "title": "Le confort avant tout ✨", "tip": "Glisse un châle pashmina dans ton bagage cabine : il sert d'oreiller, de couverture, de couche supplémentaire en avion ou en restaurant climatisé." },
-      "stylée": { "title": "Style sans compromis 👗", "tip": "Choisis une palette de 3 couleurs maximum (ex: beige, noir, blanc) pour que tout se combine. Une paire de chaussures habillées suffit si elle est polyvalente." },
-      "aventure": { "title": "Prête pour l'inattendu 🧭", "tip": "Privilégie les matières techniques séchage rapide. Une lampe frontale, un sifflet et une trousse de premiers secours compacte changent tout en cas d'imprévu." },
-      "business": { "title": "Pro et impeccable 💼", "tip": "Roule tes chemises autour d'un tube en carton ou d'un t-shirt pour éviter les plis. Garde un costume housse pour l'arrivée et un kit détachant de poche." },
-      "photo": { "title": "Capturer chaque instant 📸", "tip": "Multiplie les cartes SD (3 minimum) plutôt qu'une seule grande — si l'une lâche, tu ne perds pas tout. Range les batteries dans un étui rigide à part." },
-      "randonnée": { "title": "Léger sur le sentier 🥾", "tip": "Casse tes chaussures de rando avant le départ — pas une seule sortie le premier jour avec des neuves. Emporte des chaussettes anti-ampoules en double." },
-      "plage": { "title": "Sable, soleil, sérénité 🏖️", "tip": "Prends 2 maillots pour pouvoir alterner pendant que l'autre sèche. Une crème solaire SPF50 reef-safe protège ta peau et les coraux." },
-      "roadtrip": { "title": "La route est à toi 🚗", "tip": "Prépare un sac \"accessible\" avec snacks, chargeur voiture, écouteurs et lunettes de soleil — sans avoir à fouiller le coffre à chaque arrêt." },
-      "urbain": { "title": "À l'aise dans la ville 🏙️", "tip": "Chaussures confortables non négociables : tu marcheras 15–20 km/jour. Un petit sac anti-pickpocket en bandoulière sécurise tes papiers en métro." },
-      "luxe": { "title": "Voyage d'exception 💎", "tip": "Une housse à chaussures et une pochette à bijoux rigide changent tout. Garde un set tenue de rechange en cabine — au cas où ta valise prend du retard." }
+      "minimaliste": {
+        "title": "Voyage léger, esprit léger 🎒",
+        "tip": "Limite-toi à 5 hauts et 2 bas combinables — tu peux composer 10 tenues sans surcharge. Roule plutôt que plier, et garde une pochette pour le linge sale."
+      },
+      "confort": {
+        "title": "Le confort avant tout ✨",
+        "tip": "Glisse un châle pashmina dans ton bagage cabine : il sert d'oreiller, de couverture, de couche supplémentaire en avion ou en restaurant climatisé."
+      },
+      "stylée": {
+        "title": "Style sans compromis 👗",
+        "tip": "Choisis une palette de 3 couleurs maximum (ex: beige, noir, blanc) pour que tout se combine. Une paire de chaussures habillées suffit si elle est polyvalente."
+      },
+      "aventure": {
+        "title": "Prête pour l'inattendu 🧭",
+        "tip": "Privilégie les matières techniques séchage rapide. Une lampe frontale, un sifflet et une trousse de premiers secours compacte changent tout en cas d'imprévu."
+      },
+      "business": {
+        "title": "Pro et impeccable 💼",
+        "tip": "Roule tes chemises autour d'un tube en carton ou d'un t-shirt pour éviter les plis. Garde un costume housse pour l'arrivée et un kit détachant de poche."
+      },
+      "photo": {
+        "title": "Capturer chaque instant 📸",
+        "tip": "Multiplie les cartes SD (3 minimum) plutôt qu'une seule grande — si l'une lâche, tu ne perds pas tout. Range les batteries dans un étui rigide à part."
+      },
+      "randonnée": {
+        "title": "Léger sur le sentier 🥾",
+        "tip": "Casse tes chaussures de rando avant le départ — pas une seule sortie le premier jour avec des neuves. Emporte des chaussettes anti-ampoules en double."
+      },
+      "plage": {
+        "title": "Sable, soleil, sérénité 🏖️",
+        "tip": "Prends 2 maillots pour pouvoir alterner pendant que l'autre sèche. Une crème solaire SPF50 reef-safe protège ta peau et les coraux."
+      },
+      "roadtrip": {
+        "title": "La route est à toi 🚗",
+        "tip": "Prépare un sac \"accessible\" avec snacks, chargeur voiture, écouteurs et lunettes de soleil — sans avoir à fouiller le coffre à chaque arrêt."
+      },
+      "urbain": {
+        "title": "À l'aise dans la ville 🏙️",
+        "tip": "Chaussures confortables non négociables : tu marcheras 15–20 km/jour. Un petit sac anti-pickpocket en bandoulière sécurise tes papiers en métro."
+      },
+      "luxe": {
+        "title": "Voyage d'exception 💎",
+        "tip": "Une housse à chaussures et une pochette à bijoux rigide changent tout. Garde un set tenue de rechange en cabine — au cas où ta valise prend du retard."
+      }
     },
     "culturalTips": {
       "default": {
-        "dress": { "title": "👗 Code vestimentaire", "text": "Adapte ta tenue au contexte (lieu de culte, restaurant chic, marché local). En cas de doute, opte pour des épaules et genoux couverts. Une écharpe légère dans le sac dépanne partout." },
-        "customs": { "title": "🙏 Coutumes locales", "text": "Observe puis imite : façon de saluer, pourboires, file d'attente, ton de voix. Apprendre \"bonjour\", \"merci\", \"s'il te plaît\" dans la langue locale ouvre toutes les portes." },
-        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne photographie pas les personnes sans demander, surtout enfants et lieux religieux. Évite les sujets politiques sensibles et les comparaisons avec ton pays d'origine." },
-        "behavior": { "title": "💬 Comportements locaux", "text": "Sois patient·e avec le rythme local, souris, dis bonjour en entrant dans un commerce. La discrétion en public est appréciée presque partout." }
+        "dress": {
+          "title": "👗 Code vestimentaire",
+          "text": "Adapte ta tenue au contexte (lieu de culte, restaurant chic, marché local). En cas de doute, opte pour des épaules et genoux couverts. Une écharpe légère dans le sac dépanne partout."
+        },
+        "customs": {
+          "title": "🙏 Coutumes locales",
+          "text": "Observe puis imite : façon de saluer, pourboires, file d'attente, ton de voix. Apprendre \"bonjour\", \"merci\", \"s'il te plaît\" dans la langue locale ouvre toutes les portes."
+        },
+        "avoid": {
+          "title": "⚠️ À éviter absolument",
+          "text": "Ne photographie pas les personnes sans demander, surtout enfants et lieux religieux. Évite les sujets politiques sensibles et les comparaisons avec ton pays d'origine."
+        },
+        "behavior": {
+          "title": "💬 Comportements locaux",
+          "text": "Sois patient·e avec le rythme local, souris, dis bonjour en entrant dans un commerce. La discrétion en public est appréciée presque partout."
+        }
       },
       "japon": {
-        "dress": { "title": "👗 Code vestimentaire", "text": "Tenue soignée et discrète. Évite débardeurs/shorts très courts dans les temples. Chaussettes propres et sans trou : tu te déchausses très souvent (temples, ryokans, certains restos)." },
-        "customs": { "title": "🙏 Coutumes locales", "text": "Salut par inclinaison, pas de bise. Pas de pourboire — c'est mal vu. Reçois et tends les objets à deux mains. Silence dans les transports, mode silencieux obligatoire." },
-        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne plante jamais tes baguettes verticalement dans le riz (rituel funéraire). Pas de mouchage en public. Pas de tatouages visibles aux onsen sauf indication contraire." },
-        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : Konnichiwa (bonjour), Arigatō (merci), Sumimasen (pardon/excuse-moi). Toujours faire la queue. Trier ses déchets soi-même." }
+        "dress": {
+          "title": "👗 Code vestimentaire",
+          "text": "Tenue soignée et discrète. Évite débardeurs/shorts très courts dans les temples. Chaussettes propres et sans trou : tu te déchausses très souvent (temples, ryokans, certains restos)."
+        },
+        "customs": {
+          "title": "🙏 Coutumes locales",
+          "text": "Salut par inclinaison, pas de bise. Pas de pourboire — c'est mal vu. Reçois et tends les objets à deux mains. Silence dans les transports, mode silencieux obligatoire."
+        },
+        "avoid": {
+          "title": "⚠️ À éviter absolument",
+          "text": "Ne plante jamais tes baguettes verticalement dans le riz (rituel funéraire). Pas de mouchage en public. Pas de tatouages visibles aux onsen sauf indication contraire."
+        },
+        "behavior": {
+          "title": "💬 Comportements locaux",
+          "text": "Mots utiles : Konnichiwa (bonjour), Arigatō (merci), Sumimasen (pardon/excuse-moi). Toujours faire la queue. Trier ses déchets soi-même."
+        }
       },
       "maroc": {
-        "dress": { "title": "👗 Code vestimentaire", "text": "Épaules et genoux couverts en médina et lieux religieux. Préfère lin et coton léger. Foulard utile pour les femmes (mosquées, soleil, vent du désert)." },
-        "customs": { "title": "🙏 Coutumes locales", "text": "Le marchandage est attendu (commence à 40 % du prix annoncé), toujours avec sourire. Mange et tends la main droite uniquement. Accepte le thé à la menthe si offert." },
-        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne photographie pas les gens sans accord (souvent payant). N'entre pas dans les mosquées si tu n'es pas musulman·e (sauf Hassan II à Casablanca). Évite l'alcool en public hors hôtels." },
-        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : Salam (bonjour), Shukran (merci), La shukran (non merci). Patience avec les sollicitations dans les souks — un \"non merci\" ferme et souriant suffit." }
+        "dress": {
+          "title": "👗 Code vestimentaire",
+          "text": "Épaules et genoux couverts en médina et lieux religieux. Préfère lin et coton léger. Foulard utile pour les femmes (mosquées, soleil, vent du désert)."
+        },
+        "customs": {
+          "title": "🙏 Coutumes locales",
+          "text": "Le marchandage est attendu (commence à 40 % du prix annoncé), toujours avec sourire. Mange et tends la main droite uniquement. Accepte le thé à la menthe si offert."
+        },
+        "avoid": {
+          "title": "⚠️ À éviter absolument",
+          "text": "Ne photographie pas les gens sans accord (souvent payant). N'entre pas dans les mosquées si tu n'es pas musulman·e (sauf Hassan II à Casablanca). Évite l'alcool en public hors hôtels."
+        },
+        "behavior": {
+          "title": "💬 Comportements locaux",
+          "text": "Mots utiles : Salam (bonjour), Shukran (merci), La shukran (non merci). Patience avec les sollicitations dans les souks — un \"non merci\" ferme et souriant suffit."
+        }
       },
       "thailande": {
-        "dress": { "title": "👗 Code vestimentaire", "text": "Épaules, ventre et genoux couverts dans les temples (obligatoire). Retire chaussures et chapeau avant d'entrer. Tenue décontractée ailleurs, mais éviter le très court en ville." },
-        "customs": { "title": "🙏 Coutumes locales", "text": "Wai (paumes jointes devant la poitrine) pour saluer. Respect absolu de la famille royale et de Bouddha. Ne touche jamais la tête de quelqu'un, même un enfant." },
-        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne pointe pas les pieds vers une personne ou une statue de Bouddha. Pas de critique de la royauté (délit pénal). Pas de selfies dos à un Bouddha." },
-        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : Sawasdee (bonjour), Khop khun (merci), Mai pen rai (pas de souci). Le sourire désamorce tout. Garde ton calme — perdre la face est très mal vu." }
+        "dress": {
+          "title": "👗 Code vestimentaire",
+          "text": "Épaules, ventre et genoux couverts dans les temples (obligatoire). Retire chaussures et chapeau avant d'entrer. Tenue décontractée ailleurs, mais éviter le très court en ville."
+        },
+        "customs": {
+          "title": "🙏 Coutumes locales",
+          "text": "Wai (paumes jointes devant la poitrine) pour saluer. Respect absolu de la famille royale et de Bouddha. Ne touche jamais la tête de quelqu'un, même un enfant."
+        },
+        "avoid": {
+          "title": "⚠️ À éviter absolument",
+          "text": "Ne pointe pas les pieds vers une personne ou une statue de Bouddha. Pas de critique de la royauté (délit pénal). Pas de selfies dos à un Bouddha."
+        },
+        "behavior": {
+          "title": "💬 Comportements locaux",
+          "text": "Mots utiles : Sawasdee (bonjour), Khop khun (merci), Mai pen rai (pas de souci). Le sourire désamorce tout. Garde ton calme — perdre la face est très mal vu."
+        }
       },
       "australie": {
-        "dress": { "title": "👗 Code vestimentaire", "text": "Très décontracté au quotidien — short, tongs, t-shirt partout. En ville le soir, smart-casual dans les bons restos (pas de tongs). Privilégie tissus respirants UV-protecteurs : le soleil tape fort." },
-        "customs": { "title": "🙏 Coutumes locales", "text": "Les Australiens sont directs et chaleureux — appelle les gens par leur prénom dès la première rencontre. Le BBQ est sacré : propose toujours d'apporter quelque chose. File d'attente strictement respectée." },
-        "avoid": { "title": "⚠️ À éviter absolument", "text": "Ne plaisante pas sur les peuples aborigènes ou leur histoire. Ne touche ni ne photographie de sites sacrés Aborigènes sans permission. Ne laisse pas de nourriture accessible — kookaburras et mouettes te volent ton sandwich." },
-        "behavior": { "title": "💬 Comportements locaux", "text": "Mots utiles : G'day (bonjour décontracté), No worries (pas de souci), Arvo (après-midi), Brekkie (petit-déj), Cheers (merci/santé). Crème solaire SPF50+ obligatoire, même par temps couvert." }
+        "dress": {
+          "title": "👗 Code vestimentaire",
+          "text": "Très décontracté au quotidien — short, tongs, t-shirt partout. En ville le soir, smart-casual dans les bons restos (pas de tongs). Privilégie tissus respirants UV-protecteurs : le soleil tape fort."
+        },
+        "customs": {
+          "title": "🙏 Coutumes locales",
+          "text": "Les Australiens sont directs et chaleureux — appelle les gens par leur prénom dès la première rencontre. Le BBQ est sacré : propose toujours d'apporter quelque chose. File d'attente strictement respectée."
+        },
+        "avoid": {
+          "title": "⚠️ À éviter absolument",
+          "text": "Ne plaisante pas sur les peuples aborigènes ou leur histoire. Ne touche ni ne photographie de sites sacrés Aborigènes sans permission. Ne laisse pas de nourriture accessible — kookaburras et mouettes te volent ton sandwich."
+        },
+        "behavior": {
+          "title": "💬 Comportements locaux",
+          "text": "Mots utiles : G'day (bonjour décontracté), No worries (pas de souci), Arvo (après-midi), Brekkie (petit-déj), Cheers (merci/santé). Crème solaire SPF50+ obligatoire, même par temps couvert."
+        }
       }
     },
     "aiTipAnalyzing": "L'IA de Xplania analyse et adapte votre liste…",
@@ -3153,7 +3405,21 @@
     "kindNotes": "notes écrites",
     "kindPhotos": "photos ajoutées",
     "kindMoods": "humeurs partagées",
-    "kindHighlights": "moments forts"
+    "kindHighlights": "moments forts",
+    "blockAudio": "Audio",
+    "modeAiTone": "Choisir un ton",
+    "modeAiAuto": "Mon style",
+    "aiToneHint": "L'IA transforme tes souvenirs en récit immersif. Choisis un ton et laisse la magie opérer.",
+    "aiAutoHint": "L'IA analyse ce que tu as déjà écrit (notes, récits) pour s'adapter à ton style propre — vocabulaire, longueur de phrases, tonalité.",
+    "generateMyStyle": "Générer dans mon style",
+    "usedAuto": "Style auto",
+    "usedTone": "Ton : {{tone}}",
+    "styleNotEnough": "Pas assez de texte pour cerner ton style — un ton générique sera utilisé.",
+    "weatherBtn": "Météo du jour",
+    "weatherSaved": "Météo enregistrée ☀️",
+    "weatherFail": "Météo indisponible",
+    "geoUnavailable": "Géolocalisation indisponible",
+    "locationBtn": "Ma position"
   },
   "x2": {
     "writeMyTrip": "Écrire mon voyage",
@@ -3246,5 +3512,37 @@
     "button": "Export PDF complet",
     "success": "PDF généré",
     "error": "Échec de l'export"
+  },
+  "notebook": {
+    "titleFor": "Carnet — {{dest}}",
+    "pages": "pages"
+  },
+  "social": {
+    "title": "Partager sur les réseaux",
+    "download": "Télécharger",
+    "share": "Partager",
+    "btnShort": "Partager visuel",
+    "downloaded": "Visuel téléchargé",
+    "failed": "Échec de la génération du visuel"
+  },
+  "pageExport": {
+    "btn": "Exporter cette page",
+    "done": "Page exportée",
+    "failed": "Export impossible"
+  },
+  "audio": {
+    "record": "Enregistrer",
+    "stop": "Arrêter",
+    "saved": "Audio enregistré 🎤",
+    "uploadFail": "Échec de l'envoi audio",
+    "micDenied": "Accès micro refusé"
+  },
+  "pip": {
+    "title": "Pip — ton compagnon",
+    "welcome": "Salut ! Dis-moi ce dont tu as besoin — je t'oriente vers la bonne fonctionnalité, ou on discute simplement.",
+    "placeholder": "Pose ta question…",
+    "error": "Impossible de répondre, réessaie.",
+    "openLabel": "Ouvrir le chat",
+    "freeMode": "Mode libre"
   }
 }

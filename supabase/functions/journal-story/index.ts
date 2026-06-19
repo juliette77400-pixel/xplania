@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { destination, days, tone = "storytelling", mode, rawText, locale = "fr" } = await req.json();
+    const { destination, days, tone = "storytelling", mode, rawText, locale = "fr", styleProfile = null } = await req.json();
     const isEN = locale === "en";
 
     if (mode === "enhance-block" && rawText) {
@@ -61,8 +61,13 @@ Deno.serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
 
+    const useAutoStyle = (mode === "auto" || tone === "auto") && styleProfile && typeof styleProfile === "object";
     const TONE_PROMPTS = isEN ? TONE_PROMPTS_EN : TONE_PROMPTS_FR;
-    const toneInstruction = TONE_PROMPTS[tone] ?? TONE_PROMPTS.storytelling;
+    const toneInstruction = useAutoStyle
+      ? (isEN
+          ? `Write in the AUTHOR'S OWN STYLE described here: ${JSON.stringify(styleProfile)}. Match their vocabulary register, sentence length, emotional tone, and reuse some of their signature words naturally. Do NOT sound generic. It must read as if written by this person.`
+          : `Écris dans le STYLE PROPRE DE L'AUTEUR décrit ici : ${JSON.stringify(styleProfile)}. Respecte son registre de vocabulaire, la longueur de ses phrases, sa tonalité émotionnelle, et réutilise naturellement quelques-uns de ses mots signature. Ne sonne PAS générique. Ça doit se lire comme écrit par cette personne.`)
+      : (TONE_PROMPTS[tone] ?? TONE_PROMPTS.storytelling);
 
     const journalSummary = days
       .map((d: any, i: number) => {

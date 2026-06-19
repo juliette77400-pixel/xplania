@@ -509,11 +509,14 @@ export type Database = {
       }
       journals: {
         Row: {
+          cover_source: string
           cover_url: string | null
           created_at: string
           id: string
           is_public: boolean
           public_slug: string | null
+          style_profile: Json | null
+          style_profile_updated_at: string | null
           title: string
           tone: string
           trip_id: string
@@ -521,11 +524,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          cover_source?: string
           cover_url?: string | null
           created_at?: string
           id?: string
           is_public?: boolean
           public_slug?: string | null
+          style_profile?: Json | null
+          style_profile_updated_at?: string | null
           title?: string
           tone?: string
           trip_id: string
@@ -533,11 +539,14 @@ export type Database = {
           user_id: string
         }
         Update: {
+          cover_source?: string
           cover_url?: string | null
           created_at?: string
           id?: string
           is_public?: boolean
           public_slug?: string | null
+          style_profile?: Json | null
+          style_profile_updated_at?: string | null
           title?: string
           tone?: string
           trip_id?: string
@@ -1169,6 +1178,7 @@ export type Database = {
       trip_documents: {
         Row: {
           created_at: string
+          day_id: string | null
           doc_type: string
           file_path: string
           id: string
@@ -1182,6 +1192,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          day_id?: string | null
           doc_type?: string
           file_path: string
           id?: string
@@ -1195,6 +1206,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          day_id?: string | null
           doc_type?: string
           file_path?: string
           id?: string
@@ -1207,6 +1219,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "trip_documents_day_id_fkey"
+            columns: ["day_id"]
+            isOneToOne: false
+            referencedRelation: "journal_days"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "trip_documents_trip_id_fkey"
             columns: ["trip_id"]
