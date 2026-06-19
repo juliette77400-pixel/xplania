@@ -1681,7 +1681,60 @@
     "secHidden": "Hidden gems",
     "secFood": "Restaurants & Cafés",
     "secExperiences": "Activities & Culture",
-    "secChill": "Chill & Nature"
+    "secChill": "Chill & Nature",
+    "backToEntry": "← Change category",
+    "showingFor": "Exploring:"
+  },
+  "discoverEntry": {
+    "kicker": "Discover",
+    "title": "What are you in the mood to discover?",
+    "subtitle": "Pick a category to see places around you, or let Pip guide you.",
+    "optionACategory": "Choose a category",
+    "optionBPip": "Not sure what you're looking for?",
+    "pipDescription": "Pip asks 2-3 quick questions to narrow things down.",
+    "askPip": "Ask Pip",
+    "seePlaces": "See places",
+    "selectedCount": "{{count}} selected",
+    "tapHint": "Tap a category (or double-tap to jump straight in)",
+    "soloShortcut": "Just take me on a solo walk",
+    "cat": {
+      "gastronomie": "Food & Drink",
+      "nature": "Nature & Outdoors",
+      "culture": "Culture & Heritage",
+      "vie_nocturne": "Nightlife",
+      "shopping": "Shopping",
+      "sport": "Sport & Activities",
+      "bien_etre": "Wellness",
+      "pepites": "Hidden gems",
+      "tout": "Show everything"
+    }
+  },
+  "discoverPip": {
+    "title": "Pip Discover",
+    "aroundYou": "Around you",
+    "activeTrip": "Around your destination",
+    "greeting": "Hi! 🧭 Pip here. What are you in the mood to discover today?",
+    "askCategory": "Pick one or more categories, or just tell me in a few words what you fancy.",
+    "askCompany": "Who are you going with?",
+    "askDistance": "Want to stay close, or can you go a bit further?",
+    "confirmCategory": "Confirm ({{count}})",
+    "inputPh": "Write to Pip…",
+    "fallback": "Not sure I caught that — tap a category to get started.",
+    "soloAck": "Got it — just you, right now. Showing you what's nearby.",
+    "recap": "Found it. Showing: {{cats}}, near you.",
+    "showResults": "Show me",
+    "adjust": "Let me adjust",
+    "company": {
+      "solo": "Solo",
+      "duo": "Duo",
+      "group": "Group",
+      "family": "Family"
+    },
+    "distance": {
+      "close": "Walking distance",
+      "medium": "A short ride away",
+      "any": "Any distance"
+    }
   },
   "explorePage": {
     "title": "Travel Map",
