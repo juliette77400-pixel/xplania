@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useGamification, type BadgeWithClaim } from "@/hooks/useGamification";
 import BadgeMedal from "./BadgeMedal";
+import { explainClaim, statusLabel } from "@/lib/claim-explain";
 
 interface Props {
   badge: BadgeWithClaim | null;
