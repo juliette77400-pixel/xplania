@@ -19,9 +19,8 @@ const PublicSuivi = () => {
     if (!slug) return;
     let cancel = false;
     const load = async () => {
-      const { data: t } = await supabase
-        .from("trip_tracking").select("*")
-        .eq("share_slug", slug).eq("share_enabled", true).maybeSingle();
+      const { data: tRows } = await (supabase as any).rpc("get_public_trip_tracking", { _slug: slug });
+      const t = Array.isArray(tRows) ? tRows[0] : tRows;
       if (cancel || !t) { setLoading(false); return; }
       setTracking(t as TripTracking);
       setShareMeta({
@@ -31,18 +30,16 @@ const PublicSuivi = () => {
         slug: slug!,
       });
       const [{ data: a }, { data: p }] = await Promise.all([
-        supabase.from("trip_activities").select("*").eq("trip_id", t.trip_id).order("day_date").order("position"),
-        supabase.from("trip_positions").select("lat,lng,recorded_at").eq("trip_id", t.trip_id).order("recorded_at"),
+        (supabase as any).rpc("get_public_trip_activities", { _slug: slug }),
+        (supabase as any).rpc("get_public_trip_positions", { _slug: slug }),
       ]);
       setActivities((a || []) as TripActivity[]);
-      setPositions(p || []);
+      setPositions((p || []) as { lat: number; lng: number }[]);
       setLoading(false);
     };
     load();
-    const ch = supabase.channel(`pub-${slug}`)
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "trip_tracking", filter: `share_slug=eq.${slug}` }, load)
-      .subscribe();
-    return () => { cancel = true; supabase.removeChannel(ch); };
+    const poll = setInterval(load, 15000);
+    return () => { cancel = true; clearInterval(poll); };
   }, [slug]);
 
   if (loading) {
