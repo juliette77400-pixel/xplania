@@ -186,7 +186,7 @@ const Carnet = () => {
             <p className="text-muted-foreground">{t("carnet.noDays")}</p>
           </div>
         ) : (
-          <Tabs defaultValue="timeline">
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as CarnetSection)}>
             <TabsList className="grid grid-cols-3 sm:grid-cols-5 max-w-3xl mx-auto mb-6">
               <TabsTrigger value="timeline">📖 {t("carnet.tabPages")}</TabsTrigger>
               <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
