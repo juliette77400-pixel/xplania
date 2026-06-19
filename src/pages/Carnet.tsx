@@ -118,6 +118,23 @@ const Carnet = () => {
                 <Share2 className="w-4 h-4" />
               </Button>
             )}
+            {destination && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" title={t("cover.regenerate")} disabled={regenLoading}>
+                    {regenLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageDown className="w-4 h-4" />}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => handleRegenCover("unsplash")}>
+                    <RefreshCw className="w-4 h-4 mr-2" /> {t("cover.regenUnsplash")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleRegenCover("ai")}>
+                    <Sparkles className="w-4 h-4 mr-2" /> {t("cover.regenAi")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
             {tripId && <ExportTripButton tripId={tripId} variant="ghost" size="sm" />}
             {tripId && (
               <DeleteTripButton
