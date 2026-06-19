@@ -2864,7 +2864,27 @@
       "directions": "Directions",
       "noListErr": "Create a list first",
       "savedTo": "Saved to {{name}}",
-      "removed": "Removed from favorites"
+      "removed": "Removed from favorites",
+      "addToItinerary": "Add to my itinerary"
+    },
+    "itinerary": {
+      "title": "Add to my itinerary",
+      "subtitle": "Add \"{{name}}\" to one of your trips.",
+      "trip": "Trip",
+      "pickTrip": "Pick a trip",
+      "untitled": "Untitled trip",
+      "day": "Day",
+      "dayPlaceholder": "Pick a day",
+      "dayNone": "Unscheduled",
+      "noDates": "This trip has no dates yet — the activity will be added without a day.",
+      "noteLabel": "Note (optional)",
+      "notePlaceholder": "Booking, time, tip…",
+      "cancel": "Cancel",
+      "confirm": "Add",
+      "added": "Added to {{trip}} ✓",
+      "errAdd": "Could not add this place. Please try again.",
+      "loginRequired": "Sign in to add places to a trip.",
+      "noTrip": "You don't have any trip yet. Create one from the home screen."
     },
     "reviews": {
       "title": "Reviews ({{count}})",
