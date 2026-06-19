@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import BlockCard from "./BlockCard";
+import TripDocumentsManager from "@/components/shared/TripDocumentsManager";
 import type { JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
 import { pingStreakAction } from "@/lib/streak";
@@ -17,6 +18,8 @@ interface Props {
   day: JournalDay;
   journalId: string;
   destination?: string;
+  tripId?: string;
+  allDays?: { id: string; date: string; title?: string | null }[];
   onChanged: () => void;
 }
 
@@ -29,7 +32,7 @@ const BLOCK_TYPES = [
   { type: "audio", labelKey: "j2.blockAudio", icon: Mic },
 ] as const;
 
-const DayView = ({ day, journalId, destination, onChanged }: Props) => {
+const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Props) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
@@ -165,6 +168,11 @@ const DayView = ({ day, journalId, destination, onChanged }: Props) => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* ✨ Documents épinglés à cette page du carnet */}
+      {tripId && (
+        <TripDocumentsManager tripId={tripId} dayId={day.id} days={allDays} compact />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-// ✨ NEW (Tâche 3) — Documents de voyage (billets, passeport, réservations)
+// ✨ Documents de voyage (billets, passeport, réservations) — supporte le rattachement à un jour de carnet (day_id)
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
@@ -14,34 +14,43 @@ export type TripDocument = {
   mime_type: string | null;
   size_bytes: number | null;
   notes: string | null;
+  day_id: string | null;
   created_at: string;
 };
 
 const BUCKET = "trip-documents";
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
-export function useTripDocuments(tripId?: string) {
+export function useTripDocuments(tripId?: string, options?: { dayId?: string | null }) {
   const { user } = useAuth();
+  const dayId = options?.dayId;
   const [documents, setDocuments] = useState<TripDocument[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchDocs = useCallback(async () => {
     if (!tripId || !user) return;
     setLoading(true);
-    const { data, error } = await supabase
+    let q = supabase
       .from("trip_documents")
       .select("*")
       .eq("trip_id", tripId)
       .order("created_at", { ascending: false });
+    if (dayId) q = q.eq("day_id", dayId);
+    const { data, error } = await q;
     if (!error && data) setDocuments(data as TripDocument[]);
     setLoading(false);
-  }, [tripId, user]);
+  }, [tripId, user, dayId]);
 
   useEffect(() => {
     fetchDocs();
   }, [fetchDocs]);
 
-  const upload = async (file: File, docType: string = "other", notes?: string) => {
+  const upload = async (
+    file: File,
+    docType: string = "other",
+    notes?: string,
+    pinnedDayId?: string | null,
+  ) => {
     if (!tripId || !user) return null;
     if (file.size > MAX_SIZE) {
       toast.error("Fichier trop volumineux (max 10 Mo)");
@@ -69,6 +78,7 @@ export function useTripDocuments(tripId?: string) {
         mime_type: file.type,
         size_bytes: file.size,
         notes: notes || null,
+        day_id: pinnedDayId ?? dayId ?? null,
       })
       .select()
       .single();
@@ -93,6 +103,23 @@ export function useTripDocuments(tripId?: string) {
     toast.success("Document supprimé");
   };
 
+  const linkToDay = async (doc: TripDocument, newDayId: string | null) => {
+    const { error } = await supabase
+      .from("trip_documents")
+      .update({ day_id: newDayId })
+      .eq("id", doc.id);
+    if (error) {
+      toast.error("Échec du rattachement");
+      return;
+    }
+    setDocuments((prev) =>
+      // if we filter by dayId and the doc no longer matches, remove it locally
+      dayId && newDayId !== dayId
+        ? prev.filter((d) => d.id !== doc.id)
+        : prev.map((d) => (d.id === doc.id ? { ...d, day_id: newDayId } : d)),
+    );
+  };
+
   const getSignedUrl = async (doc: TripDocument) => {
     const { data, error } = await supabase.storage
       .from(BUCKET)
@@ -104,5 +131,5 @@ export function useTripDocuments(tripId?: string) {
     return data.signedUrl;
   };
 
-  return { documents, loading, upload, remove, getSignedUrl, refetch: fetchDocs };
+  return { documents, loading, upload, remove, getSignedUrl, linkToDay, refetch: fetchDocs };
 }

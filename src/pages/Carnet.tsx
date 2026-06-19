@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2, Share2 } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Loader2, Share2, RefreshCw, Sparkles, ImageDown } from "lucide-react";
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,6 +26,8 @@ import { useJournalCover } from "@/hooks/useJournalCover";
 import { Button } from "@/components/ui/button";
 import { Image as ImageIcon } from "lucide-react";
 import { formatDayLabel } from "@/lib/journal-utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 const Carnet = () => {
   const { tripId } = useParams<{ tripId: string }>();
@@ -37,8 +39,23 @@ const Carnet = () => {
   const [tripMeta, setTripMeta] = useState<{ departure_date: string | null; return_date: string | null } | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
+  const [regenLoading, setRegenLoading] = useState(false);
   const { t } = useTranslation();
-  const navigate = useNavigate(); // ✨ NEW (Tâche 1) — pour rediriger après suppression
+  const navigate = useNavigate();
+  const { regenerate: regenerateCover } = useJournalCover(tripId || "", destination);
+
+  const handleRegenCover = async (mode: "unsplash" | "ai") => {
+    if (!destination || regenLoading) return;
+    setRegenLoading(true);
+    try {
+      await regenerateCover(mode);
+      toast.success(t("cover.regenerated"));
+    } catch {
+      toast.error(t("cover.regenFail"));
+    } finally {
+      setRegenLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!tripId) return;
@@ -100,6 +117,23 @@ const Carnet = () => {
               <Button variant="ghost" size="sm" onClick={() => setShareOpen(true)} title={t("shareDialog.title")}>
                 <Share2 className="w-4 h-4" />
               </Button>
+            )}
+            {destination && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" title={t("cover.regenerate")} disabled={regenLoading}>
+                    {regenLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageDown className="w-4 h-4" />}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => handleRegenCover("unsplash")}>
+                    <RefreshCw className="w-4 h-4 mr-2" /> {t("cover.regenUnsplash")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleRegenCover("ai")}>
+                    <Sparkles className="w-4 h-4 mr-2" /> {t("cover.regenAi")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
             {tripId && <ExportTripButton tripId={tripId} variant="ghost" size="sm" />}
             {tripId && (
@@ -215,7 +249,7 @@ const Carnet = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.25 }}
                       >
-                        <DayView day={activeDay} journalId={journal.id} destination={destination} onChanged={refetch} />
+                        <DayView day={activeDay} journalId={journal.id} destination={destination} tripId={tripId} allDays={days} onChanged={refetch} />
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -243,7 +277,7 @@ const Carnet = () => {
 
             {/* ✨ NEW (Tâche 3) — Onglet Documents */}
             <TabsContent value="docs">
-              {tripId && <TripDocumentsManager tripId={tripId} />}
+              {tripId && <TripDocumentsManager tripId={tripId} days={days} />}
             </TabsContent>
 
             <TabsContent value="share">

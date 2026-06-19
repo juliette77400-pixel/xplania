@@ -15,7 +15,8 @@
     "skip": "Skip",
     "back": "Back",
     "letsGo": "Let's go",
-    "retry": "Try again"
+    "retry": "Try again",
+    "delete": "Delete"
   },
   "notifBell": {
     "aria": "Notifications",
@@ -1564,6 +1565,7 @@
     "tabStory": "AI Story",
     "tabInsights": "Insights",
     "tabShare": "Share",
+    "tabDocs": "Docs",
     "day": "Day {{n}}",
     "memoryOne": "{{n}} memory",
     "memoryMany": "{{n}} memories",
@@ -3495,10 +3497,14 @@
   },
   "tripDocs": {
     "title": "Trip documents",
-    "hint": "Store your tickets, passport, bookings (PDF or images, max 10 MB).",
+    "pageDocs": "Documents on this page",
+    "hint": "Store your tickets, passport, bookings (PDF or images, max 10 MB). You can also pin them to a specific journal page.",
     "upload": "Add",
     "open": "Open",
     "empty": "No documents for this trip yet. Add your tickets or bookings!",
+    "emptyPage": "No documents pinned to this page yet.",
+    "pinToPage": "Pin to…",
+    "noPage": "No page",
     "deleteTitle": "Delete this document?",
     "deleteDesc": "The file \"{{name}}\" will be permanently deleted.",
     "types": {
@@ -3507,6 +3513,13 @@
       "booking": "Booking",
       "other": "Other"
     }
+  },
+  "cover": {
+    "regenerate": "Regenerate cover",
+    "regenUnsplash": "New Unsplash photo",
+    "regenAi": "Generate with AI",
+    "regenerated": "Cover updated ✨",
+    "regenFail": "Could not regenerate cover"
   },
   "tripExport": {
     "button": "Full PDF export",
