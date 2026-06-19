@@ -252,6 +252,7 @@ const MoodExplorer = () => {
       <QuickJump />
 
       <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} toolName="Mood Explorer" />
+      <MoodRatingDialog open={ratingOpen} onOpenChange={setRatingOpen} onSubmit={handleRatingSubmit} />
     </div>
   );
 };
