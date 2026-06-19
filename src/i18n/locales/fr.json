@@ -2887,6 +2887,35 @@
         "full": "Journée complète"
       }
     },
+    "tabs": {
+      "tracker": "Suivi"
+    },
+    "tracker": {
+      "title": "Mon suivi d'humeurs",
+      "subtitle": "Évolution de ton mood au fil du temps.",
+      "logMood": "Juste noter mon humeur",
+      "loading": "Chargement…",
+      "empty": "Aucune donnée pour cette période. Note ton humeur ou lance un mood pour démarrer.",
+      "delete": "Supprimer",
+      "period": {
+        "week": "Semaine",
+        "month": "Mois",
+        "all": "Tout"
+      },
+      "col": {
+        "date": "Date",
+        "mood": "Humeur",
+        "rating": "Ressenti",
+        "note": "Note"
+      }
+    },
+    "rating": {
+      "title": "Comment c'était ?",
+      "subtitle": "Note ce moment d'un emoji, ajoute un mot si tu veux.",
+      "notePh": "Quelques mots… (optionnel)",
+      "skip": "Plus tard",
+      "save": "Enregistrer"
+    },
     "hero": {
       "kicker": "Mood Explorer",
       "title": "Trouve ta vibe du moment",
