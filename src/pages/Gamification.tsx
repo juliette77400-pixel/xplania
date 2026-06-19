@@ -19,6 +19,7 @@ import { computeXp, getLevelProgress } from "@/lib/xp-levels";
 import XpHeader from "@/components/gamification/XpHeader";
 import Leaderboard from "@/components/gamification/Leaderboard";
 import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
+import GamCatalog from "@/components/gamification/GamCatalog";
 import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
 import { differenceInDays, parseISO } from "date-fns";
 
@@ -312,6 +313,9 @@ const GamificationPage = () => {
 
         {/* ══════ XP LEVEL HEADER ══════ */}
         <XpHeader xp={totalXp} />
+
+        {/* ══════ CATALOGUE XPLANIA (260 badges, vérification réelle) ══════ */}
+        <GamCatalog />
 
         {/* ══════ LEADERBOARD GLOBAL ══════ */}
         <Leaderboard />
