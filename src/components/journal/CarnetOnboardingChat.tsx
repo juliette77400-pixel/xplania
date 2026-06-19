@@ -400,6 +400,26 @@ const CarnetOnboardingChat = ({
             >
               {mode === "guided" ? t("carnet.qa.askButton") : t("carnet.qa.backToGuide")}
             </button>
+            {mode === "qa" && (
+              <>
+                <button
+                  aria-label={t("carnet.qa.contextLabel")}
+                  title={t("carnet.qa.contextLabel")}
+                  onClick={() => setShowContext((s) => !s)}
+                  className={`p-1 rounded-md hover:bg-muted ${showContext ? "text-primary" : "text-muted-foreground"}`}
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+                <button
+                  aria-label={t("carnet.qa.exportPdf")}
+                  title={t("carnet.qa.exportPdf")}
+                  onClick={handleExportPdf}
+                  className="p-1 rounded-md hover:bg-muted text-muted-foreground"
+                >
+                  <FileDown className="w-4 h-4" />
+                </button>
+              </>
+            )}
             <button
               aria-label={expanded ? t("carnet.qa.collapse") : t("carnet.qa.expand")}
               title={expanded ? t("carnet.qa.collapse") : t("carnet.qa.expand")}
