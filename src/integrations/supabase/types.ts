@@ -339,6 +339,278 @@ export type Database = {
           },
         ]
       }
+      gam_badge_claims: {
+        Row: {
+          ai_analysis: Json | null
+          badge_id: string
+          created_at: string
+          geo_lat: number | null
+          geo_lng: number | null
+          id: string
+          proof_hash: string | null
+          proof_type: string | null
+          proof_url: string | null
+          review_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["gam_claim_status"]
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          badge_id: string
+          created_at?: string
+          geo_lat?: number | null
+          geo_lng?: number | null
+          id?: string
+          proof_hash?: string | null
+          proof_type?: string | null
+          proof_url?: string | null
+          review_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["gam_claim_status"]
+          submitted_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_analysis?: Json | null
+          badge_id?: string
+          created_at?: string
+          geo_lat?: number | null
+          geo_lng?: number | null
+          id?: string
+          proof_hash?: string | null
+          proof_type?: string | null
+          proof_url?: string | null
+          review_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["gam_claim_status"]
+          submitted_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_badge_claims_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "gam_badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gam_badges: {
+        Row: {
+          active: boolean
+          category_id: string
+          created_at: string
+          description_en: string
+          description_fr: string
+          icon: string | null
+          id: string
+          is_repeatable: boolean
+          is_weekly_mission_eligible: boolean
+          name_en: string
+          name_fr: string
+          needs_translation: boolean
+          points: number
+          reward_en: string | null
+          reward_fr: string | null
+          target_lat: number | null
+          target_lng: number | null
+          target_place: string | null
+          target_radius_m: number | null
+          updated_at: string
+          verification_method: Database["public"]["Enums"]["gam_verification_method"]
+        }
+        Insert: {
+          active?: boolean
+          category_id: string
+          created_at?: string
+          description_en?: string
+          description_fr?: string
+          icon?: string | null
+          id?: string
+          is_repeatable?: boolean
+          is_weekly_mission_eligible?: boolean
+          name_en: string
+          name_fr: string
+          needs_translation?: boolean
+          points?: number
+          reward_en?: string | null
+          reward_fr?: string | null
+          target_lat?: number | null
+          target_lng?: number | null
+          target_place?: string | null
+          target_radius_m?: number | null
+          updated_at?: string
+          verification_method?: Database["public"]["Enums"]["gam_verification_method"]
+        }
+        Update: {
+          active?: boolean
+          category_id?: string
+          created_at?: string
+          description_en?: string
+          description_fr?: string
+          icon?: string | null
+          id?: string
+          is_repeatable?: boolean
+          is_weekly_mission_eligible?: boolean
+          name_en?: string
+          name_fr?: string
+          needs_translation?: boolean
+          points?: number
+          reward_en?: string | null
+          reward_fr?: string | null
+          target_lat?: number | null
+          target_lng?: number | null
+          target_place?: string | null
+          target_radius_m?: number | null
+          updated_at?: string
+          verification_method?: Database["public"]["Enums"]["gam_verification_method"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_badges_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "gam_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gam_categories: {
+        Row: {
+          active: boolean
+          created_at: string
+          gradient_from: string
+          gradient_to: string
+          icon: string
+          id: string
+          name_en: string
+          name_fr: string
+          position: number
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          gradient_from?: string
+          gradient_to?: string
+          icon?: string
+          id?: string
+          name_en: string
+          name_fr: string
+          position?: number
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          gradient_from?: string
+          gradient_to?: string
+          icon?: string
+          id?: string
+          name_en?: string
+          name_fr?: string
+          position?: number
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gam_current_missions: {
+        Row: {
+          active: boolean
+          badge_id: string
+          created_at: string
+          end_date: string
+          id: string
+          scope: Database["public"]["Enums"]["gam_mission_scope"]
+          start_date: string
+        }
+        Insert: {
+          active?: boolean
+          badge_id: string
+          created_at?: string
+          end_date: string
+          id?: string
+          scope: Database["public"]["Enums"]["gam_mission_scope"]
+          start_date?: string
+        }
+        Update: {
+          active?: boolean
+          badge_id?: string
+          created_at?: string
+          end_date?: string
+          id?: string
+          scope?: Database["public"]["Enums"]["gam_mission_scope"]
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_current_missions_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "gam_badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gam_user_category_prefs: {
+        Row: {
+          category_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_user_category_prefs_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "gam_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gam_user_settings: {
+        Row: {
+          competition_visibility: Database["public"]["Enums"]["gam_competition_visibility"]
+          created_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          competition_visibility?: Database["public"]["Enums"]["gam_competition_visibility"]
+          created_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          competition_visibility?: Database["public"]["Enums"]["gam_competition_visibility"]
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       journal_badges: {
         Row: {
           code: string
@@ -1386,6 +1658,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       mood_reactions_public: {
@@ -1420,6 +1713,7 @@ export type Database = {
       }
     }
     Functions: {
+      gam_user_points: { Args: { _user_id: string }; Returns: number }
       get_public_display_name: { Args: { _user_id: string }; Returns: string }
       get_public_trip_activities: {
         Args: { _slug: string }
@@ -1484,6 +1778,13 @@ export type Database = {
         }
       }
       get_waitlist_count: { Args: never; Returns: number }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       owns_place_list: {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
@@ -1499,7 +1800,16 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      gam_claim_status: "in_progress" | "submitted" | "validated" | "rejected"
+      gam_competition_visibility: "public" | "anonymized" | "private"
+      gam_mission_scope: "weekly" | "monthly"
+      gam_verification_method:
+        | "geo"
+        | "photo"
+        | "ticket"
+        | "geo_photo"
+        | "manual"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1626,6 +1936,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      gam_claim_status: ["in_progress", "submitted", "validated", "rejected"],
+      gam_competition_visibility: ["public", "anonymized", "private"],
+      gam_mission_scope: ["weekly", "monthly"],
+      gam_verification_method: [
+        "geo",
+        "photo",
+        "ticket",
+        "geo_photo",
+        "manual",
+      ],
+    },
   },
 } as const
