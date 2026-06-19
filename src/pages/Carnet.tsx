@@ -277,7 +277,7 @@ const Carnet = () => {
 
             {/* ✨ NEW (Tâche 3) — Onglet Documents */}
             <TabsContent value="docs">
-              {tripId && <TripDocumentsManager tripId={tripId} />}
+              {tripId && <TripDocumentsManager tripId={tripId} days={days} />}
             </TabsContent>
 
             <TabsContent value="share">
