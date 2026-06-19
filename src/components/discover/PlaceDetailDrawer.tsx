@@ -79,20 +79,28 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
             <div className="grid grid-cols-2 gap-2 pt-2">
               <Button onClick={handleSave} variant={isSaved(place.id) ? "default" : "outline"}>
                 <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <Button onClick={handleSave} variant={isSaved(place.id) ? "default" : "outline"}>
+                <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
                 {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
               </Button>
-              <Button asChild>
+              <Button asChild variant="outline">
                 <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
                   <Navigation className="mr-2 h-4 w-4" />{t("discoverComp.drawer.directions")}
                 </a>
               </Button>
             </div>
+            <Button className="w-full" onClick={() => setItineraryOpen(true)}>
+              <CalendarPlus className="mr-2 h-4 w-4" />
+              {t("discoverComp.drawer.addToItinerary")}
+            </Button>
 
             <Separator className="my-2" />
             <ReviewsSection placeId={place.id} />
           </div>
         </div>
       </DrawerContent>
+      <AddToItineraryDialog place={place} open={itineraryOpen} onClose={() => setItineraryOpen(false)} />
     </Drawer>
   );
 };
