@@ -29,6 +29,7 @@ import Profil from "./pages/Profil.tsx";
 import Legal from "./pages/Legal.tsx";
 import Trust from "./pages/Trust.tsx";
 import About from "./pages/About.tsx";
+import GlobalPipChat from "./components/shared/GlobalPipChat";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => (
             <Route path="/legal/:type" element={<Legal />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <GlobalPipChat />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
