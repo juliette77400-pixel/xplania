@@ -14,7 +14,7 @@ interface Msg {
   intent?: string;
 }
 
-const HIDE_ROUTES = ["/auth", "/onboarding"];
+const HIDE_ROUTES = ["/auth", "/onboarding", "/carnet/", "/carnet", "/guide-budget"];
 
 const GlobalPipChat = () => {
   const { t } = useTranslation();
