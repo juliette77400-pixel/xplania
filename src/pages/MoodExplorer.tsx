@@ -170,10 +170,11 @@ const MoodExplorer = () => {
           </div>
         ) : (
           <Tabs value={tab} onValueChange={setTab}>
-            <TabsList className="flex w-full overflow-x-auto sm:grid sm:grid-cols-5 no-scrollbar">
+            <TabsList className="flex w-full overflow-x-auto sm:grid sm:grid-cols-6 no-scrollbar">
               <TabsTrigger value="feed" className="shrink-0"><Sparkles className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Feed</span><span className="sm:hidden">Feed</span></TabsTrigger>
               <TabsTrigger value="map" className="shrink-0"><MapIcon className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Carte</span><span className="sm:hidden">Carte</span></TabsTrigger>
               <TabsTrigger value="favorites" className="shrink-0"><Heart className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Favoris</span><span className="sm:hidden">♥</span> ({favorites.length})</TabsTrigger>
+              <TabsTrigger value="tracker" className="shrink-0"><LineChartIcon className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">{t("moodComp.tabs.tracker")}</span><span className="sm:hidden">📈</span></TabsTrigger>
               <TabsTrigger value="badges" className="shrink-0"><Trophy className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Badges</span><span className="sm:hidden">🏆</span> ({badges.length})</TabsTrigger>
               <TabsTrigger value="social" className="shrink-0"><Users className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Social</span><span className="sm:hidden">👥</span></TabsTrigger>
             </TabsList>
@@ -193,6 +194,10 @@ const MoodExplorer = () => {
 
             <TabsContent value="favorites" className="mt-4">
               <MoodFavorites favorites={favorites} onToggleFavorite={toggleFavorite} onOpenDetails={setDetailsPlace} />
+            </TabsContent>
+
+            <TabsContent value="tracker" className="mt-4">
+              <MoodTrackerPanel />
             </TabsContent>
 
             <TabsContent value="badges" className="mt-4">
