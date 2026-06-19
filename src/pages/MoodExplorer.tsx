@@ -243,7 +243,15 @@ const MoodExplorer = () => {
         )}
 
         {activeMood && places.length > 0 && (
-          <div className="flex justify-center pt-2">
+          <div className="flex flex-wrap gap-2 justify-center pt-2">
+            <Button variant="outline" size="sm" onClick={() => setShareOpen(true)}>
+              <Share2 className="w-4 h-4 mr-2" /> {t("moodComp.share.button")}
+            </Button>
+            <AddToCarnetButton
+              mood={activeMood}
+              topPlace={places[0] ? { name: places[0].name, address: (places[0] as any).address } : null}
+              placesCount={places.length}
+            />
             <Button variant="ghost" size="sm" onClick={() => { reset(); setTab("feed"); }}>
               {t("moodComp.history.pickAnother")}
             </Button>
