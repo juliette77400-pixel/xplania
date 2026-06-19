@@ -76,6 +76,7 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
                 <span key={tag} className="rounded-full bg-primary/10 px-2.5 py-1 text-xs text-primary">#{tag}</span>
               ))}
             </div>
+            <div className="grid grid-cols-2 gap-2 pt-2">
               <Button onClick={handleSave} variant={isSaved(place.id) ? "default" : "outline"}>
                 <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
                 {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
