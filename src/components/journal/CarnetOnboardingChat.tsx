@@ -263,7 +263,101 @@ const CarnetOnboardingChat = ({
     }
   };
 
-  if (!open) {
+  const handleInsert = async (idx: number, content: string) => {
+    if (!user || !content.trim()) return;
+    setInsertingIdx(idx);
+    try {
+      if (activeSection === "story" && journalId) {
+        const { error } = await supabase.from("journal_stories").insert({
+          journal_id: journalId,
+          user_id: user.id,
+          tone: "chat",
+          content,
+        });
+        if (error) throw error;
+        toast.success(t("carnet.qa.insertedStory"));
+      } else {
+        // Default: insert as a note block on the active (or first) day
+        const targetDay = activeDay || days[0];
+        if (!targetDay || !journalId) {
+          toast.error(t("carnet.qa.insertNoDay"));
+          return;
+        }
+        const nextPos = (targetDay.blocks?.length || 0);
+        const { error } = await supabase.from("journal_blocks").insert({
+          day_id: targetDay.id,
+          journal_id: journalId,
+          type: "note",
+          content: { text: content },
+          position: nextPos,
+        });
+        if (error) throw error;
+        toast.success(t("carnet.qa.insertedNote", { day: formatDayLabel(targetDay.date) }));
+      }
+      onChanged?.();
+    } catch (e: any) {
+      console.error("insert failed", e);
+      toast.error(e?.message || t("carnet.qa.insertFail"));
+    } finally {
+      setInsertingIdx(null);
+    }
+  };
+
+  const handleExportPdf = () => {
+    if (qaHistory.length === 0) {
+      toast.error(t("carnet.qa.exportEmpty"));
+      return;
+    }
+    try {
+      const doc = new jsPDF({ unit: "mm", format: "a4" });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const margin = 15;
+      let y = margin;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text(journalTitle || destination || t("carnet.onboarding.title"), margin, y);
+      y += 7;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(120);
+      doc.text(
+        `${t("carnet.qa.exportTab")}: ${t(`carnet.onboarding.sectionLabel.${activeSection}`)} • ${new Date().toLocaleString()}`,
+        margin, y,
+      );
+      y += 8;
+      doc.setDrawColor(200);
+      doc.line(margin, y, pageW - margin, y);
+      y += 6;
+      doc.setTextColor(0);
+
+      for (const m of qaHistory) {
+        const who = m.role === "user" ? t("carnet.qa.you") : "Pip";
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.text(`${who}`, margin, y);
+        y += 5;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        const lines = doc.splitTextToSize(m.content, pageW - margin * 2);
+        for (const line of lines) {
+          if (y > pageH - margin) { doc.addPage(); y = margin; }
+          doc.text(line, margin, y);
+          y += 5;
+        }
+        y += 3;
+      }
+
+      const safeTitle = (journalTitle || destination || "carnet").replace(/[^a-z0-9-]+/gi, "_").slice(0, 40);
+      doc.save(`chat-${safeTitle}-${activeSection}.pdf`);
+      toast.success(t("carnet.qa.exportDone"));
+    } catch (e) {
+      console.error("export pdf failed", e);
+      toast.error(t("carnet.qa.exportFail"));
+    }
+  };
+
     return (
       <button
         onClick={() => setOpen(true)}
