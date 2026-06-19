@@ -128,12 +128,25 @@ const CarnetOnboardingChat = ({
     const blocksByType: Record<string, number> = {};
     const locationsSet = new Set<string>();
     const moods: string[] = [];
+    const blocksDetail: Array<{ day: string; type: string; preview: string }> = [];
     for (const d of days) {
+      const dayLabel = formatDayLabel(d.date);
       for (const b of d.blocks || []) {
         blocksByType[b.type] = (blocksByType[b.type] || 0) + 1;
         const c = (b.content || {}) as Record<string, unknown>;
         if (b.type === "location" && typeof c.name === "string") locationsSet.add(c.name);
         if (b.type === "mood" && typeof c.label === "string") moods.push(c.label);
+        const preview =
+          (typeof c.text === "string" && c.text) ||
+          (typeof c.name === "string" && c.name) ||
+          (typeof c.label === "string" && c.label) ||
+          (typeof c.title === "string" && c.title) ||
+          "";
+        blocksDetail.push({
+          day: dayLabel,
+          type: b.type,
+          preview: String(preview).slice(0, 80),
+        });
       }
     }
     return {
@@ -141,8 +154,42 @@ const CarnetOnboardingChat = ({
       blocksByType,
       locations: Array.from(locationsSet),
       moods,
+      blocksDetail,
     };
   })();
+
+  // Payload that will be (or was) sent to the edge function — shown in the context inspector
+  const inspectablePayload = {
+    firstName,
+    destination,
+    days: days.length,
+    filledDays: ctx.filledDays,
+    totalBlocks: ctx.totalBlocks,
+    blocksByType: ctx.blocksByType,
+    blocks: ctx.blocksDetail,
+    locations: ctx.locations,
+    moods: ctx.moods,
+    activeSection,
+    activeDayLabel: activeDay ? formatDayLabel(activeDay.date) : "",
+    activeDayBlocks: activeDay?.blocks?.length || 0,
+    hasStory: !!hasStory,
+    isPublic: !!isPublic,
+    tripEnded: !!tripEnded,
+    departureDate: departureDate || "",
+    returnDate: returnDate || "",
+    locale,
+  };
+
+  const copyPayload = async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(inspectablePayload, null, 2));
+      setPayloadCopied(true);
+      toast.success(t("carnet.qa.payloadCopied"));
+      setTimeout(() => setPayloadCopied(false), 1500);
+    } catch {
+      toast.error(t("carnet.qa.payloadCopyFail"));
+    }
+  };
 
   const toggleExpanded = () => {
     setExpanded((prev) => {
