@@ -3118,12 +3118,16 @@
       "dialogTitle": "Add to travel journal",
       "dialogDesc": "Save this moment into one of your trips.",
       "pickTrip": "Pick a trip",
+      "title": "Title",
+      "titlePh": "e.g. 🌿 Chill in Lisbon",
       "note": "Note",
       "prefillIntro": "{{mood}} moment — Mood Explorer",
       "cancel": "Cancel",
       "save": "Save",
       "saving": "Saving…",
       "success": "Added to journal ✨",
+      "successDetail": "Added to {{destination}} journal: {{emoji}} {{mood}} ({{count}} places)",
+      "journalFallback": "journal",
       "error": "Could not save to journal",
       "noTrips": "Create a trip to use this feature."
     }

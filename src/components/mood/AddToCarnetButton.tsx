@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
@@ -40,6 +41,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
   const m = mood ? moodByKey(mood) : null;
   const [open, setOpen] = useState(false);
   const [tripId, setTripId] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [saving, setSaving] = useState(false);
 
@@ -49,9 +51,10 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
 
   useEffect(() => {
     if (!open) return;
-    const base = `${m?.emoji ?? "🎭"} ${t("moodComp.carnet.prefillIntro", {
+    setTitle(`${m?.emoji ?? "🎭"} ${m?.label ?? mood ?? ""}`);
+    const base = t("moodComp.carnet.prefillIntro", {
       mood: m?.label ?? mood ?? "",
-    })}`;
+    });
     const place = topPlace?.name ? `\n📍 ${topPlace.name}` : "";
     setNote(`${base}${place}`);
   }, [open, mood, topPlace?.name]);
@@ -130,6 +133,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
         type: "mood",
         position: count ?? 0,
         content: {
+          title,
           mood,
           mood_label: m?.label ?? null,
           mood_emoji: m?.emoji ?? null,
@@ -141,7 +145,15 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
       });
       if (bErr) throw bErr;
 
-      toast.success(t("moodComp.carnet.success"));
+      const trip = trips.find((tr) => tr.id === tripId);
+      toast.success(
+        t("moodComp.carnet.successDetail", {
+          destination: trip?.destination || trip?.title || t("moodComp.carnet.journalFallback"),
+          emoji: m?.emoji ?? "🎭",
+          mood: m?.label ?? mood ?? "",
+          count: placesCount,
+        })
+      );
       setOpen(false);
     } catch (e: any) {
       console.error(e);
@@ -196,6 +208,15 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
                   </SelectContent>
                 </Select>
               )}
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">{t("moodComp.carnet.title")}</label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={t("moodComp.carnet.titlePh")}
+              />
             </div>
 
             <div className="space-y-1.5">
