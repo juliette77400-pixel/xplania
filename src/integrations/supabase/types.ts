@@ -603,6 +603,36 @@ export type Database = {
           },
         ]
       }
+      gam_notification_settings: {
+        Row: {
+          channel_email: boolean
+          channel_in_app: boolean
+          enabled_rejected: boolean
+          enabled_validated: boolean
+          frequency: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          channel_email?: boolean
+          channel_in_app?: boolean
+          enabled_rejected?: boolean
+          enabled_validated?: boolean
+          frequency?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          channel_email?: boolean
+          channel_in_app?: boolean
+          enabled_rejected?: boolean
+          enabled_validated?: boolean
+          frequency?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gam_user_category_prefs: {
         Row: {
           category_id: string
