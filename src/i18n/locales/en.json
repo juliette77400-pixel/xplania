@@ -1685,6 +1685,20 @@
     "backToEntry": "← Change category",
     "showingFor": "Exploring:"
   },
+  "discoverFilters": {
+    "distance": "Distance",
+    "hiddenOnly": "Hidden gems",
+    "any": "Any",
+    "sort": "Sort",
+    "sort_near": "Nearest",
+    "sort_rating": "Rating",
+    "sort_score": "Best match",
+    "reset": "Reset",
+    "results": "{{count}} matching place(s)"
+  },
+  "discoverMap": {
+    "recenter": "Recenter on me"
+  },
   "discoverEntry": {
     "kicker": "Discover",
     "title": "What are you in the mood to discover?",
