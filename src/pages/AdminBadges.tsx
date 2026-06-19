@@ -151,6 +151,7 @@ export default function AdminBadges() {
         </div>
 
         <VerificationSettingsPanel />
+        <NotificationSettingsPanel />
         <AdminAuditPanel />
 
         {loading ? (
