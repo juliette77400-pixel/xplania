@@ -52,6 +52,8 @@ interface Props {
 
 const CarnetOnboardingChat = ({
   tripId,
+  journalId,
+  journalTitle,
   destination,
   days,
   activeSection,
@@ -62,6 +64,7 @@ const CarnetOnboardingChat = ({
   departureDate,
   returnDate,
   onSuggestFocus,
+  onChanged,
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
