@@ -32,7 +32,7 @@ const BLOCK_TYPES = [
   { type: "audio", labelKey: "j2.blockAudio", icon: Mic },
 ] as const;
 
-const DayView = ({ day, journalId, destination, onChanged }: Props) => {
+const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Props) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
