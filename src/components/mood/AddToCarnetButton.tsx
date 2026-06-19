@@ -240,15 +240,34 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
               />
             </div>
 
+            {error && (
+              <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-medium">{t("moodComp.carnet.error")}</p>
+                  <p className="text-xs opacity-90">{t("moodComp.carnet.errorHint")}</p>
+                </div>
+              </div>
+            )}
+
             <div className="flex gap-2 justify-end">
               <Button variant="ghost" onClick={() => setOpen(false)} disabled={saving}>
                 {t("moodComp.carnet.cancel")}
               </Button>
-              <Button onClick={handleSave} disabled={saving || !tripId}>
+              <Button
+                onClick={handleSave}
+                disabled={saving || !tripId}
+                variant={error ? "destructive" : "default"}
+              >
                 {saving ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     {t("moodComp.carnet.saving")}
+                  </>
+                ) : error ? (
+                  <>
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    {t("moodComp.carnet.retry")}
                   </>
                 ) : (
                   <>
