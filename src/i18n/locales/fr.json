@@ -3497,10 +3497,14 @@
   },
   "tripDocs": {
     "title": "Documents du voyage",
-    "hint": "Stockez vos billets, passeport, réservations (PDF ou images, max 10 Mo).",
+    "pageDocs": "Documents de cette page",
+    "hint": "Stockez vos billets, passeport, réservations (PDF ou images, max 10 Mo). Vous pouvez aussi les épingler à une page du carnet.",
     "upload": "Ajouter",
     "open": "Ouvrir",
     "empty": "Aucun document pour ce voyage. Ajoutez vos billets ou réservations !",
+    "emptyPage": "Aucun document épinglé à cette page.",
+    "pinToPage": "Épingler à…",
+    "noPage": "Aucune page",
     "deleteTitle": "Supprimer ce document ?",
     "deleteDesc": "Le fichier « {{name}} » sera définitivement supprimé.",
     "types": {
@@ -3509,6 +3513,13 @@
       "booking": "Réservation",
       "other": "Autre"
     }
+  },
+  "cover": {
+    "regenerate": "Régénérer la couverture",
+    "regenUnsplash": "Nouvelle photo Unsplash",
+    "regenAi": "Générer avec l'IA",
+    "regenerated": "Couverture mise à jour ✨",
+    "regenFail": "Impossible de régénérer la couverture"
   },
   "tripExport": {
     "button": "Export PDF complet",
