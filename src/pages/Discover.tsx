@@ -11,6 +11,7 @@ import SmartSearch from "@/components/discover/SmartSearch";
 import ListsView from "@/components/discover/ListsView";
 import DiscoverEntry, { type DiscoverSelection, type DiscoverEntrySlug } from "@/components/discover/DiscoverEntry";
 import DiscoverPipChat from "@/components/discover/DiscoverPipChat";
+import DiscoverFiltersBar, { DEFAULT_FILTERS, type DiscoverFilters } from "@/components/discover/DiscoverFiltersBar";
 import { useDiscover, type Place } from "@/hooks/useDiscover";
 import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { useNearbyAlerts } from "@/hooks/useNearbyAlerts";
@@ -48,12 +49,25 @@ const Discover = () => {
   const [selected, setSelected] = useState<Place | null>(null);
   const [selection, setSelection] = useState<DiscoverSelection | null>(null);
   const [pipOpen, setPipOpen] = useState(false);
+  const [filters, setFilters] = useState<DiscoverFilters>(DEFAULT_FILTERS);
   const { t } = useTranslation();
 
-  const filteredPlaces = useMemo(() => filterBySelection(places, selection), [places, selection]);
+  const applyFilters = (arr: Place[]): Place[] => {
+    let out = arr.filter((p) => {
+      if (p.distance_km != null && p.distance_km > filters.distanceKm) return false;
+      if (filters.hiddenOnly && !p.hidden_gem) return false;
+      if (filters.minRating > 0 && (p.rating_avg ?? 0) < filters.minRating) return false;
+      return true;
+    });
+    if (filters.sortBy === "near") out = [...out].sort((a, b) => (a.distance_km ?? 99) - (b.distance_km ?? 99));
+    else if (filters.sortBy === "rating") out = [...out].sort((a, b) => (b.rating_avg ?? 0) - (a.rating_avg ?? 0));
+    else out = [...out].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+    return out;
+  };
+
+  const filteredPlaces = useMemo(() => applyFilters(filterBySelection(places, selection)), [places, selection, filters]);
   const filteredSections = useMemo(() => {
-    if (!selection) return sections;
-    const f = (arr: Place[]) => filterBySelection(arr, selection);
+    const f = (arr: Place[]) => applyFilters(filterBySelection(arr, selection));
     return {
       forYou: f(sections.forYou),
       around: f(sections.around),
@@ -62,7 +76,7 @@ const Discover = () => {
       experiences: f(sections.experiences),
       chill: f(sections.chill),
     };
-  }, [sections, selection]);
+  }, [sections, selection, filters]);
 
   const defaultList = lists.find((l) => l.is_default) || lists[0];
   const handleQuickSave = async (p: Place) => {
