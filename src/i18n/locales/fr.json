@@ -2837,6 +2837,56 @@
     }
   },
   "moodComp": {
+    "entry": {
+      "aria": "Choisis comment commencer",
+      "title": "Comment tu veux commencer ?",
+      "subtitle": "Pip te guide, ou tu configures toi-même.",
+      "pip": {
+        "title": "On parle de comment tu te sens ?",
+        "desc": "Pip te pose quelques questions et te construit ton moment."
+      },
+      "form": {
+        "title": "Je sais ce que je veux",
+        "desc": "Formulaire rapide, contrôle total."
+      },
+      "solo": "Juste une balade en solo, maintenant"
+    },
+    "pip": {
+      "subtitle": "Ton compagnon mood",
+      "close": "Fermer",
+      "greeting": "Salut ! 🎭 C'est Pip. Comment tu te sens là, maintenant ? Il n'y a pas de mauvaise réponse.",
+      "askCompany": "Tu y vas avec qui ?",
+      "askDuration": "T'as combien de temps devant toi ?",
+      "recap": "Je note. Je te prépare un moment qui colle à ton humeur. C'est parti ?",
+      "soloDetected": "Compris — juste toi, maintenant. Je te prépare une balade en solo.",
+      "gotFree": "OK, je note. Tu y vas avec qui ?",
+      "thinking": "Pip réfléchit…",
+      "generate": "✨ Générer mon moment",
+      "adjust": "Je veux ajuster",
+      "placeholder": "Écris-moi ton humeur en quelques mots…",
+      "send": "Envoyer",
+      "tags": {
+        "calme": "Besoin de calme",
+        "stress": "Stressée",
+        "emerveillement": "Envie d'émerveillement",
+        "connexion": "Envie de rencontres",
+        "energie": "Pleine d'énergie",
+        "contemplatif": "Contemplative",
+        "curiosite_fatiguee": "Fatiguée mais curieuse"
+      },
+      "company": {
+        "solo": "Seule",
+        "duo": "En duo",
+        "group": "En groupe",
+        "family": "En famille"
+      },
+      "duration": {
+        "30m": "30 min",
+        "1h": "1h",
+        "half": "Demi-journée",
+        "full": "Journée complète"
+      }
+    },
     "hero": {
       "kicker": "Mood Explorer",
       "title": "Trouve ta vibe du moment",
