@@ -157,10 +157,18 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
           count: placesCount,
         })
       );
+      setError(false);
       setOpen(false);
     } catch (e: any) {
       console.error(e);
-      toast.error(t("moodComp.carnet.error"));
+      setError(true);
+      toast.error(t("moodComp.carnet.error"), {
+        description: e?.message || t("moodComp.carnet.errorDesc"),
+        action: {
+          label: t("moodComp.carnet.retry"),
+          onClick: () => handleSave(),
+        },
+      });
     } finally {
       setSaving(false);
     }
