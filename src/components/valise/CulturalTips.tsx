@@ -168,7 +168,7 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
         {!isPlaceholderDest && (
           <button
             type="button"
-            onClick={() => fetchTips(true)}
+            onClick={handleRegenerate}
             disabled={isFetching}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/40 hover:bg-muted/60 text-xs font-medium text-foreground transition-colors disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             aria-label={t("valise.culturalRegenerate")}
