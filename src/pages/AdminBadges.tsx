@@ -10,6 +10,7 @@ import { Loader2, CheckCircle2, XCircle, MapPin, Image as ImageIcon, FileText, S
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import VerificationSettingsPanel from "@/components/gamification/VerificationSettingsPanel";
+import AdminAuditPanel from "@/components/gamification/AdminAuditPanel";
 
 type ClaimRow = {
   id: string;
@@ -149,6 +150,7 @@ export default function AdminBadges() {
         </div>
 
         <VerificationSettingsPanel />
+        <AdminAuditPanel />
 
         {loading ? (
           <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin inline text-primary" /></div>
