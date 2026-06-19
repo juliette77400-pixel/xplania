@@ -20,6 +20,7 @@ interface Props {
 const PlaceDetailDrawer = ({ place, onClose }: Props) => {
   const { t } = useTranslation();
   const { lists, isSaved, toggleItem } = usePlaceLists();
+  const [itineraryOpen, setItineraryOpen] = useState(false);
   if (!place) return null;
   const cat = categoryByKey(place.category);
   const defaultList = lists.find((l) => l.is_default) || lists[0];
