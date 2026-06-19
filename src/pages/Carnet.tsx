@@ -43,6 +43,7 @@ const Carnet = () => {
   const [shareOpen, setShareOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
   const [regenLoading, setRegenLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<CarnetSection>("timeline");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { regenerate: regenerateCover } = useJournalCover(tripId || "", destination);
