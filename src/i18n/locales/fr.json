@@ -2733,6 +2733,28 @@
       "privateDesc": "Aucun classement affiché, tu vois uniquement ta progression.",
       "saved": "Mode enregistré ✓",
       "saveError": "Impossible d'enregistrer."
+    },
+    "notifications": {
+      "title": "Historique de mes notifications",
+      "subtitle": "Chaque notification envoyée lors d'une décision sur tes réclamations de badges.",
+      "date": "Date",
+      "channel": "Canal",
+      "transition": "Transition",
+      "status": "Statut",
+      "details": "Détails",
+      "empty": "Aucune notification enregistrée.",
+      "channel": {
+        "all": "Tous canaux",
+        "in_app": "In-app",
+        "email": "Email"
+      },
+      "status": {
+        "all": "Tous statuts",
+        "sent": "Envoyé",
+        "skipped": "Ignoré",
+        "queued": "En file",
+        "error": "Erreur"
+      }
     }
   },
   "discoverComp": {
