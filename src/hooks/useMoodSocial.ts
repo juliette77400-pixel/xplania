@@ -44,11 +44,13 @@ export function useMoodReactions(placeId?: string) {
     load();
   }, [load]);
 
-  // Realtime subscription
+  // Realtime subscription — scoped to the current user's own channel.
+  // Underlying mood_reactions RLS only emits the user's own row changes, so a
+  // per-user topic is sufficient and prevents cross-user channel snooping.
   useEffect(() => {
-    if (!placeId) return;
+    if (!placeId || !user?.id) return;
     const channel = supabase
-      .channel(`mood_reactions:${placeId}`)
+      .channel(`mood_reactions:${user.id}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "mood_reactions", filter: `place_id=eq.${placeId}` },
@@ -58,7 +60,7 @@ export function useMoodReactions(placeId?: string) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [placeId, load]);
+  }, [placeId, user?.id, load]);
 
   const addReaction = useCallback(
     async (input: { mood: string; emoji?: string; comment?: string; lat?: number | null; lng?: number | null; place_name?: string | null }) => {
