@@ -58,15 +58,31 @@ serve(async (req) => {
     }
 
     const badge = (claim as any).gam_badges;
-    const analysis: any = { steps: [] };
+
+    // ─── Load admin verification settings (with safe defaults) ───
+    const { data: settingsRow } = await admin
+      .from("gam_verification_settings")
+      .select("*")
+      .eq("id", "default")
+      .maybeSingle();
+    const settings = {
+      geo_auto_validate: settingsRow?.geo_auto_validate ?? true,
+      exif_auto_validate: settingsRow?.exif_auto_validate ?? true,
+      ai_auto_validate_threshold: Number(settingsRow?.ai_auto_validate_threshold ?? 0.7),
+      ai_auto_reject_threshold: Number(settingsRow?.ai_auto_reject_threshold ?? 0.8),
+      force_manual_review: settingsRow?.force_manual_review ?? false,
+    };
+
+    const analysis: any = { steps: [], settings, started_at: new Date().toISOString() };
     let verdict: "validated" | "submitted" | "rejected" = "submitted";
 
     // ─── 1) GEO check ───
     if (claim.geo_lat != null && claim.geo_lng != null && badge.target_lat != null && badge.target_lng != null) {
       const d = distMeters(claim.geo_lat, claim.geo_lng, badge.target_lat, badge.target_lng);
       const radius = badge.target_radius_m ?? 500;
-      analysis.steps.push({ kind: "geo", distance_m: Math.round(d), radius_m: radius, ok: d <= radius });
-      if (d <= radius) verdict = "validated";
+      const within = d <= radius;
+      analysis.steps.push({ kind: "geo", distance_m: Math.round(d), radius_m: radius, ok: within });
+      if (within && settings.geo_auto_validate && !settings.force_manual_review) verdict = "validated";
     }
 
     // ─── 2) PHOTO EXIF (signed URL → fetch → parse GPS) ───
@@ -81,8 +97,9 @@ serve(async (req) => {
           if (gps && badge.target_lat != null && badge.target_lng != null) {
             const d = distMeters(gps.lat, gps.lng, badge.target_lat, badge.target_lng);
             const radius = badge.target_radius_m ?? 500;
-            analysis.steps.push({ kind: "exif", lat: gps.lat, lng: gps.lng, distance_m: Math.round(d), radius_m: radius, ok: d <= radius });
-            if (d <= radius) verdict = "validated";
+            const within = d <= radius;
+            analysis.steps.push({ kind: "exif", lat: gps.lat, lng: gps.lng, distance_m: Math.round(d), radius_m: radius, ok: within });
+            if (within && settings.exif_auto_validate && !settings.force_manual_review) verdict = "validated";
           } else {
             analysis.steps.push({ kind: "exif", ok: false, reason: gps ? "no_target" : "no_gps" });
           }
@@ -127,11 +144,21 @@ Reply STRICTLY as compact JSON: {"verdict":"validated|rejected|uncertain","confi
             const txt = aiJson?.choices?.[0]?.message?.content || "";
             const match = txt.match(/\{[\s\S]*\}/);
             const parsed = match ? safeParse(match[0]) : null;
-            analysis.steps.push({ kind: "ai", raw: txt.slice(0, 400), parsed });
-            if (parsed?.verdict === "validated" && (parsed.confidence ?? 0) >= 0.7) {
-              verdict = "validated";
-            } else if (parsed?.verdict === "rejected" && (parsed.confidence ?? 0) >= 0.8) {
-              verdict = "rejected";
+            analysis.steps.push({
+              kind: "ai",
+              raw: txt.slice(0, 400),
+              parsed,
+              thresholds: {
+                validate: settings.ai_auto_validate_threshold,
+                reject: settings.ai_auto_reject_threshold,
+              },
+            });
+            if (!settings.force_manual_review) {
+              if (parsed?.verdict === "validated" && (parsed.confidence ?? 0) >= settings.ai_auto_validate_threshold) {
+                verdict = "validated";
+              } else if (parsed?.verdict === "rejected" && (parsed.confidence ?? 0) >= settings.ai_auto_reject_threshold) {
+                verdict = "rejected";
+              }
             }
           } else {
             analysis.steps.push({ kind: "ai", ok: false, status: aiRes.status, body: (await aiRes.text()).slice(0, 200) });
@@ -141,6 +168,9 @@ Reply STRICTLY as compact JSON: {"verdict":"validated|rejected|uncertain","confi
         analysis.steps.push({ kind: "ai", ok: false, error: String(e) });
       }
     }
+
+    analysis.finished_at = new Date().toISOString();
+    analysis.verdict = verdict;
 
     // ─── Persist ───
     const update: any = {
@@ -152,6 +182,7 @@ Reply STRICTLY as compact JSON: {"verdict":"validated|rejected|uncertain","confi
       update.reviewed_by = null; // auto
       if (verdict === "rejected") update.review_reason = "Auto: échec vérification automatique";
     }
+
     const { error: uErr } = await admin
       .from("gam_badge_claims")
       .update(update)
