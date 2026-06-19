@@ -12,16 +12,19 @@ import StoryGenerator from "@/components/journal/StoryGenerator";
 import InsightsPanel from "@/components/journal/InsightsPanel";
 import BadgesBar from "@/components/journal/BadgesBar";
 import ShareExport from "@/components/journal/ShareExport";
-import TripTracker from "@/components/tracking/TripTracker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuickJump from "@/components/shared/QuickJump";
-import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
-import TripDocumentsManager from "@/components/shared/TripDocumentsManager"; // ✨ NEW (Tâche 3)
-import ExportTripButton from "@/components/shared/ExportTripButton"; // ✨ NEW (Tâche 3)
-import TripUtilitiesPanel from "@/components/shared/TripUtilitiesPanel"; // ✨ NEW (Tâche 4) — countdown + météo + devise
-import TripEndRecap from "@/components/shared/TripEndRecap"; // ✨ NEW (Tâche 4) — écran fin de voyage
-import ShareCarnetDialog from "@/components/shared/ShareCarnetDialog"; // ✨ NEW (Tâche 4) — partage + QR + OG
+import DeleteTripButton from "@/components/shared/DeleteTripButton";
+import TripDocumentsManager from "@/components/shared/TripDocumentsManager";
+import ExportTripButton from "@/components/shared/ExportTripButton";
+import TripUtilitiesPanel from "@/components/shared/TripUtilitiesPanel";
+import TripEndRecap from "@/components/shared/TripEndRecap";
+import ShareCarnetDialog from "@/components/shared/ShareCarnetDialog";
+import SocialShareDialog from "@/components/journal/SocialShareDialog";
+import PagePdfExportButton from "@/components/journal/PagePdfExportButton";
+import { useJournalCover } from "@/hooks/useJournalCover";
 import { Button } from "@/components/ui/button";
+import { Image as ImageIcon } from "lucide-react";
 import { formatDayLabel } from "@/lib/journal-utils";
 
 const Carnet = () => {
@@ -33,6 +36,7 @@ const Carnet = () => {
   // ✨ NEW (Tâche 4) — dates pour utilities + détection fin de voyage
   const [tripMeta, setTripMeta] = useState<{ departure_date: string | null; return_date: string | null } | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
+  const [socialOpen, setSocialOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate(); // ✨ NEW (Tâche 1) — pour rediriger après suppression
 
