@@ -1565,6 +1565,7 @@
     "tabStory": "AI Story",
     "tabInsights": "Insights",
     "tabShare": "Share",
+    "tabDocs": "Docs",
     "day": "Day {{n}}",
     "memoryOne": "{{n}} memory",
     "memoryMany": "{{n}} memories",
