@@ -28,6 +28,9 @@ import { Image as ImageIcon } from "lucide-react";
 import { formatDayLabel } from "@/lib/journal-utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import CarnetOnboardingChat from "@/components/journal/CarnetOnboardingChat";
+
+type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share";
 
 const Carnet = () => {
   const { tripId } = useParams<{ tripId: string }>();
@@ -40,6 +43,7 @@ const Carnet = () => {
   const [shareOpen, setShareOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
   const [regenLoading, setRegenLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<CarnetSection>("timeline");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { regenerate: regenerateCover } = useJournalCover(tripId || "", destination);
@@ -182,7 +186,7 @@ const Carnet = () => {
             <p className="text-muted-foreground">{t("carnet.noDays")}</p>
           </div>
         ) : (
-          <Tabs defaultValue="timeline">
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as CarnetSection)}>
             <TabsList className="grid grid-cols-3 sm:grid-cols-5 max-w-3xl mx-auto mb-6">
               <TabsTrigger value="timeline">📖 {t("carnet.tabPages")}</TabsTrigger>
               <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
@@ -306,6 +310,19 @@ const Carnet = () => {
         destination={destination}
         title={journal.title}
         day={activeDay}
+      />
+      <CarnetOnboardingChat
+        tripId={tripId!}
+        destination={destination}
+        days={days}
+        activeSection={activeTab}
+        activeDay={activeDay}
+        hasStory={false}
+        isPublic={!!journal?.is_public}
+        tripEnded={isTripEnded}
+        departureDate={tripMeta?.departure_date || null}
+        returnDate={tripMeta?.return_date || null}
+        onSuggestFocus={(s) => setActiveTab(s)}
       />
       <QuickJump />
     </div>

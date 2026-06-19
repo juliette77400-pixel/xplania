@@ -1569,7 +1569,55 @@
     "day": "Jour {{n}}",
     "memoryOne": "{{n}} souvenir",
     "memoryMany": "{{n}} souvenirs",
-    "tabPages": "Pages"
+    "tabPages": "Pages",
+    "onboarding": {
+      "title": "Pip, ton compagnon de carnet",
+      "welcome": "Salut ! Ton carnet pour {{destination}} ({{days}} jours) est prêt à être rempli. 📖✨",
+      "question": "Tu veux que je te guide à travers les pages et fonctionnalités ?",
+      "yes": "Oui, montre-moi",
+      "no": "Je préfère explorer seul",
+      "focus": {
+        "timeline": "Pages",
+        "story": "Récit IA",
+        "insights": "Stats",
+        "docs": "Docs",
+        "share": "Partage"
+      },
+      "sectionLabel": {
+        "timeline": "Pages du carnet",
+        "story": "Récit IA",
+        "insights": "Stats & badges",
+        "docs": "Documents",
+        "share": "Partage & export"
+      },
+      "sectionHelp": {
+        "timeline": "Tu es sur les pages chronologiques. Clique un jour à gauche puis ajoute des blocs : note, photo, lieu, humeur, audio, moment fort. Plus tu remplis, plus ton carnet pour {{destination}} prend vie.",
+        "story": "Ici, l'IA transforme tes blocs en un vrai récit de voyage. Choisis un ton, laisse l'IA décider, ou utilise « Mon style » qui imite ton écriture.",
+        "insights": "Tes stats et badges sur {{destination}} : top lieux, humeurs dominantes, journée la plus heureuse. Ajoute plus de blocs pour débloquer plus de badges.",
+        "docs": "Épingle billets, PDF et reçus à un jour précis du carnet. Tu retrouves tout ce qui compte au bon endroit, au bon moment.",
+        "share": "Active le lien public, génère des cartes Instagram 1080×1920 ou exporte ton carnet en PDF pour le garder à vie."
+      }
+    },
+    "qa": {
+      "askButton": "Poser une question",
+      "backToGuide": "Retour au guide",
+      "placeholder": "Pose ta question sur ton carnet…",
+      "send": "Envoyer",
+      "loading": "Pip réfléchit…",
+      "greeting": "Salut {{name}} ! 👋 Je suis Pip, ton compagnon de carnet pour {{destination}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
+      "greetingNoName": "Salut ! 👋 Je suis Pip, ton compagnon de carnet pour {{destination}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
+      "greetings": [
+        "Hey {{name}} ! 📖 C'est Pip. Prêt à donner vie à ton carnet de {{destination}} ? Demande-moi tout.",
+        "Salut {{name}} ! ✨ Moi c'est Pip, ton compagnon de carnet. Tu sais pas quoi noter aujourd'hui pour {{destination}} ? Je t'aide.",
+        "Coucou {{name}} 🌍 Pip à l'appareil. Une question sur ton récit, tes photos, ton partage ? Lâche tout.",
+        "Yo {{name}} ! 😎 C'est Pip. On regarde ensemble comment rendre ton carnet de {{destination}} inoubliable ?",
+        "Hello {{name}} ! 👋 Pip ici. Idée de bloc, prompt d'écriture, export PDF — pose-moi la question."
+      ],
+      "emptyState": "Pose n'importe quelle question sur ton carnet pour {{destination}} — quoi noter, comment générer ton récit, comment partager, comment épingler un document… Je connais ton carnet en détail.",
+      "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
+      "expand": "Agrandir",
+      "collapse": "Réduire"
+    }
   },
   "suivi": {
     "title": "Suivi de Voyage",
