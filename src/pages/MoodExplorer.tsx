@@ -270,6 +270,14 @@ const MoodExplorer = () => {
 
       <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} toolName="Mood Explorer" />
       <MoodRatingDialog open={ratingOpen} onOpenChange={setRatingOpen} onSubmit={handleRatingSubmit} />
+      <MoodShareCard
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        mood={activeMood}
+        placesCount={places.length}
+        topPlaceName={places[0]?.name ?? null}
+        city={(position as any)?.city ?? null}
+      />
     </div>
   );
 };
