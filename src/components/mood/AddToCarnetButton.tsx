@@ -44,6 +44,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
   const [title, setTitle] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (trips.length && !tripId) setTripId(trips[0].id);
@@ -51,6 +52,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
 
   useEffect(() => {
     if (!open) return;
+    setError(false);
     setTitle(`${m?.emoji ?? "🎭"} ${m?.label ?? mood ?? ""}`);
     const base = t("moodComp.carnet.prefillIntro", {
       mood: m?.label ?? mood ?? "",
@@ -62,6 +64,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
   const handleSave = async () => {
     if (!user || !tripId || !mood) return;
     setSaving(true);
+    setError(false);
     try {
       // Find / create journal for this trip
       let { data: j } = await supabase
