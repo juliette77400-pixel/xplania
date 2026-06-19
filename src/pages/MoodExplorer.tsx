@@ -164,6 +164,10 @@ const MoodExplorer = () => {
                   >
                     ← {t("moodComp.entry.title")}
                   </button>
+                  <MoodWheel loading={loading} onSubmit={guardedRecommend} />
+                  <div className="text-center text-xs text-muted-foreground uppercase tracking-wider py-2">
+                    {t("moodComp.wheel.or")}
+                  </div>
                   <MoodSelector loading={loading} onSubmit={guardedRecommend} />
                 </div>
               )}
