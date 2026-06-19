@@ -220,31 +220,17 @@ const CarnetOnboardingChat = ({
     setQuestion("");
     setQaLoading(true);
     try {
-      // Aggregate journal context
-      const totalBlocks = days.reduce((s, d) => s + (d.blocks?.length || 0), 0);
-      const filledDays = days.filter((d) => (d.blocks?.length || 0) > 0).length;
-      const blocksByType: Record<string, number> = {};
-      const locationsSet = new Set<string>();
-      const moods: string[] = [];
-      for (const d of days) {
-        for (const b of d.blocks || []) {
-          blocksByType[b.type] = (blocksByType[b.type] || 0) + 1;
-          const c = (b.content || {}) as Record<string, unknown>;
-          if (b.type === "location" && typeof c.name === "string") locationsSet.add(c.name);
-          if (b.type === "mood" && typeof c.label === "string") moods.push(c.label);
-        }
-      }
       const payload = {
         question: q,
         history: nextHistory.slice(-10).map(({ role, content }) => ({ role, content })),
         firstName,
         destination,
         days: days.length,
-        filledDays,
-        totalBlocks,
-        blocksByType,
-        moods,
-        locations: Array.from(locationsSet),
+        filledDays: ctx.filledDays,
+        totalBlocks: ctx.totalBlocks,
+        blocksByType: ctx.blocksByType,
+        moods: ctx.moods,
+        locations: ctx.locations,
         activeSection,
         activeDayLabel: activeDay ? formatDayLabel(activeDay.date) : "",
         activeDayBlocks: activeDay?.blocks?.length || 0,
