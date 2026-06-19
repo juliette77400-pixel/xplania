@@ -1006,6 +1006,50 @@ export type Database = {
         }
         Relationships: []
       }
+      mood_entries: {
+        Row: {
+          created_at: string
+          entry_date: string
+          id: string
+          mood_selection_id: string | null
+          mood_tags: string[]
+          note: string | null
+          satisfaction_rating: number | null
+          source: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entry_date?: string
+          id?: string
+          mood_selection_id?: string | null
+          mood_tags?: string[]
+          note?: string | null
+          satisfaction_rating?: number | null
+          source?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entry_date?: string
+          id?: string
+          mood_selection_id?: string | null
+          mood_tags?: string[]
+          note?: string | null
+          satisfaction_rating?: number | null
+          source?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mood_entries_mood_selection_id_fkey"
+            columns: ["mood_selection_id"]
+            isOneToOne: false
+            referencedRelation: "mood_selections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mood_favorites: {
         Row: {
           id: string
