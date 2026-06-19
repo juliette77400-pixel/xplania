@@ -2685,6 +2685,56 @@
     "statsXp": "XP estimés",
     "statsXpShort": "XP"
   },
+  "gam": {
+    "catalog": {
+      "title": "Catalogue Xplania",
+      "subtitle": "260 badges à débloquer en prouvant tes aventures (géoloc, photo ou billet).",
+      "all": "Tous",
+      "points": "{{n}} points validés",
+      "validated": "{{n}} validés",
+      "pending": "{{n}} en attente",
+      "empty": "Aucun badge dans cette catégorie.",
+      "noPrefsTitle": "Aucune catégorie sélectionnée",
+      "noPrefsDesc": "Choisis tes centres d'intérêt dans ton profil pour personnaliser ta collection. Pour l'instant, tu vois tous les badges."
+    },
+    "claim": {
+      "chooseProof": "Comment veux-tu prouver ta mission ?",
+      "proofGeo": "Check-in géolocalisé",
+      "proofGeoDesc": "On vérifie que tu es sur place.",
+      "proofPhoto": "Photo preuve",
+      "proofPhotoDesc": "Prends une photo sur place.",
+      "proofTicket": "Billet ou reçu",
+      "proofTicketDesc": "On analyse ton billet avec l'IA.",
+      "uploadLabel": "Sélectionne ou prends une photo",
+      "submit": "Soumettre ma preuve",
+      "submitted": "Preuve envoyée — en attente de validation 🚀",
+      "validated": "Badge déjà validé ✓",
+      "pending": "Ta preuve est en cours de vérification. Tu seras notifié·e dès qu'elle est validée.",
+      "rejected": "Preuve refusée",
+      "geoFailed": "Impossible d'obtenir ta position. Essaie avec une photo.",
+      "photoRequired": "Ajoute une photo pour valider.",
+      "error": "Une erreur est survenue."
+    },
+    "prefs": {
+      "title": "Mes centres d'intérêt",
+      "subtitle": "Choisis les catégories de badges qui t'inspirent. Tu peux changer à tout moment.",
+      "selected": "{{n}} catégorie(s) sélectionnée(s)",
+      "saved": "Préférences enregistrées ✓",
+      "saveError": "Impossible d'enregistrer."
+    },
+    "visibility": {
+      "title": "Mode compétition",
+      "subtitle": "Choisis comment tu apparais dans le classement Globe Trotter.",
+      "public": "Public",
+      "publicDesc": "Tu vois et tu es visible avec ton pseudo et ton avatar.",
+      "anonymized": "Anonymisé",
+      "anonymizedDesc": "Tu vois ta position mais les autres voyageurs sont anonymes, et toi aussi.",
+      "private": "Privé / Solo",
+      "privateDesc": "Aucun classement affiché, tu vois uniquement ta progression.",
+      "saved": "Mode enregistré ✓",
+      "saveError": "Impossible d'enregistrer."
+    }
+  },
   "discoverComp": {
     "kicker": "Discover",
     "tod": {

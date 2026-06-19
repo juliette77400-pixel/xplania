@@ -14,6 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ProfileStats from "@/components/profil/ProfileStats";
 import ProfilePreferences from "@/components/profil/ProfilePreferences";
+import CategoryPickerCard from "@/components/gamification/CategoryPickerCard";
+import VisibilitySettingCard from "@/components/gamification/VisibilitySettingCard";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
@@ -104,6 +106,8 @@ const Profil = () => {
         )}
 
         {!loading && <ProfileStats />}
+        {!loading && <CategoryPickerCard />}
+        {!loading && <VisibilitySettingCard />}
         {!loading && <ProfilePreferences />}
 
         <Card className="p-6">
