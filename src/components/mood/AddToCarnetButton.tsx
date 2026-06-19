@@ -211,6 +211,15 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
             </div>
 
             <div className="space-y-1.5">
+              <label className="text-sm font-medium">{t("moodComp.carnet.title")}</label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={t("moodComp.carnet.titlePh")}
+              />
+            </div>
+
+            <div className="space-y-1.5">
               <label className="text-sm font-medium">{t("moodComp.carnet.note")}</label>
               <Textarea
                 value={note}
