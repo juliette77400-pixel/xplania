@@ -1,67 +1,70 @@
-# Refonte Carnet de voyage — Plan
+## Refonte Badges & Gamification
 
-## État actuel (audit rapide)
+Gros chantier touchant data model, vérification anti-triche, UI, admin et import. Découpé en lots livrables successivement (chaque lot est testable, rien ne casse l'existant Travel Map / Globe Trotter).
 
-Architecture déjà en place (gros avantage) :
-- Tables `journals`, `journal_days`, `journal_blocks` (types: note/photo/video/location/mood/audio/highlight), `journal_stories`, `journal_badges`.
-- Bucket privé `journal-media` (photos), bucket privé `trip-documents` (pièces jointes), tous deux avec RLS owner-only et lecture publique scoped aux carnets publics.
-- Composants: `Carnets.tsx` (liste), `Carnet.tsx` (vue carnet avec onglets Timeline / Live / Story / Insights / Docs / Share), `DayView`, `BlockCard`, `StoryGenerator`, `ShareExport`, `BadgesBar`.
-- Edge functions: `journal-story`, `journal-insights`.
-- Chatbots existants: `ValisePipChat`, `VisaPipChat` (spécifiques à une feature, pas de routeur global).
-- Secrets disponibles: `LOVABLE_API_KEY`, `OPENWEATHER_API_KEY`, `UNSPLASH_ACCESS_KEY`, `RESEND_API_KEY`.
-- i18n: `react-i18next` avec `fr.json` / `en.json`, switch `xplania-lang`.
+### Lot 1 — Modèle de données (migration Supabase)
+Nouvelles tables :
+- `categories` (id, slug, name_fr, name_en, icon, gradient_from, gradient_to, active)
+- `badges` (id, category_id FK, name_fr/en, description_fr/en, points, icon, verification_method enum `geo|photo|ticket|geo_photo|manual`, target_lat/lng/radius_m, is_repeatable, is_weekly_mission_eligible, active)
+- `badge_claims` (id, user_id, badge_id, status enum `in_progress|submitted|validated|rejected`, proof_type, proof_url, geo_lat/lng, ai_analysis jsonb, reviewed_by, review_reason, submitted_at, reviewed_at)
+- `user_category_preferences` (user_id, category_id)
+- `user_settings` ajout `competition_visibility enum public|anonymized|private` default `anonymized`
+- `current_missions` (id, badge_id, scope `weekly|monthly`, start_date, end_date, active, optional user_id pour perso)
+- `app_role` enum + `user_roles` table + `has_role()` security definer (pour l'admin)
+- Storage bucket privé `badge-proofs`
+- RLS : claims insertable seulement par leur user en statut `submitted`/`in_progress` ; passage à `validated`/`rejected` réservé service_role / admin via Edge Function
+- GRANTs explicites sur chaque table publique
+- View / RPC `leaderboard_points(user_id)` qui ne somme que claims `validated`
 
-## Faisabilité
+### Lot 2 — Edge Functions vérification
+- `badge-claim-submit` : reçoit `{badge_id, proof_type, geo?, photo?, ticket?}`, applique la cascade :
+  - geo → Haversine vs target ; dans rayon = `validated`, sinon bascule photo
+  - photo → upload Storage, lit EXIF GPS si présent, valide si match sinon `submitted`
+  - ticket → Lovable AI Gateway (google/gemini-2.5-flash multimodal, pas Anthropic — déjà câblé, gratuit) prompt JSON strict `{lieu_detecte,date_detectee,correspond,confiance}` ; auto-validate si haute+match, sinon `submitted`
+  - anti-abus : rate-limit 5/j/user, hash SHA-256 de l'image (dédup), check incohérence GPS <1h/>200km
+- `badge-claim-review` : admin only, valide/refuse + motif, recalcul points
+- `missions-rotate` : cron pg_cron lundi 00:00 Europe/Paris (weekly) + 1er du mois (monthly), évite répétition <4 semaines
+- `admin-badge-crud` : create/update/soft-delete badges & categories (admin only)
 
-**Réalisable immédiatement (réutilise l'existant)**
-- Grille "carnets" avec couverture, dates, compte de pages (cover via Unsplash sur la destination, fallback dégradé).
-- Suppression du tab "Live" dans Carnet (1 ligne).
-- Mode IA "style adaptatif" : nouvelle edge function qui lit les `journal_blocks` (notes) + `pip_chat_sessions` + `journal_stories` précédents de l'user et en déduit un mini "style profile" (vocabulaire, longueur phrases, ton). Badge affiché ("style auto" vs "ton: poétique").
-- Ajout photo + mood sur une page (les types de blocs existent déjà ; on améliore le DayView pour rendre photo/mood plus visibles et rapides).
-- Lieu géolocalisé + météo du jour : type `location` existe déjà, et `journal_days.weather` existe ; on branche OpenWeather + Geolocation API en 1 bouton "Météo du jour" / "Ma position".
-- Documents attachés à une page : on étend `trip_documents` avec un `day_id` nullable optionnel, sinon on garde au niveau voyage et on affiche dans la page.
-- Export PDF par page ou carnet entier : `ShareExport` fait déjà l'entier ; on ajoute "exporter cette page" via jsPDF/html2canvas.
-- Partage social (image format story Instagram 1080×1920) : génération via html2canvas d'un template DOM stylé (cover + titre + 1 extrait + photo principale). Pas d'appel IA nécessaire.
-- Chatbot routeur intelligent : nouveau composant `GlobalPipChat` + edge function `pip-router` qui utilise Gemini avec un schéma d'output `{ intent, route, mode }` et retourne soit une réponse texte soit un CTA pour naviguer vers `/guide-valise` / `/guide-visa` / `/carnet/:id` / `/mood` etc. Détecte "je veux explorer seule" → mode libre (pas de relance).
-- Bilingue FR/EN : ajout systématique des clés dans `fr.json` + `en.json`.
+### Lot 3 — UI utilisateur (réutilise palette/composants existants)
+- `src/pages/Gamification.tsx` refonte : ajout sections Mission de la semaine + Défi du mois (countdown), filtres catégories, états visuels distincts
+- Composant `BadgeMedal` SVG paramétrable (dégradé par catégorie + icône + état verrouillé/en cours/soumis/validé/refusé, animation unlock + confettis via `badges-fx`)
+- `BadgeClaimDialog` : bouton "J'ai terminé" → demande géoloc, fallback photo (capture="environment"), upload ticket, états loading/error/success
+- `BadgeLocationMap` : réutilise Leaflet déjà utilisé dans Suivi/Discover, pin + cercle, distance utilisateur, bouton Itinéraire (deep-link maps:// / google.com/maps)
+- Onboarding + Profil : multi-select catégories (chips style existant)
+- Profil → Paramètres : segmented control `competition_visibility` (3 options, défaut anonymized)
+- `Leaderboard.tsx` : respecte le mode visibilité ; masque/anonymise en conséquence ; n'agrège que claims validated
 
-**Demande un peu plus de travail (mais réalisable)**
-- Note vocale : enregistrement micro via `MediaRecorder`, upload dans `journal-media`, type de bloc `audio` (déjà autorisé). ~30 min de UI/upload.
-- Génération de couverture custom IA (au lieu d'Unsplash) : possible avec `google/gemini-3.1-flash-image-preview` via Lovable AI, mais plus lent/coûteux. **Recommandation : Unsplash par défaut, IA en option "Générer une couverture unique".**
+### Lot 4 — Admin
+- `src/pages/admin/Badges.tsx` (protégé par `has_role('admin')`)
+  - Liste filtrable, formulaire create/edit (FR+EN, catégorie, points, méthode, coords/rayon, repeatable, weekly-eligible), soft-delete
+  - File d'attente claims `submitted` avec aperçu photo/IA + boutons Valider/Refuser
+  - CRUD catégories
+- Route cachée du menu si non-admin
 
-**Hors scope / à éviter pour cette itération**
-- Real-time collaboration sur un carnet (multi-user).
-- Reconnaissance vocale → texte automatique (whisper).
+### Lot 5 — i18n
+- Toutes les nouvelles clés ajoutées dans `fr.json` + `en.json` (statuts, méthodes, paramètres, admin, missions, carte, erreurs)
+- Locale passée à l'Edge Function ticket pour réponse IA dans la bonne langue
+- Audit final : aucun texte en dur dans les composants
 
-## Décisions techniques à confirmer (rapides)
+### Lot 6 — Seed / import (260 badges)
+Script de migration qui :
+- Crée les 10 catégories détectées dans l'XLSX (Culture 75, Exploration 61, Spiritualité 44, Créativité 20, Eco-responsabilité 13, Famille 11, Gastronomie 10, Romantique 10, Travail 10, Technologie 6) avec icône + dégradé
+- Insère les 260 badges (name_fr depuis colonne A, description_fr depuis "Comment le débloquer", points depuis col C, category mappée)
+- name_en/description_en auto-traduits via Edge Function one-shot (Lovable AI Gateway) en batch ou laissés == FR avec TODO si tu préfères traduire manuellement
+- `verification_method` par défaut `manual` (faute de coordonnées dans le sheet) ; badges géo activables ensuite via admin
 
-1. **Couverture par défaut** : Unsplash (rapide, gratuit, déjà branchable). OK ?
-2. **Documents par page vs par voyage** : je propose de garder `trip_documents` au niveau voyage (déjà fonctionnel) et d'ajouter une colonne `day_id uuid NULL` pour optionnellement épingler à une page. Le tab Docs reste, et chaque page liste ses docs épinglés.
-3. **Note vocale** : on l'inclut dans cette itération (oui/non).
-4. **Génération cover IA** : on la met comme bouton secondaire optionnel (pas par défaut) (oui/non).
+### Ordre d'exécution proposé (livraisons indépendantes)
+1. Lot 1 (migration) — bloquant
+2. Lot 6 (seed des 260 badges)
+3. Lot 3 (UI user de base avec verification manuelle uniquement)
+4. Lot 2 (edge functions vérif auto + ticket IA)
+5. Lot 4 (admin)
+6. Lot 5 finalisation i18n + checklist validation
 
-## Plan d'implémentation (ordre)
-
-1. **DB migration** : ajouter `journals.cover_url` est déjà là ; ajouter `trip_documents.day_id uuid NULL` + index ; ajouter `journals.cover_source` (`unsplash`/`ai`/`custom`) et `journals.style_profile jsonb` (cache du profil d'écriture user).
-2. **Edge functions** :
-   - `journal-cover` : reçoit destination → renvoie URL Unsplash (ou génère IA si `mode=ai`).
-   - `journal-style-profile` : lit les écrits user (`journal_blocks` notes + `journal_stories` manuels), résume en JSON `{vocab_register, sentence_length, emotional_tone, signature_words}`.
-   - `journal-story` (modif) : accepte `mode: "tone" | "auto"`, si `auto` charge style_profile et l'injecte dans le prompt.
-   - `pip-router` : intent classification → `{ intent, route?, freeMode?, reply }`.
-3. **Refonte UI** :
-   - `Carnets.tsx` → grille de "carnets" avec couverture (image background + dégradé), titre, dates, badge "X pages, Y photos", menu actions.
-   - `Carnet.tsx` → retire tab "live", renomme `tabTimeline` en "Pages", header propre style notebook ; ajoute bouton "Exporter cette page" et "Partager visuel".
-   - `StoryGenerator.tsx` → 2 cartes radio en haut : "Choisir un ton" vs "S'adapter à mon style". Badge affiché sur le résultat + sauvegardé dans `journal_stories.tone` (`auto:<digest>`).
-   - `DayView.tsx` → barre rapide d'ajout (📝 Note / 📷 Photo / 😊 Humeur / 📍 Lieu / 🎤 Audio / ☀️ Météo du jour) ; mood = sélecteur emoji 1–5.
-   - Nouveau `SocialShareDialog` : template DOM 1080×1920, capture html2canvas → blob téléchargeable + bouton "Partager" (Web Share API).
-   - Nouveau `PagePdfExportButton` : jsPDF d'une page.
-4. **Chatbot routeur** :
-   - `GlobalPipChat` (FAB en bas-droite, dispo sur Dashboard/Carnet/Index).
-   - Intents : `carnet`, `valise`, `visa`, `mood`, `discover`, `suivi`, `budget`, `free_explore`, `smalltalk`.
-   - Si `free_explore` détecté ("je veux me promener seule", "laisse-moi tranquille", "juste explorer") → réponse douce + AUCUNE relance/CTA.
-5. **i18n** : nouvelles clés `carnets.*`, `carnet.*`, `j2.*`, `pip.*` en FR et EN.
-6. **QA** : check switch FR/EN sur tous les nouveaux écrans, build OK, sécurité (RLS inchangée), Live retiré.
-
-## Réponse attendue de toi avant que je code
-
-Confirme rapidement les 4 décisions techniques ci-dessus (cover Unsplash par défaut, doc.day_id, note vocale oui/non, cover IA oui/non) et je commence par la migration + edge functions.
+### Points à confirmer avant que je lance
+1. **IA pour l'analyse de billet** : tu as demandé Anthropic claude-sonnet-4-6 mais le projet utilise déjà Lovable AI Gateway (gratuit, multimodal via `google/gemini-2.5-flash`). Je pars sur Gemini sauf si tu veux absolument ajouter une clé Anthropic (payante, à fournir).
+2. **Traduction EN des 260 badges** : auto-traduits via IA au seed, ou je laisse EN = FR avec drapeau "à traduire" dans l'admin ?
+3. **Mission de la semaine** : commune à tous (V1 simple, dynamique communautaire) ou personnalisée par utilisateur (selon ses catégories) ? Tu mentionnes les deux.
+4. **Compte admin** : à qui je donne le rôle `admin` (ton email user) ?
+5. **Vu l'ampleur**, je propose de livrer Lot 1 + Lot 6 en premier (data + 260 badges visibles), puis itérer. OK ?
