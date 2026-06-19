@@ -15,7 +15,8 @@
     "skip": "Passer",
     "back": "Retour",
     "letsGo": "C'est parti",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "delete": "Supprimer"
   },
   "notifBell": {
     "aria": "Notifications",
