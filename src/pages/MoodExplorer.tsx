@@ -43,6 +43,9 @@ const MoodExplorer = () => {
   const [reactionsCount, setReactionsCount] = useState(0);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [mode, setMode] = useState<"entry" | "pip" | "form">("entry");
+  const [ratingOpen, setRatingOpen] = useState(false);
+  const { log: logMoodEntry } = useMoodEntries();
+  const lastLoggedSessionRef = useRef<string | null>(null);
 
   const { reached, consume } = useQuota("mood");
 
