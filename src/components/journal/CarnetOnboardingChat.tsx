@@ -35,6 +35,8 @@ interface ChatMsg { role: "user" | "assistant"; content: string; ts: number }
 
 interface Props {
   tripId: string;
+  journalId?: string;
+  journalTitle?: string;
   destination: string;
   days: JournalDay[];
   activeSection: Section;
@@ -45,6 +47,7 @@ interface Props {
   departureDate?: string | null;
   returnDate?: string | null;
   onSuggestFocus?: (focus: Section) => void;
+  onChanged?: () => void;
 }
 
 const CarnetOnboardingChat = ({
