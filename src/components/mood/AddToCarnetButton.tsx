@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BookOpen, Check, Loader2 } from "lucide-react";
+import { BookOpen, Check, Loader2, AlertCircle, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -44,6 +44,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
   const [title, setTitle] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (trips.length && !tripId) setTripId(trips[0].id);
@@ -51,6 +52,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
 
   useEffect(() => {
     if (!open) return;
+    setError(false);
     setTitle(`${m?.emoji ?? "🎭"} ${m?.label ?? mood ?? ""}`);
     const base = t("moodComp.carnet.prefillIntro", {
       mood: m?.label ?? mood ?? "",
@@ -62,6 +64,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
   const handleSave = async () => {
     if (!user || !tripId || !mood) return;
     setSaving(true);
+    setError(false);
     try {
       // Find / create journal for this trip
       let { data: j } = await supabase
@@ -154,10 +157,18 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
           count: placesCount,
         })
       );
+      setError(false);
       setOpen(false);
     } catch (e: any) {
       console.error(e);
-      toast.error(t("moodComp.carnet.error"));
+      setError(true);
+      toast.error(t("moodComp.carnet.error"), {
+        description: e?.message || t("moodComp.carnet.errorDesc"),
+        action: {
+          label: t("moodComp.carnet.retry"),
+          onClick: () => handleSave(),
+        },
+      });
     } finally {
       setSaving(false);
     }
@@ -229,15 +240,34 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
               />
             </div>
 
+            {error && (
+              <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-medium">{t("moodComp.carnet.error")}</p>
+                  <p className="text-xs opacity-90">{t("moodComp.carnet.errorHint")}</p>
+                </div>
+              </div>
+            )}
+
             <div className="flex gap-2 justify-end">
               <Button variant="ghost" onClick={() => setOpen(false)} disabled={saving}>
                 {t("moodComp.carnet.cancel")}
               </Button>
-              <Button onClick={handleSave} disabled={saving || !tripId}>
+              <Button
+                onClick={handleSave}
+                disabled={saving || !tripId}
+                variant={error ? "destructive" : "default"}
+              >
                 {saving ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     {t("moodComp.carnet.saving")}
+                  </>
+                ) : error ? (
+                  <>
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    {t("moodComp.carnet.retry")}
                   </>
                 ) : (
                   <>
