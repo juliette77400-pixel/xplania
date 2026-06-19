@@ -109,10 +109,35 @@ const CarnetOnboardingChat = ({
   const [question, setQuestion] = useState("");
   const [qaLoading, setQaLoading] = useState(false);
   const [qaHistory, setQaHistory] = useState<ChatMsg[]>([]);
+  const [showContext, setShowContext] = useState(false);
+  const [insertingIdx, setInsertingIdx] = useState<number | null>(null);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const qaStorageKey = `${QA_HISTORY_PREFIX}::${tripId}`;
   const triggerKey = tripId;
+
+  // Aggregated context (shared by inspector + edge function payload)
+  const ctx = (() => {
+    const totalBlocks = days.reduce((s, d) => s + (d.blocks?.length || 0), 0);
+    const filledDays = days.filter((d) => (d.blocks?.length || 0) > 0).length;
+    const blocksByType: Record<string, number> = {};
+    const locationsSet = new Set<string>();
+    const moods: string[] = [];
+    for (const d of days) {
+      for (const b of d.blocks || []) {
+        blocksByType[b.type] = (blocksByType[b.type] || 0) + 1;
+        const c = (b.content || {}) as Record<string, unknown>;
+        if (b.type === "location" && typeof c.name === "string") locationsSet.add(c.name);
+        if (b.type === "mood" && typeof c.label === "string") moods.push(c.label);
+      }
+    }
+    return {
+      totalBlocks, filledDays,
+      blocksByType,
+      locations: Array.from(locationsSet),
+      moods,
+    };
+  })();
 
   const toggleExpanded = () => {
     setExpanded((prev) => {
