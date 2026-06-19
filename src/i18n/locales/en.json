@@ -2837,6 +2837,56 @@
     }
   },
   "moodComp": {
+    "entry": {
+      "aria": "Choose how to start",
+      "title": "How do you want to start?",
+      "subtitle": "Pip guides you, or set it up yourself.",
+      "pip": {
+        "title": "Let's talk about how you feel",
+        "desc": "Pip will ask a few questions and build your moment for you."
+      },
+      "form": {
+        "title": "I know what I want",
+        "desc": "Quick form, full control."
+      },
+      "solo": "Just take me on a solo walk"
+    },
+    "pip": {
+      "subtitle": "Your mood companion",
+      "close": "Close",
+      "greeting": "Hi! 🎭 Pip here. How are you feeling right now? There's no wrong answer.",
+      "askCompany": "Who are you going with?",
+      "askDuration": "About how long do you have?",
+      "recap": "Got it. I'm building you a moment that fits your vibe. Ready?",
+      "soloDetected": "Got it — just you, right now. I'll build you a solo walk.",
+      "gotFree": "Okay, noted. Who are you going with?",
+      "thinking": "Pip is thinking…",
+      "generate": "✨ Generate my moment",
+      "adjust": "Let me adjust",
+      "placeholder": "Tell me your mood in a few words…",
+      "send": "Send",
+      "tags": {
+        "calme": "Need for calm",
+        "stress": "Stressed",
+        "emerveillement": "Craving wonder",
+        "connexion": "Craving connection",
+        "energie": "Full of energy",
+        "contemplatif": "Contemplative",
+        "curiosite_fatiguee": "Tired but curious"
+      },
+      "company": {
+        "solo": "Solo",
+        "duo": "With a partner",
+        "group": "In a group",
+        "family": "With family"
+      },
+      "duration": {
+        "30m": "30 min",
+        "1h": "1h",
+        "half": "Half-day",
+        "full": "Full day"
+      }
+    },
     "hero": {
       "kicker": "Mood Explorer",
       "title": "Find your vibe right now",
