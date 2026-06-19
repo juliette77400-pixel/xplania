@@ -28,6 +28,9 @@ import { Image as ImageIcon } from "lucide-react";
 import { formatDayLabel } from "@/lib/journal-utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import CarnetOnboardingChat from "@/components/journal/CarnetOnboardingChat";
+
+type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share";
 
 const Carnet = () => {
   const { tripId } = useParams<{ tripId: string }>();
