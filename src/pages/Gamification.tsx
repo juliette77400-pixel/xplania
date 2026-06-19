@@ -355,69 +355,9 @@ const GamificationPage = () => {
         {/* Ancienne collection de 9 badges supprimée — remplacée par GamCatalog (260 badges + catégories) */}
 
 
-        {/* ══════ WEEKLY MISSIONS (live, reset every Monday) ══════ */}
-        <section className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Missions de la semaine</h2>
-          <p className="text-muted-foreground mb-3">Accomplis tes missions hebdo et gagne de l'XP</p>
-          <div className="inline-flex items-center gap-2 mb-8 text-xs font-semibold text-primary bg-primary/10 border border-primary/30 rounded-full px-3 py-1.5">
-            <RefreshCw className="w-3 h-3" />
-            Reset dans <span className="tabular-nums">{timeLeft}</span>
-          </div>
+        {/* ══════ MISSIONS PERSONNALISÉES (catalogue Xplania, par catégories préférées) ══════ */}
+        <MissionsPanel />
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {missions.map((m, i) => {
-              const done = m.progress >= m.total;
-              return (
-                <motion.div
-                  key={m.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className={cn(
-                    "rounded-2xl border bg-card p-5 text-left space-y-4 transition-colors",
-                    done ? "border-emerald-500/40 bg-emerald-500/5" : "border-border"
-                  )}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className={cn("w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center", m.iconBg)}>
-                      {m.icon}
-                    </div>
-                    <span className="text-xs font-bold border border-amber-500/40 text-amber-400 rounded-full px-2.5 py-1">
-                      +{m.xp} XP
-                    </span>
-                  </div>
-
-                  <h3 className="font-semibold text-foreground">{m.title}</h3>
-
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className={done ? "text-emerald-400" : "text-primary"}>
-                        {done ? "Terminé ✓" : "Progression"}
-                      </span>
-                      <span className="text-foreground font-bold tabular-nums">{m.progress}/{m.total}</span>
-                    </div>
-                    <Progress
-                      value={(m.progress / m.total) * 100}
-                      className={cn("h-1.5", done && "[&>div]:bg-emerald-400")}
-                    />
-                  </div>
-
-                  <Link
-                    to={m.link}
-                    className={cn(
-                      "block w-full text-center rounded-xl font-semibold py-2.5 text-sm transition-opacity",
-                      done
-                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                        : "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:opacity-90"
-                    )}
-                  >
-                    {done ? "Mission accomplie ✓" : "Commencer →"}
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-        </section>
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
