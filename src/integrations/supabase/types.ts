@@ -603,6 +603,45 @@ export type Database = {
           },
         ]
       }
+      gam_notification_log: {
+        Row: {
+          badge_id: string | null
+          channel: string
+          claim_id: string | null
+          created_at: string
+          error: string | null
+          id: string
+          payload: Json | null
+          status: string
+          transition: string
+          user_id: string
+        }
+        Insert: {
+          badge_id?: string | null
+          channel: string
+          claim_id?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          payload?: Json | null
+          status?: string
+          transition: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string | null
+          channel?: string
+          claim_id?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          payload?: Json | null
+          status?: string
+          transition?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       gam_notification_settings: {
         Row: {
           channel_email: boolean
