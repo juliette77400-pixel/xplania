@@ -313,6 +313,8 @@ const Carnet = () => {
       />
       <CarnetOnboardingChat
         tripId={tripId!}
+        journalId={journal.id}
+        journalTitle={journal.title}
         destination={destination}
         days={days}
         activeSection={activeTab}
@@ -323,6 +325,7 @@ const Carnet = () => {
         departureDate={tripMeta?.departure_date || null}
         returnDate={tripMeta?.return_date || null}
         onSuggestFocus={(s) => setActiveTab(s)}
+        onChanged={refetch}
       />
       <QuickJump />
     </div>

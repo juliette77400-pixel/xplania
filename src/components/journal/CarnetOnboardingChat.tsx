@@ -13,7 +13,12 @@ import {
   Minimize2,
   Send,
   X,
+  Info,
+  Plus,
+  FileDown,
 } from "lucide-react";
+import jsPDF from "jspdf";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { JournalDay } from "@/hooks/useJournal";
@@ -28,6 +33,8 @@ interface ChatMsg { role: "user" | "assistant"; content: string; ts: number }
 
 interface Props {
   tripId: string;
+  journalId?: string;
+  journalTitle?: string;
   destination: string;
   days: JournalDay[];
   activeSection: Section;
@@ -38,10 +45,13 @@ interface Props {
   departureDate?: string | null;
   returnDate?: string | null;
   onSuggestFocus?: (focus: Section) => void;
+  onChanged?: () => void;
 }
 
 const CarnetOnboardingChat = ({
   tripId,
+  journalId,
+  journalTitle,
   destination,
   days,
   activeSection,
@@ -52,6 +62,7 @@ const CarnetOnboardingChat = ({
   departureDate,
   returnDate,
   onSuggestFocus,
+  onChanged,
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
@@ -96,10 +107,35 @@ const CarnetOnboardingChat = ({
   const [question, setQuestion] = useState("");
   const [qaLoading, setQaLoading] = useState(false);
   const [qaHistory, setQaHistory] = useState<ChatMsg[]>([]);
+  const [showContext, setShowContext] = useState(false);
+  const [insertingIdx, setInsertingIdx] = useState<number | null>(null);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const qaStorageKey = `${QA_HISTORY_PREFIX}::${tripId}`;
   const triggerKey = tripId;
+
+  // Aggregated context (shared by inspector + edge function payload)
+  const ctx = (() => {
+    const totalBlocks = days.reduce((s, d) => s + (d.blocks?.length || 0), 0);
+    const filledDays = days.filter((d) => (d.blocks?.length || 0) > 0).length;
+    const blocksByType: Record<string, number> = {};
+    const locationsSet = new Set<string>();
+    const moods: string[] = [];
+    for (const d of days) {
+      for (const b of d.blocks || []) {
+        blocksByType[b.type] = (blocksByType[b.type] || 0) + 1;
+        const c = (b.content || {}) as Record<string, unknown>;
+        if (b.type === "location" && typeof c.name === "string") locationsSet.add(c.name);
+        if (b.type === "mood" && typeof c.label === "string") moods.push(c.label);
+      }
+    }
+    return {
+      totalBlocks, filledDays,
+      blocksByType,
+      locations: Array.from(locationsSet),
+      moods,
+    };
+  })();
 
   const toggleExpanded = () => {
     setExpanded((prev) => {
@@ -182,31 +218,17 @@ const CarnetOnboardingChat = ({
     setQuestion("");
     setQaLoading(true);
     try {
-      // Aggregate journal context
-      const totalBlocks = days.reduce((s, d) => s + (d.blocks?.length || 0), 0);
-      const filledDays = days.filter((d) => (d.blocks?.length || 0) > 0).length;
-      const blocksByType: Record<string, number> = {};
-      const locationsSet = new Set<string>();
-      const moods: string[] = [];
-      for (const d of days) {
-        for (const b of d.blocks || []) {
-          blocksByType[b.type] = (blocksByType[b.type] || 0) + 1;
-          const c = (b.content || {}) as Record<string, unknown>;
-          if (b.type === "location" && typeof c.name === "string") locationsSet.add(c.name);
-          if (b.type === "mood" && typeof c.label === "string") moods.push(c.label);
-        }
-      }
       const payload = {
         question: q,
         history: nextHistory.slice(-10).map(({ role, content }) => ({ role, content })),
         firstName,
         destination,
         days: days.length,
-        filledDays,
-        totalBlocks,
-        blocksByType,
-        moods,
-        locations: Array.from(locationsSet),
+        filledDays: ctx.filledDays,
+        totalBlocks: ctx.totalBlocks,
+        blocksByType: ctx.blocksByType,
+        moods: ctx.moods,
+        locations: ctx.locations,
         activeSection,
         activeDayLabel: activeDay ? formatDayLabel(activeDay.date) : "",
         activeDayBlocks: activeDay?.blocks?.length || 0,
@@ -236,6 +258,102 @@ const CarnetOnboardingChat = ({
       ]);
     } finally {
       setQaLoading(false);
+    }
+  };
+
+  const handleInsert = async (idx: number, content: string) => {
+    if (!user || !content.trim()) return;
+    setInsertingIdx(idx);
+    try {
+      if (activeSection === "story" && journalId) {
+        const { error } = await supabase.from("journal_stories").insert({
+          journal_id: journalId,
+          user_id: user.id,
+          tone: "chat",
+          content,
+        });
+        if (error) throw error;
+        toast.success(t("carnet.qa.insertedStory"));
+      } else {
+        // Default: insert as a note block on the active (or first) day
+        const targetDay = activeDay || days[0];
+        if (!targetDay || !journalId) {
+          toast.error(t("carnet.qa.insertNoDay"));
+          return;
+        }
+        const nextPos = (targetDay.blocks?.length || 0);
+        const { error } = await supabase.from("journal_blocks").insert({
+          day_id: targetDay.id,
+          journal_id: journalId,
+          user_id: user.id,
+          type: "note",
+          content: { text: content },
+          position: nextPos,
+        });
+        if (error) throw error;
+        toast.success(t("carnet.qa.insertedNote", { day: formatDayLabel(targetDay.date) }));
+      }
+      onChanged?.();
+    } catch (e: any) {
+      console.error("insert failed", e);
+      toast.error(e?.message || t("carnet.qa.insertFail"));
+    } finally {
+      setInsertingIdx(null);
+    }
+  };
+
+  const handleExportPdf = () => {
+    if (qaHistory.length === 0) {
+      toast.error(t("carnet.qa.exportEmpty"));
+      return;
+    }
+    try {
+      const doc = new jsPDF({ unit: "mm", format: "a4" });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const margin = 15;
+      let y = margin;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text(journalTitle || destination || t("carnet.onboarding.title"), margin, y);
+      y += 7;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(120);
+      doc.text(
+        `${t("carnet.qa.exportTab")}: ${t(`carnet.onboarding.sectionLabel.${activeSection}`)} • ${new Date().toLocaleString()}`,
+        margin, y,
+      );
+      y += 8;
+      doc.setDrawColor(200);
+      doc.line(margin, y, pageW - margin, y);
+      y += 6;
+      doc.setTextColor(0);
+
+      for (const m of qaHistory) {
+        const who = m.role === "user" ? t("carnet.qa.you") : "Pip";
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.text(`${who}`, margin, y);
+        y += 5;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        const lines = doc.splitTextToSize(m.content, pageW - margin * 2);
+        for (const line of lines) {
+          if (y > pageH - margin) { doc.addPage(); y = margin; }
+          doc.text(line, margin, y);
+          y += 5;
+        }
+        y += 3;
+      }
+
+      const safeTitle = (journalTitle || destination || "carnet").replace(/[^a-z0-9-]+/gi, "_").slice(0, 40);
+      doc.save(`chat-${safeTitle}-${activeSection}.pdf`);
+      toast.success(t("carnet.qa.exportDone"));
+    } catch (e) {
+      console.error("export pdf failed", e);
+      toast.error(t("carnet.qa.exportFail"));
     }
   };
 
@@ -280,6 +398,26 @@ const CarnetOnboardingChat = ({
             >
               {mode === "guided" ? t("carnet.qa.askButton") : t("carnet.qa.backToGuide")}
             </button>
+            {mode === "qa" && (
+              <>
+                <button
+                  aria-label={t("carnet.qa.contextLabel")}
+                  title={t("carnet.qa.contextLabel")}
+                  onClick={() => setShowContext((s) => !s)}
+                  className={`p-1 rounded-md hover:bg-muted ${showContext ? "text-primary" : "text-muted-foreground"}`}
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+                <button
+                  aria-label={t("carnet.qa.exportPdf")}
+                  title={t("carnet.qa.exportPdf")}
+                  onClick={handleExportPdf}
+                  className="p-1 rounded-md hover:bg-muted text-muted-foreground"
+                >
+                  <FileDown className="w-4 h-4" />
+                </button>
+              </>
+            )}
             <button
               aria-label={expanded ? t("carnet.qa.collapse") : t("carnet.qa.expand")}
               title={expanded ? t("carnet.qa.collapse") : t("carnet.qa.expand")}
@@ -359,6 +497,23 @@ const CarnetOnboardingChat = ({
 
         {mode === "qa" && (
           <>
+            {showContext && (
+              <div className="border-b border-border/40 bg-muted/30 px-3 py-2 text-[11px] text-foreground space-y-1">
+                <div className="flex items-center gap-1.5 font-semibold text-primary">
+                  <Info className="w-3 h-3" /> {t("carnet.qa.contextTitle")}
+                </div>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-muted-foreground">
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxDestination")}:</span> {destination || "—"}</div>
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxTab")}:</span> {t(`carnet.onboarding.focus.${activeSection}`)}</div>
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxDays")}:</span> {ctx.filledDays}/{days.length}</div>
+                  <div><span className="text-foreground font-medium">{t("carnet.qa.ctxBlocks")}:</span> {ctx.totalBlocks}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxActiveDay")}:</span> {activeDay ? `${formatDayLabel(activeDay.date)} (${activeDay.blocks?.length || 0})` : "—"}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxTypes")}:</span> {Object.entries(ctx.blocksByType).map(([k,v])=>`${k}:${v}`).join(", ") || "—"}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxLocations")}:</span> {ctx.locations.slice(0,6).join(", ") || "—"}</div>
+                  <div className="col-span-2"><span className="text-foreground font-medium">{t("carnet.qa.ctxMoods")}:</span> {ctx.moods.slice(-6).join(", ") || "—"}</div>
+                </div>
+              </div>
+            )}
             <div
               ref={scrollerRef}
               className="flex-1 overflow-y-auto p-3 space-y-2 min-h-[180px]"
@@ -369,11 +524,25 @@ const CarnetOnboardingChat = ({
                 </div>
               )}
               {qaHistory.map((m, i) => (
-                <div
-                  key={i}
-                  className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[90%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}
-                >
-                  {m.content}
+                <div key={i} className={`flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}>
+                  <div
+                    className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[90%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground" : "bg-muted/50 text-foreground"}`}
+                  >
+                    {m.content}
+                  </div>
+                  {m.role === "assistant" && i > 0 && (
+                    <button
+                      onClick={() => handleInsert(i, m.content)}
+                      disabled={insertingIdx === i}
+                      className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50"
+                      title={t("carnet.qa.insertHint")}
+                    >
+                      {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+                      {activeSection === "story"
+                        ? t("carnet.qa.insertStory")
+                        : t("carnet.qa.insertNote", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
+                    </button>
+                  )}
                 </div>
               ))}
               {qaLoading && (
@@ -383,6 +552,7 @@ const CarnetOnboardingChat = ({
                 </div>
               )}
             </div>
+
 
             <form
               onSubmit={(e) => { e.preventDefault(); askQuestion(); }}
