@@ -149,9 +149,8 @@ const Carnet = () => {
           </div>
         ) : (
           <Tabs defaultValue="timeline">
-            <TabsList className="grid grid-cols-3 sm:grid-cols-6 max-w-3xl mx-auto mb-6">
-              <TabsTrigger value="timeline">📅 {t("carnet.tabTimeline")}</TabsTrigger>
-              <TabsTrigger value="live">📡 {t("carnet.tabLive")}</TabsTrigger>
+            <TabsList className="grid grid-cols-3 sm:grid-cols-5 max-w-3xl mx-auto mb-6">
+              <TabsTrigger value="timeline">📖 {t("carnet.tabPages")}</TabsTrigger>
               <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
               <TabsTrigger value="insights">📊 {t("carnet.tabInsights")}</TabsTrigger>
               <TabsTrigger value="docs">📎 {t("carnet.tabDocs", "Docs")}</TabsTrigger>
@@ -184,7 +183,7 @@ const Carnet = () => {
 
                 {/* Day content */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <button
                       onClick={() => setActiveIdx(Math.max(0, activeIdx - 1))}
                       disabled={activeIdx === 0}
@@ -193,13 +192,19 @@ const Carnet = () => {
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <span className="text-xs text-muted-foreground">{activeIdx + 1} / {days.length}</span>
-                    <button
-                      onClick={() => setActiveIdx(Math.min(days.length - 1, activeIdx + 1))}
-                      disabled={activeIdx === days.length - 1}
-                      className="p-2 rounded-lg disabled:opacity-30 hover:bg-muted/50"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {activeDay && <PagePdfExportButton day={activeDay} destination={destination} />}
+                      <Button size="sm" variant="outline" onClick={() => setSocialOpen(true)}>
+                        <ImageIcon className="w-4 h-4" /> {t("social.btnShort")}
+                      </Button>
+                      <button
+                        onClick={() => setActiveIdx(Math.min(days.length - 1, activeIdx + 1))}
+                        disabled={activeIdx === days.length - 1}
+                        className="p-2 rounded-lg disabled:opacity-30 hover:bg-muted/50"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                   <AnimatePresence mode="wait">
                     {activeDay && (
@@ -218,9 +223,6 @@ const Carnet = () => {
               </div>
             </TabsContent>
 
-            <TabsContent value="live">
-              {tripId && <TripTracker tripId={tripId} destination={destination} />}
-            </TabsContent>
 
             <TabsContent value="story">
               <StoryGenerator
