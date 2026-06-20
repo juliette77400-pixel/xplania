@@ -1,70 +1,56 @@
-## Refonte Badges & Gamification
+## Constat du code actuel
 
-Gros chantier touchant data model, vérification anti-triche, UI, admin et import. Découpé en lots livrables successivement (chaque lot est testable, rien ne casse l'existant Travel Map / Globe Trotter).
+- Page `/suivi/:tripId` → `SuiviTrip.tsx` → `TripTracker.tsx` (~360 lignes).
+- La carte importée est `SimulatedLiveMap` (déjà aliasé en `LiveMap` dans `TripTracker`). Elle utilise Leaflet et est le candidat #1 du crash.
+- Aucun composant « Maya » n'est monté sur `/suivi/*` (Maya = `BudgetOnboardingChat`, présent uniquement sur Budget). À confirmer : le « Maya » que tu vois sur Suivi est probablement le widget global Pip déjà présent (`GlobalPipChat`) — auquel cas il faudra ajouter un **PipChat dédié Suivi** plutôt qu'un remplacement.
+- Le store `useActiveTrip` existe déjà et est alimenté à l'ouverture de la page → bonne base pour la centralisation réactive.
+- `useOfflineCache` existe déjà → base offline en place.
+- `ShareTripDialog` existe déjà (lien public via `share_slug`) → base partage en place, à compléter avec QR code.
 
-### Lot 1 — Modèle de données (migration Supabase)
-Nouvelles tables :
-- `categories` (id, slug, name_fr, name_en, icon, gradient_from, gradient_to, active)
-- `badges` (id, category_id FK, name_fr/en, description_fr/en, points, icon, verification_method enum `geo|photo|ticket|geo_photo|manual`, target_lat/lng/radius_m, is_repeatable, is_weekly_mission_eligible, active)
-- `badge_claims` (id, user_id, badge_id, status enum `in_progress|submitted|validated|rejected`, proof_type, proof_url, geo_lat/lng, ai_analysis jsonb, reviewed_by, review_reason, submitted_at, reviewed_at)
-- `user_category_preferences` (user_id, category_id)
-- `user_settings` ajout `competition_visibility enum public|anonymized|private` default `anonymized`
-- `current_missions` (id, badge_id, scope `weekly|monthly`, start_date, end_date, active, optional user_id pour perso)
-- `app_role` enum + `user_roles` table + `has_role()` security definer (pour l'admin)
-- Storage bucket privé `badge-proofs`
-- RLS : claims insertable seulement par leur user en statut `submitted`/`in_progress` ; passage à `validated`/`rejected` réservé service_role / admin via Edge Function
-- GRANTs explicites sur chaque table publique
-- View / RPC `leaderboard_points(user_id)` qui ne somme que claims `validated`
+## Découpage en 4 lots livrables
 
-### Lot 2 — Edge Functions vérification
-- `badge-claim-submit` : reçoit `{badge_id, proof_type, geo?, photo?, ticket?}`, applique la cascade :
-  - geo → Haversine vs target ; dans rayon = `validated`, sinon bascule photo
-  - photo → upload Storage, lit EXIF GPS si présent, valide si match sinon `submitted`
-  - ticket → Lovable AI Gateway (google/gemini-2.5-flash multimodal, pas Anthropic — déjà câblé, gratuit) prompt JSON strict `{lieu_detecte,date_detectee,correspond,confiance}` ; auto-validate si haute+match, sinon `submitted`
-  - anti-abus : rate-limit 5/j/user, hash SHA-256 de l'image (dédup), check incohérence GPS <1h/>200km
-- `badge-claim-review` : admin only, valide/refuse + motif, recalcul points
-- `missions-rotate` : cron pg_cron lundi 00:00 Europe/Paris (weekly) + 1er du mois (monthly), évite répétition <4 semaines
-- `admin-badge-crud` : create/update/soft-delete badges & categories (admin only)
+### Lot A — Stabilisation + carte safe + chatbot Pip (Parties 1, 2, 6)
+1. **Tuer le crash** : retirer `SimulatedLiveMap` du rendu, créer `FakeMapView.tsx` (SVG stylisé : route pointillée, pin de départ, pin courant, pins d'étapes positionnés sur une grille relative, sans Leaflet ni tile). Garder les props compatibles (`activities`, `positions`, `pois` → ignorés ou résumés en liste sous la carte) pour ne pas casser les callbacks `onPoiAddToCarnet` / `onAiPinAddToCarnet` (basculés vers la liste « POI autour »).
+2. **Visu km (Partie 6)** : sous la fausse carte, barre de progression « parcouru / restant » + libellé `X km parcourus · Y km restants` calculés depuis `trip.total_distance_km` et `trip.target_distance_km` (ou somme des positions). Affichée même hors-ligne.
+3. **Chatbot Pip dédié Suivi** : nouveau `SuiviPipChat.tsx` calqué sur `DiscoverPipChat`, options guidées :
+   - « 🧭 Suivre mon trajet », « 🏅 Voir mes badges », « 🔔 Configurer une alerte », « 📍 Partager ma position », « 🚶 Juste me promener seule ».
+   - Le bouton « me promener seule » referme le chat et n'insiste plus.
+4. **i18n** : clés `suiviTrip.fakeMap.*`, `suiviTrip.km.*`, `suiviPip.*` (FR + EN).
 
-### Lot 3 — UI utilisateur (réutilise palette/composants existants)
-- `src/pages/Gamification.tsx` refonte : ajout sections Mission de la semaine + Défi du mois (countdown), filtres catégories, états visuels distincts
-- Composant `BadgeMedal` SVG paramétrable (dégradé par catégorie + icône + état verrouillé/en cours/soumis/validé/refusé, animation unlock + confettis via `badges-fx`)
-- `BadgeClaimDialog` : bouton "J'ai terminé" → demande géoloc, fallback photo (capture="environment"), upload ticket, états loading/error/success
-- `BadgeLocationMap` : réutilise Leaflet déjà utilisé dans Suivi/Discover, pin + cercle, distance utilisateur, bouton Itinéraire (deep-link maps:// / google.com/maps)
-- Onboarding + Profil : multi-select catégories (chips style existant)
-- Profil → Paramètres : segmented control `competition_visibility` (3 options, défaut anonymized)
-- `Leaderboard.tsx` : respecte le mode visibilité ; masque/anonymise en conséquence ; n'agrège que claims validated
+### Lot B — Centralisation réactive + badges + partage/QR (Parties 3, 7, 8)
+5. **Realtime trip** : élargir `useActiveTrip` pour exposer transport, dates, budget, destination, itinéraire. S'abonner via Supabase Realtime aux `UPDATE` sur `trips` + `trip_activities` du tripId actif, et rafraîchir le store sans rechargement. Affichage d'une carte « Paramètres du voyage » en haut de la page (transport, dates, budget) qui se met à jour live.
+6. **Bandeau badges** : nouveau `BadgesSummary.tsx` (count total / unlocked depuis `explore_badges`) + bouton « Voir tous mes badges » → lien `/globe-trotter` (ou route existante équivalente à vérifier dans `App.tsx`).
+7. **QR code de partage** : étendre `ShareTripDialog` avec une vue QR (lib `qrcode.react` à ajouter) du `shareUrl`, bouton « Télécharger PNG ». Réactiver l'activation de `share_enabled` via la méthode existante `tracking.toggleShare`.
 
-### Lot 4 — Admin
-- `src/pages/admin/Badges.tsx` (protégé par `has_role('admin')`)
-  - Liste filtrable, formulaire create/edit (FR+EN, catégorie, points, méthode, coords/rayon, repeatable, weekly-eligible), soft-delete
-  - File d'attente claims `submitted` avec aperçu photo/IA + boutons Valider/Refuser
-  - CRUD catégories
-- Route cachée du menu si non-admin
+### Lot C — Alertes + suggestions d'itinéraire adapté (Parties 4, 5)
+8. **Schéma BDD** : migration créant `trip_alerts` (catégorie, message, severity, source, link, created_at, trip_id, dismissed) et `alert_subscriptions` (user_id, trip_id, channel `email|sms`, categories[], phone, email). RLS user-scoped, GRANT authenticated.
+9. **Edge function `fetch-trip-alerts`** : agrège plusieurs sources publiques, ton neutre et factuel imposé via prompt système :
+   - **Météo** : OpenWeatherMap (clé déjà présente).
+   - **Climat** : moyenne saisonnière via OpenWeather/historique.
+   - **Conflit/sécurité** : pour cette catégorie sensible, **proposition** : afficher un encadré « Source officielle » avec lien direct vers la fiche pays de `https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/conseils-par-pays-destination/` (FR) et `https://travel.state.gov` (EN), plutôt qu'un scraping non autorisé. Ces sites n'exposent pas d'API publique stable → la page renvoie systématiquement vers la source officielle. **À confirmer avec toi avant implémentation.**
+   - **Activité / festival / événement** : prompt Gemini avec destination + dates, ton neutre, format JSON `{ title, body, source_url }`.
+10. **UI Alertes** : composant `AlertsPanel.tsx` (icônes par catégorie, badge non-lues, bouton « marquer comme lue »).
+11. **Abonnement SMS/email** : dialog `AlertSubscriptionDialog.tsx`, sélection canal + catégories. SMS via GatewayAPI (connecteur dispo) — **à confirmer : OK pour utiliser GatewayAPI ?**. Email via l'infra mail Lovable (à provisionner si pas déjà fait).
+12. **Suggestion d'itinéraire adapté (Partie 5)** : quand une alerte météo/conflit est active, bouton « ✨ Adapter mon itinéraire » qui appelle une edge function `adapt-itinerary` (Gemini) renvoyant 2-3 propositions concrètes (ex. décaler J3, remplacer activité extérieure). Affichage dans `AlertsPanel`.
 
-### Lot 5 — i18n
-- Toutes les nouvelles clés ajoutées dans `fr.json` + `en.json` (statuts, méthodes, paramètres, admin, missions, carte, erreurs)
-- Locale passée à l'Edge Function ticket pour réponse IA dans la bonne langue
-- Audit final : aucun texte en dur dans les composants
+### Lot D — Mode hors-ligne renforcé (Partie 9)
+13. Étendre `useOfflineCache` pour cacher en plus : `tracking` (déjà partiel), `trip_alerts`, `badges_summary`, `trip` settings. Service Worker minimal (ou simple cache localStorage) pour servir la coquille de page.
+14. Bandeau « Hors-ligne — données du <date> » déjà présent → enrichi avec timestamp du dernier sync.
 
-### Lot 6 — Seed / import (260 badges)
-Script de migration qui :
-- Crée les 10 catégories détectées dans l'XLSX (Culture 75, Exploration 61, Spiritualité 44, Créativité 20, Eco-responsabilité 13, Famille 11, Gastronomie 10, Romantique 10, Travail 10, Technologie 6) avec icône + dégradé
-- Insère les 260 badges (name_fr depuis colonne A, description_fr depuis "Comment le débloquer", points depuis col C, category mappée)
-- name_en/description_en auto-traduits via Edge Function one-shot (Lovable AI Gateway) en batch ou laissés == FR avec TODO si tu préfères traduire manuellement
-- `verification_method` par défaut `manual` (faute de coordonnées dans le sheet) ; badges géo activables ensuite via admin
+## Détails techniques (interne)
 
-### Ordre d'exécution proposé (livraisons indépendantes)
-1. Lot 1 (migration) — bloquant
-2. Lot 6 (seed des 260 badges)
-3. Lot 3 (UI user de base avec verification manuelle uniquement)
-4. Lot 2 (edge functions vérif auto + ticket IA)
-5. Lot 4 (admin)
-6. Lot 5 finalisation i18n + checklist validation
+- **FakeMap** : pure SVG/Tailwind, props `{ progressKm, totalKm, stages: {label, done}[] }` ; pas de hook géo.
+- **Pip Suivi** : pattern identique à `DiscoverPipChat` (state local, quick replies, action callbacks).
+- **Realtime** : `supabase.channel("trip:"+tripId).on("postgres_changes", { table: "trips", filter: ... }, fn).on("postgres_changes", { table: "trip_activities", ... }, fn).subscribe()` dans un `useEffect` du `TripTracker`, cleanup en démontage.
+- **QR** : `qrcode.react` (`<QRCodeCanvas value={shareUrl} size={220} />`).
+- **Migration alertes** : CREATE TABLE + GRANT authenticated + RLS `user_id = auth.uid()` + trigger `updated_at`.
+- **GatewayAPI SMS** : header `Authorization: Bearer LOVABLE_API_KEY` + `X-Connection-Api-Key: GATEWAYAPI_API_KEY`, endpoint `/mobile/single`.
 
-### Points à confirmer avant que je lance
-1. **IA pour l'analyse de billet** : tu as demandé Anthropic claude-sonnet-4-6 mais le projet utilise déjà Lovable AI Gateway (gratuit, multimodal via `google/gemini-2.5-flash`). Je pars sur Gemini sauf si tu veux absolument ajouter une clé Anthropic (payante, à fournir).
-2. **Traduction EN des 260 badges** : auto-traduits via IA au seed, ou je laisse EN = FR avec drapeau "à traduire" dans l'admin ?
-3. **Mission de la semaine** : commune à tous (V1 simple, dynamique communautaire) ou personnalisée par utilisateur (selon ses catégories) ? Tu mentionnes les deux.
-4. **Compte admin** : à qui je donne le rôle `admin` (ton email user) ?
-5. **Vu l'ampleur**, je propose de livrer Lot 1 + Lot 6 en premier (data + 260 badges visibles), puis itérer. OK ?
+## Questions ouvertes — réponds avant Lot B
+
+1. **Confirmer Pip vs Maya** : on remplace bien le widget global Pip par un Pip-Suivi spécifique, ou tu veux les deux (global + spécifique) ?
+2. **Source sécurité/conflit** : OK pour s'en remettre à un **lien sortant** vers diplomatie.gouv.fr / travel.state.gov (pas d'API officielle, pas de scraping) ? Sinon, indique une source alternative.
+3. **SMS** : OK pour ajouter le connecteur GatewayAPI (compte requis) ? Sinon je limite l'abonnement au canal email.
+4. **Route badges** : la page existante est-elle `/globe-trotter`, `/gamification`, autre ?
+
+Confirme le découpage et les 4 questions et je démarre par le **Lot A** (priorité crash).

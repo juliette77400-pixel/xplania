@@ -9,7 +9,7 @@ import { useNearbyPOI, NearbyPOI, POI_COLORS, POI_LABELS } from "@/hooks/useNear
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import LiveMap from "./SimulatedLiveMap";
+import FakeMapView from "./FakeMapView";
 import LiveTimeline from "./LiveTimeline";
 import LiveStats from "./LiveStats";
 import LiveSuggestions, { AISuggestion } from "./LiveSuggestions";
@@ -267,16 +267,16 @@ const TripTracker = ({ tripId, destination }: Props) => {
             </div>
           </div>
 
-          <LiveMap
-            position={geo.position}
-            activities={displayActivities}
-            positions={positions}
-            filter={mapFilter}
-            height="500px"
-            pois={showPois ? filteredPois : []}
-            onPoiAddToCarnet={handlePoiAdd}
-            aiPins={aiPins}
-            onAiPinAddToCarnet={(p) => handleAiAdd({ ...p, description: p.description || "", reason: p.reason || "" })}
+          <FakeMapView
+            destination={destination}
+            progressKm={Number(trip?.total_distance_km || 0)}
+            totalKm={Number((trip as any)?.target_distance_km || 0) || undefined}
+            stages={displayActivities.map((a) => ({
+              id: a.id,
+              title: a.title,
+              status: a.status,
+            }))}
+            height={420}
           />
 
           {showPois && pois.length > 0 && (
