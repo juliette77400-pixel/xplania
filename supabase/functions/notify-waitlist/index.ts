@@ -1,6 +1,7 @@
-import { requireAuth } from "../_shared/require-auth.ts";
 // Sends a notification email to the Xplania team whenever someone joins
 // the premium waitlist. Uses Resend's onboarding sender (no domain needed).
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -26,21 +27,49 @@ const escape = (v: unknown) =>
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-  const __auth = await requireAuth(req, corsHeaders);
-  if (__auth instanceof Response) return __auth;
-
 
   try {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY missing");
 
     const body = (await req.json()) as Payload;
-    if (!body?.email) {
+    const email = String(body?.email ?? "").trim().toLowerCase();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return new Response(JSON.stringify({ error: "email required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Anti-abuse: only allow notifications for emails that just successfully
+    // went through subscribe_to_waitlist RPC (server-validated row exists,
+    // created within the last 5 minutes). This prevents arbitrary callers
+    // from spamming the team inbox.
+    const admin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+    const { data: row, error: lookupErr } = await admin
+      .from("premium_waitlist")
+      .select("created_at")
+      .eq("email", email)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (lookupErr) {
+      console.error("notify-waitlist lookup error", lookupErr);
+      return new Response(JSON.stringify({ error: "lookup_failed" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!row?.created_at || Date.now() - new Date(row.created_at).getTime() > 5 * 60 * 1000) {
+      return new Response(JSON.stringify({ error: "not_eligible" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
 
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111">
