@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Plane, Home, Compass, Heart, Map, Activity, Briefcase, BookOpen,
-  MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap,
+  MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -147,6 +147,9 @@ const AppNavbar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate("/profil")} className="cursor-pointer">
                   <UserIcon className="w-4 h-4 mr-2" /> {t("appNav.profile")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/parametres")} className="cursor-pointer">
+                  <SettingsIcon className="w-4 h-4 mr-2" /> {t("appNav.settings")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut} className="cursor-pointer text-destructive focus:text-destructive">
