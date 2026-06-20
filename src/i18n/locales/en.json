@@ -4249,5 +4249,29 @@
       "subtitle": "Start your first Xplania trip in 2 minutes. Free during the beta.",
       "cta": "Start your trip"
     }
+  },
+  "collapsible": {
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "valise": {
+      "activities": "Items by activity",
+      "activitiesSub": "Add gear based on what you'll do",
+      "cultural": "Cultural codes & local tips",
+      "culturalSub": "Outfits, gestures and habits to know",
+      "outfits": "Recommended outfits",
+      "outfitsSub": "Suggestions tailored to your trip",
+      "summary": "Suitcase recap & stats",
+      "summarySub": "Overview by category"
+    },
+    "budget": {
+      "charts": "Charts & breakdown",
+      "chartsSub": "See your budget at a glance",
+      "alerts": "Alerts & local tips",
+      "alertsSub": "Avoid tourist traps with local advice",
+      "tips": "AI saving tips",
+      "tipsSub": "How to save money on the ground",
+      "currency": "Currency converter",
+      "currencySub": "Convert your spending into your currency"
+    }
   }
 }
