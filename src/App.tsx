@@ -83,8 +83,9 @@ const App = () => (
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-          <GlobalPipChat />
+            </Routes>
+            <GlobalPipChat />
+          </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
