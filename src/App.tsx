@@ -32,6 +32,7 @@ import Legal from "./pages/Legal.tsx";
 import Trust from "./pages/Trust.tsx";
 import About from "./pages/About.tsx";
 import GlobalPipChat from "./components/shared/GlobalPipChat";
+import ErrorBoundary from "./components/shared/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
