@@ -1682,6 +1682,21 @@
     "km": {
       "traveled": "{{km}} km traveled",
       "remaining": "{{km}} km remaining"
+    },
+    "params": {
+      "title": "Trip settings",
+      "live": "Live updates",
+      "destination": "Destination",
+      "dates": "Dates",
+      "transport": "Transport",
+      "budget": "Budget",
+      "travelers": "Travelers"
+    },
+    "badges": {
+      "title": "My badges",
+      "viewAll": "See all",
+      "unlocked": "unlocked",
+      "empty": "No badges yet — explore to unlock some."
     }
   },
   "suiviPip": {
