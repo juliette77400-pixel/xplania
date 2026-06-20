@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import ProfilePreferences from "@/components/profil/ProfilePreferences";
 import CategoryPickerCard from "@/components/gamification/CategoryPickerCard";
 import VisibilitySettingCard from "@/components/gamification/VisibilitySettingCard";
+import SecuritySettings from "@/components/parametres/SecuritySettings";
 
 const TABS = [
   { value: "compte", icon: User, key: "settings.tabs.account" },
