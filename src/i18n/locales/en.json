@@ -4088,6 +4088,43 @@
     "accountSoon": "Account management (email change, linked accounts) — coming soon.",
     "notificationsSoon": "Detailed preferences (email, push, frequency) — coming soon.",
     "securitySoon": "Password, active sessions, two-factor authentication — coming soon.",
-    "dataSoon": "GDPR export and account deletion — coming soon."
+    "dataSoon": "GDPR export and account deletion — coming soon.",
+    "security": {
+      "password": {
+        "title": "Password",
+        "hint": "Pick a password with at least 8 characters. You'll be asked for your current one to confirm.",
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Confirm new password",
+        "cta": "Update password",
+        "success": "Password updated ✓",
+        "wrongCurrent": "Current password is incorrect",
+        "tooShort": "Minimum 8 characters",
+        "mismatch": "Passwords don't match"
+      },
+      "email": {
+        "title": "Email address",
+        "hint": "Current address: {{email}}. A confirmation email will be sent to the new address.",
+        "new": "New email address",
+        "cta": "Request change",
+        "success": "Confirmation email sent. Check the new inbox.",
+        "invalid": "Invalid email address"
+      },
+      "sessions": {
+        "title": "Active sessions",
+        "hint": "Sign out from every device and browser. You'll need to sign back in here.",
+        "cta": "Sign out everywhere",
+        "success": "All sessions were closed"
+      },
+      "linked": {
+        "title": "Linked accounts",
+        "hint": "Connect extra providers to sign in with a click.",
+        "primary": "Primary",
+        "link": "Link",
+        "unlink": "Unlink",
+        "unlinked": "Account unlinked",
+        "lastWarn": "You can't unlink your last sign-in method."
+      }
+    }
   }
 }

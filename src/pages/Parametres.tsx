@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import ProfilePreferences from "@/components/profil/ProfilePreferences";
 import CategoryPickerCard from "@/components/gamification/CategoryPickerCard";
 import VisibilitySettingCard from "@/components/gamification/VisibilitySettingCard";
+import SecuritySettings from "@/components/parametres/SecuritySettings";
 
 const TABS = [
   { value: "compte", icon: User, key: "settings.tabs.account" },
@@ -83,9 +84,7 @@ const Parametres = () => {
           </TabsContent>
 
           <TabsContent value="securite" className="space-y-5 mt-0">
-            <Card className="p-6">
-              <p className="text-sm text-muted-foreground">{t("settings.securitySoon")}</p>
-            </Card>
+            <SecuritySettings />
           </TabsContent>
 
           <TabsContent value="donnees" className="space-y-5 mt-0">
