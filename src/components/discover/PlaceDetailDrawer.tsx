@@ -94,6 +94,8 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
             </Button>
 
             <Separator className="my-2" />
+            <RatingsSection placeId={place.id} />
+            <Separator className="my-2" />
             <ReviewsSection placeId={place.id} />
           </div>
         </div>
