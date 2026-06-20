@@ -850,24 +850,36 @@
       "title": "Politique de confidentialité",
       "sections": [
         {
-          "heading": "Qui sommes-nous",
-          "body": "Xplania est un projet individuel porté par Juliette Noël, basée à Lille, France.\n\nContact : juliettenoel.xplania@gmail.com"
+          "heading": "Qui est responsable de tes données",
+          "body": "Xplania est un projet individuel porté par Juliette Noël, basée à Lille, France. En tant que responsable de traitement, elle décide pourquoi et comment tes données sont utilisées.\n\nContact dédié pour toute question relative à tes données personnelles : juliettenoel.xplania@gmail.com"
         },
         {
-          "heading": "Données collectées et finalités",
-          "body": "• Adresse email — inscription à la bêta et création de compte. Base légale : consentement (RGPD art. 6.1.a). Conservation : durée de la bêta + 12 mois après la dernière activité.\n\n• Géolocalisation approximative — utilisée en temps réel pour suggérer des destinations adaptées. Aucun GPS précis n'est stocké. Base légale : consentement (RGPD art. 6.1.a).\n\n• Analyses d'usage anonymes — pages consultées, fonctionnalités utilisées. Aucun identifiant personnel n'y est associé. Base légale : intérêt légitime. Conservation : 24 mois."
+          "heading": "Données collectées, finalités, bases légales et durées",
+          "body": "Nous limitons la collecte au strict nécessaire. Voici précisément ce qui est traité :\n\n• Adresse email et mot de passe (compte / liste d'attente premium) — finalité : création de compte, authentification, communication produit. Base légale : exécution du contrat (RGPD art. 6.1.b) pour les comptes, consentement (art. 6.1.a) pour la liste d'attente. Conservation : durée de vie du compte + 12 mois d'inactivité, puis suppression. Pour la liste d'attente : jusqu'au lancement + 6 mois ou désinscription.\n\n• Contenu de tes voyages (destinations, dates, activités, journal, photos uploadées, position GPS du suivi en direct) — finalité : faire fonctionner les modules Planificateur, Carnet de bord, Suivi de voyage, Découverte. Base légale : exécution du contrat. Conservation : tant que le compte existe ; suppression à la demande ou à la clôture du compte.\n\n• Géolocalisation approximative ou précise (uniquement quand tu l'actives) — finalité : suggestions à proximité, suivi GPS du voyage. Base légale : consentement explicite via le navigateur. La position n'est stockée que si tu actives le suivi en direct.\n\n• Messages envoyés aux assistants IA Pip (visa) et Maya (budget) — finalité : générer une réponse personnalisée. Base légale : exécution du contrat. Conservation : 30 jours maximum à des fins de qualité, puis suppression.\n\n• Feedback envoyé via le formulaire (note, suggestions, problèmes, email) — finalité : amélioration du produit. Base légale : consentement (envoi volontaire). Conservation : 24 mois.\n\n• Analyses d'usage anonymes (pages, fonctionnalités utilisées) — aucun identifiant personnel associé. Base légale : intérêt légitime à améliorer le service. Conservation : 24 mois."
         },
         {
-          "heading": "Accès aux données",
-          "body": "Seule Juliette Noël a accès aux données. Sous-traitants techniques : un service d'envoi d'emails (pour les emails transactionnels) et Lovable (hébergement de la plateforme).\n\nAucune donnée n'est revendue, louée ou partagée avec des annonceurs."
+          "heading": "Sous-traitants et services tiers",
+          "body": "Pour faire fonctionner Xplania, nous nous appuyons sur un nombre limité de prestataires de confiance. Aucun ne revend tes données. Chacun est encadré contractuellement.\n\n1) Lovable Labs Incorporated (États-Unis)\n   • Rôle : plateforme no-code qui héberge le site, l'application et le backend Lovable Cloud.\n   • Données transmises : toutes les données techniques nécessaires au fonctionnement (compte, contenu de voyage, logs).\n   • Politique de confidentialité : https://lovable.dev/privacy\n   • Conditions : https://lovable.dev/terms\n\n2) Supabase Inc. (États-Unis)\n   • Rôle : hébergement de la base de données et du service d'authentification (sous-jacent à Lovable Cloud).\n   • Données transmises : email, mot de passe haché, contenu de tes voyages, photos uploadées.\n   • Politique de confidentialité : https://supabase.com/privacy\n\n3) Google LLC — API Gemini (États-Unis)\n   • Rôle : moteur d'intelligence artificielle utilisé par les assistants Pip (guide visa) et Maya (guide budget) pour générer leurs réponses.\n   • Données transmises : le contenu du message que tu envoies à l'assistant (destination, contexte de voyage). Aucun email ni identifiant de compte n'est transmis.\n   • Conditions API Gemini : https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (États-Unis)\n   • Rôle : réception des emails envoyés via le formulaire de feedback et de contact. Le formulaire de feedback transite par EmailJS pour acheminer le message vers la boîte Gmail de l'équipe Xplania.\n   • Données transmises : ton email, ta note, tes suggestions, les problèmes rapportés.\n   • Politique de confidentialité Google : https://policies.google.com/privacy\n\nCette liste sera tenue à jour. Toute évolution importante te sera communiquée."
         },
         {
-          "heading": "Tes droits (RGPD)",
-          "body": "Conformément au Règlement général sur la protection des données, tu disposes d'un droit d'accès, de rectification, d'effacement, de retrait du consentement, ainsi que d'un droit de réclamation auprès de la CNIL (www.cnil.fr).\n\nToutes les demandes reçoivent une réponse sous 30 jours maximum. Contact : juliettenoel.xplania@gmail.com."
+          "heading": "Transferts de données hors Union européenne",
+          "body": "Les prestataires listés ci-dessus sont basés aux États-Unis. Tes données peuvent donc être traitées en dehors de l'Union européenne.\n\nCes transferts sont encadrés par les mécanismes de conformité prévus par le RGPD : Clauses Contractuelles Types (CCT) de la Commission européenne et, le cas échéant, certification au Data Privacy Framework UE–États-Unis. Nous choisissons en priorité des prestataires qui appliquent ces garanties."
+        },
+        {
+          "heading": "Tes droits (RGPD) et comment les exercer",
+          "body": "Conformément au Règlement général sur la protection des données, tu disposes des droits suivants sur tes données personnelles :\n\n• Droit d'accès — obtenir une copie de ce qu'on détient sur toi.\n• Droit de rectification — corriger une donnée inexacte.\n• Droit à l'effacement (« droit à l'oubli ») — demander la suppression de ton compte et de tes données.\n• Droit à la portabilité — recevoir tes données dans un format lisible.\n• Droit d'opposition — t'opposer à certains traitements (ex. analyses d'usage).\n• Droit à la limitation — demander de geler un traitement le temps d'une vérification.\n• Droit de retirer ton consentement à tout moment, sans que cela remette en cause la licéité du traitement effectué avant ce retrait.\n\nPour exercer l'un de ces droits, envoie un email à : juliettenoel.xplania@gmail.com en précisant ta demande. Une réponse te sera apportée sous 30 jours maximum.\n\nSi tu estimes que tes droits ne sont pas respectés, tu peux à tout moment déposer une réclamation auprès de la CNIL (Commission nationale de l'informatique et des libertés) : https://www.cnil.fr"
+        },
+        {
+          "heading": "Cookies",
+          "body": "Xplania utilise uniquement des cookies techniques nécessaires au fonctionnement du site (session, authentification, préférence de langue) et des cookies d'analyse anonymes. Aucun cookie publicitaire ni de traceur tiers à des fins marketing n'est déposé sans consentement explicite."
         },
         {
           "heading": "Sécurité",
-          "body": "Les échanges sont chiffrés via HTTPS. L'accès aux données est restreint et protégé par mot de passe."
+          "body": "Les échanges entre ton navigateur et Xplania sont chiffrés via HTTPS. Les mots de passe sont stockés sous forme hachée. L'accès aux données est restreint à la responsable du traitement et protégé par authentification."
+        },
+        {
+          "heading": "Mises à jour de cette politique",
+          "body": "Cette politique peut évoluer (nouveau prestataire, nouvelle fonctionnalité, évolution réglementaire). Toute modification importante sera notifiée par email aux utilisateurs inscrits et la date de mise à jour ci-dessus sera modifiée."
         }
       ]
     },
