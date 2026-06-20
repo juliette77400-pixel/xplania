@@ -1021,7 +1021,9 @@
       "badges": "Badges",
       "level": "Niv.",
       "streak": "Streak",
-      "km": "Km parcourus"
+      "km": "Km parcourus",
+      "xpToNext": "{{xp}} XP avant {{level}}",
+      "maxLevel": "Niveau maximum atteint 🏆"
     },
     "prefs": {
       "title": "Préférences",
@@ -1045,7 +1047,22 @@
     },
     "settingsCardTitle": "Paramètres & confidentialité",
     "settingsCardHint": "Langue, devise, notifications, visibilité, sécurité et données.",
-    "settingsCardCta": "Ouvrir les paramètres"
+    "settingsCardCta": "Ouvrir les paramètres",
+    "memberSince": "Membre depuis {{date}}",
+    "loadError": "Impossible de charger ton profil. Réessaie plus tard.",
+    "badges": {
+      "title": "Mes badges",
+      "viewAll": "Tout voir",
+      "emptyTitle": "Aucun badge débloqué pour l'instant",
+      "emptyHint": "Voyage, explore et raconte tes étapes pour gagner tes premiers badges.",
+      "suggestedTitle": "Prochains à débloquer",
+      "error": "Impossible de charger tes badges."
+    },
+    "publicCard": {
+      "title": "Mon profil public",
+      "hint": "Gère tes carnets partagés publiquement et la visibilité de tes voyages.",
+      "cta": "Voir mes carnets"
+    }
   },
   "notFound": {
     "title": "Oups ! Page introuvable",

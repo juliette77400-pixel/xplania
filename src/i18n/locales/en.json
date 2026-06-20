@@ -1021,7 +1021,9 @@
       "badges": "Badges",
       "level": "Lv.",
       "streak": "Streak",
-      "km": "Km traveled"
+      "km": "Km traveled",
+      "xpToNext": "{{xp}} XP to {{level}}",
+      "maxLevel": "Max level reached 🏆"
     },
     "prefs": {
       "title": "Preferences",
@@ -1045,7 +1047,22 @@
     },
     "settingsCardTitle": "Settings & privacy",
     "settingsCardHint": "Language, currency, notifications, visibility, security and data.",
-    "settingsCardCta": "Open settings"
+    "settingsCardCta": "Open settings",
+    "memberSince": "Member since {{date}}",
+    "loadError": "Couldn't load your profile. Please try again later.",
+    "badges": {
+      "title": "My badges",
+      "viewAll": "View all",
+      "emptyTitle": "No badges unlocked yet",
+      "emptyHint": "Travel, explore and log your journey to earn your first badges.",
+      "suggestedTitle": "Next to unlock",
+      "error": "Couldn't load your badges."
+    },
+    "publicCard": {
+      "title": "My public profile",
+      "hint": "Manage your publicly shared journals and your trip visibility.",
+      "cta": "View my journals"
+    }
   },
   "notFound": {
     "title": "Oops! Page not found",

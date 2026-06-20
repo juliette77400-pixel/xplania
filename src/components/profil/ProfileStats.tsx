@@ -1,4 +1,5 @@
 // Aggregates user-wide stats from Supabase for the Profile page.
+// Lot 2 — added Globe-Trotter level bar (XP progress to next level).
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Plane, Award, Zap, Flame, Map as MapIcon } from "lucide-react";
@@ -6,8 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Progress } from "@/components/ui/progress";
 import { getStreakDisplay } from "@/lib/streak";
-import { computeXp, getLevelProgress } from "@/lib/xp-levels";
+import { computeXp, getLevelProgress, LEVELS } from "@/lib/xp-levels";
 
 interface Stats {
   trips: number;
@@ -92,22 +94,57 @@ const ProfileStats = () => {
     { icon: MapIcon, label: t("profil.stats.km"), value: stats.km, color: "from-emerald-400 to-teal-500" },
   ];
 
+  const progress = getLevelProgress(stats.xp);
+  const lvl = progress.level;
+  const next = progress.next;
+
   return (
-    <Card className="p-4 sm:p-6">
-      <h2 className="text-sm font-bold mb-3">{t("profil.stats.title")}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        {items.map((it) => {
-          const Icon = it.icon;
-          return (
-            <div key={it.label} className="rounded-xl border border-border/60 p-3 text-center">
-              <div className={`w-9 h-9 mx-auto rounded-xl bg-gradient-to-br ${it.color} flex items-center justify-center mb-1.5`}>
-                <Icon className="w-4 h-4 text-white" />
-              </div>
-              <p className="text-base font-bold leading-none">{it.value}</p>
-              <p className="text-[10px] text-muted-foreground mt-1 leading-tight">{it.label}</p>
+    <Card className="p-4 sm:p-6 space-y-5">
+      {/* Globe-Trotter level bar */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${lvl.gradient} flex items-center justify-center text-lg shrink-0`}>
+              {lvl.emoji}
             </div>
-          );
-        })}
+            <div className="min-w-0">
+              <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-semibold">
+                {t("profil.stats.level")} {lvl.index}
+              </p>
+              <p className="text-sm font-bold truncate">{lvl.name}</p>
+            </div>
+          </div>
+          <div className="text-right shrink-0">
+            <p className="text-sm font-bold">{stats.xp} <span className="text-[10px] text-muted-foreground font-medium">XP</span></p>
+            {next ? (
+              <p className="text-[10px] text-muted-foreground">
+                {t("profil.stats.xpToNext", { xp: progress.xpForNext, level: next.name })}
+              </p>
+            ) : (
+              <p className="text-[10px] text-amber-500 font-semibold">{t("profil.stats.maxLevel")}</p>
+            )}
+          </div>
+        </div>
+        <Progress value={progress.pct} className="h-2" />
+      </div>
+
+      {/* Stats grid */}
+      <div>
+        <h2 className="text-sm font-bold mb-3">{t("profil.stats.title")}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {items.map((it) => {
+            const Icon = it.icon;
+            return (
+              <div key={it.label} className="rounded-xl border border-border/60 p-3 text-center">
+                <div className={`w-9 h-9 mx-auto rounded-xl bg-gradient-to-br ${it.color} flex items-center justify-center mb-1.5`}>
+                  <Icon className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-base font-bold leading-none">{it.value}</p>
+                <p className="text-[10px] text-muted-foreground mt-1 leading-tight">{it.label}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </Card>
   );
