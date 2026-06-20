@@ -110,7 +110,8 @@
     "quotaTitle": "Crédits gratuits",
     "creditsShort": "crédits",
     "viewPlans": "Voir les offres",
-    "about": "À propos"
+    "about": "À propos",
+    "settings": "Paramètres"
   },
   "about": {
     "metaTitle": "À propos — Xplania, voyager autrement enfin",
@@ -1041,7 +1042,10 @@
       "notifyEnabled": "Notifications navigateur activées",
       "notifyDenied": "Permission refusée",
       "langChanged": "Langue mise à jour"
-    }
+    },
+    "settingsCardTitle": "Paramètres & confidentialité",
+    "settingsCardHint": "Langue, devise, notifications, visibilité, sécurité et données.",
+    "settingsCardCta": "Ouvrir les paramètres"
   },
   "notFound": {
     "title": "Oups ! Page introuvable",
@@ -4052,5 +4056,21 @@
     },
     "offlineBadge": "Hors ligne",
     "offlineRefresh": "Connexion requise pour actualiser"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gère ton compte, tes préférences et ta confidentialité.",
+    "tabs": {
+      "account": "Compte",
+      "preferences": "Préférences",
+      "notifications": "Notifications",
+      "privacy": "Confidentialité",
+      "security": "Sécurité",
+      "data": "Données"
+    },
+    "accountSoon": "Gestion du compte (changement d'email, comptes liés) — disponible prochainement.",
+    "notificationsSoon": "Préférences détaillées (email, push, fréquence) — disponible prochainement.",
+    "securitySoon": "Mot de passe, sessions actives, double authentification — disponible prochainement.",
+    "dataSoon": "Export RGPD et suppression de compte — disponible prochainement."
   }
 }

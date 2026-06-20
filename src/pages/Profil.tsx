@@ -13,9 +13,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ProfileStats from "@/components/profil/ProfileStats";
-import ProfilePreferences from "@/components/profil/ProfilePreferences";
-import CategoryPickerCard from "@/components/gamification/CategoryPickerCard";
-import VisibilitySettingCard from "@/components/gamification/VisibilitySettingCard";
+import { Link } from "react-router-dom";
+import { Settings as SettingsIcon } from "lucide-react";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
@@ -106,9 +105,18 @@ const Profil = () => {
         )}
 
         {!loading && <ProfileStats />}
-        {!loading && <CategoryPickerCard />}
-        {!loading && <VisibilitySettingCard />}
-        {!loading && <ProfilePreferences />}
+
+        <Card className="p-6 space-y-3">
+          <h2 className="font-semibold flex items-center gap-2">
+            <SettingsIcon className="w-4 h-4 text-primary" /> {t("profil.settingsCardTitle")}
+          </h2>
+          <p className="text-xs text-muted-foreground">{t("profil.settingsCardHint")}</p>
+          <Button asChild variant="outline" className="w-full">
+            <Link to="/parametres">
+              <SettingsIcon className="w-4 h-4 mr-2" /> {t("profil.settingsCardCta")}
+            </Link>
+          </Button>
+        </Card>
 
         <Card className="p-6">
           <h2 className="font-semibold mb-3">{t("profil.account")}</h2>

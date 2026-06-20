@@ -27,6 +27,7 @@ import Gamification from "./pages/Gamification.tsx";
 import AdminBadges from "./pages/AdminBadges.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Profil from "./pages/Profil.tsx";
+import Parametres from "./pages/Parametres.tsx";
 import Legal from "./pages/Legal.tsx";
 import Trust from "./pages/Trust.tsx";
 import About from "./pages/About.tsx";
@@ -63,6 +64,8 @@ const App = () => (
             <Route path="/admin/badges" element={<ProtectedRoute><AdminBadges /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+            <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
             <Route path="/a-propos" element={<About />} />
             {/* Localized legal routes (FR + EN canonical URLs) */}

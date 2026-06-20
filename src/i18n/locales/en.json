@@ -110,7 +110,8 @@
     "quotaTitle": "Free credits",
     "creditsShort": "credits",
     "viewPlans": "See plans",
-    "about": "About"
+    "about": "About",
+    "settings": "Settings"
   },
   "about": {
     "metaTitle": "About — Xplania, travel differently at last",
@@ -1041,7 +1042,10 @@
       "notifyEnabled": "Browser notifications enabled",
       "notifyDenied": "Permission denied",
       "langChanged": "Language updated"
-    }
+    },
+    "settingsCardTitle": "Settings & privacy",
+    "settingsCardHint": "Language, currency, notifications, visibility, security and data.",
+    "settingsCardCta": "Open settings"
   },
   "notFound": {
     "title": "Oops! Page not found",
@@ -4052,5 +4056,21 @@
     },
     "offlineBadge": "Offline",
     "offlineRefresh": "Connection required to refresh"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account, preferences and privacy.",
+    "tabs": {
+      "account": "Account",
+      "preferences": "Preferences",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "security": "Security",
+      "data": "Data"
+    },
+    "accountSoon": "Account management (email change, linked accounts) — coming soon.",
+    "notificationsSoon": "Detailed preferences (email, push, frequency) — coming soon.",
+    "securitySoon": "Password, active sessions, two-factor authentication — coming soon.",
+    "dataSoon": "GDPR export and account deletion — coming soon."
   }
 }
