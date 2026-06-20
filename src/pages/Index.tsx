@@ -4,13 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
+import DualAudienceSection from "@/components/xplania/DualAudienceSection";
+import JourneyTimelineSection from "@/components/xplania/JourneyTimelineSection";
+import DifferentiationSection from "@/components/xplania/DifferentiationSection";
 import FeaturesSection from "@/components/xplania/FeaturesSection";
-import HowItWorksSection from "@/components/xplania/HowItWorksSection";
-import BenefitsSection from "@/components/xplania/BenefitsSection";
-import DashboardSection from "@/components/xplania/DashboardSection";
 import BetaSection from "@/components/xplania/BetaSection";
-import Testimonials from "@/components/xplania/Testimonials";
 import FaqSection from "@/components/xplania/FaqSection";
+import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
 import TravelFormDialog from "@/components/xplania/TravelFormDialog";
 import FeedbackDialog from "@/components/xplania/FeedbackDialog";
@@ -73,18 +73,13 @@ const Index = () => {
         <button onClick={scrollToFeedback}>fb</button>
       </div>
       <HeroSection onCreateTrip={handleCreateTrip} onDemoTrip={handleDemoTrip} />
+      <DualAudienceSection />
+      <JourneyTimelineSection />
+      <DifferentiationSection />
       <FeaturesSection />
-      <HowItWorksSection />
-      <BenefitsSection />
-      <DashboardSection
-        onCreateTrip={handleCreateTrip}
-        tripData={tripData}
-        recommendations={recommendations}
-        loading={dashboardLoading}
-      />
-      <Testimonials />
-      <FaqSection />
       <BetaSection onFeedback={() => setFeedbackOpen(true)} />
+      <FaqSection />
+      <FinalCtaSection onCreateTrip={handleCreateTrip} />
       <Footer onCreateTrip={handleCreateTrip} />
       <TravelFormDialog
         open={travelFormOpen}
