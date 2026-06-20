@@ -13,7 +13,7 @@ const URL_REGEX = /(https?:\/\/[^\s)]+)/g;
 const renderBody = (text: string) => {
   const parts = text.split(URL_REGEX);
   return parts.map((part, i) =>
-    URL_REGEX.test(part) ? (
+    /^https?:\/\//.test(part) ? (
       <a
         key={i}
         href={part}
