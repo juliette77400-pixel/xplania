@@ -4004,5 +4004,51 @@
     "error": "Impossible de répondre, réessaie.",
     "openLabel": "Ouvrir le chat",
     "freeMode": "Mode libre"
+  },
+  "suiviAlerts": {
+    "title": "Alertes voyage",
+    "subscribe": "M'abonner",
+    "refresh": "Actualiser",
+    "refreshed": "Alertes actualisées",
+    "refreshError": "Impossible d'actualiser les alertes",
+    "empty": "Aucune alerte pour le moment. Clique sur Actualiser pour vérifier.",
+    "officialSource": "Source officielle",
+    "markRead": "Marquer lu",
+    "dismiss": "Ignorer",
+    "adaptCta": "✨ Adapter mon itinéraire",
+    "adapting": "Adaptation en cours…",
+    "adaptError": "Impossible de générer des suggestions",
+    "noAdaptation": "Aucune adaptation nécessaire pour l'instant",
+    "action": "Action",
+    "category": {
+      "weather": "Météo",
+      "climate": "Climat",
+      "security": "Sécurité",
+      "events": "Événements",
+      "activities": "Activités",
+      "transport": "Transport"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Attention",
+      "critical": "Critique"
+    },
+    "sub": {
+      "title": "Abonnement aux alertes",
+      "desc": "Choisis les canaux et catégories d'alertes pour ce voyage. Les emails sont strictement transactionnels (liés à ton voyage).",
+      "channels": "Canaux",
+      "channel": {
+        "in_app": "Dans l'app",
+        "email": "Email"
+      },
+      "transactionalNote": "SMS non disponible — uniquement notifications in-app et emails transactionnels.",
+      "email": "Adresse email",
+      "emailRequired": "Indique une adresse email pour ce canal",
+      "invalidEmail": "Adresse email invalide",
+      "categories": "Catégories suivies",
+      "minSeverity": "Gravité minimale",
+      "saved": "Préférences enregistrées",
+      "saveError": "Impossible d'enregistrer"
+    }
   }
 }

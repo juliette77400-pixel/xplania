@@ -4004,5 +4004,51 @@
     "error": "Couldn't reply, try again.",
     "openLabel": "Open chat",
     "freeMode": "Free mode"
+  },
+  "suiviAlerts": {
+    "title": "Trip alerts",
+    "subscribe": "Subscribe",
+    "refresh": "Refresh",
+    "refreshed": "Alerts refreshed",
+    "refreshError": "Could not refresh alerts",
+    "empty": "No alerts yet. Click Refresh to check.",
+    "officialSource": "Official source",
+    "markRead": "Mark read",
+    "dismiss": "Dismiss",
+    "adaptCta": "✨ Adapt my itinerary",
+    "adapting": "Adapting…",
+    "adaptError": "Could not generate suggestions",
+    "noAdaptation": "No adaptation needed for now",
+    "action": "Action",
+    "category": {
+      "weather": "Weather",
+      "climate": "Climate",
+      "security": "Safety",
+      "events": "Events",
+      "activities": "Activities",
+      "transport": "Transport"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "sub": {
+      "title": "Alert subscription",
+      "desc": "Pick the channels and categories of alerts for this trip. Emails are strictly transactional (related to your trip).",
+      "channels": "Channels",
+      "channel": {
+        "in_app": "In-app",
+        "email": "Email"
+      },
+      "transactionalNote": "SMS not available — in-app and transactional emails only.",
+      "email": "Email address",
+      "emailRequired": "Provide an email for this channel",
+      "invalidEmail": "Invalid email address",
+      "categories": "Tracked categories",
+      "minSeverity": "Minimum severity",
+      "saved": "Preferences saved",
+      "saveError": "Could not save"
+    }
   }
 }
