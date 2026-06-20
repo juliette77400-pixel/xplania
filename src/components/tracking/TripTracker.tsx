@@ -9,7 +9,7 @@ import { useNearbyPOI, NearbyPOI, POI_COLORS, POI_LABELS } from "@/hooks/useNear
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import LiveMap from "./SimulatedLiveMap";
+import FakeMapView from "./FakeMapView";
 import LiveTimeline from "./LiveTimeline";
 import LiveStats from "./LiveStats";
 import LiveSuggestions, { AISuggestion } from "./LiveSuggestions";
