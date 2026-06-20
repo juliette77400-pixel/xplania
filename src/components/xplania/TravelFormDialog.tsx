@@ -120,17 +120,29 @@ interface TravelFormDialogProps {
 }
 
 const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, initialPreset }: TravelFormDialogProps) => {
-  const [mode, setMode] = useState<PlanMode | null>(initialPreset?.mode ?? null);
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<TravelFormData>(
-    initialPreset ? { ...defaultFormData, ...initialPreset.data } : defaultFormData,
+  // Restore any in-progress questionnaire from a previous session.
+  // initialPreset (e.g. "see example") always wins over persisted state.
+  const restored = useMemo(
+    () => (initialPreset ? null : loadTravelProgress()),
+    [initialPreset],
   );
+
+  const [mode, setMode] = useState<PlanMode | null>(
+    initialPreset?.mode ?? restored?.mode ?? null,
+  );
+  const [step, setStep] = useState<number>(restored?.step ?? 0);
+  const [formData, setFormData] = useState<TravelFormData>(() => {
+    if (initialPreset) return safeMergeFormData(defaultFormData, initialPreset.data);
+    if (restored) return safeMergeFormData(defaultFormData, restored.formData);
+    return defaultFormData;
+  });
   const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
   const [generating, setGenerating] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
   const [direction, setDirection] = useState(1);
   const [previewing, setPreviewing] = useState(false);
+  const [resumedBanner, setResumedBanner] = useState<boolean>(!!restored);
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -143,8 +155,22 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
     [mode],
   );
   const totalSteps = activeSteps.length;
-  const currentStepKey = activeSteps[step];
-  const progress = totalSteps > 0 ? Math.round(((step + 1) / totalSteps) * 100) : 0;
+  // Guard against a persisted step that no longer fits the active mode.
+  const safeStep = totalSteps > 0 ? Math.min(Math.max(step, 0), totalSteps - 1) : 0;
+  const currentStepKey = activeSteps[safeStep];
+  const progress = totalSteps > 0 ? Math.round(((safeStep + 1) / totalSteps) * 100) : 0;
+
+  // Persist progress on every meaningful change.
+  // Skipped while showing the final dashboard or while previewing.
+  const skipPersist = useRef(false);
+  useEffect(() => {
+    if (!open || !mode || showDashboard || initialPreset) return;
+    if (skipPersist.current) {
+      skipPersist.current = false;
+      return;
+    }
+    saveTravelProgress(mode, safeStep, formData);
+  }, [open, mode, safeStep, formData, showDashboard, initialPreset]);
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -157,17 +183,37 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-      const response = await fetch(`${supabaseUrl}/functions/v1/travel-recommendations`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${supabaseKey}`,
-          "apikey": supabaseKey,
-        },
-        body: JSON.stringify({ formData, mode }),
-      });
+      if (!supabaseUrl || !supabaseKey) {
+        throw new Error(t("travelForm.errorGeneric"));
+      }
 
-      const data = await response.json();
+      // Cap the wait so a frozen edge function does not show an infinite spinner.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60_000);
+
+      let response: Response;
+      try {
+        response = await fetch(`${supabaseUrl}/functions/v1/travel-recommendations`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${supabaseKey}`,
+            "apikey": supabaseKey,
+          },
+          body: JSON.stringify({ formData, mode }),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
+
+      // Tolerate non-JSON 5xx bodies without crashing on `.json()`.
+      let data: any = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
 
       if (!response.ok) {
         throw new Error(data?.error || t("travelForm.errorServer", { status: response.status }));
@@ -181,6 +227,8 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
 
       setRecommendations(data.recommendations);
       onTripGenerated?.(formData, data.recommendations);
+      // Clear persisted draft only on a successful generation.
+      clearTravelProgress();
       // Incrément du compteur de générations (freemium)
       try {
         const { usePlanStore } = await import("@/stores/usePlanStore");
@@ -195,7 +243,10 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
       });
     } catch (err: any) {
       console.error("Generation error:", err);
-      const message = err?.message || t("travelForm.errorGeneric");
+      const isAbort = err?.name === "AbortError";
+      const message = isAbort
+        ? t("travelForm.errorTimeout")
+        : err?.message || t("travelForm.errorGeneric");
       setAiError(message);
       toast({
         title: t("travelForm.errorTitle"),
@@ -210,15 +261,31 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
 
   const handleClose = () => {
     onOpenChange(false);
+    // Keep persisted draft so the user can resume next time.
+    // Only the in-memory state is reset.
     setTimeout(() => {
-      setMode(initialPreset?.mode ?? null);
-      setStep(0);
       setShowDashboard(false);
       setRecommendations(null);
       setAiError(null);
-      setFormData(initialPreset ? { ...defaultFormData, ...initialPreset.data } : defaultFormData);
+      setPreviewing(false);
       setDirection(1);
+      // If a preset was provided, fully reset to it; otherwise leave draft as-is.
+      if (initialPreset) {
+        setMode(initialPreset.mode);
+        setStep(0);
+        skipPersist.current = true;
+        setFormData(safeMergeFormData(defaultFormData, initialPreset.data));
+      }
     }, 300);
+  };
+
+  const handleRestart = () => {
+    clearTravelProgress();
+    skipPersist.current = true;
+    setFormData(defaultFormData);
+    setStep(0);
+    setMode(null);
+    setResumedBanner(false);
   };
 
   const goNext = () => {
