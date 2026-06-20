@@ -1672,7 +1672,38 @@
   },
   "suiviTrip": {
     "back": "My trackings",
-    "title": "Live tracking"
+    "title": "Live tracking",
+    "fakeMap": {
+      "alt": "Stylized map of your trip",
+      "start": "Start",
+      "destination": "Destination",
+      "disclaimer": "Illustrative view — the interactive map is under maintenance."
+    },
+    "km": {
+      "traveled": "{{km}} km traveled",
+      "remaining": "{{km}} km remaining"
+    }
+  },
+  "suiviPip": {
+    "subtitle": "Your travel guide",
+    "greeting": "Hi! I'm Pip, your travel companion.",
+    "askIntent": "What would you like to do here?",
+    "placeholder": "Ask me anything…",
+    "soloAck": "No worries, I'll let you explore on your own. I'm here if you need me 👋",
+    "fallback": "I'm not sure I understand. You can pick an option below 👇",
+    "actions": {
+      "track": "🧭 Track my trip",
+      "badges": "🏅 See my badges",
+      "alerts": "🔔 Set up an alert",
+      "share": "📍 Share my location",
+      "walk_alone": "🚶 Just let me wander"
+    },
+    "replies": {
+      "track": "Your trip is visible on the map above, with kilometers traveled and remaining.",
+      "badges": "You can see all your badges from the Globe Trotter page.",
+      "alerts": "Alerts (weather, events…) are coming to this page soon. You'll be able to pick SMS or email.",
+      "share": "Use the \"Share\" button at the top of the page to generate a public link."
+    }
   },
   "discoverPage": {
     "geoDenied": "🚫 Geolocation denied. Enable it in your browser settings for precise recommendations.",
