@@ -10,6 +10,7 @@ import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
@@ -339,8 +340,12 @@ const GuideBudgetPage = () => {
   };
 
   const scrollToSection = (name: "analysis" | "forecast" | "tracker" | "charts" | "tips") => {
-    const el = document.querySelector(`[data-budget-section="${name}"]`);
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Force-open the matching collapsible if needed before scrolling
+    window.dispatchEvent(new CustomEvent("xpl:open-section", { detail: { id: name } }));
+    requestAnimationFrame(() => {
+      const el = document.querySelector(`[data-budget-section="${name}"]`);
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   useEffect(() => {
@@ -443,20 +448,47 @@ const GuideBudgetPage = () => {
               />
               <AddExpenseForm onAdd={handleAddExpense} />
               <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
-              <div ref={chartRef}>
-                <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
-              </div>
-              <BudgetAlerts categories={categories} destination={destination} />
-              <BudgetSavingTips
-                destination={destination}
-                totalBudget={totalBudget}
-                days={days}
-                travelers={travelers}
-                categories={categories}
-                tripData={tripData}
-              />
+              <CollapsibleSection
+                title={t("collapsible.budget.charts")}
+                subtitle={t("collapsible.budget.chartsSub")}
+                sectionId="charts"
+              >
+                <div ref={chartRef}>
+                  <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                </div>
+              </CollapsibleSection>
 
-              <CurrencyConverter destination={destination} />
+              <CollapsibleSection
+                title={t("collapsible.budget.alerts")}
+                subtitle={t("collapsible.budget.alertsSub")}
+              >
+                <BudgetAlerts categories={categories} destination={destination} />
+              </CollapsibleSection>
+
+              <CollapsibleSection
+                title={t("collapsible.budget.tips")}
+                subtitle={t("collapsible.budget.tipsSub")}
+                sectionId="tips"
+              >
+                <BudgetSavingTips
+                  destination={destination}
+                  totalBudget={totalBudget}
+                  days={days}
+                  travelers={travelers}
+                  categories={categories}
+                  tripData={tripData}
+                />
+              </CollapsibleSection>
+
+              <CollapsibleSection
+                title={t("collapsible.budget.currency")}
+                subtitle={t("collapsible.budget.currencySub")}
+              >
+                <CurrencyConverter destination={destination} />
+              </CollapsibleSection>
+
+
+
 
 
 

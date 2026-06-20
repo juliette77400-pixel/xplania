@@ -24,6 +24,7 @@ import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
+import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
@@ -497,17 +498,32 @@ const GuideValisePage = () => {
           />
         </div>
 
-        <ActivityItems objectives={tripData?.objectives} onAddToChecklist={addActivityItems} />
+        <CollapsibleSection
+          title={t("collapsible.valise.activities")}
+          subtitle={t("collapsible.valise.activitiesSub")}
+        >
+          <ActivityItems objectives={tripData?.objectives} onAddToChecklist={addActivityItems} />
+        </CollapsibleSection>
 
-        <CulturalTips destination={destination} tripType={tripTypeLabel} />
+        <CollapsibleSection
+          title={t("collapsible.valise.cultural")}
+          subtitle={t("collapsible.valise.culturalSub")}
+        >
+          <CulturalTips destination={destination} tripType={tripTypeLabel} />
+        </CollapsibleSection>
 
-        <OutfitRecommendations
-          tripType={tripTypeLabel}
-          destination={destination}
-          activities={tripData?.objectives}
-          luggage={luggageMode}
-          onAddToChecklist={addOutfitItems}
-        />
+        <CollapsibleSection
+          title={t("collapsible.valise.outfits")}
+          subtitle={t("collapsible.valise.outfitsSub")}
+        >
+          <OutfitRecommendations
+            tripType={tripTypeLabel}
+            destination={destination}
+            activities={tripData?.objectives}
+            luggage={luggageMode}
+            onAddToChecklist={addOutfitItems}
+          />
+        </CollapsibleSection>
 
         <ActionButtons
           onRegenerate={handleRegenerate}
@@ -527,12 +543,17 @@ const GuideValisePage = () => {
           days={days}
         />
 
-        <ValiseSummary
-          totalItems={totalItems}
-          checkedItems={checkedItems}
-          categoriesCount={Object.keys(categories).length}
-          remainingByCategory={remainingByCategory}
-        />
+        <CollapsibleSection
+          title={t("collapsible.valise.summary")}
+          subtitle={t("collapsible.valise.summarySub")}
+        >
+          <ValiseSummary
+            totalItems={totalItems}
+            checkedItems={checkedItems}
+            categoriesCount={Object.keys(categories).length}
+            remainingByCategory={remainingByCategory}
+          />
+        </CollapsibleSection>
       </div>
       <QuickJump />
       <ValisePipChat destination={destination} />
