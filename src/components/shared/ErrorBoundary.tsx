@@ -1,7 +1,7 @@
 // Reusable React error boundary. Catches render-time errors in its subtree
 // and shows a bilingual recovery UI instead of a blank screen.
 import { Component, ReactNode } from "react";
-import i18n from "@/i18n/config";
+import i18n from "@/i18n";
 import { AlertTriangle, RotateCcw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
