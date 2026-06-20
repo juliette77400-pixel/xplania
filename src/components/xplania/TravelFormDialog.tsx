@@ -426,9 +426,9 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
                 >
                   <div
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i < step
+                      i < safeStep
                         ? "bg-primary scale-100"
-                        : i === step
+                        : i === safeStep
                         ? "bg-primary scale-125 ring-2 ring-primary/30"
                         : "bg-muted-foreground/30 scale-75"
                     }`}
