@@ -1,10 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Eye, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Eye, RotateCcw, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import StepBasicInfo from "@/components/xplania/form-steps/StepBasicInfo";
 import StepTravelerProfile from "@/components/xplania/form-steps/StepTravelerProfile";
@@ -19,6 +18,13 @@ import StepInspirations from "@/components/xplania/form-steps/StepInspirations";
 import ModeSelector, { type PlanMode } from "@/components/xplania/form-steps/ModeSelector";
 import DashboardCards from "@/components/xplania/DashboardCards";
 import TripPreview from "@/components/xplania/form-steps/TripPreview";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
+import {
+  clearTravelProgress,
+  loadTravelProgress,
+  safeMergeFormData,
+  saveTravelProgress,
+} from "@/lib/travel-form-persistence";
 import { motion, AnimatePresence } from "framer-motion";
 
 type StepKey =
