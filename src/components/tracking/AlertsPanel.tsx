@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { cacheTripData, readTripData, useOnlineStatus } from "@/hooks/useOfflineCache";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -67,8 +68,18 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
   >([]);
 
   const locale = i18n.language?.startsWith("en") ? "en" : "fr";
+  const isOnline = useOnlineStatus();
+  const [cachedAt, setCachedAt] = useState<number | null>(null);
 
   const load = useCallback(async () => {
+    if (!isOnline) {
+      const cached = readTripData<TripAlert[]>(tripId, "alerts");
+      if (cached) {
+        setAlerts(cached.data);
+        setCachedAt(cached.cachedAt);
+      }
+      return;
+    }
     setLoading(true);
     const { data } = await supabase
       .from("trip_alerts")
@@ -76,9 +87,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
       .eq("trip_id", tripId)
       .eq("dismissed", false)
       .order("created_at", { ascending: false });
-    setAlerts((data || []) as TripAlert[]);
+    const list = (data || []) as TripAlert[];
+    setAlerts(list);
+    cacheTripData(tripId, "alerts", list);
+    setCachedAt(Date.now());
     setLoading(false);
-  }, [tripId]);
+  }, [tripId, isOnline]);
 
   useEffect(() => {
     load();
@@ -96,6 +110,10 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
   }, [tripId, load]);
 
   const refresh = async () => {
+    if (!isOnline) {
+      toast.error(t("suiviAlerts.offlineRefresh"));
+      return;
+    }
     setRefreshing(true);
     try {
       const { error } = await supabase.functions.invoke("fetch-trip-alerts", {
@@ -147,6 +165,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
           {unreadCount > 0 && (
             <Badge variant="default" className="h-5 text-[10px] px-1.5">
               {unreadCount}
+            </Badge>
+          )}
+          {!isOnline && (
+            <Badge variant="outline" className="h-5 text-[10px] px-1.5 border-amber-500/40 text-amber-500">
+              {t("suiviAlerts.offlineBadge")}
+              {cachedAt && ` · ${new Date(cachedAt).toLocaleTimeString(locale === "en" ? "en" : "fr-FR", { hour: "2-digit", minute: "2-digit" })}`}
             </Badge>
           )}
         </div>

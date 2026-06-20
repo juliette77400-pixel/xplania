@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Trophy, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { cacheTripData, readTripData, useOnlineStatus } from "@/hooks/useOfflineCache";
 
 interface Props {
   tripId?: string;
@@ -18,9 +19,16 @@ const BadgesSummary = ({ tripId }: Props) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [summary, setSummary] = useState<Summary>({ unlocked: 0, recent: [] });
+  const isOnline = useOnlineStatus();
 
   useEffect(() => {
     if (!user) return;
+    // Offline: read cached snapshot keyed per trip (or fallback)
+    if (!isOnline && tripId) {
+      const cached = readTripData<Summary>(tripId, "badges_summary");
+      if (cached) setSummary(cached.data);
+      return;
+    }
     let cancelled = false;
 
     const load = async () => {
@@ -37,10 +45,12 @@ const BadgesSummary = ({ tripId }: Props) => {
         .select("id", { count: "exact", head: true })
         .eq("user_id", user.id);
       if (cancelled) return;
-      setSummary({
+      const next: Summary = {
         unlocked: count || 0,
         recent: (data || []).map((b: any) => ({ id: b.id, name: b.name, icon: b.icon })),
-      });
+      };
+      setSummary(next);
+      if (tripId) cacheTripData(tripId, "badges_summary", next);
     };
 
     load();
@@ -57,7 +67,7 @@ const BadgesSummary = ({ tripId }: Props) => {
       cancelled = true;
       supabase.removeChannel(channel);
     };
-  }, [user, tripId]);
+  }, [user, tripId, isOnline]);
 
   return (
     <div className="rounded-2xl border border-border bg-gradient-to-br from-amber-500/5 via-card/60 to-primary/5 p-4">
