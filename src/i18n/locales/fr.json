@@ -1672,7 +1672,38 @@
   },
   "suiviTrip": {
     "back": "Mes suivis",
-    "title": "Suivi live"
+    "title": "Suivi live",
+    "fakeMap": {
+      "alt": "Carte stylisée de ton trajet",
+      "start": "Départ",
+      "destination": "Destination",
+      "disclaimer": "Visuel indicatif — la carte interactive est en maintenance."
+    },
+    "km": {
+      "traveled": "{{km}} km parcourus",
+      "remaining": "{{km}} km restants"
+    }
+  },
+  "suiviPip": {
+    "subtitle": "Ton guide voyage",
+    "greeting": "Salut ! Je suis Pip, ton compagnon de voyage.",
+    "askIntent": "Qu'est-ce que tu veux faire ici ?",
+    "placeholder": "Pose-moi une question…",
+    "soloAck": "Pas de souci, je te laisse explorer librement. Je reste dispo si besoin 👋",
+    "fallback": "Je ne suis pas sûr de comprendre. Tu peux choisir une option ci-dessous 👇",
+    "actions": {
+      "track": "🧭 Suivre mon trajet",
+      "badges": "🏅 Voir mes badges",
+      "alerts": "🔔 Configurer une alerte",
+      "share": "📍 Partager ma position",
+      "walk_alone": "🚶 Juste me promener seule"
+    },
+    "replies": {
+      "track": "Ton trajet est visible sur la carte ci-dessus, avec les kilomètres parcourus et restants.",
+      "badges": "Tu peux voir tous tes badges depuis la page Globe Trotter.",
+      "alerts": "Les alertes (météo, événements…) arrivent bientôt sur cette page. Tu pourras choisir SMS ou email.",
+      "share": "Utilise le bouton « Partager » en haut de la page pour générer un lien public."
+    }
   },
   "discoverPage": {
     "geoDenied": "🚫 Géolocalisation refusée. Active-la dans les réglages du navigateur pour des recos précises.",
