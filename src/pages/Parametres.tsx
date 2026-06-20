@@ -76,9 +76,7 @@ const Parametres = () => {
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-5 mt-0">
-            <Card className="p-6">
-              <p className="text-sm text-muted-foreground">{t("settings.notificationsSoon")}</p>
-            </Card>
+            <NotificationsSettings />
           </TabsContent>
 
           <TabsContent value="confidentialite" className="space-y-5 mt-0">
@@ -90,9 +88,7 @@ const Parametres = () => {
           </TabsContent>
 
           <TabsContent value="donnees" className="space-y-5 mt-0">
-            <Card className="p-6">
-              <p className="text-sm text-muted-foreground">{t("settings.dataSoon")}</p>
-            </Card>
+            <DataSettings />
           </TabsContent>
         </Tabs>
       </div>
