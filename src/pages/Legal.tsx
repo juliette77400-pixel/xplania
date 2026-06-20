@@ -74,7 +74,7 @@ const Legal = ({ legalKey }: Props) => {
             {sections.map((s, i) => (
               <section key={i}>
                 <h2 className="text-lg font-semibold text-foreground mb-2">{s.heading}</h2>
-                <p className="text-muted-foreground whitespace-pre-line">{s.body}</p>
+                <p className="text-muted-foreground whitespace-pre-line">{renderBody(s.body)}</p>
               </section>
             ))}
           </div>
