@@ -439,19 +439,71 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
           </div>
         </DialogHeader>
 
+        {resumedBanner && !previewing && (
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-xs">
+            <span className="text-foreground/80">
+              {t("travelForm.resumedBanner", { step: safeStep + 1, total: totalSteps })}
+            </span>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              className="h-7 text-xs"
+              onClick={handleRestart}
+            >
+              <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+              {t("travelForm.restart")}
+            </Button>
+          </div>
+        )}
+
         <AnimatePresence initial={false}>
           <motion.div
-            key={previewing ? "preview" : `${mode}-${step}`}
+            key={previewing ? "preview" : `${mode}-${safeStep}`}
             initial={{ opacity: 0, x: direction * 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="py-4 min-h-[200px]"
           >
-            {previewing ? (
-              <TripPreview data={formData} onResume={() => setPreviewing(false)} />
-            ) : (
-              currentStepKey && renderStep(currentStepKey)
-            )}
+            <ErrorBoundary
+              onReset={handleRestart}
+              fallback={(error, reset) => (
+                <div className="flex flex-col items-center justify-center gap-4 p-6 text-center">
+                  <div className="text-sm font-semibold text-destructive">
+                    {t("travelForm.stepCrash")}
+                  </div>
+                  <p className="text-xs text-muted-foreground max-w-md">
+                    {t("travelForm.stepCrashHint")}
+                  </p>
+                  <p className="text-[11px] font-mono text-muted-foreground/70 break-all">
+                    {error.message}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        if (safeStep > 0) setStep((s) => Math.max(0, s - 1));
+                        reset();
+                      }}
+                    >
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      {t("travelForm.back")}
+                    </Button>
+                    <Button size="sm" onClick={reset}>
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      {t("errorBoundary.retry")}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            >
+              {previewing ? (
+                <TripPreview data={formData} onResume={() => setPreviewing(false)} />
+              ) : (
+                currentStepKey && renderStep(currentStepKey)
+              )}
+            </ErrorBoundary>
           </motion.div>
         </AnimatePresence>
 
