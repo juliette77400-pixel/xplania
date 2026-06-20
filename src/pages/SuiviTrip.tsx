@@ -61,6 +61,14 @@ const SuiviTrip = () => {
         <TripTracker tripId={tripId} destination={destination} />
       </main>
       <QuickJump />
+      <SuiviPipChat
+        onAction={(a) => {
+          if (a === "share") {
+            // Scroll to share button in header — user can tap "Partager"
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }}
+      />
     </div>
   );
 };
