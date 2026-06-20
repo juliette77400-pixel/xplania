@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import TripTracker from "@/components/tracking/TripTracker";
 import QuickJump from "@/components/shared/QuickJump";
 import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
+import SuiviPipChat from "@/components/tracking/SuiviPipChat";
 
 const SuiviTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
