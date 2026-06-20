@@ -99,8 +99,11 @@ export const resetAllUsage = () => {
   (Object.keys(LIMITS) as QuotaTool[]).forEach(resetUsage);
 };
 
-// Expose helpers on window for quick console access during development.
-if (typeof window !== "undefined") {
+// Expose helpers on window for quick console access — DEV builds only.
+// In production we never attach `window.xplaniaDev` (it would advertise a
+// trivial way to bypass freemium quotas). Auto-reset of counters is also
+// gated to DEV so production users always see the real client-side counter.
+if (typeof window !== "undefined" && import.meta.env.DEV) {
   (window as unknown as Record<string, unknown>).xplaniaDev = {
     enable: enableDevMode,
     disable: disableDevMode,
@@ -108,11 +111,9 @@ if (typeof window !== "undefined") {
     isDev: isDevMode,
   };
 
-  // Auto-reset all counters & legacy plan store when running in dev/test mode.
   if (isDevMode()) {
     try {
       resetAllUsage();
-      // Also clear the legacy global generation counter and persisted plan store
       localStorage.removeItem("xplania_generation_count");
       const planRaw = localStorage.getItem("xplania-plan");
       if (planRaw) {
@@ -128,3 +129,4 @@ if (typeof window !== "undefined") {
     } catch {}
   }
 }
+
