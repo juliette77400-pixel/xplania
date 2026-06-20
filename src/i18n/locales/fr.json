@@ -4049,6 +4049,8 @@
       "minSeverity": "Gravité minimale",
       "saved": "Préférences enregistrées",
       "saveError": "Impossible d'enregistrer"
-    }
+    },
+    "offlineBadge": "Hors ligne",
+    "offlineRefresh": "Connexion requise pour actualiser"
   }
 }
