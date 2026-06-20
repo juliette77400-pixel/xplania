@@ -95,8 +95,17 @@ const Profil = () => {
                 <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
                   <Mail className="w-3 h-3 shrink-0" /> {user?.email}
                 </p>
+                {formattedMemberSince && (
+                  <p className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                    <CalendarDays className="w-3 h-3 shrink-0" /> {t("profil.memberSince", { date: formattedMemberSince })}
+                  </p>
+                )}
               </div>
             </div>
+
+            {loadError && (
+              <p className="text-xs text-destructive">{t("profil.loadError")}</p>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="name" className="flex items-center gap-1.5">
@@ -118,6 +127,19 @@ const Profil = () => {
         )}
 
         {!loading && <ProfileStats />}
+        {!loading && <BadgeShowcase />}
+
+        <Card className="p-6 space-y-3">
+          <h2 className="font-semibold flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-primary" /> {t("profil.publicCard.title")}
+          </h2>
+          <p className="text-xs text-muted-foreground">{t("profil.publicCard.hint")}</p>
+          <Button asChild variant="outline" className="w-full">
+            <Link to="/carnets">
+              <BookOpen className="w-4 h-4 mr-2" /> {t("profil.publicCard.cta")} <ArrowRight className="w-3 h-3 ml-1" />
+            </Link>
+          </Button>
+        </Card>
 
         <Card className="p-6 space-y-3">
           <h2 className="font-semibold flex items-center gap-2">
