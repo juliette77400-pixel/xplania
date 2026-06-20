@@ -107,11 +107,14 @@ Deno.serve(async (req) => {
         s.hiddenGems * XP.moodHiddenGems +
         s.badges * XP.badgesTotal;
       if (xp <= 0) return;
+      const vis = visibility.get(user_id) || "public";
+      if (vis === "private") return; // exclude entirely
       const p = profileMap.get(user_id);
+      const anonymized = vis === "anonymized";
       rows.push({
-        user_id,
-        display_name: p?.display_name ?? null,
-        avatar_url: p?.avatar_url ?? null,
+        user_id: anonymized ? `anon-${user_id.slice(0, 8)}` : user_id,
+        display_name: anonymized ? null : (p?.display_name ?? null),
+        avatar_url: anonymized ? null : (p?.avatar_url ?? null),
         xp,
         badges: s.badges,
         visited: s.visited,
