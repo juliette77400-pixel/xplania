@@ -400,7 +400,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
                 {t("travelForm.changeMode")}
               </button>
               <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
-                {step + 1}/{totalSteps}
+                {safeStep + 1}/{totalSteps}
               </span>
             </div>
           </div>
@@ -511,7 +511,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
           <Button
             variant="ghost"
             onClick={previewing ? () => setPreviewing(false) : goPrev}
-            disabled={!previewing && step === 0}
+            disabled={!previewing && safeStep === 0}
             className="text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -519,7 +519,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
           </Button>
 
           <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-            {step === totalSteps - 1 && !previewing && (
+            {safeStep === totalSteps - 1 && !previewing && (
               <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3 text-primary" /> {t("travelForm.lastStep")}
               </span>
@@ -544,7 +544,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             )}
-            {!previewing && step === totalSteps - 1 && (
+            {!previewing && safeStep === totalSteps - 1 && (
               <Button
                 onClick={handleGenerate}
                 disabled={generating}
