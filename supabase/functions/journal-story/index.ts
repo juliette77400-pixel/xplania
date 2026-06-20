@@ -1,3 +1,4 @@
+import { requireAuth } from "../_shared/require-auth.ts";
 // Generate an immersive trip story from journal data using Lovable AI
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,6 +21,9 @@ const TONE_PROMPTS_EN: Record<string, string> = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
+
 
   try {
     const { destination, days, tone = "storytelling", mode, rawText, locale = "fr", styleProfile = null } = await req.json();

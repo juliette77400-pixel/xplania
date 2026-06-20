@@ -3,6 +3,7 @@
 // mood_favorites (+ hidden_gem) and *_badges, then applies the same
 // XP formula as the client (`src/lib/xp-levels.ts`).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { requireAuth } from "../_shared/require-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -33,13 +34,16 @@ interface Row {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
+  const auth = await requireAuth(req, corsHeaders);
+  if (auth instanceof Response) return auth;
+
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const sb = createClient(SUPABASE_URL, SERVICE_KEY);
 
     // Pull all relevant rows (limited dataset → fine for beta).
-    const [profiles, nodes, blocks, favs, eb, jb, mb] = await Promise.all([
+    const [profiles, nodes, blocks, favs, eb, jb, mb, settings] = await Promise.all([
       sb.from("profiles").select("user_id, display_name, avatar_url").limit(2000),
       sb.from("explore_nodes").select("user_id, status").eq("status", "visited"),
       sb.from("journal_blocks").select("user_id, type"),
@@ -47,7 +51,14 @@ Deno.serve(async (req) => {
       sb.from("explore_badges").select("user_id"),
       sb.from("journal_badges").select("user_id"),
       sb.from("mood_badges").select("user_id"),
+      sb.from("gam_user_settings").select("user_id, competition_visibility"),
     ]);
+
+    // Build visibility map (default: public)
+    const visibility = new Map<string, string>();
+    (settings.data || []).forEach((s: any) => {
+      if (s?.user_id) visibility.set(s.user_id, s.competition_visibility || "public");
+    });
 
     const stats = new Map<string, {
       visited: number; notes: number; photos: number; locations: number;
@@ -96,11 +107,14 @@ Deno.serve(async (req) => {
         s.hiddenGems * XP.moodHiddenGems +
         s.badges * XP.badgesTotal;
       if (xp <= 0) return;
+      const vis = visibility.get(user_id) || "public";
+      if (vis === "private") return; // exclude entirely
       const p = profileMap.get(user_id);
+      const anonymized = vis === "anonymized";
       rows.push({
-        user_id,
-        display_name: p?.display_name ?? null,
-        avatar_url: p?.avatar_url ?? null,
+        user_id: anonymized ? `anon-${user_id.slice(0, 8)}` : user_id,
+        display_name: anonymized ? null : (p?.display_name ?? null),
+        avatar_url: anonymized ? null : (p?.avatar_url ?? null),
         xp,
         badges: s.badges,
         visited: s.visited,
