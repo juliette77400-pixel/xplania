@@ -1,4 +1,5 @@
 // Aggregates user-wide stats from Supabase for the Profile page.
+// Lot 2 — added Globe-Trotter level bar (XP progress to next level).
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Plane, Award, Zap, Flame, Map as MapIcon } from "lucide-react";
@@ -6,8 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Progress } from "@/components/ui/progress";
 import { getStreakDisplay } from "@/lib/streak";
-import { computeXp, getLevelProgress } from "@/lib/xp-levels";
+import { computeXp, getLevelProgress, LEVELS } from "@/lib/xp-levels";
 
 interface Stats {
   trips: number;
