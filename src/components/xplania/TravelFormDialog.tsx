@@ -1,10 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Eye, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Eye, RotateCcw, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import type { TravelFormData, TravelRecommendations } from "@/types/travel";
 import StepBasicInfo from "@/components/xplania/form-steps/StepBasicInfo";
 import StepTravelerProfile from "@/components/xplania/form-steps/StepTravelerProfile";
@@ -19,6 +18,13 @@ import StepInspirations from "@/components/xplania/form-steps/StepInspirations";
 import ModeSelector, { type PlanMode } from "@/components/xplania/form-steps/ModeSelector";
 import DashboardCards from "@/components/xplania/DashboardCards";
 import TripPreview from "@/components/xplania/form-steps/TripPreview";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
+import {
+  clearTravelProgress,
+  loadTravelProgress,
+  safeMergeFormData,
+  saveTravelProgress,
+} from "@/lib/travel-form-persistence";
 import { motion, AnimatePresence } from "framer-motion";
 
 type StepKey =
@@ -114,17 +120,29 @@ interface TravelFormDialogProps {
 }
 
 const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, initialPreset }: TravelFormDialogProps) => {
-  const [mode, setMode] = useState<PlanMode | null>(initialPreset?.mode ?? null);
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<TravelFormData>(
-    initialPreset ? { ...defaultFormData, ...initialPreset.data } : defaultFormData,
+  // Restore any in-progress questionnaire from a previous session.
+  // initialPreset (e.g. "see example") always wins over persisted state.
+  const restored = useMemo(
+    () => (initialPreset ? null : loadTravelProgress()),
+    [initialPreset],
   );
+
+  const [mode, setMode] = useState<PlanMode | null>(
+    initialPreset?.mode ?? restored?.mode ?? null,
+  );
+  const [step, setStep] = useState<number>(restored?.step ?? 0);
+  const [formData, setFormData] = useState<TravelFormData>(() => {
+    if (initialPreset) return safeMergeFormData(defaultFormData, initialPreset.data);
+    if (restored) return safeMergeFormData(defaultFormData, restored.formData);
+    return defaultFormData;
+  });
   const [recommendations, setRecommendations] = useState<TravelRecommendations | null>(null);
   const [generating, setGenerating] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
   const [direction, setDirection] = useState(1);
   const [previewing, setPreviewing] = useState(false);
+  const [resumedBanner, setResumedBanner] = useState<boolean>(!!restored);
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -137,8 +155,22 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
     [mode],
   );
   const totalSteps = activeSteps.length;
-  const currentStepKey = activeSteps[step];
-  const progress = totalSteps > 0 ? Math.round(((step + 1) / totalSteps) * 100) : 0;
+  // Guard against a persisted step that no longer fits the active mode.
+  const safeStep = totalSteps > 0 ? Math.min(Math.max(step, 0), totalSteps - 1) : 0;
+  const currentStepKey = activeSteps[safeStep];
+  const progress = totalSteps > 0 ? Math.round(((safeStep + 1) / totalSteps) * 100) : 0;
+
+  // Persist progress on every meaningful change.
+  // Skipped while showing the final dashboard or while previewing.
+  const skipPersist = useRef(false);
+  useEffect(() => {
+    if (!open || !mode || showDashboard || initialPreset) return;
+    if (skipPersist.current) {
+      skipPersist.current = false;
+      return;
+    }
+    saveTravelProgress(mode, safeStep, formData);
+  }, [open, mode, safeStep, formData, showDashboard, initialPreset]);
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -151,17 +183,37 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-      const response = await fetch(`${supabaseUrl}/functions/v1/travel-recommendations`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${supabaseKey}`,
-          "apikey": supabaseKey,
-        },
-        body: JSON.stringify({ formData, mode }),
-      });
+      if (!supabaseUrl || !supabaseKey) {
+        throw new Error(t("travelForm.errorGeneric"));
+      }
 
-      const data = await response.json();
+      // Cap the wait so a frozen edge function does not show an infinite spinner.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60_000);
+
+      let response: Response;
+      try {
+        response = await fetch(`${supabaseUrl}/functions/v1/travel-recommendations`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${supabaseKey}`,
+            "apikey": supabaseKey,
+          },
+          body: JSON.stringify({ formData, mode }),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
+
+      // Tolerate non-JSON 5xx bodies without crashing on `.json()`.
+      let data: any = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
 
       if (!response.ok) {
         throw new Error(data?.error || t("travelForm.errorServer", { status: response.status }));
@@ -175,6 +227,8 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
 
       setRecommendations(data.recommendations);
       onTripGenerated?.(formData, data.recommendations);
+      // Clear persisted draft only on a successful generation.
+      clearTravelProgress();
       // Incrément du compteur de générations (freemium)
       try {
         const { usePlanStore } = await import("@/stores/usePlanStore");
@@ -189,7 +243,10 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
       });
     } catch (err: any) {
       console.error("Generation error:", err);
-      const message = err?.message || t("travelForm.errorGeneric");
+      const isAbort = err?.name === "AbortError";
+      const message = isAbort
+        ? t("travelForm.errorTimeout")
+        : err?.message || t("travelForm.errorGeneric");
       setAiError(message);
       toast({
         title: t("travelForm.errorTitle"),
@@ -204,15 +261,31 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
 
   const handleClose = () => {
     onOpenChange(false);
+    // Keep persisted draft so the user can resume next time.
+    // Only the in-memory state is reset.
     setTimeout(() => {
-      setMode(initialPreset?.mode ?? null);
-      setStep(0);
       setShowDashboard(false);
       setRecommendations(null);
       setAiError(null);
-      setFormData(initialPreset ? { ...defaultFormData, ...initialPreset.data } : defaultFormData);
+      setPreviewing(false);
       setDirection(1);
+      // If a preset was provided, fully reset to it; otherwise leave draft as-is.
+      if (initialPreset) {
+        setMode(initialPreset.mode);
+        setStep(0);
+        skipPersist.current = true;
+        setFormData(safeMergeFormData(defaultFormData, initialPreset.data));
+      }
     }, 300);
+  };
+
+  const handleRestart = () => {
+    clearTravelProgress();
+    skipPersist.current = true;
+    setFormData(defaultFormData);
+    setStep(0);
+    setMode(null);
+    setResumedBanner(false);
   };
 
   const goNext = () => {
@@ -327,7 +400,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
                 {t("travelForm.changeMode")}
               </button>
               <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
-                {step + 1}/{totalSteps}
+                {safeStep + 1}/{totalSteps}
               </span>
             </div>
           </div>
@@ -353,9 +426,9 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
                 >
                   <div
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i < step
+                      i < safeStep
                         ? "bg-primary scale-100"
-                        : i === step
+                        : i === safeStep
                         ? "bg-primary scale-125 ring-2 ring-primary/30"
                         : "bg-muted-foreground/30 scale-75"
                     }`}
@@ -366,19 +439,71 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
           </div>
         </DialogHeader>
 
+        {resumedBanner && !previewing && (
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-xs">
+            <span className="text-foreground/80">
+              {t("travelForm.resumedBanner", { step: safeStep + 1, total: totalSteps })}
+            </span>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              className="h-7 text-xs"
+              onClick={handleRestart}
+            >
+              <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+              {t("travelForm.restart")}
+            </Button>
+          </div>
+        )}
+
         <AnimatePresence initial={false}>
           <motion.div
-            key={previewing ? "preview" : `${mode}-${step}`}
+            key={previewing ? "preview" : `${mode}-${safeStep}`}
             initial={{ opacity: 0, x: direction * 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="py-4 min-h-[200px]"
           >
-            {previewing ? (
-              <TripPreview data={formData} onResume={() => setPreviewing(false)} />
-            ) : (
-              currentStepKey && renderStep(currentStepKey)
-            )}
+            <ErrorBoundary
+              onReset={handleRestart}
+              fallback={(error, reset) => (
+                <div className="flex flex-col items-center justify-center gap-4 p-6 text-center">
+                  <div className="text-sm font-semibold text-destructive">
+                    {t("travelForm.stepCrash")}
+                  </div>
+                  <p className="text-xs text-muted-foreground max-w-md">
+                    {t("travelForm.stepCrashHint")}
+                  </p>
+                  <p className="text-[11px] font-mono text-muted-foreground/70 break-all">
+                    {error.message}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        if (safeStep > 0) setStep((s) => Math.max(0, s - 1));
+                        reset();
+                      }}
+                    >
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      {t("travelForm.back")}
+                    </Button>
+                    <Button size="sm" onClick={reset}>
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      {t("errorBoundary.retry")}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            >
+              {previewing ? (
+                <TripPreview data={formData} onResume={() => setPreviewing(false)} />
+              ) : (
+                currentStepKey && renderStep(currentStepKey)
+              )}
+            </ErrorBoundary>
           </motion.div>
         </AnimatePresence>
 
@@ -386,7 +511,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
           <Button
             variant="ghost"
             onClick={previewing ? () => setPreviewing(false) : goPrev}
-            disabled={!previewing && step === 0}
+            disabled={!previewing && safeStep === 0}
             className="text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -394,7 +519,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
           </Button>
 
           <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-            {step === totalSteps - 1 && !previewing && (
+            {safeStep === totalSteps - 1 && !previewing && (
               <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3 text-primary" /> {t("travelForm.lastStep")}
               </span>
@@ -419,7 +544,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             )}
-            {!previewing && step === totalSteps - 1 && (
+            {!previewing && safeStep === totalSteps - 1 && (
               <Button
                 onClick={handleGenerate}
                 disabled={generating}

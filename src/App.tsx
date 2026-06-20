@@ -32,6 +32,7 @@ import Legal from "./pages/Legal.tsx";
 import Trust from "./pages/Trust.tsx";
 import About from "./pages/About.tsx";
 import GlobalPipChat from "./components/shared/GlobalPipChat";
+import ErrorBoundary from "./components/shared/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
@@ -42,8 +43,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
+          <ErrorBoundary showHomeLink>
+            <Routes>
+              <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/guide-budget" element={<GuideBudget />} />
@@ -81,8 +83,9 @@ const App = () => (
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-          <GlobalPipChat />
+            </Routes>
+            <GlobalPipChat />
+          </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
