@@ -9,6 +9,7 @@ import type { Place } from "@/hooks/useDiscover";
 import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { toast } from "sonner";
 import ReviewsSection from "./ReviewsSection";
+import RatingsSection from "./RatingsSection";
 import { Separator } from "@/components/ui/separator";
 import AddToItineraryDialog from "./AddToItineraryDialog";
 
@@ -92,6 +93,8 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
               {t("discoverComp.drawer.addToItinerary")}
             </Button>
 
+            <Separator className="my-2" />
+            <RatingsSection placeId={place.id} />
             <Separator className="my-2" />
             <ReviewsSection placeId={place.id} />
           </div>

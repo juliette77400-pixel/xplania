@@ -1340,6 +1340,47 @@ export type Database = {
         }
         Relationships: []
       }
+      place_ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          place_id: string
+          rating: number
+          tags: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          place_id: string
+          rating: number
+          tags?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          place_id?: string
+          rating?: number
+          tags?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_ratings_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       place_reviews: {
         Row: {
           comment: string | null
