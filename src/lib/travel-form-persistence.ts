@@ -61,24 +61,26 @@ export const clearTravelProgress = () => {
  * guaranteeing every array/string/number field is present so consumers can
  * safely call `.includes()`, `.length`, arithmetic, etc. without crashing.
  */
-export const safeMergeFormData = <T extends Record<string, unknown>>(
+export const safeMergeFormData = <T>(
   defaults: T,
   partial: Partial<T> | null | undefined,
 ): T => {
-  if (!partial) return { ...defaults };
-  const result: any = { ...defaults };
-  for (const key of Object.keys(defaults)) {
-    const def = (defaults as any)[key];
-    const val = (partial as any)[key];
-    if (val === undefined || val === null) continue;
-    if (Array.isArray(def)) {
-      result[key] = Array.isArray(val) ? val : def;
-    } else if (typeof def === "number") {
-      result[key] = typeof val === "number" && Number.isFinite(val) ? val : def;
-    } else if (typeof def === "string") {
-      result[key] = typeof val === "string" ? val : def;
+  if (!partial) return { ...(defaults as any) };
+  const def = defaults as any;
+  const part = partial as any;
+  const result: any = { ...def };
+  for (const key of Object.keys(def)) {
+    const d = def[key];
+    const v = part[key];
+    if (v === undefined || v === null) continue;
+    if (Array.isArray(d)) {
+      result[key] = Array.isArray(v) ? v : d;
+    } else if (typeof d === "number") {
+      result[key] = typeof v === "number" && Number.isFinite(v) ? v : d;
+    } else if (typeof d === "string") {
+      result[key] = typeof v === "string" ? v : d;
     } else {
-      result[key] = val;
+      result[key] = v;
     }
   }
   return result as T;
