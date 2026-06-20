@@ -29,6 +29,7 @@ import { formatDayLabel } from "@/lib/journal-utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import CarnetOnboardingChat from "@/components/journal/CarnetOnboardingChat";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share";
 
