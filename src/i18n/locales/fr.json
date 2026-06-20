@@ -18,6 +18,12 @@
     "retry": "Réessayer",
     "delete": "Supprimer"
   },
+  "errorBoundary": {
+    "title": "Une erreur est survenue",
+    "subtitle": "On a évité un écran blanc. Tu peux réessayer — tes données saisies sont préservées quand c'est possible.",
+    "retry": "Réessayer",
+    "home": "Retour à l'accueil"
+  },
   "notifBell": {
     "aria": "Notifications",
     "title": "Notifications",
