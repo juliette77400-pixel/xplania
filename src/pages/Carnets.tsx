@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BookOpen, Loader2, ArrowLeft } from "lucide-react";
+import { BookOpen, ArrowLeft } from "lucide-react";
 import { useTrips } from "@/hooks/useTrips";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import QuickJump from "@/components/shared/QuickJump";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 import NotebookCard from "@/components/journal/NotebookCard";
 import TripActionsMenu from "@/components/shared/TripActionsMenu";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Carnets = () => {
   const { user, loading: authLoading } = useAuth();
@@ -48,7 +49,11 @@ const Carnets = () => {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" aria-busy="true" aria-label={t("common.loading")}>
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <Skeleton key={i} className="h-56 rounded-2xl" />
+            ))}
+          </div>
         ) : trips.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground mb-4">{t("carnets.empty")}</p>

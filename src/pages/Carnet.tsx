@@ -29,6 +29,7 @@ import { formatDayLabel } from "@/lib/journal-utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import CarnetOnboardingChat from "@/components/journal/CarnetOnboardingChat";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share";
 
@@ -87,8 +88,24 @@ const Carnet = () => {
   if (!user) return <Navigate to="/auth" replace />;
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background" aria-busy="true" aria-label={t("common.loading")}>
+        <div className="container mx-auto px-4 py-6 sm:py-10 max-w-5xl space-y-6">
+          <div className="flex items-center justify-between gap-3">
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-6 w-32" />
+          </div>
+          <Skeleton className="h-48 sm:h-64 w-full rounded-2xl" />
+          <div className="flex gap-2 overflow-hidden">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-9 w-24 rounded-full shrink-0" />
+            ))}
+          </div>
+          <div className="space-y-3">
+            <Skeleton className="h-32 w-full rounded-2xl" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
+          </div>
+        </div>
       </div>
     );
   }

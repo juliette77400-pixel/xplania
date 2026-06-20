@@ -17,6 +17,7 @@ import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { useNearbyAlerts } from "@/hooks/useNearbyAlerts";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Spec slug → internal Place.category (from src/lib/discover.ts)
 const SLUG_TO_CATS: Record<DiscoverEntrySlug, string[]> = {
@@ -149,7 +150,18 @@ const Discover = () => {
 
           <TabsContent value="feed" className="space-y-8 pt-6">
             {loading && filteredPlaces.length === 0 && (
-              <div className="flex items-center justify-center gap-2 py-16 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" />{t("discoverPage.loadingNearby")}</div>
+              <div className="space-y-6" aria-busy="true" aria-label={t("discoverPage.loadingNearby")}>
+                {[0, 1, 2].map((row) => (
+                  <div key={row} className="space-y-3">
+                    <Skeleton className="h-5 w-48" />
+                    <div className="flex gap-3 overflow-hidden">
+                      {[0, 1, 2, 3].map((i) => (
+                        <Skeleton key={i} className="h-44 w-60 sm:w-64 rounded-2xl shrink-0" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
             {!userPos && !loading && (
               <div className="rounded-2xl border border-border bg-card/40 p-8 text-center text-sm text-muted-foreground">
