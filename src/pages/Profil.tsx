@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LogOut, Save, User as UserIcon, Mail, Loader2 } from "lucide-react";
+import { LogOut, Save, User as UserIcon, Mail, Loader2, Settings as SettingsIcon, BookOpen, CalendarDays, ArrowRight } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,27 +13,40 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ProfileStats from "@/components/profil/ProfileStats";
-import { Link } from "react-router-dom";
-import { Settings as SettingsIcon } from "lucide-react";
+import BadgeShowcase from "@/components/profil/BadgeShowcase";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [displayName, setDisplayName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [memberSince, setMemberSince] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!user) return;
     supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle()
-      .then(({ data }) => {
-        setDisplayName(data?.display_name || "");
-        setAvatarUrl(data?.avatar_url || "");
+      .then(({ data, error }) => {
+        if (error) {
+          setLoadError(true);
+        } else {
+          setDisplayName(data?.display_name || "");
+          setAvatarUrl(data?.avatar_url || "");
+          setMemberSince(data?.created_at || user.created_at || null);
+        }
         setLoading(false);
       });
   }, [user]);
+
+  const formattedMemberSince = memberSince
+    ? new Date(memberSince).toLocaleDateString(i18n.language?.startsWith("fr") ? "fr-FR" : "en-US", {
+        month: "long",
+        year: "numeric",
+      })
+    : null;
 
   const handleSave = async () => {
     if (!user) return;
