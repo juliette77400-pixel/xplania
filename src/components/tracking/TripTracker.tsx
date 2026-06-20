@@ -17,6 +17,9 @@ import TrackingControls from "./TrackingControls";
 import LiveWeatherBadge from "./LiveWeatherBadge";
 import TodayFocus from "./TodayFocus";
 import ShareTripDialog from "./ShareTripDialog";
+import TripParamsCard from "./TripParamsCard";
+import BadgesSummary from "./BadgesSummary";
+import { useLiveTrip } from "@/hooks/useLiveTrip";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -36,6 +39,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
   const { user } = useAuth();
   const tracking = useTracking(tripId);
   const { tracking: trip, activities, positions } = tracking;
+  const { trip: liveTrip } = useLiveTrip(tripId);
   const { journal, days, refetch: refetchJournal } = useJournal(tripId);
   const [filter, setFilter] = useState<string>("all");
   const [showPois, setShowPois] = useState(true);
@@ -227,6 +231,13 @@ const TripTracker = ({ tripId, destination }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* B5 — Centralized live trip params */}
+      <TripParamsCard trip={liveTrip} />
+
+      {/* B6 — Badges condensed summary */}
+      <BadgesSummary tripId={tripId} />
+
 
       {geo.error && (
         <div className="rounded-xl p-3 bg-amber-500/10 text-amber-600 text-sm border border-amber-500/30">

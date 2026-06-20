@@ -1682,6 +1682,21 @@
     "km": {
       "traveled": "{{km}} km parcourus",
       "remaining": "{{km}} km restants"
+    },
+    "params": {
+      "title": "Paramètres du voyage",
+      "live": "Mise à jour automatique",
+      "destination": "Destination",
+      "dates": "Dates",
+      "transport": "Transport",
+      "budget": "Budget",
+      "travelers": "Voyageurs"
+    },
+    "badges": {
+      "title": "Mes badges",
+      "viewAll": "Tout voir",
+      "unlocked": "débloqués",
+      "empty": "Aucun badge pour l'instant — explore pour en débloquer."
     }
   },
   "suiviPip": {
