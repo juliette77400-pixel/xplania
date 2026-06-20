@@ -4249,5 +4249,29 @@
       "subtitle": "Démarre ton premier voyage Xplania en 2 minutes. Gratuit pendant la bêta.",
       "cta": "Commence ton voyage"
     }
+  },
+  "collapsible": {
+    "expand": "Déplier",
+    "collapse": "Replier",
+    "valise": {
+      "activities": "Affaires par activité",
+      "activitiesSub": "Ajoute des objets selon ce que tu vas faire",
+      "cultural": "Codes culturels & conseils locaux",
+      "culturalSub": "Tenue, gestes et habitudes à connaître",
+      "outfits": "Tenues recommandées",
+      "outfitsSub": "Suggestions adaptées à ton voyage",
+      "summary": "Récap & statistiques de ta valise",
+      "summarySub": "Vue d'ensemble par catégorie"
+    },
+    "budget": {
+      "charts": "Graphiques & répartition",
+      "chartsSub": "Visualise ton budget en un coup d'œil",
+      "alerts": "Alertes & bons plans",
+      "alertsSub": "Conseils locaux pour éviter les pièges",
+      "tips": "Astuces d'économie IA",
+      "tipsSub": "Comment économiser sur place",
+      "currency": "Convertisseur de devise",
+      "currencySub": "Calcule tes dépenses dans ta monnaie"
+    }
   }
 }
