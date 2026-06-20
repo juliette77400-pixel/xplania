@@ -9,6 +9,7 @@ import type { Place } from "@/hooks/useDiscover";
 import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { toast } from "sonner";
 import ReviewsSection from "./ReviewsSection";
+import RatingsSection from "./RatingsSection";
 import { Separator } from "@/components/ui/separator";
 import AddToItineraryDialog from "./AddToItineraryDialog";
 
