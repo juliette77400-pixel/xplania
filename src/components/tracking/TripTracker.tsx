@@ -232,6 +232,13 @@ const TripTracker = ({ tripId, destination }: Props) => {
         </div>
       </div>
 
+      {/* B5 — Centralized live trip params */}
+      <TripParamsCard trip={liveTrip} />
+
+      {/* B6 — Badges condensed summary */}
+      <BadgesSummary tripId={tripId} />
+
+
       {geo.error && (
         <div className="rounded-xl p-3 bg-amber-500/10 text-amber-600 text-sm border border-amber-500/30">
           ⚠️ {geo.error}
