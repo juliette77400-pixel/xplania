@@ -8,6 +8,27 @@ interface Props {
   legalKey?: LegalKey;
 }
 
+// Linkify URLs (http/https) inside translated body text. Keeps whitespace via parent <p whitespace-pre-line>.
+const URL_REGEX = /(https?:\/\/[^\s)]+)/g;
+const renderBody = (text: string) => {
+  const parts = text.split(URL_REGEX);
+  return parts.map((part, i) =>
+    /^https?:\/\//.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-primary hover:underline break-words"
+      >
+        {part}
+      </a>
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  );
+};
+
 const Legal = ({ legalKey }: Props) => {
   const { type } = useParams<{ type: string }>();
   const { t, i18n } = useTranslation();
@@ -74,7 +95,7 @@ const Legal = ({ legalKey }: Props) => {
             {sections.map((s, i) => (
               <section key={i}>
                 <h2 className="text-lg font-semibold text-foreground mb-2">{s.heading}</h2>
-                <p className="text-muted-foreground whitespace-pre-line">{s.body}</p>
+                <p className="text-muted-foreground whitespace-pre-line">{renderBody(s.body)}</p>
               </section>
             ))}
           </div>
