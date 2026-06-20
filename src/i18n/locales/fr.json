@@ -253,13 +253,13 @@
   },
   "hero": {
     "badge": "Bêta Privée — Accès Exclusif",
-    "titleLine1": "Voyagez sereinement,",
-    "titleLine2": "l'IA s'occupe du reste",
-    "subtitle": "Xplania est votre copilote de voyage intelligent. Budget, visas, bagages : toute la préparation centralisée en un seul endroit.",
-    "ctaCreate": "Créer mon voyage gratuitement",
+    "titleLine1": "Le premier compagnon IA",
+    "titleLine2": "dédié aux voyageurs modernes",
+    "subtitle": "Centralise, anticipe et accompagne chaque étape de ton voyage. Zéro friction, 100 % personnalisé.",
+    "ctaCreate": "Commence ton voyage",
     "ctaDemo": "Voir un exemple (Lisbonne)",
     "ctaDiscover": "Découvrir les fonctionnalités",
-    "forWho": "Pensé pour les voyageurs curieux qui veulent + qu'un Google Maps : préparer, vivre et raconter chaque étape.",
+    "forWho": "Pensé pour les jeunes voyageurs et les digital nomads — un guide de poche qui te suit avant, pendant et après.",
     "toolsIntro": "Bêta gratuite —",
     "toolsCount": "8 outils",
     "toolsAvail": "déjà disponibles pour préparer et vivre ton voyage :",
@@ -2851,8 +2851,19 @@
       "validated": "{{n}} validés",
       "pending": "{{n}} en attente",
       "empty": "Aucun badge dans cette catégorie.",
+      "emptyUnlocked": "Tu n'as pas encore débloqué de badge. Commence une aventure !",
+      "emptyInProgress": "Aucun badge en cours de validation.",
       "noPrefsTitle": "Aucune catégorie sélectionnée",
-      "noPrefsDesc": "Choisis tes centres d'intérêt dans ton profil pour personnaliser ta collection. Pour l'instant, tu vois tous les badges."
+      "noPrefsDesc": "Choisis tes centres d'intérêt dans ton profil pour personnaliser ta collection. Pour l'instant, tu vois tous les badges.",
+      "progressLabel": "{{unlocked}} / {{total}} badges débloqués",
+      "tabUnlocked": "Débloqués",
+      "tabInProgress": "En cours",
+      "tabAll": "Tous",
+      "sectionUnlocked": "Débloqués",
+      "sectionInProgress": "En cours de validation",
+      "sectionLocked": "À débloquer",
+      "catProgress": "{{unlocked}} / {{total}} débloqués",
+      "showMore": "Voir plus ({{remaining}})"
     },
     "claim": {
       "chooseProof": "Comment veux-tu prouver ta mission ?",
@@ -4196,6 +4207,47 @@
         "confirmCta": "Supprimer définitivement",
         "success": "Compte supprimé. À bientôt."
       }
+    }
+  },
+  "home": {
+    "dualAudience": {
+      "kicker": "Pour qui ?",
+      "title": "Deux profils, un même compagnon",
+      "youngTitle": "Jeunes voyageurs débutants",
+      "youngText": "Tu n'as pas à tout gérer seul. Xplania te guide pas à pas, t'apaise et te rassure, du visa au carnet souvenir.",
+      "nomadTitle": "Digital nomads",
+      "nomadText": "Moins de temps perdu en logistique, plus de temps pour ce qui compte. Tout est centralisé, anticipé, prêt à partir."
+    },
+    "journey": {
+      "kicker": "De A à Z",
+      "title": "Avant, pendant, après — on reste avec toi",
+      "beforeTitle": "Avant",
+      "beforeText": "Visa, budget, valise, itinéraire personnalisé — tout est prêt avant le départ.",
+      "duringTitle": "Pendant",
+      "duringText": "Guide interculturel, suivi en temps réel, recommandations contextuelles au fil du voyage.",
+      "afterTitle": "Après",
+      "afterText": "Carnet de voyage, badges Globe Trotter, souvenirs et retour d'expérience."
+    },
+    "differentiation": {
+      "kicker": "Notre différence",
+      "tagline": "ChatGPT génère. Xplania accompagne.",
+      "point1Title": "Un suivi dans la durée",
+      "point1Text": "Pas qu'une réponse — une présence continue avant, pendant et après le voyage.",
+      "point2Title": "Une personnalisation contextuelle",
+      "point2Text": "Chaque conseil s'adapte à ta destination, ton style et tes émotions du moment.",
+      "point3Title": "Une structure claire",
+      "point3Text": "Trois étapes nettes pour ne plus rien improviser, ni rien oublier."
+    },
+    "credibility": {
+      "kicker": "Ils nous font confiance",
+      "label": "Lauréat Pépite France",
+      "text": "Xplania est soutenue par Pépite France et déjà testée par notre communauté Early Explorer.",
+      "cta": "Rejoindre la bêta"
+    },
+    "ctaFinal": {
+      "title": "Prêt à voyager autrement ?",
+      "subtitle": "Démarre ton premier voyage Xplania en 2 minutes. Gratuit pendant la bêta.",
+      "cta": "Commence ton voyage"
     }
   }
 }
