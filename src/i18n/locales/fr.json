@@ -4125,6 +4125,66 @@
         "unlinked": "Compte délié",
         "lastWarn": "Impossible de délier ta dernière méthode de connexion."
       }
+    },
+    "notif": {
+      "saved": "Préférence enregistrée",
+      "inApp": {
+        "title": "Notifications dans l'app",
+        "hint": "Choisis ce que tu veux voir apparaître dans la cloche."
+      },
+      "email": {
+        "title": "Emails",
+        "hint": "Les emails transactionnels (sécurité, voyage) sont toujours envoyés."
+      },
+      "push": {
+        "title": "Notifications navigateur",
+        "hint": "Reçois des notifications même quand Xplania n'est pas ouvert.",
+        "cta": "Activer",
+        "statusGranted": "Notifications actives",
+        "statusDenied": "Notifications bloquées dans ce navigateur",
+        "statusDefault": "Notifications désactivées",
+        "granted": "Notifications activées ✓",
+        "denied": "Permission refusée",
+        "unsupported": "Ce navigateur ne supporte pas les notifications."
+      },
+      "badgesValidated": {
+        "title": "Badges validés",
+        "hint": "Quand un de tes badges est validé par un modérateur."
+      },
+      "badgesRejected": {
+        "title": "Réclamations rejetées",
+        "hint": "Quand une preuve de badge est refusée, avec le motif."
+      },
+      "tripAlerts": {
+        "title": "Alertes voyage",
+        "hint": "Météo, sécurité et événements pour tes voyages en cours."
+      },
+      "weeklyDigest": {
+        "title": "Récap hebdomadaire",
+        "hint": "Un email chaque semaine avec tes badges et tes stats."
+      },
+      "marketing": {
+        "title": "Actualités Xplania",
+        "hint": "Nouveautés produit et conseils voyage. Tu peux te désinscrire à tout moment."
+      }
+    },
+    "data": {
+      "export": {
+        "title": "Exporter mes données",
+        "hint": "Télécharge l'ensemble de tes données personnelles au format JSON, conformément au RGPD.",
+        "cta": "Télécharger mon export",
+        "success": "Export téléchargé ✓"
+      },
+      "delete": {
+        "title": "Supprimer mon compte",
+        "hint": "Cette action est définitive. Ton compte, tes voyages, tes badges et tes carnets seront supprimés. Tu peux d'abord exporter tes données ci-dessus.",
+        "cta": "Supprimer mon compte",
+        "confirmTitle": "Supprimer définitivement ton compte ?",
+        "confirmDesc": "Cette action est irréversible. Toutes tes données seront supprimées immédiatement.",
+        "typeToConfirm": "Tape \"{{word}}\" pour confirmer",
+        "confirmCta": "Supprimer définitivement",
+        "success": "Compte supprimé. À bientôt."
+      }
     }
   }
 }

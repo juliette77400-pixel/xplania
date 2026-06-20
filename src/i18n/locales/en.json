@@ -4125,6 +4125,66 @@
         "unlinked": "Account unlinked",
         "lastWarn": "You can't unlink your last sign-in method."
       }
+    },
+    "notif": {
+      "saved": "Preference saved",
+      "inApp": {
+        "title": "In-app notifications",
+        "hint": "Pick what shows up in the bell."
+      },
+      "email": {
+        "title": "Emails",
+        "hint": "Transactional emails (security, trip alerts) are always sent."
+      },
+      "push": {
+        "title": "Browser notifications",
+        "hint": "Get notified even when Xplania isn't open.",
+        "cta": "Enable",
+        "statusGranted": "Notifications enabled",
+        "statusDenied": "Notifications blocked in this browser",
+        "statusDefault": "Notifications disabled",
+        "granted": "Notifications enabled ✓",
+        "denied": "Permission denied",
+        "unsupported": "This browser does not support notifications."
+      },
+      "badgesValidated": {
+        "title": "Validated badges",
+        "hint": "When one of your badges is validated by a moderator."
+      },
+      "badgesRejected": {
+        "title": "Rejected claims",
+        "hint": "When a badge proof is rejected, with the reason."
+      },
+      "tripAlerts": {
+        "title": "Trip alerts",
+        "hint": "Weather, safety and events for your ongoing trips."
+      },
+      "weeklyDigest": {
+        "title": "Weekly digest",
+        "hint": "A weekly email with your badges and stats."
+      },
+      "marketing": {
+        "title": "Xplania updates",
+        "hint": "Product news and travel tips. You can unsubscribe anytime."
+      }
+    },
+    "data": {
+      "export": {
+        "title": "Export my data",
+        "hint": "Download all of your personal data as JSON, in line with GDPR.",
+        "cta": "Download my export",
+        "success": "Export downloaded ✓"
+      },
+      "delete": {
+        "title": "Delete my account",
+        "hint": "This action is permanent. Your account, trips, badges and journals will be deleted. You can export your data above first.",
+        "cta": "Delete my account",
+        "confirmTitle": "Permanently delete your account?",
+        "confirmDesc": "This action is irreversible. All your data will be deleted immediately.",
+        "typeToConfirm": "Type \"{{word}}\" to confirm",
+        "confirmCta": "Delete permanently",
+        "success": "Account deleted. See you."
+      }
     }
   }
 }
