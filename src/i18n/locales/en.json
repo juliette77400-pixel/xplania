@@ -1202,6 +1202,11 @@
     "errorTitle": "Generation error",
     "errorServer": "Server error ({{status}})",
     "errorNoRecs": "No recommendations received",
+    "errorTimeout": "Generation took too long. Your answers are saved — try again in a moment.",
+    "resumedBanner": "Resumed at step {{step}}/{{total}} — your previous answers are restored.",
+    "restart": "Start over",
+    "stepCrash": "This step ran into a problem",
+    "stepCrashHint": "Your answers are saved. Try again or go back to the previous step.",
     "successTitle": "✨ Travel plan generated!",
     "successDesc": "Your recommendations for {{destination}} are ready.",
     "steps": {
