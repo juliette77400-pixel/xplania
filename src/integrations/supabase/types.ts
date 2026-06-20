@@ -2117,6 +2117,20 @@ export type Database = {
         }
         Returns: boolean
       }
+      list_place_ratings_public: {
+        Args: { _place_id: string }
+        Returns: {
+          author_avatar_url: string
+          author_display_name: string
+          comment: string
+          created_at: string
+          id: string
+          place_id: string
+          rating: number
+          tags: string[]
+          updated_at: string
+        }[]
+      }
       owns_place_list: {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
