@@ -124,8 +124,9 @@ export function usePlaceReviews(placeId: string | null) {
             .from("place-reviews")
             .upload(path, photoFile, { upsert: false, contentType: photoFile.type });
           if (upErr) throw upErr;
-          const { data: pub } = supabase.storage.from("place-reviews").getPublicUrl(path);
-          photo_url = pub.publicUrl;
+          // store the storage path; signed URLs are generated on read
+          photo_url = path;
+
         }
         const { error } = await supabase.from("place_reviews").insert({
           user_id: user.id,
