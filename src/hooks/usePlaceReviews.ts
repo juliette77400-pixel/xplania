@@ -34,6 +34,17 @@ export function usePlaceReviews(placeId: string | null) {
       .limit(20);
     if (error) console.error(error);
     const list = (data as any[]) || [];
+    // Resolve signed URLs for photo paths (bucket is private; we only stored the storage path)
+    await Promise.all(
+      list.map(async (r) => {
+        if (r.photo_url && !r.photo_url.startsWith("http")) {
+          const { data: signed } = await supabase.storage
+            .from("place-reviews")
+            .createSignedUrl(r.photo_url, 60 * 60 * 24 * 7);
+          r.photo_url = signed?.signedUrl ?? null;
+        }
+      })
+    );
     // fetch author profiles
     const userIds = Array.from(new Set(list.map((r) => r.user_id)));
     if (userIds.length) {
@@ -47,6 +58,7 @@ export function usePlaceReviews(placeId: string | null) {
         r.author = { display_name: p?.display_name ?? null, avatar_url: p?.avatar_url ?? null };
       });
     }
+
     setReviews(list as PlaceReview[]);
     setLoading(false);
   }, [placeId]);
