@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      alert_subscriptions: {
+        Row: {
+          categories: string[]
+          channels: string[]
+          created_at: string
+          email: string | null
+          id: string
+          min_severity: string
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          categories?: string[]
+          channels?: string[]
+          created_at?: string
+          email?: string | null
+          id?: string
+          min_severity?: string
+          trip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          categories?: string[]
+          channels?: string[]
+          created_at?: string
+          email?: string | null
+          id?: string
+          min_severity?: string
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_subscriptions_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       discover_notifications: {
         Row: {
           body: string | null
@@ -1618,6 +1662,68 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "trip_activities_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trip_alerts: {
+        Row: {
+          category: string
+          created_at: string
+          dismissed: boolean
+          expires_at: string | null
+          id: string
+          link: string | null
+          message: string
+          metadata: Json
+          read_at: string | null
+          severity: string
+          source: string | null
+          source_url: string | null
+          title: string
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          dismissed?: boolean
+          expires_at?: string | null
+          id?: string
+          link?: string | null
+          message: string
+          metadata?: Json
+          read_at?: string | null
+          severity?: string
+          source?: string | null
+          source_url?: string | null
+          title: string
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          dismissed?: boolean
+          expires_at?: string | null
+          id?: string
+          link?: string | null
+          message?: string
+          metadata?: Json
+          read_at?: string | null
+          severity?: string
+          source?: string | null
+          source_url?: string | null
+          title?: string
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_alerts_trip_id_fkey"
             columns: ["trip_id"]
             isOneToOne: false
             referencedRelation: "trips"

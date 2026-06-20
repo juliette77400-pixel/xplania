@@ -19,6 +19,7 @@ import TodayFocus from "./TodayFocus";
 import ShareTripDialog from "./ShareTripDialog";
 import TripParamsCard from "./TripParamsCard";
 import BadgesSummary from "./BadgesSummary";
+import AlertsPanel from "./AlertsPanel";
 import { useLiveTrip } from "@/hooks/useLiveTrip";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
@@ -237,6 +238,16 @@ const TripTracker = ({ tripId, destination }: Props) => {
 
       {/* B6 — Badges condensed summary */}
       <BadgesSummary tripId={tripId} />
+
+      {/* C — Alerts panel (weather, security, events, activities, transport) */}
+      <AlertsPanel
+        tripId={tripId}
+        destination={destination}
+        lat={geo.position?.lat}
+        lng={geo.position?.lng}
+      />
+
+
 
 
       {geo.error && (
