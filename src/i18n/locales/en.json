@@ -2851,8 +2851,19 @@
       "validated": "{{n}} validated",
       "pending": "{{n}} pending",
       "empty": "No badges in this category.",
+      "emptyUnlocked": "You haven't unlocked any badge yet. Start an adventure!",
+      "emptyInProgress": "No badge currently under review.",
       "noPrefsTitle": "No category selected",
-      "noPrefsDesc": "Pick your interests in your profile to personalize your collection. For now, you see all badges."
+      "noPrefsDesc": "Pick your interests in your profile to personalize your collection. For now, you see all badges.",
+      "progressLabel": "{{unlocked}} / {{total}} badges unlocked",
+      "tabUnlocked": "Unlocked",
+      "tabInProgress": "In progress",
+      "tabAll": "All",
+      "sectionUnlocked": "Unlocked",
+      "sectionInProgress": "Under review",
+      "sectionLocked": "To unlock",
+      "catProgress": "{{unlocked}} / {{total}} unlocked",
+      "showMore": "Show more ({{remaining}})"
     },
     "claim": {
       "chooseProof": "How do you want to prove this mission?",

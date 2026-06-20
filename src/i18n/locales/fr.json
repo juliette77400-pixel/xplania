@@ -2851,8 +2851,19 @@
       "validated": "{{n}} validés",
       "pending": "{{n}} en attente",
       "empty": "Aucun badge dans cette catégorie.",
+      "emptyUnlocked": "Tu n'as pas encore débloqué de badge. Commence une aventure !",
+      "emptyInProgress": "Aucun badge en cours de validation.",
       "noPrefsTitle": "Aucune catégorie sélectionnée",
-      "noPrefsDesc": "Choisis tes centres d'intérêt dans ton profil pour personnaliser ta collection. Pour l'instant, tu vois tous les badges."
+      "noPrefsDesc": "Choisis tes centres d'intérêt dans ton profil pour personnaliser ta collection. Pour l'instant, tu vois tous les badges.",
+      "progressLabel": "{{unlocked}} / {{total}} badges débloqués",
+      "tabUnlocked": "Débloqués",
+      "tabInProgress": "En cours",
+      "tabAll": "Tous",
+      "sectionUnlocked": "Débloqués",
+      "sectionInProgress": "En cours de validation",
+      "sectionLocked": "À débloquer",
+      "catProgress": "{{unlocked}} / {{total}} débloqués",
+      "showMore": "Voir plus ({{remaining}})"
     },
     "claim": {
       "chooseProof": "Comment veux-tu prouver ta mission ?",
