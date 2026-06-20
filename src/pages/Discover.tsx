@@ -17,6 +17,7 @@ import { usePlaceLists } from "@/hooks/usePlaceLists";
 import { useNearbyAlerts } from "@/hooks/useNearbyAlerts";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Spec slug → internal Place.category (from src/lib/discover.ts)
 const SLUG_TO_CATS: Record<DiscoverEntrySlug, string[]> = {
