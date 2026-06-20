@@ -4208,5 +4208,46 @@
         "success": "Compte supprimé. À bientôt."
       }
     }
+  },
+  "home": {
+    "dualAudience": {
+      "kicker": "Pour qui ?",
+      "title": "Deux profils, un même compagnon",
+      "youngTitle": "Jeunes voyageurs débutants",
+      "youngText": "Tu n'as pas à tout gérer seul. Xplania te guide pas à pas, t'apaise et te rassure, du visa au carnet souvenir.",
+      "nomadTitle": "Digital nomads",
+      "nomadText": "Moins de temps perdu en logistique, plus de temps pour ce qui compte. Tout est centralisé, anticipé, prêt à partir."
+    },
+    "journey": {
+      "kicker": "De A à Z",
+      "title": "Avant, pendant, après — on reste avec toi",
+      "beforeTitle": "Avant",
+      "beforeText": "Visa, budget, valise, itinéraire personnalisé — tout est prêt avant le départ.",
+      "duringTitle": "Pendant",
+      "duringText": "Guide interculturel, suivi en temps réel, recommandations contextuelles au fil du voyage.",
+      "afterTitle": "Après",
+      "afterText": "Carnet de voyage, badges Globe Trotter, souvenirs et retour d'expérience."
+    },
+    "differentiation": {
+      "kicker": "Notre différence",
+      "tagline": "ChatGPT génère. Xplania accompagne.",
+      "point1Title": "Un suivi dans la durée",
+      "point1Text": "Pas qu'une réponse — une présence continue avant, pendant et après le voyage.",
+      "point2Title": "Une personnalisation contextuelle",
+      "point2Text": "Chaque conseil s'adapte à ta destination, ton style et tes émotions du moment.",
+      "point3Title": "Une structure claire",
+      "point3Text": "Trois étapes nettes pour ne plus rien improviser, ni rien oublier."
+    },
+    "credibility": {
+      "kicker": "Ils nous font confiance",
+      "label": "Lauréat Pépite France",
+      "text": "Xplania est soutenue par Pépite France et déjà testée par notre communauté Early Explorer.",
+      "cta": "Rejoindre la bêta"
+    },
+    "ctaFinal": {
+      "title": "Prêt à voyager autrement ?",
+      "subtitle": "Démarre ton premier voyage Xplania en 2 minutes. Gratuit pendant la bêta.",
+      "cta": "Commence ton voyage"
+    }
   }
 }

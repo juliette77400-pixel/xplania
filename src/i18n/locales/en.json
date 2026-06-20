@@ -4208,5 +4208,46 @@
         "success": "Account deleted. See you."
       }
     }
+  },
+  "home": {
+    "dualAudience": {
+      "kicker": "Who is it for?",
+      "title": "Two profiles, one companion",
+      "youngTitle": "Young first-time travelers",
+      "youngText": "You don't have to handle everything alone. Xplania guides you step by step, from visa to memory journal.",
+      "nomadTitle": "Digital nomads",
+      "nomadText": "Less time lost in logistics, more time for what matters. Everything centralized, anticipated, ready to go."
+    },
+    "journey": {
+      "kicker": "End to end",
+      "title": "Before, during, after — we stay with you",
+      "beforeTitle": "Before",
+      "beforeText": "Visa, budget, packing, personalized itinerary — all ready before departure.",
+      "duringTitle": "During",
+      "duringText": "Cross-cultural guide, real-time tracking, contextual recommendations all along the trip.",
+      "afterTitle": "After",
+      "afterText": "Travel journal, Globe Trotter badges, memories and feedback."
+    },
+    "differentiation": {
+      "kicker": "Our difference",
+      "tagline": "ChatGPT generates. Xplania accompanies.",
+      "point1Title": "Long-term support",
+      "point1Text": "Not just an answer — a continuous presence before, during and after the trip.",
+      "point2Title": "Contextual personalization",
+      "point2Text": "Every tip adapts to your destination, your style and your current mood.",
+      "point3Title": "A clear structure",
+      "point3Text": "Three clean stages so nothing is improvised and nothing is forgotten."
+    },
+    "credibility": {
+      "kicker": "They trust us",
+      "label": "Pépite France laureate",
+      "text": "Xplania is supported by Pépite France and already tested by our Early Explorer community.",
+      "cta": "Join the beta"
+    },
+    "ctaFinal": {
+      "title": "Ready to travel differently?",
+      "subtitle": "Start your first Xplania trip in 2 minutes. Free during the beta.",
+      "cta": "Start your trip"
+    }
   }
 }
