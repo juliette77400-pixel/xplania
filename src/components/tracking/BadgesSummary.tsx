@@ -67,7 +67,7 @@ const BadgesSummary = ({ tripId }: Props) => {
       cancelled = true;
       supabase.removeChannel(channel);
     };
-  }, [user, tripId]);
+  }, [user, tripId, isOnline]);
 
   return (
     <div className="rounded-2xl border border-border bg-gradient-to-br from-amber-500/5 via-card/60 to-primary/5 p-4">
