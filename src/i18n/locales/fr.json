@@ -1202,6 +1202,11 @@
     "errorTitle": "Erreur de génération",
     "errorServer": "Erreur serveur ({{status}})",
     "errorNoRecs": "Aucune recommandation reçue",
+    "errorTimeout": "La génération a pris trop de temps. Tes réponses sont sauvegardées — réessaie dans un instant.",
+    "resumedBanner": "Reprise à l'étape {{step}}/{{total}} — tes réponses précédentes sont restaurées.",
+    "restart": "Recommencer",
+    "stepCrash": "Cette étape a rencontré un problème",
+    "stepCrashHint": "Tes réponses sont sauvegardées. Réessaie ou reviens à l'étape précédente.",
     "successTitle": "✨ Plan de voyage généré !",
     "successDesc": "Vos recommandations pour {{destination}} sont prêtes.",
     "steps": {
