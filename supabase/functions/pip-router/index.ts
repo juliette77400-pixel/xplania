@@ -1,3 +1,4 @@
+import { requireAuth } from "../_shared/require-auth.ts";
 // Intelligent chatbot router: classifies user intent and returns a route or free-mode reply.
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -6,6 +7,9 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
+
 
   try {
     const { message, history = [], locale = "fr" } = await req.json();

@@ -1,3 +1,4 @@
+import { requireAuth } from "../_shared/require-auth.ts";
 // Sends a notification email to the Xplania team whenever someone joins
 // the premium waitlist. Uses Resend's onboarding sender (no domain needed).
 const corsHeaders = {
@@ -25,6 +26,9 @@ const escape = (v: unknown) =>
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
+
 
   try {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
