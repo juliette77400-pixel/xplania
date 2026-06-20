@@ -167,6 +167,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
               {unreadCount}
             </Badge>
           )}
+          {!isOnline && (
+            <Badge variant="outline" className="h-5 text-[10px] px-1.5 border-amber-500/40 text-amber-500">
+              {t("suiviAlerts.offlineBadge")}
+              {cachedAt && ` · ${new Date(cachedAt).toLocaleTimeString(locale === "en" ? "en" : "fr-FR", { hour: "2-digit", minute: "2-digit" })}`}
+            </Badge>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Button size="sm" variant="ghost" onClick={() => setSubOpen(true)} className="h-8 text-xs">
