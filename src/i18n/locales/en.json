@@ -419,6 +419,19 @@
   },
   "myDashboard": {
     "kicker": "My Xplania space",
+    "greetingSimple": "Hello",
+    "copilotKicker": "Your copilot today",
+    "nextTripTitle": "Your next trip at a glance",
+    "journeyTitle": "What would you like to do now?",
+    "journeyDesc": "Xplania adapts its capabilities to each moment of your journey.",
+    "progressTitle": "Your progress",
+    "progressDesc": "Missions and habits remain available without distracting from your trip.",
+    "phases": {
+      "prepare": { "title": "Prepare", "desc": "Budget, paperwork and packing tailored to the same trip." },
+      "explore": { "title": "Explore", "desc": "Places selected around your wishes, mood and context." },
+      "travel": { "title": "Travel", "desc": "Track the trip and find the right cues at the right time." },
+      "relive": { "title": "Relive", "desc": "Turn your steps and emotions into lasting memories." }
+    },
     "greeting": "Hi {{name}} 👋",
     "tripsActive_one": "You have {{count}} trip in progress.",
     "tripsActive_other": "You have {{count}} trips in progress.",

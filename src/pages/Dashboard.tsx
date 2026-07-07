@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Plus, MapPin, Calendar, Compass, Heart, Activity, Briefcase, BookOpen, Trophy, Sparkles, ArrowRight } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, Calendar, Compass, Luggage, MapPin, Plus, Sparkles } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import TripActionsMenu from "@/components/shared/TripActionsMenu";
 import StreakCard from "@/components/dashboard/StreakCard";
 import WeeklyMissionsCard from "@/components/dashboard/WeeklyMissionsCard";
 import PastTripsTrophies from "@/components/dashboard/PastTripsTrophies";
-import NextTripUtilitiesCard from "@/components/dashboard/NextTripUtilitiesCard"; // ✨ NEW (Tâche 4)
+import NextTripUtilitiesCard from "@/components/dashboard/NextTripUtilitiesCard";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -25,162 +25,41 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle()
-      .then(({ data }) => setProfile(data));
+    supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle().then(({ data }) => setProfile(data));
   }, [user]);
 
   const isFr = i18n.language.startsWith("fr");
   const dateLocale = isFr ? "fr-FR" : "en-US";
-  const fallbackName = isFr ? "voyageur" : "traveler";
-  const firstName = profile?.display_name?.split(" ")[0] || user?.email?.split("@")[0] || fallbackName;
-  const activeTrips = trips.filter((t) => {
-    if (!t.return_date) return true;
-    return new Date(t.return_date) >= new Date();
-  });
+  const firstName = profile?.display_name?.split(" ")[0] || user?.email?.split("@")[0] || (isFr ? "voyageur" : "traveler");
+  const activeTrips = trips.filter((trip) => !trip.return_date || new Date(trip.return_date) >= new Date());
 
-  const MODULES = [
-    { to: "/discover", label: t("appNav.discover"), icon: Compass, color: "from-cyan-500/20 to-blue-500/20", desc: t("myDashboard.modDiscoverDesc") },
-    { to: "/mood", label: t("appNav.mood"), icon: Heart, color: "from-pink-500/20 to-purple-500/20", desc: t("myDashboard.modMoodDesc") },
-    { to: "/suivi", label: t("appNav.tracking"), icon: Activity, color: "from-emerald-500/20 to-teal-500/20", desc: t("myDashboard.modTrackingDesc") },
-    { to: "/carnets", label: t("appNav.journal"), icon: BookOpen, color: "from-amber-500/20 to-orange-500/20", desc: t("myDashboard.modJournalDesc") },
-    { to: "/guide-valise", label: t("appNav.suitcase"), icon: Briefcase, color: "from-violet-500/20 to-fuchsia-500/20", desc: t("myDashboard.modValiseDesc") },
-    { to: "/gamification", label: t("appNav.badges"), icon: Trophy, color: "from-yellow-500/20 to-amber-500/20", desc: t("myDashboard.modBadgesDesc") },
+  const phases = [
+    { key: "prepare", icon: Luggage, title: t("myDashboard.phases.prepare.title"), desc: t("myDashboard.phases.prepare.desc"), primary: "/guide-budget", links: [[t("appNav.budget"), "/guide-budget"], [t("appNav.visa"), "/guide-visa"], [t("appNav.suitcase"), "/guide-valise"]] },
+    { key: "explore", icon: Compass, title: t("myDashboard.phases.explore.title"), desc: t("myDashboard.phases.explore.desc"), primary: "/discover", links: [[t("appNav.discover"), "/discover"], [t("appNav.mood"), "/mood"], [t("appNav.explore"), "/explore"]] },
+    { key: "travel", icon: Activity, title: t("myDashboard.phases.travel.title"), desc: t("myDashboard.phases.travel.desc"), primary: "/suivi", links: [[t("appNav.tracking"), "/suivi"], [t("appNav.badges"), "/gamification"]] },
+    { key: "relive", icon: BookOpen, title: t("myDashboard.phases.relive.title"), desc: t("myDashboard.phases.relive.desc"), primary: "/carnets", links: [[t("appNav.journal"), "/carnets"], [t("appNav.badges"), "/gamification"]] },
   ];
 
-  return (
-    <div className="min-h-screen bg-background">
-      <AppNavbar />
-      <div className="container mx-auto px-4 py-6 sm:py-10 space-y-8 max-w-6xl">
-        {/* Hero greeting */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-1">
-            <Sparkles className="inline w-3 h-3 mr-1" /> {t("myDashboard.kicker")}
-          </p>
-          <h1 className="text-2xl sm:text-4xl font-bold">
-            {t("myDashboard.greeting", { name: firstName }).split(firstName)[0]}
-            <span className="gradient-text">{firstName}</span>
-            {t("myDashboard.greeting", { name: firstName }).split(firstName)[1]}
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {activeTrips.length > 0
-              ? t("myDashboard.tripsActive", { count: activeTrips.length })
-              : t("myDashboard.noTripsCta")}
-          </p>
-        </motion.div>
+  return <div className="min-h-screen bg-background">
+    <AppNavbar />
+    <main className="container mx-auto max-w-6xl space-y-10 px-4 py-7 sm:py-12">
+      <motion.header initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><Sparkles className="mr-1 inline h-3.5 w-3.5" />{t("myDashboard.kicker")}</p><h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{t("myDashboard.greetingSimple")} <span className="gradient-text">{firstName}</span></h1><p className="mt-2 text-sm text-muted-foreground">{activeTrips.length ? t("myDashboard.tripsActive", {count:activeTrips.length}) : t("myDashboard.noTripsCta")}</p></div>
+        <Button asChild className="gradient-button h-11 rounded-xl px-5 font-bold text-primary-foreground"><Link to="/"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createTrip")}</Link></Button>
+      </motion.header>
 
-        {/* ✨ NEW (Tâche 4) — Carte récap prochain voyage (countdown + météo) */}
-        <NextTripUtilitiesCard trips={trips} />
+      <section aria-labelledby="next-trip-title"><div className="mb-4 flex items-center justify-between"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("myDashboard.copilotKicker")}</p><h2 id="next-trip-title" className="mt-1 text-xl font-bold sm:text-2xl">{t("myDashboard.nextTripTitle")}</h2></div></div><NextTripUtilitiesCard trips={trips} /></section>
 
-        {/* ✨ NEW (Tâche 3) — Engagement quotidien : streak + missions hebdo */}
-        <section className="grid md:grid-cols-2 gap-3">
-          <StreakCard />
-          <WeeklyMissionsCard />
-        </section>
+      <section aria-labelledby="journey-actions"><div className="mb-5 max-w-2xl"><h2 id="journey-actions" className="text-xl font-bold sm:text-2xl">{t("myDashboard.journeyTitle")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("myDashboard.journeyDesc")}</p></div><div className="grid gap-4 md:grid-cols-2">{phases.map((phase,index)=><motion.article key={phase.key} initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{delay:index*.07}} className="group rounded-2xl border border-border/70 bg-card/45 p-6 transition hover:border-primary/35"><div className="flex items-start gap-4"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10"><phase.icon className="h-5 w-5 text-primary" /></div><div className="min-w-0 flex-1"><div className="flex items-center justify-between gap-3"><h3 className="text-lg font-bold">{phase.title}</h3><Link to={phase.primary} aria-label={phase.title} className="rounded-lg p-2 text-primary transition hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><ArrowRight className="h-4 w-4" /></Link></div><p className="mt-1 text-sm leading-6 text-muted-foreground">{phase.desc}</p><div className="mt-4 flex flex-wrap gap-2">{phase.links.map(([label,to])=><Link key={`${label}-${to}`} to={to} className="rounded-lg border border-border bg-background/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/35 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">{label}</Link>)}</div></div></div></motion.article>)}</div></section>
 
-        {/* Voyages */}
-        <section className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">{t("myDashboard.myTrips")}</h2>
-            <Link to="/" className="text-xs text-primary hover:underline">{t("myDashboard.createTrip")}</Link>
-          </div>
+      <section className="space-y-4" aria-labelledby="my-trips-title"><div className="flex items-center justify-between"><h2 id="my-trips-title" className="text-xl font-bold sm:text-2xl">{t("myDashboard.myTrips")}</h2><Link to="/" className="rounded text-xs font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">{t("myDashboard.createTrip")}</Link></div>
+        {loading ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{[0,1,2].map(i=><Skeleton key={i} className="h-40 rounded-2xl" />)}</div> : trips.length===0 ? <Card className="border-dashed p-8 text-center sm:p-12"><div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10"><MapPin className="h-6 w-6 text-primary" /></div><h3 className="font-bold">{t("myDashboard.noTripsTitle")}</h3><p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{t("myDashboard.noTripsDesc")}</p><Button asChild className="gradient-button mt-5"><Link to="/"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createFirstTrip")}</Link></Button></Card> : <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{trips.slice(0,6).map(tr=><div key={tr.id} className="group relative"><Link to={`/carnet/${tr.id}`} className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><motion.div whileHover={{y:-3}} className="h-full rounded-2xl border border-border bg-card/50 p-5 transition-colors hover:border-primary/40"><div className="mb-4 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10"><Compass className="h-4 w-4 text-primary" /></div><h3 className="line-clamp-2 pr-7 font-bold">{tr.title||tr.destination||t("myDashboard.untitledTrip")}</h3>{tr.destination&&<p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3.5 w-3.5" />{tr.destination}</p>}{tr.departure_date&&<p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground"><Calendar className="h-3.5 w-3.5" />{new Date(tr.departure_date).toLocaleDateString(dateLocale)}{tr.duration&&<span>· {tr.duration}{isFr?"j":"d"}</span>}</p>}</motion.div></Link><div className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"><TripActionsMenu trip={tr} onChanged={()=>window.location.reload()} onDeleted={()=>removeTrip(tr.id)} /></div></div>)}</div>}
+      </section>
 
-          {loading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {[0, 1, 2].map((i) => <Skeleton key={i} className="h-32 rounded-2xl" />)}
-            </div>
-          ) : trips.length === 0 ? (
-            <Card className="p-8 text-center border-dashed">
-              <div className="text-5xl mb-3">✈️</div>
-              <h3 className="font-bold mb-1">{t("myDashboard.noTripsTitle")}</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {t("myDashboard.noTripsDesc")}
-              </p>
-              <Button asChild className="gradient-button">
-                <Link to="/"><Plus className="w-4 h-4 mr-2" /> {t("myDashboard.createFirstTrip")}</Link>
-              </Button>
-            </Card>
-          ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {trips.slice(0, 6).map((tr) => (
-                <div key={tr.id} className="relative group">
-                  <Link to={`/carnet/${tr.id}`}>
-                    <motion.div
-                      whileHover={{ y: -3 }}
-                      className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors h-full"
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="font-semibold text-sm line-clamp-2 pr-6">{tr.title || tr.destination || t("myDashboard.untitledTrip")}</h3>
-                        <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
-                      </div>
-                      {tr.destination && (
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                          <MapPin className="w-3 h-3" /> {tr.destination}
-                        </p>
-                      )}
-                      {tr.departure_date && (
-                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                          <Calendar className="w-3 h-3" /> {new Date(tr.departure_date).toLocaleDateString(dateLocale)}
-                          {tr.duration && <span> · {tr.duration}{isFr ? "j" : "d"}</span>}
-                        </p>
-                      )}
-                    </motion.div>
-                  </Link>
-                  {/* ✨ MODIFIED (Tâche 3) — menu d'actions complet (Modifier / Dupliquer / Supprimer) */}
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
-                    <TripActionsMenu
-                      trip={tr}
-                      onChanged={() => window.location.reload()}
-                      onDeleted={() => removeTrip(tr.id)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Modules */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold">{t("myDashboard.exploreModules")}</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {MODULES.map((m, i) => (
-              <motion.div
-                key={m.to}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <Link to={m.to}>
-                  <div className={`rounded-2xl border border-border bg-gradient-to-br ${m.color} p-4 hover:border-primary/40 transition-all hover:scale-[1.03] h-full`}>
-                    <m.icon className="w-5 h-5 text-primary mb-2" />
-                    <div className="font-semibold text-sm">{m.label}</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">{m.desc}</div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* ✨ NEW (Tâche 3) — Trophées des voyages terminés */}
-        <PastTripsTrophies trips={trips} />
-
-        <Card className="p-6 bg-gradient-to-br from-primary/10 via-card to-accent/10 border-primary/20">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div>
-              <h3 className="font-bold text-base mb-1">{t("myDashboard.ctaInspirationTitle")}</h3>
-              <p className="text-sm text-muted-foreground">{t("myDashboard.ctaInspirationDesc")}</p>
-            </div>
-            <Button asChild variant="outline">
-              <Link to="/mood"><Heart className="w-4 h-4 mr-2" /> {t("myDashboard.ctaInspirationBtn")} <ArrowRight className="w-4 h-4 ml-2" /></Link>
-            </Button>
-          </div>
-        </Card>
-      </div>
-      <QuickJump />
-    </div>
-  );
+      <section className="space-y-4" aria-labelledby="progress-title"><div><h2 id="progress-title" className="text-xl font-bold sm:text-2xl">{t("myDashboard.progressTitle")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("myDashboard.progressDesc")}</p></div><div className="grid gap-3 md:grid-cols-2"><StreakCard /><WeeklyMissionsCard /></div></section>
+      <PastTripsTrophies trips={trips} />
+    </main>
+    <QuickJump />
+  </div>;
 };
-
 export default Dashboard;
-
