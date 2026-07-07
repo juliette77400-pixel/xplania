@@ -11,7 +11,7 @@ const VisaDisclaimer = () => {
     <div
       role="note"
       aria-label={t("guideVisa.disclaimer.title")}
-      className="sticky top-0 z-30 sm:static border-l-4 border-amber-400 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-4 py-3 rounded-r-xl flex flex-col sm:flex-row sm:items-center gap-3 shadow-sm"
+      className="border border-amber-400/50 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-4 py-3 rounded-xl flex flex-col sm:flex-row sm:items-center gap-3"
     >
       <div className="flex items-start gap-2 flex-1">
         <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" aria-hidden />

@@ -481,6 +481,12 @@
   },
   "guideVisa": {
     "title": "Visa & Démarches Administratives",
+    "heroKicker": "Votre copilote vérifie les formalités",
+    "contextKicker": "Votre situation",
+    "contextHelp": "Le résultat dépend de votre destination et de votre nationalité.",
+    "resourcesKicker": "Pour aller plus loin",
+    "resourcesTitle": "Sources et repères pour préparer votre départ",
+    "resourcesHelp": "Retrouvez le processus, la santé, la sécurité et les informations pratiques après votre résultat.",
     "subtitle": "Les informations essentielles avant ton départ.",
     "checkBtn": "Vérifier mes besoins",
     "selectDestination": "Sélectionne ta destination",

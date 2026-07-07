@@ -481,6 +481,12 @@
   },
   "guideVisa": {
     "title": "Visa & Administrative Paperwork",
+    "heroKicker": "Your copilot checks the paperwork",
+    "contextKicker": "Your situation",
+    "contextHelp": "The result depends on your destination and nationality.",
+    "resourcesKicker": "Go further",
+    "resourcesTitle": "Sources and guidance for your departure",
+    "resourcesHelp": "Find the process, health, safety and practical information after your result.",
     "subtitle": "The essential info before you leave.",
     "checkBtn": "Check my requirements",
     "selectDestination": "Select your destination",

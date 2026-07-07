@@ -264,49 +264,20 @@ const GuideVisaPage = () => {
         <VisaDisclaimer />
 
         {/* Hero */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-8">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", bounce: 0.4 }}
-            className="w-20 h-20 mx-auto mb-5 rounded-2xl bg-secondary/20 flex items-center justify-center relative"
-          >
-            <FileText className="w-10 h-10 text-secondary" />
-            <motion.div
-              className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </motion.div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-foreground mb-2">
-            <span className="gradient-text">{t("guideVisa.title")}</span>
-          </h1>
-          <p className="text-muted-foreground">{t("guideVisa.subtitle")}</p>
-
-          {!hasGenerated && !isGenerating && (
-            <motion.button
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={runGeneration}
-              disabled={!hasValidDestination}
-              className="mt-6 px-8 py-3.5 rounded-2xl font-bold text-sm bg-gradient-to-r from-secondary to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {t("guideVisa.checkBtn")}
-            </motion.button>
-          )}
-        </motion.div>
+        <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-10">
+          <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><ShieldCheck className="h-4 w-4" />{t("guideVisa.heroKicker")}</p>
+          <h1 className="max-w-2xl text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">{t("guideVisa.title")}</h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">{t("guideVisa.subtitle")}</p>
+        </motion.header>
 
         {/* Destination selector */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-card rounded-2xl p-6"
+          className="rounded-2xl border border-border/70 bg-card/45 p-6"
         >
-          <h2 className="text-base font-bold text-foreground mb-5 text-center">{t("guideVisa.selectDestination")}</h2>
+          <div className="mb-5"><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("guideVisa.contextKicker")}</p><h2 className="mt-1 text-xl font-bold text-foreground">{t("guideVisa.selectDestination")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("guideVisa.contextHelp")}</p></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-secondary flex items-center gap-1.5">
@@ -382,26 +353,6 @@ const GuideVisaPage = () => {
             {isGenerating ? t("guideVisa.analyzing") : t("guideVisa.analyze")}
           </motion.button>
         </motion.div>
-
-        {/* Visa process stepper */}
-        <VisaProcessStepper destination={destinationName} onAskPip={askPip} />
-
-        {/* Currency converter */}
-        <section className="glass-card rounded-2xl p-6 space-y-3">
-          <h2 className="text-lg font-bold text-foreground">{t("guideVisa.currencySection.title")}</h2>
-          <CurrencyConverter destination={destinationName} />
-          <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
-        </section>
-
-        {/* Enriched vaccines guide (official sources) */}
-        <VaccinesGuide destination={hasValidDestination ? destinationName : undefined} />
-
-        {/* Enriched safety guide (France-Diplomatie levels, Ariane, emergencies) */}
-        <SafetyGuide destination={hasValidDestination ? destinationName : undefined} />
-
-
-
-
 
         {/* Generation animation */}
         <AnimatePresence>
@@ -736,6 +687,20 @@ const GuideVisaPage = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {hasGenerated && !isGenerating && aiResult && (
+          <section className="space-y-6 border-t border-border/60 pt-8" aria-labelledby="visa-resources-title">
+            <div><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("guideVisa.resourcesKicker")}</p><h2 id="visa-resources-title" className="mt-1 text-2xl font-bold">{t("guideVisa.resourcesTitle")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("guideVisa.resourcesHelp")}</p></div>
+            <VisaProcessStepper destination={destinationName} onAskPip={askPip} />
+            <VaccinesGuide destination={destinationName} />
+            <SafetyGuide destination={destinationName} />
+            <section className="glass-card rounded-2xl p-6 space-y-3" id="currency-converter">
+              <h2 className="text-lg font-bold text-foreground">{t("guideVisa.currencySection.title")}</h2>
+              <CurrencyConverter destination={destinationName} />
+              <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
+            </section>
+          </section>
+        )}
       </div>
       <QuickJump />
       <VisaPipChat
