@@ -1,73 +1,66 @@
-# Welcome to your Lovable project
+# Xplania
 
-## Project info
+Xplania est un copilote de voyage intelligent qui accompagne le voyageur avant, pendant et après son séjour.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Dépôt et synchronisation
 
-## How can I edit this code?
+- Dépôt GitHub : https://github.com/juliette77400-pixel/xplania
+- Branche principale : `main`
+- Gestionnaire de dépendances : Bun
+- Backend : Supabase, projet `alhhvpqtskymltokcgov`
+- Interface : React, TypeScript, Vite, Tailwind CSS et shadcn/ui
 
-There are several ways of editing your application.
+Le projet Lovable doit être connecté à ce dépôt GitHub et à la branche `main`. Un push sur `main` rend les changements récupérables par Lovable. Les fichiers `.lovable/`, `supabase/`, `bun.lock` et la configuration Vite doivent rester versionnés.
 
-**Use Lovable**
+## Installation locale
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Prérequis : Bun 1.3.14 ou Node.js 20 minimum.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+git clone https://github.com/juliette77400-pixel/xplania.git
+cd xplania
+cp .env.example .env
+bun install --frozen-lockfile
+bun run dev
 ```
 
-**Edit a file directly in GitHub**
+## Variables d'environnement
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Variables publiques utilisées par Vite :
 
-**Use GitHub Codespaces**
+| Variable | Usage |
+| --- | --- |
+| `VITE_SUPABASE_PROJECT_ID` | Identifiant du projet Supabase |
+| `VITE_SUPABASE_URL` | URL publique Supabase |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Clé publique destinée au navigateur |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Copier `.env.example` vers `.env`, puis renseigner les valeurs locales. Le fichier `.env` ne doit jamais être commité.
 
-## What technologies are used for this project?
+Secrets attendus par certaines Edge Functions Supabase :
 
-This project is built with:
+- `LOVABLE_API_KEY`
+- `OPENWEATHER_API_KEY`
+- `RESEND_API_KEY`
+- `SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_URL`
+- `UNSPLASH_ACCESS_KEY`
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Ces secrets doivent être configurés dans Lovable Cloud ou Supabase Secrets. Ils ne doivent jamais être placés dans `.env.example`, dans une variable `VITE_*` ou dans Git.
 
-## How can I deploy this project?
+## Vérifications
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+```sh
+bun run build
+bun run test
+bun run lint
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Déploiement
 
-Yes, you can!
+1. Valider les vérifications locales.
+2. Pousser la branche `main` sur GitHub.
+3. Vérifier dans Lovable que le dépôt et la branche `main` sont sélectionnés.
+4. Laisser Lovable récupérer le commit, puis utiliser **Share → Publish**.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Les migrations et fonctions Supabase sont conservées dans `supabase/`. Toute modification de schéma doit être ajoutée sous forme de migration versionnée.

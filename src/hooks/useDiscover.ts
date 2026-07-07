@@ -147,7 +147,7 @@ export function useDiscover() {
       return p.category === "culture" || p.category === "experience" || p.category === "nature";
     };
 
-    let forYou = sorted.filter(intentMatch).slice(0, 12);
+    const forYou = sorted.filter(intentMatch).slice(0, 12);
     // Fallback: if intent filter is too strict, fill with top-scored nearby + diversity.
     if (forYou.length < 6 && sorted.length > 0) {
       const seen = new Set(forYou.map((p) => p.id));

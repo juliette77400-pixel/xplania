@@ -15,7 +15,7 @@ function getLocale(): string {
 }
 
 /** Imperial units (mi, °F) for en-US; metric otherwise. */
-export function useImperialUnits(): boolean {
+export function usesImperialUnits(): boolean {
   return getLocale() === "en-US";
 }
 
@@ -67,7 +67,7 @@ export function formatRelativeDays(days: number): string {
 
 /** Distance in km input → mi for imperial, km otherwise. */
 export function formatDistance(km: number, fractionDigits = 1): string {
-  if (useImperialUnits()) {
+  if (usesImperialUnits()) {
     const mi = km * 0.621371;
     return `${formatNumber(mi, { maximumFractionDigits: fractionDigits })} mi`;
   }
@@ -76,7 +76,7 @@ export function formatDistance(km: number, fractionDigits = 1): string {
 
 /** Temperature in °C input → °F for imperial, °C otherwise. */
 export function formatTemperature(celsius: number, fractionDigits = 0): string {
-  if (useImperialUnits()) {
+  if (usesImperialUnits()) {
     const f = (celsius * 9) / 5 + 32;
     return `${formatNumber(f, { maximumFractionDigits: fractionDigits })}°F`;
   }

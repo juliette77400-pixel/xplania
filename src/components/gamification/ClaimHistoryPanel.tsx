@@ -30,7 +30,7 @@ export default function ClaimHistoryPanel() {
 
   useEffect(() => {
     if (!user) return;
-    let q = supabase
+    const q = supabase
       .from("gam_badge_claims")
       .select("*, gam_badges(name_fr,name_en,points)")
       .eq("user_id", user.id)
