@@ -2537,6 +2537,7 @@
     "configDefaultTransport": "Métro & Bus",
     "configConstraints": "📝 Tes contraintes :",
     "summaryTitle": "Récapitulatif de ton voyage",
+    "summaryMoreContext": "Voir les préférences prises en compte",
     "summarySubtitle": "L'IA utilisera ces données pour créer un budget sur-mesure",
     "summaryNoTrip": "Aucun voyage configuré",
     "summaryNoTripDesc": "Pour générer un budget personnalisé, remplis d'abord le formulaire de voyage sur la page d'accueil.",

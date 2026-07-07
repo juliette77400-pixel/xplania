@@ -375,7 +375,7 @@ const GuideBudgetPage = () => {
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-        <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} />
+        <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
 
         {!hasGenerated && !isGenerating && (
           <TripSummaryDashboard tripData={tripData} />

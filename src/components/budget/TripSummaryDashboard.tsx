@@ -68,7 +68,7 @@ const TripSummaryDashboard = ({ tripData }: TripSummaryDashboardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
-      className="glass-card rounded-2xl p-6 space-y-5"
+      className="rounded-2xl border border-border/70 bg-card/40 p-5 space-y-5 sm:p-6"
     >
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-xl bg-primary/10">
@@ -82,8 +82,8 @@ const TripSummaryDashboard = ({ tripData }: TripSummaryDashboardProps) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {items.map((item, i) => (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {items.slice(0, 4).map((item, i) => (
           <motion.div
             key={item.label}
             initial={{ opacity: 0, y: 10 }}
@@ -103,6 +103,15 @@ const TripSummaryDashboard = ({ tripData }: TripSummaryDashboardProps) => {
           </motion.div>
         ))}
       </div>
+
+      <details className="group rounded-xl border border-border/60 bg-background/40">
+        <summary className="cursor-pointer list-none rounded-xl px-4 py-3 text-sm font-semibold text-muted-foreground transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+          {t("budget.summaryMoreContext")}
+        </summary>
+        <div className="grid grid-cols-2 gap-3 border-t border-border/60 p-4 sm:grid-cols-4">
+          {items.slice(4).map((item) => <div key={item.label} className="min-w-0"><div className="mb-1 flex items-center gap-1.5"><item.icon className={`h-3.5 w-3.5 ${item.color}`} /><span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{item.label}</span></div><p className="truncate text-sm font-semibold text-foreground">{item.value}</p></div>)}
+        </div>
+      </details>
 
       {tripData.budgetDetails && (
         <motion.div

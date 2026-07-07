@@ -2537,6 +2537,7 @@
     "configDefaultTransport": "Subway & Bus",
     "configConstraints": "📝 Your constraints:",
     "summaryTitle": "Trip recap",
+    "summaryMoreContext": "View the preferences used",
     "summarySubtitle": "AI will use this data to build a tailored budget",
     "summaryNoTrip": "No trip configured",
     "summaryNoTripDesc": "To generate a personal budget, fill the travel form on the home page first.",
