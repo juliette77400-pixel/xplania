@@ -4,20 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import {
-  Sparkles, Compass, Briefcase, BookOpen, Map, ArrowRight, ArrowLeft, User as UserIcon,
-} from "lucide-react";
+import { Sparkles, Compass, BookOpen, MapPinned, ArrowRight, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
-const ICONS = [Sparkles, Compass, Briefcase, BookOpen, Map, UserIcon];
+const ICONS = [Sparkles, Compass, MapPinned, BookOpen];
 
 const STEP_KEYS = [
-  { titleKey: "onboardingTour.step1Title", descKey: "onboardingTour.step1Desc", cta: null },
+  { titleKey: "onboardingTour.step1Title", descKey: "onboardingTour.step1Desc", cta: { to: "/app", labelKey: "onboardingTour.cta1" } },
   { titleKey: "onboardingTour.step2Title", descKey: "onboardingTour.step2Desc", cta: { to: "/discover", labelKey: "onboardingTour.cta2" } },
-  { titleKey: "onboardingTour.step3Title", descKey: "onboardingTour.step3Desc", cta: { to: "/guide-valise", labelKey: "onboardingTour.cta3" } },
+  { titleKey: "onboardingTour.step3Title", descKey: "onboardingTour.step3Desc", cta: { to: "/suivi", labelKey: "onboardingTour.cta3" } },
   { titleKey: "onboardingTour.step4Title", descKey: "onboardingTour.step4Desc", cta: { to: "/carnets", labelKey: "onboardingTour.cta4" } },
-  { titleKey: "onboardingTour.step5Title", descKey: "onboardingTour.step5Desc", cta: { to: "/explore", labelKey: "onboardingTour.cta5" } },
-  { titleKey: "onboardingTour.step6Title", descKey: "onboardingTour.step6Desc", cta: { to: "/profil", labelKey: "onboardingTour.cta6" } },
 ];
 
 const storageKey = (uid: string) => `xplania-tour-seen-${uid}`;
@@ -61,7 +57,7 @@ const OnboardingTour = () => {
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
-      <DialogContent className="max-w-lg p-0 overflow-hidden bg-background border-border">
+      <DialogContent className="max-w-lg p-0 overflow-hidden bg-background border-border sm:rounded-3xl" aria-describedby="tour-description">
         <div className="relative">
           <div
             className="absolute inset-0 opacity-20 pointer-events-none"
@@ -93,13 +89,13 @@ const OnboardingTour = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
                   {t(slide.titleKey)}
                 </h2>
-                <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                <p id="tour-description" className="text-sm leading-6 text-muted-foreground max-w-md mx-auto">
                   {t(slide.descKey)}
                 </p>
                 {slide.cta && (
                   <button
                     onClick={handleCta}
-                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                    className="mt-5 inline-flex items-center gap-1.5 rounded-lg border border-primary/25 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary transition hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   >
                     {t(slide.cta.labelKey)} <ArrowRight className="w-3 h-3" />
                   </button>

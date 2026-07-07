@@ -16,19 +16,20 @@ const MODE_IDS: { id: PlanMode; icon: React.ReactNode; badge?: string }[] = [
 const ModeSelector = ({ onSelect }: Props) => {
   const { t } = useTranslation();
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="text-center space-y-1">
         <h3 className="text-lg font-bold text-foreground">{t("travelForm.modeSelector.title")}</h3>
         <p className="text-sm text-muted-foreground">{t("travelForm.modeSelector.subtitle")}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         {MODE_IDS.map((mode) => (
           <button
             key={mode.id}
             type="button"
             onClick={() => onSelect(mode.id)}
-            className="group relative text-left glass-card rounded-2xl p-4 border border-border hover:border-primary/60 hover:shadow-lg transition-all flex flex-col gap-3"
+            aria-label={`${t(`travelForm.modeSelector.${mode.id}.title`)} — ${t(`travelForm.modeSelector.${mode.id}.duration`)}`}
+            className={`group relative flex min-h-[250px] flex-col gap-3 rounded-2xl border p-5 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${mode.id === "custom" ? "border-primary/50 bg-primary/[.06] shadow-[0_12px_35px_hsl(var(--primary)/.08)]" : "border-border bg-card/50 hover:border-primary/40"}`}
           >
             {mode.badge && (
               <span className="absolute -top-2 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-full gradient-button text-primary-foreground">
@@ -53,7 +54,7 @@ const ModeSelector = ({ onSelect }: Props) => {
                 </li>
               ))}
             </ul>
-            <div className="flex items-center justify-end text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition">
+            <div className="mt-2 flex items-center text-sm font-semibold text-primary">
               {t("travelForm.modeSelector.choose")} <ArrowRight className="w-4 h-4 ml-1" />
             </div>
           </button>

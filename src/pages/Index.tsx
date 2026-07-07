@@ -129,7 +129,7 @@ const Index = () => {
       )}
       <QuickJump />
       <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
-      <OnboardingDialog />
+      <OnboardingDialog onCreateTrip={handleCreateTrip} />
       <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
     </div>
   );
