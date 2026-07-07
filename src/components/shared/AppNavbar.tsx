@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-  Plane, Home, Compass, Heart, Map, Activity, Briefcase, BookOpen,
+  Plane, Home, Compass, Activity, BookOpen, Luggage,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,21 +29,24 @@ interface NavItem {
   premium?: boolean;
 }
 
-// Primary nav reduced to 5 core items for clarity (was 7).
-// Explore + Suitcase moved into "More" to keep the bar scannable.
+// The primary navigation follows the natural rhythm of a trip.
 const PRIMARY: NavItem[] = [
   { to: "/app", labelKey: "appNav.home", icon: Home },
-  { to: "/discover", labelKey: "appNav.discover", icon: Compass },
-  { to: "/mood", labelKey: "appNav.mood", icon: Heart, premium: true },
-  { to: "/suivi", labelKey: "appNav.tracking", icon: Activity, premium: true },
-  { to: "/carnets", labelKey: "appNav.journal", icon: BookOpen, premium: true },
+  { to: "/guide-budget", labelKey: "appNav.prepare", icon: Luggage },
+  { to: "/discover", labelKey: "appNav.explorePhase", icon: Compass },
+  { to: "/suivi", labelKey: "appNav.travelPhase", icon: Activity },
+  { to: "/carnets", labelKey: "appNav.relive", icon: BookOpen },
 ];
 
 const MORE = [
-  { to: "/explore", labelKey: "appNav.explore" },
-  { to: "/guide-valise", labelKey: "appNav.suitcase" },
   { to: "/guide-budget", labelKey: "appNav.budget" },
   { to: "/guide-visa", labelKey: "appNav.visa" },
+  { to: "/guide-valise", labelKey: "appNav.suitcase" },
+  { to: "/mood", labelKey: "appNav.mood" },
+  { to: "/discover", labelKey: "appNav.discover" },
+  { to: "/explore", labelKey: "appNav.explore" },
+  { to: "/suivi", labelKey: "appNav.tracking" },
+  { to: "/carnets", labelKey: "appNav.journal" },
   { to: "/gamification", labelKey: "appNav.badges" },
   { to: "/offres", labelKey: "appNav.premiumOffers" },
   { to: "/about", labelKey: "appNav.about" },
@@ -264,4 +267,3 @@ const AppNavbar = () => {
 };
 
 export default AppNavbar;
-

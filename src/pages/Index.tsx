@@ -74,8 +74,8 @@ const Index = () => {
       </div>
       <HeroSection onCreateTrip={handleCreateTrip} onDemoTrip={handleDemoTrip} />
       <DualAudienceSection />
-      <JourneyTimelineSection />
       <DifferentiationSection />
+      <JourneyTimelineSection />
       <FeaturesSection />
       <BetaSection onFeedback={() => setFeedbackOpen(true)} />
       <FaqSection />

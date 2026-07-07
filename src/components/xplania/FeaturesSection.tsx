@@ -1,81 +1,21 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Luggage, Wallet, FileText, BookOpen, Activity, Compass, Heart, MapPinned, ArrowRight } from "lucide-react";
+import { ArrowRight, BookHeart, Compass, MapPinned, PlaneTakeoff, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const FEATURE_KEYS = [
-  { key: "valise", num: 1, icon: Luggage, link: "/guide-valise" },
-  { key: "budget", num: 2, icon: Wallet, link: "/guide-budget" },
-  { key: "visa", num: 3, icon: FileText, link: "/guide-visa" },
-  { key: "journal", num: 4, icon: BookOpen, link: "/carnets" },
-  { key: "tracking", num: 5, icon: Activity, link: "/suivi" },
-  { key: "explore", num: 6, icon: Compass, link: "/explore" },
-  { key: "mood", num: 7, icon: Heart, link: "/mood" },
-  { key: "discover", num: 8, icon: MapPinned, link: "/discover" },
-] as const;
-
-const FeaturesSection = () => {
-  const { t } = useTranslation();
-
-  return (
-    <section id="features" className="py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-4"
-        >
-          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">{t("features.tag")}</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            {t("features.title")}
-          </h2>
-          <p className="mt-3 text-muted-foreground">{t("features.subtitle")}</p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-          {FEATURE_KEYS.map((f, i) => (
-            <motion.div
-              key={f.num}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="glass-card rounded-2xl p-6 flex flex-col group hover:border-primary/20 transition-colors"
-            >
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {t("features.labelN", { n: f.num })}
-              </span>
-              <div className="flex items-center gap-3 mt-4">
-                <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center shrink-0">
-                  <f.icon className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground">{t(`features.items.${f.key}.title`)}</h3>
-              </div>
-              <p className="mt-2 text-sm font-medium text-primary">{t(`features.items.${f.key}.tagline`)}</p>
-              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{t(`features.items.${f.key}.description`)}</p>
-              <ul className="mt-4 space-y-2 flex-1">
-                {[1, 2].map((n) => (
-                  <li key={n} className="flex items-center gap-2 text-sm text-foreground">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                    {t(`features.items.${f.key}.benefit${n}`)}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to={f.link}
-                className="mt-6 flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all"
-              >
-                {t(`features.items.${f.key}.cta`)}
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <p className="mt-2 text-xs text-muted-foreground">{t("features.noSignup")}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+const copy = {
+  fr:{tag:"Les capacités de votre copilote",title:"Tout ce dont vous avez besoin, au moment où vous en avez besoin.",subtitle:"Plus besoin de naviguer entre des outils isolés. Chaque capacité partage le même contexte et poursuit le même voyage.", groups:[
+    ["Préparer", "Anticipez sans vous éparpiller.", "Votre copilote estime votre budget, vérifie vos formalités et prépare une valise adaptée.", "/guide-budget", "Préparer mon voyage", ["Budget intelligent","Visa & formalités","Valise météo"]],
+    ["Explorer", "Trouvez ce qui vous ressemble.", "Il comprend votre humeur et transforme vos envies en lieux pertinents, pas en listes génériques.", "/mood", "Trouver mon prochain lieu", ["Mood Explorer","Discover","Pépites locales"]],
+    ["Voyager", "Restez orienté, même en mouvement.", "Il suit le fil du séjour et vous propose des repères utiles selon le lieu et le moment.", "/suivi", "Accompagner mon voyage", ["Suivi live","Carte interactive","Suggestions contextuelles"]],
+    ["Revivre", "Gardez plus que des photos.", "Il rassemble vos étapes et vos émotions dans un carnet vivant, prêt à être partagé.", "/carnets", "Ouvrir mes carnets", ["Récit assisté par IA","Photos & émotions","Export & partage"]]
+  ]},
+  en:{tag:"Your copilot's capabilities",title:"Everything you need, exactly when you need it.",subtitle:"No more jumping between isolated tools. Every capability shares the same context and continues the same journey.", groups:[
+    ["Prepare", "Anticipate without the overwhelm.", "Your copilot estimates your budget, checks paperwork and creates a tailored packing list.", "/guide-budget", "Prepare my trip", ["Smart budget","Visa & paperwork","Weather-ready packing"]],
+    ["Explore", "Find places that feel like you.", "It understands your mood and turns your wishes into relevant places, not generic lists.", "/mood", "Find my next place", ["Mood Explorer","Discover","Local gems"]],
+    ["Travel", "Stay oriented while moving.", "It follows your trip and surfaces useful cues based on where you are and when.", "/suivi", "Guide my trip", ["Live tracking","Interactive map","Contextual suggestions"]],
+    ["Relive", "Keep more than photos.", "It brings your steps and emotions together in a living journal, ready to share.", "/carnets", "Open my journals", ["AI-assisted story","Photos & emotions","Export & share"]]
+  ]}
 };
-
+const FeaturesSection=()=>{const {i18n}=useTranslation();const c=i18n.language.startsWith("fr")?copy.fr:copy.en;const icons=[PlaneTakeoff,Compass,MapPinned,BookHeart];return <section id="features" className="border-y border-border/60 bg-card/20 px-4 py-24 sm:py-32"><div className="mx-auto max-w-6xl"><div className="max-w-3xl"><p className="text-sm font-bold uppercase tracking-[.18em] text-primary">{c.tag}</p><h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">{c.title}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{c.subtitle}</p></div><div className="mt-14 grid gap-5 md:grid-cols-2">{c.groups.map((g,i)=>{const [phase,title,body,to,cta,items]=g as [string,string,string,string,string,string[]];const Icon=icons[i];return <motion.article key={phase} initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.08}} className="group rounded-3xl border border-border/70 bg-background/65 p-7 transition hover:-translate-y-1 hover:border-primary/30 sm:p-8"><div className="flex items-start justify-between"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10"><Icon className="h-6 w-6 text-primary" /></div><span className="rounded-full border border-border px-3 py-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">{phase}</span></div><h3 className="mt-7 text-2xl font-bold">{title}</h3><p className="mt-3 leading-7 text-muted-foreground">{body}</p><div className="mt-6 flex flex-wrap gap-2">{items.map(item=><span key={item} className="inline-flex items-center gap-1.5 rounded-lg bg-muted/60 px-3 py-1.5 text-xs font-medium"><Sparkles className="h-3 w-3 text-primary" />{item}</span>)}</div><Link to={to} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-primary">{cta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link></motion.article>})}</div></div></section>};
 export default FeaturesSection;

@@ -1,54 +1,10 @@
-import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { Clock, Sparkles, LayoutGrid } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ArrowDown, BrainCircuit, Route, Sparkles } from "lucide-react";
 
-const DifferentiationSection = () => {
-  const { t } = useTranslation();
-  const points = [
-    { icon: Clock, title: t("home.differentiation.point1Title"), text: t("home.differentiation.point1Text") },
-    { icon: Sparkles, title: t("home.differentiation.point2Title"), text: t("home.differentiation.point2Text") },
-    { icon: LayoutGrid, title: t("home.differentiation.point3Title"), text: t("home.differentiation.point3Text") },
-  ];
-
-  return (
-    <section className="py-20 px-4">
-      <div className="max-w-5xl mx-auto text-center">
-        <p className="text-sm text-primary font-medium uppercase tracking-wider mb-3">
-          {t("home.differentiation.kicker")}
-        </p>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-3xl md:text-5xl font-extrabold leading-tight mb-12"
-        >
-          <span className="text-muted-foreground">ChatGPT génère.</span>
-          <br />
-          <span className="gradient-text">Xplania accompagne.</span>
-        </motion.h2>
-
-        <div className="grid md:grid-cols-3 gap-6 text-left">
-          {points.map((p, i) => (
-            <motion.div
-              key={p.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="rounded-2xl border border-border/40 bg-card/30 p-5"
-            >
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                <p.icon className="w-5 h-5 text-primary" />
-              </div>
-              <h3 className="font-bold mb-1.5">{p.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+const text = {
+  fr: { tag:"Comment fonctionne votre copilote", title:"Vous partagez l’essentiel. Xplania relie le reste.", subtitle:"Pas de prompt à écrire ni de parcours complexe : votre contexte voyage devient une expérience utile et immédiatement actionnable.", steps:[["Vous racontez votre voyage","Destination, dates, budget, rythme et envies."],["L’IA comprend votre contexte","Elle croise vos préférences avec les données utiles au séjour."],["Votre expérience évolue","Chaque recommandation reste cohérente avant, pendant et après."]] },
+  en: { tag:"How your copilot works", title:"You share the essentials. Xplania connects the rest.", subtitle:"No prompt to write and no complex flow: your travel context becomes a useful, immediately actionable experience.", steps:[["Tell us about your trip","Destination, dates, budget, pace and wishes."],["AI understands the context","It connects your preferences with useful trip data."],["Your experience evolves","Every recommendation stays consistent before, during and after."]] },
 };
-
+const DifferentiationSection = () => { const {i18n}=useTranslation(); const c=i18n.language.startsWith("fr")?text.fr:text.en; const icons=[Route,BrainCircuit,Sparkles]; return <section className="px-4 py-24"><div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-primary/15 bg-[linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-12 lg:p-16"><div className="max-w-3xl"><p className="text-sm font-bold uppercase tracking-[.18em] text-primary">{c.tag}</p><h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">{c.title}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{c.subtitle}</p></div><div className="mt-14 grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center">{c.steps.map(([title,body],i)=>{const Icon=icons[i]; return <div key={title} className="contents"><motion.div initial={{opacity:0,y:15}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.12}} className="rounded-2xl border border-border/60 bg-background/60 p-6"><div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10"><Icon className="h-5 w-5 text-primary" /></div><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></motion.div>{i<2&&<ArrowDown className="mx-auto h-5 w-5 text-primary/60 lg:-rotate-90" />}</div>})}</div></div></section> };
 export default DifferentiationSection;

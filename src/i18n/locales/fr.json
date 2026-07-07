@@ -96,6 +96,10 @@
   },
   "appNav": {
     "home": "Accueil",
+    "prepare": "Préparer",
+    "explorePhase": "Explorer",
+    "travelPhase": "Voyager",
+    "relive": "Revivre",
     "discover": "Découvrir",
     "mood": "Mood Explorer",
     "explore": "Carte de voyage",

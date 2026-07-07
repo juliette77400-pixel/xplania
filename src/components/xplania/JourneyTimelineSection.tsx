@@ -1,67 +1,10 @@
-import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { Plane, Map, BookOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { BookHeart, Compass, MapPinned, PlaneTakeoff } from "lucide-react";
 
-const JourneyTimelineSection = () => {
-  const { t } = useTranslation();
-  const steps = [
-    {
-      icon: Plane,
-      title: t("home.journey.beforeTitle"),
-      text: t("home.journey.beforeText"),
-    },
-    {
-      icon: Map,
-      title: t("home.journey.duringTitle"),
-      text: t("home.journey.duringText"),
-    },
-    {
-      icon: BookOpen,
-      title: t("home.journey.afterTitle"),
-      text: t("home.journey.afterText"),
-    },
-  ];
-
-  return (
-    <section className="py-20 px-4 bg-card/20">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-sm text-primary font-medium uppercase tracking-wider mb-2">
-            {t("home.journey.kicker")}
-          </p>
-          <h2 className="text-3xl md:text-4xl font-extrabold max-w-2xl mx-auto">
-            {t("home.journey.title")}
-          </h2>
-        </div>
-
-        <div className="relative grid md:grid-cols-3 gap-6 md:gap-4">
-          {/* connector line desktop */}
-          <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-px bg-gradient-to-r from-primary/40 via-accent/40 to-primary/40" />
-          {steps.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="relative flex flex-col items-center text-center"
-            >
-              <div className="w-16 h-16 rounded-full bg-background border-2 border-primary/40 flex items-center justify-center mb-4 relative z-10">
-                <s.icon className="w-7 h-7 text-primary" />
-              </div>
-              <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-1">
-                {i + 1}
-              </p>
-              <h3 className="text-xl font-bold mb-2">{s.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-                {s.text}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+const copy = {
+  fr: { tag: "Votre voyage, de bout en bout", title: "Toujours le même copilote. Jamais la même expérience.", text: "Xplania garde le fil de votre voyage et adapte son aide à chaque étape.", steps: [["01","Préparer","Budget, formalités et valise sont construits autour de votre destination."],["02","Explorer","Votre humeur et vos préférences révèlent des lieux qui vous ressemblent."],["03","Voyager","Suggestions locales, suivi et repères utiles évoluent avec votre position."],["04","Revivre","Vos photos, lieux et émotions deviennent un carnet que vous gardez."]] },
+  en: { tag: "Your whole journey", title: "The same copilot. A different experience every time.", text: "Xplania keeps the thread of your trip and adapts its help at every stage.", steps: [["01","Prepare","Budget, paperwork and packing are built around your destination."],["02","Explore","Your mood and preferences uncover places that feel like you."],["03","Travel","Local suggestions, tracking and useful cues evolve with your location."],["04","Relive","Your photos, places and emotions become a journal worth keeping."]] },
 };
-
+const JourneyTimelineSection = () => { const {i18n}=useTranslation(); const c=i18n.language.startsWith("fr")?copy.fr:copy.en; const icons=[PlaneTakeoff,Compass,MapPinned,BookHeart]; return <section id="journey" className="px-4 py-24 sm:py-32"><div className="mx-auto max-w-6xl"><div className="mx-auto max-w-3xl text-center"><p className="text-sm font-bold uppercase tracking-[.18em] text-primary">{c.tag}</p><h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">{c.title}</h2><p className="mt-5 text-lg text-muted-foreground">{c.text}</p></div><div className="relative mt-16 grid gap-4 lg:grid-cols-4"><div className="absolute left-[12%] right-[12%] top-8 hidden h-px bg-gradient-to-r from-secondary/30 via-primary/60 to-secondary/30 lg:block" />{c.steps.map(([n,title,body],i)=>{const Icon=icons[i]; return <motion.article key={title} initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.1}} className="relative rounded-2xl border border-border/70 bg-card/50 p-6"><div className="relative z-10 mb-8 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/25 bg-background shadow-[0_0_30px_hsl(var(--primary)/.08)]"><Icon className="h-7 w-7 text-primary" /></div><span className="text-xs font-bold tracking-[.2em] text-primary">{n}</span><h3 className="mt-2 text-xl font-bold">{title}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p></motion.article>})}</div></div></section> };
 export default JourneyTimelineSection;
