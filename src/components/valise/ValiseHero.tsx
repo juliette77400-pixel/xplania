@@ -1,85 +1,20 @@
 import { motion } from "framer-motion";
-import { CloudSun, MapPin, Sparkles, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle2, MapPin, Sparkles } from "lucide-react";
 import { useDestinationImage } from "@/hooks/useDestinationImage";
 import { useTranslation } from "react-i18next";
 
-interface ValiseHeroProps {
-  destination: string;
-  days: number;
-  onGenerate: () => void;
-  isGenerating: boolean;
-}
+interface Props { destination:string; days:number; onGenerate:()=>void; isGenerating:boolean; checkedItems:number; totalItems:number; }
 
-const ValiseHero = ({ destination, days, onGenerate, isGenerating }: ValiseHeroProps) => {
-  const { t } = useTranslation();
-  const heroSrc = useDestinationImage(destination, 1200, 800);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-2xl overflow-hidden"
-    >
-      <div className="flex flex-col md:flex-row">
-        <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold w-fit mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            {t("valise.heroBadge")}
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-            <span className="gradient-text">{t("valise.heroTitleA")}</span>
-            <br />
-            {t("valise.heroTitleB", { destination })}
-          </h2>
-          <p className="text-muted-foreground text-sm mb-6 max-w-md">
-            {t("valise.heroDesc")}
-          </p>
-
-          {!isGenerating && (
-            <button
-              onClick={onGenerate}
-              className="gradient-button inline-flex items-center gap-3 px-8 py-4 rounded-xl text-primary-foreground font-bold text-base hover:opacity-90 transition-opacity w-fit shadow-lg"
-            >
-              {t("valise.heroCta")} <Sparkles className="w-4 h-4" />
-            </button>
-          )}
-
-          <div className="flex flex-wrap gap-2 mt-5">
-            {[
-              { icon: <CloudSun className="w-3.5 h-3.5" />, label: t("valise.heroBadgeWeather") },
-              { icon: <MapPin className="w-3.5 h-3.5" />, label: t("valise.heroBadgeCulture") },
-              { icon: <Sparkles className="w-3.5 h-3.5" />, label: t("valise.heroBadgeOptimized") },
-            ].map((badge) => (
-              <span
-                key={badge.label}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 text-muted-foreground text-xs font-medium"
-              >
-                {badge.icon} {badge.label}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="w-full md:w-2/5 relative min-h-[240px] md:min-h-[340px]">
-          <img
-            src={heroSrc}
-            alt={destination}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/20 to-background/80 md:bg-gradient-to-r md:from-background/60 md:via-transparent md:to-transparent" />
-          <div className="absolute bottom-4 right-4 flex flex-col gap-2 items-end">
-            <span className="px-3 py-1.5 rounded-lg bg-background/85 backdrop-blur text-xs font-semibold text-foreground inline-flex items-center gap-1.5 shadow-md">
-              <MapPin className="w-3 h-3 text-primary" /> {destination}
-            </span>
-            <span className="px-3 py-1.5 rounded-lg bg-background/85 backdrop-blur text-xs font-semibold text-foreground inline-flex items-center gap-1.5 shadow-md">
-              <Calendar className="w-3 h-3 text-primary" /> {t("valise.heroDays", { count: days })}
-            </span>
-          </div>
-        </div>
+const ValiseHero = ({ destination, days, onGenerate, isGenerating, checkedItems, totalItems }: Props) => {
+  const { t } = useTranslation(); const heroSrc=useDestinationImage(destination,1200,800); const pct=totalItems?Math.round((checkedItems/totalItems)*100):0;
+  return <motion.header initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} className="overflow-hidden rounded-[2rem] border border-primary/15 bg-card/50">
+    <div className="grid md:grid-cols-[1.15fr_.85fr]">
+      <div className="flex flex-col justify-center p-6 sm:p-9"><p className="mb-4 inline-flex w-fit items-center gap-2 text-xs font-bold uppercase tracking-[.17em] text-primary"><Sparkles className="h-4 w-4" />{t("valise.heroBadge")}</p><h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl"><span className="gradient-text">{t("valise.heroTitleA")}</span><br />{t("valise.heroTitleB",{destination})}</h1><p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">{t("valise.heroDesc")}</p>
+        <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold"><span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/60 px-3 py-2"><MapPin className="h-3.5 w-3.5 text-primary" />{destination}</span><span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/60 px-3 py-2"><Calendar className="h-3.5 w-3.5 text-primary" />{t("valise.heroDays",{count:days})}</span></div>
+        {!isGenerating&&<button onClick={onGenerate} className="gradient-button mt-7 inline-flex w-fit items-center gap-2 rounded-xl px-6 py-3 font-bold text-primary-foreground transition hover:-translate-y-0.5">{t("valise.heroCta")}<ArrowRight className="h-4 w-4" /></button>}
       </div>
-    </motion.div>
-  );
+      <div className="relative min-h-[250px] overflow-hidden md:min-h-[390px]"><img src={heroSrc} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" /><div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" /><div className="absolute inset-x-5 bottom-5 rounded-2xl border border-white/10 bg-background/85 p-4 backdrop-blur"><div className="flex items-center justify-between"><div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /><span className="text-sm font-bold">{t("valise.progressLabel")}</span></div><span className="text-sm font-extrabold text-primary">{pct}%</span></div><div className="mt-3 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full gradient-button transition-all duration-500" style={{width:`${pct}%`}} /></div><p className="mt-2 text-xs text-muted-foreground">{t("guideValise.itemsSelected",{checked:checkedItems,total:totalItems})}</p></div></div>
+    </div>
+  </motion.header>;
 };
-
 export default ValiseHero;

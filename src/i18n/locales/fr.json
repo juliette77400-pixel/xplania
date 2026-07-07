@@ -1902,6 +1902,8 @@
     "heroBadgeOptimized": "Valise optimisée",
     "heroDays": "{{count}} jour",
     "heroDays_other": "{{count}} jours",
+    "progressLabel": "État de préparation",
+    "voyageMore": "Voir toutes les préférences analysées",
     "transportTitle": "Mode de transport",
     "transports": {
       "avion": "Avion",

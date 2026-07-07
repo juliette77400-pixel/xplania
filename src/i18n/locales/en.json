@@ -1902,6 +1902,8 @@
     "heroBadgeOptimized": "Optimized packing",
     "heroDays": "{{count}} day",
     "heroDays_other": "{{count}} days",
+    "progressLabel": "Packing progress",
+    "voyageMore": "View all analyzed preferences",
     "transportTitle": "Transport mode",
     "transports": {
       "avion": "Plane",

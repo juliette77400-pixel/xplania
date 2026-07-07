@@ -1,8 +1,6 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useTravelStore } from "@/stores/useTravelStore";
-import ValiseHeader from "@/components/valise/ValiseHeader";
-import StepProgressBar from "@/components/valise/StepProgressBar";
 import ValiseHero from "@/components/valise/ValiseHero";
 import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimation";
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
@@ -441,16 +439,8 @@ const GuideValisePage = () => {
       <AppNavbar />
       <QuotaBanner tool="valise" toolLabel="Valise intelligente" />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Valise intelligente" />
-      <ValiseHeader checkedItems={checkedItems} totalItems={totalItems} />
-
-      <div className="border-b border-border bg-background/60 backdrop-blur">
-        <div className="container mx-auto">
-          <StepProgressBar currentStep={activeSection} />
-        </div>
-      </div>
-
       <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
-        <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} />
+        <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} checkedItems={checkedItems} totalItems={totalItems} />
 
         <GenerationAnimation isGenerating={isGenerating} currentStep={generationStep} />
 
