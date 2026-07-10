@@ -24,9 +24,4 @@ verify_jwt = false
 [functions.delete-account]
 verify_jwt = false
 
-[functions.unsplash]
-verify_jwt = false
-
-[functions.valise-qa]
-verify_jwt = false
 
