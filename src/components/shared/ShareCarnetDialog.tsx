@@ -41,7 +41,7 @@ const ShareCarnetDialog = ({
 
   const togglePublic = async (val: boolean) => {
     setBusy(true);
-    const newSlug = val && !slug ? crypto.randomUUID().slice(0, 8) : slug;
+    const newSlug = val && !slug ? (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32) : slug;
     const { error } = await supabase
       .from("journals")
       .update({ is_public: val, public_slug: newSlug })
