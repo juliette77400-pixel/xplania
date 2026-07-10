@@ -1,6 +1,7 @@
 // Fetches up-to-date, AI-synthesized info from official authorities
 // (France-Diplomatie, Institut Pasteur, OMS / WHO) for a given destination.
 // Returns structured JSON with a "lastChecked" timestamp + source attributions.
+import { requireAuth } from "../_shared/require-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
