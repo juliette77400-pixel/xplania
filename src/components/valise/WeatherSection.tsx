@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CloudSun, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
+import { CloudSun, CloudOff, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cleanCityForWeather } from "@/lib/geocoding";
 import { toast } from "sonner";
