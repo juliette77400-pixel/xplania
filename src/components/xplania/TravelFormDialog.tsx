@@ -26,6 +26,7 @@ import {
   saveTravelProgress,
 } from "@/lib/travel-form-persistence";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
 type StepKey =
   | "basic"
