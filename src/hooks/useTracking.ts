@@ -113,7 +113,7 @@ export function useTracking(tripId?: string) {
 
   const toggleShare = useCallback(async (enabled: boolean) => {
     if (!tripId || !tracking) return;
-    const slug = tracking.share_slug || crypto.randomUUID().slice(0, 8);
+    const slug = tracking.share_slug || (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32);
     const { data } = await supabase
       .from("trip_tracking")
       .update({ share_enabled: enabled, share_slug: slug })
