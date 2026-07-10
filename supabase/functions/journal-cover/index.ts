@@ -1,4 +1,6 @@
 // Fetch a notebook cover image for a destination (Unsplash by default, AI fallback/option)
+import { requireAuth } from "../_shared/require-auth.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -6,6 +8,8 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
 
   try {
     const { destination, mode = "unsplash" } = await req.json();
