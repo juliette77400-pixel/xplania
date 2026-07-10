@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { timeOfDay, type MoodKey } from "@/lib/moods";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 export interface MoodPlace {
   id: string;
@@ -71,7 +72,7 @@ export function useMoodExplorer() {
     if (!position) return;
     (async () => {
       try {
-        const { data } = await supabase.functions.invoke("weather", {
+        const { data } = await invokeProtectedFunction<{ conditions?: string; temperature?: string }>("weather", {
           body: { lat: position.lat, lon: position.lng },
         });
         if (data?.conditions) setWeather(`${data.conditions} ${data.temperature || ""}`.trim());

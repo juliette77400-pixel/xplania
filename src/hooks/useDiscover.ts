@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { CATEGORIES, DiscoverCategory, distanceKm, timeOfDay } from "@/lib/discover";
 import { fetchUnsplashImage } from "@/lib/unsplash";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 export interface Place {
   id: string;
@@ -36,8 +37,8 @@ export function useDiscover() {
   // Fetch weather context
   useEffect(() => {
     if (!userPos) return;
-    supabase.functions.invoke("weather", { body: { lat: userPos.lat, lon: userPos.lng } })
-      .then(({ data }) => { if (data?.weather?.[0]?.main) setWeather(data.weather[0].main); })
+    invokeProtectedFunction<{ conditions?: string }>("weather", { body: { lat: userPos.lat, lon: userPos.lng } })
+      .then(({ data }) => { if (data?.conditions) setWeather(data.conditions); })
       .catch(() => {});
   }, [userPos?.lat, userPos?.lng]);
 

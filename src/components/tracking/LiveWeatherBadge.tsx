@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
 import { Position } from "@/hooks/useGeolocation";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 interface Weather {
   temperature: string;
@@ -43,8 +43,7 @@ const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
       ? { lat: position.lat, lon: position.lng }
       : { city: destination };
 
-    supabase.functions
-      .invoke("weather", { body })
+    invokeProtectedFunction<Weather>("weather", { body })
       .then(({ data, error }) => {
         if (error || !data || data.error) return;
         cache.set(key, data);
