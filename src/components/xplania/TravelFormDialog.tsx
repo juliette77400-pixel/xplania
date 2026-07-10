@@ -26,6 +26,7 @@ import {
   saveTravelProgress,
 } from "@/lib/travel-form-persistence";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
 type StepKey =
   | "basic"
@@ -193,11 +194,16 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
 
       let response: Response;
       try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const accessToken = session?.access_token;
+        if (!accessToken) {
+          throw new Error(t("travelForm.errorAuth", { defaultValue: "Connecte-toi pour générer un voyage." }));
+        }
         response = await fetch(`${supabaseUrl}/functions/v1/travel-recommendations`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${supabaseKey}`,
+            "Authorization": `Bearer ${accessToken}`,
             "apikey": supabaseKey,
           },
           body: JSON.stringify({ formData, mode }),
