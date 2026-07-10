@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Cloud, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 interface Props {
   destination?: string | null;
@@ -29,8 +29,7 @@ const DestinationWeather = ({ destination, compact }: Props) => {
     setLoading(true);
     // Extract first city/country segment
     const city = destination.split(",")[0].trim();
-    supabase.functions
-      .invoke("weather", { body: { city } })
+    invokeProtectedFunction<WeatherData>("weather", { body: { city } })
       .then(({ data, error }) => {
         if (cancelled || error) return;
         setData(data);

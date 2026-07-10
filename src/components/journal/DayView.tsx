@@ -13,6 +13,7 @@ import { pingStreakAction } from "@/lib/streak";
 import { Input } from "@/components/ui/input";
 import { Cloud } from "lucide-react";
 import { toast } from "sonner";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 interface Props {
   day: JournalDay;
@@ -44,7 +45,7 @@ const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Pr
     setWeatherLoading(true);
     try {
       const pos = await new Promise<GeolocationPosition>((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000 }));
-      const { data, error } = await supabase.functions.invoke("weather-now", {
+      const { data, error } = await invokeProtectedFunction("weather-now", {
         body: { lat: pos.coords.latitude, lng: pos.coords.longitude },
       });
       if (error) throw error;

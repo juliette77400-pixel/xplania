@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CloudSun, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
 import { cleanCityForWeather } from "@/lib/geocoding";
 import { toast } from "sonner";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 export interface WeatherInfo {
   temperature?: string;
@@ -36,7 +36,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
         setLoading(false);
         return;
       }
-      const { data, error: fnError } = await supabase.functions.invoke("weather", {
+      const { data, error: fnError } = await invokeProtectedFunction<WeatherInfo & { fallback?: boolean; error?: string }>("weather", {
         body: { city: cleanCity },
       });
       if (fnError) throw fnError;
