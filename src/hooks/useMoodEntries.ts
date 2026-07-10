@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -23,33 +24,31 @@ export interface LogMoodInput {
   source?: string;
 }
 
+export const moodEntriesQueryKey = (userId: string | undefined) =>
+  ["mood_entries", userId] as const;
+
 export function useMoodEntries() {
   const { user } = useAuth();
-  const [entries, setEntries] = useState<MoodEntry[]>([]);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const load = useCallback(async () => {
-    if (!user) {
-      setEntries([]);
-      return;
-    }
-    setLoading(true);
-    const { data, error } = await (supabase as any)
-      .from("mood_entries")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("entry_date", { ascending: false })
-      .order("created_at", { ascending: false })
-      .limit(200);
-    setLoading(false);
-    if (error) {
-      console.error(error);
-      return;
-    }
-    setEntries((data as MoodEntry[]) || []);
-  }, [user]);
-
-  useEffect(() => { void load(); }, [load]);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: moodEntriesQueryKey(user?.id),
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("mood_entries")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("entry_date", { ascending: false })
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (error) {
+        console.error(error);
+        return [] as MoodEntry[];
+      }
+      return (data as MoodEntry[]) || [];
+    },
+  });
 
   const log = useCallback(
     async (input: LogMoodInput) => {
@@ -75,10 +74,14 @@ export function useMoodEntries() {
         toast.error("Échec d'enregistrement");
         return null;
       }
-      setEntries((prev) => [data as MoodEntry, ...prev]);
+      // Prepend into the shared cache so every consumer stays in sync.
+      queryClient.setQueryData<MoodEntry[]>(moodEntriesQueryKey(user.id), (prev) => [
+        data as MoodEntry,
+        ...(prev || []),
+      ]);
       return data as MoodEntry;
     },
-    [user],
+    [user, queryClient],
   );
 
   const remove = useCallback(
@@ -88,10 +91,18 @@ export function useMoodEntries() {
         toast.error("Échec de suppression");
         return;
       }
-      setEntries((prev) => prev.filter((e) => e.id !== id));
+      queryClient.setQueryData<MoodEntry[]>(moodEntriesQueryKey(user?.id), (prev) =>
+        (prev || []).filter((e) => e.id !== id),
+      );
     },
-    [],
+    [user, queryClient],
   );
 
-  return { entries, loading, log, remove, reload: load };
+  return {
+    entries: data ?? [],
+    loading: user ? isLoading : false,
+    log,
+    remove,
+    reload: refetch,
+  };
 }

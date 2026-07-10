@@ -80,7 +80,7 @@ const TripActionsMenu = ({ trip, onChanged, onDeleted, onDuplicated, className }
             <Pencil className="w-4 h-4 mr-2" /> Modifier
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={handleDuplicate} disabled={!!duplicating}>
-            <Copy className="w-4 h-4 mr-2" /> Refaire ce voyage
+            <Copy className="w-4 h-4 mr-2" /> Dupliquer ce voyage
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

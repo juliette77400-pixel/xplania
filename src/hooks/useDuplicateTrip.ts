@@ -3,14 +3,12 @@
 // Les données vivantes (carnet, GPS, badges, mood favs) ne sont PAS copiées,
 // pour donner à l'utilisateur un voyage "propre" à refaire.
 import { useState, useCallback } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export const useDuplicateTrip = () => {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
   const [duplicating, setDuplicating] = useState<string | null>(null);
 
   const duplicateTrip = useCallback(
@@ -52,8 +50,6 @@ export const useDuplicateTrip = () => {
           .single();
         if (insErr) throw insErr;
 
-        // Refresh any cached trips list so the duplicate appears immediately.
-        queryClient.invalidateQueries({ queryKey: ["trips"] });
         toast.success("Voyage dupliqué — modifie les dates pour le replanifier ✨");
         return created?.id || null;
       } catch (e: any) {
@@ -64,7 +60,7 @@ export const useDuplicateTrip = () => {
         setDuplicating(null);
       }
     },
-    [user, queryClient]
+    [user]
   );
 
   return { duplicateTrip, duplicating };
