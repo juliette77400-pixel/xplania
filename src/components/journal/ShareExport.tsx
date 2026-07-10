@@ -33,7 +33,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
   const publicUrl = journal.public_slug ? `${window.location.origin}/carnet/public/${journal.public_slug}` : "";
 
   const togglePublic = async (val: boolean) => {
-    const slug = val && !journal.public_slug ? crypto.randomUUID().slice(0, 8) : journal.public_slug;
+    const slug = val && !journal.public_slug ? (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32) : journal.public_slug;
     await supabase.from("journals").update({ is_public: val, public_slug: slug }).eq("id", journal.id);
     onUpdated();
     toast.success(val ? t("j2.publishedToast") : t("j2.privateToast"));
