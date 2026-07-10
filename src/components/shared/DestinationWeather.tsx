@@ -1,7 +1,7 @@
 // ✨ NEW — Météo destination (réutilise edge function `weather`)
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Cloud, Loader2 } from "lucide-react";
+import { Cloud, CloudOff, Loader2 } from "lucide-react";
 import { invokeProtectedFunction } from "@/lib/protected-functions";
 
 interface Props {
@@ -22,18 +22,25 @@ const DestinationWeather = ({ destination, compact }: Props) => {
   const { t } = useTranslation();
   const [data, setData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!destination) return;
     let cancelled = false;
     setLoading(true);
-    // Extract first city/country segment
+    setFailed(false);
     const city = destination.split(",")[0].trim();
     invokeProtectedFunction<WeatherData>("weather", { body: { city } })
       .then(({ data, error }) => {
-        if (cancelled || error) return;
+        if (cancelled) return;
+        if (error || !data || data.fallback || !data.temperature) {
+          setFailed(true);
+          setData(null);
+          return;
+        }
         setData(data);
       })
+      .catch(() => !cancelled && setFailed(true))
       .finally(() => !cancelled && setLoading(false));
     return () => {
       cancelled = true;
@@ -50,10 +57,14 @@ const DestinationWeather = ({ destination, compact }: Props) => {
     );
   }
 
-  if (!data || data.fallback || !data.temperature) {
+  if (!data) {
     return (
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Cloud className="w-3.5 h-3.5" /> {t("weatherWidget.unavailable")}
+      <div
+        className="flex items-center gap-2 text-xs text-muted-foreground"
+        title={failed ? t("trackingComp.weather.unavailableHint") : undefined}
+      >
+        {failed ? <CloudOff className="w-3.5 h-3.5" /> : <Cloud className="w-3.5 h-3.5" />}
+        {t("weatherWidget.unavailable")}
       </div>
     );
   }
