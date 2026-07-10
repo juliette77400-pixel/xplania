@@ -3478,7 +3478,9 @@
     },
     "weather": {
       "loading": "Weather…",
-      "feelsLikeWind": "Feels like {{feels}} • Wind {{wind}}"
+      "feelsLikeWind": "Feels like {{feels}} • Wind {{wind}}",
+      "unavailable": "Weather unavailable",
+      "unavailableHint": "Weather service didn’t respond — the screen keeps working without it."
     },
     "share": {
       "title": "Share my live trip",
