@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CloudSun, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
+import { CloudSun, CloudOff, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cleanCityForWeather } from "@/lib/geocoding";
 import { toast } from "sonner";
@@ -180,7 +180,20 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
           </button>
         </>
       ) : error ? (
-        <p className="text-sm text-destructive">{error}</p>
+        <div className="flex items-start gap-3 p-4 rounded-xl bg-muted/40 border border-border">
+          <CloudOff className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-sm font-semibold text-foreground">{error}</p>
+            <p className="text-xs text-muted-foreground">{t("trackingComp.weather.unavailableHint")}</p>
+            <button
+              onClick={handleRefresh}
+              className="mt-1 text-xs text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1.5"
+            >
+              <RefreshCw className="w-3 h-3" />
+              {t("valise.weatherRefreshCta")}
+            </button>
+          </div>
+        </div>
       ) : null}
     </motion.div>
   );

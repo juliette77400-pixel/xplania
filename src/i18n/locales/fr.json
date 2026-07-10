@@ -3478,7 +3478,9 @@
     },
     "weather": {
       "loading": "Météo…",
-      "feelsLikeWind": "Ressenti {{feels}} • Vent {{wind}}"
+      "feelsLikeWind": "Ressenti {{feels}} • Vent {{wind}}",
+      "unavailable": "Météo indisponible",
+      "unavailableHint": "Le service météo n’a pas répondu — l’écran continue de fonctionner sans elle."
     },
     "share": {
       "title": "Partager mon voyage en direct",
