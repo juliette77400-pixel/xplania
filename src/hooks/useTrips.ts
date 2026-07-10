@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -15,33 +15,41 @@ export interface Trip {
   created_at: string;
 }
 
+export const tripsQueryKey = (userId: string | undefined) => ["trips", userId] as const;
+
 export const useTrips = () => {
   const { user } = useAuth();
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  const fetch = async () => {
-    if (!user) {
-      setTrips([]);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    const { data } = await supabase
-      .from("trips")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
-    setTrips((data || []) as Trip[]);
-    setLoading(false);
-  };
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: tripsQueryKey(user?.id),
+    // Only run once we know the user; keeps behaviour identical to the old
+    // effect that returned an empty list when logged out.
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("trips")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false });
+      return (data || []) as Trip[];
+    },
+  });
 
-  useEffect(() => { fetch(); }, [user]);
-
-  // ✨ NEW (Tâche 1) — retrait optimiste local après suppression côté DB
+  // Optimistic local removal after a DB delete — now updates the query cache
+  // so every consumer of useTrips stays in sync.
   const removeTrip = (tripId: string) => {
-    setTrips((prev) => prev.filter((t) => t.id !== tripId));
+    queryClient.setQueryData<Trip[]>(tripsQueryKey(user?.id), (prev) =>
+      (prev || []).filter((t) => t.id !== tripId),
+    );
   };
 
-  return { trips, loading, refetch: fetch, removeTrip };
+  return {
+    trips: data ?? [],
+    // When logged out the query is disabled (stays "pending"); surface it as
+    // not-loading so consumers don't spin forever, matching the old hook.
+    loading: user ? isLoading : false,
+    refetch,
+    removeTrip,
+  };
 };

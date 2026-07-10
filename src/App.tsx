@@ -1,40 +1,63 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Loader2 } from "lucide-react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import Index from "./pages/Index.tsx";
-import GuideBudget from "./pages/GuideBudget.tsx";
-import GuideValise from "./pages/GuideValise.tsx";
-import GuideVisa from "./pages/GuideVisa.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import Offres from "./pages/Offres.tsx";
-import Auth from "./pages/Auth.tsx";
-import ResetPassword from "./pages/ResetPassword.tsx";
-import Carnets from "./pages/Carnets.tsx";
-import Carnet from "./pages/Carnet.tsx";
-import PublicCarnet from "./pages/PublicCarnet.tsx";
-import Suivi from "./pages/Suivi.tsx";
-import SuiviTrip from "./pages/SuiviTrip.tsx";
-import PublicSuivi from "./pages/PublicSuivi.tsx";
-import Explore from "./pages/Explore.tsx";
-import ExploreTrip from "./pages/ExploreTrip.tsx";
-import MoodExplorer from "./pages/MoodExplorer.tsx";
-import Discover from "./pages/Discover.tsx";
-import Gamification from "./pages/Gamification.tsx";
-import AdminBadges from "./pages/AdminBadges.tsx";
-import Dashboard from "./pages/Dashboard.tsx";
-import Profil from "./pages/Profil.tsx";
-import Parametres from "./pages/Parametres.tsx";
-import Legal from "./pages/Legal.tsx";
-import Trust from "./pages/Trust.tsx";
-import About from "./pages/About.tsx";
 import GlobalPipChat from "./components/shared/GlobalPipChat";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 
-const queryClient = new QueryClient();
+// Index (landing page) stays eager for a fast first paint.
+import Index from "./pages/Index.tsx";
+
+// All other routes are code-split so their JS (and heavy libs such as
+// leaflet / recharts / framer-motion) is only fetched when the route is visited.
+const GuideBudget = lazy(() => import("./pages/GuideBudget.tsx"));
+const GuideValise = lazy(() => import("./pages/GuideValise.tsx"));
+const GuideVisa = lazy(() => import("./pages/GuideVisa.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const Offres = lazy(() => import("./pages/Offres.tsx"));
+const Auth = lazy(() => import("./pages/Auth.tsx"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const Carnets = lazy(() => import("./pages/Carnets.tsx"));
+const Carnet = lazy(() => import("./pages/Carnet.tsx"));
+const PublicCarnet = lazy(() => import("./pages/PublicCarnet.tsx"));
+const Suivi = lazy(() => import("./pages/Suivi.tsx"));
+const SuiviTrip = lazy(() => import("./pages/SuiviTrip.tsx"));
+const PublicSuivi = lazy(() => import("./pages/PublicSuivi.tsx"));
+const Explore = lazy(() => import("./pages/Explore.tsx"));
+const ExploreTrip = lazy(() => import("./pages/ExploreTrip.tsx"));
+const MoodExplorer = lazy(() => import("./pages/MoodExplorer.tsx"));
+const Discover = lazy(() => import("./pages/Discover.tsx"));
+const Gamification = lazy(() => import("./pages/Gamification.tsx"));
+const AdminBadges = lazy(() => import("./pages/AdminBadges.tsx"));
+const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
+const Profil = lazy(() => import("./pages/Profil.tsx"));
+const Parametres = lazy(() => import("./pages/Parametres.tsx"));
+const Legal = lazy(() => import("./pages/Legal.tsx"));
+const Trust = lazy(() => import("./pages/Trust.tsx"));
+const About = lazy(() => import("./pages/About.tsx"));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Cache data for 1 min before considering it stale, keep it 5 min in memory.
+      staleTime: 60 * 1000,
+      gcTime: 5 * 60 * 1000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+const PageLoader = () => (
+  <div className="flex min-h-screen items-center justify-center">
+    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" aria-label="Chargement" />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -44,6 +67,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
+            <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
@@ -84,6 +108,7 @@ const App = () => (
             <Route path="/legal/:type" element={<Legal />} />
             <Route path="*" element={<NotFound />} />
             </Routes>
+            </Suspense>
             <GlobalPipChat />
           </ErrorBoundary>
         </AuthProvider>
