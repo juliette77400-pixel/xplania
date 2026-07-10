@@ -73,4 +73,24 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Split heavy third-party libraries into their own chunks so they are
+        // cached independently and don't bloat the entry bundle. Anything not
+        // matched here falls into Vite's default vendor chunking.
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (/[\\/]react-router/.test(id)) return "react-vendor";
+          if (/[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "react-vendor";
+          if (id.includes("@supabase")) return "supabase";
+          if (id.includes("leaflet")) return "maps";
+          if (id.includes("recharts") || id.includes("d3-")) return "charts";
+          if (id.includes("framer-motion")) return "motion";
+          if (id.includes("@radix-ui")) return "radix";
+          if (id.includes("i18next")) return "i18n";
+        },
+      },
+    },
+  },
 }));
