@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { CloudOff, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Position } from "@/hooks/useGeolocation";
 import { invokeProtectedFunction } from "@/lib/protected-functions";
@@ -24,6 +24,7 @@ const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
   const { t } = useTranslation();
   const [weather, setWeather] = useState<Weather | null>(null);
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const key = position
@@ -39,17 +40,22 @@ const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
     }
 
     setLoading(true);
+    setFailed(false);
     const body = position
       ? { lat: position.lat, lon: position.lng }
       : { city: destination };
 
     invokeProtectedFunction<Weather>("weather", { body })
       .then(({ data, error }) => {
-        if (error || !data || data.error) return;
+        if (error || !data || (data as any).error || !data.temperature) {
+          setFailed(true);
+          return;
+        }
         cache.set(key, data);
         setWeather(data);
         onLoaded?.(`${data.conditions}, ${data.temperature}`);
       })
+      .catch(() => setFailed(true))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [position?.lat, position?.lng, destination]);
@@ -63,7 +69,18 @@ const LiveWeatherBadge = ({ position, destination, onLoaded }: Props) => {
     );
   }
 
-  if (!weather) return null;
+  if (!weather) {
+    if (!failed) return null;
+    return (
+      <span
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-muted/40 text-muted-foreground border border-border"
+        title={t("trackingComp.weather.unavailableHint")}
+      >
+        <CloudOff className="w-3 h-3" />
+        {t("trackingComp.weather.unavailable")}
+      </span>
+    );
+  }
 
   return (
     <span
