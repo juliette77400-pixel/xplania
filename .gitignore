@@ -11,6 +11,8 @@ node_modules
 .pnpm-store
 dist
 dist-ssr
+test-results
+playwright-report
 *.local
 .env
 .env.*
