@@ -15,6 +15,9 @@ interface ChatMessage {
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
+
 
 
 
