@@ -8,6 +8,19 @@ interface Trip {
 }
 
 const cache = new Map<string, string>();
+type CoverMode = "unsplash" | "ai";
+
+const invokeJournalCover = async (destination: string, mode: CoverMode) => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.access_token) {
+    return { data: null, error: new Error("Not authenticated") };
+  }
+
+  return supabase.functions.invoke("journal-cover", {
+    headers: { Authorization: `Bearer ${session.access_token}` },
+    body: { destination, mode },
+  });
+};
 
 export const useJournalCover = (tripId: string, destination: string | null) => {
   const [cover, setCover] = useState<string | null>(cache.get(tripId) || null);
@@ -31,9 +44,7 @@ export const useJournalCover = (tripId: string, destination: string | null) => {
         if (!cancelled) setCover(j.cover_url);
         return;
       }
-      const { data, error } = await supabase.functions.invoke("journal-cover", {
-        body: { destination, mode: "unsplash" },
-      });
+      const { data, error } = await invokeJournalCover(destination, "unsplash");
       if (cancelled || error) return;
       const url = (data as any)?.url || null;
       if (url) {
@@ -49,11 +60,9 @@ export const useJournalCover = (tripId: string, destination: string | null) => {
     return () => { cancelled = true; };
   }, [tripId, destination]);
 
-  const regenerate = async (mode: "unsplash" | "ai" = "ai") => {
+  const regenerate = async (mode: CoverMode = "ai") => {
     if (!destination) return;
-    const { data, error } = await supabase.functions.invoke("journal-cover", {
-      body: { destination, mode },
-    });
+    const { data, error } = await invokeJournalCover(destination, mode);
     if (error) return;
     const url = (data as any)?.url;
     if (url) {

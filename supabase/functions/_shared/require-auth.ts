@@ -5,6 +5,19 @@
 // anon key as the Bearer token.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 
+const decodeJwtPayload = (token: string): Record<string, unknown> | null => {
+  const payloadSegment = token.split(".")[1];
+  if (!payloadSegment) return null;
+
+  try {
+    const normalized = payloadSegment.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = normalized.padEnd(normalized.length + ((4 - normalized.length % 4) % 4), "=");
+    return JSON.parse(atob(padded));
+  } catch {
+    return null;
+  }
+};
+
 export async function requireAuth(
   req: Request,
   corsHeaders: Record<string, string>,
@@ -24,14 +37,8 @@ export async function requireAuth(
 
   // Decode the JWT payload without verification just to detect the anon key
   // (role === "anon"), which has no `sub` and must not pass as a user.
-  try {
-    const payload = JSON.parse(
-      atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")),
-    );
-    if (payload?.role === "anon" || !payload?.sub) return unauthorized();
-  } catch {
-    return unauthorized();
-  }
+  const payload = decodeJwtPayload(token);
+  if (payload?.role === "anon" || typeof payload?.sub !== "string") return unauthorized();
 
   try {
     const supabase = createClient(
