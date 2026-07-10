@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,6 +42,7 @@ const Index = () => {
   const [demoMode, setDemoMode] = useState(false);
   const { user } = useAuth();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
@@ -106,6 +108,8 @@ const Index = () => {
               .select("id")
               .single();
             if (trip) {
+              // Refresh cached trips list so the new trip shows up elsewhere.
+              queryClient.invalidateQueries({ queryKey: ["trips"] });
               setCurrentTripId(trip.id);
               setActiveTrip({
                 tripId: trip.id,
