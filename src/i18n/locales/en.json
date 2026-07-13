@@ -2993,7 +2993,7 @@
       "save": "Add to a list",
       "directions": "Directions",
       "noListErr": "Create a list first",
-      "savedTo": "Saved to {{name}}",
+      "savedTo": "Added to {{name}}",
       "removed": "Removed from favorites",
       "addToItinerary": "Add to my itinerary",
       "close": "Close"
