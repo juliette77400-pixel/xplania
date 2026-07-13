@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { buildDateRange } from "@/lib/journal-utils";
@@ -39,103 +40,107 @@ interface UseJournalResult {
   refetch: () => Promise<void>;
 }
 
+interface JournalData {
+  journal: Journal | null;
+  days: JournalDay[];
+}
+
+export const journalQueryKey = (tripId: string | undefined, userId: string | undefined) =>
+  ["journal", tripId, userId] as const;
+
 export const useJournal = (tripId: string | undefined): UseJournalResult => {
   const { user } = useAuth();
-  const [journal, setJournal] = useState<Journal | null>(null);
-  const [days, setDays] = useState<JournalDay[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const fetchJournal = useCallback(async () => {
-    if (!tripId || !user) {
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
+  const { data, isLoading, refetch } = useQuery<JournalData>({
+    queryKey: journalQueryKey(tripId, user?.id),
+    enabled: !!tripId && !!user,
+    queryFn: async () => {
+      // Fetch trip to know dates
+      const { data: trip } = await supabase
+        .from("trips")
+        .select("departure_date, return_date, destination")
+        .eq("id", tripId!)
+        .maybeSingle();
 
-    // Fetch trip to know dates
-    const { data: trip } = await supabase
-      .from("trips")
-      .select("departure_date, return_date, destination")
-      .eq("id", tripId)
-      .maybeSingle();
-
-    // Find or create journal
-    let { data: j } = await supabase
-      .from("journals")
-      .select("*")
-      .eq("trip_id", tripId)
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (!j) {
-      const { data: created } = await supabase
+      // Find or create journal
+      let { data: j } = await supabase
         .from("journals")
-        .insert({
-          trip_id: tripId,
-          user_id: user.id,
-          title: trip?.destination ? `Carnet — ${trip.destination}` : "Mon carnet",
-        })
         .select("*")
-        .single();
-      j = created;
-    }
+        .eq("trip_id", tripId!)
+        .eq("user_id", user!.id)
+        .maybeSingle();
 
-    if (!j) {
-      setLoading(false);
-      return;
-    }
-    setJournal(j as Journal);
-
-    // Auto-create days from trip dates if missing
-    const { data: existingDays } = await supabase
-      .from("journal_days")
-      .select("*")
-      .eq("journal_id", j.id)
-      .order("date", { ascending: true });
-
-    let allDays = existingDays || [];
-
-    if (allDays.length === 0 && trip?.departure_date) {
-      const range = buildDateRange(trip.departure_date, trip.return_date);
-      if (range.length) {
-        const inserts = range.map((date, i) => ({
-          journal_id: j!.id,
-          user_id: user.id,
-          date,
-          position: i,
-        }));
-        const { data: newDays } = await supabase.from("journal_days").insert(inserts).select("*");
-        allDays = newDays || [];
-      }
-    }
-
-    // Fetch blocks for all days
-    const dayIds = allDays.map((d) => d.id);
-    const { data: blocks } = dayIds.length
-      ? await supabase
-          .from("journal_blocks")
+      if (!j) {
+        const { data: created } = await supabase
+          .from("journals")
+          .insert({
+            trip_id: tripId!,
+            user_id: user!.id,
+            title: trip?.destination ? `Carnet — ${trip.destination}` : "Mon carnet",
+          })
           .select("*")
-          .in("day_id", dayIds)
-          .order("position", { ascending: true })
-      : { data: [] };
+          .single();
+        j = created;
+      }
 
-    const merged: JournalDay[] = allDays.map((d) => ({
-      id: d.id,
-      date: d.date,
-      title: d.title,
-      summary: d.summary,
-      weather: d.weather,
-      position: d.position,
-      blocks: (blocks || []).filter((b) => b.day_id === d.id) as JournalBlock[],
-    }));
+      if (!j) return { journal: null, days: [] };
 
-    setDays(merged);
-    setLoading(false);
-  }, [tripId, user]);
+      // Auto-create days from trip dates if missing
+      const { data: existingDays } = await supabase
+        .from("journal_days")
+        .select("*")
+        .eq("journal_id", j.id)
+        .order("date", { ascending: true });
 
-  useEffect(() => {
-    fetchJournal();
-  }, [fetchJournal]);
+      let allDays = existingDays || [];
 
-  return { journal, days, loading, refetch: fetchJournal };
+      if (allDays.length === 0 && trip?.departure_date) {
+        const range = buildDateRange(trip.departure_date, trip.return_date);
+        if (range.length) {
+          const inserts = range.map((date, i) => ({
+            journal_id: j!.id,
+            user_id: user!.id,
+            date,
+            position: i,
+          }));
+          const { data: newDays } = await supabase.from("journal_days").insert(inserts).select("*");
+          allDays = newDays || [];
+        }
+      }
+
+      // Fetch blocks for all days
+      const dayIds = allDays.map((d) => d.id);
+      const { data: blocks } = dayIds.length
+        ? await supabase
+            .from("journal_blocks")
+            .select("*")
+            .in("day_id", dayIds)
+            .order("position", { ascending: true })
+        : { data: [] };
+
+      const merged: JournalDay[] = allDays.map((d) => ({
+        id: d.id,
+        date: d.date,
+        title: d.title,
+        summary: d.summary,
+        weather: d.weather,
+        position: d.position,
+        blocks: (blocks || []).filter((b) => b.day_id === d.id) as JournalBlock[],
+      }));
+
+      return { journal: j as Journal, days: merged };
+    },
+  });
+
+  // Preserve the original signature: refetch resolves to void.
+  const refetchVoid = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
+
+  return {
+    journal: data?.journal ?? null,
+    days: data?.days ?? [],
+    loading: tripId && user ? isLoading : false,
+    refetch: refetchVoid,
+  };
 };
