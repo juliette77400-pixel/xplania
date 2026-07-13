@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CalendarPlus, Check, Heart, MapPin, Navigation, Plus, Sparkles, Star, X } from "lucide-react";
+import { CalendarPlus, Check, Heart, Loader2, MapPin, Navigation, Plus, Sparkles, Star, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -26,19 +26,44 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
   const [itineraryOpen, setItineraryOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [newListName, setNewListName] = useState("");
+  const [pendingListIds, setPendingListIds] = useState<Set<string>>(new Set());
   if (!place) return null;
   const cat = categoryByKey(place.category);
 
   const savedListIds = new Set(
     items.filter((i) => i.place_id === place.id).map((i) => i.list_id),
   );
+  const anyPending = pendingListIds.size > 0;
+
+  const runToggle = async (listId: string, listLabel: string) => {
+    setPendingListIds((prev) => {
+      const n = new Set(prev);
+      n.add(listId);
+      return n;
+    });
+    try {
+      return await toggleItem(listId, place.id);
+    } finally {
+      setPendingListIds((prev) => {
+        const n = new Set(prev);
+        n.delete(listId);
+        return n;
+      });
+    }
+  };
 
   const handleToggle = async (listId: string, listLabel: string) => {
-    const added = await toggleItem(listId, place.id);
+    const added = await runToggle(listId, listLabel);
     toast.success(
       added
         ? t("discoverComp.drawer.savedTo", { name: listLabel })
         : t("discoverComp.drawer.removed", { name: listLabel }),
+      {
+        action: {
+          label: t("discoverComp.drawer.undo"),
+          onClick: () => { void runToggle(listId, listLabel); },
+        },
+      },
     );
   };
 
