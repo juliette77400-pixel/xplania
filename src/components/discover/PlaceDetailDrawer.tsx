@@ -131,8 +131,12 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
             <div className="grid grid-cols-2 gap-2 pt-2">
               <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
                 <PopoverTrigger asChild>
-                  <Button variant={isSaved(place.id) ? "default" : "outline"}>
-                    <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
+                  <Button variant={isSaved(place.id) ? "default" : "outline"} disabled={anyPending}>
+                    {anyPending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
+                    )}
                     {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
                   </Button>
                 </PopoverTrigger>
@@ -143,15 +147,21 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
                   <div className="max-h-56 space-y-0.5 overflow-y-auto">
                     {lists.map((l) => {
                       const checked = savedListIds.has(l.id);
+                      const busy = pendingListIds.has(l.id);
                       return (
                         <button
                           key={l.id}
+                          disabled={busy}
                           onClick={() => handleToggle(l.id, `${l.emoji ?? "📍"} ${l.name}`)}
-                          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-muted"
+                          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-muted disabled:opacity-60"
                         >
                           <span className="text-base">{l.emoji ?? "📍"}</span>
                           <span className="flex-1 truncate">{l.name}</span>
-                          {checked && <Check className="h-4 w-4 text-primary" />}
+                          {busy ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                          ) : checked ? (
+                            <Check className="h-4 w-4 text-primary" />
+                          ) : null}
                         </button>
                       );
                     })}
