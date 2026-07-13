@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { CalendarPlus, Heart, MapPin, Navigation, Sparkles, Star, X } from "lucide-react";
+import { CalendarPlus, Check, Heart, MapPin, Navigation, Plus, Sparkles, Star, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { categoryByKey } from "@/lib/discover";
@@ -20,19 +22,37 @@ interface Props {
 
 const PlaceDetailDrawer = ({ place, onClose }: Props) => {
   const { t } = useTranslation();
-  const { lists, isSaved, toggleItem } = usePlaceLists();
+  const { lists, items, toggleItem, createList, isSaved } = usePlaceLists();
   const [itineraryOpen, setItineraryOpen] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [newListName, setNewListName] = useState("");
   if (!place) return null;
   const cat = categoryByKey(place.category);
-  const defaultList = lists.find((l) => l.is_default) || lists[0];
 
-  const handleSave = async () => {
-    if (!defaultList) return toast.error(t("discoverComp.drawer.noListErr"));
-    const added = await toggleItem(defaultList.id, place.id);
-    toast.success(added
-      ? t("discoverComp.drawer.savedTo", { name: `${defaultList.emoji ?? ""} ${defaultList.name}`.trim() })
-      : t("discoverComp.drawer.removed"));
+  const savedListIds = new Set(
+    items.filter((i) => i.place_id === place.id).map((i) => i.list_id),
+  );
+
+  const handleToggle = async (listId: string, listLabel: string) => {
+    const added = await toggleItem(listId, place.id);
+    toast.success(
+      added
+        ? t("discoverComp.drawer.savedTo", { name: listLabel })
+        : t("discoverComp.drawer.removed", { name: listLabel }),
+    );
   };
+
+  const handleCreate = async () => {
+    const name = newListName.trim();
+    if (!name) return;
+    const created = await createList(name);
+    setNewListName("");
+    if (created) {
+      toast.success(t("discoverComp.drawer.listCreated"));
+      await handleToggle(created.id, `${created.emoji ?? "📍"} ${created.name}`);
+    }
+  };
+
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
 
   return (
