@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CalendarPlus, Heart, MapPin, Navigation, Sparkles, Star } from "lucide-react";
+import { CalendarPlus, Heart, MapPin, Navigation, Sparkles, Star, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { categoryByKey } from "@/lib/discover";
@@ -39,6 +39,12 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
     <Drawer open={!!place} onOpenChange={(o) => !o && onClose()}>
       <DrawerContent className="max-h-[92vh]">
         <div className="mx-auto w-full max-w-2xl overflow-y-auto">
+          <DrawerClose
+            aria-label={t("discoverComp.drawer.close")}
+            className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-background"
+          >
+            <X className="h-5 w-5" />
+          </DrawerClose>
           <div className="relative h-56 w-full overflow-hidden bg-gradient-to-br from-primary/20 to-accent/30">
             {place.image_url ? <img src={place.image_url} alt={place.name} className="h-full w-full object-cover" /> : (
               <div className="grid h-full place-items-center text-7xl opacity-60">{cat?.emoji ?? "📍"}</div>

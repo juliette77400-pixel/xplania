@@ -2983,19 +2983,20 @@
       "suggestion6": "authentic night out"
     },
     "card": {
-      "save": "Save",
-      "remove": "Remove",
+      "save": "Add to a list",
+      "remove": "Remove from list",
       "hiddenGem": "Hidden gem"
     },
     "drawer": {
       "tipInsider": "💡 Insider tip",
-      "saved": "Saved",
-      "save": "Save",
+      "saved": "In your list",
+      "save": "Add to a list",
       "directions": "Directions",
       "noListErr": "Create a list first",
       "savedTo": "Saved to {{name}}",
       "removed": "Removed from favorites",
-      "addToItinerary": "Add to my itinerary"
+      "addToItinerary": "Add to my itinerary",
+      "close": "Close"
     },
     "itinerary": {
       "title": "Add to my itinerary",
