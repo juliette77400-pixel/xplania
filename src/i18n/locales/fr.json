@@ -2994,9 +2994,13 @@
       "directions": "Itinéraire",
       "noListErr": "Crée une liste d'abord",
       "savedTo": "Ajouté à {{name}}",
-      "removed": "Retiré des favoris",
+      "removed": "Retiré de {{name}}",
       "addToItinerary": "Ajouter à mon itinéraire",
-      "close": "Fermer"
+      "close": "Fermer",
+      "chooseList": "Choisis une liste",
+      "newListPlaceholder": "Nouvelle liste…",
+      "createList": "Créer",
+      "listCreated": "Liste créée ✓"
     },
     "itinerary": {
       "title": "Ajouter à mon itinéraire",

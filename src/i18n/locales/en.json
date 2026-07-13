@@ -2994,9 +2994,13 @@
       "directions": "Directions",
       "noListErr": "Create a list first",
       "savedTo": "Added to {{name}}",
-      "removed": "Removed from favorites",
+      "removed": "Removed from {{name}}",
       "addToItinerary": "Add to my itinerary",
-      "close": "Close"
+      "close": "Close",
+      "chooseList": "Pick a list",
+      "newListPlaceholder": "New list…",
+      "createList": "Create",
+      "listCreated": "List created ✓"
     },
     "itinerary": {
       "title": "Add to my itinerary",

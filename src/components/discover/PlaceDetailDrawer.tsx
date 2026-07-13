@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { CalendarPlus, Heart, MapPin, Navigation, Sparkles, Star, X } from "lucide-react";
+import { CalendarPlus, Check, Heart, MapPin, Navigation, Plus, Sparkles, Star, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { categoryByKey } from "@/lib/discover";
@@ -20,19 +22,37 @@ interface Props {
 
 const PlaceDetailDrawer = ({ place, onClose }: Props) => {
   const { t } = useTranslation();
-  const { lists, isSaved, toggleItem } = usePlaceLists();
+  const { lists, items, toggleItem, createList, isSaved } = usePlaceLists();
   const [itineraryOpen, setItineraryOpen] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [newListName, setNewListName] = useState("");
   if (!place) return null;
   const cat = categoryByKey(place.category);
-  const defaultList = lists.find((l) => l.is_default) || lists[0];
 
-  const handleSave = async () => {
-    if (!defaultList) return toast.error(t("discoverComp.drawer.noListErr"));
-    const added = await toggleItem(defaultList.id, place.id);
-    toast.success(added
-      ? t("discoverComp.drawer.savedTo", { name: `${defaultList.emoji ?? ""} ${defaultList.name}`.trim() })
-      : t("discoverComp.drawer.removed"));
+  const savedListIds = new Set(
+    items.filter((i) => i.place_id === place.id).map((i) => i.list_id),
+  );
+
+  const handleToggle = async (listId: string, listLabel: string) => {
+    const added = await toggleItem(listId, place.id);
+    toast.success(
+      added
+        ? t("discoverComp.drawer.savedTo", { name: listLabel })
+        : t("discoverComp.drawer.removed", { name: listLabel }),
+    );
   };
+
+  const handleCreate = async () => {
+    const name = newListName.trim();
+    if (!name) return;
+    const created = await createList(name);
+    setNewListName("");
+    if (created) {
+      toast.success(t("discoverComp.drawer.listCreated"));
+      await handleToggle(created.id, `${created.emoji ?? "📍"} ${created.name}`);
+    }
+  };
+
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
 
   return (
@@ -84,10 +104,51 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
               ))}
             </div>
             <div className="grid grid-cols-2 gap-2 pt-2">
-              <Button onClick={handleSave} variant={isSaved(place.id) ? "default" : "outline"}>
-                <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
-                {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
-              </Button>
+              <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant={isSaved(place.id) ? "default" : "outline"}>
+                    <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
+                    {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-72 p-2">
+                  <div className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {t("discoverComp.drawer.chooseList")}
+                  </div>
+                  <div className="max-h-56 space-y-0.5 overflow-y-auto">
+                    {lists.map((l) => {
+                      const checked = savedListIds.has(l.id);
+                      return (
+                        <button
+                          key={l.id}
+                          onClick={() => handleToggle(l.id, `${l.emoji ?? "📍"} ${l.name}`)}
+                          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-muted"
+                        >
+                          <span className="text-base">{l.emoji ?? "📍"}</span>
+                          <span className="flex-1 truncate">{l.name}</span>
+                          {checked && <Check className="h-4 w-4 text-primary" />}
+                        </button>
+                      );
+                    })}
+                    {lists.length === 0 && (
+                      <p className="px-2 py-3 text-xs text-muted-foreground">{t("discoverComp.drawer.noListErr")}</p>
+                    )}
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex items-center gap-1.5 px-1 pb-1">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleCreate(); } }}
+                      placeholder={t("discoverComp.drawer.newListPlaceholder")}
+                      className="h-8 text-sm"
+                    />
+                    <Button size="sm" onClick={handleCreate} disabled={!newListName.trim()}>
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
               <Button asChild variant="outline">
                 <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
                   <Navigation className="mr-2 h-4 w-4" />{t("discoverComp.drawer.directions")}
