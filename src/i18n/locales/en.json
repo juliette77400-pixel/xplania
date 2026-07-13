@@ -2984,7 +2984,7 @@
     },
     "card": {
       "save": "Add to a list",
-      "remove": "Remove from list",
+      "remove": "In your list",
       "hiddenGem": "Hidden gem"
     },
     "drawer": {
@@ -3000,7 +3000,8 @@
       "chooseList": "Pick a list",
       "newListPlaceholder": "New list…",
       "createList": "Create",
-      "listCreated": "List created ✓"
+      "listCreated": "List created ✓",
+      "undo": "Undo"
     },
     "itinerary": {
       "title": "Add to my itinerary",
