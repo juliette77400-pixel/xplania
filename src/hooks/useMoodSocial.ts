@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -22,27 +23,27 @@ export interface PopularMood {
   count: number;
 }
 
+export const moodReactionsQueryKey = (placeId: string | undefined) =>
+  ["mood_reactions", placeId] as const;
+
 export function useMoodReactions(placeId?: string) {
   const { user } = useAuth();
-  const [reactions, setReactions] = useState<MoodReaction[]>([]);
-  const [loading, setLoading] = useState(false);
 
-  const load = useCallback(async () => {
-    if (!placeId) return;
-    setLoading(true);
-    const { data } = await (supabase as any)
-      .from("mood_reactions_public")
-      .select("*")
-      .eq("place_id", placeId)
-      .order("created_at", { ascending: false })
-      .limit(50);
-    setReactions((data as any) || []);
-    setLoading(false);
-  }, [placeId]);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: moodReactionsQueryKey(placeId),
+    enabled: !!placeId,
+    queryFn: async () => {
+      const { data } = await (supabase as any)
+        .from("mood_reactions_public")
+        .select("*")
+        .eq("place_id", placeId)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      return ((data as any) || []) as MoodReaction[];
+    },
+  });
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  const reactions = data ?? [];
 
   // Realtime subscription — scoped to the current user's own channel.
   // Underlying mood_reactions RLS only emits the user's own row changes, so a
@@ -54,13 +55,13 @@ export function useMoodReactions(placeId?: string) {
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "mood_reactions", filter: `place_id=eq.${placeId}` },
-        () => load(),
+        () => refetch(),
       )
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [placeId, user?.id, load]);
+  }, [placeId, user?.id, refetch]);
 
   const addReaction = useCallback(
     async (input: { mood: string; emoji?: string; comment?: string; lat?: number | null; lng?: number | null; place_name?: string | null }) => {
@@ -92,40 +93,44 @@ export function useMoodReactions(placeId?: string) {
     [user, placeId],
   );
 
-  return { reactions, loading, addReaction, reload: load };
+  return { reactions, loading: placeId ? isLoading : false, addReaction, reload: refetch };
 }
 
+interface PopularMoodsData {
+  popular: PopularMood[];
+  recent: MoodReaction[];
+}
+
+export const popularMoodsQueryKey = ["popular_moods"] as const;
+
 export function usePopularMoods() {
-  const [popular, setPopular] = useState<PopularMood[]>([]);
-  const [recent, setRecent] = useState<MoodReaction[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { data, isLoading, refetch } = useQuery<PopularMoodsData>({
+    queryKey: popularMoodsQueryKey,
+    queryFn: async () => {
+      // Get recent reactions (last 7 days)
+      const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const { data } = await (supabase as any)
+        .from("mood_reactions_public")
+        .select("*")
+        .gte("created_at", since)
+        .order("created_at", { ascending: false })
+        .limit(100);
+      const list = ((data as any) || []) as MoodReaction[];
+      const counts = new Map<string, number>();
+      list.forEach((r) => counts.set(r.mood, (counts.get(r.mood) || 0) + 1));
+      const popular = Array.from(counts.entries())
+        .map(([mood, count]) => ({ mood, count }))
+        .sort((a, b) => b.count - a.count);
+      return { popular, recent: list.slice(0, 10) };
+    },
+  });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    // Get recent reactions (last 7 days)
-    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data } = await (supabase as any)
-      .from("mood_reactions_public")
-      .select("*")
-      .gte("created_at", since)
-      .order("created_at", { ascending: false })
-      .limit(100);
-    const list = (data as any) || [];
-    setRecent(list.slice(0, 10));
-    const counts = new Map<string, number>();
-    list.forEach((r: MoodReaction) => counts.set(r.mood, (counts.get(r.mood) || 0) + 1));
-    const popular = Array.from(counts.entries())
-      .map(([mood, count]) => ({ mood, count }))
-      .sort((a, b) => b.count - a.count);
-    setPopular(popular);
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  return { popular, recent, loading, reload: load };
+  return {
+    popular: data?.popular ?? [],
+    recent: data?.recent ?? [],
+    loading: isLoading,
+    reload: refetch,
+  };
 }
 
 export async function getReactionsCount(userId: string): Promise<number> {
