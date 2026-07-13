@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -17,56 +18,54 @@ export interface PlaceReview {
 
 const LOCAL_VOICE_THRESHOLD = 5;
 
+export const placeReviewsQueryKey = (placeId: string | null) =>
+  ["place_reviews", placeId] as const;
+
 export function usePlaceReviews(placeId: string | null) {
   const { user } = useAuth();
-  const [reviews, setReviews] = useState<PlaceReview[]>([]);
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const load = useCallback(async () => {
-    if (!placeId) return;
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("place_reviews")
-      .select("*")
-      .eq("place_id", placeId)
-      .order("created_at", { ascending: false })
-      .limit(20);
-    if (error) console.error(error);
-    const list = (data as any[]) || [];
-    // Resolve signed URLs for photo paths (bucket is private; we only stored the storage path)
-    await Promise.all(
-      list.map(async (r) => {
-        if (r.photo_url && !r.photo_url.startsWith("http")) {
-          const { data: signed } = await supabase.storage
-            .from("place-reviews")
-            .createSignedUrl(r.photo_url, 60 * 60 * 24 * 7);
-          r.photo_url = signed?.signedUrl ?? null;
-        }
-      })
-    );
-    // fetch author profiles
-    const userIds = Array.from(new Set(list.map((r) => r.user_id)));
-    if (userIds.length) {
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("user_id, display_name, avatar_url")
-        .in("user_id", userIds);
-      const map = new Map((profiles || []).map((p: any) => [p.user_id, p]));
-      list.forEach((r) => {
-        const p = map.get(r.user_id);
-        r.author = { display_name: p?.display_name ?? null, avatar_url: p?.avatar_url ?? null };
-      });
-    }
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: placeReviewsQueryKey(placeId),
+    enabled: !!placeId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("place_reviews")
+        .select("*")
+        .eq("place_id", placeId!)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      if (error) console.error(error);
+      const list = (data as any[]) || [];
+      // Resolve signed URLs for photo paths (bucket is private; we only stored the storage path)
+      await Promise.all(
+        list.map(async (r) => {
+          if (r.photo_url && !r.photo_url.startsWith("http")) {
+            const { data: signed } = await supabase.storage
+              .from("place-reviews")
+              .createSignedUrl(r.photo_url, 60 * 60 * 24 * 7);
+            r.photo_url = signed?.signedUrl ?? null;
+          }
+        }),
+      );
+      // fetch author profiles
+      const userIds = Array.from(new Set(list.map((r) => r.user_id)));
+      if (userIds.length) {
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("user_id, display_name, avatar_url")
+          .in("user_id", userIds);
+        const map = new Map((profiles || []).map((p: any) => [p.user_id, p]));
+        list.forEach((r) => {
+          const p = map.get(r.user_id);
+          r.author = { display_name: p?.display_name ?? null, avatar_url: p?.avatar_url ?? null };
+        });
+      }
+      return list as PlaceReview[];
+    },
+  });
 
-    setReviews(list as PlaceReview[]);
-    setLoading(false);
-  }, [placeId]);
-
-  useEffect(() => {
-    if (placeId) load();
-    else setReviews([]);
-  }, [placeId, load]);
+  const reviews = data ?? [];
 
   const checkLocalVoiceBadge = useCallback(async () => {
     if (!user) return;
@@ -126,7 +125,6 @@ export function usePlaceReviews(placeId: string | null) {
           if (upErr) throw upErr;
           // store the storage path; signed URLs are generated on read
           photo_url = path;
-
         }
         const { error } = await supabase.from("place_reviews").insert({
           user_id: user.id,
@@ -137,7 +135,7 @@ export function usePlaceReviews(placeId: string | null) {
         });
         if (error) throw error;
         toast.success("Merci pour ton avis ✨");
-        await load();
+        await refetch();
         await checkLocalVoiceBadge();
         return true;
       } catch (e: any) {
@@ -148,10 +146,17 @@ export function usePlaceReviews(placeId: string | null) {
         setSubmitting(false);
       }
     },
-    [user, placeId, load, checkLocalVoiceBadge],
+    [user, placeId, refetch, checkLocalVoiceBadge],
   );
 
   const userReview = user ? reviews.find((r) => r.user_id === user.id) : null;
 
-  return { reviews, loading, submitting, submit, userReview, reload: load };
+  return {
+    reviews,
+    loading: placeId ? isLoading : false,
+    submitting,
+    submit,
+    userReview,
+    reload: refetch,
+  };
 }
