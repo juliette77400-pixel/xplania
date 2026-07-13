@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://xplania.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://xplania.lovable.app/guide-budget</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://xplania.lovable.app/guide-valise</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://xplania.lovable.app/guide-visa</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://xplania.lovable.app/offres</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://xplania.lovable.app/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://xplania.lovable.app/a-propos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://xplania.lovable.app/trust</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://xplania.lovable.app/securite</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://xplania.lovable.app/mentions-legales</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://xplania.lovable.app/legal-notice</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://xplania.lovable.app/politique-de-confidentialite</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://xplania.lovable.app/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://xplania.lovable.app/conditions-utilisation</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://xplania.lovable.app/terms-of-use</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://xplania.app/guide-budget</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xplania.app/guide-valise</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xplania.app/guide-visa</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xplania.app/offres</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xplania.app/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xplania.app/a-propos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xplania.app/trust</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xplania.app/securite</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xplania.app/mentions-legales</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/legal-notice</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/politique-de-confidentialite</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/conditions-utilisation</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/terms-of-use</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
