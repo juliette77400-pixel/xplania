@@ -44,7 +44,7 @@ export function useDiscover() {
 
   const seed = useCallback(async (category: DiscoverCategory | "all" = "all") => {
     if (!userPos) return;
-    await supabase.functions.invoke("discover-osm", { body: { lat: userPos.lat, lng: userPos.lng, radius: 1500, category } });
+    await invokeProtectedFunction("discover-osm", { body: { lat: userPos.lat, lng: userPos.lng, radius: 1500, category } }).catch(() => {});
   }, [userPos]);
 
   const fetchInBbox = useCallback(async (radiusM: number) => {
@@ -71,7 +71,7 @@ export function useDiscover() {
       let withDist = await fetchInBbox(3000);
       if (withDist.length < 8) {
         // Re-seed with bigger radius and retry
-        await supabase.functions.invoke("discover-osm", { body: { lat: userPos.lat, lng: userPos.lng, radius: 5000, category: "all" } });
+        await invokeProtectedFunction("discover-osm", { body: { lat: userPos.lat, lng: userPos.lng, radius: 5000, category: "all" } }).catch(() => {});
         withDist = await fetchInBbox(8000);
       }
       if (withDist.length < 4) {
@@ -83,7 +83,7 @@ export function useDiscover() {
       const missing = withDist.filter((p) => !p.why_fits).slice(0, 12).map((p) => p.id);
       if (missing.length && !enrichingRef.current) {
         enrichingRef.current = true;
-        supabase.functions.invoke("discover-enrich", { body: { placeIds: missing, contextHint: `${timeOfDay()}, météo: ${weather || "n/a"}` } })
+        invokeProtectedFunction("discover-enrich", { body: { placeIds: missing, contextHint: `${timeOfDay()}, météo: ${weather || "n/a"}` } })
           .then(async () => {
             const { data: refreshed } = await supabase.from("places").select("*").in("id", missing);
             if (refreshed) {

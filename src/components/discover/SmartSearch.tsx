@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Search, Loader2, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
+import { invokeProtectedFunction } from "@/lib/protected-functions";
 import { distanceKm } from "@/lib/discover";
 import type { Place } from "@/hooks/useDiscover";
 import { searchPhoton, type GeoSuggestion } from "@/lib/geocoding";
@@ -47,7 +47,7 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
     setShowAuto(false);
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("discover-search", {
+      const { data, error } = await invokeProtectedFunction<{ places: Place[] }>("discover-search", {
         body: { query: text, lat: userPos?.lat, lng: userPos?.lng, radius: 4000 },
       });
       if (error) throw error;
