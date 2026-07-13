@@ -15,4 +15,6 @@
   <url><loc>https://xplania.app/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://xplania.app/conditions-utilisation</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://xplania.app/terms-of-use</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/auth</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xplania.app/reset-password</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>
