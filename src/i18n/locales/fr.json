@@ -2983,19 +2983,20 @@
       "suggestion6": "sortie soir authentique"
     },
     "card": {
-      "save": "Sauvegarder",
-      "remove": "Retirer",
+      "save": "Ajouter à une liste",
+      "remove": "Retirer de la liste",
       "hiddenGem": "Hidden gem"
     },
     "drawer": {
       "tipInsider": "💡 Tip insider",
-      "saved": "Sauvegardé",
-      "save": "Sauvegarder",
+      "saved": "Dans ma liste",
+      "save": "Ajouter à une liste",
       "directions": "Itinéraire",
       "noListErr": "Crée une liste d'abord",
       "savedTo": "Sauvegardé dans {{name}}",
       "removed": "Retiré des favoris",
-      "addToItinerary": "Ajouter à mon itinéraire"
+      "addToItinerary": "Ajouter à mon itinéraire",
+      "close": "Fermer"
     },
     "itinerary": {
       "title": "Ajouter à mon itinéraire",
