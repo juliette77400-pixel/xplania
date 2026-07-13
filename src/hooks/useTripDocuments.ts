@@ -1,5 +1,5 @@
 // ✨ Documents de voyage (billets, passeport, réservations) — supporte le rattachement à un jour de carnet (day_id)
-import { useEffect, useState, useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 import { toast } from "sonner";
@@ -21,29 +21,36 @@ export type TripDocument = {
 const BUCKET = "trip-documents";
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
+export const tripDocumentsQueryKey = (tripId: string | undefined, dayId: string | null | undefined) =>
+  ["trip_documents", tripId, dayId ?? null] as const;
+
 export function useTripDocuments(tripId?: string, options?: { dayId?: string | null }) {
   const { user } = useAuth();
   const dayId = options?.dayId;
-  const [documents, setDocuments] = useState<TripDocument[]>([]);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const fetchDocs = useCallback(async () => {
-    if (!tripId || !user) return;
-    setLoading(true);
-    let q = supabase
-      .from("trip_documents")
-      .select("*")
-      .eq("trip_id", tripId)
-      .order("created_at", { ascending: false });
-    if (dayId) q = q.eq("day_id", dayId);
-    const { data, error } = await q;
-    if (!error && data) setDocuments(data as TripDocument[]);
-    setLoading(false);
-  }, [tripId, user, dayId]);
+  const queryKey = tripDocumentsQueryKey(tripId, dayId);
 
-  useEffect(() => {
-    fetchDocs();
-  }, [fetchDocs]);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey,
+    enabled: !!tripId && !!user,
+    queryFn: async () => {
+      let q = supabase
+        .from("trip_documents")
+        .select("*")
+        .eq("trip_id", tripId!)
+        .order("created_at", { ascending: false });
+      if (dayId) q = q.eq("day_id", dayId);
+      const { data, error } = await q;
+      if (error || !data) return [] as TripDocument[];
+      return data as TripDocument[];
+    },
+  });
+
+  const documents = data ?? [];
+
+  const setDocuments = (updater: (prev: TripDocument[]) => TripDocument[]) =>
+    queryClient.setQueryData<TripDocument[]>(queryKey, (prev) => updater(prev ?? []));
 
   const upload = async (
     file: File,
@@ -131,5 +138,5 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
     return data.signedUrl;
   };
 
-  return { documents, loading, upload, remove, getSignedUrl, linkToDay, refetch: fetchDocs };
+  return { documents, loading: tripId && user ? isLoading : false, upload, remove, getSignedUrl, linkToDay, refetch };
 }
