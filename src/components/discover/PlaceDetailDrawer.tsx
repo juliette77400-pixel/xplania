@@ -104,10 +104,51 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
               ))}
             </div>
             <div className="grid grid-cols-2 gap-2 pt-2">
-              <Button onClick={handleSave} variant={isSaved(place.id) ? "default" : "outline"}>
-                <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
-                {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
-              </Button>
+              <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant={isSaved(place.id) ? "default" : "outline"}>
+                    <Heart className={`mr-2 h-4 w-4 ${isSaved(place.id) ? "fill-current" : ""}`} />
+                    {isSaved(place.id) ? t("discoverComp.drawer.saved") : t("discoverComp.drawer.save")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-72 p-2">
+                  <div className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {t("discoverComp.drawer.chooseList")}
+                  </div>
+                  <div className="max-h-56 space-y-0.5 overflow-y-auto">
+                    {lists.map((l) => {
+                      const checked = savedListIds.has(l.id);
+                      return (
+                        <button
+                          key={l.id}
+                          onClick={() => handleToggle(l.id, `${l.emoji ?? "📍"} ${l.name}`)}
+                          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-muted"
+                        >
+                          <span className="text-base">{l.emoji ?? "📍"}</span>
+                          <span className="flex-1 truncate">{l.name}</span>
+                          {checked && <Check className="h-4 w-4 text-primary" />}
+                        </button>
+                      );
+                    })}
+                    {lists.length === 0 && (
+                      <p className="px-2 py-3 text-xs text-muted-foreground">{t("discoverComp.drawer.noListErr")}</p>
+                    )}
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex items-center gap-1.5 px-1 pb-1">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleCreate(); } }}
+                      placeholder={t("discoverComp.drawer.newListPlaceholder")}
+                      className="h-8 text-sm"
+                    />
+                    <Button size="sm" onClick={handleCreate} disabled={!newListName.trim()}>
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
               <Button asChild variant="outline">
                 <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
                   <Navigation className="mr-2 h-4 w-4" />{t("discoverComp.drawer.directions")}
