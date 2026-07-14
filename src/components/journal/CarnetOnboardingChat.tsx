@@ -20,7 +20,6 @@ import {
   Check,
   Pencil,
 } from "lucide-react";
-import jsPDF from "jspdf";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -362,6 +361,7 @@ const CarnetOnboardingChat = ({
       return;
     }
     try {
+      const { default: jsPDF } = await import("jspdf");
       const doc = new jsPDF({ unit: "mm", format: "a4" });
       const pageW = doc.internal.pageSize.getWidth();
       const pageH = doc.internal.pageSize.getHeight();

@@ -10,7 +10,6 @@ import {
   Download, FileText, Filter,
 } from "lucide-react";
 import { toast } from "sonner";
-import jsPDF from "jspdf";
 
 type AuditRow = {
   id: string;
@@ -132,7 +131,8 @@ export default function AdminAuditPanel() {
   };
 
   const exportPdf = () => {
-    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const { default: jsPDF } = await import("jspdf");
+      const doc = new jsPDF({ unit: "pt", format: "a4" });
     const margin = 36;
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
