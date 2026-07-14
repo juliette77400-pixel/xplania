@@ -1919,8 +1919,11 @@ export type Database = {
           id: string
           luxury_score: number
           nature_score: number
+          need_tags: string[] | null
           nomad_score: number
+          onboarding_step: string | null
           organization_score: number
+          qualif: Json | null
           recommended_features: string[]
           reward_points: number
           reward_unlocks: string[]
@@ -1943,8 +1946,11 @@ export type Database = {
           id?: string
           luxury_score?: number
           nature_score?: number
+          need_tags?: string[] | null
           nomad_score?: number
+          onboarding_step?: string | null
           organization_score?: number
+          qualif?: Json | null
           recommended_features?: string[]
           reward_points?: number
           reward_unlocks?: string[]
@@ -1967,8 +1973,11 @@ export type Database = {
           id?: string
           luxury_score?: number
           nature_score?: number
+          need_tags?: string[] | null
           nomad_score?: number
+          onboarding_step?: string | null
           organization_score?: number
+          qualif?: Json | null
           recommended_features?: string[]
           reward_points?: number
           reward_unlocks?: string[]
