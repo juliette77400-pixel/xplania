@@ -4,7 +4,6 @@ import { Share2, Download, Globe, Lock, Copy, Check, Mail, Loader2, Image as Ima
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import jsPDF from "jspdf";
 import { toast } from "sonner";
 import type { Journal, JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
@@ -72,6 +71,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
   const exportPdf = async () => {
     setExporting(true);
     try {
+      const { default: jsPDF } = await import("jspdf");
       const doc = new jsPDF({ unit: "mm", format: "a4" });
       const pageW = 210;
       const pageH = 297;

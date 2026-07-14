@@ -1,4 +1,4 @@
-import jsPDF from "jspdf";
+// jspdf loaded lazily inside exportListToPDF.
 import type { Place } from "@/hooks/useDiscover";
 
 interface ListExport {
@@ -7,7 +7,8 @@ interface ListExport {
   places: Place[];
 }
 
-export function exportListToPDF(list: ListExport) {
+export async function exportListToPDF(list: ListExport) {
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();

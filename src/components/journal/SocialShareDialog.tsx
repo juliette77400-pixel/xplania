@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, Share2, Loader2 } from "lucide-react";
-import html2canvas from "html2canvas";
 import { toast } from "sonner";
 import type { JournalDay } from "@/hooks/useJournal";
 
@@ -41,6 +40,7 @@ const SocialShareDialog = ({ open, onOpenChange, destination, title, cover, day 
 
   const generate = async (): Promise<Blob | null> => {
     if (!cardRef.current) return null;
+    const { default: html2canvas } = await import("html2canvas");
     const canvas = await html2canvas(cardRef.current, { useCORS: true, backgroundColor: null, scale: 2 });
     return await new Promise((res) => canvas.toBlob((b) => res(b), "image/png"));
   };

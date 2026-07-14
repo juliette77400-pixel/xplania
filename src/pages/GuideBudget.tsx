@@ -157,7 +157,6 @@ const GuideBudgetPage = () => {
       /* ignore */
     }
     setHydratedFromStorage(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
 
   // Persist whenever state changes (auto-save), independent of focus/keyboard

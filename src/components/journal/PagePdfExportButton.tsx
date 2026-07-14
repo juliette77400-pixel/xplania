@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { FileDown, Loader2 } from "lucide-react";
-import jsPDF from "jspdf";
 import { toast } from "sonner";
 import type { JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
@@ -19,6 +18,7 @@ const PagePdfExportButton = ({ day, destination }: Props) => {
   const run = async () => {
     setBusy(true);
     try {
+      const { default: jsPDF } = await import("jspdf");
       const doc = new jsPDF({ unit: "mm", format: "a4" });
       const margin = 15;
       const pageW = 210;

@@ -1,5 +1,6 @@
 // ✨ NEW (Tâche 3) — Export PDF "all-in-one" du voyage (résumé + itinéraire + budget + valise + visa + journal)
-import jsPDF from "jspdf";
+// jspdf loaded lazily inside exportTripAllInOnePDF.
+import type { jsPDF } from "jspdf";
 import { supabase } from "@/integrations/supabase/client";
 
 type TripData = {
@@ -80,6 +81,7 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   if (error || !trip) throw new Error("Voyage introuvable");
 
   const t = trip as TripData;
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const dest = t.destination || t.arrival_city || "Voyage";
 

@@ -1,5 +1,4 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+// jspdf + html2canvas are heavy (>600kB combined). Loaded on demand only.
 import type { BudgetCategory } from "@/components/budget/BudgetForecast";
 import type { Expense } from "@/components/budget/AddExpenseForm";
 import type { TravelFormData } from "@/types/travel";
@@ -33,6 +32,7 @@ export async function exportBudgetPdf({
   chartElement,
   t,
 }: ExportBudgetPdfArgs) {
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
@@ -142,6 +142,7 @@ export async function exportBudgetPdf({
   // Chart snapshot
   if (chartElement) {
     try {
+      const { default: html2canvas } = await import("html2canvas");
       const canvas = await html2canvas(chartElement, {
         backgroundColor: "#0d1117",
         scale: 2,
