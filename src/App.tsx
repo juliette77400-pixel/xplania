@@ -109,7 +109,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
-            <Suspense fallback={null}><GlobalPipChat /></Suspense>
+            <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>

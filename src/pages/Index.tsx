@@ -14,6 +14,8 @@ import FaqSection from "@/components/xplania/FaqSection";
 import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
 import QuickJump from "@/components/shared/QuickJump";
+import DialogSkeleton from "@/components/shared/DialogSkeleton";
+
 
 // Dialogs are only mounted when the user opens them — keep them out of the entry bundle.
 const TravelFormDialog = lazy(() => import("@/components/xplania/TravelFormDialog"));
