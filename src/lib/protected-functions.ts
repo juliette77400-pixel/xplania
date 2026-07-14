@@ -18,11 +18,13 @@ export const invokeProtectedFunction = async <T = unknown>(
     return { data: null, error: sessionError ?? new Error("auth_required") };
   }
 
-  return supabase.functions.invoke<T>(functionName, {
+  const invokeOptions = {
     ...options,
     headers: {
       ...(options.headers ?? {}),
       Authorization: `Bearer ${session.access_token}`,
     },
-  });
+  } as Parameters<typeof supabase.functions.invoke<T>>[1];
+
+  return supabase.functions.invoke<T>(functionName, invokeOptions);
 };
