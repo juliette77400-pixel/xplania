@@ -91,7 +91,13 @@ const OnboardingFeatures = () => {
           ))}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <Link
+            to="/onboarding/besoin"
+            className="text-sm text-muted-foreground hover:text-primary"
+          >
+            ← {t("onboarding.features.editNeeds", "Modifier mes réponses")}
+          </Link>
           <Link
             to="/app"
             className="text-sm text-muted-foreground hover:text-primary"
