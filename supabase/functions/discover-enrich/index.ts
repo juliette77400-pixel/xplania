@@ -106,6 +106,7 @@ serve(async (req) => {
     const parsed = JSON.parse(args);
 
     let count = 0;
+    const shown: Array<{ item_key: string; item_type: string; source: string; context?: Record<string, unknown> }> = [];
     for (const item of parsed.places || []) {
       const { error: upErr } = await supa.from("places").update({
         description: item.description,
@@ -116,7 +117,12 @@ serve(async (req) => {
         score: Math.round(item.score),
       }).eq("id", item.id);
       if (!upErr) count++;
+      const src = places.find((p) => p.id === item.id);
+      if (src?.name) shown.push({ item_key: src.name, item_type: "place", source: "discover-enrich", context: { category: src.category } });
     }
+
+    // Xplania brain: record shown recommendations
+    await recordShownRecommendations(supa, __auth.userId, shown);
 
     return new Response(JSON.stringify({ enriched: count }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
