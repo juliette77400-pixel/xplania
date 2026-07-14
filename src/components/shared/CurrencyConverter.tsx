@@ -117,7 +117,6 @@ const CurrencyConverter = ({ destination, defaultFrom = "EUR" }: Props) => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => load(from), 60_000);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from]);
 
   const value = parseFloat(amount);

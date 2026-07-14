@@ -1,4 +1,5 @@
-// Compute insights from a journal: most-visited places, mood evolution, best moments
+
+import { requireAuth } from "../_shared/require-auth.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -6,6 +7,9 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
 
   try {
     const { days } = await req.json();

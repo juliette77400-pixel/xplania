@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.50.0";
+import { requireAuth } from "../_shared/require-auth.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -24,6 +26,12 @@ function distMeters(lat1: number, lng1: number, lat2: number, lng2: number) {
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  const __auth = await requireAuth(req, corsHeaders);
+  if (__auth instanceof Response) return __auth;
+  const __rl = checkRateLimit({ key: "gam-verify-claim", subject: __auth.userId, limit: 20, windowMs: 60_000 });
+  const __rlResp = rateLimitResponse(__rl, corsHeaders);
+  if (__rlResp) return __rlResp;
 
   try {
     const authHeader = req.headers.get("Authorization");
