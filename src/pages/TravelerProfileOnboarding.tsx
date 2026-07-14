@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import TinderCard, { type TinderCardData } from "@/components/tinder/TinderCard";
 import {
   applyScoreTags,
+  BADGE_REWARDS,
   calculateBadge,
   emptyScores,
   TRAVELER_DIMENSIONS,
