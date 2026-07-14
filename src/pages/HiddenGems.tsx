@@ -15,11 +15,11 @@ interface HiddenGemRow {
   destination_id: string | null;
   name: string;
   kind: string;
-  summary: string | null;
+  summary_fr: string | null;
+  summary_en: string | null;
   best_season: string | null;
   originality_score: number;
   tags: string[] | null;
-  photo_url: string | null;
   lat: number | null;
   lng: number | null;
   destinations?: { name: string; country: string; slug: string } | null;
