@@ -2,6 +2,7 @@
 // (France-Diplomatie, Institut Pasteur, OMS / WHO) for a given destination.
 // Returns structured JSON with a "lastChecked" timestamp + source attributions.
 import { requireAuth } from "../_shared/require-auth.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -92,6 +93,10 @@ Deno.serve(async (req) => {
   }
   const __auth = await requireAuth(req, corsHeaders);
   if (__auth instanceof Response) return __auth;
+
+  const __rl = checkRateLimit({ key: "visa-official-info", subject: __auth.userId, limit: 20, windowMs: 60_000 });
+  const __rlResp = rateLimitResponse(__rl, corsHeaders);
+  if (__rlResp) return __rlResp;
 
 
   try {
