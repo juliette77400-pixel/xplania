@@ -130,10 +130,13 @@ const TravelerProfileOnboarding = () => {
       if (!user) return;
       setFinalizing(true);
       const badge = calculateBadge(finalScores);
+      const reward = BADGE_REWARDS[badge.key];
       const row: Record<string, number | string | string[] | null> = {
         user_id: user.id,
         badge: badge.key,
         recommended_features: badge.features as unknown as string[],
+        reward_points: reward.points,
+        reward_unlocks: reward.unlocks as unknown as string[],
         completed_at: new Date().toISOString(),
       };
       for (const d of TRAVELER_DIMENSIONS) {
