@@ -133,7 +133,9 @@ ${structureRule}
 Tu ne dis JAMAIS que tu ne peux pas répondre. Si tu n'es pas sûr à 100%, dis-le honnêtement et donne ta meilleure estimation. Écris comme si tu textais à un pote. Un emoji de temps en temps ✈️.
 
 CONTEXTE
-${context}`;
+${context}
+
+${travelerCtx}`;
 
     const recentHistory = (history as ChatMessage[])
       .filter((m) => m && typeof m.content === "string" && (m.role === "user" || m.role === "assistant"))
