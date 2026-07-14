@@ -1,8 +1,9 @@
-import jsPDF from "jspdf";
+// jspdf loaded lazily inside exportMoodFavoritesPDF.
 import type { MoodFavorite } from "@/hooks/useMoodExplorer";
 import { moodByKey } from "./moods";
 
-export function exportMoodFavoritesPDF(favorites: MoodFavorite[]) {
+export async function exportMoodFavoritesPDF(favorites: MoodFavorite[]) {
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();

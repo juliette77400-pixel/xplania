@@ -1,4 +1,4 @@
-import jsPDF from "jspdf";
+// jspdf loaded lazily inside the exported function.
 import type { ChecklistItem } from "@/components/valise/ChecklistSection";
 import type { LuggageMode } from "@/components/valise/LuggageModes";
 import type { TransportMode } from "@/components/valise/TransportSelector";
@@ -18,8 +18,9 @@ const transportEmoji: Record<TransportMode, string> = {
   bateau: "Bateau",
 };
 
-export function exportValisePdf(opts: ValisePdfOptions) {
+export async function exportValisePdf(opts: ValisePdfOptions) {
   const { destination, days, mode, transport, categories } = opts;
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();

@@ -1,4 +1,4 @@
-import jsPDF from "jspdf";
+// jspdf loaded lazily inside generateChecklistPdf.
 import i18n from "@/i18n";
 
 /**
