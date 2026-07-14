@@ -41,6 +41,8 @@ const Parametres = lazy(() => import("./pages/Parametres.tsx"));
 const Legal = lazy(() => import("./pages/Legal.tsx"));
 const Trust = lazy(() => import("./pages/Trust.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
+const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnboarding.tsx"));
+const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
