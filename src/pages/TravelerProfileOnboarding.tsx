@@ -87,6 +87,11 @@ const TravelerProfileOnboarding = () => {
       setCards((allCards ?? []) as DbCard[]);
       setLoading(false);
 
+      // Friendly "welcome back" toast when we resume mid-parcours
+      if (done.size > 0 && done.size < (allCards?.length ?? 20)) {
+        toast(t("travelerProfile.resumed", { done: done.size, total: allCards?.length ?? 20 }));
+      }
+
       // Kick off image seeding if any card lacks an image
       if ((allCards ?? []).some((c) => !c.image_url)) {
         void supabase.functions.invoke("tinder-seed-images").then(() => {
