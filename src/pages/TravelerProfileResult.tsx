@@ -3,13 +3,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { Gift, Loader2, LogIn, RefreshCw, Sparkles, Trophy } from "lucide-react";
-import {
-  PolarAngleAxis,
-  PolarGrid,
-  Radar,
-  RadarChart,
-  ResponsiveContainer,
-} from "recharts";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -85,11 +78,11 @@ const TravelerProfileResult = () => {
     };
   }, [user, profile, local]);
 
-  const radarData = useMemo(() => {
+  const scoreData = useMemo(() => {
     if (!display) return [];
     return TRAVELER_DIMENSIONS.map((d) => ({
       dim: t(`travelerProfile.dimensions.${d}`),
-      value: Math.max(0, display.scores[d] ?? 0),
+      value: Math.min(100, Math.max(0, display.scores[d] ?? 0)),
     }));
   }, [display, t]);
 
@@ -173,23 +166,21 @@ const TravelerProfileResult = () => {
 
         <div className="mt-10 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
           <h2 className="mb-4 text-lg font-bold">{t("travelerProfile.yourScores")}</h2>
-          <div className="h-[380px] w-full">
-            <ResponsiveContainer>
-              <RadarChart data={radarData} outerRadius="75%">
-                <PolarGrid stroke="hsl(var(--border))" />
-                <PolarAngleAxis
-                  dataKey="dim"
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-                />
-                <Radar
-                  name="scores"
-                  dataKey="value"
-                  stroke="hsl(var(--primary))"
-                  fill="hsl(var(--primary))"
-                  fillOpacity={0.35}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
+          <div className="grid gap-4 sm:grid-cols-2" aria-label={t("travelerProfile.yourScores")}>
+            {scoreData.map((item) => (
+              <div key={item.dim} className="rounded-2xl border border-border/60 bg-background/60 p-4">
+                <div className="mb-2 flex items-center justify-between gap-3 text-sm font-semibold">
+                  <span className="min-w-0 truncate text-muted-foreground">{item.dim}</span>
+                  <span className="shrink-0 text-foreground">{Math.round(item.value)}</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-muted">
+                  <div
+                    className="h-full rounded-full bg-primary transition-[width] duration-500"
+                    style={{ width: `${item.value}%` }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
