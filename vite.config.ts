@@ -88,7 +88,12 @@ export default defineConfig(({ mode }) => ({
           if (id.includes("recharts") || id.includes("d3-")) return "charts";
           if (id.includes("framer-motion")) return "motion";
           if (id.includes("@radix-ui")) return "radix";
-          if (id.includes("i18next")) return "i18n";
+          if (id.includes("i18next") || id.includes("react-i18next")) return "i18n";
+          if (id.includes("@tanstack")) return "tanstack";
+          if (id.includes("date-fns")) return "date-fns";
+          if (id.includes("zod")) return "zod";
+          if (id.includes("sonner")) return "sonner";
+          if (id.includes("lucide-react")) return "icons";
         },
       },
     },
