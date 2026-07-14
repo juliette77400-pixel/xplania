@@ -144,6 +144,7 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
+          { role: "system", content: ctxSnippet },
           { role: "user", content: userPrompt },
         ],
         tools: [{
