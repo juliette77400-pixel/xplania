@@ -149,3 +149,55 @@ export function applyScoreTags(
 export function emptyScores(): TravelerScores {
   return Object.fromEntries(TRAVELER_DIMENSIONS.map((d) => [d, 0])) as TravelerScores;
 }
+
+/**
+ * Blends the badge's default features with the user's need_tags to produce a
+ * personalized top-2 feature recommendation. A "need" only nudges the ranking
+ * — the badge stays authoritative but the picks shift toward what the user
+ * explicitly asked for.
+ */
+const NEED_TO_FEATURE_BOOST: Record<string, Partial<Record<FeatureKey, number>>> = {
+  no_idea:            { discover: 3, mood: 2 },
+  prepare_trip:       { carnet: 3, "guide-visa": 2, "guide-valise": 1 },
+  budget_fear:        { "guide-budget": 4, "guide-valise": 1 },
+  want_unusual:       { discover: 3, mood: 2 },
+  travel_differently: { mood: 3, discover: 1 },
+  just_curious:       { discover: 2, mood: 1 },
+};
+
+const ALL_FEATURES: FeatureKey[] = [
+  "discover",
+  "carnet",
+  "suivi",
+  "mood",
+  "guide-valise",
+  "guide-budget",
+  "guide-visa",
+];
+
+export function recomputeRecommendedFeatures(
+  badge: TravelerBadgeKey,
+  needs: string[] = [],
+): [FeatureKey, FeatureKey] {
+  const badgeFeatures = BADGE_FEATURES[badge] ?? BADGE_FEATURES.curious;
+  const scores = new Map<FeatureKey, number>();
+  // Badge picks weigh most: 5 for the primary, 4 for the secondary.
+  scores.set(badgeFeatures[0], 5);
+  scores.set(badgeFeatures[1], (scores.get(badgeFeatures[1]) ?? 0) + 4);
+  // Apply need boosts.
+  for (const n of needs) {
+    const boost = NEED_TO_FEATURE_BOOST[n];
+    if (!boost) continue;
+    for (const [feat, delta] of Object.entries(boost)) {
+      const key = feat as FeatureKey;
+      scores.set(key, (scores.get(key) ?? 0) + (delta ?? 0));
+    }
+  }
+  const ranked = ALL_FEATURES
+    .map((f) => [f, scores.get(f) ?? 0] as const)
+    .sort((a, b) => b[1] - a[1]);
+  const top1 = ranked[0][0];
+  const top2 = ranked.find(([f]) => f !== top1)?.[0] ?? badgeFeatures[1];
+  return [top1, top2];
+}
+

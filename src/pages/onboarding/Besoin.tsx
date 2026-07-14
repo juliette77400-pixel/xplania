@@ -5,11 +5,13 @@ import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTravelerProfile } from "@/hooks/useTravelerProfile";
 import {
   getLocalOnboarding,
   setLocalOnboarding,
   trackOnboardingEvent,
 } from "@/lib/onboarding-state";
+import { recomputeRecommendedFeatures, type TravelerBadgeKey } from "@/lib/traveler-badge";
 
 const NEEDS = [
   { key: "no_idea", fr: "Je ne sais pas où partir", en: "I don't know where to go" },
@@ -24,10 +26,24 @@ const Besoin = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { data: profile } = useTravelerProfile();
   const isEn = i18n.language?.startsWith("en");
 
-  const initial = useMemo(() => getLocalOnboarding().needs ?? [], []);
+  // Prefer DB-stored needs when the user is logged in, fall back to localStorage.
+  const initial = useMemo(() => {
+    const dbNeeds = (profile?.need_tags ?? []) as string[];
+    if (dbNeeds.length > 0) return dbNeeds;
+    return getLocalOnboarding().needs ?? [];
+  }, [profile?.need_tags]);
   const [selected, setSelected] = useState<Set<string>>(new Set(initial));
+
+  // Sync selection when profile loads (e.g. user coming back to edit answers).
+  useEffect(() => {
+    if (initial.length > 0 && selected.size === 0) {
+      setSelected(new Set(initial));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initial.join("|")]);
 
   useEffect(() => {
     setLocalOnboarding({ step: "besoin" });
@@ -45,12 +61,23 @@ const Besoin = () => {
 
   const next = async () => {
     const arr = Array.from(selected);
+    // Recompute recommended features from the (possibly updated) needs.
+    const badge = (profile?.badge ?? "curious") as TravelerBadgeKey;
+    const recommended = recomputeRecommendedFeatures(badge, arr);
     setLocalOnboarding({ needs: arr, step: "features" });
-    trackOnboardingEvent("step_complete", { step: "besoin", needs: arr });
+    trackOnboardingEvent("step_complete", {
+      step: "besoin",
+      needs: arr,
+      recommended,
+    });
     if (user) {
       await supabase
         .from("traveler_profiles")
-        .update({ need_tags: arr as never, onboarding_step: "features" })
+        .update({
+          need_tags: arr as never,
+          recommended_features: recommended as unknown as string[],
+          onboarding_step: "features",
+        })
         .eq("user_id", user.id);
     }
     navigate("/profil-voyageur/features");
