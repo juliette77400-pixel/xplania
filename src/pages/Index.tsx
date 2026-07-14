@@ -14,6 +14,8 @@ import FaqSection from "@/components/xplania/FaqSection";
 import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
 import QuickJump from "@/components/shared/QuickJump";
+import DialogSkeleton from "@/components/shared/DialogSkeleton";
+
 
 // Dialogs are only mounted when the user opens them — keep them out of the entry bundle.
 const TravelFormDialog = lazy(() => import("@/components/xplania/TravelFormDialog"));
@@ -86,7 +88,7 @@ const Index = () => {
       <FinalCtaSection onCreateTrip={handleCreateTrip} />
       <Footer onCreateTrip={handleCreateTrip} />
       {travelFormOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DialogSkeleton size="lg" />}>
           <TravelFormDialog
             open={travelFormOpen}
             onOpenChange={setTravelFormOpen}
@@ -139,7 +141,7 @@ const Index = () => {
       )}
       <QuickJump />
       {feedbackOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DialogSkeleton size="md" />}>
           <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
         </Suspense>
       )}
@@ -147,10 +149,11 @@ const Index = () => {
         <OnboardingDialog onCreateTrip={handleCreateTrip} />
       </Suspense>
       {quotaOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DialogSkeleton size="sm" compact />}>
           <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
         </Suspense>
       )}
+
     </div>
   );
 };

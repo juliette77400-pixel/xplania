@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 const GlobalPipChat = lazy(() => import("./components/shared/GlobalPipChat"));
+import PipChatSkeleton from "./components/shared/PipChatSkeleton";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 
 // Index (landing page) stays eager for a fast first paint.
@@ -109,7 +110,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
-            <Suspense fallback={null}><GlobalPipChat /></Suspense>
+            <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
