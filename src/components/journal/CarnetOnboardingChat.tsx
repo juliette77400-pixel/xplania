@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useDisplayName } from "@/lib/data/profiles";
 import { useAuth } from "@/hooks/useAuth";
 import type { JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";

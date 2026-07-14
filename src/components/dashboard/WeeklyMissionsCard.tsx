@@ -6,14 +6,8 @@ import { Target, Search, Landmark, Heart, Clock, ArrowRight } from "lucide-react
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
-import { ensureWeeklySnapshot, formatTimeLeft } from "@/lib/weekly-missions";
-
-interface Counts {
-  moodHiddenGems: number;
-  exploreVisited: number;
-  journalMoods: number;
-}
+import { useWeeklyProgress } from "@/lib/data/weekly-progress";
+import { formatTimeLeft } from "@/lib/weekly-missions";
 
 const buildMissions = (t: (k: string) => string) => [
   { key: "moodHiddenGems" as const, title: t("weeklyMissionsCard.missionGem"), xp: 50, icon: Search, link: "/discover", color: "from-cyan-400 to-cyan-500", target: 1 },
@@ -24,35 +18,15 @@ const buildMissions = (t: (k: string) => string) => [
 const WeeklyMissionsCard = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [counts, setCounts] = useState<Counts>({ moodHiddenGems: 0, exploreVisited: 0, journalMoods: 0 });
+  const { counts, baseline } = useWeeklyProgress();
   const [tick, setTick] = useState(0);
   const MISSIONS = useMemo(() => buildMissions(t), [t]);
 
   useEffect(() => {
-    if (!user) return;
-    let cancelled = false;
-    (async () => {
-      const [nodes, blocks, favs] = await Promise.all([
-        supabase.from("explore_nodes").select("status").eq("user_id", user.id),
-        supabase.from("journal_blocks").select("type").eq("user_id", user.id),
-        supabase.from("mood_favorites").select("place_id,mood_places!inner(hidden_gem)").eq("user_id", user.id),
-      ]);
-      if (cancelled) return;
-      setCounts({
-        exploreVisited: (nodes.data || []).filter((n: any) => n.status === "visited").length,
-        journalMoods: (blocks.data || []).filter((b: any) => b.type === "mood").length,
-        moodHiddenGems: (favs.data || []).filter((f: any) => f.mood_places?.hidden_gem).length,
-      });
-    })();
-    return () => { cancelled = true; };
-  }, [user]);
-
-  useEffect(() => {
-    const t = setInterval(() => setTick((x) => x + 1), 60_000);
-    return () => clearInterval(t);
+    const id = setInterval(() => setTick((x) => x + 1), 60_000);
+    return () => clearInterval(id);
   }, []);
 
-  const baseline = useMemo(() => ensureWeeklySnapshot(counts as any).baseline, [user]);
   const timeLeft = useMemo(() => formatTimeLeft(), [tick]);
 
   const items = MISSIONS.map((m) => {
