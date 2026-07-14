@@ -5,12 +5,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Target, X, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
-import { ensureWeeklySnapshot, getCurrentWeekKey } from "@/lib/weekly-missions";
+import { useWeeklyProgress, type WeeklyProgressCounts } from "@/lib/data/weekly-progress";
+import { getCurrentWeekKey } from "@/lib/weekly-missions";
 
 const DISMISS_KEY = "xplania_missions_banner_dismiss_v1";
-
-interface Counts { moodHiddenGems: number; exploreVisited: number; journalMoods: number; }
 
 const HIDDEN_ROUTES = ["/auth", "/reset-password", "/carnet/public", "/suivi/public"];
 
@@ -18,37 +16,17 @@ const MissionsBanner = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { pathname } = useLocation();
-  const [counts, setCounts] = useState<Counts>({ moodHiddenGems: 0, exploreVisited: 0, journalMoods: 0 });
+  const { counts, baseline } = useWeeklyProgress();
   const [dismissed, setDismissed] = useState<string | null>(null);
 
   useEffect(() => {
     try { setDismissed(localStorage.getItem(DISMISS_KEY)); } catch {}
   }, []);
 
-  useEffect(() => {
-    if (!user) return;
-    let cancel = false;
-    (async () => {
-      const [nodes, blocks, favs] = await Promise.all([
-        supabase.from("explore_nodes").select("status").eq("user_id", user.id),
-        supabase.from("journal_blocks").select("type").eq("user_id", user.id),
-        supabase.from("mood_favorites").select("place_id,mood_places!inner(hidden_gem)").eq("user_id", user.id),
-      ]);
-      if (cancel) return;
-      setCounts({
-        exploreVisited: (nodes.data || []).filter((n: any) => n.status === "visited").length,
-        journalMoods: (blocks.data || []).filter((b: any) => b.type === "mood").length,
-        moodHiddenGems: (favs.data || []).filter((f: any) => f.mood_places?.hidden_gem).length,
-      });
-    })();
-    return () => { cancel = true; };
-  }, [user]);
-
-  const baseline = useMemo(() => ensureWeeklySnapshot(counts as any).baseline, [user]);
   const wk = getCurrentWeekKey();
 
   const done = useMemo(() => {
-    const targets: Array<keyof Counts> = ["moodHiddenGems", "exploreVisited", "journalMoods"];
+    const targets: Array<keyof WeeklyProgressCounts> = ["moodHiddenGems", "exploreVisited", "journalMoods"];
     return targets.filter((k) => Math.max(0, counts[k] - ((baseline?.[k] as number) ?? 0)) >= 1).length;
   }, [counts, baseline]);
 
