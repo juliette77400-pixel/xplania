@@ -50,7 +50,7 @@ const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Pr
       });
       if (error) throw error;
       const w = data || {};
-      await supabase.from("journal_days").update({ weather: w }).eq("id", day.id);
+      await supabase.from("journal_days").update({ weather: w as any }).eq("id", day.id);
       toast.success(t("j2.weatherSaved"));
       onChanged();
     } catch (e: any) {

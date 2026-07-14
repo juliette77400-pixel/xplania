@@ -81,7 +81,7 @@ const ExploreTrip = () => {
           </div>
         ) : (
           <>
-            <ProgressHeader progress={explore.progress} cityName={cityNode?.name || trip?.destination} />
+            <ProgressHeader progress={explore.progress} cityName={cityNode?.name || trip?.destination || undefined} />
             <BadgesShowcase badges={explore.badges} nodes={explore.nodes} mediaCount={explore.media.length} />
 
             <div className="grid lg:grid-cols-[1fr_320px] gap-5">

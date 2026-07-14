@@ -42,7 +42,7 @@ export function usePlaceRatings(placeId: string | null) {
     enabled: !!placeId,
     queryFn: async () => {
       // Public listing via RPC — does NOT expose user_id of other raters.
-      const { data, error } = await supabase.rpc("list_place_ratings_public", { _place_id: placeId });
+      const { data, error } = await supabase.rpc("list_place_ratings_public", { _place_id: placeId! });
       if (error) console.error(error);
       const list = ((data as any[]) || []).map((r) => ({
         id: r.id,
