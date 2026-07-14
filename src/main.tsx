@@ -27,16 +27,18 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
   );
 }
 
-const [{ default: App }, { ThemeProvider }, { registerAppSW }] = await Promise.all([
-  import("./App.tsx"),
-  import("@/hooks/useTheme"),
-  import("@/pwa/registerSW"),
-]);
+void (async () => {
+  const [{ default: App }, { ThemeProvider }, { registerAppSW }] = await Promise.all([
+    import("./App.tsx"),
+    import("@/hooks/useTheme"),
+    import("@/pwa/registerSW"),
+  ]);
 
-createRoot(rootEl).render(
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>
-);
+  createRoot(rootEl).render(
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
 
-void registerAppSW();
+  void registerAppSW();
+})();
