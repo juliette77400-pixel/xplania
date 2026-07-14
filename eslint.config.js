@@ -28,4 +28,16 @@ export default tseslint.config(
       "no-empty": "off",
     },
   },
+  {
+    // shadcn/ui components ship variants (cva) + component in the same file
+    // by design; hooks files often colocate types/constants with the hook.
+    // The react-refresh rule is a dev-only HMR hint, not a correctness rule.
+    files: [
+      "src/components/ui/**/*.{ts,tsx}",
+      "src/hooks/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 );

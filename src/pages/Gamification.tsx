@@ -267,6 +267,7 @@ const GamificationPage = () => {
     [counts, weeklyBaseline],
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- tick is the trigger, formatTimeLeft() reads current time
   const timeLeft = useMemo(() => formatTimeLeft(), [tick]);
 
   // XP — derived from real activity counts (single source of truth)

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -52,13 +52,16 @@ export function usePlaceLists() {
     },
   });
 
-  const lists = data?.lists ?? [];
-  const items = data?.items ?? [];
+  const lists = useMemo<PlaceList[]>(() => data?.lists ?? [], [data?.lists]);
+  const items = useMemo<ListItem[]>(() => data?.items ?? [], [data?.items]);
 
-  const setData = (updater: (prev: PlaceListsData) => PlaceListsData) =>
-    queryClient.setQueryData<PlaceListsData>(placeListsQueryKey(user?.id), (prev) =>
-      updater(prev ?? { lists: [], items: [] }),
-    );
+  const setData = useCallback(
+    (updater: (prev: PlaceListsData) => PlaceListsData) =>
+      queryClient.setQueryData<PlaceListsData>(placeListsQueryKey(user?.id), (prev) =>
+        updater(prev ?? { lists: [], items: [] }),
+      ),
+    [queryClient, user?.id],
+  );
 
   const createList = useCallback(
     async (name: string, emoji = "📍") => {
@@ -72,7 +75,7 @@ export function usePlaceLists() {
         setData((prev) => ({ ...prev, lists: [data as PlaceList, ...prev.lists] }));
       return data as PlaceList | null;
     },
-    [user],
+    [user, setData],
   );
 
   const toggleItem = useCallback(
@@ -92,7 +95,7 @@ export function usePlaceLists() {
       if (data) setData((prev) => ({ ...prev, items: [...prev.items, data as ListItem] }));
       return true;
     },
-    [items, user],
+    [items, user, setData],
   );
 
   const isSaved = useCallback((placeId: string) => items.some((i) => i.place_id === placeId), [items]);

@@ -116,6 +116,7 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { modes };
 export default LuggageModes;
 

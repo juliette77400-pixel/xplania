@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pingStreakAction } from "@/lib/streak";
 import { supabase } from "@/integrations/supabase/client";
@@ -95,7 +95,7 @@ export function useMoodExplorer() {
       return (data as MoodFavorite[]) || [];
     },
   });
-  const favorites = favoritesQuery.data ?? [];
+  const favorites = useMemo<MoodFavorite[]>(() => favoritesQuery.data ?? [], [favoritesQuery.data]);
 
   const historyQuery = useQuery({
     queryKey: moodHistoryKey(user?.id),

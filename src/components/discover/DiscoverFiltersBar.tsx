@@ -10,6 +10,7 @@ export interface DiscoverFilters {
   sortBy: SortBy;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const DEFAULT_FILTERS: DiscoverFilters = {
   distanceKm: 10,
   hiddenOnly: false,

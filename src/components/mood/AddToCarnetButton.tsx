@@ -59,7 +59,7 @@ const AddToCarnetButton = ({ mood, topPlace, placesCount }: Props) => {
     });
     const place = topPlace?.name ? `\n📍 ${topPlace.name}` : "";
     setNote(`${base}${place}`);
-  }, [open, mood, topPlace?.name]);
+  }, [open, mood, topPlace?.name, m?.emoji, m?.label, t]);
 
   const handleSave = async () => {
     if (!user || !tripId || !mood) return;

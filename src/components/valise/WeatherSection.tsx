@@ -64,6 +64,10 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
 
   useEffect(() => {
     fetchWeather();
+    // fetchWeather is intentionally not in the deps: it closes over `destination`
+    // which is already the trigger, and we do not want a new fetch when the
+    // callback identity changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [destination]);
 
   const handleRefresh = () => {

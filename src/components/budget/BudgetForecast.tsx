@@ -169,5 +169,6 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { defaultCategories };
 export default BudgetForecast;

@@ -27,6 +27,7 @@ const WeeklyMissionsCard = () => {
     return () => clearInterval(id);
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- tick is the trigger, formatTimeLeft() reads current time
   const timeLeft = useMemo(() => formatTimeLeft(), [tick]);
 
   const items = MISSIONS.map((m) => {

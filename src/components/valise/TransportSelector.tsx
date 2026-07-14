@@ -10,6 +10,7 @@ interface TransportSelectorProps {
   isLoading?: boolean;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const transports: { id: TransportMode; icon: React.ReactNode; emoji: string }[] = [
   { id: "avion", icon: <Plane className="w-4 h-4" />, emoji: "✈️" },
   { id: "train", icon: <Train className="w-4 h-4" />, emoji: "🚆" },
