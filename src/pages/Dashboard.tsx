@@ -45,8 +45,10 @@ const Dashboard = () => {
     <main className="container mx-auto max-w-6xl space-y-10 px-4 py-7 sm:py-12">
       <motion.header initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div><p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><Sparkles className="mr-1 inline h-3.5 w-3.5" />{t("myDashboard.kicker")}</p><h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{t("myDashboard.greetingSimple")} <span className="gradient-text">{firstName}</span></h1><p className="mt-2 text-sm text-muted-foreground">{activeTrips.length ? t("myDashboard.tripsActive", {count:activeTrips.length}) : t("myDashboard.noTripsCta")}</p></div>
-        <Button asChild className="gradient-button h-11 rounded-xl px-5 font-bold text-primary-foreground"><Link to="/"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createTrip")}</Link></Button>
-      </motion.header>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button asChild variant="outline" className="h-11 rounded-xl px-4 font-semibold" title="Revoir ton profil voyageur (aucun score n'est modifié)"><Link to="/"><Heart className="mr-2 h-4 w-4 text-primary" />Revoir mon Tinder</Link></Button>
+          <Button asChild className="gradient-button h-11 rounded-xl px-5 font-bold text-primary-foreground"><Link to="/carnets"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createTrip")}</Link></Button>
+        </div></motion.header>
 
       <section aria-labelledby="next-trip-title"><div className="mb-4 flex items-center justify-between"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("myDashboard.copilotKicker")}</p><h2 id="next-trip-title" className="mt-1 text-xl font-bold sm:text-2xl">{t("myDashboard.nextTripTitle")}</h2></div></div><NextTripUtilitiesCard trips={trips} /></section>
 
