@@ -1,9 +1,6 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 import "./i18n";
-import { ThemeProvider } from "@/hooks/useTheme";
-import { registerAppSW } from "@/pwa/registerSW";
 
 const rootEl = document.getElementById("root")!;
 
@@ -30,10 +27,18 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
   );
 }
 
-createRoot(rootEl).render(
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>
-);
+void (async () => {
+  const [{ default: App }, { ThemeProvider }, { registerAppSW }] = await Promise.all([
+    import("./App.tsx"),
+    import("@/hooks/useTheme"),
+    import("@/pwa/registerSW"),
+  ]);
 
-void registerAppSW();
+  createRoot(rootEl).render(
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
+
+  void registerAppSW();
+})();
