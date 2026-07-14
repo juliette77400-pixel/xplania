@@ -142,6 +142,7 @@ export async function exportBudgetPdf({
   // Chart snapshot
   if (chartElement) {
     try {
+      const { default: html2canvas } = await import("html2canvas");
       const canvas = await html2canvas(chartElement, {
         backgroundColor: "#0d1117",
         scale: 2,
