@@ -56,7 +56,8 @@ export default function HiddenGems() {
     return (data ?? []).filter((g) => {
       if (destFilter !== "all" && g.destinations?.slug !== destFilter) return false;
       if (!q) return true;
-      const hay = `${g.name} ${g.summary ?? ""} ${(g.tags ?? []).join(" ")} ${g.destinations?.name ?? ""}`.toLowerCase();
+      const summary = g.summary_fr ?? g.summary_en ?? "";
+      const hay = `${g.name} ${summary} ${(g.tags ?? []).join(" ")} ${g.destinations?.name ?? ""}`.toLowerCase();
       return hay.includes(q);
     });
   }, [data, query, destFilter]);
