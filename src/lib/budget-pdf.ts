@@ -1,5 +1,4 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+// jspdf + html2canvas are heavy (>600kB combined). Loaded on demand only.
 import type { BudgetCategory } from "@/components/budget/BudgetForecast";
 import type { Expense } from "@/components/budget/AddExpenseForm";
 import type { TravelFormData } from "@/types/travel";
