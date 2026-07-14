@@ -83,7 +83,11 @@ serve(async (req) => {
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
-        messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }],
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "system", content: ctxSnippet },
+          { role: "user", content: userPrompt },
+        ],
         tools: [tool],
         tool_choice: { type: "function", function: { name: "enrich_places" } },
       }),
