@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
-import { Heart, SkipForward, X, Loader2, Info } from "lucide-react";
+import { Heart, SkipForward, X, Loader2, Info, RefreshCw, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -49,6 +49,10 @@ const TravelerProfileOnboarding = () => {
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [finalizing, setFinalizing] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [resetting, setResetting] = useState(false);
+  const [retryTick, setRetryTick] = useState(0);
+  const retryTimerRef = useRef<number | null>(null);
 
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
@@ -61,53 +65,61 @@ const TravelerProfileOnboarding = () => {
     let cancelled = false;
     (async () => {
       setLoading(true);
+      setLoadError(null);
       const cardsQ = supabase
         .from("tinder_cards")
         .select("id, name, image_url, phrase_fr, phrase_en, score_tags, order_index")
         .eq("active", true)
         .order("order_index", { ascending: true });
 
-      const [{ data: allCards, error: e1 }, swipeRes] = await Promise.all([
-        cardsQ,
-        user
-          ? supabase
-              .from("user_swipes")
-              .select("card_id, direction")
-              .eq("user_id", user.id)
-          : Promise.resolve({ data: null, error: null } as {
-              data: { card_id: string; direction: string }[] | null;
-              error: null;
-            }),
-      ]);
+      let allCards: DbCard[] | null = null;
+      let e1: unknown = null;
+      let swipeRes: { data: { card_id: string; direction: string }[] | null; error: unknown } = { data: null, error: null };
+      try {
+        const [cardsRes, sw] = await Promise.all([
+          cardsQ,
+          user
+            ? supabase.from("user_swipes").select("card_id, direction").eq("user_id", user.id)
+            : Promise.resolve({ data: null, error: null } as typeof swipeRes),
+        ]);
+        allCards = (cardsRes.data ?? null) as DbCard[] | null;
+        e1 = cardsRes.error;
+        swipeRes = sw as typeof swipeRes;
+      } catch (err) {
+        e1 = err;
+      }
       if (cancelled) return;
+
       if (e1) {
-        toast.error(t("travelerProfile.loadError"));
+        const msg = (e1 as { message?: string })?.message || t("travelerProfile.loadError");
+        setLoadError(msg);
         setLoading(false);
+        // Auto-retry with backoff (max ~30s) as long as the user stays on the page.
+        const delay = Math.min(30000, 2000 * Math.pow(2, Math.min(retryTick, 4)));
+        if (retryTimerRef.current) window.clearTimeout(retryTimerRef.current);
+        retryTimerRef.current = window.setTimeout(() => setRetryTick((n) => n + 1), delay);
         return;
       }
 
       const localSwipes = user ? [] : getLocalOnboarding().swipes;
       const source = user ? swipeRes.data ?? [] : localSwipes;
-      const done = new Set(source.map((s) => s.card_id));
-      setSwipedIds(done);
+      const doneIds = new Set(source.map((s) => s.card_id));
+      setSwipedIds(doneIds);
 
       let running = emptyScores();
       const cardsById = new Map((allCards ?? []).map((c) => [c.id, c]));
       for (const s of source) {
         const c = cardsById.get(s.card_id);
         if (!c) continue;
-        running = applyScoreTags(
-          running,
-          c.score_tags as Record<string, number>,
-          s.direction as Direction,
-        );
+        running = applyScoreTags(running, c.score_tags as Record<string, number>, s.direction as Direction);
       }
       setScores(running);
       setCards((allCards ?? []) as DbCard[]);
+      setIndex(0);
       setLoading(false);
 
-      if (done.size > 0 && done.size < (allCards?.length ?? 20)) {
-        toast(t("travelerProfile.resumed", { done: done.size, total: allCards?.length ?? 20 }));
+      if (doneIds.size > 0 && doneIds.size < (allCards?.length ?? 20)) {
+        toast(t("travelerProfile.resumed", { done: doneIds.size, total: allCards?.length ?? 20 }));
       }
 
       if ((allCards ?? []).some((c) => !c.image_url)) {
@@ -123,8 +135,38 @@ const TravelerProfileOnboarding = () => {
     })();
     return () => {
       cancelled = true;
+      if (retryTimerRef.current) window.clearTimeout(retryTimerRef.current);
     };
-  }, [user, t]);
+  }, [user, t, retryTick]);
+
+  const handleReset = useCallback(async () => {
+    if (resetting) return;
+    if (!window.confirm(t("travelerProfile.resetConfirm", "Tout effacer et recommencer ce Tinder ?"))) return;
+    setResetting(true);
+    try {
+      if (user) {
+        await supabase.from("user_swipes").delete().eq("user_id", user.id);
+        // Reset scores on the profile (keeps the row so RLS + onboarding_step stay coherent).
+        const clear: Record<string, number | string | null> = { onboarding_step: "tinder", completed_at: null };
+        for (const d of TRAVELER_DIMENSIONS) clear[`${d}_score`] = 0;
+        await supabase.from("traveler_profiles").upsert({ user_id: user.id, ...clear } as never, { onConflict: "user_id" });
+        queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
+      }
+      // Always purge local state.
+      setLocalOnboarding({ swipes: [], result: null, step: "tinder" });
+      setSwipedIds(new Set());
+      setScores(emptyScores());
+      setIndex(0);
+      trackOnboardingEvent("tinder_reset", { authed: !!user });
+      toast.success(t("travelerProfile.resetDone", "Profil réinitialisé."));
+      setRetryTick((n) => n + 1);
+    } catch (err) {
+      toast.error((err as { message?: string })?.message || t("travelerProfile.resetError", "Échec de la réinitialisation."));
+    } finally {
+      setResetting(false);
+    }
+  }, [user, resetting, queryClient, t]);
+
 
   const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
   const current = remaining[index] ?? null;
@@ -231,8 +273,72 @@ const TravelerProfileOnboarding = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background flex flex-col">
+        <div className="mx-auto w-full max-w-md px-4 pt-6 sm:pt-10 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+            <div className="h-4 w-14 rounded bg-muted animate-pulse" />
+          </div>
+          <div className="h-2 w-full rounded-full bg-muted" />
+          <div className="h-3 w-2/3 mx-auto rounded bg-muted animate-pulse" />
+        </div>
+        <div className="flex-1 flex items-center justify-center px-4 py-6">
+          <div className="relative h-[70vh] max-h-[620px] w-full max-w-md rounded-3xl border border-border/40 bg-card overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-background animate-pulse" />
+            <div className="absolute inset-x-0 bottom-0 p-6 space-y-3">
+              <div className="h-6 w-3/4 rounded bg-muted animate-pulse" />
+              <div className="h-6 w-1/2 rounded bg-muted animate-pulse" />
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto flex w-full max-w-md items-center justify-center gap-6 px-4 pb-8">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-14 w-14 rounded-full bg-muted animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div className="h-12 w-12 rounded-full bg-destructive/15 flex items-center justify-center">
+          <RefreshCw className="h-6 w-6 text-destructive" />
+        </div>
+        <div className="max-w-md space-y-1">
+          <h2 className="text-lg font-bold">{t("travelerProfile.loadErrorTitle", "Chargement impossible")}</h2>
+          <p className="text-sm text-muted-foreground">{t("travelerProfile.loadErrorHint", "Impossible de récupérer les cartes. Vérifie ta connexion — on réessaye toutes les quelques secondes.")}</p>
+          <p className="text-[11px] font-mono text-muted-foreground/70 break-all pt-1">{loadError}</p>
+        </div>
+        <button
+          onClick={() => setRetryTick((n) => n + 1)}
+          className="gradient-button inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-primary-foreground"
+        >
+          <RefreshCw className="h-4 w-4" />
+          {t("travelerProfile.retryNow", "Réessayer maintenant")}
+        </button>
+      </div>
+    );
+  }
+
+  if (!loading && cards.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
+          <Info className="h-6 w-6 text-muted-foreground" />
+        </div>
+        <div className="max-w-md space-y-1">
+          <h2 className="text-lg font-bold">{t("travelerProfile.emptyTitle", "Aucune carte disponible")}</h2>
+          <p className="text-sm text-muted-foreground">{t("travelerProfile.emptyHint", "Aucune carte n'est disponible pour le moment. Réessaie dans quelques instants.")}</p>
+        </div>
+        <button
+          onClick={() => setRetryTick((n) => n + 1)}
+          className="gradient-button inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-primary-foreground"
+        >
+          <RefreshCw className="h-4 w-4" />
+          {t("travelerProfile.retry", "Réessayer")}
+        </button>
       </div>
     );
   }
@@ -267,7 +373,7 @@ const TravelerProfileOnboarding = () => {
           />
         </div>
         <p className="mt-3 text-center text-sm text-muted-foreground">{message}</p>
-        <div className="mt-2 text-center">
+        <div className="mt-2 flex items-center justify-center gap-4">
           <Link
             to="/home"
             className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
@@ -275,6 +381,19 @@ const TravelerProfileOnboarding = () => {
             <Info className="h-3 w-3" />
             {t("travelerProfile.learnMore", "En savoir plus sur Xplania")}
           </Link>
+          {done > 0 && (
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={resetting}
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive disabled:opacity-50"
+            >
+              <RotateCcw className="h-3 w-3" />
+              {resetting
+                ? t("travelerProfile.resetting", "Réinitialisation…")
+                : t("travelerProfile.resetCta", "Refaire à zéro")}
+            </button>
+          )}
         </div>
       </div>
 
