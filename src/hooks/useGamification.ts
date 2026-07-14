@@ -98,7 +98,7 @@ export function useGamification() {
       );
       setData((prev) => ({ ...prev, visibility: v }));
     },
-    [user],
+    [user, setData],
   );
 
   const submitClaim = useCallback(
