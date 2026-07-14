@@ -83,20 +83,25 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
+            <OnboardingSyncGate />
             <Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/" element={<Index />} />
+              {/* Anonymous Tinder deck is now the landing page. */}
+              <Route path="/" element={<TravelerProfileOnboarding />} />
+              <Route path="/home" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            {/* New onboarding tunnel (public until signup) */}
+            {/* Legacy onboarding routes (kept public for backward compat) */}
             <Route path="/welcome" element={<OnbWelcome />} />
             <Route path="/onboarding/besoin" element={<OnbBesoin />} />
             <Route path="/onboarding/qualif" element={<OnbQualif />} />
             <Route path="/onboarding/signup" element={<OnbSignup />} />
-            <Route path="/profil-voyageur" element={<ProtectedRoute skipOnboarding><TravelerProfileOnboarding /></ProtectedRoute>} />
-            <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
+            {/* The Tinder deck lives at "/" now — keep this legacy path as a redirect. */}
+            <Route path="/profil-voyageur" element={<TravelerProfileOnboarding />} />
+            <Route path="/profil-voyageur/resultat" element={<TravelerProfileResult />} />
             <Route path="/profil-voyageur/features" element={<ProtectedRoute skipOnboarding><OnbFeatures /></ProtectedRoute>} />
             <Route path="/profil-voyageur/essai" element={<ProtectedRoute skipOnboarding><OnbEssai /></ProtectedRoute>} />
+
             <Route path="/profil-voyageur/ajuster" element={<ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>} />
             <Route path="/destinations" element={<ProtectedRoute><Destinations /></ProtectedRoute>} />
             <Route path="/hidden-gems" element={<ProtectedRoute><HiddenGems /></ProtectedRoute>} />
