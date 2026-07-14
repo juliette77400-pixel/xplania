@@ -92,7 +92,7 @@ export function useDiscover() {
       return withDist;
     },
   });
-  const places = placesQuery.data ?? [];
+  const places = useMemo<Place[]>(() => placesQuery.data ?? [], [placesQuery.data]);
 
   const patchPlaces = useCallback(
     (updater: (prev: Place[]) => Place[]) => {
