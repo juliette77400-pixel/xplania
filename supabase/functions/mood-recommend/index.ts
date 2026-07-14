@@ -161,6 +161,7 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
         messages: [
           { role: "system", content: systemPrompt },
           { role: "system", content: ctxSnippet },
+          ...(ragSnippet ? [{ role: "system" as const, content: ragSnippet }] : []),
           { role: "user", content: userPrompt },
         ],
         tools: [{
