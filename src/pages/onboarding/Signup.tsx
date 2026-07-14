@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { setLocalOnboarding } from "@/lib/onboarding-state";
+import { setLocalOnboarding, trackOnboardingEvent } from "@/lib/onboarding-state";
 
 const OnboardingSignup = () => {
   const { t } = useTranslation();
@@ -13,22 +13,24 @@ const OnboardingSignup = () => {
 
   useEffect(() => {
     setLocalOnboarding({ step: "signup" });
+    trackOnboardingEvent("step_view", { step: "signup" });
   }, []);
 
-  // If already logged in, skip straight to the Tinder step. The Tinder page
-  // will sync any pending local needs/qualif into traveler_profiles.
-  if (!loading && user) return <Navigate to="/profil-voyageur" replace />;
+  // Already signed in — OnboardingSyncGate will push localStorage into the DB
+  // and route to /onboarding/besoin (or /app if profile is already done).
+  if (!loading && user) return <Navigate to="/onboarding/besoin" replace />;
 
   const goAuth = () => {
-    // Preserve the intended destination so the auth page returns here.
-    navigate("/auth?next=/profil-voyageur");
+    trackOnboardingEvent("signup_cta_click", {});
+    // After auth, come back to besoin (OnboardingSyncGate will handle sync).
+    navigate("/auth?next=/onboarding/besoin");
   };
 
   return (
     <div className="min-h-screen bg-background px-4 py-10 flex items-center">
       <div className="mx-auto max-w-xl w-full">
         <button
-          onClick={() => navigate("/onboarding/qualif")}
+          onClick={() => navigate("/profil-voyageur/resultat")}
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" /> {t("common.back", "Retour")}
@@ -37,7 +39,7 @@ const OnboardingSignup = () => {
           <Sparkles className="h-7 w-7 text-primary-foreground" />
         </div>
         <p className="text-xs font-semibold uppercase tracking-widest text-primary text-center">
-          {t("onboarding.stepOf", "Étape {{n}} / 4", { n: 3 })}
+          {t("onboarding.signup.step", "Sauvegardez votre profil")}
         </p>
         <h1 className="mt-2 text-3xl font-extrabold text-center">
           {t("onboarding.signup.title", "Créez votre compte")}
@@ -45,12 +47,12 @@ const OnboardingSignup = () => {
         <p className="mt-3 text-center text-muted-foreground">
           {t(
             "onboarding.signup.help",
-            "On sauvegarde vos réponses pour reprendre exactement où vous êtes, et pour que vos résultats vous suivent partout.",
+            "Créez un compte pour ne pas perdre votre profil de voyageur, vos scores et vos recommandations.",
           )}
         </p>
         <div className="mt-8 flex justify-center">
           <Button onClick={goAuth} className="gradient-button" size="lg">
-            {t("onboarding.signup.cta", "Continuer avec un compte")}
+            {t("onboarding.signup.cta", "Créer mon compte")}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
