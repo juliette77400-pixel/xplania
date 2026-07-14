@@ -115,6 +115,10 @@ Règles strictes :
       ? (isEN ? `Recent user moods: ${history.map(h => h.mood).join(", ")}.` : `Moods récents de l'utilisateur : ${history.map(h => h.mood).join(", ")}.`)
       : "";
 
+    // Xplania brain: inject persistent traveler context (profile + memory + history)
+    const travelCtx = await buildTravelContext(supabase, user.id);
+    const ctxSnippet = contextToPromptSnippet(travelCtx, isEN ? "en" : "fr");
+
     const userPrompt = isEN
       ? `Mood sought: "${finalMood}"${free_input ? ` — detail: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Desired energy level (0=calm, 100=energetic): ${energy_level}.` : ""}
