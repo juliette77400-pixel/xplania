@@ -5,11 +5,13 @@ import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTravelerProfile } from "@/hooks/useTravelerProfile";
 import {
   getLocalOnboarding,
   setLocalOnboarding,
   trackOnboardingEvent,
 } from "@/lib/onboarding-state";
+import { recomputeRecommendedFeatures, type TravelerBadgeKey } from "@/lib/traveler-badge";
 
 const NEEDS = [
   { key: "no_idea", fr: "Je ne sais pas où partir", en: "I don't know where to go" },
