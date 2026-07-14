@@ -88,6 +88,27 @@ export const BADGE_FEATURES: Record<TravelerBadgeKey, [FeatureKey, FeatureKey]> 
   curious: ["discover", "mood"],
 };
 
+/** Rewards granted the first time a traveler profile is completed. */
+export interface BadgeReward {
+  points: number;
+  /** i18n keys resolved on the result screen. */
+  unlocks: string[];
+}
+
+export const BADGE_REWARDS: Record<TravelerBadgeKey, BadgeReward> = {
+  cultural_explorer: { points: 150, unlocks: ["title", "content_culture", "ai_tone_curator"] },
+  digital_nomad:     { points: 150, unlocks: ["title", "content_nomad",   "ai_tone_pragmatic"] },
+  relaxation:        { points: 150, unlocks: ["title", "content_relax",   "ai_tone_soft"] },
+  adventurer:        { points: 200, unlocks: ["title", "content_adventure","ai_tone_bold"] },
+  nature:            { points: 150, unlocks: ["title", "content_nature",  "ai_tone_soft"] },
+  gastronomic:       { points: 150, unlocks: ["title", "content_food",    "ai_tone_curator"] },
+  wellbeing:         { points: 150, unlocks: ["title", "content_wellbeing","ai_tone_soft"] },
+  social:            { points: 150, unlocks: ["title", "content_social",  "ai_tone_warm"] },
+  organized:         { points: 150, unlocks: ["title", "content_planning","ai_tone_pragmatic"] },
+  budget:            { points: 150, unlocks: ["title", "content_budget",  "ai_tone_pragmatic"] },
+  curious:           { points: 100, unlocks: ["title", "ai_tone_warm"] },
+};
+
 /**
  * Returns the badge key + its two recommended features. All scores at 0 or
  * empty input falls back to "curious".
