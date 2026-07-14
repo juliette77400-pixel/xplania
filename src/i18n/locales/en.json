@@ -4310,5 +4310,64 @@
       "currency": "Currency converter",
       "currencySub": "Convert your spending into your currency"
     }
+  },
+  "travelerProfile": {
+    "title": "Your traveler profile",
+    "progress": "{{done}} / {{total}}",
+    "msg1": "Let's get to know each other.",
+    "msg2": "I'm starting to understand how you travel.",
+    "msg3": "Your profile is taking shape.",
+    "msg4": "Almost done…",
+    "loadError": "Could not load the cards.",
+    "saveError": "Could not save your profile.",
+    "computing": "Analyzing your traveler profile…",
+    "almostDone": "All done!",
+    "notMe": "Not for me",
+    "forMe": "That's me",
+    "yourProfile": "Your traveler profile",
+    "yourScores": "Your affinities",
+    "recommendedForYou": "Recommended for you",
+    "recommendation": "Recommended",
+    "discoverNow": "Discover",
+    "goToDashboard": "Go to dashboard",
+    "retake": "Retake the test",
+    "resetConfirm": "This will erase your answers and badge. Continue?",
+    "resetDone": "Profile reset.",
+    "dimensions": {
+      "culture": "Culture",
+      "adventure": "Adventure",
+      "nature": "Nature",
+      "comfort": "Comfort",
+      "budget": "Budget",
+      "food": "Food",
+      "authenticity": "Authenticity",
+      "social": "Social",
+      "wellbeing": "Wellbeing",
+      "nomad": "Nomad",
+      "luxury": "Luxury",
+      "organization": "Planning"
+    },
+    "badges": {
+      "cultural_explorer": { "name": "Cultural Explorer", "description": "You travel to understand people, their traditions and stories. Museums, local markets, craft workshops — that's where your journey means the most." },
+      "digital_nomad": { "name": "Digital Nomad", "description": "Your desk changes windows every month. You look for places where you can work well, live well, and stay a while." },
+      "relaxation": { "name": "Comfort Traveler", "description": "For you, traveling is resting, treating yourself and unwinding in a beautiful setting." },
+      "adventurer": { "name": "Adventurer", "description": "The beaten path bores you. You want effort, raw nature, and stories to tell when you get back." },
+      "nature": { "name": "Nature Traveler", "description": "You recharge in wide open spaces, far from noise, in tune with the wild." },
+      "gastronomic": { "name": "Foodie Traveler", "description": "Your itinerary follows your palate: Michelin tables, street food, buzzing markets." },
+      "wellbeing": { "name": "Wellbeing Traveler", "description": "You travel to reconnect: yoga, spa, silence and soothing landscapes." },
+      "social": { "name": "Social Traveler", "description": "Your best memories are the people you meet. You thrive with local culture and fellow travelers." },
+      "organized": { "name": "Organized Traveler", "description": "You like everything planned, from the visa to the last museum. Peace of mind starts with preparation." },
+      "budget": { "name": "Budget Traveler", "description": "You prove you can see the world without breaking the bank. You optimize everything without sacrificing the experience." },
+      "curious": { "name": "Curious Traveler", "description": "Your profile is open and eclectic. You try a bit of everything and let your desires guide you." }
+    },
+    "features": {
+      "discover": { "name": "Discover", "description": "Local spots and hidden gems tailored to your profile." },
+      "carnet": { "name": "Travel Journal", "description": "Your smart travel journal with photos, moments and AI-crafted stories." },
+      "suivi": { "name": "Trip Tracker", "description": "Live map, itinerary, check-ins and real-time alerts." },
+      "mood": { "name": "Mood Explorer", "description": "Recommendations based on your current mood." },
+      "guide-valise": { "name": "Packing Guide", "description": "Smart checklist adapted to your destination and style." },
+      "guide-budget": { "name": "Budget Guide", "description": "Expense dashboard with alerts and AI tips." },
+      "guide-visa": { "name": "Visa Guide", "description": "Formalities, vaccines and safety for your destination." }
+    }
   }
 }

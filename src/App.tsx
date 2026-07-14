@@ -41,6 +41,8 @@ const Parametres = lazy(() => import("./pages/Parametres.tsx"));
 const Legal = lazy(() => import("./pages/Legal.tsx"));
 const Trust = lazy(() => import("./pages/Trust.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
+const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnboarding.tsx"));
+const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,6 +75,8 @@ const App = () => (
               <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/profil-voyageur" element={<ProtectedRoute skipOnboarding><TravelerProfileOnboarding /></ProtectedRoute>} />
+            <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
             <Route path="/guide-budget" element={<GuideBudget />} />
             <Route path="/guide-valise" element={<ProtectedRoute><GuideValise /></ProtectedRoute>} />
             <Route path="/guide-visa" element={<GuideVisa />} />
