@@ -32,6 +32,7 @@ export async function exportBudgetPdf({
   chartElement,
   t,
 }: ExportBudgetPdfArgs) {
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
