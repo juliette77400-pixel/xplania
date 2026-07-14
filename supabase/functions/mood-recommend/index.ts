@@ -120,6 +120,21 @@ Règles strictes :
     const travelCtx = await buildTravelContext(supabase, user.id);
     const ctxSnippet = contextToPromptSnippet(travelCtx, isEN ? "en" : "fr");
 
+    // Xplania RAG: retrieve curated knowledge chunks relevant to city + mood
+    let ragSnippet = "";
+    if (city_hint) {
+      const slug = String(city_hint).toLowerCase().trim();
+      const query = `${city_hint} ${finalMood} ${free_input ?? ""}`.trim();
+      const docs = await retrieveTravelDocs(supabase, query, {
+        destinationSlug: slug,
+        locale: isEN ? "en" : "fr",
+        k: 3,
+      });
+      // Fallback: search across all destinations if no match on this slug
+      const finalDocs = docs.length ? docs : await retrieveTravelDocs(supabase, query, { locale: isEN ? "en" : "fr", k: 3 });
+      ragSnippet = docsToPromptSnippet(finalDocs, isEN ? "en" : "fr");
+    }
+
     const userPrompt = isEN
       ? `Mood sought: "${finalMood}"${free_input ? ` — detail: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Desired energy level (0=calm, 100=energetic): ${energy_level}.` : ""}
