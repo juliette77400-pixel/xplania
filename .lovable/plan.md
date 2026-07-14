@@ -1,100 +1,109 @@
-# Vague 1 — Tinder Onboarding Voyageur
 
-## Ce qu'on construit
+## 1. État des lieux — Tinder actuel
 
-Un parcours de swipe obligatoire après inscription qui construit un profil voyageur (12 dimensions), calcule un badge, et redirige vers 2 fonctionnalités recommandées.
+**Fichiers concernés**
+- `src/pages/TravelerProfileOnboarding.tsx` — écran principal du swipe (20 cartes)
+- `src/components/tinder/TinderCard.tsx` — composant carte (drag + animations framer-motion)
+- `src/pages/TravelerProfileResult.tsx` — écran de révélation du badge après le swipe
+- Table `tinder_cards` (contenu des cartes) + `user_swipes` (historique par user) + `traveler_profiles` (badge + scores 12D + recommended_features + reward_points)
+- Edge function `tinder-seed-images` (génère les visuels manquants)
 
-## 1. Base de données (migration Supabase)
+**Où il apparaît dans le parcours aujourd'hui**
+- Route : `/profil-voyageur` (protégée par `ProtectedRoute skipOnboarding`)
+- `ProtectedRoute` **force** tout utilisateur connecté qui n'a pas encore de `traveler_profiles.completed_at` à être redirigé vers `/profil-voyageur` → le Tinder est donc **obligatoire, après l'inscription/connexion**, avant l'accès au reste de l'app.
+- Reprise automatique déjà en place : les swipes déjà faits sont rechargés depuis `user_swipes`, les scores sont recalculés et un toast "resumed" s'affiche.
+- Pas de lien avec la création d'un voyage.
 
-**Table `tinder_cards`** (lecture publique authentifiée)
-- `id uuid PK`, `name text unique`, `image_url text`, `unsplash_query text`, `phrase_fr text`, `phrase_en text`, `score_tags jsonb`, `order_index int`, `active bool default true`, `created_at`
+**Connexion à `traveler_profiles`**
+- Oui, pleinement connecté. À la fin des 20 cartes, `finalize()` fait un `upsert` dans `traveler_profiles` avec : les 12 scores dimensionnels, le `badge`, `recommended_features`, `reward_points`, `reward_unlocks`, `completed_at`. Puis redirection vers `/profil-voyageur/resultat`.
+- Ce n'est **plus une maquette isolée** — la data flow est complète.
 
-**Table `traveler_profiles`** (RLS: user_id = auth.uid())
-- `id uuid PK`, `user_id uuid unique FK→auth.users`, les 12 colonnes de score `int default 0`, `badge text`, `badge_description text`, `recommended_features text[]`, `completed_at timestamptz`, `created_at`, `updated_at`
+**Ce qui manque pour la nouvelle cible**
+- Pas d'étape "Promesse", "Besoin", "Mini qualification" avant le Tinder.
+- L'auth (`ProtectedRoute`) intercepte AVANT même la promesse → un visiteur non connecté ne voit rien de l'entonnoir.
+- Pas de tracking `onboarding_step` pour reprendre à l'étape exacte.
+- Pas d'écran "Essai limité" entre les 2 fonctionnalités recommandées et le dashboard.
 
-**Table `user_swipes`** (RLS: user_id = auth.uid())
-- `id`, `user_id`, `card_id FK`, `direction text check in ('right','left','skip')`, `created_at`, unique(user_id, card_id)
+---
 
-GRANTs standard (authenticated + service_role), RLS + policies, trigger `updated_at`.
+## 2. Nouveau parcours cible
 
-## 2. Seed des 20 cartes
+```text
+[public]                                      [auth requise]
+Promesse → Besoin → MiniQualif → Tinder → [SIGN-UP] → Profil → 2 Features → Essai → Dashboard
+  /welcome  /besoin   /qualif    /profil-voyageur
+                                 /profil-voyageur/resultat
+                                 /profil-voyageur/features
+                                 /profil-voyageur/essai
+                                 /app
+```
 
-Migration d'INSERT avec les 20 cartes de la spec (phrases FR + EN + score_tags). `image_url` initialement null.
+**Moment de création du compte** : entre le Tinder et la révélation du profil.
+Raison : l'utilisateur a déjà investi ~2 min de swipe → il est engagé, la friction du signup est acceptable, et on a besoin d'un `user_id` pour persister les scores calculés côté serveur dans `traveler_profiles`. Avant le signup, les réponses (besoin, qualif, swipes) sont stockées en `localStorage` sous la clé `xplania:onboarding` puis rejouées après création du compte.
 
-Edge function `tinder-cards-seed-images` (admin one-shot): pour chaque carte sans image, appelle `unsplash` avec `unsplash_query` et enregistre l'URL. Déclenchable via un bouton admin ou automatiquement à la 1ʳᵉ visite si vide.
+---
 
-## 3. Écran de swipe `/profil-voyageur`
+## 3. Détail des étapes
 
-Nouveau composant `TinderOnboarding` avec sous-composants:
-- `TinderCard` — image plein cadre, dégradé sombre bas, phrase en overlay, drag+rotation via framer-motion
-- `TinderDeck` — stack de 2 cartes (courante + suivante en scale-95 dessous)
-- `TinderControls` — 3 boutons ❌ ⏭️ ❤️ + raccourcis clavier ←/→/espace
-- `TinderProgress` — barre "7 / 20" + message dynamique (5 paliers FR/EN via i18n)
+| # | Route | Contenu | Auth ? |
+|---|---|---|---|
+| 1 | `/welcome` | Une phrase promesse + CTA "Commencer". Redirection automatique vers l'étape courante si onboarding en cours. | non |
+| 2 | `/onboarding/besoin` | Liste de 5-6 besoins (cartes cliquables) : "Je ne sais pas où partir", "Je prépare un voyage", "Peur du budget", "Envie d'insolite", "Voyager autrement", "Juste curieux". Multi-sélection possible. | non |
+| 3 | `/onboarding/qualif` | 3 questions rapides : budget approximatif (slider 3 crans), durée type (weekend / 1 sem / 2+ sem), avec qui (seul / couple / famille / amis). Sert à moduler le ton et l'ordre des cartes Tinder. | non |
+| 4 | `/onboarding/tinder` | **Le Tinder existant, déplacé ici**. Fonctionne en mode anonyme (état local) tant que non connecté ; les swipes sont mis en tampon dans localStorage. À la 20e carte → redirection vers `/onboarding/signup`. | non |
+| 5 | `/onboarding/signup` | Auth (email + Google). Après succès : rejoue les données locales → écrit `user_swipes` + `traveler_profiles` via `finalize()`, puis va au profil. | transition |
+| 6 | `/profil-voyageur/resultat` | Écran de révélation (existant, à conserver tel quel). CTA "Voir mes fonctionnalités". | oui |
+| 7 | `/profil-voyageur/features` | Affiche **uniquement les 2 premières** de `recommended_features` (au lieu des 8), avec description et CTA "Essayer celle-ci". | oui |
+| 8 | `/profil-voyageur/essai` | Aperçu **limité** de la feature choisie (ex : 3 suggestions destinations au lieu de 20, ou 1 hidden gem au lieu de la liste). Bandeau "Débloquer tout" → CTA dashboard. | oui |
+| 9 | `/app` | Dashboard complet (existant). | oui |
 
-Comportement:
-- Ordre mélangé une fois au montage (seed = user_id pour reproductibilité)
-- Swipe droite/gauche/skip → insert dans `user_swipes` + update optimiste des scores locaux
-- Debounce des writes (batch toutes les 3 cartes) pour limiter les allers-retours
-- Reprise: si `user_swipes` contient déjà des lignes, on reprend là où on en était
-- À la 20ᵉ carte → `finalizeProfile()`: calcule badge, upsert `traveler_profiles` avec `completed_at`, navigue vers `/profil-voyageur/resultat`
+---
 
-## 4. Calcul du badge
+## 4. Persistance / reprise
 
-`src/lib/traveler-badge.ts` — fonction pure `calculateBadge(scores)` identique à la spec + normalisation (clamp min 0 pour affichage, garde interne signée) + fallback "Voyageur curieux".
+**Nouvelle colonne** `traveler_profiles.onboarding_step TEXT` (nullable) — valeurs : `welcome | besoin | qualif | tinder | signup | resultat | features | essai | done`. Écrite à chaque transition.
 
-Table de mapping badge → 2 features recommandées:
-- Explorateur culturel → Discover + Carnet
-- Digital Nomad → Guide Budget + Suivi
-- Voyageur détente → Guide Valise + Mood
-- Aventurier → Suivi + Mood Explorer
-- Voyageur nature → Mood + Discover
-- Voyageur gastronomique → Discover + Carnet
-- Voyageur bien-être → Mood + Guide Valise
-- Voyageur social → Mood + Carnet (partage)
-- Voyageur organisé → Guide Budget + Guide Visa
-- Voyageur économe → Guide Budget + Guide Valise
-- Voyageur curieux → Discover + Mood
+**Nouvelles colonnes** `traveler_profiles.need_tags TEXT[]`, `qualif JSONB` — stockent besoin/qualif après signup.
 
-Tests unitaires Vitest sur `calculateBadge` (cas top1+top2 match, fallback, égalités, tous à 0).
+**Avant signup** : les mêmes données vivent dans `localStorage['xplania:onboarding']` (JSON : `{step, needs, qualif, swipes:[{cardId, direction}]}`). Écriture à chaque action.
 
-## 5. Écran de révélation `/profil-voyageur/resultat`
+**Reprise** :
+- Visiteur non connecté → `/welcome` lit `localStorage.step` et redirige vers l'étape en cours (bouton "Continuer" au lieu de "Commencer").
+- Utilisateur connecté → `ProtectedRoute` lit `traveler_profiles.onboarding_step` et redirige vers l'étape correspondante tant que ≠ `done`. Les routes app (`/app`, `/mood`, etc.) restent verrouillées jusqu'au `done`.
 
-- Titre "Votre profil voyageur : {badge}"
-- Radar chart des 12 scores (recharts, déjà installé)
-- Description chaleureuse 2-3 phrases par badge (i18n FR/EN)
-- 2 cartes "fonctionnalités recommandées" avec icône, titre, CTA
-- Bouton secondaire "Refaire le test" (efface `user_swipes` + reset profil)
+**Navigation** : chaque étape a un bouton "← Retour" vers la précédente ; le "Suivant" est désactivé tant que l'étape courante n'est pas remplie ; impossible de sauter en avant via URL (garde côté route).
 
-## 6. Redirection obligatoire après signup
+---
 
-- Nouveau hook `useTravelerProfile()` — React Query sur `traveler_profiles` par `user_id`
-- Nouveau composant `<RequireTravelerProfile>` qui wrap les routes protégées: si `user` connecté ET `completed_at` null ET route ≠ `/profil-voyageur*` → `<Navigate to="/profil-voyageur" replace />`
-- On l'insère dans `App.tsx` autour de `<ProtectedRoute>` sur Dashboard/Carnet/Suivi/etc. (pas sur `/`, `/auth`, `/legal`)
-- Skip toléré uniquement si l'utilisateur est déjà en train de finir le parcours
+## 5. Détails techniques (dev)
 
-## 7. i18n
+**Migration Supabase** (nouvelle) :
+- `ALTER TABLE traveler_profiles ADD COLUMN onboarding_step text`, `need_tags text[]`, `qualif jsonb`.
+- Backfill : `UPDATE ... SET onboarding_step='done' WHERE completed_at IS NOT NULL`.
 
-Nouveau namespace `travelerProfile` dans `src/i18n/locales/{fr,en}.json`:
-- Phrases des 20 cartes (redondant avec DB mais permet UI côté client sans requête)
-- Messages de progression
-- Noms + descriptions des 11 badges
-- Labels du radar (12 dimensions)
+**Nouveaux fichiers front** :
+- `src/lib/onboarding-state.ts` — helpers `getLocalOnboarding()`, `setLocalOnboarding()`, `clearLocalOnboarding()`, `nextStep()`, `stepToRoute()`.
+- `src/hooks/useOnboardingFlow.ts` — hook central : fusionne état local + `traveler_profiles`, expose `currentStep`, `goNext()`, `goBack()`, `syncAfterSignup()`.
+- `src/pages/onboarding/Welcome.tsx` (route `/welcome`)
+- `src/pages/onboarding/Besoin.tsx` (route `/onboarding/besoin`)
+- `src/pages/onboarding/Qualif.tsx` (route `/onboarding/qualif`)
+- `src/pages/onboarding/Signup.tsx` (route `/onboarding/signup`) — réutilise le composant auth existant, avec logique post-login qui appelle `syncAfterSignup()`.
+- `src/pages/onboarding/Features.tsx` (route `/profil-voyageur/features`)
+- `src/pages/onboarding/Essai.tsx` (route `/profil-voyageur/essai`)
 
-## Détails techniques
+**Fichiers modifiés** :
+- `src/pages/TravelerProfileOnboarding.tsx` — accepter le mode "anonyme" : si `!user`, lire/écrire dans localStorage au lieu de Supabase ; à la fin, rediriger vers `/onboarding/signup` (au lieu de `finalize()`).
+- `src/App.tsx` — ajouter les 6 nouvelles routes ; `/welcome` en index public ; `/onboarding/*` en public.
+- `src/components/auth/ProtectedRoute.tsx` — remplacer le redirect statique `/profil-voyageur` par un redirect basé sur `traveler_profiles.onboarding_step` (via helper `stepToRoute`).
+- `src/pages/TravelerProfileResult.tsx` — CTA final envoie vers `/profil-voyageur/features` (au lieu de `/app`).
+- `src/i18n/locales/{fr,en}.json` — clés pour les 6 nouveaux écrans.
 
-- Framer-motion déjà présent, on l'utilise pour le drag (`useMotionValue`, `useTransform` pour la rotation)
-- Recharts pour le radar
-- Les scores en DB sont signés (int), l'affichage clampe à 0 mais le calcul du badge utilise les valeurs brutes
-- Edge function d'upsert final `finalize-traveler-profile` optionnelle si on veut sécuriser le calcul serveur; sinon on fait tout côté client puisque RLS protège déjà
-- Route `/profil-voyageur` et `/profil-voyageur/resultat` publiques mais requièrent auth (redirige vers `/auth` si pas de user)
+**Non touché** : logique de scoring, `traveler-badge.ts`, `TinderCard.tsx`, tables `tinder_cards` / `user_swipes`, RAG, guides.
 
-## Ce qu'on ne fait PAS dans cette vague
+---
 
-- Pas de `user_memory` / `user_recommendations_history`
-- Pas de RAG, pas de destinations/hidden_gems
-- Pas de refonte Suivi
-- Pas de vraies récompenses (crédits, quota) — juste badge cosmétique + 2 features recommandées
+## 6. Livraison
 
-## Livraison
+Estimation : 1 migration + ~8 nouveaux fichiers + 4 fichiers modifiés. Aucune donnée utilisateur perdue (le backfill met les profils existants directement en `done` → ils atterrissent sur `/app`).
 
-Une seule migration DB (tables + seed 20 cartes sans image), puis code frontend + edge function seed-images. Après validation de la migration je code le reste dans la foulée.
+Confirme le plan et j'implémente dans la foulée.

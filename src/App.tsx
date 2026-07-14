@@ -47,6 +47,12 @@ const TravelerProfileAdjust = lazy(() => import("./pages/TravelerProfileAdjust.t
 const Destinations = lazy(() => import("./pages/Destinations.tsx"));
 const HiddenGems = lazy(() => import("./pages/HiddenGems.tsx"));
 const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
+const OnbWelcome = lazy(() => import("./pages/onboarding/Welcome.tsx"));
+const OnbBesoin = lazy(() => import("./pages/onboarding/Besoin.tsx"));
+const OnbQualif = lazy(() => import("./pages/onboarding/Qualif.tsx"));
+const OnbSignup = lazy(() => import("./pages/onboarding/Signup.tsx"));
+const OnbFeatures = lazy(() => import("./pages/onboarding/Features.tsx"));
+const OnbEssai = lazy(() => import("./pages/onboarding/Essai.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,8 +85,15 @@ const App = () => (
               <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            {/* New onboarding tunnel (public until signup) */}
+            <Route path="/welcome" element={<OnbWelcome />} />
+            <Route path="/onboarding/besoin" element={<OnbBesoin />} />
+            <Route path="/onboarding/qualif" element={<OnbQualif />} />
+            <Route path="/onboarding/signup" element={<OnbSignup />} />
             <Route path="/profil-voyageur" element={<ProtectedRoute skipOnboarding><TravelerProfileOnboarding /></ProtectedRoute>} />
             <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
+            <Route path="/profil-voyageur/features" element={<ProtectedRoute skipOnboarding><OnbFeatures /></ProtectedRoute>} />
+            <Route path="/profil-voyageur/essai" element={<ProtectedRoute skipOnboarding><OnbEssai /></ProtectedRoute>} />
             <Route path="/profil-voyageur/ajuster" element={<ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>} />
             <Route path="/destinations" element={<ProtectedRoute><Destinations /></ProtectedRoute>} />
             <Route path="/hidden-gems" element={<ProtectedRoute><HiddenGems /></ProtectedRoute>} />

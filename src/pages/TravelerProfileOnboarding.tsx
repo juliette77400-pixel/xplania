@@ -17,6 +17,7 @@ import {
   type TravelerScores,
 } from "@/lib/traveler-badge";
 import { travelerProfileKey } from "@/hooks/useTravelerProfile";
+import { getLocalOnboarding, setLocalOnboarding } from "@/lib/onboarding-state";
 
 type Direction = "right" | "left" | "skip";
 
@@ -45,9 +46,38 @@ const TravelerProfileOnboarding = () => {
 
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
-  // Load cards + existing swipes (resume)
+  // Load cards + existing swipes (resume) + sync any pending local onboarding.
   useEffect(() => {
     if (!user) return;
+    // Mark local step + sync need_tags/qualif captured pre-signup, if any.
+    setLocalOnboarding({ step: "tinder" });
+    const local = getLocalOnboarding();
+    const pendingSync =
+      (local.needs && local.needs.length > 0) ||
+      (local.qualif && Object.keys(local.qualif).length > 0);
+    if (pendingSync) {
+      void supabase
+        .from("traveler_profiles")
+        .upsert(
+          {
+            user_id: user.id,
+            need_tags: local.needs ?? [],
+            qualif: local.qualif ?? {},
+            onboarding_step: "tinder",
+          } as never,
+          { onConflict: "user_id" },
+        )
+        .then(() => {
+          setLocalOnboarding({ needs: [], qualif: {} });
+        });
+    } else {
+      void supabase
+        .from("traveler_profiles")
+        .upsert(
+          { user_id: user.id, onboarding_step: "tinder" } as never,
+          { onConflict: "user_id" },
+        );
+    }
     let cancelled = false;
     (async () => {
       setLoading(true);
@@ -142,6 +172,7 @@ const TravelerProfileOnboarding = () => {
       for (const d of TRAVELER_DIMENSIONS) {
         row[`${d}_score`] = Math.max(0, finalScores[d] ?? 0);
       }
+      row["onboarding_step"] = "resultat";
       const { error } = await supabase
         .from("traveler_profiles")
         .upsert(row as never, { onConflict: "user_id" });
@@ -150,6 +181,7 @@ const TravelerProfileOnboarding = () => {
         setFinalizing(false);
         return;
       }
+      setLocalOnboarding({ step: "resultat" });
       queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
       navigate("/profil-voyageur/resultat", { replace: true });
     },

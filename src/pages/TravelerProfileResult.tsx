@@ -184,8 +184,20 @@ const TravelerProfileResult = () => {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link to="/app">
-            <Button className="gradient-button">{t("travelerProfile.goToDashboard")}</Button>
+          <Link
+            to="/profil-voyageur/features"
+            onClick={() => {
+              if (user) {
+                void supabase
+                  .from("traveler_profiles")
+                  .update({ onboarding_step: "features" })
+                  .eq("user_id", user.id);
+              }
+            }}
+          >
+            <Button className="gradient-button">
+              {t("travelerProfile.seeFeatures", "Voir mes fonctionnalités")}
+            </Button>
           </Link>
           <Button variant="ghost" onClick={resetProfile}>
             <RefreshCw className="mr-2 h-4 w-4" /> {t("travelerProfile.retake")}

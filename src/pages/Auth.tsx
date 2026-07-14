@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Sparkles, ArrowLeft } from "lucide-react";
@@ -14,6 +14,8 @@ import { toast } from "sonner";
 
 const Auth = () => {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const next = params.get("next") || "/";
   const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
@@ -22,8 +24,8 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate("/");
-  }, [user, authLoading, navigate]);
+    if (!authLoading && user) navigate(next);
+  }, [user, authLoading, navigate, next]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +34,7 @@ const Auth = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: `${window.location.origin}${next}`,
         data: { display_name: displayName },
       },
     });
@@ -47,13 +49,13 @@ const Auth = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) toast.error(error.message);
-    else navigate("/");
+    else navigate(next);
   };
 
   const handleGoogle = async () => {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}${next}`,
     });
     if (result.error) {
       setLoading(false);
@@ -61,7 +63,7 @@ const Auth = () => {
       return;
     }
     if (result.redirected) return;
-    navigate("/");
+    navigate(next);
   };
 
   const handleReset = async () => {
