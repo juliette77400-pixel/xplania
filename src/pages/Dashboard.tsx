@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Activity, ArrowRight, BookOpen, Calendar, Compass, Luggage, MapPin, Plus, Sparkles } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, Calendar, Compass, Heart, Luggage, MapPin, Plus, Sparkles } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import { Button } from "@/components/ui/button";
