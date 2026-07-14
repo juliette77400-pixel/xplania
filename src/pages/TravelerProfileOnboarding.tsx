@@ -65,53 +65,61 @@ const TravelerProfileOnboarding = () => {
     let cancelled = false;
     (async () => {
       setLoading(true);
+      setLoadError(null);
       const cardsQ = supabase
         .from("tinder_cards")
         .select("id, name, image_url, phrase_fr, phrase_en, score_tags, order_index")
         .eq("active", true)
         .order("order_index", { ascending: true });
 
-      const [{ data: allCards, error: e1 }, swipeRes] = await Promise.all([
-        cardsQ,
-        user
-          ? supabase
-              .from("user_swipes")
-              .select("card_id, direction")
-              .eq("user_id", user.id)
-          : Promise.resolve({ data: null, error: null } as {
-              data: { card_id: string; direction: string }[] | null;
-              error: null;
-            }),
-      ]);
+      let allCards: DbCard[] | null = null;
+      let e1: unknown = null;
+      let swipeRes: { data: { card_id: string; direction: string }[] | null; error: unknown } = { data: null, error: null };
+      try {
+        const [cardsRes, sw] = await Promise.all([
+          cardsQ,
+          user
+            ? supabase.from("user_swipes").select("card_id, direction").eq("user_id", user.id)
+            : Promise.resolve({ data: null, error: null } as typeof swipeRes),
+        ]);
+        allCards = (cardsRes.data ?? null) as DbCard[] | null;
+        e1 = cardsRes.error;
+        swipeRes = sw as typeof swipeRes;
+      } catch (err) {
+        e1 = err;
+      }
       if (cancelled) return;
+
       if (e1) {
-        toast.error(t("travelerProfile.loadError"));
+        const msg = (e1 as { message?: string })?.message || t("travelerProfile.loadError");
+        setLoadError(msg);
         setLoading(false);
+        // Auto-retry with backoff (max ~30s) as long as the user stays on the page.
+        const delay = Math.min(30000, 2000 * Math.pow(2, Math.min(retryTick, 4)));
+        if (retryTimerRef.current) window.clearTimeout(retryTimerRef.current);
+        retryTimerRef.current = window.setTimeout(() => setRetryTick((n) => n + 1), delay);
         return;
       }
 
       const localSwipes = user ? [] : getLocalOnboarding().swipes;
       const source = user ? swipeRes.data ?? [] : localSwipes;
-      const done = new Set(source.map((s) => s.card_id));
-      setSwipedIds(done);
+      const doneIds = new Set(source.map((s) => s.card_id));
+      setSwipedIds(doneIds);
 
       let running = emptyScores();
       const cardsById = new Map((allCards ?? []).map((c) => [c.id, c]));
       for (const s of source) {
         const c = cardsById.get(s.card_id);
         if (!c) continue;
-        running = applyScoreTags(
-          running,
-          c.score_tags as Record<string, number>,
-          s.direction as Direction,
-        );
+        running = applyScoreTags(running, c.score_tags as Record<string, number>, s.direction as Direction);
       }
       setScores(running);
       setCards((allCards ?? []) as DbCard[]);
+      setIndex(0);
       setLoading(false);
 
-      if (done.size > 0 && done.size < (allCards?.length ?? 20)) {
-        toast(t("travelerProfile.resumed", { done: done.size, total: allCards?.length ?? 20 }));
+      if (doneIds.size > 0 && doneIds.size < (allCards?.length ?? 20)) {
+        toast(t("travelerProfile.resumed", { done: doneIds.size, total: allCards?.length ?? 20 }));
       }
 
       if ((allCards ?? []).some((c) => !c.image_url)) {
@@ -127,8 +135,38 @@ const TravelerProfileOnboarding = () => {
     })();
     return () => {
       cancelled = true;
+      if (retryTimerRef.current) window.clearTimeout(retryTimerRef.current);
     };
-  }, [user, t]);
+  }, [user, t, retryTick]);
+
+  const handleReset = useCallback(async () => {
+    if (resetting) return;
+    if (!window.confirm(t("travelerProfile.resetConfirm", "Tout effacer et recommencer ce Tinder ?"))) return;
+    setResetting(true);
+    try {
+      if (user) {
+        await supabase.from("user_swipes").delete().eq("user_id", user.id);
+        // Reset scores on the profile (keeps the row so RLS + onboarding_step stay coherent).
+        const clear: Record<string, number | string | null> = { onboarding_step: "tinder", completed_at: null };
+        for (const d of TRAVELER_DIMENSIONS) clear[`${d}_score`] = 0;
+        await supabase.from("traveler_profiles").upsert({ user_id: user.id, ...clear } as never, { onConflict: "user_id" });
+        queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
+      }
+      // Always purge local state.
+      setLocalOnboarding({ swipes: [], result: null, step: "tinder" });
+      setSwipedIds(new Set());
+      setScores(emptyScores());
+      setIndex(0);
+      trackOnboardingEvent("tinder_reset", { authed: !!user });
+      toast.success(t("travelerProfile.resetDone", "Profil réinitialisé."));
+      setRetryTick((n) => n + 1);
+    } catch (err) {
+      toast.error((err as { message?: string })?.message || t("travelerProfile.resetError", "Échec de la réinitialisation."));
+    } finally {
+      setResetting(false);
+    }
+  }, [user, resetting, queryClient, t]);
+
 
   const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
   const current = remaining[index] ?? null;
