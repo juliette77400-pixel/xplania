@@ -1,5 +1,6 @@
 // ✨ NEW (Tâche 3) — Export PDF "all-in-one" du voyage (résumé + itinéraire + budget + valise + visa + journal)
 // jspdf loaded lazily inside exportTripAllInOnePDF.
+import type { jsPDF } from "jspdf";
 import { supabase } from "@/integrations/supabase/client";
 
 type TripData = {
