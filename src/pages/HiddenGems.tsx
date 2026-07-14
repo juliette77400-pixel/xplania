@@ -132,11 +132,6 @@ export default function HiddenGems() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((g) => (
             <Card key={g.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              {g.photo_url && (
-                <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
-                  <img src={g.photo_url} alt={g.name} className="w-full h-full object-cover" />
-                </div>
-              )}
               <CardHeader>
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-lg leading-tight">{g.name}</CardTitle>
@@ -151,7 +146,9 @@ export default function HiddenGems() {
                 )}
               </CardHeader>
               <CardContent className="space-y-3">
-                {g.summary && <p className="text-sm text-muted-foreground">{g.summary}</p>}
+                {(g.summary_fr ?? g.summary_en) && (
+                  <p className="text-sm text-muted-foreground">{g.summary_fr ?? g.summary_en}</p>
+                )}
                 <div className="flex flex-wrap gap-1">
                   <Badge variant="secondary" className="text-xs capitalize">{g.kind}</Badge>
                   {g.best_season && (
