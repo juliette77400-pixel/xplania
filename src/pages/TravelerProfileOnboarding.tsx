@@ -273,8 +273,72 @@ const TravelerProfileOnboarding = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background flex flex-col">
+        <div className="mx-auto w-full max-w-md px-4 pt-6 sm:pt-10 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+            <div className="h-4 w-14 rounded bg-muted animate-pulse" />
+          </div>
+          <div className="h-2 w-full rounded-full bg-muted" />
+          <div className="h-3 w-2/3 mx-auto rounded bg-muted animate-pulse" />
+        </div>
+        <div className="flex-1 flex items-center justify-center px-4 py-6">
+          <div className="relative h-[70vh] max-h-[620px] w-full max-w-md rounded-3xl border border-border/40 bg-card overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-background animate-pulse" />
+            <div className="absolute inset-x-0 bottom-0 p-6 space-y-3">
+              <div className="h-6 w-3/4 rounded bg-muted animate-pulse" />
+              <div className="h-6 w-1/2 rounded bg-muted animate-pulse" />
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto flex w-full max-w-md items-center justify-center gap-6 px-4 pb-8">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-14 w-14 rounded-full bg-muted animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div className="h-12 w-12 rounded-full bg-destructive/15 flex items-center justify-center">
+          <RefreshCw className="h-6 w-6 text-destructive" />
+        </div>
+        <div className="max-w-md space-y-1">
+          <h2 className="text-lg font-bold">{t("travelerProfile.loadErrorTitle", "Chargement impossible")}</h2>
+          <p className="text-sm text-muted-foreground">{t("travelerProfile.loadErrorHint", "Impossible de récupérer les cartes. Vérifie ta connexion — on réessaye toutes les quelques secondes.")}</p>
+          <p className="text-[11px] font-mono text-muted-foreground/70 break-all pt-1">{loadError}</p>
+        </div>
+        <button
+          onClick={() => setRetryTick((n) => n + 1)}
+          className="gradient-button inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-primary-foreground"
+        >
+          <RefreshCw className="h-4 w-4" />
+          {t("travelerProfile.retryNow", "Réessayer maintenant")}
+        </button>
+      </div>
+    );
+  }
+
+  if (!loading && cards.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
+          <Info className="h-6 w-6 text-muted-foreground" />
+        </div>
+        <div className="max-w-md space-y-1">
+          <h2 className="text-lg font-bold">{t("travelerProfile.emptyTitle", "Aucune carte disponible")}</h2>
+          <p className="text-sm text-muted-foreground">{t("travelerProfile.emptyHint", "Aucune carte n'est disponible pour le moment. Réessaie dans quelques instants.")}</p>
+        </div>
+        <button
+          onClick={() => setRetryTick((n) => n + 1)}
+          className="gradient-button inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-primary-foreground"
+        >
+          <RefreshCw className="h-4 w-4" />
+          {t("travelerProfile.retry", "Réessayer")}
+        </button>
       </div>
     );
   }
