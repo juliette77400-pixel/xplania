@@ -355,7 +355,7 @@ const CarnetOnboardingChat = ({
     }
   };
 
-  const handleExportPdf = () => {
+  const handleExportPdf = async () => {
     if (qaHistory.length === 0) {
       toast.error(t("carnet.qa.exportEmpty"));
       return;

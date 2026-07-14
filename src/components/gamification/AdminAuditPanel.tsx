@@ -130,7 +130,7 @@ export default function AdminAuditPanel() {
     toast.success("CSV exporté");
   };
 
-  const exportPdf = () => {
+  const exportPdf = async () => {
     const { default: jsPDF } = await import("jspdf");
       const doc = new jsPDF({ unit: "pt", format: "a4" });
     const margin = 36;
