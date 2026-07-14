@@ -2,6 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTravelerProfile } from "@/hooks/useTravelerProfile";
 import { Loader2 } from "lucide-react";
+import { stepToRoute, type OnboardingStep } from "@/lib/onboarding-state";
 
 interface Props {
   children: React.ReactNode;
@@ -12,7 +13,6 @@ interface Props {
 const ProtectedRoute = ({ children, skipOnboarding = false }: Props) => {
   const { user, loading } = useAuth();
   const location = useLocation();
-  // Only fire the query when we already know we have a user; gate below.
   const { data: profile, isLoading: profileLoading } = useTravelerProfile();
 
   if (loading) {
@@ -35,8 +35,14 @@ const ProtectedRoute = ({ children, skipOnboarding = false }: Props) => {
         </div>
       );
     }
-    if (!profile?.completed_at) {
-      return <Navigate to="/profil-voyageur" replace />;
+    const step = (profile?.onboarding_step ?? null) as OnboardingStep | null;
+    const finished = step === "done" || (!step && !!profile?.completed_at);
+    if (!finished) {
+      // If no profile row yet, send them to the beginning of the tunnel.
+      const target = step ? stepToRoute(step) : "/profil-voyageur";
+      if (location.pathname !== target) {
+        return <Navigate to={target} replace />;
+      }
     }
   }
 
