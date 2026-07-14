@@ -28,88 +28,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
-type StepKey =
-  | "basic"
-  | "profile"
-  | "objectives"
-  | "style"
-  | "budget"
-  | "accommodation"
-  | "transport"
-  | "constraints"
-  | "environment"
-  | "inspirations";
+import { MODE_STEPS, STEP_KEYS, defaultFormData, type StepKey } from "./travel-form.config";
 
-const STEP_KEYS: StepKey[] = [
-  "basic", "profile", "objectives", "style", "budget",
-  "accommodation", "transport", "constraints", "environment", "inspirations",
-];
-
-const MODE_STEPS: Record<PlanMode, StepKey[]> = {
-  quick: ["basic", "budget", "style"],
-  custom: ["basic", "profile", "objectives", "style", "budget", "accommodation", "inspirations"],
-  tailored: [
-    "basic",
-    "profile",
-    "objectives",
-    "style",
-    "budget",
-    "accommodation",
-    "transport",
-    "constraints",
-    "environment",
-    "inspirations",
-  ],
-};
-
-const defaultFormData: TravelFormData = {
-  destination: "",
-  arrivalCity: "",
-  departureLocation: "",
-  departureDate: "",
-  returnDate: "",
-  duration: "",
-  tripTypes: [],
-  tripTypeOther: "",
-  travelerType: "",
-  age: 0,
-  activityLevel: "",
-  languages: [],
-  speaksLocalLanguage: "",
-  needsFrenchGuide: "",
-  travelExperience: "",
-  objectives: [],
-  objectiveOther: "",
-  feelings: [],
-  priorities: [],
-  organization: "",
-  rhythm: "",
-  totalBudget: 0,
-  spendingPriorities: [],
-  accommodationType: "",
-  accommodationTypeOther: "",
-  accommodationStanding: "",
-  bookingStatus: "",
-  hasStopover: "",
-  stopoverCount: 0,
-  localTransport: [],
-  hasInternationalPermit: "",
-  constraints: [],
-  childrenCount: 0,
-  animalDetails: "",
-  mobilityDetails: "",
-  budgetDetails: "",
-  timeDetails: "",
-  importantNotes: "",
-  dietaryPreferences: [],
-  dietaryOther: "",
-  connectivity: "",
-  climatePreference: "",
-  environmentalSensitivity: "",
-  culturalImmersion: "",
-  baggageTypes: [],
-  inspirations: "",
-};
 
 interface TravelFormDialogProps {
   open: boolean;
