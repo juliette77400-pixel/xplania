@@ -1,5 +1,6 @@
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 // Intelligent chatbot router: classifies user intent and returns a route or free-mode reply.
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
