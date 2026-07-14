@@ -58,6 +58,102 @@ export type Database = {
           },
         ]
       }
+      destinations: {
+        Row: {
+          active: boolean
+          adventure_score: number
+          authenticity_score: number
+          best_seasons: string[]
+          budget_score: number
+          comfort_score: number
+          country: string
+          created_at: string
+          culture_score: number
+          food_score: number
+          hero_image_url: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          luxury_score: number
+          name: string
+          nature_score: number
+          nomad_score: number
+          organization_score: number
+          originality_score: number
+          region: string | null
+          slug: string
+          social_score: number
+          summary_en: string | null
+          summary_fr: string | null
+          tags: string[]
+          tourism_mass: number
+          updated_at: string
+          wellbeing_score: number
+        }
+        Insert: {
+          active?: boolean
+          adventure_score?: number
+          authenticity_score?: number
+          best_seasons?: string[]
+          budget_score?: number
+          comfort_score?: number
+          country: string
+          created_at?: string
+          culture_score?: number
+          food_score?: number
+          hero_image_url?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          luxury_score?: number
+          name: string
+          nature_score?: number
+          nomad_score?: number
+          organization_score?: number
+          originality_score?: number
+          region?: string | null
+          slug: string
+          social_score?: number
+          summary_en?: string | null
+          summary_fr?: string | null
+          tags?: string[]
+          tourism_mass?: number
+          updated_at?: string
+          wellbeing_score?: number
+        }
+        Update: {
+          active?: boolean
+          adventure_score?: number
+          authenticity_score?: number
+          best_seasons?: string[]
+          budget_score?: number
+          comfort_score?: number
+          country?: string
+          created_at?: string
+          culture_score?: number
+          food_score?: number
+          hero_image_url?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          luxury_score?: number
+          name?: string
+          nature_score?: number
+          nomad_score?: number
+          organization_score?: number
+          originality_score?: number
+          region?: string | null
+          slug?: string
+          social_score?: number
+          summary_en?: string | null
+          summary_fr?: string | null
+          tags?: string[]
+          tourism_mass?: number
+          updated_at?: string
+          wellbeing_score?: number
+        }
+        Relationships: []
+      }
       discover_notifications: {
         Row: {
           body: string | null
@@ -795,6 +891,71 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      hidden_gems: {
+        Row: {
+          active: boolean
+          best_season: string | null
+          created_at: string
+          destination_id: string | null
+          id: string
+          kind: string
+          lat: number | null
+          lng: number | null
+          name: string
+          originality_score: number
+          source: string | null
+          source_url: string | null
+          summary_en: string | null
+          summary_fr: string | null
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          best_season?: string | null
+          created_at?: string
+          destination_id?: string | null
+          id?: string
+          kind?: string
+          lat?: number | null
+          lng?: number | null
+          name: string
+          originality_score?: number
+          source?: string | null
+          source_url?: string | null
+          summary_en?: string | null
+          summary_fr?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          best_season?: string | null
+          created_at?: string
+          destination_id?: string | null
+          id?: string
+          kind?: string
+          lat?: number | null
+          lng?: number | null
+          name?: string
+          originality_score?: number
+          source?: string | null
+          source_url?: string | null
+          summary_en?: string | null
+          summary_fr?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hidden_gems_destination_id_fkey"
+            columns: ["destination_id"]
+            isOneToOne: false
+            referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       journal_badges: {
         Row: {
@@ -1640,6 +1801,62 @@ export type Database = {
         }
         Relationships: []
       }
+      travel_documents: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          destination_id: string | null
+          destination_slug: string | null
+          embedding: string | null
+          id: string
+          locale: string
+          metadata: Json
+          source: string | null
+          source_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          content: string
+          created_at?: string
+          destination_id?: string | null
+          destination_slug?: string | null
+          embedding?: string | null
+          id?: string
+          locale?: string
+          metadata?: Json
+          source?: string | null
+          source_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          destination_id?: string | null
+          destination_slug?: string | null
+          embedding?: string | null
+          id?: string
+          locale?: string
+          metadata?: Json
+          source?: string | null
+          source_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "travel_documents_destination_id_fkey"
+            columns: ["destination_id"]
+            isOneToOne: false
+            referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       traveler_profiles: {
         Row: {
           adventure_score: number
@@ -2344,6 +2561,25 @@ export type Database = {
           rating: number
           tags: string[]
           updated_at: string
+        }[]
+      }
+      match_travel_documents: {
+        Args: {
+          filter_destination_slug?: string
+          filter_locale?: string
+          match_count?: number
+          query_embedding: string
+        }
+        Returns: {
+          category: string
+          content: string
+          destination_slug: string
+          id: string
+          locale: string
+          similarity: number
+          source: string
+          source_url: string
+          title: string
         }[]
       }
       owns_place_list: {
