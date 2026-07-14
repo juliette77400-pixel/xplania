@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
