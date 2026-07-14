@@ -2104,6 +2104,75 @@ export type Database = {
         }
         Relationships: []
       }
+      user_memory: {
+        Row: {
+          created_at: string
+          dislikes: string[]
+          likes: string[]
+          preferences: Json
+          saved_experiences: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dislikes?: string[]
+          likes?: string[]
+          preferences?: Json
+          saved_experiences?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dislikes?: string[]
+          likes?: string[]
+          preferences?: Json
+          saved_experiences?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_recommendations_history: {
+        Row: {
+          context: Json
+          created_at: string
+          id: string
+          item_key: string
+          item_type: string
+          liked: boolean | null
+          shown: boolean
+          source: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context?: Json
+          created_at?: string
+          id?: string
+          item_key: string
+          item_type: string
+          liked?: boolean | null
+          shown?: boolean
+          source?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context?: Json
+          created_at?: string
+          id?: string
+          item_key?: string
+          item_type?: string
+          liked?: boolean | null
+          shown?: boolean
+          source?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
