@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useStableCoords } from "@/hooks/useStableCallback";
 
 export interface NearbyPOI {
   id: string;
@@ -27,76 +28,63 @@ function classify(tags: Record<string, string>): NearbyPOI["category"] {
   return "hidden_gem";
 }
 
-const cache = new Map<string, NearbyPOI[]>();
+async function fetchOverpass(
+  position: { lat: number; lng: number },
+  radiusMeters: number,
+): Promise<NearbyPOI[]> {
+  const query = `[out:json][timeout:15];(${CATEGORY_QUERY
+    .replace(/RADIUS/g, String(radiusMeters))
+    .replace(/LAT/g, position.lat.toFixed(6))
+    .replace(/LNG/g, position.lng.toFixed(6))});out body 60;`;
+
+  const res = await fetch("https://overpass-api.de/api/interpreter", {
+    method: "POST",
+    body: query,
+    headers: { "Content-Type": "text/plain" },
+  });
+  if (!res.ok) throw new Error("overpass_failed");
+  const json = await res.json();
+  const elems = (json?.elements || []) as Array<{
+    id: number; lat: number; lon: number; tags?: Record<string, string>;
+  }>;
+  return elems
+    .filter((e) => e.tags?.name)
+    .map((e) => ({
+      id: String(e.id),
+      name: e.tags!.name,
+      category: classify(e.tags!),
+      lat: e.lat,
+      lng: e.lon,
+      tags: e.tags!,
+    }))
+    .slice(0, 50);
+}
 
 /**
- * Fetch nearby points of interest from OpenStreetMap Overpass API.
- * Free, no API key required. Cached in-memory + sessionStorage.
+ * Fetch nearby points of interest from OpenStreetMap Overpass API via React
+ * Query. Positions are quantized to a ~100 m grid (via `useStableCoords`) so
+ * small GPS drift doesn't invalidate the cache; results are shared across
+ * consumers thanks to the React Query cache.
  */
 export function useNearbyPOI(
   position: { lat: number; lng: number } | null,
   enabled: boolean,
   radiusMeters = 600,
 ) {
-  const [pois, setPois] = useState<NearbyPOI[]>([]);
-  const [loading, setLoading] = useState(false);
+  const stable = useStableCoords(position, 100);
+  const key = stable
+    ? `${stable.lat.toFixed(3)}_${stable.lng.toFixed(3)}_${radiusMeters}`
+    : null;
 
-  useEffect(() => {
-    if (!enabled || !position) return;
-    // Round to ~100m grid to maximize cache hits
-    const key = `${position.lat.toFixed(3)}_${position.lng.toFixed(3)}_${radiusMeters}`;
+  const { data, isLoading } = useQuery({
+    queryKey: ["nearby-poi", key],
+    enabled: enabled && !!stable,
+    staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 60,
+    queryFn: () => fetchOverpass(stable!, radiusMeters),
+  });
 
-    if (cache.has(key)) { setPois(cache.get(key)!); return; }
-    try {
-      const cached = sessionStorage.getItem(`poi:${key}`);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        cache.set(key, parsed);
-        setPois(parsed);
-        return;
-      }
-    } catch {}
-
-    let cancelled = false;
-    setLoading(true);
-    const query = `[out:json][timeout:15];(${CATEGORY_QUERY
-      .replace(/RADIUS/g, String(radiusMeters))
-      .replace(/LAT/g, position.lat.toFixed(6))
-      .replace(/LNG/g, position.lng.toFixed(6))});out body 60;`;
-
-    fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      body: query,
-      headers: { "Content-Type": "text/plain" },
-    })
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((json) => {
-        if (cancelled) return;
-        const elems = (json?.elements || []) as Array<{
-          id: number; lat: number; lon: number; tags?: Record<string, string>;
-        }>;
-        const list: NearbyPOI[] = elems
-          .filter((e) => e.tags?.name)
-          .map((e) => ({
-            id: String(e.id),
-            name: e.tags!.name,
-            category: classify(e.tags!),
-            lat: e.lat,
-            lng: e.lon,
-            tags: e.tags!,
-          }))
-          .slice(0, 50);
-        cache.set(key, list);
-        try { sessionStorage.setItem(`poi:${key}`, JSON.stringify(list)); } catch {}
-        setPois(list);
-      })
-      .catch(() => { if (!cancelled) setPois([]); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-
-    return () => { cancelled = true; };
-  }, [position?.lat, position?.lng, enabled, radiusMeters]);
-
-  return { pois, loading };
+  return { pois: data ?? [], loading: enabled && !!stable && isLoading };
 }
 
 export const POI_COLORS: Record<NearbyPOI["category"], string> = {

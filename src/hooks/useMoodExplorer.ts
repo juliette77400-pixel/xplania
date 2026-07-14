@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pingStreakAction } from "@/lib/streak";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -47,17 +48,18 @@ export interface RecommendInput {
   city_hint?: string;
 }
 
+export const moodFavoritesKey = (userId?: string) => ["mood", "favorites", userId] as const;
+export const moodHistoryKey = (userId?: string) => ["mood", "history", userId] as const;
+export const moodWeatherKey = (lat?: number, lng?: number) => ["mood", "weather", lat, lng] as const;
+
 export function useMoodExplorer() {
   const { user } = useAuth();
+  const qc = useQueryClient();
+
   const [places, setPlaces] = useState<MoodPlace[]>([]);
-  const [favorites, setFavorites] = useState<MoodFavorite[]>([]);
-  const [history, setHistory] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [activeMood, setActiveMood] = useState<string | null>(null);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
-  const [weather, setWeather] = useState<string | null>(null);
 
-  // Geolocate once on mount
   useEffect(() => {
     if (!("geolocation" in navigator)) return;
     navigator.geolocation.getCurrentPosition(
@@ -67,56 +69,56 @@ export function useMoodExplorer() {
     );
   }, []);
 
-  // Fetch weather when position known
-  useEffect(() => {
-    if (!position) return;
-    (async () => {
-      try {
-        const { data } = await invokeProtectedFunction<{ conditions?: string; temperature?: string }>("weather", {
-          body: { lat: position.lat, lon: position.lng },
-        });
-        if (data?.conditions) setWeather(`${data.conditions} ${data.temperature || ""}`.trim());
-      } catch {}
-    })();
-  }, [position]);
+  const weatherQuery = useQuery({
+    queryKey: moodWeatherKey(position?.lat, position?.lng),
+    enabled: !!position,
+    staleTime: 1000 * 60 * 15,
+    queryFn: async () => {
+      const { data } = await invokeProtectedFunction<{ conditions?: string; temperature?: string }>("weather", {
+        body: { lat: position!.lat, lon: position!.lng },
+      });
+      return data?.conditions ? `${data.conditions} ${data.temperature || ""}`.trim() : null;
+    },
+  });
+  const weather = weatherQuery.data ?? null;
+
+  const favoritesQuery = useQuery({
+    queryKey: moodFavoritesKey(user?.id),
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("mood_favorites")
+        .select("*, place:mood_places(*)")
+        .eq("user_id", user!.id)
+        .order("saved_at", { ascending: false });
+      if (error) throw error;
+      return (data as MoodFavorite[]) || [];
+    },
+  });
+  const favorites = favoritesQuery.data ?? [];
+
+  const historyQuery = useQuery({
+    queryKey: moodHistoryKey(user?.id),
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("mood_selections")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false })
+        .limit(10);
+      return data || [];
+    },
+  });
+  const history = historyQuery.data ?? [];
 
   const loadFavorites = useCallback(async () => {
-    if (!user) return;
-    const { data, error } = await supabase
-      .from("mood_favorites")
-      .select("*, place:mood_places(*)")
-      .eq("user_id", user.id)
-      .order("saved_at", { ascending: false });
-    if (error) {
-      console.error(error);
-      return;
-    }
-    setFavorites((data as any) || []);
-  }, [user]);
+    await favoritesQuery.refetch();
+  }, [favoritesQuery]);
 
-  const loadHistory = useCallback(async () => {
-    if (!user) return;
-    const { data } = await supabase
-      .from("mood_selections")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(10);
-    setHistory(data || []);
-  }, [user]);
-
-  useEffect(() => {
-    loadFavorites();
-    loadHistory();
-  }, [loadFavorites, loadHistory]);
-
-  const recommend = useCallback(async (input: RecommendInput) => {
-    if (!user) {
-      toast.error("Connecte-toi pour utiliser le Mood Explorer");
-      return;
-    }
-    setLoading(true);
-    try {
+  const recommendMutation = useMutation({
+    mutationFn: async (input: RecommendInput) => {
+      if (!user) throw new Error("auth_required");
       const locale = (localStorage.getItem("xplania-lang") || navigator.language).startsWith("en") ? "en" : "fr";
       const { data, error } = await supabase.functions.invoke("mood-recommend", {
         body: {
@@ -130,44 +132,72 @@ export function useMoodExplorer() {
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
+      return { data, input };
+    },
+    onSuccess: ({ data, input }) => {
       setPlaces(data?.places || []);
       setActiveMood(data?.mood || input.mood || null);
-      loadHistory();
+      qc.invalidateQueries({ queryKey: moodHistoryKey(user?.id) });
       if (!data?.places?.length) toast.info("Aucun lieu trouvé, réessaie avec un autre mood");
       else toast.success(`${data.places.length} lieux trouvés pour "${data.mood}"`);
-    } catch (e: any) {
-      toast.error(e?.message || "Erreur recommandation");
-    } finally {
-      setLoading(false);
-    }
-  }, [user, position, weather, loadHistory]);
-
-  const toggleFavorite = useCallback(async (place: MoodPlace) => {
-    if (!user) return;
-    const existing = favorites.find((f) => f.place_id === place.id);
-    if (existing) {
-      const { error } = await supabase.from("mood_favorites").delete().eq("id", existing.id);
-      if (error) {
-        toast.error("Échec suppression");
-        return;
+    },
+    onError: (e: any) => {
+      if (e?.message === "auth_required") {
+        toast.error("Connecte-toi pour utiliser le Mood Explorer");
+      } else {
+        toast.error(e?.message || "Erreur recommandation");
       }
-      setFavorites((prev) => prev.filter((f) => f.id !== existing.id));
-      toast.success("Retiré des favoris");
-    } else {
+    },
+  });
+
+  const recommend = useCallback(
+    async (input: RecommendInput) => {
+      await recommendMutation.mutateAsync(input).catch(() => {});
+    },
+    [recommendMutation],
+  );
+
+  const toggleFavoriteMutation = useMutation({
+    mutationFn: async (place: MoodPlace) => {
+      if (!user) throw new Error("auth_required");
+      const existing = favorites.find((f) => f.place_id === place.id);
+      if (existing) {
+        const { error } = await supabase.from("mood_favorites").delete().eq("id", existing.id);
+        if (error) throw error;
+        return { kind: "removed" as const, id: existing.id };
+      }
       const { data, error } = await supabase
         .from("mood_favorites")
         .insert({ user_id: user.id, place_id: place.id })
         .select("*, place:mood_places(*)")
         .single();
-      if (error) {
-        toast.error("Échec sauvegarde");
-        return;
+      if (error) throw error;
+      return { kind: "added" as const, favorite: data as MoodFavorite };
+    },
+    onSuccess: (res) => {
+      qc.setQueryData<MoodFavorite[]>(moodFavoritesKey(user?.id), (prev) => {
+        const list = prev ?? [];
+        if (res.kind === "removed") return list.filter((f) => f.id !== res.id);
+        return [res.favorite, ...list];
+      });
+      if (res.kind === "added") {
+        pingStreakAction("mood:favorite");
+        toast.success("Sauvegardé ❤️");
+      } else {
+        toast.success("Retiré des favoris");
       }
-      setFavorites((prev) => [data as any, ...prev]);
-      pingStreakAction("mood:favorite"); // ✨ NEW (gamif)
-      toast.success("Sauvegardé ❤️");
-    }
-  }, [user, favorites]);
+    },
+    onError: (e: any) => {
+      toast.error(e?.message === "auth_required" ? "Connecte-toi" : "Échec sauvegarde");
+    },
+  });
+
+  const toggleFavorite = useCallback(
+    async (place: MoodPlace) => {
+      await toggleFavoriteMutation.mutateAsync(place).catch(() => {});
+    },
+    [toggleFavoriteMutation],
+  );
 
   const isFavorite = useCallback(
     (placeId: string) => favorites.some((f) => f.place_id === placeId),
@@ -179,7 +209,6 @@ export function useMoodExplorer() {
     setActiveMood(null);
   }, []);
 
-  // Compute badge context (distinct moods, hidden gems saved, etc.)
   const distinctMoods = new Set(history.map((h: any) => h.mood)).size;
   const hiddenGemsSaved = favorites.filter((f) => f.place?.hidden_gem).length;
   const badgeContext = {
@@ -187,12 +216,22 @@ export function useMoodExplorer() {
     favoritesCount: favorites.length,
     hiddenGemsSaved,
     totalSelections: history.length,
-    reactionsCount: 0, // hydraté côté page
+    reactionsCount: 0,
   };
 
   return {
-    places, favorites, history, loading, activeMood, position, weather,
-    recommend, toggleFavorite, isFavorite, reset, loadFavorites,
+    places,
+    favorites,
+    history,
+    loading: recommendMutation.isPending,
+    activeMood,
+    position,
+    weather,
+    recommend,
+    toggleFavorite,
+    isFavorite,
+    reset,
+    loadFavorites,
     badgeContext,
   };
 }
