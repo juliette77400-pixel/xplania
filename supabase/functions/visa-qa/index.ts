@@ -97,6 +97,8 @@ Passport / nationality: ${nationality}
 Trip type: ${tripType || "(unknown)"}
 Stay duration: ${duration || "(unknown)"}`;
 
+    const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+
     const system = isEN
       ? `You are Pip, Xplania's personal visa & travel-formalities copilot. Warm, clear, jargon-free, reassuring for first-time travellers — never condescending. You help with visas, entry requirements, safety advisories, admin steps, and currency basics.
 
