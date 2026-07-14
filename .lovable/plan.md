@@ -1,94 +1,100 @@
+# Vague 1 — Tinder Onboarding Voyageur
 
-# Plan — Optimisation UI globale + Refonte page d'accueil
+## Ce qu'on construit
 
-Travail livré en **2 lots** séparés pour limiter les risques de régression. Bilingue FR/EN, mobile-first, design system existant respecté, aucune fonctionnalité supprimée.
+Un parcours de swipe obligatoire après inscription qui construit un profil voyageur (12 dimensions), calcule un badge, et redirige vers 2 fonctionnalités recommandées.
 
----
+## 1. Base de données (migration Supabase)
 
-## LOT 1 — Page Gamification + optimisations UI globales
+**Table `tinder_cards`** (lecture publique authentifiée)
+- `id uuid PK`, `name text unique`, `image_url text`, `unsplash_query text`, `phrase_fr text`, `phrase_en text`, `score_tags jsonb`, `order_index int`, `active bool default true`, `created_at`
 
-### 1.1 Refonte de la page Gamification (`src/pages/Gamification.tsx` + `GamCatalog.tsx`)
+**Table `traveler_profiles`** (RLS: user_id = auth.uid())
+- `id uuid PK`, `user_id uuid unique FK→auth.users`, les 12 colonnes de score `int default 0`, `badge text`, `badge_description text`, `recommended_features text[]`, `completed_at timestamptz`, `created_at`, `updated_at`
 
-**En haut de la page (vitrine) :**
-- Bandeau de progression global : "12 / 40 badges débloqués" + barre + niveau / XP (déjà présent via XpHeader).
-- Section "Débloqués récemment" (max 6, carrousel mobile).
-- Section "Bientôt à portée" : badges en cours avec progression ≥ 25 % (max 4).
+**Table `user_swipes`** (RLS: user_id = auth.uid())
+- `id`, `user_id`, `card_id FK`, `direction text check in ('right','left','skip')`, `created_at`, unique(user_id, card_id)
 
-**Onglets de filtrage** (Tabs shadcn) :
-- Débloqués · En cours · Tous (par défaut : Débloqués).
+GRANTs standard (authenticated + service_role), RLS + policies, trigger `updated_at`.
 
-**Reste du catalogue :**
-- Badges verrouillés **regroupés par catégorie**, chaque catégorie dans un `<Accordion>` replié par défaut.
-- Header de catégorie : nom + compteur "3 / 8 débloqués" + barre fine.
-- Style verrouillé : grisé, opacité réduite, pas de description longue, icône cadenas.
-- Pagination "Voir plus" (12 par 12) si une catégorie ouverte dépasse 12 cartes.
+## 2. Seed des 20 cartes
 
-**Aucune logique de claim / verif / XP modifiée** — uniquement la présentation.
+Migration d'INSERT avec les 20 cartes de la spec (phrases FR + EN + score_tags). `image_url` initialement null.
 
-### 1.2 Optimisations UI transverses (faible risque, ciblées)
+Edge function `tinder-cards-seed-images` (admin one-shot): pour chaque carte sans image, appelle `unsplash` avec `unsplash_query` et enregistre l'URL. Déclenchable via un bouton admin ou automatiquement à la 1ʳᵉ visite si vide.
 
-- **Skeletons** : ajouter des skeleton loaders shadcn là où on a aujourd'hui un écran vide pendant un fetch — pages identifiées : Dashboard, Carnet, Carnets, Discover, Profil, Suivi. Pas de changement de logique, juste un fallback visuel.
-- **Sections repliables** sur pages denses :
-  - `Carnet` : blocs journal et timeline en `<Accordion>` repliables.
-  - `GuideBudget` / `GuideValise` / `GuideVisa` : sections secondaires (tips IA, historique) repliables.
-- **Mobile** : audit rapide des cartes qui débordent (Dashboard, Gamification, Profil) — ajustement padding / font-size via classes Tailwind existantes (`text-sm md:text-base`, `p-3 md:p-6`).
-- **Espacements** : passage en revue des écarts `space-y-*` incohérents entre pages, normalisation sur `space-y-6 md:space-y-8`.
-- **Pas de nouveaux tokens** : aucune couleur, ombre ou police nouvelle.
+## 3. Écran de swipe `/profil-voyageur`
 
-### 1.3 i18n
-Nouvelles clés FR/EN pour : onglets badges, "Voir plus", "Bientôt à portée", "Débloqués récemment", headers de catégorie, états vides.
+Nouveau composant `TinderOnboarding` avec sous-composants:
+- `TinderCard` — image plein cadre, dégradé sombre bas, phrase en overlay, drag+rotation via framer-motion
+- `TinderDeck` — stack de 2 cartes (courante + suivante en scale-95 dessous)
+- `TinderControls` — 3 boutons ❌ ⏭️ ❤️ + raccourcis clavier ←/→/espace
+- `TinderProgress` — barre "7 / 20" + message dynamique (5 paliers FR/EN via i18n)
 
----
+Comportement:
+- Ordre mélangé une fois au montage (seed = user_id pour reproductibilité)
+- Swipe droite/gauche/skip → insert dans `user_swipes` + update optimiste des scores locaux
+- Debounce des writes (batch toutes les 3 cartes) pour limiter les allers-retours
+- Reprise: si `user_swipes` contient déjà des lignes, on reprend là où on en était
+- À la 20ᵉ carte → `finalizeProfile()`: calcule badge, upsert `traveler_profiles` avec `completed_at`, navigue vers `/profil-voyageur/resultat`
 
-## LOT 2 — Refonte de la page d'accueil
+## 4. Calcul du badge
 
-Fichier principal : `src/pages/Index.tsx`. Réécriture des sections via composants existants dans `src/components/xplania/` (modifiés) + 2-3 nouveaux composants ciblés. **Aucune URL ni ancre supprimée** : on garde `#features`, `#how-it-works`, `#faq` si présents et on ajoute les nouvelles.
+`src/lib/traveler-badge.ts` — fonction pure `calculateBadge(scores)` identique à la spec + normalisation (clamp min 0 pour affichage, garde interne signée) + fallback "Voyageur curieux".
 
-### Structure finale (ordre)
+Table de mapping badge → 2 features recommandées:
+- Explorateur culturel → Discover + Carnet
+- Digital Nomad → Guide Budget + Suivi
+- Voyageur détente → Guide Valise + Mood
+- Aventurier → Suivi + Mood Explorer
+- Voyageur nature → Mood + Discover
+- Voyageur gastronomique → Discover + Carnet
+- Voyageur bien-être → Mood + Guide Valise
+- Voyageur social → Mood + Carnet (partage)
+- Voyageur organisé → Guide Budget + Guide Visa
+- Voyageur économe → Guide Budget + Guide Valise
+- Voyageur curieux → Discover + Mood
 
-1. **Hero** (`HeroSection.tsx` refondu)
-   - H1 : « Le premier compagnon IA dédié aux voyageurs modernes »
-   - Sous-titre : « Centralise, anticipe et accompagne chaque étape de ton voyage. Zéro friction, 100 % personnalisé. »
-   - CTA principal : « Commence ton voyage » → flux existant.
-   - Visuel immersif conservé / ajusté (pas de nouvel asset lourd).
+Tests unitaires Vitest sur `calculateBadge` (cas top1+top2 match, fallback, égalités, tous à 0).
 
-2. **Double cible** (nouveau composant `DualAudienceSection.tsx`)
-   - 2 cartes côte à côte (stack mobile) : Jeunes voyageurs débutants · Digital nomads.
-   - Ton apaisant vs ton efficacité, icônes existantes lucide.
+## 5. Écran de révélation `/profil-voyageur/resultat`
 
-3. **Avant / Pendant / Après** (nouveau `JourneyTimelineSection.tsx`)
-   - 3 colonnes desktop, timeline verticale mobile.
-   - Items : visa/budget/valise/itinéraire · guide interculturel/suivi temps réel/recos contextuelles · carnet/badges/retour d'expérience.
+- Titre "Votre profil voyageur : {badge}"
+- Radar chart des 12 scores (recharts, déjà installé)
+- Description chaleureuse 2-3 phrases par badge (i18n FR/EN)
+- 2 cartes "fonctionnalités recommandées" avec icône, titre, CTA
+- Bouton secondaire "Refaire le test" (efface `user_swipes` + reset profil)
 
-4. **Différenciation** (nouveau `DifferentiationSection.tsx`)
-   - Phrase signature XL : « ChatGPT génère. Xplania accompagne. »
-   - 3 puces courtes : suivi continu · personnalisation contextuelle · structure avant/pendant/après.
+## 6. Redirection obligatoire après signup
 
-5. **Fonctionnalités clés** (`FeaturesSection.tsx` allégé)
-   - 5 tuiles icônes : Visa · Budget · Valise · Carnet · Globe Trotter.
-   - Texte raccourci, pas de paragraphes.
+- Nouveau hook `useTravelerProfile()` — React Query sur `traveler_profiles` par `user_id`
+- Nouveau composant `<RequireTravelerProfile>` qui wrap les routes protégées: si `user` connecté ET `completed_at` null ET route ≠ `/profil-voyageur*` → `<Navigate to="/profil-voyageur" replace />`
+- On l'insère dans `App.tsx` autour de `<ProtectedRoute>` sur Dashboard/Carnet/Suivi/etc. (pas sur `/`, `/auth`, `/legal`)
+- Skip toléré uniquement si l'utilisateur est déjà en train de finir le parcours
 
-6. **Crédibilité** (`BetaSection.tsx` ajusté)
-   - Mise en avant Pépite France + compteur testeurs bêta (si dispo via store/contenu existant, sinon placeholder masquable).
+## 7. i18n
 
-7. **CTA final** — réutilise le composant CTA existant, ton chaleureux.
+Nouveau namespace `travelerProfile` dans `src/i18n/locales/{fr,en}.json`:
+- Phrases des 20 cartes (redondant avec DB mais permet UI côté client sans requête)
+- Messages de progression
+- Noms + descriptions des 11 badges
+- Labels du radar (12 dimensions)
 
-### Sections retirées / déplacées
-- `Testimonials`, `PhotoGallery`, `FaqSection`, `HowItWorksSection`, `DashboardSection`, `BenefitsSection` : **conservées dans le repo** mais retirées de l'accueil si redondantes avec la nouvelle structure. Aucun fichier supprimé pour éviter de casser des imports tiers. Ancres `#faq` / `#how-it-works` conservées via redirect simple vers section équivalente ou supprimées seulement si non référencées (vérification `rg` avant).
+## Détails techniques
 
-### i18n
-Toutes les nouvelles strings ajoutées dans `fr.json` / `en.json` sous `home.*` (hero, dualAudience, journey, differentiation, features, credibility, ctaFinal).
+- Framer-motion déjà présent, on l'utilise pour le drag (`useMotionValue`, `useTransform` pour la rotation)
+- Recharts pour le radar
+- Les scores en DB sont signés (int), l'affichage clampe à 0 mais le calcul du badge utilise les valeurs brutes
+- Edge function d'upsert final `finalize-traveler-profile` optionnelle si on veut sécuriser le calcul serveur; sinon on fait tout côté client puisque RLS protège déjà
+- Route `/profil-voyageur` et `/profil-voyageur/resultat` publiques mais requièrent auth (redirige vers `/auth` si pas de user)
 
----
+## Ce qu'on ne fait PAS dans cette vague
 
-## Contraintes respectées
-- Aucune route ni fonctionnalité supprimée.
-- Pas de nouveau design token, pas de nouvelle police, pas de nouvelle couleur.
-- Mobile-first, bilingue, design system existant.
-- Lot 1 indépendant du Lot 2 : possible de stopper après l'un ou l'autre.
+- Pas de `user_memory` / `user_recommendations_history`
+- Pas de RAG, pas de destinations/hidden_gems
+- Pas de refonte Suivi
+- Pas de vraies récompenses (crédits, quota) — juste badge cosmétique + 2 features recommandées
 
----
+## Livraison
 
-## Question avant de démarrer
-
-Tu veux que j'enchaîne **Lot 1 puis Lot 2 d'affilée**, ou je m'arrête après le Lot 1 pour que tu valides visuellement la Gamification avant la refonte de l'accueil ?
+Une seule migration DB (tables + seed 20 cartes sans image), puis code frontend + edge function seed-images. Après validation de la migration je code le reste dans la foulée.

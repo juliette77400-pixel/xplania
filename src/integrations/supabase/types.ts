@@ -1601,6 +1601,114 @@ export type Database = {
         }
         Relationships: []
       }
+      tinder_cards: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          image_url: string | null
+          name: string
+          order_index: number
+          phrase_en: string
+          phrase_fr: string
+          score_tags: Json
+          unsplash_query: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          order_index: number
+          phrase_en: string
+          phrase_fr: string
+          score_tags?: Json
+          unsplash_query: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          order_index?: number
+          phrase_en?: string
+          phrase_fr?: string
+          score_tags?: Json
+          unsplash_query?: string
+        }
+        Relationships: []
+      }
+      traveler_profiles: {
+        Row: {
+          adventure_score: number
+          authenticity_score: number
+          badge: string | null
+          badge_description: string | null
+          budget_score: number
+          comfort_score: number
+          completed_at: string | null
+          created_at: string
+          culture_score: number
+          food_score: number
+          id: string
+          luxury_score: number
+          nature_score: number
+          nomad_score: number
+          organization_score: number
+          recommended_features: string[]
+          social_score: number
+          updated_at: string
+          user_id: string
+          wellbeing_score: number
+        }
+        Insert: {
+          adventure_score?: number
+          authenticity_score?: number
+          badge?: string | null
+          badge_description?: string | null
+          budget_score?: number
+          comfort_score?: number
+          completed_at?: string | null
+          created_at?: string
+          culture_score?: number
+          food_score?: number
+          id?: string
+          luxury_score?: number
+          nature_score?: number
+          nomad_score?: number
+          organization_score?: number
+          recommended_features?: string[]
+          social_score?: number
+          updated_at?: string
+          user_id: string
+          wellbeing_score?: number
+        }
+        Update: {
+          adventure_score?: number
+          authenticity_score?: number
+          badge?: string | null
+          badge_description?: string | null
+          budget_score?: number
+          comfort_score?: number
+          completed_at?: string | null
+          created_at?: string
+          culture_score?: number
+          food_score?: number
+          id?: string
+          luxury_score?: number
+          nature_score?: number
+          nomad_score?: number
+          organization_score?: number
+          recommended_features?: string[]
+          social_score?: number
+          updated_at?: string
+          user_id?: string
+          wellbeing_score?: number
+        }
+        Relationships: []
+      }
       trip_activities: {
         Row: {
           category: string | null
@@ -2010,6 +2118,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_swipes: {
+        Row: {
+          card_id: string
+          created_at: string
+          direction: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          card_id: string
+          created_at?: string
+          direction: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          card_id?: string
+          created_at?: string
+          direction?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_swipes_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "tinder_cards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
