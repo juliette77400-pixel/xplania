@@ -85,7 +85,11 @@ export default defineConfig(({ mode }) => ({
           if (/[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "react-vendor";
           if (id.includes("@supabase")) return "supabase";
           if (id.includes("leaflet")) return "maps";
-          if (id.includes("recharts") || id.includes("d3-")) return "charts";
+          // NOTE: do NOT split recharts / d3-* into their own chunk.
+          // Rollup's manualChunks breaks recharts' internal circular ESM
+          // graph and produces a TDZ error ("Cannot access 'P' before
+          // initialization") at runtime, which crashes any page that
+          // eventually loads a chart-using route. Let Vite handle it.
           if (id.includes("framer-motion")) return "motion";
           if (id.includes("@radix-ui")) return "radix";
           if (id.includes("i18next") || id.includes("react-i18next")) return "i18n";
