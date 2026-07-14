@@ -140,14 +140,14 @@ const OnboardingEssai = () => {
         } else if (f === "carnet" && user) {
           const { data } = await supabase
             .from("journals")
-            .select("title, destination_slug, created_at")
+            .select("title, tone, created_at")
             .eq("user_id", user.id)
             .order("created_at", { ascending: false })
             .limit(3);
           if (data && data.length > 0) {
             dbItems = data.map((j) => ({
               title: j.title ?? "Carnet",
-              subtitle: j.destination_slug ?? undefined,
+              subtitle: j.tone ?? undefined,
               meta: new Date(j.created_at).toLocaleDateString(i18n.language),
             }));
           }
