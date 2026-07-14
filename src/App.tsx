@@ -75,6 +75,8 @@ const App = () => (
               <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/profil-voyageur" element={<ProtectedRoute skipOnboarding><TravelerProfileOnboarding /></ProtectedRoute>} />
+            <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
             <Route path="/guide-budget" element={<GuideBudget />} />
             <Route path="/guide-valise" element={<ProtectedRoute><GuideValise /></ProtectedRoute>} />
             <Route path="/guide-visa" element={<GuideVisa />} />
