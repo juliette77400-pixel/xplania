@@ -79,6 +79,9 @@ Retourne UNIQUEMENT un objet JSON de cette forme exacte :
 {"tips":{"dress":{"title":"...","text":"..."},"customs":{"title":"...","text":"..."},"avoid":{"title":"...","text":"..."},"behavior":{"title":"...","text":"..."}}}
 PAS de markdown, PAS de commentaire, uniquement le JSON.`;
 
+    const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+    const systemWithCtx = system + (travelerCtx ? "\n\n" + travelerCtx : "");
+
     const user = isEN
       ? `Destination: ${destination}
 Trip type: ${tripType || "(unknown)"}
