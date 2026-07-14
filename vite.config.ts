@@ -73,33 +73,4 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    rollupOptions: {
-      output: {
-        // Split heavy third-party libraries into their own chunks so they are
-        // cached independently and don't bloat the entry bundle. Anything not
-        // matched here falls into Vite's default vendor chunking.
-        manualChunks(id) {
-          if (!id.includes("node_modules")) return;
-          if (/[\\/]react-router/.test(id)) return "react-vendor";
-          if (/[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "react-vendor";
-          if (id.includes("@supabase")) return "supabase";
-          if (id.includes("leaflet")) return "maps";
-          // NOTE: do NOT split recharts / d3-* into their own chunk.
-          // Rollup's manualChunks breaks recharts' internal circular ESM
-          // graph and produces a TDZ error ("Cannot access 'P' before
-          // initialization") at runtime, which crashes any page that
-          // eventually loads a chart-using route. Let Vite handle it.
-          if (id.includes("framer-motion")) return "motion";
-          if (id.includes("@radix-ui")) return "radix";
-          if (id.includes("i18next") || id.includes("react-i18next")) return "i18n";
-          if (id.includes("@tanstack")) return "tanstack";
-          if (id.includes("date-fns")) return "date-fns";
-          if (id.includes("zod")) return "zod";
-          if (id.includes("sonner")) return "sonner";
-          if (id.includes("lucide-react")) return "icons";
-        },
-      },
-    },
-  },
 }));
