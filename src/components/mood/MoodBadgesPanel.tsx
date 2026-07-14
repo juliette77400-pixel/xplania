@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Trophy, Lock, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { MOOD_BADGES, type BadgeContext } from "@/lib/mood-badges";
