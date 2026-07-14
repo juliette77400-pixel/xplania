@@ -86,7 +86,7 @@ const Index = () => {
       <FinalCtaSection onCreateTrip={handleCreateTrip} />
       <Footer onCreateTrip={handleCreateTrip} />
       {travelFormOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DialogSkeleton size="lg" />}>
           <TravelFormDialog
             open={travelFormOpen}
             onOpenChange={setTravelFormOpen}
@@ -139,7 +139,7 @@ const Index = () => {
       )}
       <QuickJump />
       {feedbackOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DialogSkeleton size="md" />}>
           <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
         </Suspense>
       )}
@@ -147,10 +147,11 @@ const Index = () => {
         <OnboardingDialog onCreateTrip={handleCreateTrip} />
       </Suspense>
       {quotaOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DialogSkeleton size="sm" compact />}>
           <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
         </Suspense>
       )}
+
     </div>
   );
 };
