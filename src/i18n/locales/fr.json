@@ -4310,5 +4310,64 @@
       "currency": "Convertisseur de devise",
       "currencySub": "Calcule tes dépenses dans ta monnaie"
     }
+  },
+  "travelerProfile": {
+    "title": "Ton profil voyageur",
+    "progress": "{{done}} / {{total}}",
+    "msg1": "Faisons connaissance.",
+    "msg2": "Je commence à comprendre ta façon de voyager.",
+    "msg3": "Ton profil prend forme.",
+    "msg4": "Presque terminé…",
+    "loadError": "Impossible de charger les cartes.",
+    "saveError": "Impossible d'enregistrer ton profil.",
+    "computing": "Analyse de ton profil voyageur…",
+    "almostDone": "C'est fini !",
+    "notMe": "Pas pour moi",
+    "forMe": "Ça me correspond",
+    "yourProfile": "Ton profil voyageur",
+    "yourScores": "Tes affinités",
+    "recommendedForYou": "Recommandé pour toi",
+    "recommendation": "Recommandé",
+    "discoverNow": "Découvrir",
+    "goToDashboard": "Aller au tableau de bord",
+    "retake": "Refaire le test",
+    "resetConfirm": "Cela supprimera tes réponses et ton badge. Continuer ?",
+    "resetDone": "Profil réinitialisé.",
+    "dimensions": {
+      "culture": "Culture",
+      "adventure": "Aventure",
+      "nature": "Nature",
+      "comfort": "Confort",
+      "budget": "Budget",
+      "food": "Gastronomie",
+      "authenticity": "Authenticité",
+      "social": "Social",
+      "wellbeing": "Bien-être",
+      "nomad": "Nomade",
+      "luxury": "Luxe",
+      "organization": "Organisation"
+    },
+    "badges": {
+      "cultural_explorer": { "name": "Explorateur culturel", "description": "Tu voyages pour comprendre les gens, leurs traditions et leurs récits. Musées, marchés locaux, ateliers d'artisans — c'est là que ton voyage prend son sens." },
+      "digital_nomad": { "name": "Digital Nomad", "description": "Ton bureau change de fenêtre chaque mois. Tu cherches des lieux où bien travailler, bien vivre et t'installer un moment." },
+      "relaxation": { "name": "Voyageur détente", "description": "Pour toi, voyager c'est se reposer, se faire plaisir et lâcher prise dans un cadre soigné." },
+      "adventurer": { "name": "Aventurier", "description": "Les sentiers battus t'ennuient. Tu cherches l'effort, la nature brute et les histoires à raconter au retour." },
+      "nature": { "name": "Voyageur nature", "description": "Tu recharges tes batteries dans les grands espaces, loin du bruit, au rythme du vivant." },
+      "gastronomic": { "name": "Voyageur gastronomique", "description": "Ton itinéraire suit ton palais : tables étoilées, cuisines de rue, marchés vivants." },
+      "wellbeing": { "name": "Voyageur bien-être", "description": "Tu voyages pour te retrouver : yoga, spa, silence et paysages qui apaisent." },
+      "social": { "name": "Voyageur social", "description": "Tes plus beaux souvenirs sont des rencontres. Tu vibres avec la culture locale et les autres voyageurs." },
+      "organized": { "name": "Voyageur organisé", "description": "Tu aimes que tout soit prévu, du visa au dernier musée. La sérénité passe par la préparation." },
+      "budget": { "name": "Voyageur économe", "description": "Tu prouves qu'on peut voir le monde sans se ruiner. Tu optimises tout, sans sacrifier l'expérience." },
+      "curious": { "name": "Voyageur curieux", "description": "Ton profil est ouvert et éclectique. Tu goûtes à tout et laisses tes envies te guider." }
+    },
+    "features": {
+      "discover": { "name": "Discover", "description": "Lieux locaux et pépites cachées, personnalisés selon ton profil." },
+      "carnet": { "name": "Carnet de bord", "description": "Ton journal de voyage intelligent avec photos, moments et récits IA." },
+      "suivi": { "name": "Suivi de voyage", "description": "Carte live, itinéraire, check-ins et alertes en temps réel." },
+      "mood": { "name": "Mood Explorer", "description": "Des recommandations selon ton humeur du moment." },
+      "guide-valise": { "name": "Guide Valise", "description": "Checklist intelligente adaptée à ta destination et ton style." },
+      "guide-budget": { "name": "Guide Budget", "description": "Tableau de bord de tes dépenses avec alertes et conseils IA." },
+      "guide-visa": { "name": "Guide Visa", "description": "Formalités, vaccins et sécurité pour ton pays de destination." }
+    }
   }
 }
