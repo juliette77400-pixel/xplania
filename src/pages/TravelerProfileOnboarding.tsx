@@ -373,7 +373,7 @@ const TravelerProfileOnboarding = () => {
           />
         </div>
         <p className="mt-3 text-center text-sm text-muted-foreground">{message}</p>
-        <div className="mt-2 text-center">
+        <div className="mt-2 flex items-center justify-center gap-4">
           <Link
             to="/home"
             className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
@@ -381,6 +381,19 @@ const TravelerProfileOnboarding = () => {
             <Info className="h-3 w-3" />
             {t("travelerProfile.learnMore", "En savoir plus sur Xplania")}
           </Link>
+          {done > 0 && (
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={resetting}
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive disabled:opacity-50"
+            >
+              <RotateCcw className="h-3 w-3" />
+              {resetting
+                ? t("travelerProfile.resetting", "Réinitialisation…")
+                : t("travelerProfile.resetCta", "Refaire à zéro")}
+            </button>
+          )}
         </div>
       </div>
 
