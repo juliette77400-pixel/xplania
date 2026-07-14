@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { buildTravelContext, contextToPromptSnippet, recordShownRecommendations } from "../_shared/travel-context.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -35,7 +36,11 @@ serve(async (req) => {
       return new Response(JSON.stringify({ enriched: 0 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const systemPrompt = `Tu es un curator local expert. Pour chaque lieu, écris en français une description immersive courte (1 phrase, max 18 mots), une raison émotionnelle "why_fits" (1 phrase, max 16 mots, commence par un verbe ou "Pour"), 3 tags lifestyle (ex: cosy, vue, brunch, hidden, romantique, local, instagrammable), un tip insider concret (max 14 mots), et indique si c'est un hidden gem. Reste authentique, jamais touristique générique.${contextHint ? " Contexte: " + contextHint : ""}`;
+    // Xplania brain: build traveler context to personalize enrichment
+    const travelCtx = await buildTravelContext(supa, __auth.userId);
+    const ctxSnippet = contextToPromptSnippet(travelCtx, "fr");
+
+    const systemPrompt = `Tu es un curator local expert. Pour chaque lieu, écris en français une description immersive courte (1 phrase, max 18 mots), une raison émotionnelle "why_fits" (1 phrase, max 16 mots, commence par un verbe ou "Pour"), 3 tags lifestyle (ex: cosy, vue, brunch, hidden, romantique, local, instagrammable), un tip insider concret (max 14 mots), et indique si c'est un hidden gem. Adapte le ton et les tags au profil voyageur ci-dessous. Reste authentique, jamais touristique générique.${contextHint ? " Contexte: " + contextHint : ""}`;
 
     const tool = {
       type: "function",
@@ -78,7 +83,11 @@ serve(async (req) => {
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
-        messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }],
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "system", content: ctxSnippet },
+          { role: "user", content: userPrompt },
+        ],
         tools: [tool],
         tool_choice: { type: "function", function: { name: "enrich_places" } },
       }),
@@ -97,6 +106,7 @@ serve(async (req) => {
     const parsed = JSON.parse(args);
 
     let count = 0;
+    const shown: Array<{ item_key: string; item_type: string; source: string; context?: Record<string, unknown> }> = [];
     for (const item of parsed.places || []) {
       const { error: upErr } = await supa.from("places").update({
         description: item.description,
@@ -107,7 +117,12 @@ serve(async (req) => {
         score: Math.round(item.score),
       }).eq("id", item.id);
       if (!upErr) count++;
+      const src = places.find((p) => p.id === item.id);
+      if (src?.name) shown.push({ item_key: src.name, item_type: "place", source: "discover-enrich", context: { category: src.category } });
     }
+
+    // Xplania brain: record shown recommendations
+    await recordShownRecommendations(supa, __auth.userId, shown);
 
     return new Response(JSON.stringify({ enriched: count }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {

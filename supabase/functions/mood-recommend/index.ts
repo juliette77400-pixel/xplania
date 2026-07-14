@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { buildTravelContext, contextToPromptSnippet, recordShownRecommendations } from "../_shared/travel-context.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -114,6 +115,10 @@ Règles strictes :
       ? (isEN ? `Recent user moods: ${history.map(h => h.mood).join(", ")}.` : `Moods récents de l'utilisateur : ${history.map(h => h.mood).join(", ")}.`)
       : "";
 
+    // Xplania brain: inject persistent traveler context (profile + memory + history)
+    const travelCtx = await buildTravelContext(supabase, user.id);
+    const ctxSnippet = contextToPromptSnippet(travelCtx, isEN ? "en" : "fr");
+
     const userPrompt = isEN
       ? `Mood sought: "${finalMood}"${free_input ? ` — detail: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Desired energy level (0=calm, 100=energetic): ${energy_level}.` : ""}
@@ -139,6 +144,7 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
+          { role: "system", content: ctxSnippet },
           { role: "user", content: userPrompt },
         ],
         tools: [{
@@ -261,6 +267,18 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
       if (insErr) console.error("Insert places error:", insErr);
       inserted = ins || [];
     }
+
+    // Xplania brain: record shown recommendations so we don't propose them again
+    await recordShownRecommendations(
+      supabase,
+      user.id,
+      places.map((p: any) => ({
+        item_key: p.name,
+        item_type: "mood_place",
+        source: "mood-recommend",
+        context: { mood: finalMood, city_hint, category: p.category },
+      })),
+    );
 
     return new Response(JSON.stringify({
       mood: finalMood,
