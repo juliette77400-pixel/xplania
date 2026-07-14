@@ -49,6 +49,10 @@ const TravelerProfileOnboarding = () => {
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [finalizing, setFinalizing] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [resetting, setResetting] = useState(false);
+  const [retryTick, setRetryTick] = useState(0);
+  const retryTimerRef = useRef<number | null>(null);
 
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
