@@ -36,7 +36,11 @@ serve(async (req) => {
       return new Response(JSON.stringify({ enriched: 0 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const systemPrompt = `Tu es un curator local expert. Pour chaque lieu, écris en français une description immersive courte (1 phrase, max 18 mots), une raison émotionnelle "why_fits" (1 phrase, max 16 mots, commence par un verbe ou "Pour"), 3 tags lifestyle (ex: cosy, vue, brunch, hidden, romantique, local, instagrammable), un tip insider concret (max 14 mots), et indique si c'est un hidden gem. Reste authentique, jamais touristique générique.${contextHint ? " Contexte: " + contextHint : ""}`;
+    // Xplania brain: build traveler context to personalize enrichment
+    const travelCtx = await buildTravelContext(supa, __auth.userId);
+    const ctxSnippet = contextToPromptSnippet(travelCtx, "fr");
+
+    const systemPrompt = `Tu es un curator local expert. Pour chaque lieu, écris en français une description immersive courte (1 phrase, max 18 mots), une raison émotionnelle "why_fits" (1 phrase, max 16 mots, commence par un verbe ou "Pour"), 3 tags lifestyle (ex: cosy, vue, brunch, hidden, romantique, local, instagrammable), un tip insider concret (max 14 mots), et indique si c'est un hidden gem. Adapte le ton et les tags au profil voyageur ci-dessous. Reste authentique, jamais touristique générique.${contextHint ? " Contexte: " + contextHint : ""}`;
 
     const tool = {
       type: "function",
