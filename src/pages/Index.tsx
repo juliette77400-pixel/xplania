@@ -85,46 +85,50 @@ const Index = () => {
       <FaqSection />
       <FinalCtaSection onCreateTrip={handleCreateTrip} />
       <Footer onCreateTrip={handleCreateTrip} />
-      <TravelFormDialog
-        open={travelFormOpen}
-        onOpenChange={setTravelFormOpen}
-        initialPreset={demoMode ? DEMO_PRESET : undefined}
-        onTripGenerated={async (data, recs) => {
-          setTripData(data);
-          setRecommendations(recs);
-          if (user) {
-            const { data: trip } = await supabase
-              .from("trips")
-              .insert({
-                user_id: user.id,
-                title: t("index.tripTitle", { destination: data.destination }),
-                destination: data.destination,
-                arrival_city: data.arrivalCity,
-                departure_location: data.departureLocation,
-                departure_date: data.departureDate || null,
-                return_date: data.returnDate || null,
-                duration: data.duration ? parseInt(data.duration) : null,
-                form_data: data as any,
-                recommendations: recs as any,
-              })
-              .select("id")
-              .single();
-            if (trip) {
-              // Refresh cached trips list so the new trip shows up elsewhere.
-              queryClient.invalidateQueries({ queryKey: ["trips"] });
-              setCurrentTripId(trip.id);
-              setActiveTrip({
-                tripId: trip.id,
-                destination: data.destination,
-                arrivalCity: data.arrivalCity,
-                departureDate: data.departureDate || null,
-                returnDate: data.returnDate || null,
-              });
-            }
-          }
-        }}
-        onGenerating={setDashboardLoading}
-      />
+      {travelFormOpen && (
+        <Suspense fallback={null}>
+          <TravelFormDialog
+            open={travelFormOpen}
+            onOpenChange={setTravelFormOpen}
+            initialPreset={demoMode ? DEMO_PRESET : undefined}
+            onTripGenerated={async (data, recs) => {
+              setTripData(data);
+              setRecommendations(recs);
+              if (user) {
+                const { data: trip } = await supabase
+                  .from("trips")
+                  .insert({
+                    user_id: user.id,
+                    title: t("index.tripTitle", { destination: data.destination }),
+                    destination: data.destination,
+                    arrival_city: data.arrivalCity,
+                    departure_location: data.departureLocation,
+                    departure_date: data.departureDate || null,
+                    return_date: data.returnDate || null,
+                    duration: data.duration ? parseInt(data.duration) : null,
+                    form_data: data as any,
+                    recommendations: recs as any,
+                  })
+                  .select("id")
+                  .single();
+                if (trip) {
+                  // Refresh cached trips list so the new trip shows up elsewhere.
+                  queryClient.invalidateQueries({ queryKey: ["trips"] });
+                  setCurrentTripId(trip.id);
+                  setActiveTrip({
+                    tripId: trip.id,
+                    destination: data.destination,
+                    arrivalCity: data.arrivalCity,
+                    departureDate: data.departureDate || null,
+                    returnDate: data.returnDate || null,
+                  });
+                }
+              }
+            }}
+            onGenerating={setDashboardLoading}
+          />
+        </Suspense>
+      )}
       {currentTripId && (
         <a
           href={`/carnet/${currentTripId}`}
@@ -134,9 +138,19 @@ const Index = () => {
         </a>
       )}
       <QuickJump />
-      <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
-      <OnboardingDialog onCreateTrip={handleCreateTrip} />
-      <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
+      {feedbackOpen && (
+        <Suspense fallback={null}>
+          <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
+        </Suspense>
+      )}
+      <Suspense fallback={null}>
+        <OnboardingDialog onCreateTrip={handleCreateTrip} />
+      </Suspense>
+      {quotaOpen && (
+        <Suspense fallback={null}>
+          <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />
+        </Suspense>
+      )}
     </div>
   );
 };
