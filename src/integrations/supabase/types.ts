@@ -1440,6 +1440,36 @@ export type Database = {
         }
         Relationships: []
       }
+      onboarding_events: {
+        Row: {
+          created_at: string
+          event: string
+          id: string
+          meta: Json
+          session_id: string
+          step: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          id?: string
+          meta?: Json
+          session_id: string
+          step?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          id?: string
+          meta?: Json
+          session_id?: string
+          step?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       pip_chat_sessions: {
         Row: {
           context: Json
