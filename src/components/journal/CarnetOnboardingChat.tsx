@@ -69,20 +69,8 @@ const CarnetOnboardingChat = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const [profileName, setProfileName] = useState("");
+  const profileName = useDisplayName(user?.id) ?? "";
 
-  useEffect(() => {
-    if (!user?.id) { setProfileName(""); return; }
-    let cancelled = false;
-    (async () => {
-      try {
-        const { data } = await supabase
-          .from("profiles").select("display_name").eq("user_id", user.id).maybeSingle();
-        if (!cancelled && data?.display_name) setProfileName(data.display_name as string);
-      } catch { /* ignore */ }
-    })();
-    return () => { cancelled = true; };
-  }, [user?.id]);
 
   const firstName = (() => {
     const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
