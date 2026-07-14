@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -60,9 +61,11 @@ serve(async (req) => {
       ? `Only suggest saving tips that are specific, verifiable, and directly relevant to the user's destination and budget categories. Avoid generic advice. Each tip MUST reference a real place, service, transport card, market, district, chain or local practice you genuinely know exists in ${destination}. If you cannot ground a tip in a verifiable local reality, do NOT include it. Prefer fewer, well-sourced tips over filler. Tailor tone and content to the traveler profile and current budget allocation.`
       : `Ne propose que des astuces spécifiques, vérifiables et directement utiles à la destination et aux postes budgétaires de l'utilisateur. Évite les conseils génériques. Chaque astuce DOIT mentionner un vrai lieu, service, pass transport, marché, quartier, enseigne ou pratique locale que tu connais réellement à ${destination}. Si tu ne peux pas ancrer une astuce dans une réalité locale vérifiable, NE l'inclus PAS. Mieux vaut moins d'astuces, mais solides. Adapte le ton et le contenu au profil voyageur et à la répartition budgétaire actuelle.`;
 
+    const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+
     const system = isEN
-      ? `You are a frugal local guide who knows ${destination} intimately. You write 3 to 5 HYPER-LOCAL money-saving tips for THIS specific traveler. ${guardrail} Each tip 1–2 sentences. Reply ONLY via the "saving_tips" tool. Output in ENGLISH.`
-      : `Tu es un guide local frugal qui connaît parfaitement ${destination}. Tu rédiges 3 à 5 astuces d'économie HYPER-LOCALES pour CE voyageur précis. ${guardrail} Chaque astuce fait 1 à 2 phrases. Réponds UNIQUEMENT via le tool "saving_tips". En FRANÇAIS.`;
+      ? `You are a frugal local guide who knows ${destination} intimately. You write 3 to 5 HYPER-LOCAL money-saving tips for THIS specific traveler. ${guardrail} Each tip 1–2 sentences. Reply ONLY via the "saving_tips" tool. Output in ENGLISH.\n\n${travelerCtx}`
+      : `Tu es un guide local frugal qui connaît parfaitement ${destination}. Tu rédiges 3 à 5 astuces d'économie HYPER-LOCALES pour CE voyageur précis. ${guardrail} Chaque astuce fait 1 à 2 phrases. Réponds UNIQUEMENT via le tool "saving_tips". En FRANÇAIS.\n\n${travelerCtx}`;
 
     const user = isEN
       ? `Destination: ${destination}

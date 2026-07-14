@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -96,6 +97,8 @@ Passport / nationality: ${nationality}
 Trip type: ${tripType || "(unknown)"}
 Stay duration: ${duration || "(unknown)"}`;
 
+    const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+
     const system = isEN
       ? `You are Pip, Xplania's personal visa & travel-formalities copilot. Warm, clear, jargon-free, reassuring for first-time travellers — never condescending. You help with visas, entry requirements, safety advisories, admin steps, and currency basics.
 
@@ -112,7 +115,9 @@ ${structureRule}
 You NEVER say you can't answer. If you're not 100% sure, say so honestly and still give your best estimate with context. Write like you're texting a friend. Occasional emoji is fine ✈️.
 
 CONTEXT
-${context}`
+${context}
+
+${travelerCtx}`
       : `Tu es Pip, le copilote personnel de Xplania pour les visas et formalités de voyage. Chaleureux, clair, sans jargon, rassurant pour les premiers voyages — jamais condescendant. Tu aides sur visas, formalités d'entrée, sécurité, démarches admin et bases de change.
 
 ${languageRule}
@@ -128,7 +133,9 @@ ${structureRule}
 Tu ne dis JAMAIS que tu ne peux pas répondre. Si tu n'es pas sûr à 100%, dis-le honnêtement et donne ta meilleure estimation. Écris comme si tu textais à un pote. Un emoji de temps en temps ✈️.
 
 CONTEXTE
-${context}`;
+${context}
+
+${travelerCtx}`;
 
     const recentHistory = (history as ChatMessage[])
       .filter((m) => m && typeof m.content === "string" && (m.role === "user" || m.role === "assistant"))

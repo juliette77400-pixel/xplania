@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -78,6 +79,9 @@ Retourne UNIQUEMENT un objet JSON de cette forme exacte :
 {"tips":{"dress":{"title":"...","text":"..."},"customs":{"title":"...","text":"..."},"avoid":{"title":"...","text":"..."},"behavior":{"title":"...","text":"..."}}}
 PAS de markdown, PAS de commentaire, uniquement le JSON.`;
 
+    const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+    const systemWithCtx = system + (travelerCtx ? "\n\n" + travelerCtx : "");
+
     const user = isEN
       ? `Destination: ${destination}
 Trip type: ${tripType || "(unknown)"}
@@ -97,7 +101,7 @@ Graine de variation : ${v} (produis un résultat clairement différent des varia
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: system },
+          { role: "system", content: systemWithCtx },
           { role: "user", content: user },
         ],
         temperature: 0.95,

@@ -45,6 +45,7 @@ const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnbo
 const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
 const TravelerProfileAdjust = lazy(() => import("./pages/TravelerProfileAdjust.tsx"));
 const Destinations = lazy(() => import("./pages/Destinations.tsx"));
+const HiddenGems = lazy(() => import("./pages/HiddenGems.tsx"));
 const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
 
 const queryClient = new QueryClient({
@@ -82,6 +83,7 @@ const App = () => (
             <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
             <Route path="/profil-voyageur/ajuster" element={<ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>} />
             <Route path="/destinations" element={<ProtectedRoute><Destinations /></ProtectedRoute>} />
+            <Route path="/hidden-gems" element={<ProtectedRoute><HiddenGems /></ProtectedRoute>} />
             <Route path="/guide-budget" element={<GuideBudget />} />
             <Route path="/guide-valise" element={<ProtectedRoute><GuideValise /></ProtectedRoute>} />
             <Route path="/guide-visa" element={<GuideVisa />} />
