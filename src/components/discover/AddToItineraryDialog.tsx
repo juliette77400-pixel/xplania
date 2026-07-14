@@ -50,7 +50,7 @@ const AddToItineraryDialog = ({ place, open, onClose }: Props) => {
     if (!tripId && trips.length > 0) setTripId(trips[0].id);
     setNote("");
     setDay("__none__");
-  }, [open, trips]);
+  }, [open, trips, tripId]);
 
   const fmtDay = (d: string) => {
     try {

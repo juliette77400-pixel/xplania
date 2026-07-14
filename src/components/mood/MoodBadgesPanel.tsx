@@ -45,7 +45,7 @@ const MoodBadgesPanel = ({ badges, context }: Props) => {
     }
   }
 
-  const owned = new Set(badges.map((b) => b.code));
+  const owned = useMemo(() => new Set(badges.map((b) => b.code)), [badges]);
   const unlockedCount = badges.length;
   const total = MOOD_BADGES.length;
   const globalPct = Math.round((unlockedCount / total) * 100);

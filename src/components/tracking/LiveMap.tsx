@@ -45,7 +45,7 @@ const FitBounds = ({ points }: { points: [number, number][] }) => {
     if (points.length > 0) {
       map.fitBounds(points as any, { padding: [40, 40], maxZoom: 14 });
     }
-  }, [points.length]);
+  }, [points, map]);
   return null;
 };
 
@@ -138,6 +138,10 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
 
   const [routeLine, setRouteLine] = useState<[number, number][] | null>(null);
 
+  const routeSignature = useMemo(
+    () => orderedRoute.map((p) => p.join(",")).join("|"),
+    [orderedRoute],
+  );
   useEffect(() => {
     let cancelled = false;
     if (orderedRoute.length < 2) { setRouteLine(null); return; }
@@ -147,7 +151,9 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
       if (!cancelled) setRouteLine(line);
     });
     return () => { cancelled = true; };
-  }, [orderedRoute.map((p) => p.join(",")).join("|")]);
+    // orderedRoute identity changes on every render; routeSignature captures its value.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeSignature]);
 
   const initialCenter: [number, number] = position
     ? [position.lat, position.lng]
