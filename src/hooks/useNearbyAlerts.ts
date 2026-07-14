@@ -27,7 +27,7 @@ export function useNearbyAlerts(userPos: { lat: number; lng: number } | null, pl
         user_id: user.id, type: "nearby", place_id: p.id, title, body,
       }).then(() => {});
     }
-  }, [userPos?.lat, userPos?.lng, places, permission, user, notify]);
+  }, [userPos, places, permission, user, notify]);
 
   return { permission };
 }

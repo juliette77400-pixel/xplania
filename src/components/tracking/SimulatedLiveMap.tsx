@@ -78,11 +78,14 @@ const SimulatedLiveMap = ({
     return { minLat: minLat - padLat, maxLat: maxLat + padLat, minLng: minLng - padLng, maxLng: maxLng + padLng };
   }, [allPoints]);
 
-  const project = (lat: number, lng: number) => {
-    const x = ((lng - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100;
-    const y = (1 - (lat - bounds.minLat) / (bounds.maxLat - bounds.minLat)) * 100;
-    return { x, y };
-  };
+  const project = useCallback(
+    (lat: number, lng: number) => {
+      const x = ((lng - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100;
+      const y = (1 - (lat - bounds.minLat) / (bounds.maxLat - bounds.minLat)) * 100;
+      return { x, y };
+    },
+    [bounds],
+  );
 
   const userPos = position ? project(position.lat, position.lng) : null;
 
@@ -95,7 +98,7 @@ const SimulatedLiveMap = ({
         return `${x.toFixed(2)},${y.toFixed(2)}`;
       })
       .join(" ");
-  }, [positions, bounds]);
+  }, [positions, project]);
 
   // Planned route (ordered)
   const orderedRoute = useMemo(() => {

@@ -128,7 +128,7 @@ export function useGamification() {
       }));
       return data as GamClaim;
     },
-    [user],
+    [user, setData],
   );
 
   // Build merged list with status, optionally filtered to user prefs
