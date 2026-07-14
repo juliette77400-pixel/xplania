@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -59,35 +60,49 @@ export interface ExploreMedia {
   created_at: string;
 }
 
+interface ExploreData {
+  nodes: ExploreNode[];
+  edges: ExploreEdge[];
+  progress: ExploreProgress | null;
+  badges: ExploreBadge[];
+  media: ExploreMedia[];
+}
+
+const EMPTY_EXPLORE: ExploreData = { nodes: [], edges: [], progress: null, badges: [], media: [] };
+
+export const exploreQueryKey = (tripId: string | undefined) => ["explore", tripId] as const;
+
 export const useExplore = (tripId: string | undefined) => {
   const { user } = useAuth();
-  const [nodes, setNodes] = useState<ExploreNode[]>([]);
-  const [edges, setEdges] = useState<ExploreEdge[]>([]);
-  const [progress, setProgress] = useState<ExploreProgress | null>(null);
-  const [badges, setBadges] = useState<ExploreBadge[]>([]);
-  const [media, setMedia] = useState<ExploreMedia[]>([]);
-  const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
 
-  const reload = useCallback(async () => {
-    if (!tripId) return;
-    setLoading(true);
-    const [n, e, p, b, m] = await Promise.all([
-      supabase.from("explore_nodes").select("*").eq("trip_id", tripId).order("level"),
-      supabase.from("explore_edges").select("*").eq("trip_id", tripId),
-      supabase.from("explore_progress").select("*").eq("trip_id", tripId).maybeSingle(),
-      supabase.from("explore_badges").select("*").eq("trip_id", tripId),
-      supabase.from("explore_node_media").select("*").eq("trip_id", tripId),
-    ]);
-    setNodes((n.data || []) as ExploreNode[]);
-    setEdges((e.data || []) as ExploreEdge[]);
-    setProgress((p.data as ExploreProgress | null) || null);
-    setBadges((b.data || []) as ExploreBadge[]);
-    setMedia((m.data || []) as ExploreMedia[]);
-    setLoading(false);
-  }, [tripId]);
+  const { data, isLoading, refetch } = useQuery<ExploreData>({
+    queryKey: exploreQueryKey(tripId),
+    enabled: !!tripId,
+    queryFn: async () => {
+      const [n, e, p, b, m] = await Promise.all([
+        supabase.from("explore_nodes").select("*").eq("trip_id", tripId!).order("level"),
+        supabase.from("explore_edges").select("*").eq("trip_id", tripId!),
+        supabase.from("explore_progress").select("*").eq("trip_id", tripId!).maybeSingle(),
+        supabase.from("explore_badges").select("*").eq("trip_id", tripId!),
+        supabase.from("explore_node_media").select("*").eq("trip_id", tripId!),
+      ]);
+      return {
+        nodes: (n.data || []) as ExploreNode[],
+        edges: (e.data || []) as ExploreEdge[],
+        progress: (p.data as ExploreProgress | null) || null,
+        badges: (b.data || []) as ExploreBadge[],
+        media: (m.data || []) as ExploreMedia[],
+      };
+    },
+  });
 
-  useEffect(() => { reload(); }, [reload]);
+  const { nodes, edges, progress, badges, media } = data ?? EMPTY_EXPLORE;
+  const loading = tripId ? isLoading : false;
+
+  const reload = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
 
   // Realtime
   useEffect(() => {
