@@ -45,6 +45,7 @@ const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnbo
 const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
 const TravelerProfileAdjust = lazy(() => import("./pages/TravelerProfileAdjust.tsx"));
 const Destinations = lazy(() => import("./pages/Destinations.tsx"));
+const HiddenGems = lazy(() => import("./pages/HiddenGems.tsx"));
 const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
 
 const queryClient = new QueryClient({
