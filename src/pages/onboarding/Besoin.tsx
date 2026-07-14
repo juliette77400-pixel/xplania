@@ -1,9 +1,15 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getLocalOnboarding, setLocalOnboarding } from "@/lib/onboarding-state";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  getLocalOnboarding,
+  setLocalOnboarding,
+  trackOnboardingEvent,
+} from "@/lib/onboarding-state";
 
 const NEEDS = [
   { key: "no_idea", fr: "Je ne sais pas où partir", en: "I don't know where to go" },
@@ -17,10 +23,16 @@ const NEEDS = [
 const Besoin = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const isEn = i18n.language?.startsWith("en");
 
   const initial = useMemo(() => getLocalOnboarding().needs ?? [], []);
   const [selected, setSelected] = useState<Set<string>>(new Set(initial));
+
+  useEffect(() => {
+    setLocalOnboarding({ step: "besoin" });
+    trackOnboardingEvent("step_view", { step: "besoin" });
+  }, []);
 
   const toggle = (k: string) => {
     setSelected((prev) => {
@@ -31,22 +43,30 @@ const Besoin = () => {
     });
   };
 
-  const next = () => {
-    setLocalOnboarding({ needs: Array.from(selected), step: "qualif" });
-    navigate("/onboarding/qualif");
+  const next = async () => {
+    const arr = Array.from(selected);
+    setLocalOnboarding({ needs: arr, step: "features" });
+    trackOnboardingEvent("step_complete", { step: "besoin", needs: arr });
+    if (user) {
+      await supabase
+        .from("traveler_profiles")
+        .update({ need_tags: arr as never, onboarding_step: "features" })
+        .eq("user_id", user.id);
+    }
+    navigate("/profil-voyageur/features");
   };
 
   return (
     <div className="min-h-screen bg-background px-4 py-10">
       <div className="mx-auto max-w-2xl">
         <button
-          onClick={() => navigate("/welcome")}
+          onClick={() => navigate("/profil-voyageur/resultat")}
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" /> {t("common.back", "Retour")}
         </button>
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-          {t("onboarding.stepOf", "Étape {{n}} / 4", { n: 1 })}
+          {t("onboarding.stepOf", "Étape {{n}} / 3", { n: 1 })}
         </p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">
           {t("onboarding.besoin.title", "Qu'est-ce qui vous amène ?")}

@@ -10,9 +10,12 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 const GlobalPipChat = lazy(() => import("./components/shared/GlobalPipChat"));
 import PipChatSkeleton from "./components/shared/PipChatSkeleton";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
+import OnboardingSyncGate from "./components/onboarding/OnboardingSyncGate";
 
-// Index (landing page) stays eager for a fast first paint.
-import Index from "./pages/Index.tsx";
+// The Tinder deck is now the anonymous landing screen at "/". Keep it eager
+// so first paint is fast. The classic marketing landing moves to "/home".
+import TravelerProfileOnboarding from "./pages/TravelerProfileOnboarding.tsx";
+const Index = lazy(() => import("./pages/Index.tsx"));
 
 // All other routes are code-split so their JS (and heavy libs such as
 // leaflet / recharts / framer-motion) is only fetched when the route is visited.
@@ -41,7 +44,7 @@ const Parametres = lazy(() => import("./pages/Parametres.tsx"));
 const Legal = lazy(() => import("./pages/Legal.tsx"));
 const Trust = lazy(() => import("./pages/Trust.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
-const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnboarding.tsx"));
+
 const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
 const TravelerProfileAdjust = lazy(() => import("./pages/TravelerProfileAdjust.tsx"));
 const Destinations = lazy(() => import("./pages/Destinations.tsx"));
@@ -80,20 +83,25 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
+            <OnboardingSyncGate />
             <Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/" element={<Index />} />
+              {/* Anonymous Tinder deck is now the landing page. */}
+              <Route path="/" element={<TravelerProfileOnboarding />} />
+              <Route path="/home" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            {/* New onboarding tunnel (public until signup) */}
+            {/* Legacy onboarding routes (kept public for backward compat) */}
             <Route path="/welcome" element={<OnbWelcome />} />
             <Route path="/onboarding/besoin" element={<OnbBesoin />} />
             <Route path="/onboarding/qualif" element={<OnbQualif />} />
             <Route path="/onboarding/signup" element={<OnbSignup />} />
-            <Route path="/profil-voyageur" element={<ProtectedRoute skipOnboarding><TravelerProfileOnboarding /></ProtectedRoute>} />
-            <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
+            {/* The Tinder deck lives at "/" now — keep this legacy path as a redirect. */}
+            <Route path="/profil-voyageur" element={<TravelerProfileOnboarding />} />
+            <Route path="/profil-voyageur/resultat" element={<TravelerProfileResult />} />
             <Route path="/profil-voyageur/features" element={<ProtectedRoute skipOnboarding><OnbFeatures /></ProtectedRoute>} />
             <Route path="/profil-voyageur/essai" element={<ProtectedRoute skipOnboarding><OnbEssai /></ProtectedRoute>} />
+
             <Route path="/profil-voyageur/ajuster" element={<ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>} />
             <Route path="/destinations" element={<ProtectedRoute><Destinations /></ProtectedRoute>} />
             <Route path="/hidden-gems" element={<ProtectedRoute><HiddenGems /></ProtectedRoute>} />

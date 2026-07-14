@@ -1,8 +1,8 @@
-import { useMemo } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Gift, Loader2, RefreshCw, Sparkles, Trophy } from "lucide-react";
+import { Gift, Loader2, LogIn, RefreshCw, Sparkles, Trophy } from "lucide-react";
 import {
   PolarAngleAxis,
   PolarGrid,
@@ -14,8 +14,19 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTravelerProfile, travelerProfileKey } from "@/hooks/useTravelerProfile";
-import { TRAVELER_DIMENSIONS, type FeatureKey } from "@/lib/traveler-badge";
+import {
+  TRAVELER_DIMENSIONS,
+  type FeatureKey,
+  type TravelerBadgeKey,
+  type TravelerScores,
+} from "@/lib/traveler-badge";
 import { Button } from "@/components/ui/button";
+import {
+  clearLocalOnboarding,
+  getLocalOnboarding,
+  setLocalOnboarding,
+  trackOnboardingEvent,
+} from "@/lib/onboarding-state";
 
 const FEATURE_META: Record<FeatureKey, { to: string; iconKey: string }> = {
   discover: { to: "/discover", iconKey: "discover" },
@@ -27,21 +38,62 @@ const FEATURE_META: Record<FeatureKey, { to: string; iconKey: string }> = {
   "guide-visa": { to: "/guide-visa", iconKey: "visa" },
 };
 
+interface DisplayProfile {
+  badge: TravelerBadgeKey;
+  scores: Partial<TravelerScores>;
+  features: FeatureKey[];
+  reward_points: number;
+  reward_unlocks: string[];
+}
+
 const TravelerProfileResult = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { data: profile, isLoading } = useTravelerProfile();
   const queryClient = useQueryClient();
 
+  useEffect(() => {
+    trackOnboardingEvent("step_view", { step: "resultat" });
+  }, []);
+
+  const local = useMemo(() => (user ? null : getLocalOnboarding()), [user]);
+
+  const display: DisplayProfile | null = useMemo(() => {
+    if (user) {
+      if (!profile?.completed_at) return null;
+      const scores: Partial<TravelerScores> = {};
+      for (const d of TRAVELER_DIMENSIONS) {
+        scores[d] = (profile[`${d}_score` as keyof typeof profile] as number) ?? 0;
+      }
+      return {
+        badge: (profile.badge ?? "curious") as TravelerBadgeKey,
+        scores,
+        features: (profile.recommended_features ?? []) as FeatureKey[],
+        reward_points: profile.reward_points ?? 0,
+        reward_unlocks: (profile.reward_unlocks ?? []) as string[],
+      };
+    }
+    // Anonymous mode — read from localStorage.
+    if (!local?.result) return null;
+    return {
+      badge: local.result.badge,
+      scores: local.result.scores,
+      features: local.result.features,
+      reward_points: local.result.reward_points,
+      reward_unlocks: local.result.reward_unlocks,
+    };
+  }, [user, profile, local]);
+
   const radarData = useMemo(() => {
-    if (!profile) return [];
+    if (!display) return [];
     return TRAVELER_DIMENSIONS.map((d) => ({
       dim: t(`travelerProfile.dimensions.${d}`),
-      value: Math.max(0, ((profile[`${d}_score` as keyof typeof profile] as number) ?? 0)),
+      value: Math.max(0, display.scores[d] ?? 0),
     }));
-  }, [profile, t]);
+  }, [display, t]);
 
-  if (isLoading) {
+  if (user && isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -49,19 +101,45 @@ const TravelerProfileResult = () => {
     );
   }
 
-  if (!profile?.completed_at) return <Navigate to="/profil-voyageur" replace />;
+  if (!display) return <Navigate to="/" replace />;
 
-  const badgeKey = profile.badge ?? "curious";
-  const features = (profile.recommended_features ?? []) as FeatureKey[];
+  const badgeKey = display.badge;
+  const features = display.features;
 
-  const resetProfile = async () => {
-    if (!user) return;
-    if (!confirm(t("travelerProfile.resetConfirm"))) return;
-    await supabase.from("user_swipes").delete().eq("user_id", user.id);
-    await supabase.from("traveler_profiles").delete().eq("user_id", user.id);
-    queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
+  const restart = async () => {
+    if (!confirm(t("travelerProfile.resetConfirm", "Recommencer le questionnaire ?"))) return;
+    trackOnboardingEvent("restart_click", { authed: !!user });
+    if (user) {
+      await supabase.from("user_swipes").delete().eq("user_id", user.id);
+      await supabase.from("traveler_profiles").delete().eq("user_id", user.id);
+      queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
+    }
+    // Preserve the session_id for continuous tracking.
+    const sessionId = getLocalOnboarding().session_id;
+    clearLocalOnboarding();
+    setLocalOnboarding({ session_id: sessionId, step: "tinder" });
     toast.success(t("travelerProfile.resetDone"));
-    window.location.href = "/profil-voyageur";
+    window.location.href = "/";
+  };
+
+  const goSignup = () => {
+    trackOnboardingEvent("save_profile_click", {});
+    setLocalOnboarding({ step: "signup" });
+    navigate("/onboarding/signup");
+  };
+
+  const goNext = async () => {
+    trackOnboardingEvent("resultat_continue", {});
+    if (user) {
+      setLocalOnboarding({ step: "besoin" });
+      await supabase
+        .from("traveler_profiles")
+        .update({ onboarding_step: "besoin" })
+        .eq("user_id", user.id);
+      navigate("/onboarding/besoin");
+    } else {
+      goSignup();
+    }
   };
 
   return (
@@ -81,6 +159,17 @@ const TravelerProfileResult = () => {
             {t(`travelerProfile.badges.${badgeKey}.description`)}
           </p>
         </div>
+
+        {!user && (
+          <div className="mt-8 rounded-2xl border border-primary/40 bg-primary/10 p-5 text-center">
+            <p className="text-sm font-semibold">
+              {t(
+                "travelerProfile.saveWarn",
+                "⚠️ Ce profil n'est pas encore enregistré. Créez votre compte pour ne pas le perdre.",
+              )}
+            </p>
+          </div>
+        )}
 
         <div className="mt-10 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
           <h2 className="mb-4 text-lg font-bold">{t("travelerProfile.yourScores")}</h2>
@@ -119,14 +208,14 @@ const TravelerProfileResult = () => {
             </div>
             <div className="flex items-center gap-2 rounded-2xl bg-background/60 px-4 py-2">
               <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="text-2xl font-extrabold">+{profile.reward_points ?? 0}</span>
+              <span className="text-2xl font-extrabold">+{display.reward_points}</span>
               <span className="text-sm font-semibold text-muted-foreground">
                 {t("travelerProfile.points")}
               </span>
             </div>
           </div>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-            {(profile.reward_unlocks ?? []).map((u) => (
+            {display.reward_unlocks.map((u) => (
               <li
                 key={u}
                 className="flex items-start gap-3 rounded-xl border border-border/50 bg-background/60 p-3"
@@ -151,18 +240,17 @@ const TravelerProfileResult = () => {
           </ul>
         </div>
 
-
-
         <div className="mt-10">
           <h2 className="mb-4 text-lg font-bold">{t("travelerProfile.recommendedForYou")}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {features.map((f) => {
               const meta = FEATURE_META[f];
               if (!meta) return null;
+              const to = user ? meta.to : "/onboarding/signup";
               return (
                 <Link
                   key={f}
-                  to={meta.to}
+                  to={to}
                   className="group rounded-2xl border border-border/60 bg-card p-6 transition hover:-translate-y-1 hover:border-primary/60 hover:shadow-lg"
                 >
                   <div className="text-xs font-bold uppercase tracking-wider text-primary">
@@ -184,23 +272,18 @@ const TravelerProfileResult = () => {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            to="/profil-voyageur/features"
-            onClick={() => {
-              if (user) {
-                void supabase
-                  .from("traveler_profiles")
-                  .update({ onboarding_step: "features" })
-                  .eq("user_id", user.id);
-              }
-            }}
-          >
-            <Button className="gradient-button">
-              {t("travelerProfile.seeFeatures", "Voir mes fonctionnalités")}
+          {user ? (
+            <Button className="gradient-button" onClick={goNext}>
+              {t("travelerProfile.seeFeatures", "Continuer")}
             </Button>
-          </Link>
-          <Button variant="ghost" onClick={resetProfile}>
-            <RefreshCw className="mr-2 h-4 w-4" /> {t("travelerProfile.retake")}
+          ) : (
+            <Button className="gradient-button" size="lg" onClick={goSignup}>
+              <LogIn className="mr-2 h-4 w-4" />
+              {t("travelerProfile.saveProfileCta", "Créer mon compte pour sauvegarder mon profil")}
+            </Button>
+          )}
+          <Button variant="ghost" onClick={restart}>
+            <RefreshCw className="mr-2 h-4 w-4" /> {t("travelerProfile.retake", "Recommencer")}
           </Button>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
-import { Heart, SkipForward, X, Loader2 } from "lucide-react";
+import { Heart, SkipForward, X, Loader2, Info } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,7 +17,13 @@ import {
   type TravelerScores,
 } from "@/lib/traveler-badge";
 import { travelerProfileKey } from "@/hooks/useTravelerProfile";
-import { getLocalOnboarding, setLocalOnboarding } from "@/lib/onboarding-state";
+import {
+  getLocalOnboarding,
+  pushLocalSwipe,
+  setLocalOnboarding,
+  trackOnboardingEvent,
+  type StoredResult,
+} from "@/lib/onboarding-state";
 
 type Direction = "right" | "left" | "skip";
 
@@ -46,65 +52,48 @@ const TravelerProfileOnboarding = () => {
 
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
-  // Load cards + existing swipes (resume) + sync any pending local onboarding.
+  // Load cards + prior swipes. For a logged-in user we read from
+  // `user_swipes`; for an anonymous visitor we rehydrate from localStorage.
   useEffect(() => {
-    if (!user) return;
-    // Mark local step + sync need_tags/qualif captured pre-signup, if any.
     setLocalOnboarding({ step: "tinder" });
-    const local = getLocalOnboarding();
-    const pendingSync =
-      (local.needs && local.needs.length > 0) ||
-      (local.qualif && Object.keys(local.qualif).length > 0);
-    if (pendingSync) {
-      void supabase
-        .from("traveler_profiles")
-        .upsert(
-          {
-            user_id: user.id,
-            need_tags: local.needs ?? [],
-            qualif: local.qualif ?? {},
-            onboarding_step: "tinder",
-          } as never,
-          { onConflict: "user_id" },
-        )
-        .then(() => {
-          setLocalOnboarding({ needs: [], qualif: {} });
-        });
-    } else {
-      void supabase
-        .from("traveler_profiles")
-        .upsert(
-          { user_id: user.id, onboarding_step: "tinder" } as never,
-          { onConflict: "user_id" },
-        );
-    }
+    trackOnboardingEvent("step_view", { step: "tinder" });
+
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const [{ data: allCards, error: e1 }, { data: swipes, error: e2 }] = await Promise.all([
-        supabase
-          .from("tinder_cards")
-          .select("id, name, image_url, phrase_fr, phrase_en, score_tags, order_index")
-          .eq("active", true)
-          .order("order_index", { ascending: true }),
-        supabase
-          .from("user_swipes")
-          .select("card_id, direction")
-          .eq("user_id", user.id),
+      const cardsQ = supabase
+        .from("tinder_cards")
+        .select("id, name, image_url, phrase_fr, phrase_en, score_tags, order_index")
+        .eq("active", true)
+        .order("order_index", { ascending: true });
+
+      const [{ data: allCards, error: e1 }, swipeRes] = await Promise.all([
+        cardsQ,
+        user
+          ? supabase
+              .from("user_swipes")
+              .select("card_id, direction")
+              .eq("user_id", user.id)
+          : Promise.resolve({ data: null, error: null } as {
+              data: { card_id: string; direction: string }[] | null;
+              error: null;
+            }),
       ]);
       if (cancelled) return;
-      if (e1 || e2) {
+      if (e1) {
         toast.error(t("travelerProfile.loadError"));
         setLoading(false);
         return;
       }
-      const done = new Set((swipes ?? []).map((s: { card_id: string }) => s.card_id));
+
+      const localSwipes = user ? [] : getLocalOnboarding().swipes;
+      const source = user ? swipeRes.data ?? [] : localSwipes;
+      const done = new Set(source.map((s) => s.card_id));
       setSwipedIds(done);
 
-      // Rebuild running scores from existing swipes
       let running = emptyScores();
       const cardsById = new Map((allCards ?? []).map((c) => [c.id, c]));
-      for (const s of swipes ?? []) {
+      for (const s of source) {
         const c = cardsById.get(s.card_id);
         if (!c) continue;
         running = applyScoreTags(
@@ -117,15 +106,12 @@ const TravelerProfileOnboarding = () => {
       setCards((allCards ?? []) as DbCard[]);
       setLoading(false);
 
-      // Friendly "welcome back" toast when we resume mid-parcours
       if (done.size > 0 && done.size < (allCards?.length ?? 20)) {
         toast(t("travelerProfile.resumed", { done: done.size, total: allCards?.length ?? 20 }));
       }
 
-      // Kick off image seeding if any card lacks an image
       if ((allCards ?? []).some((c) => !c.image_url)) {
         void supabase.functions.invoke("tinder-seed-images").then(() => {
-          // Refresh cards list once seeding is done
           supabase
             .from("tinder_cards")
             .select("id, name, image_url, phrase_fr, phrase_en, score_tags, order_index")
@@ -140,7 +126,6 @@ const TravelerProfileOnboarding = () => {
     };
   }, [user, t]);
 
-  // Cards still to swipe
   const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
   const current = remaining[index] ?? null;
   const next = remaining[index + 1] ?? null;
@@ -157,32 +142,47 @@ const TravelerProfileOnboarding = () => {
 
   const finalize = useCallback(
     async (finalScores: TravelerScores) => {
-      if (!user) return;
       setFinalizing(true);
       const badge = calculateBadge(finalScores);
       const reward = BADGE_REWARDS[badge.key];
-      const row: Record<string, number | string | string[] | null> = {
-        user_id: user.id,
+      const result: StoredResult = {
         badge: badge.key,
-        recommended_features: badge.features as unknown as string[],
+        scores: finalScores,
+        features: [...badge.features],
         reward_points: reward.points,
-        reward_unlocks: reward.unlocks as unknown as string[],
+        reward_unlocks: [...reward.unlocks],
         completed_at: new Date().toISOString(),
       };
-      for (const d of TRAVELER_DIMENSIONS) {
-        row[`${d}_score`] = Math.max(0, finalScores[d] ?? 0);
+      // Always cache locally so the result screen can render without auth.
+      setLocalOnboarding({ result, step: "resultat" });
+      trackOnboardingEvent("tinder_complete", {
+        badge: badge.key,
+        authed: !!user,
+      });
+
+      if (user) {
+        const row: Record<string, number | string | string[] | null> = {
+          user_id: user.id,
+          badge: badge.key,
+          recommended_features: badge.features as unknown as string[],
+          reward_points: reward.points,
+          reward_unlocks: reward.unlocks as unknown as string[],
+          completed_at: result.completed_at,
+          onboarding_step: "resultat",
+        };
+        for (const d of TRAVELER_DIMENSIONS) {
+          row[`${d}_score`] = Math.max(0, finalScores[d] ?? 0);
+        }
+        const { error } = await supabase
+          .from("traveler_profiles")
+          .upsert(row as never, { onConflict: "user_id" });
+        if (error) {
+          toast.error(t("travelerProfile.saveError"));
+          setFinalizing(false);
+          return;
+        }
+        queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
       }
-      row["onboarding_step"] = "resultat";
-      const { error } = await supabase
-        .from("traveler_profiles")
-        .upsert(row as never, { onConflict: "user_id" });
-      if (error) {
-        toast.error(t("travelerProfile.saveError"));
-        setFinalizing(false);
-        return;
-      }
-      setLocalOnboarding({ step: "resultat" });
-      queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
       navigate("/profil-voyageur/resultat", { replace: true });
     },
     [user, t, queryClient, navigate],
@@ -190,24 +190,27 @@ const TravelerProfileOnboarding = () => {
 
   const handleSwipe = useCallback(
     async (direction: Direction) => {
-      if (!current || !user) return;
+      if (!current) return;
       const nextScores = applyScoreTags(scores, current.score_tags, direction);
       setScores(nextScores);
       setSwipedIds((prev) => new Set(prev).add(current.id));
       setIndex((i) => i + 1);
 
-      // Fire-and-forget write; upsert avoids conflicts on resume
-      supabase
-        .from("user_swipes")
-        .upsert(
-          { user_id: user.id, card_id: current.id, direction },
-          { onConflict: "user_id,card_id" },
-        )
-        .then(({ error }) => {
-          if (error) console.warn("swipe write failed", error);
-        });
+      // Persist immediately: DB when logged in, localStorage otherwise.
+      if (user) {
+        supabase
+          .from("user_swipes")
+          .upsert(
+            { user_id: user.id, card_id: current.id, direction },
+            { onConflict: "user_id,card_id" },
+          )
+          .then(({ error }) => {
+            if (error) console.warn("swipe write failed", error);
+          });
+      } else {
+        pushLocalSwipe({ card_id: current.id, direction });
+      }
 
-      // If that was the last one, finalize
       if (done + 1 >= total) {
         void finalize(nextScores);
       }
@@ -215,7 +218,6 @@ const TravelerProfileOnboarding = () => {
     [current, user, scores, done, total, finalize],
   );
 
-  // Keyboard shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (finalizing || !current) return;
@@ -265,6 +267,15 @@ const TravelerProfileOnboarding = () => {
           />
         </div>
         <p className="mt-3 text-center text-sm text-muted-foreground">{message}</p>
+        <div className="mt-2 text-center">
+          <Link
+            to="/home"
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+          >
+            <Info className="h-3 w-3" />
+            {t("travelerProfile.learnMore", "En savoir plus sur Xplania")}
+          </Link>
+        </div>
       </div>
 
       <div className="flex-1 flex items-center justify-center px-4 py-6">
