@@ -31,7 +31,7 @@ const OnboardingFeatures = () => {
     );
   }
 
-  if (!profile?.completed_at) return <Navigate to="/profil-voyageur" replace />;
+  if (!profile?.completed_at) return <Navigate to="/" replace />;
 
   const features = ((profile.recommended_features ?? []) as FeatureKey[]).slice(0, 2);
   const badgeKey = profile.badge ?? "curious";

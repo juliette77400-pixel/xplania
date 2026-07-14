@@ -86,7 +86,7 @@ const OnboardingEssai = () => {
     );
   }
 
-  if (!profile?.completed_at) return <Navigate to="/profil-voyageur" replace />;
+  if (!profile?.completed_at) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-background px-4 py-10">
