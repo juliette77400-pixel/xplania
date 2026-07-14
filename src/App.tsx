@@ -43,6 +43,9 @@ const Trust = lazy(() => import("./pages/Trust.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
 const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnboarding.tsx"));
 const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
+const TravelerProfileAdjust = lazy(() => import("./pages/TravelerProfileAdjust.tsx"));
+const Destinations = lazy(() => import("./pages/Destinations.tsx"));
+const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,6 +80,8 @@ const App = () => (
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/profil-voyageur" element={<ProtectedRoute skipOnboarding><TravelerProfileOnboarding /></ProtectedRoute>} />
             <Route path="/profil-voyageur/resultat" element={<ProtectedRoute skipOnboarding><TravelerProfileResult /></ProtectedRoute>} />
+            <Route path="/profil-voyageur/ajuster" element={<ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>} />
+            <Route path="/destinations" element={<ProtectedRoute><Destinations /></ProtectedRoute>} />
             <Route path="/guide-budget" element={<GuideBudget />} />
             <Route path="/guide-valise" element={<ProtectedRoute><GuideValise /></ProtectedRoute>} />
             <Route path="/guide-visa" element={<GuideVisa />} />
@@ -93,6 +98,7 @@ const App = () => (
             <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
             <Route path="/gamification" element={<ProtectedRoute><Gamification /></ProtectedRoute>} />
             <Route path="/admin/badges" element={<ProtectedRoute><AdminBadges /></ProtectedRoute>} />
+            <Route path="/admin/seed-rag" element={<ProtectedRoute><AdminSeedRag /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />

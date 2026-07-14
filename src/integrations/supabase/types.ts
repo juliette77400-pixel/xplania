@@ -1762,6 +1762,53 @@ export type Database = {
         }
         Relationships: []
       }
+      rag_seed_status: {
+        Row: {
+          chunk_key: string
+          created_at: string
+          destination_slug: string
+          document_id: string | null
+          error_message: string | null
+          id: string
+          seeded_by: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          chunk_key: string
+          created_at?: string
+          destination_slug: string
+          document_id?: string | null
+          error_message?: string | null
+          id?: string
+          seeded_by?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          chunk_key?: string
+          created_at?: string
+          destination_slug?: string
+          document_id?: string | null
+          error_message?: string | null
+          id?: string
+          seeded_by?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rag_seed_status_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "travel_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tinder_cards: {
         Row: {
           active: boolean
