@@ -10,9 +10,12 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 const GlobalPipChat = lazy(() => import("./components/shared/GlobalPipChat"));
 import PipChatSkeleton from "./components/shared/PipChatSkeleton";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
+import OnboardingSyncGate from "./components/onboarding/OnboardingSyncGate";
 
-// Index (landing page) stays eager for a fast first paint.
-import Index from "./pages/Index.tsx";
+// The Tinder deck is now the anonymous landing screen at "/". Keep it eager
+// so first paint is fast. The classic marketing landing moves to "/home".
+import TravelerProfileOnboarding from "./pages/TravelerProfileOnboarding.tsx";
+const Index = lazy(() => import("./pages/Index.tsx"));
 
 // All other routes are code-split so their JS (and heavy libs such as
 // leaflet / recharts / framer-motion) is only fetched when the route is visited.
