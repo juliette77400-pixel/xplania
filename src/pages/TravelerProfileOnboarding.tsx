@@ -240,6 +240,7 @@ const TravelerProfileOnboarding = () => {
 
       // Persist immediately: DB when logged in, localStorage otherwise.
       if (user) {
+        // 1) record the swipe row (source of truth for re-hydration)
         supabase
           .from("user_swipes")
           .upsert(
@@ -249,9 +250,25 @@ const TravelerProfileOnboarding = () => {
           .then(({ error }) => {
             if (error) console.warn("swipe write failed", error);
           });
+        // 2) mirror the running scores onto traveler_profiles so progress is
+        //    never lost, even if the user drops off before finalize().
+        const partial: Record<string, number | string> = {
+          user_id: user.id,
+          onboarding_step: "tinder",
+        };
+        for (const d of TRAVELER_DIMENSIONS) {
+          partial[`${d}_score`] = Math.max(0, nextScores[d] ?? 0);
+        }
+        supabase
+          .from("traveler_profiles")
+          .upsert(partial as never, { onConflict: "user_id" })
+          .then(({ error }) => {
+            if (error) console.warn("profile score sync failed", error);
+          });
       } else {
         pushLocalSwipe({ card_id: current.id, direction });
       }
+
 
       if (done + 1 >= total) {
         void finalize(nextScores);
