@@ -268,6 +268,18 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
       inserted = ins || [];
     }
 
+    // Xplania brain: record shown recommendations so we don't propose them again
+    await recordShownRecommendations(
+      supabase,
+      user.id,
+      places.map((p: any) => ({
+        item_key: p.name,
+        item_type: "mood_place",
+        source: "mood-recommend",
+        context: { mood: finalMood, city_hint, category: p.category },
+      })),
+    );
+
     return new Response(JSON.stringify({
       mood: finalMood,
       selection_id: selection?.id,
