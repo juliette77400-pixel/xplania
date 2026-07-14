@@ -61,8 +61,11 @@ CRITIQUE : Si l'utilisateur dit des choses comme « je veux me promener seule »
 
 Pour les autres intentions, réponds en 1-2 phrases courtes et propose l'outil pertinent. Réponds en FRANÇAIS.`;
 
+    const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+    const sysWithCtx = sys + (travelerCtx ? "\n\n" + travelerCtx : "");
+
     const messages = [
-      { role: "system", content: sys },
+      { role: "system", content: sysWithCtx },
       ...history.slice(-6).map((m: any) => ({ role: m.role, content: String(m.content || "").slice(0, 800) })),
       { role: "user", content: message.slice(0, 1000) },
     ];
