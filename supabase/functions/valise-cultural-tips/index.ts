@@ -101,7 +101,7 @@ Graine de variation : ${v} (produis un résultat clairement différent des varia
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: system },
+          { role: "system", content: systemWithCtx },
           { role: "user", content: user },
         ],
         temperature: 0.95,
