@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import TinderCard, { type TinderCardData } from "@/components/tinder/TinderCard";
 import {
   applyScoreTags,
+  BADGE_REWARDS,
   calculateBadge,
   emptyScores,
   TRAVELER_DIMENSIONS,
@@ -86,6 +87,11 @@ const TravelerProfileOnboarding = () => {
       setCards((allCards ?? []) as DbCard[]);
       setLoading(false);
 
+      // Friendly "welcome back" toast when we resume mid-parcours
+      if (done.size > 0 && done.size < (allCards?.length ?? 20)) {
+        toast(t("travelerProfile.resumed", { done: done.size, total: allCards?.length ?? 20 }));
+      }
+
       // Kick off image seeding if any card lacks an image
       if ((allCards ?? []).some((c) => !c.image_url)) {
         void supabase.functions.invoke("tinder-seed-images").then(() => {
@@ -124,10 +130,13 @@ const TravelerProfileOnboarding = () => {
       if (!user) return;
       setFinalizing(true);
       const badge = calculateBadge(finalScores);
+      const reward = BADGE_REWARDS[badge.key];
       const row: Record<string, number | string | string[] | null> = {
         user_id: user.id,
         badge: badge.key,
         recommended_features: badge.features as unknown as string[],
+        reward_points: reward.points,
+        reward_unlocks: reward.unlocks as unknown as string[],
         completed_at: new Date().toISOString(),
       };
       for (const d of TRAVELER_DIMENSIONS) {
