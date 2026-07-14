@@ -68,8 +68,11 @@ export function useGamification() {
 
   const gam = data ?? EMPTY;
 
-  const setData = (updater: (prev: GamData) => GamData) =>
-    queryClient.setQueryData<GamData>(queryKey, (prev) => updater(prev ?? EMPTY));
+  const setData = useCallback(
+    (updater: (prev: GamData) => GamData) =>
+      queryClient.setQueryData<GamData>(queryKey, (prev) => updater(prev ?? EMPTY)),
+    [queryClient, queryKey],
+  );
 
   const setPrefsRemote = useCallback(
     async (categoryIds: string[]) => {
@@ -83,7 +86,7 @@ export function useGamification() {
       }
       setData((prev) => ({ ...prev, prefs: categoryIds }));
     },
-    [user],
+    [user, setData],
   );
 
   const setVisibilityRemote = useCallback(
