@@ -38,8 +38,8 @@ const ProtectedRoute = ({ children, skipOnboarding = false }: Props) => {
     const step = (profile?.onboarding_step ?? null) as OnboardingStep | null;
     const finished = step === "done" || (!step && !!profile?.completed_at);
     if (!finished) {
-      // If no profile row yet, send them to the beginning of the tunnel.
-      const target = step ? stepToRoute(step) : "/profil-voyageur";
+      // If no profile row yet, send them to the anonymous Tinder deck at "/".
+      const target = step ? stepToRoute(step) : "/";
       if (location.pathname !== target) {
         return <Navigate to={target} replace />;
       }
