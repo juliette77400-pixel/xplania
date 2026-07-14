@@ -5,7 +5,8 @@ import i18n from "@/i18n";
  * Generates a "Ultimate pre-departure checklist" PDF lead magnet.
  * Returns a Blob that can be downloaded or attached.
  */
-export function generateChecklistPdf(): Blob {
+export async function generateChecklistPdf(): Promise<Blob> {
+  const { default: jsPDF } = await import("jspdf");
   const isFr = (i18n.language || "fr").startsWith("fr");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -205,8 +206,8 @@ export function generateChecklistPdf(): Blob {
   return doc.output("blob");
 }
 
-export function downloadChecklistPdf() {
-  const blob = generateChecklistPdf();
+export async function downloadChecklistPdf() {
+  const blob = await generateChecklistPdf();
   const url = URL.createObjectURL(blob);
   const isFr = (i18n.language || "fr").startsWith("fr");
   const filename = isFr
