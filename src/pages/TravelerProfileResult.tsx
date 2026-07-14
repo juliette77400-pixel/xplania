@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Loader2, RefreshCw, Sparkles } from "lucide-react";
+import { Gift, Loader2, RefreshCw, Sparkles, Trophy } from "lucide-react";
 import {
   PolarAngleAxis,
   PolarGrid,
