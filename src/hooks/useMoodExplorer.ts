@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { timeOfDay, type MoodKey } from "@/lib/moods";
 import { invokeProtectedFunction } from "@/lib/protected-functions";
+import { trackReaction } from "@/lib/user-memory";
 
 export interface MoodPlace {
   id: string;
