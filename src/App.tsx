@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import GlobalPipChat from "./components/shared/GlobalPipChat";
+const GlobalPipChat = lazy(() => import("./components/shared/GlobalPipChat"));
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 
 // Index (landing page) stays eager for a fast first paint.
@@ -109,7 +109,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
-            <GlobalPipChat />
+            <Suspense fallback={null}><GlobalPipChat /></Suspense>
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
