@@ -78,6 +78,9 @@ const MoodExplorer = () => {
   useEffect(() => {
     if (!user) return;
     evaluate({ ...badgeContext, reactionsCount });
+    // badgeContext is a fresh object each render; the individual fields below
+    // are the actual triggers we care about.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, badgeContext.distinctMoods, badgeContext.favoritesCount, badgeContext.hiddenGemsSaved, badgeContext.totalSelections, reactionsCount, evaluate]);
 
   // After a generation lands (activeMood + places), open the rating popup once per session

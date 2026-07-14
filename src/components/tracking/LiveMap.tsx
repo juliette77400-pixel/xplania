@@ -92,7 +92,7 @@ const StableUserMarker = ({ position }: { position: Position | null }) => {
         map.panTo(latlng, { animate: true, duration: 0.8 });
       }
     }
-  }, [position?.lat, position?.lng, position?.accuracy, position?.source, map]);
+  }, [position, map]);
 
   useEffect(() => () => {
     if (markerRef.current) { map.removeLayer(markerRef.current); markerRef.current = null; }

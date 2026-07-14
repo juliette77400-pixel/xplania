@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
@@ -53,7 +53,7 @@ const Discover = () => {
   const [filters, setFilters] = useState<DiscoverFilters>(DEFAULT_FILTERS);
   const { t } = useTranslation();
 
-  const applyFilters = (arr: Place[]): Place[] => {
+  const applyFilters = useCallback((arr: Place[]): Place[] => {
     let out = arr.filter((p) => {
       if (p.distance_km != null && p.distance_km > filters.distanceKm) return false;
       if (filters.hiddenOnly && !p.hidden_gem) return false;
@@ -64,9 +64,9 @@ const Discover = () => {
     else if (filters.sortBy === "rating") out = [...out].sort((a, b) => (b.rating_avg ?? 0) - (a.rating_avg ?? 0));
     else out = [...out].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
     return out;
-  };
+  }, [filters]);
 
-  const filteredPlaces = useMemo(() => applyFilters(filterBySelection(places, selection)), [places, selection, filters]);
+  const filteredPlaces = useMemo(() => applyFilters(filterBySelection(places, selection)), [places, selection, applyFilters]);
   const filteredSections = useMemo(() => {
     const f = (arr: Place[]) => applyFilters(filterBySelection(arr, selection));
     return {
@@ -77,7 +77,7 @@ const Discover = () => {
       experiences: f(sections.experiences),
       chill: f(sections.chill),
     };
-  }, [sections, selection, filters]);
+  }, [sections, selection, applyFilters]);
 
   const defaultList = lists.find((l) => l.is_default) || lists[0];
   const handleQuickSave = async (p: Place) => {

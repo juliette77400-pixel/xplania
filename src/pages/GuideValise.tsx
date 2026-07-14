@@ -346,7 +346,7 @@ const GuideValisePage = () => {
     setIsGenerating(false);
     setActiveSection(7);
     toast.success(t("guideValise.toastValiseReady"), { description: t("guideValise.toastValiseReadyDesc") });
-  }, [t]);
+  }, [t, consume, reached]);
 
   const handleRegenerate = useCallback(
     async (scope: "all" | "clothes" | "activities") => {

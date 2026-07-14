@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Navigation, Sparkles, MapPin, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -117,7 +117,7 @@ const SimulatedLiveMap = ({
         return `${x.toFixed(2)},${y.toFixed(2)}`;
       })
       .join(" ");
-  }, [orderedRoute, bounds]);
+  }, [orderedRoute, project]);
 
   const openExternal = (provider: "gmaps" | "osm") => {
     if (!position) return;
