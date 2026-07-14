@@ -1658,6 +1658,8 @@ export type Database = {
           nomad_score: number
           organization_score: number
           recommended_features: string[]
+          reward_points: number
+          reward_unlocks: string[]
           social_score: number
           updated_at: string
           user_id: string
@@ -1680,6 +1682,8 @@ export type Database = {
           nomad_score?: number
           organization_score?: number
           recommended_features?: string[]
+          reward_points?: number
+          reward_unlocks?: string[]
           social_score?: number
           updated_at?: string
           user_id: string
@@ -1702,6 +1706,8 @@ export type Database = {
           nomad_score?: number
           organization_score?: number
           recommended_features?: string[]
+          reward_points?: number
+          reward_unlocks?: string[]
           social_score?: number
           updated_at?: string
           user_id?: string
