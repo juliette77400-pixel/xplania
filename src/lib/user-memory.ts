@@ -30,15 +30,15 @@ export async function trackReaction(input: TrackReactionInput): Promise<void> {
     const { error: hErr } = await supabase
       .from("user_recommendations_history")
       .upsert(
-        {
+        [{
           user_id: user.id,
           item_key: itemKey,
           item_type: itemType,
           source,
           shown: true,
           liked,
-          context,
-        },
+          context: context as never,
+        }],
         { onConflict: "user_id,item_key,item_type" },
       );
     if (hErr) console.error("trackReaction history error", hErr);
