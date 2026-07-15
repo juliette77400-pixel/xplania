@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,6 +16,9 @@ Deno.serve(async (req) => {
   const __rl = checkRateLimit({ key: "explore-suggest", subject: __auth.userId, limit: 20, windowMs: 60_000 });
   const __rlResp = rateLimitResponse(__rl, corsHeaders);
   if (__rlResp) return __rlResp;
+
+  const __quota = await enforceQuota("explore", req, corsHeaders);
+  if (__quota) return __quota;
 
   try {
     const { tripId } = await req.json();
