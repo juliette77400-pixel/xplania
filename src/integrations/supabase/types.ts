@@ -1792,6 +1792,24 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_completions: {
+        Row: {
+          completed_at: string
+          count: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          count?: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       rag_seed_status: {
         Row: {
           chunk_key: string
@@ -2407,6 +2425,30 @@ export type Database = {
         }
         Relationships: []
       }
+      usage_counters: {
+        Row: {
+          count: number
+          period_month: string
+          tool: Database["public"]["Enums"]["quota_tool"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          period_month?: string
+          tool: Database["public"]["Enums"]["quota_tool"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          period_month?: string
+          tool?: Database["public"]["Enums"]["quota_tool"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_memory: {
         Row: {
           created_at: string
@@ -2563,7 +2605,13 @@ export type Database = {
       }
     }
     Functions: {
+      can_retake_quiz: { Args: never; Returns: Json }
+      consume_quota: {
+        Args: { _tool: Database["public"]["Enums"]["quota_tool"] }
+        Returns: Json
+      }
       gam_user_points: { Args: { _user_id: string }; Returns: number }
+      get_all_quota_status: { Args: never; Returns: Json }
       get_public_display_name: { Args: { _user_id: string }; Returns: string }
       get_public_trip_activities: {
         Args: { _slug: string }
@@ -2627,6 +2675,14 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      get_quota_limit: {
+        Args: { _tool: Database["public"]["Enums"]["quota_tool"] }
+        Returns: number
+      }
+      get_quota_status: {
+        Args: { _tool: Database["public"]["Enums"]["quota_tool"] }
+        Returns: Json
+      }
       get_waitlist_count: { Args: never; Returns: number }
       has_role: {
         Args: {
@@ -2673,6 +2729,7 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      record_quiz_completion: { Args: never; Returns: Json }
       subscribe_to_waitlist: {
         Args: {
           _email: string
@@ -2694,6 +2751,15 @@ export type Database = {
         | "ticket"
         | "geo_photo"
         | "manual"
+      quota_tool:
+        | "valise"
+        | "budget"
+        | "visa"
+        | "discover"
+        | "mood"
+        | "explore"
+        | "carnet"
+        | "suivi"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2831,6 +2897,16 @@ export const Constants = {
         "ticket",
         "geo_photo",
         "manual",
+      ],
+      quota_tool: [
+        "valise",
+        "budget",
+        "visa",
+        "discover",
+        "mood",
+        "explore",
+        "carnet",
+        "suivi",
       ],
     },
   },
