@@ -30,7 +30,11 @@ const fetchQuota = async (
   isAuthed: boolean,
 ): Promise<ServerQuotaRow> => {
   if (!isAuthed) {
-    return { used: getUsage(tool), limit: getLocalLimit(tool) as number, anon: true };
+    // Anon users are blocked at the edge function (requireAuth → 401).
+    // Surface reached=true in the UI so they can't queue a doomed request;
+    // the CTA elsewhere prompts them to sign in.
+    const lim = getLocalLimit(tool) as number;
+    return { used: lim, limit: lim, anon: true };
   }
   try {
     const { data, error } = await supabase.rpc("get_quota_status", { _tool: tool });
