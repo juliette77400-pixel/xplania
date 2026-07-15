@@ -3,10 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
-import { Heart, SkipForward, X, Loader2, Info, RefreshCw, RotateCcw } from "lucide-react";
+import { Heart, SkipForward, X, Loader2, Info, RefreshCw, RotateCcw, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import TinderCard, { type TinderCardData } from "@/components/tinder/TinderCard";
 import {
   applyScoreTags,
@@ -52,7 +62,10 @@ const TravelerProfileOnboarding = () => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const retryTimerRef = useRef<number | null>(null);
+  const animatingRef = useRef(false);
+  const animTimerRef = useRef<number | null>(null);
 
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
@@ -136,6 +149,7 @@ const TravelerProfileOnboarding = () => {
     return () => {
       cancelled = true;
       if (retryTimerRef.current) window.clearTimeout(retryTimerRef.current);
+      if (animTimerRef.current) window.clearTimeout(animTimerRef.current);
     };
   }, [user, t, retryTick]);
 
@@ -171,9 +185,12 @@ const TravelerProfileOnboarding = () => {
   const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
   const current = remaining[index] ?? null;
   const next = remaining[index + 1] ?? null;
-  const total = cards.length || 20;
+  const total = cards.length;
   const done = swipedIds.size;
-  const progressText = t("travelerProfile.progress", { done, total });
+  const questionNumber = Math.min(done + 1, Math.max(total, 1));
+  const progressText = total > 0
+    ? t("travelerProfile.questionOf", { current: questionNumber, total, defaultValue: "Question {{current}}/{{total}}" })
+    : "";
 
   const message = useMemo(() => {
     if (done < 5) return t("travelerProfile.msg1");
@@ -233,14 +250,26 @@ const TravelerProfileOnboarding = () => {
   const handleSwipe = useCallback(
     async (direction: Direction) => {
       if (!current) return;
+      // Lock: ignore any subsequent swipe until the previous card animation ends.
+      if (animatingRef.current || finalizing) return;
+      animatingRef.current = true;
+      if (animTimerRef.current) window.clearTimeout(animTimerRef.current);
+      animTimerRef.current = window.setTimeout(() => {
+        animatingRef.current = false;
+      }, 400);
+
       const nextScores = applyScoreTags(scores, current.score_tags, direction);
       setScores(nextScores);
-      setSwipedIds((prev) => new Set(prev).add(current.id));
+      setSwipedIds((prev) => {
+        if (prev.has(current.id)) return prev; // guard against double-count
+        const next = new Set(prev);
+        next.add(current.id);
+        return next;
+      });
       setIndex((i) => i + 1);
 
       // Persist immediately: DB when logged in, localStorage otherwise.
       if (user) {
-        // 1) record the swipe row (source of truth for re-hydration)
         supabase
           .from("user_swipes")
           .upsert(
@@ -250,8 +279,6 @@ const TravelerProfileOnboarding = () => {
           .then(({ error }) => {
             if (error) console.warn("swipe write failed", error);
           });
-        // 2) mirror the running scores onto traveler_profiles so progress is
-        //    never lost, even if the user drops off before finalize().
         const partial: Record<string, number | string> = {
           user_id: user.id,
           onboarding_step: "tinder",
@@ -269,12 +296,14 @@ const TravelerProfileOnboarding = () => {
         pushLocalSwipe({ card_id: current.id, direction });
       }
 
-
-      if (done + 1 >= total) {
+      // Only finalize when the LAST card of a non-empty deck has been swiped.
+      const alreadySwiped = swipedIds.has(current.id);
+      const newDone = alreadySwiped ? swipedIds.size : swipedIds.size + 1;
+      if (cards.length > 0 && newDone >= cards.length) {
         void finalize(nextScores);
       }
     },
-    [current, user, scores, done, total, finalize],
+    [current, user, scores, swipedIds, cards.length, finalize, finalizing],
   );
 
   useEffect(() => {
@@ -378,10 +407,21 @@ const TravelerProfileOnboarding = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="mx-auto w-full max-w-md px-4 pt-6 sm:pt-10">
+      {/* Persistent exit CTA — always reachable, discreet, thumb-friendly on mobile. */}
+      <button
+        type="button"
+        onClick={() => setShowExitConfirm(true)}
+        aria-label={t("travelerProfile.exit", "Quitter le quiz")}
+        className="fixed left-3 top-3 z-40 inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur transition hover:text-foreground hover:border-border"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" />
+        {t("travelerProfile.exit", "Quitter")}
+      </button>
+
+      <div className="mx-auto w-full max-w-md px-4 pt-14 sm:pt-16">
         <div className="mb-2 flex items-center justify-between text-sm font-semibold text-muted-foreground">
           <span>{t("travelerProfile.title")}</span>
-          <span>{progressText}</span>
+          <span aria-live="polite">{progressText}</span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
           <div
@@ -458,6 +498,23 @@ const TravelerProfileOnboarding = () => {
           <Heart className="h-7 w-7" />
         </button>
       </div>
+
+      <AlertDialog open={showExitConfirm} onOpenChange={setShowExitConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("travelerProfile.exitTitle", "Quitter le quiz ?")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("travelerProfile.exitDesc", "Ta progression est sauvegardée automatiquement. Tu pourras reprendre où tu t'es arrêté(e).")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("travelerProfile.exitStay", "Continuer le quiz")}</AlertDialogCancel>
+            <AlertDialogAction onClick={() => navigate("/home")}>
+              {t("travelerProfile.exitConfirm", "Quitter")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
