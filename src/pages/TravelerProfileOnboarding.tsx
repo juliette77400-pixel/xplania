@@ -230,8 +230,13 @@ const TravelerProfileOnboarding = () => {
     }
   }, [activeCategory, remaining.length]);
 
-  const current = remaining[index] ?? null;
-  const next = remaining[index + 1] ?? null;
+  // `remaining` already excludes swiped cards, so the top card is always
+  // remaining[0]. Do NOT add an incrementing index here — combining an
+  // incrementing index with a filter that drops swiped cards causes every
+  // other card to be skipped (regression from wave 2).
+  void index; // kept for legacy reset calls; not used to pick the current card
+  const current = remaining[0] ?? null;
+  const next = remaining[1] ?? null;
   const total = cards.length;
   const done = swipedIds.size;
   const currentCategoryKey: CategoryKey | null = current
