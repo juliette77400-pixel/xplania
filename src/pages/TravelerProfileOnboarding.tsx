@@ -69,6 +69,7 @@ const TravelerProfileOnboarding = () => {
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const retryTimerRef = useRef<number | null>(null);
   const animatingRef = useRef(false);
   const animTimerRef = useRef<number | null>(null);
