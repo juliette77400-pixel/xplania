@@ -85,6 +85,7 @@ const App = () => (
         <AuthProvider>
           <ErrorBoundary showHomeLink>
             <OnboardingSyncGate />
+            <AdminGate />
             <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* Anonymous Tinder deck is now the landing page. */}
