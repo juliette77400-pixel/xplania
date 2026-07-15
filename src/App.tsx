@@ -11,6 +11,7 @@ const GlobalPipChat = lazy(() => import("./components/shared/GlobalPipChat"));
 import PipChatSkeleton from "./components/shared/PipChatSkeleton";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 import OnboardingSyncGate from "./components/onboarding/OnboardingSyncGate";
+import AdminGate from "./components/admin/AdminGate";
 
 // The Tinder deck is now the anonymous landing screen at "/". Keep it eager
 // so first paint is fast. The classic marketing landing moves to "/home".
