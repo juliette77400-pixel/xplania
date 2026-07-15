@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Gift, Loader2, LogIn, RefreshCw, Sparkles, Trophy } from "lucide-react";
+import { Gift, Loader2, Lock, LogIn, RefreshCw, Sparkles, Trophy } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,7 +13,16 @@ import {
   type TravelerBadgeKey,
   type TravelerScores,
 } from "@/lib/traveler-badge";
+import {
+  ALL_APP_FEATURES,
+  deriveFreeFeatures,
+  derivePremiumPack,
+  dominantDimension,
+  SCORE_LABEL_FR,
+  topDimensions,
+} from "@/lib/feature-unlocks";
 import { Button } from "@/components/ui/button";
+import PremiumUnlockDialog from "@/components/premium/PremiumUnlockDialog";
 import {
   clearLocalOnboarding,
   getLocalOnboarding,
