@@ -249,14 +249,26 @@ const TravelerProfileOnboarding = () => {
   const handleSwipe = useCallback(
     async (direction: Direction) => {
       if (!current) return;
+      // Lock: ignore any subsequent swipe until the previous card animation ends.
+      if (animatingRef.current || finalizing) return;
+      animatingRef.current = true;
+      if (animTimerRef.current) window.clearTimeout(animTimerRef.current);
+      animTimerRef.current = window.setTimeout(() => {
+        animatingRef.current = false;
+      }, 400);
+
       const nextScores = applyScoreTags(scores, current.score_tags, direction);
       setScores(nextScores);
-      setSwipedIds((prev) => new Set(prev).add(current.id));
+      setSwipedIds((prev) => {
+        if (prev.has(current.id)) return prev; // guard against double-count
+        const next = new Set(prev);
+        next.add(current.id);
+        return next;
+      });
       setIndex((i) => i + 1);
 
       // Persist immediately: DB when logged in, localStorage otherwise.
       if (user) {
-        // 1) record the swipe row (source of truth for re-hydration)
         supabase
           .from("user_swipes")
           .upsert(
@@ -266,8 +278,6 @@ const TravelerProfileOnboarding = () => {
           .then(({ error }) => {
             if (error) console.warn("swipe write failed", error);
           });
-        // 2) mirror the running scores onto traveler_profiles so progress is
-        //    never lost, even if the user drops off before finalize().
         const partial: Record<string, number | string> = {
           user_id: user.id,
           onboarding_step: "tinder",
@@ -285,12 +295,14 @@ const TravelerProfileOnboarding = () => {
         pushLocalSwipe({ card_id: current.id, direction });
       }
 
-
-      if (done + 1 >= total) {
+      // Only finalize when the LAST card of a non-empty deck has been swiped.
+      const alreadySwiped = swipedIds.has(current.id);
+      const newDone = alreadySwiped ? swipedIds.size : swipedIds.size + 1;
+      if (cards.length > 0 && newDone >= cards.length) {
         void finalize(nextScores);
       }
     },
-    [current, user, scores, done, total, finalize],
+    [current, user, scores, swipedIds, cards.length, finalize, finalizing],
   );
 
   useEffect(() => {
