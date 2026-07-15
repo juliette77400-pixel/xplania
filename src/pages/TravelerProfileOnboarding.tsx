@@ -328,7 +328,8 @@ const TravelerProfileOnboarding = () => {
         next.add(current.id);
         return next;
       });
-      setIndex((i) => i + 1);
+      // Note: no setIndex(i+1) — remaining[0] naturally advances once
+      // swipedIds gains the current card.
 
       // Persist immediately: DB when logged in, localStorage otherwise.
       if (user) {
