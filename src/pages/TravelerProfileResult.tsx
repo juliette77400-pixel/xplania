@@ -143,6 +143,21 @@ const TravelerProfileResult = () => {
     if (!confirm(t("travelerProfile.resetConfirm", "Recommencer le questionnaire ?"))) return;
     trackOnboardingEvent("restart_click", { authed: !!user });
     if (user) {
+      // Server-side gate: non-admin, non-premium users cannot retake the
+      // quiz once they've completed it. Admins pass through automatically.
+      const { data, error } = await supabase.rpc("can_retake_quiz");
+      const payload = (data ?? {}) as { allowed?: boolean; admin?: boolean; reason?: string };
+      if (error || !payload.allowed) {
+        toast.error(
+          payload.reason === "quiz_already_completed"
+            ? t(
+                "travelerProfile.retakeLocked",
+                "Le quiz est réservé à une fois. Passe Premium pour le refaire.",
+              )
+            : t("travelerProfile.retakeError", "Impossible de recommencer le quiz pour le moment."),
+        );
+        return;
+      }
       await supabase.from("user_swipes").delete().eq("user_id", user.id);
       await supabase.from("traveler_profiles").delete().eq("user_id", user.id);
       queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
@@ -154,6 +169,7 @@ const TravelerProfileResult = () => {
     toast.success(t("travelerProfile.resetDone"));
     window.location.href = "/";
   };
+
 
   const goSignup = () => {
     trackOnboardingEvent("save_profile_click", {});
