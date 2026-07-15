@@ -12,6 +12,9 @@ Deno.serve(async (req) => {
   const __auth = await requireAuth(req, corsHeaders);
   if (__auth instanceof Response) return __auth;
 
+  const __quota = await enforceQuota("carnet", req, corsHeaders);
+  if (__quota) return __quota;
+
   try {
     const { days } = await req.json();
     if (!Array.isArray(days)) {
