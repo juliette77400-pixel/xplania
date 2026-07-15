@@ -3,19 +3,18 @@ import { expect, test, type Route } from "@playwright/test";
 /**
  * E2E coverage for admin bypass and freemium paywall.
  *
- * These tests hit the traveler-profile result page with a seeded local
- * onboarding payload (anonymous mode) so we don't need a real Supabase
- * session. The `is_current_user_admin` RPC is stubbed per-test to flip
- * between admin and non-admin.
+ * Strategy: seed a completed traveler profile in localStorage (anonymous
+ * mode) so we can land on `/profil-voyageur/resultat` without a real
+ * Supabase session, then compare two runs — one with the client-side
+ * admin flag OFF (the visitor is a normal freemium user) and one with
+ * the flag ON (the visitor is a server-verified admin).
  *
- * What we prove:
- *  1. A non-admin visitor sees the premium locks on locked features and
- *     the paywall dialog opens on click.
- *  2. An admin visitor sees NO locks (every feature card shows the
- *     "free access" style) and the "Mode Admin" badge is rendered.
+ * The client-side flag is only the *presentation* layer. Real bypass is
+ * enforced server-side (`consume_quota`, `can_retake_quiz`, RLS on
+ * `user_roles`), which is why we ALSO stub the relevant RPCs to match
+ * each scenario.
  */
 
-// A minimal completed traveler profile stored in localStorage (anonymous mode).
 const LOCAL_ONBOARDING = {
   session_id: "e2e-admin",
   step: "resultat",
@@ -25,40 +24,32 @@ const LOCAL_ONBOARDING = {
       culture: 80, nature: 40, gastronomy: 30, adventure: 20,
       relaxation: 50, budget: 30, luxury: 30, nomad: 40,
     },
-    // These two are picked by deriveFreeFeatures; the others are locked.
     features: ["discover", "mood"],
     reward_points: 100,
     reward_unlocks: ["title"],
   },
 };
 
-async function seedAnonymousResult(page: import("@playwright/test").Page) {
-  // Answer every REST probe with an empty payload so nothing errors out.
-  await page.route(/\/rest\/v1\/(user_swipes|traveler_profiles|user_roles|quiz_completions|usage_counters)/, (route: Route) => {
+async function stubBackend(page: import("@playwright/test").Page, opts: { admin: boolean }) {
+  // Answer every REST probe with an empty payload so the page never errors.
+  await page.route(/\/rest\/v1\/(user_swipes|traveler_profiles|user_roles|quiz_completions|usage_counters|profiles)/, (route: Route) => {
     route.fulfill({ status: 200, contentType: "application/json", body: "[]" });
   });
   await page.route(/\/auth\/v1\//, (route: Route) => {
     route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
   });
-  await page.addInitScript((payload) => {
-    window.localStorage.setItem("xplania:onboarding", JSON.stringify(payload));
-  }, LOCAL_ONBOARDING);
-}
 
-async function stubAdminRpc(page: import("@playwright/test").Page, isAdmin: boolean) {
-  // The Supabase JS client posts RPCs to /rest/v1/rpc/<name>.
+  // Admin-status RPCs mirror the scenario.
   await page.route(/\/rest\/v1\/rpc\/is_current_user_admin/, (route: Route) => {
-    route.fulfill({
-      status: 200,
-      contentType: "application/json",
-      body: JSON.stringify(isAdmin),
-    });
+    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(opts.admin) });
   });
   await page.route(/\/rest\/v1\/rpc\/(get_quota_status|get_all_quota_status)/, (route: Route) => {
     route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify(isAdmin ? { used: 0, limit: -1, admin: true } : { used: 3, limit: 3, admin: false }),
+      body: JSON.stringify(
+        opts.admin ? { used: 0, limit: -1, admin: true } : { used: 3, limit: 3, admin: false },
+      ),
     });
   });
   await page.route(/\/rest\/v1\/rpc\/can_retake_quiz/, (route: Route) => {
@@ -66,75 +57,54 @@ async function stubAdminRpc(page: import("@playwright/test").Page, isAdmin: bool
       status: 200,
       contentType: "application/json",
       body: JSON.stringify(
-        isAdmin
+        opts.admin
           ? { allowed: true, admin: true }
           : { allowed: false, reason: "quiz_already_completed" },
       ),
     });
   });
+
+  await page.addInitScript(({ onboarding, admin }) => {
+    window.localStorage.setItem("xplania:onboarding", JSON.stringify(onboarding));
+    // Test-only marker read by admin-access.ts. Real security is server-side,
+    // so this front-only flag cannot grant access to a real Supabase query.
+    if (admin) {
+      window.localStorage.setItem("xplania:e2e_force_admin", "1");
+    }
+  }, { onboarding: LOCAL_ONBOARDING, admin: opts.admin });
 }
 
-test.describe("admin access", () => {
-  test("non-admin sees premium locks on locked features", async ({ page }) => {
-    await seedAnonymousResult(page);
-    await stubAdminRpc(page, false);
+test.describe("admin access — freemium paywall", () => {
+  test("non-admin sees premium locks on locked feature cards", async ({ page }) => {
+    await stubBackend(page, { admin: false });
     await page.goto("/profil-voyageur/resultat");
 
-    // The 5 non-free features must render as locked (cadenas / "Premium" chip).
-    // We assert at least one locked feature is visible via its `aria-label`.
+    // Locked features render as a <button aria-label="Débloquer <Feature> avec Premium">.
     const lockedButton = page.getByRole("button", { name: /Débloquer.*Premium/i }).first();
     await expect(lockedButton).toBeVisible();
 
-    // Clicking a locked card opens the paywall dialog.
     await lockedButton.click();
+
+    // Paywall dialog opens with the pricing grid.
     await expect(
       page.getByRole("heading", { name: /Débloque tout Xplania|Passe Premium/i }),
     ).toBeVisible();
 
-    // No admin badge for a non-admin visitor.
+    // No admin badge for a normal visitor.
     await expect(page.getByLabel("Mode Admin")).toHaveCount(0);
   });
 
-  test("admin sees no lock, unlimited pill, and the admin badge", async ({ page }) => {
-    await seedAnonymousResult(page);
-    await stubAdminRpc(page, true);
-
-    // Fake an authenticated user so `useIsAdmin` runs the RPC.
-    await page.route(/\/auth\/v1\/user/, (route: Route) => {
-      route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({ id: "admin-uid", email: "juliette7740@gmail.com" }),
-      });
-    });
-    await page.addInitScript(() => {
-      // Force the client-side admin flag on immediately so the first render
-      // already treats the visitor as unlimited even before the RPC resolves.
-      // This mirrors what `<AdminGate />` would do after fetching.
-      (window as unknown as { __xplaniaForceAdmin?: boolean }).__xplaniaForceAdmin = true;
-    });
-
+  test("admin sees no locks, no paywall, and the Mode Admin badge", async ({ page }) => {
+    await stubBackend(page, { admin: true });
     await page.goto("/profil-voyageur/resultat");
 
-    // Wait for the AdminGate badge to render (RPC resolves + flag flips).
-    // In anonymous mode `useIsAdmin` never fires because there's no user,
-    // so we assert the negative behavior: the paywall must never open even
-    // when we click what would be a locked card. To do that we set the
-    // client-side admin flag directly.
-    await page.evaluate(async () => {
-      const mod = await import("/src/lib/admin-access.ts");
-      mod.setAdminFlag(true);
-    });
+    // Admin badge is rendered by AdminGate as soon as the flag is on.
+    await expect(page.getByLabel("Mode Admin")).toBeVisible();
 
-    // Trigger a re-render by navigating in place.
-    await page.reload();
-
-    // Every feature card must now render as an <a> (free access) rather
-    // than a <button aria-label="Débloquer …">. We assert no locked button
-    // is present.
+    // Every card is unlocked — no "Débloquer … Premium" button anywhere.
     await expect(page.getByRole("button", { name: /Débloquer.*Premium/i })).toHaveCount(0);
 
-    // The Mode Admin badge is visible.
-    await expect(page.getByLabel("Mode Admin")).toBeVisible();
+    // Paywall dialog is never mounted.
+    await expect(page.getByRole("heading", { name: /Débloque tout Xplania/i })).toHaveCount(0);
   });
 });
