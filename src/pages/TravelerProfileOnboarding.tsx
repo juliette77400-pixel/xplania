@@ -406,10 +406,21 @@ const TravelerProfileOnboarding = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="mx-auto w-full max-w-md px-4 pt-6 sm:pt-10">
+      {/* Persistent exit CTA — always reachable, discreet, thumb-friendly on mobile. */}
+      <button
+        type="button"
+        onClick={() => setShowExitConfirm(true)}
+        aria-label={t("travelerProfile.exit", "Quitter le quiz")}
+        className="fixed left-3 top-3 z-40 inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur transition hover:text-foreground hover:border-border"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" />
+        {t("travelerProfile.exit", "Quitter")}
+      </button>
+
+      <div className="mx-auto w-full max-w-md px-4 pt-14 sm:pt-16">
         <div className="mb-2 flex items-center justify-between text-sm font-semibold text-muted-foreground">
           <span>{t("travelerProfile.title")}</span>
-          <span>{progressText}</span>
+          <span aria-live="polite">{progressText}</span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
           <div
