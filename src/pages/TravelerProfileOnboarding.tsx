@@ -528,34 +528,50 @@ const TravelerProfileOnboarding = () => {
             {categoriesPresent.map((k) => {
               const cat = CATEGORIES[k];
               const stat = categoryStats.get(k) ?? { total: 0, done: 0 };
-              const isActive = (currentCategoryKey ?? null) === k;
+              const isCurrent = (currentCategoryKey ?? null) === k;
               const isFilterOn = activeCategory === k;
               const complete = stat.done >= stat.total && stat.total > 0;
+              // Visual hierarchy:
+              // - filter ON (user-clicked)   → full color ring + colored bg
+              // - complete                   → dimmed + green check, not-allowed
+              // - current (auto, no filter)  → subtle border tint only
+              // - idle                       → neutral
+              const styleClass = isFilterOn
+                ? `${cat.border} ${cat.chipBg} ${cat.accent} ring-2 ${cat.ring}`
+                : complete
+                ? "border-emerald-500/40 bg-emerald-500/5 text-emerald-400/70"
+                : isCurrent
+                ? `${cat.border} bg-card/80 ${cat.accent}`
+                : "border-border/60 bg-card/60 text-muted-foreground hover:text-foreground";
               return (
                 <button
                   key={k}
                   type="button"
-                  onClick={() => jumpToCategory(k)}
-                  className={`shrink-0 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
-                    isActive || isFilterOn
-                      ? `${cat.border} ${cat.chipBg} ${cat.accent} ring-2 ${cat.ring}`
-                      : `border-border/60 bg-card/60 text-muted-foreground hover:text-foreground`
-                  } ${complete ? "opacity-70" : ""}`}
+                  onClick={() => jumpToCategory(k, { complete })}
+                  disabled={complete && !isFilterOn}
+                  className={`shrink-0 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${styleClass} ${
+                    complete && !isFilterOn ? "cursor-not-allowed" : ""
+                  }`}
                   aria-pressed={isFilterOn}
-                  aria-label={`${cat.fallback} — ${stat.done}/${stat.total}`}
+                  aria-label={`${cat.fallback} — ${stat.done}/${stat.total}${complete ? " (terminé)" : ""}`}
+                  title={
+                    complete
+                      ? t("travelerProfile.categoryDone", { defaultValue: "Catégorie terminée" })
+                      : isFilterOn
+                      ? t("travelerProfile.clearFilter", { defaultValue: "Cliquer pour retirer le filtre" })
+                      : t("travelerProfile.filterTo", { defaultValue: "Filtrer sur cette catégorie" })
+                  }
                 >
                   <cat.Icon className="h-3.5 w-3.5" />
                   <span>{cat.fallback}</span>
-                  <span className="ml-1 flex items-center gap-0.5">
-                    {Array.from({ length: stat.total }).map((_, i) => (
-                      <span
-                        key={i}
-                        className={`h-1.5 w-1.5 rounded-full ${
-                          i < stat.done ? (isActive || isFilterOn ? "bg-current" : "bg-primary") : "bg-muted"
-                        }`}
-                      />
-                    ))}
-                  </span>
+                  {complete ? (
+                    <span className="ml-1 text-[10px] font-bold">✓</span>
+                  ) : (
+                    <span className="ml-1 text-[10px] tabular-nums opacity-80">
+                      {stat.done}/{stat.total}
+                    </span>
+                  )}
+                  {isFilterOn && <X className="ml-0.5 h-3 w-3 opacity-70" />}
                 </button>
               );
             })}
