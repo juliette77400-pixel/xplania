@@ -184,9 +184,12 @@ const TravelerProfileOnboarding = () => {
   const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
   const current = remaining[index] ?? null;
   const next = remaining[index + 1] ?? null;
-  const total = cards.length || 20;
+  const total = cards.length;
   const done = swipedIds.size;
-  const progressText = t("travelerProfile.progress", { done, total });
+  const questionNumber = Math.min(done + 1, Math.max(total, 1));
+  const progressText = total > 0
+    ? t("travelerProfile.questionOf", { current: questionNumber, total, defaultValue: "Question {{current}}/{{total}}" })
+    : "";
 
   const message = useMemo(() => {
     if (done < 5) return t("travelerProfile.msg1");
