@@ -74,10 +74,8 @@ async function provisionUser() {
   return { admin, authed, userId, email };
 }
 
-async function cleanup(
-  admin: ReturnType<typeof createClient>,
-  userId: string,
-) {
+// deno-lint-ignore no-explicit-any
+async function cleanup(admin: any, userId: string) {
   await admin.from("usage_counters").delete().eq("user_id", userId);
   await admin.from("quiz_completions").delete().eq("user_id", userId);
   await admin.from("user_roles").delete().eq("user_id", userId);
