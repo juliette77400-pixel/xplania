@@ -102,12 +102,16 @@ const TravelerProfileResult = () => {
   );
 
   // Freemium: 2 free features derived dynamically from the traveler's profile.
-  // Everything else is locked behind the premium modal.
+  // Admins / dev bypass unlock every card.
+  const unlimited = hasUnlimitedAccess();
   const freeFeatures = useMemo(
     () => (display ? deriveFreeFeatures(display.scores) : (["mood", "discover"] as [FeatureKey, FeatureKey])),
     [display],
   );
-  const freeSet = useMemo(() => new Set<FeatureKey>(freeFeatures), [freeFeatures]);
+  const freeSet = useMemo(
+    () => (unlimited ? new Set<FeatureKey>(ALL_APP_FEATURES) : new Set<FeatureKey>(freeFeatures)),
+    [freeFeatures, unlimited],
+  );
   const dominantKey = useMemo(() => (display ? dominantDimension(display.scores) : null), [display]);
   const highlightPack = useMemo(() => (display ? derivePremiumPack(display.scores) : "all"), [display]);
 
