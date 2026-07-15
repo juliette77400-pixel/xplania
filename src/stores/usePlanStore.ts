@@ -82,7 +82,10 @@ export const usePlanStore = create<PlanStore>()(
   ),
 );
 
+import { hasUnlimitedAccess } from "@/lib/admin-access";
+
 export const hasReachedFreeQuota = () => {
+  if (hasUnlimitedAccess()) return false;
   const { tier, generationsUsed, freeQuota } = usePlanStore.getState();
   return tier === "free" && generationsUsed >= freeQuota;
 };
