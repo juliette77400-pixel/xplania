@@ -149,6 +149,7 @@ const TravelerProfileOnboarding = () => {
     return () => {
       cancelled = true;
       if (retryTimerRef.current) window.clearTimeout(retryTimerRef.current);
+      if (animTimerRef.current) window.clearTimeout(animTimerRef.current);
     };
   }, [user, t, retryTick]);
 
