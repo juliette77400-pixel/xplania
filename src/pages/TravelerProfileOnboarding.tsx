@@ -62,7 +62,10 @@ const TravelerProfileOnboarding = () => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const retryTimerRef = useRef<number | null>(null);
+  const animatingRef = useRef(false);
+  const animTimerRef = useRef<number | null>(null);
 
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
