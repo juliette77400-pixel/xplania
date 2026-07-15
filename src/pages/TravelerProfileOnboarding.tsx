@@ -26,6 +26,12 @@ import {
   TRAVELER_DIMENSIONS,
   type TravelerScores,
 } from "@/lib/traveler-badge";
+import {
+  CATEGORIES,
+  CATEGORY_ORDER,
+  categoryForCard,
+  type CategoryKey,
+} from "@/lib/tinder-categories";
 import { travelerProfileKey } from "@/hooks/useTravelerProfile";
 import {
   getLocalOnboarding,
