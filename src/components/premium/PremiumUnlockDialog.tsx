@@ -36,9 +36,17 @@ interface Props {
   highlightPack?: PremiumPackId;
 }
 
+import { hasUnlimitedAccess } from "@/lib/admin-access";
+
 const PremiumUnlockDialog = ({ open, onOpenChange, lockedFeature, highlightPack = "all" }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Admin / dev bypass — never render the paywall for unlimited users.
+  if (hasUnlimitedAccess()) {
+    if (open) onOpenChange(false);
+    return null;
+  }
 
   const goToPricing = () => {
     onOpenChange(false);
