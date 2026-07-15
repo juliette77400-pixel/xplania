@@ -35,8 +35,12 @@ const DEV_KEY = "xplania_dev_mode";
  *
  * Toggle from console: localStorage.setItem('xplania_dev_mode','1')  /  removeItem('xplania_dev_mode')
  */
+import { isAdminSync } from "@/lib/admin-access";
+
 export const isDevMode = (): boolean => {
   if (typeof window === "undefined") return false;
+  // Real admin (server-verified via RLS) always bypasses quotas.
+  if (isAdminSync()) return true;
   // Explicit env var bypass — highest priority
   try {
     if (import.meta.env?.VITE_DEV_BYPASS === "true" || import.meta.env?.VITE_DEV_BYPASS === true) {
