@@ -26,6 +26,12 @@ import {
   TRAVELER_DIMENSIONS,
   type TravelerScores,
 } from "@/lib/traveler-badge";
+import {
+  CATEGORIES,
+  CATEGORY_ORDER,
+  categoryForCard,
+  type CategoryKey,
+} from "@/lib/tinder-categories";
 import { travelerProfileKey } from "@/hooks/useTravelerProfile";
 import {
   getLocalOnboarding,
@@ -63,6 +69,7 @@ const TravelerProfileOnboarding = () => {
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const retryTimerRef = useRef<number | null>(null);
   const animatingRef = useRef(false);
   const animTimerRef = useRef<number | null>(null);
@@ -182,15 +189,65 @@ const TravelerProfileOnboarding = () => {
   }, [user, resetting, queryClient, t]);
 
 
-  const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
+  // Precompute category per card and per-category stats.
+  const cardCategory = useMemo(() => {
+    const m = new Map<string, CategoryKey>();
+    for (const c of cards) m.set(c.id, categoryForCard(c.score_tags));
+    return m;
+  }, [cards]);
+
+  const categoriesPresent = useMemo(() => {
+    const set = new Set<CategoryKey>();
+    for (const c of cards) set.add(cardCategory.get(c.id) ?? "immersion");
+    return CATEGORY_ORDER.filter((k) => set.has(k));
+  }, [cards, cardCategory]);
+
+  const categoryStats = useMemo(() => {
+    const stats = new Map<CategoryKey, { total: number; done: number }>();
+    for (const c of cards) {
+      const k = cardCategory.get(c.id) ?? "immersion";
+      const s = stats.get(k) ?? { total: 0, done: 0 };
+      s.total += 1;
+      if (swipedIds.has(c.id)) s.done += 1;
+      stats.set(k, s);
+    }
+    return stats;
+  }, [cards, cardCategory, swipedIds]);
+
+  // If the user jumps to a category via the pills, the queue is filtered to
+  // that category's unswiped cards; when it empties we drop the filter so the
+  // rest of the deck resumes seamlessly.
+  const remaining = useMemo(() => {
+    const base = cards.filter((c) => !swipedIds.has(c.id));
+    if (!activeCategory) return base;
+    return base.filter((c) => cardCategory.get(c.id) === activeCategory);
+  }, [cards, swipedIds, activeCategory, cardCategory]);
+
+  useEffect(() => {
+    if (activeCategory && remaining.length === 0) {
+      setActiveCategory(null);
+      setIndex(0);
+    }
+  }, [activeCategory, remaining.length]);
+
   const current = remaining[index] ?? null;
   const next = remaining[index + 1] ?? null;
   const total = cards.length;
   const done = swipedIds.size;
+  const currentCategoryKey: CategoryKey | null = current
+    ? cardCategory.get(current.id) ?? null
+    : activeCategory;
+  const currentCategory = currentCategoryKey ? CATEGORIES[currentCategoryKey] : null;
   const questionNumber = Math.min(done + 1, Math.max(total, 1));
   const progressText = total > 0
     ? t("travelerProfile.questionOf", { current: questionNumber, total, defaultValue: "Question {{current}}/{{total}}" })
     : "";
+
+  const jumpToCategory = useCallback((k: CategoryKey) => {
+    if (animatingRef.current) return;
+    setActiveCategory((prev) => (prev === k ? null : k));
+    setIndex(0);
+  }, []);
 
   const message = useMemo(() => {
     if (done < 5) return t("travelerProfile.msg1");
@@ -454,14 +511,78 @@ const TravelerProfileOnboarding = () => {
         </div>
       </div>
 
+      {/* Category pills — horizontal, scrollable, with per-category progress dots. */}
+      {categoriesPresent.length > 1 && (
+        <div className="mx-auto w-full max-w-2xl px-2 pt-3">
+          <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {categoriesPresent.map((k) => {
+              const cat = CATEGORIES[k];
+              const stat = categoryStats.get(k) ?? { total: 0, done: 0 };
+              const isActive = (currentCategoryKey ?? null) === k;
+              const isFilterOn = activeCategory === k;
+              const complete = stat.done >= stat.total && stat.total > 0;
+              return (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => jumpToCategory(k)}
+                  className={`shrink-0 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    isActive || isFilterOn
+                      ? `${cat.border} ${cat.chipBg} ${cat.accent} ring-2 ${cat.ring}`
+                      : `border-border/60 bg-card/60 text-muted-foreground hover:text-foreground`
+                  } ${complete ? "opacity-70" : ""}`}
+                  aria-pressed={isFilterOn}
+                  aria-label={`${cat.fallback} — ${stat.done}/${stat.total}`}
+                >
+                  <cat.Icon className="h-3.5 w-3.5" />
+                  <span>{cat.fallback}</span>
+                  <span className="ml-1 flex items-center gap-0.5">
+                    {Array.from({ length: stat.total }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 w-1.5 rounded-full ${
+                          i < stat.done ? (isActive || isFilterOn ? "bg-current" : "bg-primary") : "bg-muted"
+                        }`}
+                      />
+                    ))}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="flex-1 flex items-center justify-center px-4 py-6">
         <div className="relative h-[70vh] max-h-[620px] w-full max-w-md">
+          {currentCategory && (
+            <div className="pointer-events-none absolute -top-3 left-1/2 z-10 -translate-x-1/2 -translate-y-full">
+              <div
+                className={`inline-flex items-center gap-1.5 rounded-full border ${currentCategory.border} ${currentCategory.chipBg} px-3 py-1 text-xs font-bold ${currentCategory.accent} shadow-lg backdrop-blur`}
+              >
+                <currentCategory.Icon className="h-3.5 w-3.5" />
+                <span className="uppercase tracking-wide">{currentCategory.fallback}</span>
+              </div>
+            </div>
+          )}
           <AnimatePresence>
             {nextUi && (
-              <TinderCard key={nextUi.id} card={nextUi} onSwipe={() => {}} isTop={false} />
+              <TinderCard
+                key={nextUi.id}
+                card={nextUi}
+                onSwipe={() => {}}
+                isTop={false}
+                category={next ? CATEGORIES[cardCategory.get(next.id) ?? "immersion"] : undefined}
+              />
             )}
             {currentUi && (
-              <TinderCard key={currentUi.id} card={currentUi} onSwipe={handleSwipe} isTop />
+              <TinderCard
+                key={currentUi.id}
+                card={currentUi}
+                onSwipe={handleSwipe}
+                isTop
+                category={currentCategory ?? undefined}
+              />
             )}
           </AnimatePresence>
           {!currentUi && (
