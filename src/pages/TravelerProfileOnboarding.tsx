@@ -248,11 +248,15 @@ const TravelerProfileOnboarding = () => {
     ? t("travelerProfile.questionOf", { current: questionNumber, total, defaultValue: "Question {{current}}/{{total}}" })
     : "";
 
-  const jumpToCategory = useCallback((k: CategoryKey) => {
+  const jumpToCategory = useCallback((k: CategoryKey, opts: { complete?: boolean } = {}) => {
     if (animatingRef.current) return;
+    if (opts.complete) {
+      toast(t("travelerProfile.categoryDone", { defaultValue: "Catégorie déjà terminée ✓" }));
+      return;
+    }
+    // Explicit: same pill twice = clear filter. Different pill = switch filter.
     setActiveCategory((prev) => (prev === k ? null : k));
-    setIndex(0);
-  }, []);
+  }, [t]);
 
   const message = useMemo(() => {
     if (done < 5) return t("travelerProfile.msg1");
