@@ -60,6 +60,17 @@ const TravelerProfileResult = () => {
     trackOnboardingEvent("step_view", { step: "resultat" });
   }, []);
 
+  // Record the quiz completion server-side the first time an authenticated
+  // user reaches this screen with a completed profile. The RPC is idempotent.
+  useEffect(() => {
+    if (user && profile?.completed_at) {
+      supabase.rpc("record_quiz_completion").then(({ error }) => {
+        if (error) console.warn("[quiz] record_quiz_completion failed", error);
+      });
+    }
+  }, [user, profile?.completed_at]);
+
+
   const local = useMemo(() => (user ? null : getLocalOnboarding()), [user]);
 
   const display: DisplayProfile | null = useMemo(() => {
