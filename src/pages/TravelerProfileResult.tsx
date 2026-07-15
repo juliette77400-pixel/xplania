@@ -21,6 +21,7 @@ import {
   SCORE_LABEL_FR,
   topDimensions,
 } from "@/lib/feature-unlocks";
+import { hasUnlimitedAccess } from "@/lib/admin-access";
 import { Button } from "@/components/ui/button";
 import PremiumUnlockDialog from "@/components/premium/PremiumUnlockDialog";
 import {
