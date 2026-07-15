@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Gift, Loader2, LogIn, RefreshCw, Sparkles, Trophy } from "lucide-react";
+import { Gift, Loader2, Lock, LogIn, RefreshCw, Sparkles, Trophy } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,7 +13,16 @@ import {
   type TravelerBadgeKey,
   type TravelerScores,
 } from "@/lib/traveler-badge";
+import {
+  ALL_APP_FEATURES,
+  deriveFreeFeatures,
+  derivePremiumPack,
+  dominantDimension,
+  SCORE_LABEL_FR,
+  topDimensions,
+} from "@/lib/feature-unlocks";
 import { Button } from "@/components/ui/button";
+import PremiumUnlockDialog from "@/components/premium/PremiumUnlockDialog";
 import {
   clearLocalOnboarding,
   getLocalOnboarding,
@@ -81,10 +90,34 @@ const TravelerProfileResult = () => {
   const scoreData = useMemo(() => {
     if (!display) return [];
     return TRAVELER_DIMENSIONS.map((d) => ({
+      key: d,
       dim: t(`travelerProfile.dimensions.${d}`),
       value: Math.min(100, Math.max(0, display.scores[d] ?? 0)),
     }));
   }, [display, t]);
+
+  const dominantKeys = useMemo(
+    () => (display ? new Set(topDimensions(display.scores, 4)) : new Set()),
+    [display],
+  );
+
+  // Freemium: 2 free features derived dynamically from the traveler's profile.
+  // Everything else is locked behind the premium modal.
+  const freeFeatures = useMemo(
+    () => (display ? deriveFreeFeatures(display.scores) : (["mood", "discover"] as [FeatureKey, FeatureKey])),
+    [display],
+  );
+  const freeSet = useMemo(() => new Set<FeatureKey>(freeFeatures), [freeFeatures]);
+  const dominantKey = useMemo(() => (display ? dominantDimension(display.scores) : null), [display]);
+  const highlightPack = useMemo(() => (display ? derivePremiumPack(display.scores) : "all"), [display]);
+
+  const [premiumOpen, setPremiumOpen] = useState(false);
+  const [lockedFeature, setLockedFeature] = useState<FeatureKey | null>(null);
+  const openPremium = (f: FeatureKey) => {
+    trackOnboardingEvent("premium_lock_click", { feature: f });
+    setLockedFeature(f);
+    setPremiumOpen(true);
+  };
 
   if (user && isLoading) {
     return (
@@ -97,7 +130,9 @@ const TravelerProfileResult = () => {
   if (!display) return <Navigate to="/" replace />;
 
   const badgeKey = display.badge;
-  const features = display.features;
+  // `display.features` (the badge's default picks) is kept in the DB for
+  // historical / RAG use but is no longer rendered — the free features are
+  // derived dynamically from the traveler's scores via `deriveFreeFeatures`.
 
   const restart = async () => {
     if (!confirm(t("travelerProfile.resetConfirm", "Recommencer le questionnaire ?"))) return;
@@ -165,22 +200,41 @@ const TravelerProfileResult = () => {
         )}
 
         <div className="mt-10 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
-          <h2 className="mb-4 text-lg font-bold">{t("travelerProfile.yourScores")}</h2>
+          <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-lg font-bold">{t("travelerProfile.yourScores")}</h2>
+            <p className="text-xs text-muted-foreground">
+              {t("travelerProfile.topScoresHint", { defaultValue: "Tes affinités dominantes en surbrillance" })}
+            </p>
+          </div>
           <div className="grid gap-4 sm:grid-cols-2" aria-label={t("travelerProfile.yourScores")}>
-            {scoreData.map((item) => (
-              <div key={item.dim} className="rounded-2xl border border-border/60 bg-background/60 p-4">
-                <div className="mb-2 flex items-center justify-between gap-3 text-sm font-semibold">
-                  <span className="min-w-0 truncate text-muted-foreground">{item.dim}</span>
-                  <span className="shrink-0 text-foreground">{Math.round(item.value)}</span>
+            {scoreData.map((item) => {
+              const dominant = dominantKeys.has(item.key);
+              return (
+                <div
+                  key={item.key}
+                  className={`rounded-2xl border p-4 transition ${
+                    dominant
+                      ? "border-primary/60 bg-primary/10 shadow-sm"
+                      : "border-border/60 bg-background/60"
+                  }`}
+                >
+                  <div className="mb-2 flex items-center justify-between gap-3 text-sm font-semibold">
+                    <span className={`min-w-0 truncate ${dominant ? "text-foreground" : "text-muted-foreground"}`}>
+                      {item.dim}
+                    </span>
+                    <span className="shrink-0 text-foreground">{Math.round(item.value)}</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className={`h-full rounded-full transition-[width] duration-500 ${
+                        dominant ? "bg-gradient-to-r from-primary to-secondary" : "bg-primary/70"
+                      }`}
+                      style={{ width: `${item.value}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-primary transition-[width] duration-500"
-                    style={{ width: `${item.value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -232,31 +286,82 @@ const TravelerProfileResult = () => {
         </div>
 
         <div className="mt-10">
+          <div className="mb-4 rounded-2xl border border-primary/40 bg-gradient-to-r from-primary/15 via-card to-secondary/10 p-4 sm:p-5">
+            <p className="text-sm font-semibold">
+              🎉{" "}
+              {dominantKey
+                ? t("travelerProfile.freeIntroDynamic", {
+                    trait: SCORE_LABEL_FR[dominantKey],
+                    defaultValue: `Basé sur ${SCORE_LABEL_FR[dominantKey]}, voici tes 2 accès gratuits à vie.`,
+                  })
+                : t("travelerProfile.freeIntroStatic", {
+                    defaultValue: "Voici tes 2 accès gratuits à vie, choisis pour toi.",
+                  })}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {t("travelerProfile.freeIntroHint", {
+                defaultValue: "Les autres fonctionnalités sont disponibles avec Premium.",
+              })}
+            </p>
+          </div>
+
           <h2 className="mb-4 text-lg font-bold">{t("travelerProfile.recommendedForYou")}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            {features.map((f) => {
+            {ALL_APP_FEATURES.map((f) => {
               const meta = FEATURE_META[f];
               if (!meta) return null;
+              const isFree = freeSet.has(f);
               const to = user ? meta.to : "/onboarding/signup";
+              const name = t(`travelerProfile.features.${f}.name`);
+              const desc = t(`travelerProfile.features.${f}.description`);
+
+              if (isFree) {
+                return (
+                  <Link
+                    key={f}
+                    to={to}
+                    className="group relative overflow-hidden rounded-2xl border border-primary/50 bg-gradient-to-br from-primary/10 via-card to-secondary/5 p-6 transition hover:-translate-y-1 hover:border-primary hover:shadow-lg"
+                  >
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                      <Sparkles className="h-3 w-3" />
+                      {t("travelerProfile.freeAccess", { defaultValue: "Accès gratuit" })}
+                    </div>
+                    <div className="mt-3 text-xl font-bold">{name}</div>
+                    <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+                    <div className="mt-4 text-sm font-semibold text-primary group-hover:underline">
+                      {t("travelerProfile.discoverNow")} →
+                    </div>
+                  </Link>
+                );
+              }
+
+              // Locked card: click opens the premium modal.
               return (
-                <Link
+                <button
                   key={f}
-                  to={to}
-                  className="group rounded-2xl border border-border/60 bg-card p-6 transition hover:-translate-y-1 hover:border-primary/60 hover:shadow-lg"
+                  type="button"
+                  onClick={() => openPremium(f)}
+                  className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-6 text-left transition hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg"
+                  aria-label={t("travelerProfile.unlockWithPremium", {
+                    feature: name,
+                    defaultValue: `Débloquer ${name} avec Premium`,
+                  })}
                 >
-                  <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                    {t("travelerProfile.recommendation")}
+                  {/* frosted overlay for the locked look */}
+                  <div className="pointer-events-none absolute inset-0 bg-background/40 backdrop-blur-[1px]" />
+                  <div className="relative">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                      <Lock className="h-3 w-3" />
+                      {t("travelerProfile.premium", { defaultValue: "Premium" })}
+                    </div>
+                    <div className="mt-3 text-xl font-bold text-foreground/80">{name}</div>
+                    <p className="mt-2 text-sm text-muted-foreground/90 line-clamp-2">{desc}</p>
+                    <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:underline">
+                      <Lock className="h-3.5 w-3.5" />
+                      {t("travelerProfile.unlockCta", { defaultValue: "Débloquer avec Premium" })}
+                    </div>
                   </div>
-                  <div className="mt-2 text-xl font-bold">
-                    {t(`travelerProfile.features.${f}.name`)}
-                  </div>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {t(`travelerProfile.features.${f}.description`)}
-                  </p>
-                  <div className="mt-4 text-sm font-semibold text-primary group-hover:underline">
-                    {t("travelerProfile.discoverNow")} →
-                  </div>
-                </Link>
+                </button>
               );
             })}
           </div>
@@ -278,6 +383,13 @@ const TravelerProfileResult = () => {
           </Button>
         </div>
       </div>
+
+      <PremiumUnlockDialog
+        open={premiumOpen}
+        onOpenChange={setPremiumOpen}
+        lockedFeature={lockedFeature}
+        highlightPack={highlightPack}
+      />
     </div>
   );
 };
