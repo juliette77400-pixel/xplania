@@ -189,15 +189,65 @@ const TravelerProfileOnboarding = () => {
   }, [user, resetting, queryClient, t]);
 
 
-  const remaining = useMemo(() => cards.filter((c) => !swipedIds.has(c.id)), [cards, swipedIds]);
+  // Precompute category per card and per-category stats.
+  const cardCategory = useMemo(() => {
+    const m = new Map<string, CategoryKey>();
+    for (const c of cards) m.set(c.id, categoryForCard(c.score_tags));
+    return m;
+  }, [cards]);
+
+  const categoriesPresent = useMemo(() => {
+    const set = new Set<CategoryKey>();
+    for (const c of cards) set.add(cardCategory.get(c.id) ?? "immersion");
+    return CATEGORY_ORDER.filter((k) => set.has(k));
+  }, [cards, cardCategory]);
+
+  const categoryStats = useMemo(() => {
+    const stats = new Map<CategoryKey, { total: number; done: number }>();
+    for (const c of cards) {
+      const k = cardCategory.get(c.id) ?? "immersion";
+      const s = stats.get(k) ?? { total: 0, done: 0 };
+      s.total += 1;
+      if (swipedIds.has(c.id)) s.done += 1;
+      stats.set(k, s);
+    }
+    return stats;
+  }, [cards, cardCategory, swipedIds]);
+
+  // If the user jumps to a category via the pills, the queue is filtered to
+  // that category's unswiped cards; when it empties we drop the filter so the
+  // rest of the deck resumes seamlessly.
+  const remaining = useMemo(() => {
+    const base = cards.filter((c) => !swipedIds.has(c.id));
+    if (!activeCategory) return base;
+    return base.filter((c) => cardCategory.get(c.id) === activeCategory);
+  }, [cards, swipedIds, activeCategory, cardCategory]);
+
+  useEffect(() => {
+    if (activeCategory && remaining.length === 0) {
+      setActiveCategory(null);
+      setIndex(0);
+    }
+  }, [activeCategory, remaining.length]);
+
   const current = remaining[index] ?? null;
   const next = remaining[index + 1] ?? null;
   const total = cards.length;
   const done = swipedIds.size;
+  const currentCategoryKey: CategoryKey | null = current
+    ? cardCategory.get(current.id) ?? null
+    : activeCategory;
+  const currentCategory = currentCategoryKey ? CATEGORIES[currentCategoryKey] : null;
   const questionNumber = Math.min(done + 1, Math.max(total, 1));
   const progressText = total > 0
     ? t("travelerProfile.questionOf", { current: questionNumber, total, defaultValue: "Question {{current}}/{{total}}" })
     : "";
+
+  const jumpToCategory = useCallback((k: CategoryKey) => {
+    if (animatingRef.current) return;
+    setActiveCategory((prev) => (prev === k ? null : k));
+    setIndex(0);
+  }, []);
 
   const message = useMemo(() => {
     if (done < 5) return t("travelerProfile.msg1");
