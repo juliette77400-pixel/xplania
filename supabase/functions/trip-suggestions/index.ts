@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
@@ -15,6 +16,9 @@ serve(async (req) => {
   const __rl = checkRateLimit({ key: "trip-suggestions", subject: __auth.userId, limit: 20, windowMs: 60_000 });
   const __rlResp = rateLimitResponse(__rl, corsHeaders);
   if (__rlResp) return __rlResp;
+
+  const __quota = await enforceQuota("suivi", req, corsHeaders);
+  if (__quota) return __quota;
 
   try {
     const { lat, lng, destination, weather, mood, budget, timeAvailable } = await req.json();

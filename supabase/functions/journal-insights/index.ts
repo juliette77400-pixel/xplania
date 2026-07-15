@@ -1,5 +1,6 @@
 
-import { requireAuth } from "../_shared/require-auth.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
+import { requireAuth } from "../_shared/require-auth.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -10,6 +11,9 @@ Deno.serve(async (req) => {
 
   const __auth = await requireAuth(req, corsHeaders);
   if (__auth instanceof Response) return __auth;
+
+  const __quota = await enforceQuota("carnet", req, corsHeaders);
+  if (__quota) return __quota;
 
   try {
     const { days } = await req.json();

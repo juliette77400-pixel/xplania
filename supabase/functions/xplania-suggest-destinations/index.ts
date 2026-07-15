@@ -4,6 +4,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { recordShownRecommendations } from "../_shared/travel-context.ts";
 
@@ -22,6 +23,9 @@ serve(async (req) => {
 
   const auth = await requireAuth(req, corsHeaders);
   if (auth instanceof Response) return auth;
+
+  const __quota = await enforceQuota("discover", req, corsHeaders);
+  if (__quota) return __quota;
 
   const rl = checkRateLimit({ key: "xplania-suggest-destinations", subject: auth.userId, limit: 20, windowMs: 60_000 });
   const rlResp = rateLimitResponse(rl, corsHeaders);
