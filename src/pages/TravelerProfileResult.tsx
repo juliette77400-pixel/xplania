@@ -198,22 +198,41 @@ const TravelerProfileResult = () => {
         )}
 
         <div className="mt-10 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
-          <h2 className="mb-4 text-lg font-bold">{t("travelerProfile.yourScores")}</h2>
+          <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-lg font-bold">{t("travelerProfile.yourScores")}</h2>
+            <p className="text-xs text-muted-foreground">
+              {t("travelerProfile.topScoresHint", { defaultValue: "Tes affinités dominantes en surbrillance" })}
+            </p>
+          </div>
           <div className="grid gap-4 sm:grid-cols-2" aria-label={t("travelerProfile.yourScores")}>
-            {scoreData.map((item) => (
-              <div key={item.dim} className="rounded-2xl border border-border/60 bg-background/60 p-4">
-                <div className="mb-2 flex items-center justify-between gap-3 text-sm font-semibold">
-                  <span className="min-w-0 truncate text-muted-foreground">{item.dim}</span>
-                  <span className="shrink-0 text-foreground">{Math.round(item.value)}</span>
+            {scoreData.map((item) => {
+              const dominant = dominantKeys.has(item.key);
+              return (
+                <div
+                  key={item.key}
+                  className={`rounded-2xl border p-4 transition ${
+                    dominant
+                      ? "border-primary/60 bg-primary/10 shadow-sm"
+                      : "border-border/60 bg-background/60"
+                  }`}
+                >
+                  <div className="mb-2 flex items-center justify-between gap-3 text-sm font-semibold">
+                    <span className={`min-w-0 truncate ${dominant ? "text-foreground" : "text-muted-foreground"}`}>
+                      {item.dim}
+                    </span>
+                    <span className="shrink-0 text-foreground">{Math.round(item.value)}</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className={`h-full rounded-full transition-[width] duration-500 ${
+                        dominant ? "bg-gradient-to-r from-primary to-secondary" : "bg-primary/70"
+                      }`}
+                      style={{ width: `${item.value}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-primary transition-[width] duration-500"
-                    style={{ width: `${item.value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
