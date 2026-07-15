@@ -130,7 +130,9 @@ const TravelerProfileResult = () => {
   if (!display) return <Navigate to="/" replace />;
 
   const badgeKey = display.badge;
-  const features = display.features;
+  // `display.features` (the badge's default picks) is kept in the DB for
+  // historical / RAG use but is no longer rendered — the free features are
+  // derived dynamically from the traveler's scores via `deriveFreeFeatures`.
 
   const restart = async () => {
     if (!confirm(t("travelerProfile.resetConfirm", "Recommencer le questionnaire ?"))) return;
