@@ -90,10 +90,34 @@ const TravelerProfileResult = () => {
   const scoreData = useMemo(() => {
     if (!display) return [];
     return TRAVELER_DIMENSIONS.map((d) => ({
+      key: d,
       dim: t(`travelerProfile.dimensions.${d}`),
       value: Math.min(100, Math.max(0, display.scores[d] ?? 0)),
     }));
   }, [display, t]);
+
+  const dominantKeys = useMemo(
+    () => (display ? new Set(topDimensions(display.scores, 4)) : new Set()),
+    [display],
+  );
+
+  // Freemium: 2 free features derived dynamically from the traveler's profile.
+  // Everything else is locked behind the premium modal.
+  const freeFeatures = useMemo(
+    () => (display ? deriveFreeFeatures(display.scores) : (["mood", "discover"] as [FeatureKey, FeatureKey])),
+    [display],
+  );
+  const freeSet = useMemo(() => new Set<FeatureKey>(freeFeatures), [freeFeatures]);
+  const dominantKey = useMemo(() => (display ? dominantDimension(display.scores) : null), [display]);
+  const highlightPack = useMemo(() => (display ? derivePremiumPack(display.scores) : "all"), [display]);
+
+  const [premiumOpen, setPremiumOpen] = useState(false);
+  const [lockedFeature, setLockedFeature] = useState<FeatureKey | null>(null);
+  const openPremium = (f: FeatureKey) => {
+    trackOnboardingEvent("premium_lock_click", { feature: f });
+    setLockedFeature(f);
+    setPremiumOpen(true);
+  };
 
   if (user && isLoading) {
     return (
