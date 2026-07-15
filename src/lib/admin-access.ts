@@ -11,6 +11,19 @@
 // on the server, which only trusts `has_role(auth.uid(), 'admin')`.
 
 let adminFlag = false;
+// E2E hook: tests set `xplania:e2e_force_admin=1` in localStorage before load.
+// This ONLY affects the client-side UI (paywall visibility, badge). Every
+// server-side gate (RLS, consume_quota, can_retake_quiz) is unaffected —
+// the test also has to stub the matching RPCs to fake an admin end-to-end.
+if (typeof window !== "undefined") {
+  try {
+    if (window.localStorage.getItem("xplania:e2e_force_admin") === "1") {
+      adminFlag = true;
+    }
+  } catch {
+    /* noop */
+  }
+}
 const listeners = new Set<(v: boolean) => void>();
 
 export const setAdminFlag = (value: boolean) => {
