@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";
 import { buildTravelContext, contextToPromptSnippet, recordShownRecommendations } from "../_shared/travel-context.ts";
 import { retrieveTravelDocs, docsToPromptSnippet } from "../_shared/travel-rag.ts";
 
@@ -18,6 +19,9 @@ serve(async (req) => {
   const __rl = checkRateLimit({ key: "mood-recommend", subject: __auth.userId, limit: 20, windowMs: 60_000 });
   const __rlResp = rateLimitResponse(__rl, corsHeaders);
   if (__rlResp) return __rlResp;
+
+  const __quota = await enforceQuota("mood", req, corsHeaders);
+  if (__quota) return __quota;
 
   try {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");

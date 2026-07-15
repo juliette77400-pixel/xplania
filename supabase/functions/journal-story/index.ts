@@ -1,5 +1,6 @@
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";
 // Generate an immersive trip story from journal data using Lovable AI
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -28,6 +29,9 @@ Deno.serve(async (req) => {
   const __rl = checkRateLimit({ key: "journal-story", subject: __auth.userId, limit: 10, windowMs: 60_000 });
   const __rlResp = rateLimitResponse(__rl, corsHeaders);
   if (__rlResp) return __rlResp;
+
+  const __quota = await enforceQuota("carnet", req, corsHeaders);
+  if (__quota) return __quota;
 
 
   try {
