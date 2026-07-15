@@ -497,6 +497,23 @@ const TravelerProfileOnboarding = () => {
           <Heart className="h-7 w-7" />
         </button>
       </div>
+
+      <AlertDialog open={showExitConfirm} onOpenChange={setShowExitConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("travelerProfile.exitTitle", "Quitter le quiz ?")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("travelerProfile.exitDesc", "Ta progression est sauvegardée automatiquement. Tu pourras reprendre où tu t'es arrêté(e).")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("travelerProfile.exitStay", "Continuer le quiz")}</AlertDialogCancel>
+            <AlertDialogAction onClick={() => navigate("/home")}>
+              {t("travelerProfile.exitConfirm", "Quitter")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
