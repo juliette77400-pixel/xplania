@@ -1,5 +1,6 @@
 
-import { requireAuth } from "../_shared/require-auth.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
+import { requireAuth } from "../_shared/require-auth.ts";
+import { enforceQuota } from "../_shared/quota-guard.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
