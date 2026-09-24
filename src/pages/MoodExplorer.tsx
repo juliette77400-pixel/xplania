@@ -32,6 +32,9 @@ import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import { useQuota } from "@/hooks/useQuota";
+import ListsView from "@/components/discover/ListsView";
+import PlaceDetailDrawer from "@/components/discover/PlaceDetailDrawer";
+import type { Place } from "@/hooks/useDiscover";
 
 const MoodExplorer = () => {
   const { user } = useAuth();
@@ -44,6 +47,7 @@ const MoodExplorer = () => {
   const { badges, evaluate } = useMoodBadges();
   const [tab, setTab] = useState("feed");
   const [detailsPlace, setDetailsPlace] = useState<MoodPlace | null>(null);
+  const [listPlace, setListPlace] = useState<Place | null>(null);
   const [reactionsCount, setReactionsCount] = useState(0);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [mode, setMode] = useState<"entry" | "pip" | "form">("entry");
@@ -204,8 +208,14 @@ const MoodExplorer = () => {
               <MoodMap places={places} userPosition={position} onSelect={setDetailsPlace} />
             </TabsContent>
 
-            <TabsContent value="favorites" className="mt-4">
+            <TabsContent value="favorites" className="mt-4 space-y-8">
               <MoodFavorites favorites={favorites} onToggleFavorite={toggleFavorite} onOpenDetails={setDetailsPlace} />
+              {user && (
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold">{t("gmaps.lists.myLists")}</h3>
+                  <ListsView onSelect={setListPlace} />
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="tracker" className="mt-4">
@@ -269,6 +279,7 @@ const MoodExplorer = () => {
         onToggleFavorite={() => detailsPlace && toggleFavorite(detailsPlace)}
         onSharedReaction={() => user && getReactionsCount(user.id).then(setReactionsCount)}
       />
+      <PlaceDetailDrawer place={listPlace} onClose={() => setListPlace(null)} />
       <QuickJump />
 
       <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} toolName="Mood Explorer" />
