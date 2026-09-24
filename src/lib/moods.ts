@@ -1,3 +1,5 @@
+import i18n from "@/i18n";
+
 export type MoodKey =
   | "chill"
   | "explore"
@@ -19,11 +21,11 @@ export interface MoodDef {
 export const MOODS: MoodDef[] = [
   { key: "chill",    label: "Chill",     emoji: "🌿", description: "Calme, vue, slow vibes",       gradient: "from-cyan-500/30 to-emerald-400/20",   glow: "text-cyan-300" },
   { key: "explore",  label: "Explore",   emoji: "🧭", description: "Aventure, hidden gems",         gradient: "from-amber-500/30 to-orange-400/20",   glow: "text-amber-300" },
-  { key: "romantic", label: "Romantic",  emoji: "💞", description: "Sunset, intime, élégant",       gradient: "from-rose-500/30 to-pink-400/20",      glow: "text-rose-300" },
+  { key: "romantic", label: "Romantic",  emoji: "💞", get description() { return i18n.language.startsWith("en") ? i18n.t("ui2.moods.romantic", { defaultValue: "Sunset, intimate, elegant" }) : "Sunset, intime, élégant"; },       gradient: "from-rose-500/30 to-pink-400/20",      glow: "text-rose-300" },
   { key: "food",     label: "Food",      emoji: "🍜", description: "Saveurs locales, gourmand",     gradient: "from-orange-500/30 to-red-400/20",     glow: "text-orange-300" },
   { key: "party",    label: "Party",     emoji: "🪩", description: "Énergie, rooftop, nightlife",   gradient: "from-fuchsia-500/30 to-purple-400/20", glow: "text-fuchsia-300" },
   { key: "nature",   label: "Nature",    emoji: "🌄", description: "Recharger, plein air",          gradient: "from-emerald-500/30 to-teal-400/20",   glow: "text-emerald-300" },
-  { key: "focus",    label: "Focus",     emoji: "☕", description: "Bosser, concentration, café",   gradient: "from-slate-500/30 to-blue-400/20",     glow: "text-blue-300" },
+  { key: "focus",    label: "Focus",     emoji: "☕", get description() { return i18n.language.startsWith("en") ? i18n.t("ui2.moods.focus", { defaultValue: "Work, focus, café" }) : "Bosser, concentration, café"; },   gradient: "from-slate-500/30 to-blue-400/20",     glow: "text-blue-300" },
 ];
 
 export const moodByKey = (k: string) => MOODS.find((m) => m.key === k);

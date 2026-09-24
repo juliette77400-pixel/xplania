@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { Sparkles, X } from "lucide-react";
 import type { Level } from "@/lib/xp-levels";
+import { levelName } from "@/lib/xp-levels";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -11,6 +13,7 @@ interface Props {
 }
 
 const LevelUpOverlay = ({ level, onClose }: Props) => {
+  const { i18n } = useTranslation();
   useEffect(() => {
     if (!level) return;
     // Triple-burst confetti for full screen "wow" effect
@@ -110,7 +113,7 @@ const LevelUpOverlay = ({ level, onClose }: Props) => {
               transition={{ delay: 0.3 }}
               className="mt-2 text-4xl sm:text-5xl font-extrabold text-foreground"
             >
-              {level.name}
+              {level ? levelName(level, i18n.language) : ""}
             </motion.h1>
 
             <motion.p

@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import i18n from "@/i18n";
 
 export interface TripUpdatePayload {
   title?: string | null;
@@ -41,11 +42,11 @@ export const useUpdateTrip = () => {
           .eq("id", tripId)
           .eq("user_id", user.id);
         if (error) throw error;
-        toast.success("Voyage mis à jour ✨");
+        toast.success(i18n.language.startsWith("en") ? i18n.t("ui2.useUpdateTrip.updated", { defaultValue: "Trip updated ✨" }) : "Voyage mis à jour ✨");
         return true;
       } catch (e: any) {
         console.error("[useUpdateTrip] failed", e);
-        toast.error(e?.message || "Impossible de mettre à jour ce voyage.");
+        toast.error(e?.message || (i18n.language.startsWith("en") ? i18n.t("ui2.useUpdateTrip.updateFailed", { defaultValue: "Unable to update this trip." }) : "Impossible de mettre à jour ce voyage."));
         return false;
       } finally {
         setUpdating(false);

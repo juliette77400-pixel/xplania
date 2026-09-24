@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getLevelProgress, LEVELS } from "@/lib/xp-levels";
+import { getLevelProgress, LEVELS, levelName } from "@/lib/xp-levels";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   xp: number;
 }
 
 const XpHeader = ({ xp }: Props) => {
+  const { i18n } = useTranslation();
   const { level, next, xpInLevel, xpForNext, pct } = getLevelProgress(xp);
 
   return (
@@ -37,7 +39,7 @@ const XpHeader = ({ xp }: Props) => {
             </span>
           </div>
           <h2 className="text-lg sm:text-2xl font-bold text-foreground leading-tight truncate">
-            {level.name}
+            {levelName(level, i18n.language)}
           </h2>
 
           {next ? (
@@ -54,7 +56,7 @@ const XpHeader = ({ xp }: Props) => {
                 <span className="font-bold text-foreground tabular-nums">{xpForNext.toLocaleString()} XP</span>{" "}
                 pour passer{" "}
                 <span className="font-semibold text-foreground">
-                  {next.emoji} {next.name}
+                  {next.emoji} {levelName(next, i18n.language)}
                 </span>
               </p>
             </>

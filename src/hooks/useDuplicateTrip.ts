@@ -6,6 +6,7 @@ import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import i18n from "@/i18n";
 
 export const useDuplicateTrip = () => {
   const { user } = useAuth();
@@ -50,7 +51,7 @@ export const useDuplicateTrip = () => {
           .single();
         if (insErr) throw insErr;
 
-        toast.success("Voyage dupliqué — modifie les dates pour le replanifier ✨");
+        toast.success(i18n.language.startsWith("en") ? i18n.t("ui2.useDuplicateTrip.duplicated", { defaultValue: "Trip duplicated — update the dates to reschedule it ✨" }) : "Voyage dupliqué — modifie les dates pour le replanifier ✨");
         return created?.id || null;
       } catch (e: any) {
         console.error("[useDuplicateTrip] failed", e);

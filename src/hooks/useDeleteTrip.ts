@@ -6,6 +6,7 @@ import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import i18n from "@/i18n";
 
 export const useDeleteTrip = () => {
   const { user } = useAuth();
@@ -14,7 +15,7 @@ export const useDeleteTrip = () => {
   const deleteTrip = useCallback(
     async (tripId: string): Promise<boolean> => {
       if (!user) {
-        toast.error("Tu dois être connecté pour supprimer un voyage.");
+        toast.error(i18n.language.startsWith("en") ? i18n.t("ui2.useDeleteTrip.mustBeLoggedIn", { defaultValue: "You must be logged in to delete a trip." }) : "Tu dois être connecté pour supprimer un voyage.");
         return false;
       }
       setDeleting(tripId);
@@ -68,7 +69,7 @@ export const useDeleteTrip = () => {
         const { error } = await supabase.from("trips").delete().eq("id", tripId);
         if (error) throw error;
 
-        toast.success("Voyage supprimé");
+        toast.success(i18n.language.startsWith("en") ? i18n.t("ui2.useDeleteTrip.deleted", { defaultValue: "Trip deleted" }) : "Voyage supprimé");
         return true;
       } catch (e: any) {
         console.error("[useDeleteTrip] failed", e);

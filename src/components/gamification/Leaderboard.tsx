@@ -4,7 +4,8 @@ import { Crown, Medal, Trophy, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
-import { getLevelProgress } from "@/lib/xp-levels";
+import { getLevelProgress, levelName } from "@/lib/xp-levels";
+import { useTranslation } from "react-i18next";
 
 interface LbRow {
   user_id: string;
@@ -16,7 +17,9 @@ interface LbRow {
 }
 
 const Leaderboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
+  const { i18n } = useTranslation();
   const [rows, setRows] = useState<LbRow[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +52,7 @@ const Leaderboard = () => {
         </div>
         <div className="flex-1 min-w-0">
           <h2 className="text-xl font-bold text-foreground leading-tight">Leaderboard global</h2>
-          <p className="text-xs text-muted-foreground">Top voyageurs Xplania (XP cumulés)</p>
+          <p className="text-xs text-muted-foreground">{t("ui2.Leaderboard.subtitle")}</p>
         </div>
         {myRank >= 0 && (
           <span className="text-xs font-bold border border-primary/40 text-primary rounded-full px-2.5 py-1 whitespace-nowrap">
@@ -108,7 +111,7 @@ const Leaderboard = () => {
                   <p className="mt-2 text-xs font-bold text-foreground truncate">
                     {r.display_name || "Voyageur"}
                   </p>
-                  <p className="text-[10px] text-muted-foreground truncate">{lvl.name}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{levelName(lvl, i18n.language)}</p>
                   <p className="mt-1 text-sm font-bold text-amber-400 inline-flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> {r.xp.toLocaleString()}
                   </p>
@@ -143,7 +146,7 @@ const Leaderboard = () => {
                       <p className="text-sm font-semibold text-foreground truncate">
                         {r.display_name || "Voyageur"} {isMe && <span className="text-[10px] text-primary">(toi)</span>}
                       </p>
-                      <p className="text-[10px] text-muted-foreground truncate">{lvl.name}</p>
+                      <p className="text-[10px] text-muted-foreground truncate">{levelName(lvl, i18n.language)}</p>
                     </div>
                     <span className="text-sm font-bold text-amber-400 tabular-nums">
                       {r.xp.toLocaleString()} XP

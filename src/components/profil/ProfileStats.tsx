@@ -2,6 +2,7 @@
 // Lot 2 — added Globe-Trotter level bar (XP progress to next level).
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { levelName } from "@/lib/xp-levels";
 import { Plane, Award, Zap, Flame, Map as MapIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -22,7 +23,7 @@ interface Stats {
 
 const ProfileStats = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
@@ -111,14 +112,14 @@ const ProfileStats = () => {
               <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-semibold">
                 {t("profil.stats.level")} {lvl.index}
               </p>
-              <p className="text-sm font-bold truncate">{lvl.name}</p>
+              <p className="text-sm font-bold truncate">{levelName(lvl, i18n.language)}</p>
             </div>
           </div>
           <div className="text-right shrink-0">
             <p className="text-sm font-bold">{stats.xp} <span className="text-[10px] text-muted-foreground font-medium">XP</span></p>
             {next ? (
               <p className="text-[10px] text-muted-foreground">
-                {t("profil.stats.xpToNext", { xp: progress.xpForNext, level: next.name })}
+                {t("profil.stats.xpToNext", { xp: progress.xpForNext, level: levelName(next, i18n.language) })}
               </p>
             ) : (
               <p className="text-[10px] text-amber-500 font-semibold">{t("profil.stats.maxLevel")}</p>
