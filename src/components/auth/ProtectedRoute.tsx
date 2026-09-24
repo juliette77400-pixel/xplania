@@ -10,7 +10,7 @@ interface Props {
   skipOnboarding?: boolean;
 }
 
-const ProtectedRoute = ({ children, skipOnboarding = false }: Props) => {
+const ProtectedRoute = ({ children, skipOnboarding = true }: Props) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   const { data: profile, isLoading: profileLoading } = useTravelerProfile();

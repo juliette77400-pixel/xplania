@@ -43,6 +43,7 @@ const PRIMARY: NavItem[] = [
 interface NavGroup { labelKey: string; items: NavItem[] }
 const GROUPS: NavGroup[] = [
   { labelKey: "appNav.groupPrepare", items: [
+    { to: "/profil-voyageur", labelKey: "appNav.dna", icon: Dna },
     { to: "/guide-budget", labelKey: "appNav.budget", icon: Wallet },
     { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
     { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
