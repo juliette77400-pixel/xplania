@@ -64,6 +64,7 @@ serve(async (req) => {
 HARD REQUIREMENTS:
 - Mention at least one REAL local place, neighborhood, monument or local word per tip when relevant (e.g. "in Gion district", "at Fushimi Inari", "say 'sumimasen'").
 - Cite concrete numbers when meaningful (typical tip %, opening hours, ticket prices in local currency, dress-code thresholds).
+- First identify the COUNTRY of the destination; every tip must follow that country's own laws, religion, dress norms and etiquette (and regional nuances of the city), so the traveler packs accordingly.
 - NEVER produce generic advice that could apply to any country.
 - Each text: 2 sentences max, concrete and actionable.
 - Titles: 3-5 words, specific (not "Be respectful").
@@ -75,6 +76,7 @@ NO markdown, NO commentary, JSON only.`
 EXIGENCES IMPÉRATIVES :
 - Mentionne au moins un VRAI nom de lieu, quartier, monument ou mot local pertinent dans chaque conseil (ex. "dans le quartier de Gion", "à Fushimi Inari", "dites 'sumimasen'").
 - Cite des chiffres concrets quand pertinent (% de pourboire, horaires, prix en devise locale, seuils de dress code).
+- Identifie d'abord le PAYS de la destination ; chaque conseil doit suivre les lois, la religion, les codes vestimentaires et l'étiquette propres à ce pays (et les nuances de la ville), pour une valise adaptée.
 - JAMAIS de conseil générique qui pourrait s'appliquer à n'importe quel pays.
 - Chaque texte : 2 phrases max, concret et actionnable.
 - Titres : 3-5 mots, spécifiques (pas "Soyez respectueux").

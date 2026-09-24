@@ -2,13 +2,16 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { AlertTriangle, TrendingDown, CheckCircle, Lightbulb, Trees, Utensils, Bus, Heart } from "lucide-react";
 import type { BudgetCategory } from "./BudgetForecast";
+import type { BudgetInsights, BudgetPlace } from "@/hooks/useBudgetInsights";
 
 interface Props {
   categories: BudgetCategory[];
   destination: string;
+  deals?: BudgetInsights["deals"] | null;
+  loading?: boolean;
 }
 
-const BudgetAlerts = ({ categories, destination }: Props) => {
+const BudgetAlerts = ({ categories, deals, loading }: Props) => {
   const { t } = useTranslation();
 
   // Build alerts using translated category labels
@@ -25,39 +28,11 @@ const BudgetAlerts = ({ categories, destination }: Props) => {
     }
   });
 
-  const getDestinationTips = (dest: string) => {
-    const d = dest.toLowerCase();
-    if (d.includes("paris")) {
-      return {
-        activities: t("budget.tipsParis.activities", { returnObjects: true, defaultValue: [] }) as string[],
-        restaurants: t("budget.tipsParis.restaurants", { returnObjects: true, defaultValue: [] }) as string[],
-        transport: t("budget.tipsParis.transport", { returnObjects: true, defaultValue: [] }) as string[],
-        mood: t("budget.tipsParis.mood", { returnObjects: true, defaultValue: [] }) as string[],
-      };
-    }
-    if (d.includes("tokyo") || d.includes("japon") || d.includes("japan")) {
-      return {
-        activities: t("budget.tipsTokyo.activities", { returnObjects: true, defaultValue: [] }) as string[],
-        restaurants: t("budget.tipsTokyo.restaurants", { returnObjects: true, defaultValue: [] }) as string[],
-        transport: t("budget.tipsTokyo.transport", { returnObjects: true, defaultValue: [] }) as string[],
-        mood: t("budget.tipsTokyo.mood", { returnObjects: true, defaultValue: [] }) as string[],
-      };
-    }
-    return {
-      activities: t("budget.tipsDefault.activities", { returnObjects: true, defaultValue: [] }) as string[],
-      restaurants: t("budget.tipsDefault.restaurants", { returnObjects: true, defaultValue: [] }) as string[],
-      transport: t("budget.tipsDefault.transport", { returnObjects: true, defaultValue: [] }) as string[],
-      mood: t("budget.tipsDefault.mood", { returnObjects: true, defaultValue: [] }) as string[],
-    };
-  };
-
-  const tips = getDestinationTips(destination);
-
   const tipSections = [
-    { title: t("budget.alertsActivities"), icon: Trees, items: tips.activities, color: "text-green-400" },
-    { title: t("budget.alertsRestaurants"), icon: Utensils, items: tips.restaurants, color: "text-orange-400" },
-    { title: t("budget.alertsTransportAlt"), icon: Bus, items: tips.transport, color: "text-blue-400" },
-    { title: t("budget.alertsMood"), icon: Heart, items: tips.mood, color: "text-pink-400" },
+    { title: t("budget.alertsActivities"), icon: Trees, items: deals?.activities ?? [], color: "text-green-400" },
+    { title: t("budget.alertsRestaurants"), icon: Utensils, items: deals?.restaurants ?? [], color: "text-orange-400" },
+    { title: t("budget.alertsTransportAlt"), icon: Bus, items: deals?.transport ?? [], color: "text-blue-400" },
+    { title: t("budget.alertsMood"), icon: Heart, items: deals?.mood ?? [], color: "text-pink-400" },
   ];
 
   return (
@@ -118,14 +93,21 @@ const BudgetAlerts = ({ categories, destination }: Props) => {
                 <section.icon className={`w-4 h-4 ${section.color}`} />
                 <h4 className="text-sm font-bold text-foreground">{section.title}</h4>
               </div>
-              <ul className="space-y-1.5">
-                {section.items.map((item, j) => (
-                  <li key={j} className="text-xs text-muted-foreground flex items-start gap-2">
-                    <span className="text-primary mt-0.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              {loading && section.items.length === 0 ? (
+                <div className="space-y-2"><div className="h-3 rounded bg-muted/50 animate-pulse" /><div className="h-3 w-2/3 rounded bg-muted/50 animate-pulse" /></div>
+              ) : section.items.length === 0 ? (
+                <p className="text-xs text-muted-foreground">{t("budget.dealsEmpty")}</p>
+              ) : (
+                <ul className="space-y-2.5">
+                  {section.items.map((item: BudgetPlace, j: number) => (
+                    <li key={j} className="text-xs text-muted-foreground">
+                      <p className="font-semibold text-foreground">{item.name}</p>
+                      <p className="text-[11px] text-primary">📍 {[item.zone, item.city].filter(Boolean).join(" · ")}</p>
+                      <p className="mt-0.5 leading-relaxed">{item.detail}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </motion.div>
           ))}
         </div>

@@ -499,7 +499,7 @@
     "resourcesKicker": "Go further",
     "resourcesTitle": "Sources and guidance for your departure",
     "resourcesHelp": "Find the process, health, safety and practical information after your result.",
-    "subtitle": "The essential info before you leave.",
+    "subtitle": "The essentials before you leave, for a stress-free trip.",
     "checkBtn": "Check my requirements",
     "selectDestination": "Select your destination",
     "destinationLabel": "Choose a destination",
@@ -560,8 +560,8 @@
     "tipsTitle": "Practical tips",
     "inlineDisclaimer": "ℹ️ Always double-check this information on the official embassy website (diplomatie.gouv.fr).",
     "disclaimer": {
-      "title": "⚠️ Important notice —",
-      "body": "The information provided by Xplania is for guidance purposes only and may not reflect the latest entry requirements. Always verify with the official French embassy or consulate website for your destination before travelling.",
+      "title": "Important —",
+      "body": "For any detail or question, it's always best to check with the embassy or consulate of your destination before leaving. Xplania cannot be held responsible if a problem occurs.",
       "cta": "Official embassy website"
     },
     "stepper": {
@@ -570,7 +570,7 @@
       "steps": [
         {
           "title": "Check if you need a visa",
-          "detail": "Based on your nationality and destination. Most European passports don't need a visa for short EU stays, but it's different elsewhere."
+          "detail": "Depends on your nationality ({{nationality}}) and destination. A French passport gives visa-free access to the Schengen area and many countries for short stays, but some require a visa, an e-authorisation (ESTA, eTA, ETIAS…) or a visa on arrival."
         },
         {
           "title": "Check processing times",
@@ -592,7 +592,8 @@
           "title": "On arrival: keep your documents handy",
           "detail": "Paper + cloud copy of your passport, visa, insurance and bookings. Note the nearest French consulate number."
         }
-      ]
+      ],
+      "nationalityNote": "As a {{nationality}} national, here's what applies to you for {{destination}}."
     },
     "currencySection": {
       "title": "💱 Currency converter — live rates",
@@ -837,6 +838,11 @@
         "safety": "Safety",
         "embassy": "Embassy"
       }
+    },
+    "actions": {
+      "regenerate": "Regenerate formalities",
+      "continuePrep": "Continue my preparations",
+      "toValise": "Continue to the packing guide"
     }
   },
   "footer": {
@@ -2238,23 +2244,8 @@
           "Compact umbrella"
         ]
       },
-      "photo": {
-        "name": "Photo / Creation",
-        "items": [
-          "Camera / spare lens",
-          "Spare SD cards (×3 min)",
-          "Compact tripod or gorilla pod",
-          "Spare camera battery",
-          "Multi-port fast charger",
-          "External hard drive or USB stick",
-          "Optical cleaning cloth",
-          "ND filter (for video)",
-          "Drone if permitted",
-          "Notebook for content ideas"
-        ]
-      },
       "business": {
-        "name": "Business",
+        "name": "Business trip",
         "items": [
           "Suit / pro outfit in garment bag",
           "Shirts/blouses (1 per day + 1 extra)",
@@ -2586,6 +2577,21 @@
         "weatherTip": "Conference rooms are often air-conditioned — bring a layer.",
         "culturalTip": "In some countries, business cards are exchanged with both hands."
       }
+    },
+    "discoverFeatures": "Discover other features",
+    "missing": {
+      "title": "What might be missing",
+      "subtitle": "AI compares your bag with your trip to {{destination}}.",
+      "check": "Check my bag",
+      "recheck": "Check again",
+      "essential": "Essential",
+      "secondary": "Extras, if you have room",
+      "add": "Add",
+      "added": "Added",
+      "addedToast": "Added to your bag",
+      "nothing": "Nothing missing, your bag is complete 🎉",
+      "error": "The check couldn't run. Try again.",
+      "category": "AI suggestions"
     }
   },
   "budget": {
@@ -2656,7 +2662,11 @@
       "food": "Food",
       "shopping": "Shopping",
       "extras": "Extras",
-      "unexpected": "Unexpected"
+      "unexpected": "Unexpected",
+      "flights": "Round-trip transport",
+      "insurance": "Insurance & health",
+      "connectivity": "Internet & eSIM",
+      "fees": "Bank fees & tips"
     },
     "payments": {
       "card": "Credit card",
@@ -2702,7 +2712,7 @@
     "alertsActivities": "Free activities",
     "alertsRestaurants": "Affordable restaurants",
     "alertsTransportAlt": "Transport alternatives",
-    "alertsMood": "Mood suggestions",
+    "alertsMood": "What I suggest based on your mood",
     "tipsTitle": "Saving tips",
     "tipsSubtitle": "Practical tips to travel smart and save",
     "tips": {
@@ -2833,7 +2843,7 @@
     "savingTipsTitle": "Local saving tips",
     "savingTipsSubtitle": "AI tips tailored to {{destination}}",
     "savingTipsRefresh": "Refresh",
-    "savingTipsError": "Could not generate tips right now. Try again in a moment.",
+    "savingTipsError": "Couldn't load tips right now. Try again.",
     "savingTipsEmpty": "No tips available.",
     "savingTipsFallback": {
       "transportTitle": "Check local passes",
@@ -2923,7 +2933,20 @@
       "chartsTitle": "Charts",
       "expensesTitle": "Logged expenses",
       "tipsTitle": "Saving tips"
-    }
+    },
+    "addToastMissingAuto": "Enter at least the amount",
+    "addAutoDetected": "Auto-classified: {{category}}",
+    "addAutoHint": "Describe the expense (e.g. “airport taxi”): the category will be picked for you.",
+    "scenariosTitle": "3 scenarios calculated for your trip",
+    "scenario": {
+      "economy": "Economy",
+      "realistic": "Realistic",
+      "comfort": "Comfort"
+    },
+    "scenarioBest": "best value",
+    "scenarioApply": "Apply this scenario",
+    "scenarioApplied": "Scenario applied to your budget",
+    "dealsEmpty": "Deals appear after generation."
   },
   "gamification": {
     "heroTitle": "Badge Collection",

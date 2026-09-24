@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota } from "../_shared/quota-guard.ts";
@@ -38,10 +39,16 @@ serve(async (req) => {
     const systemPrompt = isEN
       ? `You are an expert in travel formalities and international diplomacy. You provide accurate, up-to-date and practical information on visas, security, health and required travel documents.
 
-Reply ONLY by calling the "visa_info" tool. Do not generate any text outside the tool call. ALL string fields must be in ENGLISH.`
+ Reply with the JSON object only. ALL string fields must be in ENGLISH.
+
+ACCURACY (it is 2026): only give information valid in 2026. For the embassy/consulate, check it is actually open: if the traveler's country representation is closed or suspended (e.g. the French embassy in Kabul, closed since 2021), say so clearly and give the nearest competent representation or the foreign ministry crisis centre. When unsure, point to the official website rather than inventing an address.
+Tailor EVERYTHING (visa, checklist, steps, contacts) to the traveler's nationality.`
       : `Tu es un expert en formalités de voyage et diplomatie internationale. Tu fournis des informations précises, actualisées et pratiques sur les visas, la sécurité, la santé et les documents nécessaires pour voyager.
 
-Réponds UNIQUEMENT en utilisant le tool "visa_info" fourni. Ne génère aucun texte en dehors de l'appel au tool.`;
+ Réponds uniquement avec l'objet JSON.
+
+EXACTITUDE (nous sommes en 2026) : donne uniquement des informations valables en 2026. Pour l'ambassade ou le consulat, vérifie qu'il est réellement ouvert : si la représentation du pays du voyageur est fermée ou suspendue (ex. ambassade de France à Kaboul fermée depuis 2021), dis-le clairement et indique la représentation compétente la plus proche (ex. ambassade de France à Islamabad) ou le Centre de crise et de soutien du ministère. En cas de doute, renvoie vers le site officiel plutôt que d'inventer une adresse.
+Adapte TOUT (visa, checklist, démarches, contacts) à la nationalité du voyageur.`;
 
     const userPrompt = isEN
       ? `Destination: ${destination}
@@ -57,25 +64,7 @@ Type de voyageur : ${travelerType || "touriste"}
 
 Génère les informations complètes de formalités pour ce voyage.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "visa_info",
-              description: "Retourne les informations de visa, sécurité, santé et checklist pour un voyage.",
-              parameters: {
+    const SCHEMA = {
                 type: "object",
                 properties: {
                   visa: {
@@ -164,40 +153,15 @@ Génère les informations complètes de formalités pour ce voyage.`;
                 },
                 required: ["visa", "security", "health", "checklist", "emergency_contacts"],
                 additionalProperties: false,
-              },
-            },
-          },
-        ],
-        tool_choice: { type: "function", function: { name: "visa_info" } },
-      }),
-    });
-
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Trop de requêtes, réessayez dans quelques instants." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Crédits IA insuffisants." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      throw new Error(`AI gateway error: ${response.status}`);
+              };
+    let visaInfo: unknown;
+    try {
+      visaInfo = await generateJson({ instructions: systemPrompt, input: userPrompt, schema: SCHEMA, name: "visa_info" });
+    } catch (e) {
+      const r = aiErrorResponse(e, corsHeaders);
+      if (r) return r;
+      throw e;
     }
-
-    const data = await response.json();
-    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
-
-    if (!toolCall?.function?.arguments) {
-      throw new Error("No structured output from AI");
-    }
-
-    const visaInfo = JSON.parse(toolCall.function.arguments);
 
     return new Response(JSON.stringify(visaInfo), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

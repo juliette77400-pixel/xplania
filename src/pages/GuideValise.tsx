@@ -11,6 +11,7 @@ import ShareTripDialog from "@/components/valise/ShareTripDialog";
 import { exportValisePdf } from "@/lib/valise-export";
 import AiTipCard from "@/components/valise/AiTipCard";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
+import MissingItemsCheck from "@/components/valise/MissingItemsCheck";
 import ActivityItems from "@/components/valise/ActivityItems";
 import CulturalTips from "@/components/valise/CulturalTips";
 import OutfitRecommendations from "@/components/valise/OutfitRecommendations";
@@ -306,11 +307,23 @@ const GuideValisePage = () => {
           />
         </div>
 
+        <MissingItemsCheck
+          destination={destination}
+          days={days}
+          tripTypes={tripData?.tripTypes}
+          activities={tripData?.objectives}
+          luggage={luggageMode}
+          transport={transport}
+          departureDate={tripData?.departureDate}
+          currentItems={Object.values(categories).flat().map((i) => i.name)}
+          onAdd={(name) => addItemsToCategory(t("valise.missing.category"), [name])}
+        />
+
         <CollapsibleSection
           title={t("collapsible.valise.activities")}
           subtitle={t("collapsible.valise.activitiesSub")}
         >
-          <ActivityItems objectives={tripData?.objectives} onAddToChecklist={addActivityItems} />
+          <ActivityItems objectives={[...(tripData?.objectives || []), ...(tripData?.tripTypes || [])]} onAddToChecklist={addActivityItems} />
         </CollapsibleSection>
 
         <CollapsibleSection
