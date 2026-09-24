@@ -1199,6 +1199,21 @@ export type Database = {
           },
         ]
       }
+      map_load_counters: {
+        Row: {
+          day: string
+          loads: number
+        }
+        Insert: {
+          day: string
+          loads?: number
+        }
+        Update: {
+          day?: string
+          loads?: number
+        }
+        Relationships: []
+      }
       mood_badges: {
         Row: {
           code: string
@@ -2775,6 +2790,7 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      record_map_load: { Args: never; Returns: number }
       record_quiz_completion: { Args: never; Returns: Json }
       subscribe_to_waitlist: {
         Args: {
