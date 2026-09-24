@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Settings = {
   id: string;
@@ -17,6 +18,7 @@ type Settings = {
 };
 
 export default function VerificationSettingsPanel() {
+  const { t } = useTranslation();
   const [s, setS] = useState<Settings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,7 +53,7 @@ export default function VerificationSettingsPanel() {
       .eq("id", "default");
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success("Réglages enregistrés ✓");
+    toast.success(t("ui2.VerificationSettingsPanel.saved"));
     load();
   };
 
@@ -61,7 +63,7 @@ export default function VerificationSettingsPanel() {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 space-y-5">
       <div>
-        <h2 className="text-lg font-bold">Règles de vérification automatique</h2>
+        <h2 className="text-lg font-bold">{t("ui2.VerificationSettingsPanel.title")}</h2>
         <p className="text-xs text-muted-foreground">
           Ajuste les seuils utilisés par la fonction de vérification. Affecte toutes les nouvelles réclamations.
         </p>
@@ -69,7 +71,7 @@ export default function VerificationSettingsPanel() {
 
       <div className="flex items-center justify-between gap-3">
         <div>
-          <Label className="text-sm">Valider auto. par géolocalisation</Label>
+          <Label className="text-sm">{t("ui2.VerificationSettingsPanel.autoGeo")}</Label>
           <p className="text-[11px] text-muted-foreground">Auto-validation si l'utilisateur est dans le rayon du badge.</p>
         </div>
         <Switch checked={s.geo_auto_validate} onCheckedChange={(v) => setS({ ...s, geo_auto_validate: v })} />
@@ -106,7 +108,7 @@ export default function VerificationSettingsPanel() {
 
       <div className="flex items-center justify-between gap-3 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
         <div>
-          <Label className="text-sm">Forcer la modération manuelle</Label>
+          <Label className="text-sm">{t("ui2.VerificationSettingsPanel.forceManual")}</Label>
           <p className="text-[11px] text-muted-foreground">Aucune auto-validation ni auto-rejet. Toutes les preuves passent par l'admin.</p>
         </div>
         <Switch checked={s.force_manual_review} onCheckedChange={(v) => setS({ ...s, force_manual_review: v })} />
