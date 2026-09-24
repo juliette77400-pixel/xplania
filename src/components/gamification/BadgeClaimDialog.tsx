@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,11 @@ const BadgeClaimDialog = ({ badge, open, onOpenChange }: Props) => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const isFr = i18n.language?.startsWith("fr");
+
+  // Location-based challenges default to "I'm there" (GPS) validation.
+  useEffect(() => {
+    if (badge) setProofType(badge.target_lat != null && badge.target_lng != null ? "geo" : "photo");
+  }, [badge]);
 
   if (!badge) return null;
 

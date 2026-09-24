@@ -133,7 +133,11 @@ export function useGamification() {
 
   // Build merged list with status, optionally filtered to user prefs
   const visibleBadges: BadgeWithClaim[] = gam.badges
-    .filter((b) => gam.prefs.length === 0 || gam.prefs.includes(b.category_id))
+    .filter((b) =>
+      gam.prefs.length === 0 ||
+      gam.prefs.includes(b.category_id) ||
+      // Beta: Lille challenges are always visible so testers can try them.
+      gam.categories.find((c) => c.id === b.category_id)?.slug === "lille")
     .map((b) => {
       const cat = gam.categories.find((c) => c.id === b.category_id);
       const claim = gam.claims
