@@ -392,6 +392,19 @@ const TravelerProfileOnboarding = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, [handleSwipe, finalizing, current]);
 
+  // The journey intro must be the very first thing a new visitor sees —
+  // before any loading skeleton — so it renders even while cards load.
+  if (!introSeen && done === 0) {
+    return (
+      <JourneyIntro
+        onStart={() => {
+          try { localStorage.setItem("xplania-journey-intro-seen", "1"); } catch { /* ignore */ }
+          setIntroSeen(true);
+        }}
+      />
+    );
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
@@ -479,17 +492,6 @@ const TravelerProfileOnboarding = () => {
   const nextUi: TinderCardData | null = next
     ? { id: next.id, image_url: next.image_url, phrase: lang === "en" ? next.phrase_en : next.phrase_fr }
     : null;
-
-  if (!introSeen && done === 0) {
-    return (
-      <JourneyIntro
-        onStart={() => {
-          try { localStorage.setItem("xplania-journey-intro-seen", "1"); } catch { /* ignore */ }
-          setIntroSeen(true);
-        }}
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
