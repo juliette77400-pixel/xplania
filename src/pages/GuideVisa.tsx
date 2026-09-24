@@ -1,3 +1,4 @@
+import { friendlyInvokeError } from "@/lib/invoke-error";
 import i18n from "@/i18n";
 import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -159,7 +160,7 @@ const GuideVisaPage = () => {
           return;
         }
         if (status === 402) { setShowUpgrade(true); return; }
-        throw new Error(error.message || t("guideVisa.errAi"));
+        throw new Error(await friendlyInvokeError(error));
       }
       if (data?.error) throw new Error(data.error);
 

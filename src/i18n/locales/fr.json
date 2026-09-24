@@ -5432,5 +5432,11 @@
       "addError": "Impossible d'ajouter ce lieu.",
       "added": "« {{name}} » ajouté au parcours"
     }
+  },
+  "invokeError": {
+    "rateLimit": "Trop de demandes en peu de temps. Patiente une minute puis réessaie.",
+    "quota": "Tu as atteint ta limite de générations IA pour le moment.",
+    "auth": "Ta session a expiré, reconnecte-toi.",
+    "server": "Le service est momentanément indisponible. Réessaie dans quelques instants."
   }
 }
