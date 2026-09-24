@@ -5106,6 +5106,101 @@
     },
     "PhotoGallery": {
       "subtitle": "Real photos via Unsplash"
+    },
+    "NotificationSettingsPanel": {
+      "dailyRecapSoon": "Daily recap (coming soon)",
+      "frequency": "Frequency",
+      "instant": "Instant",
+      "notifyRejected": "Notify me when a proof is rejected",
+      "notifyValidated": "Notify me when a badge is validated",
+      "onlyInstantActive": "Only instant mode is active for now.",
+      "soonServerReady": "Coming soon, once the server is ready.",
+      "updated": "Preferences updated"
+    },
+    "VerificationSettingsPanel": {
+      "autoGeo": "Auto-validate by location",
+      "forceManual": "Force manual review",
+      "saved": "Settings saved",
+      "title": "Verification settings"
+    },
+    "EditTripDialog": {
+      "cancel": "Cancel",
+      "departure": "Departure",
+      "description": "Edit your trip's title, destination or dates.",
+      "destinationLabel": "Destination",
+      "editTrip": "Edit trip",
+      "returnLabel": "Return",
+      "save": "Save",
+      "titleLabel": "Title",
+      "titlePh": "My trip to Portugal"
+    },
+    "WeatherSection": {
+      "weatherAlt": "Weather"
+    },
+    "useCheckIn": {
+      "arrived": "Checked in at {{title}}!"
+    },
+    "useMoodExplorer": {
+      "noPlaces": "No places found for this mood",
+      "placesFound": "{{count}} places found for your {{mood}} mood",
+      "removedFromFavorites": "Removed from favorites",
+      "saved": "Saved to favorites"
+    },
+    "useMoodSocial": {
+      "shared": "Feeling shared!"
+    },
+    "useTripDocuments": {
+      "docAdded": "Document added",
+      "docDeleted": "Document deleted"
+    },
+    "visaStatic": {
+      "alerts": {
+        "mandatoryInsurance": "Some countries require mandatory travel insurance.",
+        "passportValidity": "Your passport often needs to be valid 6 months after your return."
+      },
+      "generalDocuments": {
+        "accommodation": "Proof of accommodation",
+        "copies": "Paper and digital copies of your documents",
+        "flightTicket": "Return flight ticket",
+        "insurance": "Travel insurance certificate",
+        "passport": "Valid passport",
+        "specificDocs": "Destination-specific documents"
+      },
+      "security": {
+        "caution": "Increased caution",
+        "danger": "Not recommended",
+        "moderate": "Normal caution",
+        "safe": "Safe"
+      },
+      "steps": {
+        "analyzeHealth": "Checking health requirements",
+        "analyzeProfile": "Analyzing your profile",
+        "checkAuthorities": "Checking official sources",
+        "checkVisaRules": "Checking visa rules",
+        "generateChecklist": "Building your checklist",
+        "ready": "All set!"
+      },
+      "tips": {
+        "customsRestrictions": "Check customs restrictions (food, medicine, cash).",
+        "digitalCopy": "Keep a digital copy of your passport and visa.",
+        "embassyContact": "Write down the local embassy or consulate contact details.",
+        "healthRecommendations": "Check health and vaccine recommendations before you leave."
+      }
+    },
+    "AdminBadges": {
+      "badgeValidated": "Badge validated",
+      "claimRejected": "Claim rejected",
+      "filterAll": "All",
+      "filterPending": "Pending",
+      "filterRejected": "Rejected",
+      "filterValidated": "Validated",
+      "moderateDesc": "Review submitted proofs and validate or reject badges.",
+      "restrictedDesc": "This page is for administrators only.",
+      "restrictedTitle": "Restricted access"
+    },
+    "PublicSuivi": {
+      "linkNotFound": "Link not found or expired",
+      "liveTrackDesc": "Live tracking · {{km}} km travelled"
     }
   }
 }
