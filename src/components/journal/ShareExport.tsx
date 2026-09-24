@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import type { Journal, JournalDay } from "@/hooks/useJournal";
 import { formatDayLabel } from "@/lib/journal-utils";
+import i18nInstance from "@/i18n";
 
 interface Props {
   journal: Journal;
@@ -87,7 +88,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
       doc.text(journal.title, margin, 40);
       doc.setFontSize(13);
       doc.setTextColor(180, 200, 220);
-      doc.text(`Voyage à ${destination || ""}`, margin, 50);
+      doc.text(t("ui2.ShareExport.pdfTripLine", { destination: destination || "" }), margin, 50);
       doc.setFontSize(10);
       doc.text(`${days.length} jour${days.length > 1 ? "s" : ""} de souvenirs`, margin, 58);
       y = 100;
@@ -147,7 +148,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
           if (b.type === "note") line = c.text || "";
           else if (b.type === "highlight") line = `★ ${c.text || ""}`;
           else if (b.type === "location") line = `📍 ${c.name || ""}`;
-          else if (b.type === "mood") line = `Humeur: ${c.emoji || ""} ${c.score ?? ""}/5`;
+          else if (b.type === "mood") line = t("ui2.ShareExport.moodLine", { emoji: c.emoji || "", score: c.score ?? "" });
           else if (b.type === "photo") line = `📸 ${c.caption || "(photo)"}`;
           if (line) {
             doc.setFontSize(10);
@@ -163,7 +164,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
       // Footer last page
       doc.setFontSize(9);
       doc.setTextColor(150, 150, 150);
-      doc.text(`Carnet généré avec Xplania · ${new Date().toLocaleDateString("fr-FR")}`, margin, pageH - 10);
+      doc.text(t("ui2.ShareExport.footer", { date: new Date().toLocaleDateString(i18nInstance.language?.startsWith("fr") ? "fr-FR" : "en-US") }), margin, pageH - 10);
 
       doc.save(`carnet-${(destination || "voyage").toLowerCase().replace(/\s+/g, "-")}.pdf`);
       toast.success(t("j2.pdfReady"));
@@ -217,9 +218,9 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
       <div className="glass-card rounded-2xl p-6 space-y-4">
         <div className="flex items-center gap-2">
           <Download className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-bold text-foreground">Exporter en PDF</h3>
+          <h3 className="text-lg font-bold text-foreground">{t("ui2.ShareExport.exportPdfHeading")}</h3>
         </div>
-        <p className="text-sm text-muted-foreground">Crée un livre souvenir de ton voyage, prêt à imprimer ou à archiver.</p>
+        <p className="text-sm text-muted-foreground">{t("ui2.ShareExport.exportPdfSubtitle")}</p>
 
         <label className="flex items-center justify-between p-3 rounded-xl bg-muted/30 cursor-pointer">
           <div className="flex items-center gap-2">

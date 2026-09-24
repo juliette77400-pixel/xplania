@@ -114,10 +114,10 @@ interface Mission {
   link: string;
 }
 
-const MISSION_DEFS: Mission[] = [
+const buildMissionDefs = (t: (k: string) => string): Mission[] => [
   { title: "Sauvegarder 1 hidden gem", xp: 50, icon: <Search className="w-5 h-5 text-white" />, iconBg: "from-cyan-400 to-cyan-500", metric: "moodHiddenGems", total: 1, link: "/discover" },
   { title: "Explorer 1 lieu culturel", xp: 75, icon: <Landmark className="w-5 h-5 text-white" />, iconBg: "from-purple-400 to-purple-500", metric: "exploreVisited", total: 1, link: "/explore" },
-  { title: "Partager 1 émotion dans ton carnet", xp: 100, icon: <Heart className="w-5 h-5 text-white" />, iconBg: "from-pink-400 to-rose-500", metric: "journalMoods", total: 1, link: "/carnets" },
+  { title: t("ui2.Gamification.missionShareMood"), xp: 100, icon: <Heart className="w-5 h-5 text-white" />, iconBg: "from-pink-400 to-rose-500", metric: "journalMoods", total: 1, link: "/carnets" },
 ];
 
 // ── Weekly XP (kept as visualization, derived from real counts × XP/badge) ──
@@ -257,6 +257,7 @@ const GamificationPage = () => {
     return () => clearInterval(t);
   }, []);
 
+  const MISSION_DEFS = useMemo(() => buildMissionDefs(t), [t]);
   const missions = useMemo(
     () =>
       MISSION_DEFS.map((m) => {
@@ -264,7 +265,7 @@ const GamificationPage = () => {
         const delta = Math.max(0, counts[m.metric] - base);
         return { ...m, progress: Math.min(m.total, delta) };
       }),
-    [counts, weeklyBaseline],
+    [counts, weeklyBaseline, MISSION_DEFS],
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps -- tick is the trigger, formatTimeLeft() reads current time
@@ -372,7 +373,7 @@ const GamificationPage = () => {
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">Ton Rythme de Progression</h2>
-          <p className="text-muted-foreground mb-8">Aperçu de ton activité Xplania</p>
+          <p className="text-muted-foreground mb-8">{t("ui2.Gamification.rhythmSubtitle")}</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 text-left">
@@ -381,7 +382,7 @@ const GamificationPage = () => {
                   <BarChart3 className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground">Activité par module</h3>
+                  <h3 className="font-bold text-foreground">{t("ui2.Gamification.moduleActivityTitle")}</h3>
                   <p className="text-xs text-muted-foreground">Tes contributions actuelles</p>
                 </div>
               </div>
@@ -390,7 +391,7 @@ const GamificationPage = () => {
                 {[
                   { label: "Carnet — notes", value: counts.journalNotes, max: 20 },
                   { label: "Carnet — photos", value: counts.journalPhotos, max: 20 },
-                  { label: "Explore — lieux visités", value: counts.exploreVisited, max: 20 },
+                  { label: t("ui2.Gamification.statExploreVisited"), value: counts.exploreVisited, max: 20 },
                   { label: "Mood — favoris", value: counts.moodFavorites, max: 15 },
                 ].map((row) => (
                   <div key={row.label}>
@@ -414,7 +415,7 @@ const GamificationPage = () => {
                 </div>
                 {tripId ? (
                   <>
-                    <p className="text-xs text-muted-foreground mb-1">Durée</p>
+                    <p className="text-xs text-muted-foreground mb-1">{t("ui2.Gamification.duration")}</p>
                     <p className="text-3xl font-bold text-foreground mb-3">{tripDays || "—"} j</p>
                     <p className="text-xs text-muted-foreground">
                       Tes objectifs sont automatiquement adaptés à la durée de ton voyage.
@@ -463,7 +464,7 @@ const GamificationPage = () => {
             ))}
           </div>
 
-          <p className="text-muted-foreground mb-2">Continue ton aventure et débloque des badges épiques.</p>
+          <p className="text-muted-foreground mb-2">{t("ui2.Gamification.ctaSubtitle")}</p>
           <p className="text-sm text-muted-foreground/70 max-w-lg mx-auto mb-8">
             Chaque action compte : une note, une photo, une visite, un favori… tout te rapproche du prochain palier.
           </p>
