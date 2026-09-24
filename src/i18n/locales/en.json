@@ -121,7 +121,13 @@
     "creditsShort": "credits",
     "viewPlans": "See plans",
     "about": "About",
-    "settings": "Settings"
+    "settings": "Settings",
+    "groupPrepare": "Prepare my trip",
+    "groupExplore": "Find ideas",
+    "groupTravel": "During the trip",
+    "groupRelive": "Memories & progress",
+    "groupXplania": "Xplania",
+    "groupAccount": "My account"
   },
   "about": {
     "metaTitle": "About — Xplania, travel differently at last",

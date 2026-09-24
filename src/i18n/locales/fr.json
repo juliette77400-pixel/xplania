@@ -121,7 +121,13 @@
     "creditsShort": "crédits",
     "viewPlans": "Voir les offres",
     "about": "À propos",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "groupPrepare": "Préparer mon voyage",
+    "groupExplore": "Trouver des idées",
+    "groupTravel": "Pendant le voyage",
+    "groupRelive": "Souvenirs & progression",
+    "groupXplania": "Xplania",
+    "groupAccount": "Mon compte"
   },
   "about": {
     "metaTitle": "À propos — Xplania, voyager autrement enfin",
