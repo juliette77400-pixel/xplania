@@ -556,7 +556,7 @@ const GuideVisaPage = () => {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <FileText className="w-5 h-5 text-secondary" />
-                  <h3 className="text-base font-bold text-foreground">Documents généraux à préparer</h3>
+                  <h3 className="text-base font-bold text-foreground">{t("ui2.GuideVisa.generalDocs", "Documents généraux à préparer")}</h3>
                 </div>
                 <ul className="space-y-2">
                   {getGeneralDocuments().map((doc, i) => (
