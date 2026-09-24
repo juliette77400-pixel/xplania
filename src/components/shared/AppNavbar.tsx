@@ -5,6 +5,7 @@ import {
   Plane, Home, Compass, Activity, BookOpen, Luggage,
   Wallet, FileCheck, Smile, Map, Trophy, Crown, Info,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
+  Dna,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {

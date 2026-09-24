@@ -15,6 +15,7 @@ import {
 import {
   Compass, Heart, Map, Activity, Briefcase, BookOpen, Wallet, FileText,
   LayoutDashboard, User as UserIcon, Award, Sparkles,
+  Dna,
 } from "lucide-react";
 
 interface CmdEntry {
