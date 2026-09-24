@@ -25,7 +25,7 @@ export interface OnboardingQualif {
 
 export interface StoredSwipe {
   card_id: string;
-  direction: "right" | "left" | "skip";
+  direction: "right" | "left" | "skip" | "love";
 }
 
 export interface StoredResult {

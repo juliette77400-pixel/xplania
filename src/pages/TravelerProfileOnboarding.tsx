@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
-import { Heart, SkipForward, X, Loader2, Info, RefreshCw, RotateCcw, ArrowLeft } from "lucide-react";
+import { Heart, Star, SkipForward, X, Loader2, Info, RefreshCw, RotateCcw, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,7 +41,7 @@ import {
   type StoredResult,
 } from "@/lib/onboarding-state";
 
-type Direction = "right" | "left" | "skip";
+type Direction = "right" | "left" | "skip" | "love";
 
 interface DbCard {
   id: string;
@@ -123,7 +123,10 @@ const TravelerProfileOnboarding = () => {
 
       const localSwipes = user ? [] : getLocalOnboarding().swipes;
       const source = user ? swipeRes.data ?? [] : localSwipes;
-      const doneIds = new Set(source.map((s) => s.card_id));
+      // Only count answers for cards that are part of the current deck, so
+      // stale answers can never end the quiz early.
+      const deckIds = new Set((allCards ?? []).map((c) => c.id));
+      const doneIds = new Set(source.map((s) => s.card_id).filter((id) => deckIds.has(id)));
       setSwipedIds(doneIds);
 
       let running = emptyScores();
@@ -162,7 +165,7 @@ const TravelerProfileOnboarding = () => {
 
   const handleReset = useCallback(async () => {
     if (resetting) return;
-    if (!window.confirm(t("travelerProfile.resetConfirm", "Tout effacer et recommencer ce Tinder ?"))) return;
+    if (!window.confirm(t("travelerProfile.resetConfirm", "Tout effacer et recommencer le quiz ?"))) return;
     setResetting(true);
     try {
       if (user) {
@@ -238,7 +241,7 @@ const TravelerProfileOnboarding = () => {
   const current = remaining[0] ?? null;
   const next = remaining[1] ?? null;
   const total = cards.length;
-  const done = swipedIds.size;
+  const done = cards.reduce((n, c) => n + (swipedIds.has(c.id) ? 1 : 0), 0);
   const currentCategoryKey: CategoryKey | null = current
     ? cardCategory.get(current.id) ?? null
     : activeCategory;
@@ -364,9 +367,8 @@ const TravelerProfileOnboarding = () => {
       }
 
       // Only finalize when the LAST card of a non-empty deck has been swiped.
-      const alreadySwiped = swipedIds.has(current.id);
-      const newDone = alreadySwiped ? swipedIds.size : swipedIds.size + 1;
-      if (cards.length > 0 && newDone >= cards.length) {
+      const allAnswered = cards.length > 0 && cards.every((c) => c.id === current.id || swipedIds.has(c.id));
+      if (allAnswered) {
         void finalize(nextScores);
       }
     },
@@ -643,6 +645,15 @@ const TravelerProfileOnboarding = () => {
           className="flex h-14 w-14 items-center justify-center rounded-full border border-green-400/40 bg-card text-green-400 shadow transition hover:scale-110 disabled:opacity-40"
         >
           <Heart className="h-7 w-7" />
+        </button>
+        <button
+          onClick={() => handleSwipe("love")}
+          disabled={!current}
+          aria-label={t("travelerProfile.love")}
+          title={t("travelerProfile.love")}
+          className="flex h-12 w-12 items-center justify-center rounded-full border border-amber-400/40 bg-card text-amber-400 shadow transition hover:scale-110 disabled:opacity-40"
+        >
+          <Star className="h-6 w-6 fill-current" />
         </button>
       </div>
 
