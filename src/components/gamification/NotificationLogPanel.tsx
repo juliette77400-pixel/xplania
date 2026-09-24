@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Bell, Mail, RefreshCw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type LogRow = {
   id: string;
@@ -25,6 +26,7 @@ const statusVariant = (s: string): "default" | "secondary" | "destructive" | "ou
 };
 
 export default function NotificationLogPanel() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState<LogRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [channel, setChannel] = useState<"all" | "in_app" | "email">("all");
@@ -55,14 +57,14 @@ export default function NotificationLogPanel() {
         <div>
           <h2 className="text-lg font-bold flex items-center gap-2">
             <Bell className="w-4 h-4 text-primary" />
-            Historique des notifications
+            {t("ui2.NotificationLogPanel.title")}
           </h2>
           <p className="text-xs text-muted-foreground">
-            Trace de chaque notification envoyée (in-app / email) lors d'une transition de réclamation.
+            {t("ui2.NotificationLogPanel.subtitle")}
           </p>
         </div>
         <Button size="sm" variant="outline" onClick={load}>
-          <RefreshCw className="w-3.5 h-3.5 mr-1" /> Rafraîchir
+          <RefreshCw className="w-3.5 h-3.5 mr-1" /> {t("ui2.NotificationLogPanel.refresh")}
         </Button>
       </div>
 
@@ -70,14 +72,14 @@ export default function NotificationLogPanel() {
         <div className="flex gap-1">
           {(["all", "in_app", "email"] as const).map((c) => (
             <Button key={c} size="sm" variant={channel === c ? "default" : "outline"} onClick={() => setChannel(c)}>
-              {c === "all" ? "Tous canaux" : c === "in_app" ? "In-app" : "Email"}
+              {c === "all" ? t("ui2.NotificationLogPanel.allChannels") : c === "in_app" ? t("ui2.NotificationLogPanel.inApp") : t("ui2.NotificationLogPanel.email")}
             </Button>
           ))}
         </div>
         <div className="flex gap-1">
           {(["all", "sent", "skipped", "queued", "error"] as const).map((s) => (
             <Button key={s} size="sm" variant={status === s ? "default" : "outline"} onClick={() => setStatus(s)}>
-              {s === "all" ? "Tous statuts" : s}
+              {s === "all" ? t("ui2.NotificationLogPanel.allStatuses") : s}
             </Button>
           ))}
         </div>
@@ -86,18 +88,18 @@ export default function NotificationLogPanel() {
       {loading ? (
         <div className="py-8 text-center"><Loader2 className="w-5 h-5 animate-spin inline text-primary" /></div>
       ) : rows.length === 0 ? (
-        <div className="py-8 text-center text-sm text-muted-foreground">Aucune notification enregistrée.</div>
+        <div className="py-8 text-center text-sm text-muted-foreground">{t("ui2.NotificationLogPanel.none")}</div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead className="text-left text-muted-foreground">
               <tr className="border-b border-border">
-                <th className="py-2 pr-3">Date</th>
-                <th className="py-2 pr-3">Canal</th>
-                <th className="py-2 pr-3">Transition</th>
-                <th className="py-2 pr-3">Statut</th>
-                <th className="py-2 pr-3">Utilisateur</th>
-                <th className="py-2 pr-3">Détails</th>
+                <th className="py-2 pr-3">{t("ui2.NotificationLogPanel.colDate")}</th>
+                <th className="py-2 pr-3">{t("ui2.NotificationLogPanel.colChannel")}</th>
+                <th className="py-2 pr-3">{t("ui2.NotificationLogPanel.colTransition")}</th>
+                <th className="py-2 pr-3">{t("ui2.NotificationLogPanel.colStatus")}</th>
+                <th className="py-2 pr-3">{t("ui2.NotificationLogPanel.colUser")}</th>
+                <th className="py-2 pr-3">{t("ui2.NotificationLogPanel.colDetails")}</th>
               </tr>
             </thead>
             <tbody>
