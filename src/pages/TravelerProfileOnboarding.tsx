@@ -557,7 +557,7 @@ const TravelerProfileOnboarding = () => {
                     complete && !isFilterOn ? "cursor-not-allowed" : ""
                   }`}
                   aria-pressed={isFilterOn}
-                  aria-label={`${cat.fallback} — ${stat.done}/${stat.total}${complete ? " (terminé)" : ""}`}
+                  aria-label={`${t(cat.labelKey, cat.fallback)} — ${stat.done}/${stat.total}${complete ? ` (${t("tinder.done")})` : ""}`}
                   title={
                     complete
                       ? t("travelerProfile.categoryDone", { defaultValue: "Catégorie terminée" })
@@ -567,7 +567,7 @@ const TravelerProfileOnboarding = () => {
                   }
                 >
                   <cat.Icon className="h-3.5 w-3.5" />
-                  <span>{cat.fallback}</span>
+                  <span>{t(cat.labelKey, cat.fallback)}</span>
                   {complete ? (
                     <span className="ml-1 text-[10px] font-bold">✓</span>
                   ) : (
@@ -591,7 +591,7 @@ const TravelerProfileOnboarding = () => {
                 className={`inline-flex items-center gap-1.5 rounded-full border ${currentCategory.border} ${currentCategory.chipBg} px-3 py-1 text-xs font-bold ${currentCategory.accent} shadow-lg backdrop-blur`}
               >
                 <currentCategory.Icon className="h-3.5 w-3.5" />
-                <span className="uppercase tracking-wide">{currentCategory.fallback}</span>
+                <span className="uppercase tracking-wide">{t(currentCategory.labelKey, currentCategory.fallback)}</span>
               </div>
             </div>
           )}
