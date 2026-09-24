@@ -33,7 +33,7 @@ type ClaimRow = {
 
 export default function AdminBadges() {
   const { user, loading: authLoading } = useAuth();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [claims, setClaims] = useState<ClaimRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -105,7 +105,7 @@ export default function AdminBadges() {
       })
       .eq("id", claim.id);
     if (error) return toast.error(error.message);
-    toast.success(status === "validated" ? "Badge validé ✓" : "Réclamation rejetée");
+    toast.success(status === "validated" ? t("ui2.AdminBadges.badgeValidated") : t("ui2.AdminBadges.claimRejected"));
     load();
   };
 
@@ -123,8 +123,8 @@ export default function AdminBadges() {
         <AppNavbar />
         <main className="container mx-auto max-w-2xl px-4 py-20 text-center">
           <ShieldAlert className="w-12 h-12 mx-auto text-destructive mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Accès réservé aux administrateurs</h1>
-          <p className="text-muted-foreground">Tu n'as pas les droits pour accéder à cette page.</p>
+          <h1 className="text-2xl font-bold mb-2">{t("ui2.AdminBadges.restrictedTitle")}</h1>
+          <p className="text-muted-foreground">{t("ui2.AdminBadges.restrictedDesc")}</p>
         </main>
       </div>
     );
@@ -140,12 +140,12 @@ export default function AdminBadges() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h1 className="text-2xl font-bold">Validation des badges</h1>
-            <p className="text-sm text-muted-foreground">Modère les réclamations soumises par les voyageurs.</p>
+            <p className="text-sm text-muted-foreground">{t("ui2.AdminBadges.moderateDesc")}</p>
           </div>
           <div className="flex gap-2 flex-wrap">
             {(["submitted", "validated", "rejected", "all"] as const).map((f) => (
               <Button key={f} size="sm" variant={filter === f ? "default" : "outline"} onClick={() => setFilter(f)}>
-                {f === "submitted" ? "En attente" : f === "validated" ? "Validés" : f === "rejected" ? "Rejetés" : "Tous"}
+                {f === "submitted" ? t("ui2.AdminBadges.filterPending") : f === "validated" ? t("ui2.AdminBadges.filterValidated") : f === "rejected" ? t("ui2.AdminBadges.filterRejected") : t("ui2.AdminBadges.filterAll")}
               </Button>
             ))}
           </div>
