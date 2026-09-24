@@ -18,6 +18,16 @@ interface PackTeaser {
  * a persuasive teaser + a CTA that lands the user on `/offres` with the
  * most relevant pack pre-highlighted.
  */
+/** Tool opened when a pack card is clicked. */
+const PACK_TOOL: Record<PremiumPackId, string> = {
+  admin: "/guide-budget",
+  creatif: "/carnets",
+  ia: "/dashboard",
+  intercultural: "/discover",
+  futur: "/explore",
+  all: "/app",
+};
+
 const TEASERS: PackTeaser[] = [
   { id: "admin",         price: 5.99,  suffix: "/mois" },
   { id: "creatif",       price: 5.99,  suffix: "/mois" },
@@ -80,9 +90,11 @@ const PremiumUnlockDialog = ({ open, onOpenChange, lockedFeature, highlightPack 
           {TEASERS.map((p) => {
             const isHighlight = p.id === highlightPack;
             return (
-              <div
+              <button
+                type="button"
                 key={p.id}
-                className={`relative rounded-xl border p-3 transition ${
+                onClick={() => { onOpenChange(false); navigate(PACK_TOOL[p.id]); }}
+                className={`relative w-full text-left rounded-xl border p-3 transition hover:border-primary hover:-translate-y-0.5 ${
                   isHighlight
                     ? "border-primary/70 bg-gradient-to-br from-primary/15 to-secondary/10 shadow-md"
                     : "border-border/60 bg-card"
@@ -108,7 +120,7 @@ const PremiumUnlockDialog = ({ open, onOpenChange, lockedFeature, highlightPack 
                     <div className="text-[10px] text-muted-foreground">{p.suffix}</div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>

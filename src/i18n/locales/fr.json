@@ -4469,7 +4469,7 @@
     }
   },
   "travelerProfile": {
-    "title": "Ton profil voyageur",
+    "title": "Ton ADN Voyageur",
     "progress": "{{done}} / {{total}}",
     "msg1": "Faisons connaissance.",
     "msg2": "Je commence à comprendre ta façon de voyager.",
@@ -4649,6 +4649,8 @@
         "name": "Guide Visa",
         "description": "Formalités, vaccins et sécurité pour ton pays de destination."
       }
-    }
+    },
+    "love": "J'adore !",
+    "answersHint": "✕ Pas pour moi · ⏭ Passer · ♥ Ça me correspond · ★ J'adore"
   }
 }

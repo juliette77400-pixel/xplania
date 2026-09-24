@@ -15,6 +15,13 @@
       "when": 1790265570469,
       "tag": "0001_lille_beta_challenges_and_more_badges",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790265875214,
+      "tag": "0002_quiz_more_cards_and_love",
+      "breakpoints": true
     }
   ]
 }

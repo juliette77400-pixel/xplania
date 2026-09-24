@@ -4469,7 +4469,7 @@
     }
   },
   "travelerProfile": {
-    "title": "Your traveler profile",
+    "title": "Your Travel DNA",
     "progress": "{{done}} / {{total}}",
     "msg1": "Let's get to know each other.",
     "msg2": "I'm starting to understand how you travel.",
@@ -4649,6 +4649,8 @@
         "name": "Visa Guide",
         "description": "Formalities, vaccines and safety for your destination."
       }
-    }
+    },
+    "love": "I love it!",
+    "answersHint": "✕ Not me · ⏭ Skip · ♥ That's me · ★ I love it"
   }
 }

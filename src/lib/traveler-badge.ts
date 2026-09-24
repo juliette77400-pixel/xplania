@@ -134,10 +134,11 @@ export function calculateBadge(scores: TravelerScores): BadgeDefinition {
 export function applyScoreTags(
   scores: TravelerScores,
   tags: Partial<Record<string, number>>,
-  direction: "right" | "left" | "skip",
+  direction: "right" | "left" | "skip" | "love",
 ): TravelerScores {
   if (direction === "skip") return scores;
-  const sign = direction === "right" ? 1 : -1;
+  // "love" (J'adore) counts double compared to a simple "yes".
+  const sign = direction === "love" ? 2 : direction === "right" ? 1 : -1;
   const next = { ...scores };
   for (const [k, v] of Object.entries(tags || {})) {
     if (!v || !(k in next)) continue;
