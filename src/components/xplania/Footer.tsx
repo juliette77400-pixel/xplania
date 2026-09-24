@@ -156,6 +156,15 @@ const Footer = (_: Props) => {
                   {t("appNav.about")}
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/blog/how-to-plan-a-trip-with-ai"
+                  className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <BookOpen className="w-4 h-4 group-hover:text-primary transition-colors" />
+                  {t("planGuide.footerLink")}
+                </Link>
+              </li>
             </ul>
           </motion.div>
         </div>

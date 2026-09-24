@@ -5291,6 +5291,7 @@
     "t3": "Vérifie la validité de ton passeport au moins trois mois avant le départ.",
     "t4": "Laisse une demi-journée libre pour les découvertes spontanées.",
     "ctaText": "Prêt à planifier ton prochain voyage ?",
-    "ctaButton": "Commencer gratuitement"
+    "ctaButton": "Commencer gratuitement",
+    "footerLink": "Planifier un voyage avec l'IA"
   }
 }
