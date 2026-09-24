@@ -3,11 +3,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Plane, Home, Compass, Activity, BookOpen, Luggage,
+  Wallet, FileCheck, Smile, Map, Trophy, Crown, Info,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -38,18 +39,30 @@ const PRIMARY: NavItem[] = [
   { to: "/carnets", labelKey: "appNav.relive", icon: BookOpen },
 ];
 
-const MORE = [
-  { to: "/guide-budget", labelKey: "appNav.budget" },
-  { to: "/guide-visa", labelKey: "appNav.visa" },
-  { to: "/guide-valise", labelKey: "appNav.suitcase" },
-  { to: "/mood", labelKey: "appNav.mood" },
-  { to: "/discover", labelKey: "appNav.discover" },
-  { to: "/explore", labelKey: "appNav.explore" },
-  { to: "/suivi", labelKey: "appNav.tracking" },
-  { to: "/carnets", labelKey: "appNav.journal" },
-  { to: "/gamification", labelKey: "appNav.badges" },
-  { to: "/offres", labelKey: "appNav.premiumOffers" },
-  { to: "/about", labelKey: "appNav.about" },
+// Every tool, grouped by trip phase — one distinct icon per tool.
+interface NavGroup { labelKey: string; items: NavItem[] }
+const GROUPS: NavGroup[] = [
+  { labelKey: "appNav.groupPrepare", items: [
+    { to: "/guide-budget", labelKey: "appNav.budget", icon: Wallet },
+    { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
+    { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
+  ] },
+  { labelKey: "appNav.groupExplore", items: [
+    { to: "/mood", labelKey: "appNav.mood", icon: Smile },
+    { to: "/discover", labelKey: "appNav.discover", icon: Compass },
+    { to: "/explore", labelKey: "appNav.explore", icon: Map },
+  ] },
+  { labelKey: "appNav.groupTravel", items: [
+    { to: "/suivi", labelKey: "appNav.tracking", icon: Activity },
+  ] },
+  { labelKey: "appNav.groupRelive", items: [
+    { to: "/carnets", labelKey: "appNav.journal", icon: BookOpen },
+    { to: "/gamification", labelKey: "appNav.badges", icon: Trophy },
+  ] },
+  { labelKey: "appNav.groupXplania", items: [
+    { to: "/offres", labelKey: "appNav.premiumOffers", icon: Crown },
+    { to: "/about", labelKey: "appNav.about", icon: Info },
+  ] },
 ];
 
 import { useWeeklyMissionsRemaining } from "@/hooks/useWeeklyMissionsRemaining";
@@ -108,15 +121,25 @@ const AppNavbar = () => {
               )}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
-              {MORE.map((m) => (
-                <DropdownMenuItem key={m.to} onClick={() => navigate(m.to)} className="cursor-pointer flex items-center justify-between gap-2">
-                  <span>{t(m.labelKey)}</span>
-                  {m.to === "/gamification" && user && missionsRemaining > 0 && (
-                    <span className="ml-auto inline-flex items-center justify-center min-w-[18px] h-4 px-1 rounded-full bg-primary/15 text-primary text-[10px] font-bold">
-                      {missionsRemaining}
-                    </span>
-                  )}
-                </DropdownMenuItem>
+              {GROUPS.map((g, gi) => (
+                <div key={g.labelKey}>
+                  {gi > 0 && <DropdownMenuSeparator />}
+                  <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">{t(g.labelKey)}</DropdownMenuLabel>
+                  {g.items.map((m) => {
+                    const Icon = m.icon;
+                    return (
+                      <DropdownMenuItem key={m.to} onClick={() => navigate(m.to)} className="cursor-pointer flex items-center gap-2">
+                        <Icon className="w-4 h-4 text-primary" />
+                        <span>{t(m.labelKey)}</span>
+                        {m.to === "/gamification" && user && missionsRemaining > 0 && (
+                          <span className="ml-auto inline-flex items-center justify-center min-w-[18px] h-4 px-1 rounded-full bg-primary/15 text-primary text-[10px] font-bold">
+                            {missionsRemaining}
+                          </span>
+                        )}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </div>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -209,7 +232,7 @@ const AppNavbar = () => {
             <SheetTrigger aria-label={t("appNav.openMenu")} className="lg:hidden p-2 rounded-lg hover:bg-muted">
               <Menu className="w-5 h-5" />
             </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] p-0">
+            <SheetContent side="right" className="w-[280px] p-0 overflow-y-auto">
               <div className="flex items-center justify-between border-b border-border p-4">
                 <span className="font-bold gradient-text">Xplania</span>
                 <button onClick={() => setOpen(false)} className="p-1 rounded hover:bg-muted">
@@ -217,24 +240,37 @@ const AppNavbar = () => {
                 </button>
               </div>
               <div className="p-2">
-                {[...PRIMARY, ...MORE].map((it: any) => {
-                  const Icon = it.icon || Compass;
-                  const active = isActive(it.to);
-                  return (
-                    <Link
-                      key={it.to}
-                      to={it.to}
-                      onClick={() => setOpen(false)}
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
-                        active ? "bg-primary/15 text-primary font-semibold" : "text-foreground hover:bg-muted/60"
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span>{t(it.labelKey)}</span>
-                      {it.premium && <Sparkles className="ml-auto w-3 h-3 text-amber-500" />}
-                    </Link>
-                  );
-                })}
+                {[{ labelKey: "", items: [{ to: "/app", labelKey: "appNav.home", icon: Home }] }, ...GROUPS,
+                  ...(user ? [{ labelKey: "appNav.groupAccount", items: [
+                    { to: "/profil", labelKey: "appNav.profile", icon: UserIcon },
+                    { to: "/parametres", labelKey: "appNav.settings", icon: SettingsIcon },
+                  ] }] : [])].map((g) => (
+                  <div key={g.labelKey || "home"} className="mb-2">
+                    {g.labelKey && (
+                      <p className="px-3 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{t(g.labelKey)}</p>
+                    )}
+                    {g.items.map((it: NavItem) => {
+                      const Icon = it.icon;
+                      const active = isActive(it.to);
+                      return (
+                        <Link
+                          key={it.to}
+                          to={it.to}
+                          onClick={() => setOpen(false)}
+                          className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm ${
+                            active ? "bg-primary/15 text-primary font-semibold" : "text-foreground hover:bg-muted/60"
+                          }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                          <span>{t(it.labelKey)}</span>
+                          {it.to === "/gamification" && user && missionsRemaining > 0 && (
+                            <span className="ml-auto inline-flex items-center justify-center min-w-[18px] h-4 px-1 rounded-full bg-primary/15 text-primary text-[10px] font-bold">{missionsRemaining}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ))}
                 <div className="mt-3 border-t border-border pt-3">
                   {user ? (
                     <button

@@ -121,7 +121,13 @@
     "creditsShort": "crédits",
     "viewPlans": "Voir les offres",
     "about": "À propos",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "groupPrepare": "Préparer mon voyage",
+    "groupExplore": "Trouver des idées",
+    "groupTravel": "Pendant le voyage",
+    "groupRelive": "Souvenirs & progression",
+    "groupXplania": "Xplania",
+    "groupAccount": "Mon compte"
   },
   "about": {
     "metaTitle": "À propos — Xplania, voyager autrement enfin",
@@ -1115,6 +1121,64 @@
       "title": "Mon profil public",
       "hint": "Gère tes carnets partagés publiquement et la visibilité de tes voyages.",
       "cta": "Voir mes carnets"
+    },
+    "perso": {
+      "title": "Ton profil de voyageur",
+      "subtitle": "Montre qui tu es : ta bio, tes envies et tes réponses aux questions.",
+      "bio": "Bio",
+      "bioPlaceholder": "Ex. Toujours partante pour un road trip et un bon marché local…",
+      "homeCity": "Ville de départ",
+      "homeCityPlaceholder": "Ex. Paris",
+      "style": "Style de voyage",
+      "stylePlaceholder": "Choisis ton style",
+      "styles": {
+        "backpacker": "Sac à dos",
+        "comfort": "Confort",
+        "luxury": "Luxe",
+        "slow": "Slow travel",
+        "adventure": "Aventure",
+        "nomad": "Nomade digital",
+        "family": "En famille"
+      },
+      "interests": "Centres d'intérêt",
+      "interestList": {
+        "food": "Gastronomie",
+        "hiking": "Randonnée",
+        "museums": "Musées",
+        "beach": "Plage",
+        "nightlife": "Vie nocturne",
+        "photo": "Photo",
+        "roadtrip": "Road trip",
+        "wellness": "Bien-être",
+        "surf": "Surf",
+        "architecture": "Architecture",
+        "music": "Concerts",
+        "wildlife": "Animaux",
+        "street_art": "Street art",
+        "markets": "Marchés"
+      },
+      "languages": "Langues parlées",
+      "languagesPlaceholder": "Ex. Espagnol, puis Entrée",
+      "dreams": "Destinations de rêve",
+      "dreamsPlaceholder": "Ex. Japon, puis Entrée",
+      "promptsTitle": "Questions-réponses",
+      "promptsHint": "Choisis jusqu'à {{max}} questions et réponds-y pour montrer ta personnalité.",
+      "addPrompt": "Ajouter une question",
+      "removePrompt": "Retirer la question",
+      "answerPlaceholder": "Ta réponse…",
+      "save": "Enregistrer mon profil",
+      "prompts": {
+        "p1": "Mon meilleur souvenir de voyage…",
+        "p2": "Le pays où je retournerais demain…",
+        "p3": "Je ne pars jamais sans…",
+        "p4": "Mon plus gros fail en voyage…",
+        "p5": "Le plat qui m'a fait voyager…",
+        "p6": "Mon voyage idéal ressemble à…",
+        "p7": "On s'entendra bien si tu aimes…",
+        "p8": "Ma prochaine aventure…",
+        "p9": "Le lieu le plus insolite que j'ai visité…",
+        "p10": "En voyage, je suis plutôt du genre à…"
+      }
     }
   },
   "notFound": {

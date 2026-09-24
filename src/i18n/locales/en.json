@@ -121,7 +121,13 @@
     "creditsShort": "credits",
     "viewPlans": "See plans",
     "about": "About",
-    "settings": "Settings"
+    "settings": "Settings",
+    "groupPrepare": "Prepare my trip",
+    "groupExplore": "Find ideas",
+    "groupTravel": "During the trip",
+    "groupRelive": "Memories & progress",
+    "groupXplania": "Xplania",
+    "groupAccount": "My account"
   },
   "about": {
     "metaTitle": "About — Xplania, travel differently at last",
@@ -1115,6 +1121,64 @@
       "title": "My public profile",
       "hint": "Manage your publicly shared journals and your trip visibility.",
       "cta": "View my journals"
+    },
+    "perso": {
+      "title": "Your traveler profile",
+      "subtitle": "Show who you are: your bio, your travel wishes and your answers to questions.",
+      "bio": "Bio",
+      "bioPlaceholder": "E.g. Always up for a road trip and a good local market…",
+      "homeCity": "Home city",
+      "homeCityPlaceholder": "E.g. Paris",
+      "style": "Travel style",
+      "stylePlaceholder": "Pick your style",
+      "styles": {
+        "backpacker": "Backpacker",
+        "comfort": "Comfort",
+        "luxury": "Luxury",
+        "slow": "Slow travel",
+        "adventure": "Adventure",
+        "nomad": "Digital nomad",
+        "family": "Family"
+      },
+      "interests": "Interests",
+      "interestList": {
+        "food": "Food",
+        "hiking": "Hiking",
+        "museums": "Museums",
+        "beach": "Beach",
+        "nightlife": "Nightlife",
+        "photo": "Photography",
+        "roadtrip": "Road trip",
+        "wellness": "Wellness",
+        "surf": "Surf",
+        "architecture": "Architecture",
+        "music": "Concerts",
+        "wildlife": "Wildlife",
+        "street_art": "Street art",
+        "markets": "Markets"
+      },
+      "languages": "Languages spoken",
+      "languagesPlaceholder": "E.g. Spanish, then Enter",
+      "dreams": "Dream destinations",
+      "dreamsPlaceholder": "E.g. Japan, then Enter",
+      "promptsTitle": "Questions & answers",
+      "promptsHint": "Pick up to {{max}} questions and answer them to show your personality.",
+      "addPrompt": "Add a question",
+      "removePrompt": "Remove question",
+      "answerPlaceholder": "Your answer…",
+      "save": "Save my profile",
+      "prompts": {
+        "p1": "My best travel memory…",
+        "p2": "The country I'd go back to tomorrow…",
+        "p3": "I never travel without…",
+        "p4": "My biggest travel fail…",
+        "p5": "The dish that made me travel…",
+        "p6": "My ideal trip looks like…",
+        "p7": "We'll get along if you love…",
+        "p8": "My next adventure…",
+        "p9": "The most unusual place I've visited…",
+        "p10": "When traveling, I'm the kind of person who…"
+      }
     }
   },
   "notFound": {

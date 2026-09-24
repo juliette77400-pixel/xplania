@@ -1768,25 +1768,46 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           created_at: string
           display_name: string | null
+          dream_destinations: string[]
+          home_city: string | null
           id: string
+          interests: string[]
+          languages: string[]
+          prompts: Json
+          travel_style: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           display_name?: string | null
+          dream_destinations?: string[]
+          home_city?: string | null
           id?: string
+          interests?: string[]
+          languages?: string[]
+          prompts?: Json
+          travel_style?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           display_name?: string | null
+          dream_destinations?: string[]
+          home_city?: string | null
           id?: string
+          interests?: string[]
+          languages?: string[]
+          prompts?: Json
+          travel_style?: string | null
           updated_at?: string
           user_id?: string
         }
