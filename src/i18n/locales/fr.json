@@ -499,7 +499,7 @@
     "resourcesKicker": "Pour aller plus loin",
     "resourcesTitle": "Sources et repères pour préparer votre départ",
     "resourcesHelp": "Retrouvez le processus, la santé, la sécurité et les informations pratiques après votre résultat.",
-    "subtitle": "Les informations essentielles avant ton départ.",
+    "subtitle": "Les informations essentielles avant ton départ, pour un voyage en toute sérénité.",
     "checkBtn": "Vérifier mes besoins",
     "selectDestination": "Sélectionne ta destination",
     "destinationLabel": "Choisir une destination",
@@ -560,8 +560,8 @@
     "tipsTitle": "Conseils pratiques",
     "inlineDisclaimer": "ℹ️ Vérifie toujours ces informations sur le site officiel de l'ambassade (diplomatie.gouv.fr).",
     "disclaimer": {
-      "title": "⚠️ Avis important —",
-      "body": "Les informations fournies par Xplania sont données à titre indicatif et peuvent ne pas refléter les dernières exigences d'entrée en vigueur. Consulte toujours le site officiel de l'ambassade ou du consulat français pour ta destination avant de voyager.",
+      "title": "Avis important —",
+      "body": "Pour tout détail ou toute question, il vaut toujours mieux consulter l'ambassade ou le consulat de ta destination avant de partir. Xplania ne peut pas être tenu responsable en cas de problème.",
       "cta": "Site officiel de l'ambassade"
     },
     "stepper": {
@@ -570,7 +570,7 @@
       "steps": [
         {
           "title": "Vérifie si tu as besoin d'un visa",
-          "detail": "Selon ta nationalité et ta destination. La plupart des passeports européens n'ont pas besoin de visa pour les courts séjours dans l'UE, mais c'est différent ailleurs."
+          "detail": "Selon ta nationalité ({{nationality}}) et ta destination. Avec un passeport français, tu voyages sans visa dans l'espace Schengen et dans beaucoup de pays pour un court séjour, mais certains exigent un visa, une e-autorisation (ESTA, eTA, ETIAS…) ou un visa à l'arrivée."
         },
         {
           "title": "Repère les délais",
@@ -592,7 +592,8 @@
           "title": "À l'arrivée : garde tes documents accessibles",
           "detail": "Copie papier + copie cloud de ton passeport, visa, assurance et réservations. Note le numéro du consulat français le plus proche."
         }
-      ]
+      ],
+      "nationalityNote": "En tant que voyageur·se de nationalité {{nationality}}, voici ce qui s'applique à toi pour {{destination}}."
     },
     "currencySection": {
       "title": "💱 Convertisseur de devises — taux en temps réel",
@@ -837,6 +838,11 @@
         "safety": "Sécurité",
         "embassy": "Ambassade"
       }
+    },
+    "actions": {
+      "regenerate": "Régénérer les formalités",
+      "continuePrep": "Continuer mes préparatifs",
+      "toValise": "Continuer vers le guide valise"
     }
   },
   "footer": {
@@ -2238,23 +2244,8 @@
           "Parapluie compact"
         ]
       },
-      "photo": {
-        "name": "Photo / Création",
-        "items": [
-          "Appareil photo / objectif supplémentaire",
-          "Cartes SD de rechange (×3 min)",
-          "Trépied compact ou gorilla pod",
-          "Batterie de rechange appareil",
-          "Chargeur rapide multi-port",
-          "Disque dur externe ou clé USB",
-          "Chiffon de nettoyage optique",
-          "Filtre ND (si vidéo)",
-          "Drone si autorisé",
-          "Carnet de notes idées contenu"
-        ]
-      },
       "business": {
-        "name": "Business",
+        "name": "Déplacement professionnel",
         "items": [
           "Costume / tenue pro dans housse à vêtements",
           "Chemises/blouses (1 par jour + 1 extra)",
@@ -2586,6 +2577,21 @@
         "weatherTip": "Les salles de conférence sont souvent climatisées : prévois une couche.",
         "culturalTip": "Dans certains pays, la carte de visite se remet à deux mains."
       }
+    },
+    "discoverFeatures": "Découvrir d'autres fonctionnalités",
+    "missing": {
+      "title": "Ce qui manque peut-être",
+      "subtitle": "L'IA compare ta valise à ton voyage à {{destination}}.",
+      "check": "Vérifier ma valise",
+      "recheck": "Revérifier",
+      "essential": "Indispensable",
+      "secondary": "En plus, si tu as de la place",
+      "add": "Ajouter",
+      "added": "Ajouté",
+      "addedToast": "Ajouté à ta valise",
+      "nothing": "Rien ne manque, ta valise est complète 🎉",
+      "error": "La vérification n'a pas pu se faire. Réessaie.",
+      "category": "Suggestions de l'IA"
     }
   },
   "budget": {
@@ -2656,7 +2662,11 @@
       "food": "Nourriture",
       "shopping": "Shopping",
       "extras": "Extras",
-      "unexpected": "Imprévus"
+      "unexpected": "Imprévus",
+      "flights": "Transport aller-retour",
+      "insurance": "Assurance & santé",
+      "connectivity": "Internet & eSIM",
+      "fees": "Frais bancaires & pourboires"
     },
     "payments": {
       "card": "Carte bancaire",
@@ -2702,7 +2712,7 @@
     "alertsActivities": "Activités gratuites",
     "alertsRestaurants": "Restaurants économiques",
     "alertsTransportAlt": "Alternatives transport",
-    "alertsMood": "Suggestions Mood",
+    "alertsMood": "Ce que je te suggère d'après ton mood",
     "tipsTitle": "Astuces Économies",
     "tipsSubtitle": "Des conseils pratiques pour voyager malin et économiser",
     "tips": {
@@ -2833,7 +2843,7 @@
     "savingTipsTitle": "Astuces d'économie locales",
     "savingTipsSubtitle": "Conseils IA spécifiques à {{destination}}",
     "savingTipsRefresh": "Rafraîchir",
-    "savingTipsError": "Impossible de générer des astuces pour l'instant. Réessaie dans un instant.",
+    "savingTipsError": "Impossible de charger les astuces pour l'instant. Réessaie.",
     "savingTipsEmpty": "Aucune astuce disponible.",
     "savingTipsFallback": {
       "transportTitle": "Regarde les passes locaux",
@@ -2923,7 +2933,20 @@
       "chartsTitle": "Graphiques",
       "expensesTitle": "Dépenses enregistrées",
       "tipsTitle": "Astuces d'économie"
-    }
+    },
+    "addToastMissingAuto": "Indique au moins le montant",
+    "addAutoDetected": "Classée automatiquement : {{category}}",
+    "addAutoHint": "Décris la dépense (ex. « taxi aéroport ») : la catégorie sera choisie toute seule.",
+    "scenariosTitle": "3 scénarios calculés pour ton voyage",
+    "scenario": {
+      "economy": "Économique",
+      "realistic": "Réaliste",
+      "comfort": "Confort"
+    },
+    "scenarioBest": "meilleur rapport qualité-prix",
+    "scenarioApply": "Appliquer ce scénario",
+    "scenarioApplied": "Scénario appliqué à ton budget",
+    "dealsEmpty": "Les bons plans arrivent après la génération."
   },
   "gamification": {
     "heroTitle": "Collection de Badges",

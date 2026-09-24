@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota } from "../_shared/quota-guard.ts";
@@ -39,17 +40,18 @@ serve(async (req) => {
       accommodationStanding = "",
       organization = "",
       rhythm = "",
+      avoid = [] as string[],
+      moods = [] as string[],
+      seed = "",
     } = await req.json();
 
     const isEN = locale === "en";
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
 
     const breakdown = (categories as Array<{ key: string; planned: number; spent: number }>)
       .map((c) => `${c.key}: planned €${c.planned}, spent €${c.spent}`)
       .join(" | ");
 
-    const traveler = `${travelers} traveler${travelers > 1 ? "s" : ""}`;
     const styleBits = [
       tripTypes?.length ? `trip type: ${(tripTypes as string[]).join(", ")}` : "",
       spendingPriorities?.length ? `priorities: ${(spendingPriorities as string[]).join(", ")}` : "",
@@ -57,105 +59,73 @@ serve(async (req) => {
       organization ? `organization: ${organization}` : "",
       rhythm ? `rhythm: ${rhythm}` : "",
       travelStyle ? `style: ${travelStyle}` : "",
+      moods?.length ? `mood: ${moods.join(", ")}` : "",
     ].filter(Boolean).join(" | ");
-
-    const dateBits = departureDate ? `Dates: ${departureDate}${returnDate ? ` → ${returnDate}` : ""}` : "";
-
-    const guardrail = isEN
-      ? `Only suggest saving tips that are specific, verifiable, and directly relevant to the user's destination and budget categories. Avoid generic advice. Each tip MUST reference a real place, service, transport card, market, district, chain or local practice you genuinely know exists in ${destination}. If you cannot ground a tip in a verifiable local reality, do NOT include it. Prefer fewer, well-sourced tips over filler. Tailor tone and content to the traveler profile and current budget allocation.`
-      : `Ne propose que des astuces spécifiques, vérifiables et directement utiles à la destination et aux postes budgétaires de l'utilisateur. Évite les conseils génériques. Chaque astuce DOIT mentionner un vrai lieu, service, pass transport, marché, quartier, enseigne ou pratique locale que tu connais réellement à ${destination}. Si tu ne peux pas ancrer une astuce dans une réalité locale vérifiable, NE l'inclus PAS. Mieux vaut moins d'astuces, mais solides. Adapte le ton et le contenu au profil voyageur et à la répartition budgétaire actuelle.`;
-
+    const dateBits = departureDate ? `${departureDate}${returnDate ? ` → ${returnDate}` : ""}` : "n/a";
     const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
+    const lang = isEN ? "ENGLISH" : "FRENCH (tutoiement)";
 
-    const system = isEN
-      ? `You are a frugal local guide who knows ${destination} intimately. You write 3 to 5 HYPER-LOCAL money-saving tips for THIS specific traveler. ${guardrail} Each tip 1–2 sentences. Reply ONLY via the "saving_tips" tool. Output in ENGLISH.\n\n${travelerCtx}`
-      : `Tu es un guide local frugal qui connaît parfaitement ${destination}. Tu rédiges 3 à 5 astuces d'économie HYPER-LOCALES pour CE voyageur précis. ${guardrail} Chaque astuce fait 1 à 2 phrases. Réponds UNIQUEMENT via le tool "saving_tips". En FRANÇAIS.\n\n${travelerCtx}`;
+    const instructions = `You are a local budget expert who knows ${destination} intimately, and a travel financial planner. Write every string in ${lang}.
 
-    const user = isEN
-      ? `Destination: ${destination}
-${dateBits}
-Total budget: €${totalBudget} (${traveler}, ${days} days)
+1. SCENARIOS: compute three full-trip budgets (economy, realistic, comfort) in EUR from real ${destination} prices for these dates, traveler count and accommodation standing. Each has a total and a per-category split using the same category keys as the user's breakdown. "realistic" must be the best value-for-money option: credible without overspending. Give one short sentence per scenario explaining what it includes.
+2. ANALYSIS: 2-3 sentences addressed to THIS traveler, based on their profile, priorities and current split vs the realistic scenario. Then 2-4 concrete points (what to increase, what to cut, and why), never generic.
+3. DEALS: good deals that match the trip type and profile, grouped in activities, restaurants, transport and mood (things matching the traveler's mood/vibe). 2-3 items per group. Each has a real place or service name, its zone (e.g. north, south, city centre, a named district) and city, and one short enticing sentence with a price hint. No standard advice valid in any city.
+4. TIPS: 4 money-saving tips specific to the trip type, each naming a real place, pass, market or local practice, with its zone and city. 1-2 sentences.
+Novelty: never repeat any idea listed in "Already shown". Variation seed: ${seed}.
+Only include places you genuinely know exist. Prefer fewer but solid items.
+
+${travelerCtx}`;
+
+    const input = `Destination: ${destination}
+Dates: ${dateBits}
+Total budget: €${totalBudget} (${travelers} traveler(s), ${days} days)
 Traveler profile: ${styleBits || "n/a"}
-Current breakdown: ${breakdown || "none yet"}
+Current breakdown: ${breakdown || "none"}
+Already shown (do not repeat): ${(avoid as string[]).slice(0, 30).join(" | ") || "none"}`;
 
-Generate 3 to 5 saving tips specifically useful for THIS trip and profile.`
-      : `Destination : ${destination}
-${dateBits}
-Budget total : ${totalBudget} € (${traveler}, ${days} jours)
-Profil voyageur : ${styleBits || "n/c"}
-Répartition actuelle : ${breakdown || "aucune pour l'instant"}
-
-Génère 3 à 5 astuces d'économie utiles pour CE voyage et ce profil précisément.`;
-
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
+    const item = { type: "object", properties: { name: { type: "string" }, zone: { type: "string" }, city: { type: "string" }, detail: { type: "string" } }, required: ["name", "zone", "city", "detail"], additionalProperties: false };
+    const scenario = {
+      type: "object",
+      properties: {
+        total: { type: "number" },
+        note: { type: "string" },
+        split: { type: "array", items: { type: "object", properties: { key: { type: "string" }, amount: { type: "number" } }, required: ["key", "amount"], additionalProperties: false } },
       },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: user },
-        ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "saving_tips",
-              description: "Return localized money-saving tips for the trip.",
-              parameters: {
-                type: "object",
-                properties: {
-                  tips: {
-                    type: "array",
-                    minItems: 3,
-                    maxItems: 5,
-                    items: {
-                      type: "object",
-                      properties: {
-                        title: { type: "string", description: "Short title (max 6 words)" },
-                        body: { type: "string", description: "1-2 sentence practical tip with a real local reference" },
-                        category: { type: "string", enum: ["accommodation", "localTransport", "activities", "food", "shopping", "extras"] },
-                      },
-                      required: ["title", "body", "category"],
-                      additionalProperties: false,
-                    },
-                  },
-                },
-                required: ["tips"],
-                additionalProperties: false,
-              },
+      required: ["total", "note", "split"], additionalProperties: false,
+    };
+    const SCHEMA = {
+      type: "object",
+      properties: {
+        scenarios: { type: "object", properties: { economy: scenario, realistic: scenario, comfort: scenario }, required: ["economy", "realistic", "comfort"], additionalProperties: false },
+        analysis: { type: "object", properties: { summary: { type: "string" }, points: { type: "array", items: { type: "string" } } }, required: ["summary", "points"], additionalProperties: false },
+        deals: {
+          type: "object",
+          properties: { activities: { type: "array", items: item }, restaurants: { type: "array", items: item }, transport: { type: "array", items: item }, mood: { type: "array", items: item } },
+          required: ["activities", "restaurants", "transport", "mood"], additionalProperties: false,
+        },
+        tips: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string" }, body: { type: "string" }, zone: { type: "string" }, city: { type: "string" },
+              category: { type: "string", enum: ["accommodation", "localTransport", "activities", "food", "shopping", "extras", "flights", "insurance", "connectivity", "fees"] },
             },
+            required: ["title", "body", "zone", "city", "category"], additionalProperties: false,
           },
-        ],
-        tool_choice: { type: "function", function: { name: "saving_tips" } },
-      }),
-    });
+        },
+      },
+      required: ["scenarios", "analysis", "deals", "tips"], additionalProperties: false,
+    };
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "rate_limited" }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "credits_exhausted" }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const txt = await response.text();
-      console.error("AI gateway error", response.status, txt);
-      throw new Error(`AI gateway ${response.status}`);
+    let parsed: unknown;
+    try {
+      parsed = await generateJson({ instructions, input, schema: SCHEMA, name: "budget_insights", strict: true });
+    } catch (e) {
+      const r = aiErrorResponse(e, corsHeaders);
+      if (r) return r;
+      throw e;
     }
-
-    const data = await response.json();
-    const tool = data.choices?.[0]?.message?.tool_calls?.[0];
-    if (!tool?.function?.arguments) throw new Error("no_structured_output");
-    const parsed = JSON.parse(tool.function.arguments);
 
     return new Response(JSON.stringify(parsed), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

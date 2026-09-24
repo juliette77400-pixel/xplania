@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Mountain, Umbrella, Compass, Camera, Briefcase, Car,
+  Mountain, Umbrella, Compass, Briefcase, Car,
   Dumbbell, Utensils, CheckCircle, Plus
 } from "lucide-react";
 import { toast } from "sonner";
@@ -12,14 +12,13 @@ interface ActivityItemsProps {
   onAddToChecklist?: (items: string[]) => void;
 }
 
-type ActivityKey = "hiking" | "beach" | "city" | "photo" | "business" | "roadtrip" | "sport" | "gastro";
+type ActivityKey = "hiking" | "beach" | "city" | "business" | "roadtrip" | "sport" | "gastro";
 
 const activityMeta: Record<ActivityKey, { icon: React.ReactNode; color: string; matchers: string[] }> = {
   hiking:   { icon: <Mountain className="w-5 h-5" />,  color: "from-green-500/20 to-emerald-500/10",  matchers: ["rando", "nature", "trek", "hik", "mountain"] },
   beach:    { icon: <Umbrella className="w-5 h-5" />,  color: "from-cyan-500/20 to-blue-500/10",      matchers: ["plage", "mer", "soleil", "repos", "beach", "swim"] },
   city:     { icon: <Compass className="w-5 h-5" />,   color: "from-violet-500/20 to-purple-500/10",  matchers: ["ville", "culture", "musée", "découvrir", "city", "museum"] },
-  photo:    { icon: <Camera className="w-5 h-5" />,    color: "from-orange-500/20 to-amber-500/10",   matchers: ["photo", "créat", "creat"] },
-  business: { icon: <Briefcase className="w-5 h-5" />, color: "from-slate-500/20 to-gray-500/10",     matchers: ["business", "travail", "professionnel", "work"] },
+  business: { icon: <Briefcase className="w-5 h-5" />, color: "from-slate-500/20 to-gray-500/10",     matchers: ["business", "travail", "professionnel", "pro", "work", "remote", "télétravail", "conférence", "séminaire"] },
   roadtrip: { icon: <Car className="w-5 h-5" />,       color: "from-rose-500/20 to-pink-500/10",      matchers: ["road", "voiture", "car"] },
   sport:    { icon: <Dumbbell className="w-5 h-5" />,  color: "from-red-500/20 to-orange-500/10",     matchers: ["sport", "fitness"] },
   gastro:   { icon: <Utensils className="w-5 h-5" />,  color: "from-amber-500/20 to-yellow-500/10",   matchers: ["gastro", "cuisine", "restaurant", "food"] },
@@ -135,7 +134,17 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
                           className="flex items-center gap-2 text-xs text-muted-foreground"
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                          {item}
+                          <span className="flex-1">{item}</span>
+                          {!isAdded && onAddToChecklist && (
+                            <button
+                              type="button"
+                              onClick={() => { onAddToChecklist([item]); toast.success(t("valise.missing.addedToast"), { description: item }); }}
+                              className="shrink-0 p-1 rounded-md text-primary hover:bg-primary/10"
+                              aria-label={t("valise.missing.add")}
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          )}
                         </motion.div>
                       ))}
                       {!isAdded && onAddToChecklist && (

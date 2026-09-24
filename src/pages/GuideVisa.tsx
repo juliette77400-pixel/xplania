@@ -23,7 +23,6 @@ import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
 import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
 
 import VisaPipChat from "@/components/visa/VisaPipChat";
-import CurrencyConverter from "@/components/shared/CurrencyConverter";
 import VaccinesGuide from "@/components/visa/VaccinesGuide";
 import SafetyGuide from "@/components/visa/SafetyGuide";
 import {
@@ -610,25 +609,6 @@ const GuideVisaPage = () => {
                 </div>
               </motion.div>
 
-              {/* Regenerate + CTA */}
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleRegenerate}
-                  disabled={isGenerating}
-                  className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-semibold transition-colors disabled:opacity-50"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  Regénérer les formalités
-                </motion.button>
-                <Link
-                  to="/guide-budget"
-                  className="gradient-button inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
-                >
-                  Continuer mes préparatifs →
-                </Link>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -636,14 +616,34 @@ const GuideVisaPage = () => {
         {hasGenerated && !isGenerating && aiResult && (
           <section className="space-y-6 border-t border-border/60 pt-8" aria-labelledby="visa-resources-title">
             <div><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("guideVisa.resourcesKicker")}</p><h2 id="visa-resources-title" className="mt-1 text-2xl font-bold">{t("guideVisa.resourcesTitle")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("guideVisa.resourcesHelp")}</p></div>
-            <VisaProcessStepper destination={destinationName} onAskPip={askPip} />
+            <VisaProcessStepper destination={destinationName} nationality={nationalityName} onAskPip={askPip} />
             <VaccinesGuide destination={destinationName} />
             <SafetyGuide destination={destinationName} />
-            <section className="glass-card rounded-2xl p-6 space-y-3" id="currency-converter">
-              <h2 className="text-lg font-bold text-foreground">{t("guideVisa.currencySection.title")}</h2>
-              <CurrencyConverter destination={destinationName} />
-              <p className="text-xs text-amber-600 dark:text-amber-400">⚠️ {t("guideVisa.currencySection.disclaimer")}</p>
-            </section>
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center w-full">
+                <button
+                  type="button"
+                  onClick={handleRegenerate}
+                  disabled={isGenerating}
+                  className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-semibold transition-colors disabled:opacity-50"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  {t("guideVisa.actions.regenerate")}
+                </button>
+                <Link
+                  to="/guide-budget"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-primary/40 text-foreground font-semibold hover:bg-primary/10 transition-colors"
+                >
+                  {t("guideVisa.actions.continuePrep")} →
+                </Link>
+              </div>
+              <Link
+                to="/guide-valise"
+                className="gradient-button inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+              >
+                {t("guideVisa.actions.toValise")} →
+              </Link>
+            </div>
           </section>
         )}
       </div>

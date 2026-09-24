@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { classifyExpense } from "@/lib/cost-of-living";
 
 export interface Expense {
   id: string;
@@ -17,7 +18,7 @@ export interface Expense {
   date: string;
 }
 
-const categoryKeys = ["accommodation", "localTransport", "activities", "food", "shopping", "extras", "unexpected"] as const;
+const categoryKeys = ["accommodation", "localTransport", "activities", "food", "shopping", "extras", "unexpected", "flights", "insurance", "connectivity", "fees"] as const;
 const paymentKeys = [
   { value: "card", icon: CreditCard },
   { value: "cash", icon: Banknote },
@@ -35,23 +36,33 @@ const AddExpenseForm = ({ onAdd }: Props) => {
   const [category, setCategory] = useState("");
   const [payment, setPayment] = useState("");
   const [comment, setComment] = useState("");
-  const [autoClassify, setAutoClassify] = useState(false);
+  const [autoClassify, setAutoClassify] = useState(() => {
+    try { return localStorage.getItem("xplania-budget-autoclassify") === "1"; } catch { return false; }
+  });
+  const toggleAuto = (v: boolean) => {
+    setAutoClassify(v);
+    try { localStorage.setItem("xplania-budget-autoclassify", v ? "1" : "0"); } catch { /* ignore */ }
+  };
+  const guessed = autoClassify ? classifyExpense(comment) : null;
 
   const handleSubmit = () => {
-    if (!amount || !category) {
-      toast.error(t("budget.addToastMissing"));
+    // When auto-classification is on, the comment decides the category;
+    // a manual choice is only used when nothing could be recognised.
+    const finalCategory = (autoClassify && guessed) || category || (autoClassify ? "extras" : "");
+    if (!amount || !finalCategory) {
+      toast.error(t(autoClassify ? "budget.addToastMissingAuto" : "budget.addToastMissing"));
       return;
     }
     onAdd({
       id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `exp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       amount: parseFloat(amount),
-      category,
+      category: finalCategory,
       payment: payment || "card",
       comment,
       date: new Date().toISOString(),
     });
     toast.success(t("budget.addToastAdded"), {
-      description: t("budget.addToastAddedDesc", { amount, category: t(`budget.categories.${category}`) }),
+      description: t("budget.addToastAddedDesc", { amount, category: t(`budget.categories.${finalCategory}`) }),
     });
     setAmount("");
     setCategory("");
@@ -92,7 +103,7 @@ const AddExpenseForm = ({ onAdd }: Props) => {
 
         <div className="space-y-2">
           <Label className="text-foreground font-semibold">{t("budget.addCategory")}</Label>
-          <Select value={category} onValueChange={setCategory}>
+          <Select value={(autoClassify && guessed) || category} onValueChange={setCategory} disabled={autoClassify && !!guessed}>
             <SelectTrigger className="bg-muted border-border text-foreground">
               <SelectValue placeholder={t("budget.addCategoryPh")} />
             </SelectTrigger>
@@ -102,6 +113,13 @@ const AddExpenseForm = ({ onAdd }: Props) => {
               ))}
             </SelectContent>
           </Select>
+          {autoClassify && (
+            <p className="text-xs text-primary">
+              {guessed
+                ? t("budget.addAutoDetected", { category: t(`budget.categories.${guessed}`) })
+                : t("budget.addAutoHint")}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -145,7 +163,7 @@ const AddExpenseForm = ({ onAdd }: Props) => {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">{t("budget.addEnable")}</span>
-          <Switch checked={autoClassify} onCheckedChange={setAutoClassify} />
+          <Switch checked={autoClassify} onCheckedChange={toggleAuto} aria-label={t("budget.addAutoClassify")} />
         </div>
       </div>
     </motion.div>

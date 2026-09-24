@@ -4,14 +4,16 @@ import { MessageCircle } from "lucide-react";
 
 interface Props {
   destination?: string;
+  nationality?: string;
   onAskPip?: () => void;
 }
 
 const ICONS = ["🔍", "📅", "📄", "🏛️", "✅", "🛂"];
 
-const VisaProcessStepper = ({ destination, onAskPip }: Props) => {
+const VisaProcessStepper = ({ destination, nationality, onAskPip }: Props) => {
   const { t } = useTranslation();
-  const steps = t("guideVisa.stepper.steps", { returnObjects: true }) as Array<{
+  const nat = nationality || (t("common.france", { defaultValue: "française" }) as string);
+  const steps = t("guideVisa.stepper.steps", { returnObjects: true, nationality: nat }) as Array<{
     title: string;
     detail: string;
   }>;
@@ -22,6 +24,9 @@ const VisaProcessStepper = ({ destination, onAskPip }: Props) => {
       <h2 className="text-lg font-bold text-foreground">
         {t("guideVisa.stepper.title")}
       </h2>
+      <p className="text-sm text-foreground/80">
+        {t("guideVisa.stepper.nationalityNote", { nationality: nat, destination: destination || "" })}
+      </p>
       <Accordion type="single" collapsible className="w-full">
         {list.map((s, i) => (
           <AccordionItem key={i} value={`step-${i}`} className="border-border/40">

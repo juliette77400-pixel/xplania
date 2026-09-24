@@ -13,6 +13,7 @@ import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
+import { useBudgetInsights, type BudgetScenario } from "@/hooks/useBudgetInsights";
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
@@ -27,7 +28,7 @@ import BudgetSavingTips from "@/components/budget/BudgetSavingTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
 import BudgetOnboardingChat from "@/components/budget/BudgetOnboardingChat";
 import CurrencyConverter from "@/components/shared/CurrencyConverter";
-import { suggestCategoryAmount, buildAdjustmentExplanation, type CategoryKey } from "@/lib/cost-of-living";
+import { suggestCategoryAmount, buildAdjustmentExplanation, buildScenarios, type CategoryKey } from "@/lib/cost-of-living";
 
 /* =============================================================================
  * DEV NOTE — Item 6: Bank-transaction integration feasibility (research only)
@@ -101,6 +102,41 @@ const GuideBudgetPage = () => {
 
   const totalBudget = categories.reduce((s, c) => s + c.planned, 0) || userBudget;
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
+  const insights = useBudgetInsights({
+    enabled: hasGenerated,
+    destination,
+    totalBudget,
+    days,
+    travelers,
+    locale,
+    categories: categories.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent })),
+    tripData,
+  });
+
+  // Once AI scenarios arrive, the "realistic" split becomes the suggestion per category.
+  useEffect(() => {
+    const realistic = insights.data?.scenarios?.realistic;
+    if (!realistic?.split?.length) return;
+    const sc = insights.data!.scenarios;
+    setCategories((prev) => prev.map((c) => {
+      const amt = (k: "economy" | "realistic" | "comfort") => Math.round(sc[k]?.split?.find((x) => x.key === c.key)?.amount ?? 0);
+      const r = amt("realistic");
+      if (!r) return c;
+      const line = locale === "en"
+        ? `AI scenarios for ${destination}: economy ~€${amt("economy")} · realistic ~€${r} · comfort ~€${amt("comfort")}. The realistic one is the best value.`
+        : `Scénarios IA pour ${destination} : éco ~${amt("economy")} € · réaliste ~${r} € · confort ~${amt("comfort")} €. Le réaliste offre le meilleur rapport qualité-prix.`;
+      return { ...c, aiSuggested: r, aiExplanation: line };
+    }));
+  }, [insights.data, locale, destination]);
+
+  const applyScenario = useCallback((sc: BudgetScenario) => {
+    setCategories((prev) => prev.map((c) => {
+      const a = sc.split?.find((x) => x.key === c.key)?.amount;
+      return typeof a === "number" && a > 0 ? { ...c, planned: Math.round(a) } : c;
+    }));
+    toast.success(t("budget.scenarioApplied"));
+  }, [t]);
+
   const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
 
   const handleExportPdf = useCallback(async () => {
@@ -145,6 +181,9 @@ const GuideBudgetPage = () => {
               color: def.color,
             } as BudgetCategory;
           });
+          for (const def of defaultCategories) {
+            if (!rehydrated.some((c) => c.key === def.key)) rehydrated.push({ ...def });
+          }
           setCategories(rehydrated);
           setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
           setHasGenerated(true);
@@ -195,10 +234,14 @@ const GuideBudgetPage = () => {
           days,
           travelers,
         });
+        const sc = buildScenarios(suggested);
+        const scLine = locale === "en"
+          ? ` Scenarios: economy ~€${sc.economy} · realistic ~€${sc.realistic} · comfort ~€${sc.comfort}.`
+          : ` Scénarios : éco ~${sc.economy} € · réaliste ~${sc.realistic} € · confort ~${sc.comfort} €.`;
         return {
           ...c,
           aiSuggested: suggested,
-          aiExplanation: buildAdjustmentExplanation(c.key as CategoryKey, destination, days, monthLabel, locale),
+          aiExplanation: buildAdjustmentExplanation(c.key as CategoryKey, destination, days, monthLabel, locale) + scLine,
         };
       }),
     [destination, days, travelers, monthLabel, locale]
@@ -213,7 +256,12 @@ const GuideBudgetPage = () => {
         if (c.key === "activities") return /activit|visit|visite|museum|mus[eé]e|sortie/.test(name);
         if (c.key === "food") return /food|repas|restaurant|nourriture|meal|gastronomie/.test(name);
         if (c.key === "shopping") return /shopping|souvenir|achat/.test(name);
-        return /extra|impr[eé]vu|unexpected|misc/.test(name);
+        if (c.key === "flights") return /vol|flight|avion|a[eé]rien|aller[- ]retour/.test(name);
+        if (c.key === "insurance") return /assurance|insurance|sant[eé]|health/.test(name);
+        if (c.key === "connectivity") return /sim|internet|data|t[eé]l[eé]phone|phone/.test(name);
+        if (c.key === "fees") return /frais|fee|pourboire|tip|bank|banc/.test(name);
+        if (c.key === "unexpected") return /impr[eé]vu|unexpected|misc/.test(name);
+        return /extra/.test(name);
       });
       const base = typeof rec?.amount === "number" && rec.amount > 0
         ? rec.amount
@@ -437,6 +485,9 @@ const GuideBudgetPage = () => {
                 days={days}
                 destination={destination}
                 onTotalBudgetChange={handleUpdateTotalBudget}
+                insights={insights.data}
+                insightsLoading={insights.isFetching}
+                onApplyScenario={applyScenario}
               />
               <BudgetForecast
                 totalBudget={totalBudget}
@@ -461,7 +512,7 @@ const GuideBudgetPage = () => {
                 title={t("collapsible.budget.alerts")}
                 subtitle={t("collapsible.budget.alertsSub")}
               >
-                <BudgetAlerts categories={categories} destination={destination} />
+                <BudgetAlerts categories={categories} destination={destination} deals={insights.data?.deals} loading={insights.isFetching} />
               </CollapsibleSection>
 
               <CollapsibleSection
@@ -471,11 +522,10 @@ const GuideBudgetPage = () => {
               >
                 <BudgetSavingTips
                   destination={destination}
-                  totalBudget={totalBudget}
-                  days={days}
-                  travelers={travelers}
-                  categories={categories}
-                  tripData={tripData}
+                  tips={insights.data?.tips}
+                  loading={insights.isFetching}
+                  failed={insights.isError}
+                  onRefresh={insights.refresh}
                 />
               </CollapsibleSection>
 

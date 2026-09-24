@@ -2,15 +2,19 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Sparkles, Edit3, Check, X } from "lucide-react";
 import { useState } from "react";
+import type { BudgetInsights } from "@/hooks/useBudgetInsights";
 
 interface Props {
   totalBudget: number;
   days: number;
   destination: string;
   onTotalBudgetChange: (amount: number) => void;
+  insights?: BudgetInsights | null;
+  insightsLoading?: boolean;
+  onApplyScenario?: (s: BudgetInsights["scenarios"]["realistic"]) => void;
 }
 
-const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange }: Props) => {
+const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange, insights, insightsLoading, onApplyScenario }: Props) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(String(totalBudget));
@@ -84,6 +88,53 @@ const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange }:
         <Edit3 className="w-4 h-4" />
         {t("budget.aiResultModify")}
       </motion.button>
+
+      {insightsLoading && !insights && (
+        <div className="mt-5 space-y-2" aria-busy="true">
+          <div className="h-4 w-3/4 rounded bg-muted/50 animate-pulse" />
+          <div className="h-20 rounded-xl bg-muted/30 animate-pulse" />
+        </div>
+      )}
+      {insights?.analysis && (
+        <div className="mt-5 space-y-3">
+          <p className="text-sm text-foreground leading-relaxed">{insights.analysis.summary}</p>
+          {insights.analysis.points?.length > 0 && (
+            <ul className="space-y-1.5">
+              {insights.analysis.points.map((pt, i) => (
+                <li key={i} className="text-sm text-muted-foreground flex gap-2"><span className="text-primary">•</span>{pt}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+      {insights?.scenarios && (
+        <div className="mt-5">
+          <h4 className="text-sm font-bold text-foreground mb-2">{t("budget.scenariosTitle")}</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {(["economy", "realistic", "comfort"] as const).map((k) => {
+              const sc = insights.scenarios[k];
+              if (!sc) return null;
+              const best = k === "realistic";
+              return (
+                <div key={k} className={`p-4 rounded-xl border ${best ? "border-primary bg-primary/10" : "border-border bg-muted/30"}`}>
+                  <p className="text-xs font-semibold text-muted-foreground">{t(`budget.scenario.${k}`)}{best && ` · ${t("budget.scenarioBest")}`}</p>
+                  <p className="text-xl font-extrabold text-foreground">{Math.round(sc.total)} €</p>
+                  <p className="text-xs text-muted-foreground mt-1">{sc.note}</p>
+                  {onApplyScenario && (
+                    <button
+                      type="button"
+                      onClick={() => onApplyScenario(sc)}
+                      className="mt-3 text-xs font-semibold text-primary hover:underline"
+                    >
+                      {t("budget.scenarioApply")}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };

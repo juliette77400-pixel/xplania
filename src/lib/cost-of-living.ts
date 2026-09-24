@@ -10,7 +10,11 @@ export type CategoryKey =
   | "food"
   | "shopping"
   | "extras"
-  | "unexpected";
+  | "unexpected"
+  | "flights"
+  | "insurance"
+  | "connectivity"
+  | "fees";
 
 interface CityProfile {
   match: RegExp;
@@ -21,7 +25,7 @@ interface CityProfile {
   /** Average mid-range hotel night in EUR */
   hotelNight: number;
   /** Per-category multipliers vs baseline */
-  mult: Record<CategoryKey, number>;
+  mult: Partial<Record<CategoryKey, number>>;
   /** Currency hint */
   currency: string;
 }
@@ -176,8 +180,22 @@ export const suggestCategoryAmount = (
     case "unexpected":
       baseline = (currentPlanned || profile.mealCost * 3) * 0.15;
       break;
+    case "flights":
+      // Round-trip transport: long-haul destinations (cheap local costs) tend to be far away.
+      baseline = (profile.hotelNight < 60 ? 650 : profile.hotelNight > 150 ? 550 : 220) * travelers;
+      break;
+    case "insurance":
+      baseline = (18 + Math.max(1, opts.days) * 2.2) * travelers;
+      break;
+    case "connectivity":
+      baseline = (profile.mult.accommodation ?? 1) < 0.6 ? 12 : Math.max(5, Math.min(30, opts.days * 1.5));
+      break;
+    case "fees":
+      baseline = profile.mealCost * 0.6 * Math.max(1, opts.days) * 0.5 * travelers;
+      break;
   }
-  const multiplied = baseline * profile.mult[category] * season;
+  const mult = category === "flights" || category === "insurance" ? 1 : profile.mult[category] ?? 1;
+  const multiplied = baseline * mult * season;
 
   // Blend with current planned (so user history matters) — weight 30% baseline / 70% planned
   // but if planned is 0, use full baseline.
@@ -231,4 +249,31 @@ export const buildAdjustmentExplanation = (
     default:
       return `Ajusté aux prix moyens à ${destination} en ${month}.`;
   }
+};
+
+/** Three budget scenarios around the realistic suggestion. */
+export const buildScenarios = (realistic: number) => ({
+  economy: Math.max(1, Math.round(realistic * 0.75)),
+  realistic: Math.max(1, Math.round(realistic)),
+  comfort: Math.max(1, Math.round(realistic * 1.35)),
+});
+
+const CLASSIFY_RULES: Array<[CategoryKey, RegExp]> = [
+  ["flights", /\b(vol|vols|flight|avion|plane|airline|billet d'avion|train aller|ferry|easyjet|ryanair|air france|sncf|tgv|ouigo|eurostar)\b/i],
+  ["accommodation", /(h[oô]tel|hostel|auberge|airbnb|booking|logement|nuit|night|g[iî]te|camping|ryokan|room|chambre|apartment|appart)/i],
+  ["localTransport", /(m[eé]tro|metro|bus|tram|taxi|uber|bolt|grab|tuk|train|ticket transport|navigo|pass transport|essence|fuel|gas|parking|location voiture|car rental|scooter|v[eé]lo|bike)/i],
+  ["food", /(resto|restaurant|repas|meal|d[eé]jeuner|d[iî]ner|lunch|dinner|breakfast|petit[- ]d[eé]j|caf[eé]|coffee|bar|bi[eè]re|beer|vin|wine|boulangerie|bakery|march[eé]|market|supermarch[eé]|grocery|courses|snack|glace|street food|pizza|sushi|tapas)/i],
+  ["activities", /(mus[eé]e|museum|visite|tour|excursion|entr[eé]e|ticket|billet|concert|spectacle|show|parc|park|plong[eé]e|diving|surf|randonn[eé]e|hike|cours|class|spa|massage|temple|ch[aâ]teau)/i],
+  ["shopping", /(shopping|souvenir|v[eê]tement|clothes|cadeau|gift|boutique|store|magasin|achat)/i],
+  ["insurance", /(assurance|insurance|pharmacie|pharmacy|m[eé]decin|doctor|h[oô]pital|m[eé]dicament|vaccin)/i],
+  ["connectivity", /(sim|esim|e-sim|roaming|data|internet|wifi|forfait|airalo|holafly)/i],
+  ["fees", /(frais|fee|commission|retrait|atm|change|exchange|pourboire|tip|visa|taxe|tax)/i],
+];
+
+/** Guess the expense category from a free-text comment. Returns null when unsure. */
+export const classifyExpense = (text: string): CategoryKey | null => {
+  const s = (text || "").trim();
+  if (!s) return null;
+  for (const [key, re] of CLASSIFY_RULES) if (re.test(s)) return key;
+  return null;
 };

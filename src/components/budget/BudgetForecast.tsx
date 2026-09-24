@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Home, Bus, Ticket, Utensils, ShoppingBag, AlertTriangle, Sparkles, Edit3, Check } from "lucide-react";
+import { Home, Bus, Ticket, Utensils, ShoppingBag, AlertTriangle, Sparkles, Edit3, Check, Plane, ShieldCheck, Wifi, Receipt } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 export interface BudgetCategory {
@@ -24,6 +24,10 @@ const defaultCategories: BudgetCategory[] = [
   { key: "shopping", planned: 50, aiSuggested: 45, spent: 0, icon: ShoppingBag, color: "text-pink-400" },
   { key: "extras", planned: 30, aiSuggested: 25, spent: 0, icon: AlertTriangle, color: "text-yellow-400" },
   { key: "unexpected", planned: 10, aiSuggested: 15, spent: 0, icon: AlertTriangle, color: "text-red-400" },
+  { key: "flights", planned: 250, aiSuggested: 240, spent: 0, icon: Plane, color: "text-sky-400" },
+  { key: "insurance", planned: 30, aiSuggested: 30, spent: 0, icon: ShieldCheck, color: "text-emerald-400" },
+  { key: "connectivity", planned: 15, aiSuggested: 12, spent: 0, icon: Wifi, color: "text-cyan-400" },
+  { key: "fees", planned: 25, aiSuggested: 25, spent: 0, icon: Receipt, color: "text-amber-400" },
 ];
 
 interface Props {
