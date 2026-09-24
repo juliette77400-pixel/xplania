@@ -1,4 +1,5 @@
 import type { ExploreNode } from "@/hooks/useExplore";
+import i18n from "@/i18n";
 
 export type BadgeCategory = "exploration" | "food" | "culture" | "social" | "adventure";
 export type BadgeRarity = "commun" | "rare" | "épique" | "légendaire";
@@ -6,7 +7,7 @@ export type BadgeRarity = "commun" | "rare" | "épique" | "légendaire";
 export interface BadgeDef {
   code: string;
   name: string;
-  description: string;
+  readonly description: string;
   icon: string;
   category: BadgeCategory;
   rarity: BadgeRarity;
@@ -22,7 +23,7 @@ const visitedByType = (n: ExploreNode[], t: string) => n.filter((x) => x.type ==
 const mk = (
   code: string,
   name: string,
-  description: string,
+  descriptionKey: string,
   icon: string,
   category: BadgeCategory,
   rarity: BadgeRarity,
@@ -31,7 +32,9 @@ const mk = (
 ): BadgeDef => ({
   code,
   name,
-  description,
+  get description() {
+    return i18n.t(`ui2.exploreBadges.${descriptionKey}`);
+  },
   icon,
   category,
   rarity,
