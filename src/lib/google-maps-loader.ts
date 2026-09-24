@@ -1,22 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Loads the Google Maps JavaScript API once. Rejects when the key is refused
-// (e.g. on a custom domain the managed key does not cover) so callers can fall back.
+// (e.g. referrer restrictions) so callers can fall back to the Leaflet map.
 
 let promise: Promise<any> | null = null;
 
-/** The managed browser key only works on Lovable domains (and localhost for dev). */
-export function googleMapsAllowedHere() {
-  const h = window.location.hostname;
-  return h.endsWith(".lovable.app") || h.endsWith(".lovableproject.com") || h === "localhost";
+/**
+ * The founder's own browser key (referrer-restricted to xplania.app) or, as a
+ * fallback, the Lovable-managed browser key (Lovable domains + localhost only).
+ */
+export function getBrowserKey(): string | undefined {
+  return (
+    import.meta.env["VITE_GOOGLE_MAPS_BROWSER_KEY"] ||
+    import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] ||
+    undefined
+  );
 }
 
 export function loadGoogleMaps(): Promise<any> {
   const w = window as any;
   if (w.google?.maps?.Map) return Promise.resolve(w.google.maps);
   if (promise) return promise;
-  const key = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
+  const key = getBrowserKey();
   const channel = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"] ?? "";
-  if (!key || !googleMapsAllowedHere()) return Promise.reject(new Error("google_maps_unavailable"));
+  if (!key) return Promise.reject(new Error("google_maps_unavailable"));
 
   promise = new Promise((resolve, reject) => {
     const timer = window.setTimeout(() => reject(new Error("google_maps_timeout")), 12000);
