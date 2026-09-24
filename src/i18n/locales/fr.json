@@ -5293,5 +5293,29 @@
     "ctaText": "Prêt à planifier ton prochain voyage ?",
     "ctaButton": "Commencer gratuitement",
     "footerLink": "Planifier un voyage avec l'IA"
+  },
+  "journeyIntro": {
+    "kicker": "Bienvenue sur Xplania",
+    "title": "Ton parcours en 4 étapes",
+    "subtitle": "En quelques minutes, Xplania apprend à te connaître pour te proposer des voyages qui te ressemblent vraiment.",
+    "s1": {
+      "title": "On t'explique",
+      "text": "Tu es ici : un aperçu rapide de ce qui t'attend."
+    },
+    "s2": {
+      "title": "Ton ADN Voyageur",
+      "time": "≈ 5 min",
+      "text": "Réagis à des photos de voyage : « J'adore », « Ça me correspond », « Pas pour moi » ou « Passer ». Il n'y a pas de mauvaise réponse."
+    },
+    "s3": {
+      "title": "Tu testes une fonctionnalité",
+      "text": "Selon ton profil, on te propose l'outil le plus utile pour toi : créer un voyage, budget, visa, valise…"
+    },
+    "s4": {
+      "title": "Tu explores tout Xplania",
+      "text": "Accède à ton espace : carnet de voyage, défis et badges, Mood Explorer, découvertes locales et bien plus."
+    },
+    "cta": "C'est parti !",
+    "note": "Gratuit, sans inscription pour commencer. Tu peux quitter à tout moment."
   }
 }
