@@ -5293,6 +5293,9 @@
       "m9": "Réessayer",
       "m10": "Tes objectifs sont automatiquement adaptés à la durée de ton voyage.",
       "m11": "👑 Niveau maximum atteint — tu es une vraie Légende !"
+    },
+    "GuideVisa": {
+      "generalDocs": "Documents généraux à préparer"
     }
   },
   "planGuide": {

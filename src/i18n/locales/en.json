@@ -5293,6 +5293,9 @@
       "m9": "Retry",
       "m10": "Your goals are automatically adjusted to your trip duration.",
       "m11": "👑 Max level reached — you are a true Legend!"
+    },
+    "GuideVisa": {
+      "generalDocs": "General documents to prepare"
     }
   },
   "planGuide": {
