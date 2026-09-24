@@ -5,6 +5,7 @@ import { Position, haversineKm } from "@/hooks/useGeolocation";
 import { TripActivity } from "@/hooks/useTracking";
 import { toast } from "sonner";
 import { pingStreakAction } from "@/lib/streak";
+import i18n from "@/i18n";
 
 const CHECKIN_RADIUS_KM = 0.1; // 100m
 const DWELL_MS = 90_000; // 1.5 min
@@ -39,7 +40,7 @@ export function useCheckIn(
             await supabase.from("trip_activities")
               .update({ status: "done", completed_at: new Date().toISOString() })
               .eq("id", act.id);
-            toast.success(`📍 Tu es arrivé à "${act.title}" — ajouté au carnet ?`);
+            toast.success(i18n.t("ui2.useCheckIn.arrived", { title: act.title }));
             onCheckIn?.(act);
           })();
         }

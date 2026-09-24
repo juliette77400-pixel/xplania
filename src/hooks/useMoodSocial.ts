@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { pingStreakAction } from "@/lib/streak";
+import i18n from "@/i18n";
 
 export interface MoodReaction {
   id: string;
@@ -87,7 +88,7 @@ export function useMoodReactions(placeId?: string) {
         toast.error("Échec partage");
         return null;
       }
-      toast.success("Ressenti partagé 💬");
+      toast.success(i18n.t("ui2.useMoodSocial.shared"));
       return data as any;
     },
     [user, placeId],

@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { timeOfDay, type MoodKey } from "@/lib/moods";
 import { invokeProtectedFunction } from "@/lib/protected-functions";
 import { trackReaction } from "@/lib/user-memory";
+import i18n from "@/i18n";
 
 export interface MoodPlace {
   id: string;
@@ -139,8 +140,8 @@ export function useMoodExplorer() {
       setPlaces(data?.places || []);
       setActiveMood(data?.mood || input.mood || null);
       qc.invalidateQueries({ queryKey: moodHistoryKey(user?.id) });
-      if (!data?.places?.length) toast.info("Aucun lieu trouvé, réessaie avec un autre mood");
-      else toast.success(`${data.places.length} lieux trouvés pour "${data.mood}"`);
+      if (!data?.places?.length) toast.info(i18n.t("ui2.useMoodExplorer.noPlaces"));
+      else toast.success(i18n.t("ui2.useMoodExplorer.placesFound", { count: data.places.length, mood: data.mood }));
     },
     onError: (e: any) => {
       if (e?.message === "auth_required") {
@@ -183,7 +184,7 @@ export function useMoodExplorer() {
       });
       if (res.kind === "added") {
         pingStreakAction("mood:favorite");
-        toast.success("Sauvegardé ❤️");
+        toast.success(i18n.t("ui2.useMoodExplorer.saved"));
         void trackReaction({
           itemKey: place.name,
           itemType: "mood_place",
@@ -193,7 +194,7 @@ export function useMoodExplorer() {
           context: { mood: place.mood, category: place.category },
         });
       } else {
-        toast.success("Retiré des favoris");
+        toast.success(i18n.t("ui2.useMoodExplorer.removedFromFavorites"));
       }
     },
     onError: (e: any) => {
