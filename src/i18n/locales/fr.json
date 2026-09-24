@@ -5366,5 +5366,71 @@
     },
     "cta": "C'est parti !",
     "note": "Gratuit, sans inscription pour commencer. Tu peux quitter à tout moment."
+  },
+  "gmaps": {
+    "info": {
+      "loading": "Infos Google Maps…",
+      "title": "Infos Google Maps",
+      "openNow": "Ouvert",
+      "closedNow": "Fermé",
+      "photoBy": "Photo : {{name}}",
+      "hours": "Horaires",
+      "website": "Site web",
+      "openInMaps": "Ouvrir dans Google Maps"
+    },
+    "categories": {
+      "food": "Food & boissons",
+      "nightlife": "Vie nocturne",
+      "culture": "Expériences",
+      "nature": "Chill & nature",
+      "chill": "Chill",
+      "experience": "Expériences"
+    },
+    "lists": {
+      "linkCopied": "Lien de la liste copié",
+      "public": "Publique",
+      "shareLink": "Partager le lien",
+      "deleteList": "Supprimer la liste",
+      "confirmDelete": "Supprimer la liste « {{name}} » ?",
+      "addToTrip": "Ajouter au voyage",
+      "remove": "Retirer",
+      "addToList": "Ajouter à une liste",
+      "noCoords": "Ce lieu n'a pas de position, impossible de l'enregistrer.",
+      "myLists": "Mes listes"
+    },
+    "public": {
+      "loading": "Chargement…",
+      "missing": "Cette liste n'existe pas ou n'est plus partagée.",
+      "discover": "Découvrir Xplania",
+      "kicker": "Liste partagée sur Xplania",
+      "cta": "Crée tes propres listes de lieux avec Xplania."
+    },
+    "map": {
+      "youAreHere": "Tu es ici",
+      "checkpoint": "Point {{label}}",
+      "loading": "Chargement de la carte…",
+      "legendPath": "Mon parcours (A → Z)",
+      "legendPlanned": "Étapes prévues"
+    },
+    "route": {
+      "title": "Mon parcours",
+      "addStop": "Ajouter un lieu",
+      "traveled": "Parcouru",
+      "planned": "Prévu",
+      "remaining": "Restant",
+      "removeStop": "Retirer l'étape",
+      "birdNote": "Distances à vol d'oiseau, recalculées à chaque position et chaque étape ajoutée."
+    },
+    "stop": {
+      "title": "Ajouter un lieu au parcours",
+      "desc": "Cherche un vrai lieu sur Google Maps, il s'ajoute à tes étapes.",
+      "placeholder": "Ex. Musée, café, gare…",
+      "noDay": "Sans date",
+      "searching": "Recherche…",
+      "noResult": "Aucun lieu trouvé",
+      "searchError": "La recherche a échoué, réessaie.",
+      "addError": "Impossible d'ajouter ce lieu.",
+      "added": "« {{name}} » ajouté au parcours"
+    }
   }
 }
