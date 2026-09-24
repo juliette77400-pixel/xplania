@@ -53,6 +53,10 @@ const META: Record<string, Meta> = {
     en: ["Trust & security — Xplania", "How Xplania protects your data, your privacy and the reliability of travel information."],
   },
 };
+META["/blog/how-to-plan-a-trip-with-ai"] = {
+  fr: ["Comment planifier un voyage avec l'IA — Xplania", "Guide étape par étape pour planifier un voyage avec l'IA : itinéraire, budget, visa, valise et découvertes locales."],
+  en: ["How to plan a trip with AI — Xplania", "Step-by-step guide to plan a trip with an AI travel planner: itinerary, budget, visa, packing and local tips."],
+};
 META["/a-propos"] = META["/about"];
 META["/securite"] = META["/trust"];
 
