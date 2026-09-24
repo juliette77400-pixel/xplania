@@ -145,9 +145,9 @@ export function useMoodExplorer() {
     },
     onError: (e: any) => {
       if (e?.message === "auth_required") {
-        toast.error("Connecte-toi pour utiliser le Mood Explorer");
+        toast.error(i18n.t("ui2.auto.k7"));
       } else {
-        toast.error(e?.message || "Erreur recommandation");
+        toast.error(e?.message || i18n.t("ui2.auto.k9"));
       }
     },
   });

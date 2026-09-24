@@ -67,7 +67,7 @@ export function useMoodReactions(placeId?: string) {
   const addReaction = useCallback(
     async (input: { mood: string; emoji?: string; comment?: string; lat?: number | null; lng?: number | null; place_name?: string | null }) => {
       if (!user || !placeId) {
-        toast.error("Connecte-toi pour partager ton ressenti");
+        toast.error(i18n.t("ui2.auto.k6"));
         return null;
       }
       const { data, error } = await supabase
@@ -85,7 +85,7 @@ export function useMoodReactions(placeId?: string) {
         .select("*")
         .single();
       if (error) {
-        toast.error("Échec partage");
+        toast.error(i18n.t("ui2.auto.k24"));
         return null;
       }
       toast.success(i18n.t("ui2.useMoodSocial.shared"));

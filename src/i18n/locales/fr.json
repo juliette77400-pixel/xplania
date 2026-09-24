@@ -5106,6 +5106,147 @@
     },
     "PhotoGallery": {
       "subtitle": "Images réelles via Unsplash"
+    },
+    "NotificationSettingsPanel": {
+      "dailyRecapSoon": "Récap quotidien (bientôt)",
+      "frequency": "Fréquence",
+      "instant": "Instantanée",
+      "notifyRejected": "Me prévenir quand une preuve est refusée",
+      "notifyValidated": "Me prévenir quand un badge est validé",
+      "onlyInstantActive": "Seul le mode instantané est actif pour l'instant.",
+      "soonServerReady": "Bientôt disponible, dès que le serveur sera prêt.",
+      "updated": "Préférences mises à jour"
+    },
+    "VerificationSettingsPanel": {
+      "autoGeo": "Valider auto. par position",
+      "forceManual": "Forcer la vérification manuelle",
+      "saved": "Réglages enregistrés",
+      "title": "Réglages de vérification"
+    },
+    "EditTripDialog": {
+      "cancel": "Annuler",
+      "departure": "Départ",
+      "description": "Modifie le titre, la destination ou les dates de ton voyage.",
+      "destinationLabel": "Destination",
+      "editTrip": "Modifier le voyage",
+      "returnLabel": "Retour",
+      "save": "Enregistrer",
+      "titleLabel": "Titre",
+      "titlePh": "Mon voyage au Portugal"
+    },
+    "WeatherSection": {
+      "weatherAlt": "Météo"
+    },
+    "useCheckIn": {
+      "arrived": "Bien arrivé·e à {{title}} !"
+    },
+    "useMoodExplorer": {
+      "noPlaces": "Aucun lieu trouvé pour ce mood",
+      "placesFound": "{{count}} lieux trouvés pour ton mood {{mood}}",
+      "removedFromFavorites": "Retiré des favoris",
+      "saved": "Ajouté aux favoris"
+    },
+    "useMoodSocial": {
+      "shared": "Ressenti partagé !"
+    },
+    "useTripDocuments": {
+      "docAdded": "Document ajouté",
+      "docDeleted": "Document supprimé"
+    },
+    "visaStatic": {
+      "alerts": {
+        "mandatoryInsurance": "Certains pays exigent une assurance voyage obligatoire.",
+        "passportValidity": "Ton passeport doit souvent être valide 6 mois après le retour."
+      },
+      "generalDocuments": {
+        "accommodation": "Justificatif d'hébergement",
+        "copies": "Copies papier et numériques de tes documents",
+        "flightTicket": "Billet d'avion aller-retour",
+        "insurance": "Attestation d'assurance voyage",
+        "passport": "Passeport valide",
+        "specificDocs": "Documents spécifiques selon la destination"
+      },
+      "security": {
+        "caution": "Vigilance renforcée",
+        "danger": "Déconseillé",
+        "moderate": "Vigilance normale",
+        "safe": "Sûr"
+      },
+      "steps": {
+        "analyzeHealth": "Analyse des exigences sanitaires",
+        "analyzeProfile": "Analyse de ton profil",
+        "checkAuthorities": "Consultation des sources officielles",
+        "checkVisaRules": "Vérification des règles de visa",
+        "generateChecklist": "Création de ta checklist",
+        "ready": "C'est prêt !"
+      },
+      "tips": {
+        "customsRestrictions": "Renseigne-toi sur les restrictions douanières (alimentation, médicaments, devises).",
+        "digitalCopy": "Garde une copie numérique de ton passeport et de ton visa.",
+        "embassyContact": "Note les coordonnées de l'ambassade ou du consulat sur place.",
+        "healthRecommendations": "Consulte les recommandations santé et vaccins avant de partir."
+      }
+    },
+    "AdminBadges": {
+      "badgeValidated": "Badge validé",
+      "claimRejected": "Demande refusée",
+      "filterAll": "Toutes",
+      "filterPending": "En attente",
+      "filterRejected": "Refusées",
+      "filterValidated": "Validées",
+      "moderateDesc": "Examine les preuves envoyées et valide ou refuse les badges.",
+      "restrictedDesc": "Cette page est réservée aux administrateurs.",
+      "restrictedTitle": "Accès restreint"
+    },
+    "PublicSuivi": {
+      "linkNotFound": "Lien introuvable ou expiré",
+      "liveTrackDesc": "Suivi en direct · {{km}} km parcourus"
+    },
+    "auto": {
+      "k0": "Auto-validation si l'utilisateur est dans le rayon du badge.",
+      "k1": "Chargement",
+      "k2": "Chargement des photos…",
+      "k3": "Connecte-toi pour dupliquer un voyage.",
+      "k4": "Connecte-toi pour enregistrer ton humeur",
+      "k5": "Connecte-toi pour noter ce lieu",
+      "k6": "Connecte-toi pour partager ton ressenti",
+      "k7": "Connecte-toi pour utiliser le Mood Explorer",
+      "k8": "Erreur de génération",
+      "k9": "Erreur recommandation",
+      "k10": "Impossible d'enregistrer la note",
+      "k11": "Impossible d'ouvrir le fichier",
+      "k12": "Impossible de dupliquer ce voyage.",
+      "k13": "Impossible de supprimer ce voyage.",
+      "k14": "Note invalide",
+      "k15": "Tes contributions actuelles",
+      "k16": "Ton Rythme de Progression",
+      "k17": "Voyage introuvable.",
+      "k18": "Échec d'enregistrement",
+      "k19": "Échec de l'enregistrement",
+      "k20": "Échec de l'upload",
+      "k21": "Échec de la suppression",
+      "k22": "Échec de suppression",
+      "k23": "Échec du rattachement",
+      "k24": "Échec partage"
+    },
+    "fix": {
+      "activeTrip": "Voyage actif",
+      "noActiveTrip": "Aucun voyage actif — crée ou sélectionne un voyage pour adapter tes objectifs.",
+      "yourRank": "Ton rang : #{{rank}}"
+    },
+    "auto2": {
+      "m0": "Active le suivi pour voir ta position et tes étapes en temps réel.",
+      "m1": "Ajuste les seuils utilisés par la fonction de vérification. Affecte toutes les nouvelles réclamations.",
+      "m2": "Aucune photo trouvée pour cette ville.",
+      "m3": "Aucune réclamation à afficher.",
+      "m4": "Chaque action compte : une note, une photo, une visite, un favori… tout te rapproche du prochain palier.",
+      "m5": "Continue d'explorer pour atteindre le suivant.",
+      "m6": "Itinéraire ↗",
+      "m7": "Pas encore de classement. Sois le premier à débloquer des badges ! ✨",
+      "m8": "Quand une réclamation passe d'« en attente » à « validée » ou « rejetée », ces réglages contrôlent l'envoi de notifications aux voyageurs.",
+      "m9": "Réessayer",
+      "m10": "Tes objectifs sont automatiquement adaptés à la durée de ton voyage.",
+      "m11": "👑 Niveau maximum atteint — tu es une vraie Légende !"
     }
   }
 }

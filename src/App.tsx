@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
@@ -72,7 +73,7 @@ const queryClient = new QueryClient({
 
 const PageLoader = () => (
   <div className="flex min-h-screen items-center justify-center">
-    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" aria-label="Chargement" />
+    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" aria-label={i18n.t("ui2.auto.k1")} />
   </div>
 );
 

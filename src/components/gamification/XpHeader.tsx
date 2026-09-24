@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -54,7 +55,7 @@ const XpHeader = ({ xp }: Props) => {
               </div>
               <p className="text-[11px] sm:text-xs text-muted-foreground mt-1.5">
                 <span className="font-bold text-foreground tabular-nums">{xpForNext.toLocaleString()} XP</span>{" "}
-                pour passer{" "}
+                {i18n.language?.startsWith("en") ? "to reach" : "pour passer"}{" "}
                 <span className="font-semibold text-foreground">
                   {next.emoji} {levelName(next, i18n.language)}
                 </span>
@@ -62,7 +63,7 @@ const XpHeader = ({ xp }: Props) => {
             </>
           ) : (
             <p className="text-xs text-amber-400 font-semibold mt-2">
-              👑 Niveau maximum atteint — tu es une vraie Légende !
+              {i18n.t("ui2.auto2.m11")}
             </p>
           )}
         </div>

@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -65,14 +66,14 @@ export default function VerificationSettingsPanel() {
       <div>
         <h2 className="text-lg font-bold">{t("ui2.VerificationSettingsPanel.title")}</h2>
         <p className="text-xs text-muted-foreground">
-          Ajuste les seuils utilisés par la fonction de vérification. Affecte toutes les nouvelles réclamations.
+          {i18n.t("ui2.auto2.m1")}
         </p>
       </div>
 
       <div className="flex items-center justify-between gap-3">
         <div>
           <Label className="text-sm">{t("ui2.VerificationSettingsPanel.autoGeo")}</Label>
-          <p className="text-[11px] text-muted-foreground">Auto-validation si l'utilisateur est dans le rayon du badge.</p>
+          <p className="text-[11px] text-muted-foreground">{i18n.t("ui2.auto.k0")}</p>
         </div>
         <Switch checked={s.geo_auto_validate} onCheckedChange={(v) => setS({ ...s, geo_auto_validate: v })} />
       </div>

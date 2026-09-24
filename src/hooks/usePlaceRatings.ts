@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -85,11 +86,11 @@ export function usePlaceRatings(placeId: string | null) {
   const submit = useCallback(
     async (rating: number, tags: string[], comment: string) => {
       if (!user || !placeId) {
-        toast.error("Connecte-toi pour noter ce lieu");
+        toast.error(i18n.t("ui2.auto.k5"));
         return false;
       }
       if (rating < 1 || rating > 5) {
-        toast.error("Note invalide");
+        toast.error(i18n.t("ui2.auto.k14"));
         return false;
       }
       setSubmitting(true);
@@ -112,7 +113,7 @@ export function usePlaceRatings(placeId: string | null) {
         return true;
       } catch (e: any) {
         console.error(e);
-        toast.error(e.message || "Impossible d'enregistrer la note");
+        toast.error(e.message || i18n.t("ui2.auto.k10"));
         return false;
       } finally {
         setSubmitting(false);

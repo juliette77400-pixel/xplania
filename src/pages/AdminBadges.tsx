@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -160,7 +161,7 @@ export default function AdminBadges() {
           <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin inline text-primary" /></div>
         ) : claims.length === 0 ? (
           <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
-            Aucune réclamation à afficher.
+            {i18n.t("ui2.auto2.m3")}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

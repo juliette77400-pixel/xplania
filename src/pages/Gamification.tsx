@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -372,7 +373,7 @@ const GamificationPage = () => {
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Ton Rythme de Progression</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{i18n.t("ui2.auto.k16")}</h2>
           <p className="text-muted-foreground mb-8">{t("ui2.Gamification.rhythmSubtitle")}</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -383,7 +384,7 @@ const GamificationPage = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground">{t("ui2.Gamification.moduleActivityTitle")}</h3>
-                  <p className="text-xs text-muted-foreground">Tes contributions actuelles</p>
+                  <p className="text-xs text-muted-foreground">{i18n.t("ui2.auto.k15")}</p>
                 </div>
               </div>
 
@@ -411,19 +412,19 @@ const GamificationPage = () => {
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center">
                     <Clock className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-foreground">Voyage actif</h3>
+                  <h3 className="font-bold text-foreground">{t("ui2.fix.activeTrip")}</h3>
                 </div>
                 {tripId ? (
                   <>
                     <p className="text-xs text-muted-foreground mb-1">{t("ui2.Gamification.duration")}</p>
                     <p className="text-3xl font-bold text-foreground mb-3">{tripDays || "—"} j</p>
                     <p className="text-xs text-muted-foreground">
-                      Tes objectifs sont automatiquement adaptés à la durée de ton voyage.
+                      {i18n.t("ui2.auto2.m10")}
                     </p>
                   </>
                 ) : (
                   <p className="text-sm text-muted-foreground">
-                    Aucun voyage actif — crée ou sélectionne un voyage pour adapter tes objectifs.
+                    {t("ui2.fix.noActiveTrip")}
                   </p>
                 )}
               </div>
@@ -466,7 +467,7 @@ const GamificationPage = () => {
 
           <p className="text-muted-foreground mb-2">{t("ui2.Gamification.ctaSubtitle")}</p>
           <p className="text-sm text-muted-foreground/70 max-w-lg mx-auto mb-8">
-            Chaque action compte : une note, une photo, une visite, un favori… tout te rapproche du prochain palier.
+            {i18n.t("ui2.auto2.m4")}
           </p>
 
           <Link
