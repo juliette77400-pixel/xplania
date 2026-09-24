@@ -2,6 +2,7 @@
 // modale de confirmation. Variants : "icon" (corbeille discrète sur cartes)
 // ou "menu-item" (entrée rouge dans un menu d'actions).
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Trash2, Loader2 } from "lucide-react";
 import {
   AlertDialog,
@@ -36,6 +37,7 @@ const DeleteTripButton = ({
   className,
   stopPropagation = true,
 }: Props) => {
+  const { t } = useTranslation();
   const { deleteTrip, deleting } = useDeleteTrip();
   const [open, setOpen] = useState(false);
   const isDeleting = deleting === tripId;
@@ -61,7 +63,7 @@ const DeleteTripButton = ({
             type="button"
             onClick={stop}
             onPointerDown={stop}
-            aria-label="Supprimer ce voyage"
+            aria-label={t("ui2.DeleteTripButton.ariaLabel")}
             disabled={isDeleting}
             className={cn(
               "p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors",
@@ -82,7 +84,7 @@ const DeleteTripButton = ({
             )}
           >
             {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-            <span>Supprimer ce voyage</span>
+            <span>{t("ui2.DeleteTripButton.label")}</span>
           </button>
         ) : (
           <button
@@ -96,28 +98,27 @@ const DeleteTripButton = ({
             )}
           >
             {isDeleting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Trash2 className="w-3 h-3" />}
-            Supprimer
+            {t("ui2.DeleteTripButton.short")}
           </button>
         )}
       </AlertDialogTrigger>
       <AlertDialogContent onClick={(e) => e.stopPropagation()}>
         <AlertDialogHeader>
-          <AlertDialogTitle>Supprimer ce voyage ?</AlertDialogTitle>
+          <AlertDialogTitle>{t("ui2.DeleteTripButton.dialogTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
             {tripLabel ? (
               <>
-                Es-tu sûr(e) de vouloir supprimer <strong className="text-foreground">{tripLabel}</strong> ?
+                {t("ui2.DeleteTripButton.confirmWithLabelPrefix")} <strong className="text-foreground">{tripLabel}</strong> ?
                 <br />
               </>
             ) : (
-              "Es-tu sûr(e) de vouloir supprimer ce voyage ? "
+              t("ui2.DeleteTripButton.confirmGeneric")
             )}
-            Cette action est <strong>irréversible</strong>. Toutes les données associées
-            (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.
+            {t("ui2.DeleteTripButton.irreversibleWarning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isDeleting}>{t("ui2.DeleteTripButton.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={isDeleting}
@@ -125,11 +126,11 @@ const DeleteTripButton = ({
           >
             {isDeleting ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Suppression…
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t("ui2.DeleteTripButton.deleting")}
               </>
             ) : (
               <>
-                <Trash2 className="w-4 h-4 mr-2" /> Supprimer définitivement
+                <Trash2 className="w-4 h-4 mr-2" /> {t("ui2.DeleteTripButton.deletePermanently")}
               </>
             )}
           </AlertDialogAction>
