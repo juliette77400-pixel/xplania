@@ -150,7 +150,16 @@ const GuideVisaPage = () => {
 
       await stepPromise;
 
-      if (error) throw new Error(error.message || t("guideVisa.errAi"));
+      if (error) {
+        const status = (error as { context?: { status?: number } })?.context?.status;
+        if (status === 401) {
+          toast.error(t("guideVisa.errAuth", { defaultValue: i18n.language.startsWith("fr") ? "Session expirée, reconnecte-toi." : "Session expired, please sign in again." }));
+          window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`);
+          return;
+        }
+        if (status === 402) { setShowUpgrade(true); return; }
+        throw new Error(error.message || t("guideVisa.errAi"));
+      }
       if (data?.error) throw new Error(data.error);
 
       if (!data?.visa || !data?.security || !data?.health || !Array.isArray(data?.checklist)) {
