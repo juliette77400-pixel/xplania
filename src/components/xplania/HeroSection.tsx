@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, Check, MapPin, Play, Sparkles, WandSparkles } from "lucide-react";
+import { ArrowRight, Check, MapPin, Sparkles, WandSparkles } from "lucide-react";
 
 interface Props {
   onCreateTrip: () => void;
-  onDemoTrip?: () => void;
 }
 
 const copy = {
@@ -14,7 +13,6 @@ const copy = {
     accent: "tout votre voyage.",
     subtitle: "Xplania apprend vos envies, prépare chaque détail et reste à vos côtés avant, pendant et après le départ.",
     primary: "Planifier mon voyage",
-    demo: "Voir un voyage à Lisbonne",
     proof: ["Personnalisé à vos préférences", "Essai gratuit", "FR · EN"],
     cardLabel: "Ping analyse votre voyage",
     destination: "Lisbonne · 4 jours",
@@ -28,7 +26,6 @@ const copy = {
     accent: "your entire journey.",
     subtitle: "Xplania learns what you like, prepares every detail and stays with you before, during and after your trip.",
     primary: "Plan my trip",
-    demo: "See a Lisbon trip",
     proof: ["Tailored to your preferences", "Free to try", "FR · EN"],
     cardLabel: "Ping is analyzing your trip",
     destination: "Lisbon · 4 days",
@@ -38,7 +35,7 @@ const copy = {
   },
 };
 
-const HeroSection = ({ onCreateTrip, onDemoTrip }: Props) => {
+const HeroSection = ({ onCreateTrip }: Props) => {
   const { i18n } = useTranslation();
   const c = i18n.language.startsWith("fr") ? copy.fr : copy.en;
 
@@ -58,7 +55,6 @@ const HeroSection = ({ onCreateTrip, onDemoTrip }: Props) => {
             <button onClick={onCreateTrip} className="gradient-button group inline-flex items-center justify-center gap-2 rounded-xl px-7 py-4 font-bold text-primary-foreground shadow-[0_16px_50px_hsl(var(--primary)/.16)] transition hover:-translate-y-0.5">
               {c.primary}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
-            {onDemoTrip && <button onClick={onDemoTrip} className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card/70 px-7 py-4 font-semibold transition hover:border-primary/35 hover:bg-card"><Play className="h-4 w-4 fill-current text-primary" />{c.demo}</button>}
           </div>
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-muted-foreground">
             {c.proof.map((item) => <span key={item} className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" />{item}</span>)}
