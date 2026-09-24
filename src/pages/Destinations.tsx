@@ -15,10 +15,10 @@ import { useDestinationSuggestions, type DestinationSuggestion } from "@/hooks/u
 import { trackReaction } from "@/lib/user-memory";
 
 export default function Destinations() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const qc = useQueryClient();
-  const { data: destinations, isLoading, refetch } = useDestinationSuggestions({ limit: 8, originalityBoost: 0.4 });
+  const { data: destinations, isLoading, refetch } = useDestinationSuggestions({ limit: 8, originalityBoost: 0.4, locale: i18n.language?.startsWith("en") ? "en" : "fr" });
   const [reacting, setReacting] = useState<Record<string, boolean>>({});
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
 
