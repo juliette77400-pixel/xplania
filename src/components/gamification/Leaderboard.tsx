@@ -56,7 +56,7 @@ const Leaderboard = () => {
         </div>
         {myRank >= 0 && (
           <span className="text-xs font-bold border border-primary/40 text-primary rounded-full px-2.5 py-1 whitespace-nowrap">
-            Ton rang : #{myRank + 1}
+            {t("ui2.fix.yourRank", { rank: myRank + 1 })}
           </span>
         )}
       </div>

@@ -5228,6 +5228,11 @@
       "k22": "Deletion failed",
       "k23": "Attachment failed",
       "k24": "Share failed"
+    },
+    "fix": {
+      "activeTrip": "Active trip",
+      "noActiveTrip": "No active trip — create or select a trip to tailor your goals.",
+      "yourRank": "Your rank: #{{rank}}"
     }
   }
 }

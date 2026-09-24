@@ -5228,6 +5228,11 @@
       "k22": "Échec de suppression",
       "k23": "Échec du rattachement",
       "k24": "Échec partage"
+    },
+    "fix": {
+      "activeTrip": "Voyage actif",
+      "noActiveTrip": "Aucun voyage actif — crée ou sélectionne un voyage pour adapter tes objectifs.",
+      "yourRank": "Ton rang : #{{rank}}"
     }
   }
 }

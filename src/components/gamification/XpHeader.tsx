@@ -54,7 +54,7 @@ const XpHeader = ({ xp }: Props) => {
               </div>
               <p className="text-[11px] sm:text-xs text-muted-foreground mt-1.5">
                 <span className="font-bold text-foreground tabular-nums">{xpForNext.toLocaleString()} XP</span>{" "}
-                pour passer{" "}
+                {i18n.language?.startsWith("en") ? "to reach" : "pour passer"}{" "}
                 <span className="font-semibold text-foreground">
                   {next.emoji} {levelName(next, i18n.language)}
                 </span>

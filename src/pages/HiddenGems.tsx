@@ -27,7 +27,7 @@ interface HiddenGemRow {
 }
 
 export default function HiddenGems() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [query, setQuery] = useState("");
   const [destFilter, setDestFilter] = useState<string>("all");
@@ -58,7 +58,7 @@ export default function HiddenGems() {
     return (data ?? []).filter((g) => {
       if (destFilter !== "all" && g.destinations?.slug !== destFilter) return false;
       if (!q) return true;
-      const summary = g.summary_fr ?? g.summary_en ?? "";
+      const summary = (i18n.language?.startsWith("en") ? g.summary_en ?? g.summary_fr : g.summary_fr ?? g.summary_en) ?? "";
       const hay = `${g.name} ${summary} ${(g.tags ?? []).join(" ")} ${g.destinations?.name ?? ""}`.toLowerCase();
       return hay.includes(q);
     });
@@ -148,7 +148,7 @@ export default function HiddenGems() {
               </CardHeader>
               <CardContent className="space-y-3">
                 {(g.summary_fr ?? g.summary_en) && (
-                  <p className="text-sm text-muted-foreground">{g.summary_fr ?? g.summary_en}</p>
+                  <p className="text-sm text-muted-foreground">{i18n.language?.startsWith("en") ? g.summary_en ?? g.summary_fr : g.summary_fr ?? g.summary_en}</p>
                 )}
                 <div className="flex flex-wrap gap-1">
                   <Badge variant="secondary" className="text-xs capitalize">{g.kind}</Badge>
