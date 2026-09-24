@@ -27,6 +27,7 @@ import {
 } from "@/lib/travel-form-persistence";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 import { MODE_STEPS, STEP_KEYS, defaultFormData, type StepKey } from "./travel-form.config";
 
@@ -66,6 +67,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
   const [resumedBanner, setResumedBanner] = useState<boolean>(!!restored);
   const { toast } = useToast();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const updateForm = (partial: Partial<TravelFormData>) => {
     setFormData((prev) => ({ ...prev, ...partial }));
@@ -110,7 +112,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
 
       // Cap the wait so a frozen edge function does not show an infinite spinner.
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 60_000);
+      const timeout = setTimeout(() => controller.abort(), 120_000);
 
       let response: Response;
       try {
@@ -126,7 +128,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
             "Authorization": `Bearer ${accessToken}`,
             "apikey": supabaseKey,
           },
-          body: JSON.stringify({ formData, mode }),
+          body: JSON.stringify({ formData, mode, locale: (localStorage.getItem("xplania-lang") || "fr").startsWith("en") ? "en" : "fr" }),
           signal: controller.signal,
         });
       } finally {
@@ -247,6 +249,18 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
             loading={generating}
             error={aiError}
           />
+          {recommendations && !generating && !aiError && (
+            <div className="flex flex-col items-center gap-2 pt-6 border-t border-border/50 mt-4">
+              <p className="text-sm text-muted-foreground">{t("travelForm.goToFeaturesHint")}</p>
+              <Button
+                onClick={() => { onOpenChange(false); navigate("/profil-voyageur/features"); }}
+                className="gradient-button text-primary-foreground border-0"
+              >
+                {t("travelForm.goToFeatures")}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          )}
           {aiError && (
             <div className="flex justify-center pt-4">
               <Button
