@@ -125,7 +125,7 @@ const Carnet = () => {
 
       <header className="relative border-b border-border backdrop-blur-md bg-background/60 sticky top-0 z-30">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+          <Link to="/app" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
             <ArrowLeft className="w-4 h-4" /> {t("carnet.back")}
           </Link>
           <div className="flex items-center gap-2">

@@ -15,7 +15,7 @@ const Navbar = ({ onCreateTrip, onFeedback }: Props) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/home" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center">
             <Plane className="w-5 h-5 text-primary-foreground" />
           </div>

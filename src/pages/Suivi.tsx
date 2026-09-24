@@ -15,7 +15,7 @@ const Suivi = () => {
 
       <header className="relative border-b border-border backdrop-blur-md bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/app" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-4 h-4" /> {t("common2.home")}
           </Link>
           <div className="flex items-center gap-2">
@@ -38,7 +38,7 @@ const Suivi = () => {
         ) : trips.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground mb-4">{t("suivi.empty")}</p>
-            <Link to="/" className="text-primary hover:underline">{t("suivi.createTrip")}</Link>
+            <Link to="/home#create" className="text-primary hover:underline">{t("suivi.createTrip")}</Link>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 gap-4">

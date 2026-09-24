@@ -60,7 +60,7 @@ const Legal = ({ legalKey }: Props) => {
     <div className="min-h-screen bg-background pt-24 pb-16 px-4">
       <div className="container mx-auto max-w-3xl">
         <Link
-          to="/"
+          to="/home"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />

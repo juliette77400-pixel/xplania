@@ -139,9 +139,9 @@
     },
     "pip": {
       "tag": "Our mascot",
-      "title": "Pip, your travel companion",
-      "body": "Pip isn't just a logo. He's the embodiment of what Xplania stands for: curious, adventurous, always ready for the next discovery. Like you, Pip doesn't travel to tick boxes — he travels to feel something.",
-      "alt": "Pip, Xplania's penguin mascot, with his backpack and compass"
+      "title": "Ping, your travel companion",
+      "body": "Ping isn't just a logo. He's the embodiment of what Xplania stands for: curious, adventurous, always ready for the next discovery. Like you, Ping doesn't travel to tick boxes — he travels to feel something.",
+      "alt": "Ping, Xplania's penguin mascot, with his backpack and compass"
     },
     "vision": {
       "tag": "The vision",
@@ -427,10 +427,22 @@
     "progressTitle": "Your progress",
     "progressDesc": "Missions and habits remain available without distracting from your trip.",
     "phases": {
-      "prepare": { "title": "Prepare", "desc": "Budget, paperwork and packing tailored to the same trip." },
-      "explore": { "title": "Explore", "desc": "Places selected around your wishes, mood and context." },
-      "travel": { "title": "Travel", "desc": "Track the trip and find the right cues at the right time." },
-      "relive": { "title": "Relive", "desc": "Turn your steps and emotions into lasting memories." }
+      "prepare": {
+        "title": "Prepare",
+        "desc": "Budget, paperwork and packing tailored to the same trip."
+      },
+      "explore": {
+        "title": "Explore",
+        "desc": "Places selected around your wishes, mood and context."
+      },
+      "travel": {
+        "title": "Travel",
+        "desc": "Track the trip and find the right cues at the right time."
+      },
+      "relive": {
+        "title": "Relive",
+        "desc": "Turn your steps and emotions into lasting memories."
+      }
     },
     "greeting": "Hi {{name}} 👋",
     "tripsActive_one": "You have {{count}} trip in progress.",
@@ -554,7 +566,7 @@
     },
     "stepper": {
       "title": "Your visa checklist, made simple 📋",
-      "reassurance": "💬 Not sure about a step? Ask Pip — no question is too basic.",
+      "reassurance": "💬 Not sure about a step? Ask Ping — no question is too basic.",
       "steps": [
         {
           "title": "Check if you need a visa",
@@ -785,11 +797,11 @@
       }
     },
     "chatbot": {
-      "openLabel": "Open Pip, your visa copilot",
+      "openLabel": "Open Ping, your visa copilot",
       "subtitle": "Your visa copilot",
       "close": "Close",
       "restart": "Restart",
-      "welcome": "Hi! 🌍 Pip here. I'll help you navigate visas, safety tips, and entry requirements — no stress, no jargon. Want me to guide you step by step?",
+      "welcome": "Hi! 🌍 Ping here. I'll help you navigate visas, safety tips, and entry requirements — no stress, no jargon. Want me to guide you step by step?",
       "welcomeYes": "✨ Yes, guide me",
       "welcomeNo": "I'll explore on my own",
       "steps": {
@@ -815,7 +827,7 @@
       "summary": "Here's what I found for {{destination}} with a {{nationality}} passport, {{duration}}, {{tripType}} 🎉\n\nAsk me anything, or use the shortcuts above to jump to visa process, safety or the embassy.",
       "placeholder": "Ask anything about visas or entry requirements…",
       "send": "Send",
-      "loading": "Pip is thinking…",
+      "loading": "Ping is thinking…",
       "errorAnswer": "Oops, small glitch on my side. Rephrase and I'll try again 🙏",
       "qaEmpty": "Ask me anything — visa, safety, paperwork, currency… I'm here.",
       "disclaimer": "⚠️ Always verify on the official embassy site before booking.",
@@ -861,7 +873,7 @@
         },
         {
           "heading": "Intellectual Property",
-          "body": "All Xplania content — including texts, the Pip penguin mascot, the Xplania name and logo, visual identity and AI-generated travel recommendations — is the exclusive property of the creator. It is protected under the French Intellectual Property Code (Code de la propriété intellectuelle), which grants the same level of protection as standard copyright law in most jurisdictions.\n\nAny reproduction, representation or reuse without prior written consent is strictly forbidden."
+          "body": "All Xplania content — including texts, the Ping penguin mascot, the Xplania name and logo, visual identity and AI-generated travel recommendations — is the exclusive property of the creator. It is protected under the French Intellectual Property Code (Code de la propriété intellectuelle), which grants the same level of protection as standard copyright law in most jurisdictions.\n\nAny reproduction, representation or reuse without prior written consent is strictly forbidden."
         },
         {
           "heading": "Personal Data",
@@ -886,11 +898,11 @@
         },
         {
           "heading": "Data collected, purposes, legal bases and retention",
-          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Pip (visa) and Maya (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
+          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Maya (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
         },
         {
           "heading": "Sub-processors and third-party services",
-          "body": "To run Xplania we rely on a small number of trusted providers. None of them resells your data. Each one is bound by contract.\n\n1) Lovable Labs Incorporated (United States)\n   • Role: no-code platform hosting the website, the app and the Lovable Cloud backend.\n   • Data transmitted: all technical data needed to operate the service (account, trip content, logs).\n   • Privacy policy: https://lovable.dev/privacy\n   • Terms: https://lovable.dev/terms\n\n2) Supabase Inc. (United States)\n   • Role: database and authentication hosting (underlying Lovable Cloud).\n   • Data transmitted: email, hashed password, trip content, uploaded photos.\n   • Privacy policy: https://supabase.com/privacy\n\n3) Google LLC — Gemini API (United States)\n   • Role: AI engine used by the Pip (visa guide) and Maya (budget guide) assistants to generate answers.\n   • Data transmitted: the content of the message you send to the assistant (destination, travel context). No email or account identifier is transmitted.\n   • Gemini API terms: https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (United States)\n   • Role: receives the emails sent through the feedback and contact forms. The feedback form relies on EmailJS to relay the message to the Xplania team's Gmail inbox.\n   • Data transmitted: your email, rating, suggestions, reported problems.\n   • Google privacy policy: https://policies.google.com/privacy\n\nThis list will be kept up to date. Any meaningful change will be communicated to you."
+          "body": "To run Xplania we rely on a small number of trusted providers. None of them resells your data. Each one is bound by contract.\n\n1) Lovable Labs Incorporated (United States)\n   • Role: no-code platform hosting the website, the app and the Lovable Cloud backend.\n   • Data transmitted: all technical data needed to operate the service (account, trip content, logs).\n   • Privacy policy: https://lovable.dev/privacy\n   • Terms: https://lovable.dev/terms\n\n2) Supabase Inc. (United States)\n   • Role: database and authentication hosting (underlying Lovable Cloud).\n   • Data transmitted: email, hashed password, trip content, uploaded photos.\n   • Privacy policy: https://supabase.com/privacy\n\n3) Google LLC — Gemini API (United States)\n   • Role: AI engine used by the Ping (visa guide) and Maya (budget guide) assistants to generate answers.\n   • Data transmitted: the content of the message you send to the assistant (destination, travel context). No email or account identifier is transmitted.\n   • Gemini API terms: https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (United States)\n   • Role: receives the emails sent through the feedback and contact forms. The feedback form relies on EmailJS to relay the message to the Xplania team's Gmail inbox.\n   • Data transmitted: your email, rating, suggestions, reported problems.\n   • Google privacy policy: https://policies.google.com/privacy\n\nThis list will be kept up to date. Any meaningful change will be communicated to you."
         },
         {
           "heading": "Data transfers outside the European Union",
@@ -1001,8 +1013,8 @@
     "dialogTitle": "Discover Xplania",
     "stepLabel": "Step {{n}} / 3",
     "step1Title": "Start with your trip",
-    "step1Desc": "Share your destination, dates and travel style. A few answers give Pip the context it needs.",
-    "step2Title": "Pip connects every detail",
+    "step1Desc": "Share your destination, dates and travel style. A few answers give Ping the context it needs.",
+    "step2Title": "Ping connects every detail",
     "step2Desc": "Budget, paperwork, packing and recommendations are personalized together — not generated as separate tools.",
     "step3Title": "Keep the same copilot",
     "step3Desc": "Xplania stays with you from planning to your travel journal, keeping the journey consistent at every stage.",
@@ -1329,11 +1341,10 @@
       "tripTypeOtherLabel": "Specify your trip type",
       "tripTypeOtherPh": "e.g. Humanitarian trip, road trip in a van...",
       "whoTravels": "Who is travelling?",
-      "age": "Approximate age",
+      "age": "Your age",
       "activityLevel": "Activity level",
       "languages": "Spoken languages",
       "speaksLocal": "Do you speak the local language?",
-      "needsFrenchGuide": "Need a French-speaking guide?",
       "experience": "Travel experience level",
       "objective": "Main goal of the trip",
       "otherObjective": "Other goal",
@@ -1377,7 +1388,10 @@
       "baggageType": "Baggage type",
       "inspirationsLabel": "What inspires you for this trip?",
       "inspirationsPh": "Landscapes, volcanoes, villages, beaches, road trip, hidden spots...",
-      "inspirationsHint": "Optional — you can leave it blank and start the generation right away."
+      "inspirationsHint": "Optional — you can leave it blank and start the generation right away.",
+      "agePh": "e.g. 34",
+      "durationAuto": "Calculated automatically from your dates",
+      "durationValue": "{{days}} days ({{nights}} nights)"
     },
     "options": {
       "yes": "Yes",
@@ -1607,7 +1621,60 @@
       "secLocal": "Local recommendations",
       "placesCount_one": "{{count}} place",
       "placesCount_other": "{{count}} places"
-    }
+    },
+    "optionHints": {
+      "tripType": {
+        "Exploration": "See as many different places as possible, off the beaten track",
+        "Relaxation": "Rest: beach, spa, light schedule",
+        "Aventure": "Hikes, thrills, wild nature",
+        "Culture": "Museums, monuments, history and traditions",
+        "Gastronomie": "Local food, markets, restaurants",
+        "Sport": "Surfing, cycling, skiing, diving… sport on site",
+        "Photographie": "Photogenic spots, sunrise/sunset light",
+        "Spiritualité": "Temples, retreats, meditation, sacred places",
+        "Voyage slow": "Few stops, take your time, live like a local",
+        "Autre": "Describe it just below"
+      },
+      "travelerType": {
+        "Solo": "You travel alone",
+        "Couple": "As a couple",
+        "Famille avec enfants": "Kid-friendly activities",
+        "Groupe d'amis": "With friends",
+        "Voyage professionnel": "Business trip with some free time",
+        "Digital nomad": "You work remotely on site",
+        "Backpacker": "Backpack, small budget, freedom",
+        "Retraité(e)": "Comfortable pace",
+        "Étudiant": "Tight budget, good deals",
+        "Lune de miel": "Romantic and special",
+        "Aventurier solo": "Alone and looking for challenges"
+      },
+      "activityLevel": {
+        "Sédentaire": "Little walking, short trips",
+        "Modéré": "A few hours of walking a day",
+        "Actif": "Long days, easy hikes",
+        "Très actif": "Hard hikes, intense sport"
+      },
+      "experience": {
+        "Premier voyage": "We explain everything step by step",
+        "Voyage occasionnel": "1–2 trips a year",
+        "Voyageur régulier": "You travel often and know the basics",
+        "Grand explorateur": "You've travelled a lot, want the unusual"
+      },
+      "organization": {
+        "Planifié": "Everything planned day by day",
+        "Équilibré": "A basic plan with free time",
+        "Spontané": "You decide on the spot"
+      },
+      "rhythm": {
+        "Intensif": "Lots of visits every day",
+        "Modéré": "2–3 activities a day",
+        "Tranquille": "One activity a day, lots of breaks"
+      }
+    },
+    "goToFeatures": "Choose my features",
+    "goToFeaturesHint": "Your trip is ready! On to the next step.",
+    "realWeather": "Real weather",
+    "cheap": "Budget-friendly"
   },
   "common2": {
     "home": "Home",
@@ -1641,7 +1708,7 @@
     "memoryMany": "{{n}} memories",
     "tabPages": "Pages",
     "onboarding": {
-      "title": "Pip, your journal companion",
+      "title": "Ping, your journal companion",
       "welcome": "Hey! Your {{destination}} journal ({{days}} days) is ready to fill in. 📖✨",
       "question": "Want me to walk you through the pages and features?",
       "yes": "Yes, show me",
@@ -1673,15 +1740,15 @@
       "backToGuide": "Back to guide",
       "placeholder": "Ask anything about your journal…",
       "send": "Send",
-      "loading": "Pip is thinking…",
-      "greeting": "Hey {{name}}! 👋 I'm Pip, your journal companion for {{destination}}. Want memory ideas, help generating your story, or stuck on a feature? I've got you.",
-      "greetingNoName": "Hey! 👋 I'm Pip, your journal companion for {{destination}}. Want memory ideas, help generating your story, or stuck on a feature? I've got you.",
+      "loading": "Ping is thinking…",
+      "greeting": "Hey {{name}}! 👋 I'm Ping, your journal companion for {{destination}}. Want memory ideas, help generating your story, or stuck on a feature? I've got you.",
+      "greetingNoName": "Hey! 👋 I'm Ping, your journal companion for {{destination}}. Want memory ideas, help generating your story, or stuck on a feature? I've got you.",
       "greetings": [
-        "Hey {{name}}! 📖 Pip here. Ready to bring your {{destination}} journal to life? Ask me anything.",
-        "Hi {{name}}! ✨ I'm Pip, your journal buddy. Not sure what to log today for {{destination}}? I'll help.",
-        "Hello {{name}} 🌍 Pip speaking. Question on your story, photos, or sharing? Lay it on me.",
-        "Yo {{name}}! 😎 Pip here. Let's make your {{destination}} journal unforgettable together.",
-        "Hey there {{name}}! 👋 Pip's in. Block ideas, writing prompts, PDF export — just ask."
+        "Hey {{name}}! 📖 Ping here. Ready to bring your {{destination}} journal to life? Ask me anything.",
+        "Hi {{name}}! ✨ I'm Ping, your journal buddy. Not sure what to log today for {{destination}}? I'll help.",
+        "Hello {{name}} 🌍 Ping speaking. Question on your story, photos, or sharing? Lay it on me.",
+        "Yo {{name}}! 😎 Ping here. Let's make your {{destination}} journal unforgettable together.",
+        "Hey there {{name}}! 👋 Ping's in. Block ideas, writing prompts, PDF export — just ask."
       ],
       "emptyState": "Ask anything about your {{destination}} journal — what to log, how to generate your story, how to share, how to pin a document… I know your journal inside out.",
       "errorAnswer": "I couldn't answer right now. Please try again in a moment.",
@@ -1759,7 +1826,7 @@
   },
   "suiviPip": {
     "subtitle": "Your travel guide",
-    "greeting": "Hi! I'm Pip, your travel companion.",
+    "greeting": "Hi! I'm Ping, your travel companion.",
     "askIntent": "What would you like to do here?",
     "placeholder": "Ask me anything…",
     "soloAck": "No worries, I'll let you explore on your own. I'm here if you need me 👋",
@@ -1818,11 +1885,11 @@
   "discoverEntry": {
     "kicker": "Discover",
     "title": "What are you in the mood to discover?",
-    "subtitle": "Pick a category to see places around you, or let Pip guide you.",
+    "subtitle": "Pick a category to see places around you, or let Ping guide you.",
     "optionACategory": "Choose a category",
     "optionBPip": "Not sure what you're looking for?",
-    "pipDescription": "Pip asks 2-3 quick questions to narrow things down.",
-    "askPip": "Ask Pip",
+    "pipDescription": "Ping asks 2-3 quick questions to narrow things down.",
+    "askPip": "Ask Ping",
     "seePlaces": "See places",
     "selectedCount": "{{count}} selected",
     "tapHint": "Tap a category (or double-tap to jump straight in)",
@@ -1840,15 +1907,15 @@
     }
   },
   "discoverPip": {
-    "title": "Pip Discover",
+    "title": "Ping Discover",
     "aroundYou": "Around you",
     "activeTrip": "Around your destination",
-    "greeting": "Hi! 🧭 Pip here. What are you in the mood to discover today?",
+    "greeting": "Hi! 🧭 Ping here. What are you in the mood to discover today?",
     "askCategory": "Pick one or more categories, or just tell me in a few words what you fancy.",
     "askCompany": "Who are you going with?",
     "askDistance": "Want to stay close, or can you go a bit further?",
     "confirmCategory": "Confirm ({{count}})",
-    "inputPh": "Write to Pip…",
+    "inputPh": "Write to Ping…",
     "fallback": "Not sure I caught that — tap a category to get started.",
     "soloAck": "Got it — just you, right now. Showing you what's nearby.",
     "recap": "Found it. Showing: {{cats}}, near you.",
@@ -2021,14 +2088,14 @@
     },
     "backDashboard": "Back to dashboard",
     "chatbot": {
-      "openLabel": "Open Pip packing",
+      "openLabel": "Open Ping packing",
       "subtitle": "Your packing copilot",
       "close": "Close",
       "restart": "Restart",
       "send": "Send",
       "next": "Next",
       "skip": "Skip",
-      "loading": "Pip is thinking…",
+      "loading": "Ping is thinking…",
       "errorAnswer": "Oops, I couldn't reply. Try again in a few seconds 🙏",
       "offline": {
         "indicator": "You're offline — your questions are saved and will be sent as soon as you're back online.",
@@ -2039,7 +2106,7 @@
       },
       "placeholder": "Ask me anything about packing…",
       "qaEmpty": "Ask me anything — packing, weather, outfits, culture, solo safety… I've got you 🎒",
-      "welcome": "Hey {{name}}! 🧳 Pip here. I'll help you pack the perfect bag — real-time weather, packing tips, outfit ideas and cultural advice. Want me to walk you through it?",
+      "welcome": "Hey {{name}}! 🧳 Ping here. I'll help you pack the perfect bag — real-time weather, packing tips, outfit ideas and cultural advice. Want me to walk you through it?",
       "welcomeYes": "Yes, guide me",
       "welcomeNo": "I'll explore on my own",
       "computedDays_one": "{{count}} day",
@@ -2109,7 +2176,7 @@
     "outfitsAdded_other": "{{count}} items added to your luggage",
     "outfitsAllPresent": "All pieces are already in your luggage",
     "outfitsAiBadge": "AI generated",
-    "outfitsLoading": "Pip is preparing your outfits…",
+    "outfitsLoading": "Ping is preparing your outfits…",
     "outfitsError": "Could not generate outfits, showing defaults",
     "culturalTitle": "Cultural tips — {{destination}}",
     "culturalRegenerate": "Regenerate tips",
@@ -2779,7 +2846,7 @@
       "extrasBody": "Set aside a small buffer for surprises in {{destination}} so you do not have to cut back on meals or key activities."
     },
     "onboarding": {
-      "title": "Pip, your budget copilot",
+      "title": "Ping, your budget copilot",
       "welcome": "Hi! Your budget for {{destination}} ({{days}} days) is ready. 🎉",
       "question": "Want me to walk you through the features?",
       "yes": "Yes, show me",
@@ -2816,15 +2883,15 @@
       "backToGuide": "Back to guide",
       "placeholder": "Ask anything about your budget…",
       "send": "Send",
-      "loading": "Pip is thinking…",
-      "greeting": "Hey {{name}}! 👋 I'm Pip, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
-      "greetingNoName": "Hey! 👋 I'm Pip, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
+      "loading": "Ping is thinking…",
+      "greeting": "Hey {{name}}! 👋 I'm Ping, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
+      "greetingNoName": "Hey! 👋 I'm Ping, your personal travel copilot for {{destination}}. Got questions about your budget, unsure about a spend, or just need some travel tips? I've got you!",
       "greetings": [
-        "Hey {{name}}! 👋 Pip here. Ready to talk budget for {{destination}}? Ask me anything on your mind.",
-        "Hi {{name}}! ✈️ I'm Pip, your travel copilot. Wondering if your {{destination}} budget holds up? I'm on it.",
-        "Hello {{name}} 🌍 Pip speaking. Doubt on a spend, craving local tips for {{destination}}? Lay it on me.",
-        "Yo {{name}}! 😎 Pip here. Wanna look at your {{destination}} budget together? Tell me what's bugging you.",
-        "Hey there {{name}}! 👋 Pip's in. Food, transport, stays in {{destination}} — I've got tips for all of it."
+        "Hey {{name}}! 👋 Ping here. Ready to talk budget for {{destination}}? Ask me anything on your mind.",
+        "Hi {{name}}! ✈️ I'm Ping, your travel copilot. Wondering if your {{destination}} budget holds up? I'm on it.",
+        "Hello {{name}} 🌍 Ping speaking. Doubt on a spend, craving local tips for {{destination}}? Lay it on me.",
+        "Yo {{name}}! 😎 Ping here. Wanna look at your {{destination}} budget together? Tell me what's bugging you.",
+        "Hey there {{name}}! 👋 Ping's in. Food, transport, stays in {{destination}} — I've got tips for all of it."
       ],
       "emptyState": "Ask anything about your {{destination}} budget — accommodation, food, transport, overspending… I'll use your current trip data.",
       "errorAnswer": "I couldn't answer right now. Please try again in a moment.",
@@ -3097,10 +3164,10 @@
     "entry": {
       "aria": "Choose how to start",
       "title": "How do you want to start?",
-      "subtitle": "Pip guides you, or set it up yourself.",
+      "subtitle": "Ping guides you, or set it up yourself.",
       "pip": {
         "title": "Let's talk about how you feel",
-        "desc": "Pip will ask a few questions and build your moment for you."
+        "desc": "Ping will ask a few questions and build your moment for you."
       },
       "form": {
         "title": "I know what I want",
@@ -3111,13 +3178,13 @@
     "pip": {
       "subtitle": "Your mood companion",
       "close": "Close",
-      "greeting": "Hi! 🎭 Pip here. How are you feeling right now? There's no wrong answer.",
+      "greeting": "Hi! 🎭 Ping here. How are you feeling right now? There's no wrong answer.",
       "askCompany": "Who are you going with?",
       "askDuration": "About how long do you have?",
       "recap": "Got it. I'm building you a moment that fits your vibe. Ready?",
       "soloDetected": "Got it — just you, right now. I'll build you a solo walk.",
       "gotFree": "Okay, noted. Who are you going with?",
-      "thinking": "Pip is thinking…",
+      "thinking": "Ping is thinking…",
       "generate": "✨ Generate my moment",
       "adjust": "Let me adjust",
       "placeholder": "Tell me your mood in a few words…",
@@ -4078,7 +4145,7 @@
     "micDenied": "Microphone access denied"
   },
   "pip": {
-    "title": "Pip — your companion",
+    "title": "Ping — your companion",
     "welcome": "Hi! Tell me what you need — I'll point you to the right tool, or we can just chat.",
     "placeholder": "Ask anything…",
     "error": "Couldn't reply, try again.",
@@ -4338,22 +4405,70 @@
     "rewardsSubtitle": "Your badge earns you:",
     "points": "adventure points",
     "unlocks": {
-      "title": { "name": "Traveler title", "description": "Your badge is shown on your profile." },
-      "content_culture": { "name": "Culture pack", "description": "Enhanced cultural recommendations in Discover." },
-      "content_nomad": { "name": "Nomad pack", "description": "Coworking and connectivity sheets per city." },
-      "content_relax": { "name": "Relax pack", "description": "Curated hotels and spas." },
-      "content_adventure": { "name": "Adventure pack", "description": "Trek routes, sports and thrills prioritized." },
-      "content_nature": { "name": "Nature pack", "description": "Parks, reserves and hikes highlighted first." },
-      "content_food": { "name": "Foodie pack", "description": "Local tables and starred restaurants surfaced first." },
-      "content_wellbeing": { "name": "Wellbeing pack", "description": "Retreats, yoga and spas prioritized." },
-      "content_social": { "name": "Social pack", "description": "Events and lively venues surfaced first." },
-      "content_planning": { "name": "Planning pack", "description": "Ready-to-customize itinerary templates." },
-      "content_budget": { "name": "Budget pack", "description": "Deals and cheaper alternatives favored." },
-      "ai_tone_curator": { "name": "AI — curator tone", "description": "Your travel AI speaks like a cultured guide." },
-      "ai_tone_pragmatic": { "name": "AI — efficient tone", "description": "Short, action-oriented answers." },
-      "ai_tone_bold": { "name": "AI — bold tone", "description": "Direct tone that pushes you out of your comfort zone." },
-      "ai_tone_soft": { "name": "AI — gentle tone", "description": "Soft, caring tone that helps you unwind." },
-      "ai_tone_warm": { "name": "AI — warm tone", "description": "Friendly tone, like a local showing you their city." }
+      "title": {
+        "name": "Traveler title",
+        "description": "Your badge is shown on your profile."
+      },
+      "content_culture": {
+        "name": "Culture pack",
+        "description": "Enhanced cultural recommendations in Discover."
+      },
+      "content_nomad": {
+        "name": "Nomad pack",
+        "description": "Coworking and connectivity sheets per city."
+      },
+      "content_relax": {
+        "name": "Relax pack",
+        "description": "Curated hotels and spas."
+      },
+      "content_adventure": {
+        "name": "Adventure pack",
+        "description": "Trek routes, sports and thrills prioritized."
+      },
+      "content_nature": {
+        "name": "Nature pack",
+        "description": "Parks, reserves and hikes highlighted first."
+      },
+      "content_food": {
+        "name": "Foodie pack",
+        "description": "Local tables and starred restaurants surfaced first."
+      },
+      "content_wellbeing": {
+        "name": "Wellbeing pack",
+        "description": "Retreats, yoga and spas prioritized."
+      },
+      "content_social": {
+        "name": "Social pack",
+        "description": "Events and lively venues surfaced first."
+      },
+      "content_planning": {
+        "name": "Planning pack",
+        "description": "Ready-to-customize itinerary templates."
+      },
+      "content_budget": {
+        "name": "Budget pack",
+        "description": "Deals and cheaper alternatives favored."
+      },
+      "ai_tone_curator": {
+        "name": "AI — curator tone",
+        "description": "Your travel AI speaks like a cultured guide."
+      },
+      "ai_tone_pragmatic": {
+        "name": "AI — efficient tone",
+        "description": "Short, action-oriented answers."
+      },
+      "ai_tone_bold": {
+        "name": "AI — bold tone",
+        "description": "Direct tone that pushes you out of your comfort zone."
+      },
+      "ai_tone_soft": {
+        "name": "AI — gentle tone",
+        "description": "Soft, caring tone that helps you unwind."
+      },
+      "ai_tone_warm": {
+        "name": "AI — warm tone",
+        "description": "Friendly tone, like a local showing you their city."
+      }
     },
     "dimensions": {
       "culture": "Culture",
@@ -4370,26 +4485,80 @@
       "organization": "Planning"
     },
     "badges": {
-      "cultural_explorer": { "name": "Cultural Explorer", "description": "You travel to understand people, their traditions and stories. Museums, local markets, craft workshops — that's where your journey means the most." },
-      "digital_nomad": { "name": "Digital Nomad", "description": "Your desk changes windows every month. You look for places where you can work well, live well, and stay a while." },
-      "relaxation": { "name": "Comfort Traveler", "description": "For you, traveling is resting, treating yourself and unwinding in a beautiful setting." },
-      "adventurer": { "name": "Adventurer", "description": "The beaten path bores you. You want effort, raw nature, and stories to tell when you get back." },
-      "nature": { "name": "Nature Traveler", "description": "You recharge in wide open spaces, far from noise, in tune with the wild." },
-      "gastronomic": { "name": "Foodie Traveler", "description": "Your itinerary follows your palate: Michelin tables, street food, buzzing markets." },
-      "wellbeing": { "name": "Wellbeing Traveler", "description": "You travel to reconnect: yoga, spa, silence and soothing landscapes." },
-      "social": { "name": "Social Traveler", "description": "Your best memories are the people you meet. You thrive with local culture and fellow travelers." },
-      "organized": { "name": "Organized Traveler", "description": "You like everything planned, from the visa to the last museum. Peace of mind starts with preparation." },
-      "budget": { "name": "Budget Traveler", "description": "You prove you can see the world without breaking the bank. You optimize everything without sacrificing the experience." },
-      "curious": { "name": "Curious Traveler", "description": "Your profile is open and eclectic. You try a bit of everything and let your desires guide you." }
+      "cultural_explorer": {
+        "name": "Cultural Explorer",
+        "description": "You travel to understand people, their traditions and stories. Museums, local markets, craft workshops — that's where your journey means the most."
+      },
+      "digital_nomad": {
+        "name": "Digital Nomad",
+        "description": "Your desk changes windows every month. You look for places where you can work well, live well, and stay a while."
+      },
+      "relaxation": {
+        "name": "Comfort Traveler",
+        "description": "For you, traveling is resting, treating yourself and unwinding in a beautiful setting."
+      },
+      "adventurer": {
+        "name": "Adventurer",
+        "description": "The beaten path bores you. You want effort, raw nature, and stories to tell when you get back."
+      },
+      "nature": {
+        "name": "Nature Traveler",
+        "description": "You recharge in wide open spaces, far from noise, in tune with the wild."
+      },
+      "gastronomic": {
+        "name": "Foodie Traveler",
+        "description": "Your itinerary follows your palate: Michelin tables, street food, buzzing markets."
+      },
+      "wellbeing": {
+        "name": "Wellbeing Traveler",
+        "description": "You travel to reconnect: yoga, spa, silence and soothing landscapes."
+      },
+      "social": {
+        "name": "Social Traveler",
+        "description": "Your best memories are the people you meet. You thrive with local culture and fellow travelers."
+      },
+      "organized": {
+        "name": "Organized Traveler",
+        "description": "You like everything planned, from the visa to the last museum. Peace of mind starts with preparation."
+      },
+      "budget": {
+        "name": "Budget Traveler",
+        "description": "You prove you can see the world without breaking the bank. You optimize everything without sacrificing the experience."
+      },
+      "curious": {
+        "name": "Curious Traveler",
+        "description": "Your profile is open and eclectic. You try a bit of everything and let your desires guide you."
+      }
     },
     "features": {
-      "discover": { "name": "Discover", "description": "Local spots and hidden gems tailored to your profile." },
-      "carnet": { "name": "Travel Journal", "description": "Your smart travel journal with photos, moments and AI-crafted stories." },
-      "suivi": { "name": "Trip Tracker", "description": "Live map, itinerary, check-ins and real-time alerts." },
-      "mood": { "name": "Mood Explorer", "description": "Recommendations based on your current mood." },
-      "guide-valise": { "name": "Packing Guide", "description": "Smart checklist adapted to your destination and style." },
-      "guide-budget": { "name": "Budget Guide", "description": "Expense dashboard with alerts and AI tips." },
-      "guide-visa": { "name": "Visa Guide", "description": "Formalities, vaccines and safety for your destination." }
+      "discover": {
+        "name": "Discover",
+        "description": "Local spots and hidden gems tailored to your profile."
+      },
+      "carnet": {
+        "name": "Travel Journal",
+        "description": "Your smart travel journal with photos, moments and AI-crafted stories."
+      },
+      "suivi": {
+        "name": "Trip Tracker",
+        "description": "Live map, itinerary, check-ins and real-time alerts."
+      },
+      "mood": {
+        "name": "Mood Explorer",
+        "description": "Recommendations based on your current mood."
+      },
+      "guide-valise": {
+        "name": "Packing Guide",
+        "description": "Smart checklist adapted to your destination and style."
+      },
+      "guide-budget": {
+        "name": "Budget Guide",
+        "description": "Expense dashboard with alerts and AI tips."
+      },
+      "guide-visa": {
+        "name": "Visa Guide",
+        "description": "Formalities, vaccines and safety for your destination."
+      }
     }
   }
 }

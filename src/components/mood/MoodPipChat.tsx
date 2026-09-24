@@ -156,7 +156,7 @@ const MoodPipChat = ({ loading, onClose, onSubmit }: Props) => {
             <Sparkles className="w-4 h-4 text-primary-foreground" />
           </div>
           <div>
-            <p className="text-sm font-bold">Pip</p>
+            <p className="text-sm font-bold">Ping</p>
             <p className="text-[10px] text-muted-foreground">{t("moodComp.pip.subtitle")}</p>
           </div>
         </div>

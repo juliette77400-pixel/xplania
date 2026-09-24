@@ -18,7 +18,7 @@ const ModuleNavbar = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
           <Link
-            to="/#create"
+            to="/home#create"
             className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors shrink-0"
           >
             <ArrowLeft className="w-4 h-4 text-foreground" />

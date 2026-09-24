@@ -19,7 +19,7 @@ const Explore = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5 pointer-events-none" />
       <header className="relative border-b border-border backdrop-blur-md bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> {t("common2.home")}</Link>
+          <Link to="/app" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> {t("common2.home")}</Link>
           <div className="flex items-center gap-2"><Compass className="w-5 h-5 text-primary" /><h1 className="font-bold">{t("explorePage.title")}</h1></div>
           <div className="w-16" />
         </div>
@@ -36,7 +36,7 @@ const Explore = () => {
         ) : trips.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground mb-4">{t("explorePage.empty")}</p>
-            <Link to="/" className="text-primary hover:underline">{t("explorePage.createFirst")}</Link>
+            <Link to="/home#create" className="text-primary hover:underline">{t("explorePage.createFirst")}</Link>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 gap-4">

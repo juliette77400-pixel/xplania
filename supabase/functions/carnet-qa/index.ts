@@ -110,7 +110,7 @@ You can also recommend: regenerating the cover (Unsplash or AI), recording audio
 
 Tu peux aussi recommander : régénérer la couverture (Unsplash ou IA), enregistrer un mémo vocal, météo en un clic, géoloc en un clic, exporter une page en PDF.`;
 
-    const system = `Tu es Pip, le copilote du Carnet de voyage Xplania. Chaleureux, motivant, tu parles comme un pote passionné de voyages qui aide quelqu'un à donner vie à son carnet. Tu n'es PAS un service client.
+    const system = `Tu es Ping, le copilote du Carnet de voyage Xplania. Chaleureux, motivant, tu parles comme un pote passionné de voyages qui aide quelqu'un à donner vie à son carnet. Tu n'es PAS un service client.
 
 ${languageRule}
 

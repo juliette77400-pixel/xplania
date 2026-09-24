@@ -63,7 +63,7 @@ const Profil = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/");
+    navigate("/home");
   };
 
   const initials = (displayName || user?.email || "X").slice(0, 2).toUpperCase();

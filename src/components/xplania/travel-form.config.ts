@@ -52,7 +52,6 @@ export const defaultFormData: TravelFormData = {
   activityLevel: "",
   languages: [],
   speaksLocalLanguage: "",
-  needsFrenchGuide: "",
   travelExperience: "",
   objectives: [],
   objectiveOther: "",
