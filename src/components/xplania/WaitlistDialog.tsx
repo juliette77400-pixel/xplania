@@ -10,7 +10,7 @@ import { Sparkles, Check, Rocket, Mail, Loader2, Users, Linkedin, User } from "l
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-const WAITLIST_BASELINE = 327;
+const WAITLIST_BASELINE = 40;
 /** Shown when the free quota is reached: "40 personnes attendent la version bêta". */
 const BETA_WAITLIST_MIN = 40;
 
