@@ -15,7 +15,12 @@ import { toast } from "sonner";
 const Auth = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const next = params.get("next") || "/";
+  const location = useLocation();
+  // After sign-in, land on the marketing home ("/home") — never the anonymous
+  // Tinder deck at "/". If the user was bounced here from a protected page,
+  // send them back there instead.
+  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
+  const next = params.get("next") || (from && from !== "/" && from !== "/auth" ? from : "/home");
   const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
