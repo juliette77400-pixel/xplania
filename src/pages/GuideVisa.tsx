@@ -116,6 +116,14 @@ const GuideVisaPage = () => {
       toast.error(t("guideVisa.errSelectDest"));
       return;
     }
+    // The visa service requires a signed-in user; check the session first so
+    // we never send a doomed request (401) and can guide the user instead.
+    const { data: sess } = await supabase.auth.getSession();
+    if (!sess.session) {
+      toast.error(t("guideVisa.errAuth", { defaultValue: i18n.language.startsWith("fr") ? "Connecte-toi pour générer tes formalités." : "Sign in to generate your travel formalities." }));
+      window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`);
+      return;
+    }
     if (reached) { setShowUpgrade(true); return; }
     consume();
     setIsGenerating(true);
@@ -142,7 +150,16 @@ const GuideVisaPage = () => {
 
       await stepPromise;
 
-      if (error) throw new Error(error.message || t("guideVisa.errAi"));
+      if (error) {
+        const status = (error as { context?: { status?: number } })?.context?.status;
+        if (status === 401) {
+          toast.error(t("guideVisa.errAuth", { defaultValue: i18n.language.startsWith("fr") ? "Session expirée, reconnecte-toi." : "Session expired, please sign in again." }));
+          window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`);
+          return;
+        }
+        if (status === 402) { setShowUpgrade(true); return; }
+        throw new Error(error.message || t("guideVisa.errAi"));
+      }
       if (data?.error) throw new Error(data.error);
 
       if (!data?.visa || !data?.security || !data?.health || !Array.isArray(data?.checklist)) {
