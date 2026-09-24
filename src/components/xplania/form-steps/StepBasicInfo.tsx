@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MapPin, Calendar, Clock, Compass, Palmtree, Mountain, Drama, UtensilsCrossed, Dumbbell, Camera, Flame, Snail, Plane, HelpCircle, Search } from "lucide-react";
+import OptionButton from "./OptionButton";
 import type { TravelFormData } from "@/types/travel";
 import { searchDeparturePoints, formatDeparturePoint, type DeparturePoint } from "@/data/departure-points";
 
@@ -48,6 +49,19 @@ const StepBasicInfo = ({ data, update }: Props) => {
     update({ departureLocation: formatDeparturePoint(point) });
     setShowSuggestions(false);
   };
+
+  // Auto-compute trip length as soon as both dates are known.
+  const stay = (() => {
+    if (!data.departureDate || !data.returnDate) return null;
+    const a = new Date(data.departureDate).getTime();
+    const b = new Date(data.returnDate).getTime();
+    if (Number.isNaN(a) || Number.isNaN(b) || b < a) return null;
+    const nights = Math.round((b - a) / 86_400_000);
+    return { nights, days: nights + 1 };
+  })();
+  useEffect(() => {
+    if (stay && data.duration !== String(stay.days)) update({ duration: String(stay.days) });
+  }, [stay?.days]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -146,6 +160,7 @@ const StepBasicInfo = ({ data, update }: Props) => {
           <Input
             type="date"
             value={data.returnDate}
+            min={data.departureDate || undefined}
             onChange={(e) => update({ returnDate: e.target.value })}
             className="bg-muted border-border text-foreground"
           />
@@ -156,31 +171,33 @@ const StepBasicInfo = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold flex items-center gap-2">
           <Clock className="w-4 h-4 text-primary" /> {t("travelForm.fields.duration")}
         </Label>
-        <Input
-          placeholder={t("travelForm.fields.durationPh")}
-          value={data.duration}
-          onChange={(e) => update({ duration: e.target.value })}
-          className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-        />
+        {stay ? (
+          <div className="rounded-lg bg-muted border border-border px-3 py-2 text-sm text-foreground">
+            {t("travelForm.fields.durationValue", { days: stay.days, nights: stay.nights })}
+            <p className="text-xs text-muted-foreground">{t("travelForm.fields.durationAuto")}</p>
+          </div>
+        ) : (
+          <Input
+            placeholder={t("travelForm.fields.durationPh")}
+            value={data.duration}
+            onChange={(e) => update({ duration: e.target.value })}
+            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+          />
+        )}
       </div>
 
       <div className="space-y-2">
         <Label className="text-foreground font-semibold">{t("travelForm.fields.tripType")}</Label>
         <div className="flex flex-wrap gap-2">
           {TRIP_TYPES.map((opt) => (
-            <button
+            <OptionButton
               key={opt.id}
-              type="button"
+              selected={data.tripTypes.includes(opt.id)}
+              label={t(`travelForm.options.tripType.${opt.id}`)}
+              hint={t(`travelForm.optionHints.tripType.${opt.id}`, { defaultValue: "" })}
+              icon={opt.icon}
               onClick={() => toggleTripType(opt.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
-                data.tripTypes.includes(opt.id)
-                  ? "gradient-button text-primary-foreground"
-                  : "glass-card text-foreground hover:bg-muted"
-              }`}
-            >
-              {opt.icon}
-              {t(`travelForm.options.tripType.${opt.id}`)}
-            </button>
+            />
           ))}
         </div>
       </div>
