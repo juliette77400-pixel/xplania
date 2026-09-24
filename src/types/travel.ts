@@ -15,7 +15,6 @@ export interface TravelFormData {
   activityLevel: string;
   languages: string[];
   speaksLocalLanguage: string;
-  needsFrenchGuide: string;
   travelExperience: string;
 
   // Section 3 - Objectif du voyage
