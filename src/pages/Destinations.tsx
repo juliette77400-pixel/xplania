@@ -10,10 +10,12 @@ import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Heart, X, MapPin, Sparkles, Info, ChevronDown, Loader2, Compass, BookOpen } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { useDestinationSuggestions, type DestinationSuggestion } from "@/hooks/useDestinationSuggestions";
 import { trackReaction } from "@/lib/user-memory";
 
 export default function Destinations() {
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const qc = useQueryClient();
   const { data: destinations, isLoading, refetch } = useDestinationSuggestions({ limit: 8, originalityBoost: 0.4 });
@@ -39,11 +41,11 @@ export default function Destinations() {
         context: { name: dest.name, country: dest.country, match_score: dest.match_score },
       });
       setDismissed((prev) => new Set(prev).add(dest.slug));
-      toast.success(liked ? `${dest.name} sauvegardée ❤️` : `${dest.name} écartée`);
+      toast.success(liked ? t("ui2.Destinations.saved", { name: dest.name }) : t("ui2.Destinations.dismissed", { name: dest.name }));
       // Invalidate to refresh suggestions with updated history
       qc.invalidateQueries({ queryKey: ["xplania-destinations"] });
     } catch (e) {
-      toast.error("Impossible d'enregistrer");
+      toast.error(t("ui2.Destinations.saveFailed"));
     } finally {
       setReacting((s) => ({ ...s, [dest.slug]: false }));
     }
@@ -57,11 +59,10 @@ export default function Destinations() {
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Compass className="h-8 w-8 text-primary" /> Destinations pour toi
+            <Compass className="h-8 w-8 text-primary" /> {t("ui2.Destinations.title")}
           </h1>
           <p className="text-muted-foreground mt-2">
-            Suggestions calculées à partir de ton profil voyageur et de l'ADN de chaque destination.
-            Like ❤️ ou écarte ✕ — Xplania apprend en direct.
+{t("ui2.Destinations.subtitle")}
           </p>
         </div>
 
@@ -75,9 +76,9 @@ export default function Destinations() {
           <Card className="text-center py-12">
             <CardContent>
               <Sparkles className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">Plus rien à te proposer pour l'instant.</p>
+              <p className="text-muted-foreground">{t("ui2.Destinations.noneLeft")}</p>
               <Button variant="outline" className="mt-4" onClick={() => { setDismissed(new Set()); refetch(); }}>
-                Recharger
+                {t("ui2.Destinations.reload")}
               </Button>
             </CardContent>
           </Card>
@@ -110,6 +111,7 @@ function DestinationCard({
   onReject: () => void;
   disabled: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <Card className="overflow-hidden">
       {dest.hero_image_url && (
@@ -140,7 +142,7 @@ function DestinationCard({
             <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>
           ))}
           <Badge variant="outline" className="text-xs">
-            Originalité {dest.originality_score}/100
+            {t("ui2.Destinations.originality", { value: dest.originality_score })}
           </Badge>
         </div>
 
@@ -149,20 +151,20 @@ function DestinationCard({
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="sm" className="w-full justify-between">
               <span className="flex items-center gap-2">
-                <Info className="h-4 w-4" /> Pourquoi cette recommandation ?
+                <Info className="h-4 w-4" /> {t("ui2.Destinations.whyRecommend")}
               </span>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="pt-4 space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <MatchBar label="Correspondance profil" value={dest.match_reason.profile_match} />
-              <MatchBar label="Score d'originalité" value={dest.match_reason.originality} />
+              <MatchBar label={t("ui2.Destinations.profileMatch")} value={dest.match_reason.profile_match} />
+              <MatchBar label={t("ui2.Destinations.originalityScore")} value={dest.match_reason.originality} />
             </div>
             {dest.curated_notes.length > 0 && (
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 flex items-center gap-1">
-                  <BookOpen className="h-3 w-3" /> Sources Xplania (RAG)
+                  <BookOpen className="h-3 w-3" /> {t("ui2.Destinations.sources")}
                 </p>
                 <ul className="space-y-2">
                   {dest.curated_notes.map((note, i) => (
@@ -177,7 +179,7 @@ function DestinationCard({
             {dest.hidden_gems.length > 0 && (
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 flex items-center gap-1">
-                  <Sparkles className="h-3 w-3" /> Hidden gems associés
+                  <Sparkles className="h-3 w-3" /> {t("ui2.Destinations.hiddenGems")}
                 </p>
                 <ul className="space-y-1.5">
                   {dest.hidden_gems.slice(0, 3).map((gem, i) => (
@@ -199,10 +201,10 @@ function DestinationCard({
             onClick={onReject}
             disabled={disabled}
           >
-            <X className="mr-2 h-4 w-4" /> Pas pour moi
+            <X className="mr-2 h-4 w-4" /> {t("ui2.Destinations.notForMe")}
           </Button>
           <Button className="flex-1" onClick={onLike} disabled={disabled}>
-            <Heart className="mr-2 h-4 w-4 fill-current" /> J'adore
+            <Heart className="mr-2 h-4 w-4 fill-current" /> {t("ui2.Destinations.love")}
           </Button>
         </div>
       </CardContent>

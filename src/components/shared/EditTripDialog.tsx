@@ -1,6 +1,7 @@
 // ✨ NEW (Tâche 3) — Modale d'édition d'un voyage : titre, destination, dates.
 import { useState, useEffect } from "react";
 import { Pencil, Loader2, Save } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter,
   DialogHeader, DialogTitle, DialogTrigger,
@@ -105,7 +106,7 @@ const EditTripDialog = ({ trip, variant = "icon", onUpdated, className, stopProp
         <div className="space-y-3 py-2">
           <div className="space-y-1.5">
             <Label htmlFor="trip-title">Titre</Label>
-            <Input id="trip-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Mon voyage à Lisbonne" />
+            <Input id="trip-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("ui2.EditTripDialog.titlePh")} />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="trip-dest">Destination</Label>
@@ -113,7 +114,7 @@ const EditTripDialog = ({ trip, variant = "icon", onUpdated, className, stopProp
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="trip-dep">Départ</Label>
+              <Label htmlFor="trip-dep">{t("ui2.EditTripDialog.departure")}</Label>
               <Input id="trip-dep" type="date" value={dep} onChange={(e) => setDep(e.target.value)} />
             </div>
             <div className="space-y-1.5">
