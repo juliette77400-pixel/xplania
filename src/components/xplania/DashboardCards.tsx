@@ -252,6 +252,21 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           title={t("travelForm.dashboard.secWeather")}
           subtitle={formData.arrivalCity || formData.destination}
         >
+          {rec?.weather?.temperature && (
+            <div className="mb-3 rounded-xl bg-muted/30 p-3 space-y-1">
+              <p className="text-sm font-semibold text-foreground">
+                {toText(rec.weather.temperature)}
+                {rec.weather.source && (
+                  <span className="ml-2 text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    {t("travelForm.realWeather")}
+                  </span>
+                )}
+              </p>
+              {rec.weather.forecast && <p className="text-xs text-muted-foreground">{toText(rec.weather.forecast)}</p>}
+              {rec.weather.advice && <p className="text-xs text-foreground/80">{toText(rec.weather.advice)}</p>}
+              {rec.weather.source && <p className="text-[10px] text-muted-foreground">{toText(rec.weather.source)}</p>}
+            </div>
+          )}
           <WeatherSection destination={formData.arrivalCity || formData.destination} />
         </SectionItem>
 
@@ -316,7 +331,12 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                       <p className="text-sm font-semibold text-foreground">{toText(act.name)}</p>
                     </div>
                     <p className="text-xs text-muted-foreground">{toText(act.description)}</p>
-                    <p className="text-xs font-medium text-primary">≈ {toText(act.estimatedCost)}</p>
+                    <p className="text-xs font-medium text-primary flex items-center gap-2">
+                      ≈ {toText(act.estimatedCost)}
+                      {act.budgetFriendly && (
+                        <span className="text-[10px] font-semibold bg-primary/10 px-2 py-0.5 rounded-full">{t("travelForm.cheap")}</span>
+                      )}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -404,6 +424,12 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                       {toText(item.category)}
                     </span>
                     <p className="text-sm font-semibold text-foreground">{toText(item.name)}</p>
+                    {(item.city || item.neighborhood) && (
+                      <p className="text-xs font-medium text-primary flex items-center gap-1">
+                        <MapPin className="w-3 h-3" />
+                        {[toText(item.neighborhood), toText(item.city)].filter(Boolean).join(", ")}
+                      </p>
+                    )}
                     <p className="text-xs text-muted-foreground">{toText(item.description)}</p>
                   </div>
                 </div>

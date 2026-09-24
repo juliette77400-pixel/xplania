@@ -70,6 +70,7 @@ export interface WeatherData {
   temperature: string;
   forecast: string;
   advice: string;
+  source?: string;
 }
 
 export interface CulturalTip {
@@ -82,12 +83,15 @@ export interface Activity {
   description: string;
   type: "culture" | "nature" | "gastronomie" | "aventure";
   estimatedCost: string;
+  budgetFriendly?: boolean;
 }
 
 export interface LocalRecommendation {
   category: "restaurant" | "transport" | "quartier" | "marché";
   name: string;
   description: string;
+  city?: string;
+  neighborhood?: string;
 }
 
 export interface BudgetItem {
