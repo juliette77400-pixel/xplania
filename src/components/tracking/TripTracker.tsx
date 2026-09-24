@@ -9,7 +9,8 @@ import { useNearbyPOI, NearbyPOI, POI_COLORS, POI_LABELS } from "@/hooks/useNear
 import { useJournal } from "@/hooks/useJournal";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import FakeMapView from "./FakeMapView";
+import GoogleTripMap from "./GoogleTripMap";
+import RouteDistances from "./RouteDistances";
 import LiveTimeline from "./LiveTimeline";
 import LiveStats from "./LiveStats";
 import LiveSuggestions, { AISuggestion } from "./LiveSuggestions";
@@ -291,16 +292,19 @@ const TripTracker = ({ tripId, destination }: Props) => {
             </div>
           </div>
 
-          <FakeMapView
-            destination={destination}
-            progressKm={Number(trip?.total_distance_km || 0)}
-            totalKm={Number((trip as any)?.target_distance_km || 0) || undefined}
-            stages={displayActivities.map((a) => ({
-              id: a.id,
-              title: a.title,
-              status: a.status,
-            }))}
-            height={420}
+          <GoogleTripMap
+            position={geo.position}
+            activities={mapFilter ? displayActivities.filter((a) => a.category === mapFilter) : displayActivities}
+            positions={positions}
+            height={440}
+          />
+
+          <RouteDistances
+            tripId={tripId}
+            position={geo.position}
+            activities={displayActivities}
+            positions={positions}
+            onChanged={tracking.refetch}
           />
 
           {showPois && pois.length > 0 && (
