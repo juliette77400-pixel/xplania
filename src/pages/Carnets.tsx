@@ -36,7 +36,7 @@ const Carnets = () => {
 
       <header className="relative border-b border-border backdrop-blur-md bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> {t("common2.home")}</Link>
+          <Link to="/app" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> {t("common2.home")}</Link>
           <div className="flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /><h1 className="font-bold">{t("carnets.title")}</h1></div>
           <div className="w-16" />
         </div>
@@ -57,7 +57,7 @@ const Carnets = () => {
         ) : trips.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground mb-4">{t("carnets.empty")}</p>
-            <Link to="/" className="text-primary hover:underline">{t("carnets.createFirst")}</Link>
+            <Link to="/home#create" className="text-primary hover:underline">{t("carnets.createFirst")}</Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

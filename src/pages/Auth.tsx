@@ -83,7 +83,7 @@ const Auth = () => {
         animate={{ opacity: 1, y: 0 }}
         className="relative z-10 w-full max-w-md"
       >
-        <Link to="/" className="flex items-center justify-center gap-2 mb-8">
+        <Link to="/home" className="flex items-center justify-center gap-2 mb-8">
           <Sparkles className="w-6 h-6 text-primary" />
           <span className="text-2xl font-bold gradient-text">Xplania</span>
         </Link>
@@ -158,7 +158,7 @@ const Auth = () => {
         </div>
 
         <Link
-          to="/"
+          to="/home"
           className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> {t("auth.backHome")}

@@ -375,7 +375,7 @@ const CarnetOnboardingChat = ({
       doc.setTextColor(0);
 
       for (const m of qaHistory) {
-        const who = m.role === "user" ? t("carnet.qa.you") : "Pip";
+        const who = m.role === "user" ? t("carnet.qa.you") : "Ping";
         doc.setFont("helvetica", "bold");
         doc.setFontSize(11);
         doc.text(`${who}`, margin, y);

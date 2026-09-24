@@ -31,7 +31,7 @@ const ValiseHeader = ({ checkedItems, totalItems, userName }: ValiseHeaderProps)
   return (
     <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-6 py-4 flex items-center gap-4">
-        <Link to="/#create" className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors">
+        <Link to="/home#create" className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <div className="flex-1 min-w-0">

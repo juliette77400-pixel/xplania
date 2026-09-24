@@ -32,7 +32,7 @@ const ResetPassword = () => {
     if (error) toast.error(error.message);
     else {
       toast.success(t("resetPassword.success"));
-      navigate("/");
+      navigate("/app");
     }
   };
 
