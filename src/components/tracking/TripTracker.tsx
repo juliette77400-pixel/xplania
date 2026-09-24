@@ -57,7 +57,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
   });
 
   const notif = useNotifications();
-  useCheckIn(tripId, geo.position, activities, (a) => notif.notify("Check-in automatique", a.title));
+  useCheckIn(tripId, geo.position, activities, (a) => notif.notify(t("ui2.TripTracker.autoCheckin"), a.title));
   const { isOnline } = useOfflineCache(tripId, trip, activities);
 
   const { pois, loading: loadingPois } = useNearbyPOI(geo.position, showPois && !!geo.position, 600);
@@ -94,7 +94,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
   useEffect(() => {
     if (!tracking.loading && trip && activities.length === 0) {
       tracking.seedActivities().then((n) => {
-        if (n > 0) toast.success(`${n} étapes synchronisées depuis ton voyage`);
+        if (n > 0) toast.success(t("ui2.TripTracker.stepsSyncedFromTrip", { count: n }));
       }).catch(() => {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,11 +113,11 @@ const TripTracker = ({ tripId, destination }: Props) => {
     source: "poi" | "ai";
   }) => {
     if (!user) {
-      toast.error("Connecte-toi pour ajouter à ton carnet");
+      toast.error(t("ui2.TripTracker.loginToAddJournal"));
       return;
     }
     if (!journal || days.length === 0) {
-      toast.error("Carnet pas encore prêt — patiente un instant");
+      toast.error(t("ui2.TripTracker.journalNotReady"));
       return;
     }
     const today = new Date().toISOString().slice(0, 10);
@@ -146,13 +146,15 @@ const TripTracker = ({ tripId, destination }: Props) => {
     });
 
     if (error) {
-      toast.error("Impossible d'ajouter au carnet");
+      toast.error(t("ui2.TripTracker.addToJournalFailed"));
       return;
     }
 
-    toast.success(`✨ "${payload.title}" ajouté à ton carnet`, {
-      description: `Jour du ${new Date(targetDay.date).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}`,
-      action: { label: "Voir", onClick: () => window.open(`/carnet/${tripId}`, "_blank") },
+    toast.success(t("ui2.TripTracker.addedToJournal", { title: payload.title }), {
+      description: t("ui2.TripTracker.dayOf", {
+        date: new Date(targetDay.date).toLocaleDateString(t("ui2.TripTracker.dateLocale"), { weekday: "long", day: "numeric", month: "long" }),
+      }),
+      action: { label: t("ui2.TripTracker.view"), onClick: () => window.open(`/carnet/${tripId}`, "_blank") },
     });
     refetchJournal();
   };
@@ -180,7 +182,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
   const shareUrl = trip?.share_slug ? `${window.location.origin}/suivi/public/${trip.share_slug}` : "";
 
   if (tracking.loading) {
-    return <div className="text-center py-12 text-muted-foreground text-sm">Chargement…</div>;
+    return <div className="text-center py-12 text-muted-foreground text-sm">{t("ui2.TripTracker.loading")}</div>;
   }
 
   return (
@@ -219,15 +221,15 @@ const TripTracker = ({ tripId, destination }: Props) => {
                 : "bg-muted text-muted-foreground border-border"
             }`}>
               <Activity className="inline w-3 h-3 mr-1" />
-              {trip?.is_active ? "EN DIRECT" : "EN PAUSE"}
+              {trip?.is_active ? t("ui2.TripTracker.live") : t("ui2.TripTracker.paused")}
             </span>
             {!isOnline && (
               <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/30">
-                Hors ligne
+                {t("ui2.TripTracker.offline")}
               </span>
             )}
             <Button size="sm" variant="outline" onClick={() => setShareOpen(true)} className="h-8">
-              <Share2 className="w-3.5 h-3.5 mr-1.5" /> Partager
+              <Share2 className="w-3.5 h-3.5 mr-1.5" /> {t("ui2.TripTracker.share")}
             </Button>
           </div>
         </div>
@@ -277,13 +279,13 @@ const TripTracker = ({ tripId, destination }: Props) => {
                       : "bg-muted/40 text-muted-foreground hover:bg-muted/70 border-border"
                   }`}
                 >
-                  {f === "all" ? "Tout" : POI_LABELS[f as keyof typeof POI_LABELS] || f.replace("_", " ")}
+                  {f === "all" ? t("ui2.TripTracker.all") : POI_LABELS[f as keyof typeof POI_LABELS] || f.replace("_", " ")}
                 </button>
               ))}
             </div>
             <div className="flex items-center gap-2">
               <Label htmlFor="poi-toggle" className="text-xs text-muted-foreground cursor-pointer">
-                Points d'intérêt {loadingPois && "…"}
+                {t("ui2.TripTracker.poi")} {loadingPois && "…"}
               </Label>
               <Switch id="poi-toggle" checked={showPois} onCheckedChange={setShowPois} />
             </div>
@@ -303,7 +305,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
 
           {showPois && pois.length > 0 && (
             <div className="flex items-center gap-3 flex-wrap text-[11px] text-muted-foreground px-1">
-              <span className="font-semibold">{filteredPois.length} POI autour</span>
+              <span className="font-semibold">{t("ui2.TripTracker.poiAround", { count: filteredPois.length })}</span>
               {(Object.entries(POI_LABELS) as [keyof typeof POI_LABELS, string][]).map(([cat, label]) => (
                 <span key={cat} className="flex items-center gap-1">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ background: POI_COLORS[cat] }} />
@@ -313,7 +315,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
               {aiPins.length > 0 && (
                 <span className="flex items-center gap-1 ml-2">
                   <span className="w-2.5 h-2.5 rounded-full border-2 border-amber-400" style={{ background: "#f59e0b" }} />
-                  ✨ Suggestions IA
+                  {t("ui2.TripTracker.aiSuggestions")}
                 </span>
               )}
             </div>
@@ -334,7 +336,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
             onRequestNotifications={notif.request}
             onSeed={async () => {
               const n = await tracking.seedActivities();
-              toast.success(`${n} étapes synchronisées`);
+              toast.success(t("ui2.TripTracker.stepsSynced", { count: n }));
             }}
             notifGranted={notif.permission === "granted"}
           />
@@ -343,8 +345,8 @@ const TripTracker = ({ tripId, destination }: Props) => {
 
       <Tabs defaultValue="timeline">
         <TabsList className="grid grid-cols-2 max-w-md">
-          <TabsTrigger value="timeline">📋 Timeline du voyage</TabsTrigger>
-          <TabsTrigger value="suggestions">✨ Suggestions IA</TabsTrigger>
+          <TabsTrigger value="timeline">{t("ui2.TripTracker.timelineTab")}</TabsTrigger>
+          <TabsTrigger value="suggestions">{t("ui2.TripTracker.aiSuggestionsTab")}</TabsTrigger>
         </TabsList>
         <TabsContent value="timeline" className="mt-4">
           <LiveTimeline activities={displayActivities} onStatusChange={tracking.updateActivityStatus} />
@@ -358,7 +360,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
             onSuggestions={(s) => {
               setAiSuggestions(s);
               const withPin = s.filter((x) => x.lat && x.lng).length;
-              if (withPin > 0) toast.success(`${withPin} suggestion${withPin > 1 ? "s" : ""} épinglée${withPin > 1 ? "s" : ""} sur la carte ⭐`);
+              if (withPin > 0) toast.success(t("ui2.TripTracker.suggestionsPinned", { count: withPin }));
             }}
             onAddToCarnet={handleAiAdd}
           />
