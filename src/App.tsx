@@ -1,3 +1,4 @@
+import RouteMeta from "@/components/shared/RouteMeta";
 import i18n from "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -85,6 +86,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
+            <RouteMeta />
             <OnboardingSyncGate />
             <AdminGate />
             <Suspense fallback={<PageLoader />}>
