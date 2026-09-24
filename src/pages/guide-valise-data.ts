@@ -4,8 +4,11 @@
 import type { LuggageMode } from "@/components/valise/LuggageModes";
 import type { TransportMode } from "@/components/valise/TransportSelector";
 import type { ChecklistItem } from "@/components/valise/ChecklistSection";
+import i18n from "@/i18n";
 
-export const baseCategories: Record<string, ChecklistItem[]> = {
+const isEn = () => i18n.language?.startsWith("en");
+
+const baseCategoriesFr: Record<string, ChecklistItem[]> = {
   "Vêtements essentiels": [
     { name: "T-shirts (3-4)", description: "Couleurs neutres, respirants", checked: true },
     { name: "Pull léger", description: "Pour les soirées fraîches", checked: true },
@@ -51,7 +54,60 @@ export const baseCategories: Record<string, ChecklistItem[]> = {
   ],
 };
 
-export const modeExtras: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
+const baseCategoriesEn: Record<string, ChecklistItem[]> = {
+  "Essential clothing": [
+    { name: "T-shirts (3-4)", description: "Neutral colours, breathable", checked: true },
+    { name: "Light sweater", description: "For cool evenings", checked: true },
+    { name: "Comfortable trousers", description: "Ideal for walking", checked: true },
+    { name: "Shorts", description: "For warm days", checked: false },
+    { name: "Evening outfit", description: "Elegant but casual", checked: false },
+    { name: "Light jacket", description: "Adapted to the climate", checked: true },
+    { name: "Underwear (×5)", description: "Allow for laundry", checked: true },
+    { name: "Pyjamas", description: "Comfortable", checked: false },
+  ],
+  "Accessories & Protection": [
+    { name: "Sunglasses", description: "UV protection", checked: true },
+    { name: "Cap / hat", description: "For daytime sightseeing", checked: true },
+    { name: "Light scarf", description: "Style and comfort", checked: false },
+    { name: "Compact umbrella", description: "In case of rain", checked: false },
+  ],
+  "Technology": [
+    { name: "Chargers & cables", description: "Phone + devices", checked: true },
+    { name: "Power bank", description: "10,000mAh minimum", checked: true },
+    { name: "Universal adapter", description: "For the destination", checked: true },
+    { name: "Earphones / AirPods", description: "For the journeys", checked: true },
+  ],
+  "Important documents": [
+    { name: "Passport", description: "Check validity (6+ months)", checked: true },
+    { name: "ID card", description: "Always useful", checked: true },
+    { name: "Travel insurance", description: "Digital + paper copies", checked: false },
+    { name: "Tickets / bookings", description: "Printed + digital", checked: true },
+  ],
+  "Health & Pharmacy": [
+    { name: "Mini first-aid kit", description: "Basic medication", checked: true },
+    { name: "SPF 30+ sunscreen", description: "Sun protection", checked: true },
+    { name: "Insect repellent", description: "Depending on the destination", checked: false },
+    { name: "Hand sanitiser", description: "Travel size", checked: true },
+  ],
+  "Hygiene & Care": [
+    { name: "Toiletries", description: "Travel size (<100ml)", checked: true },
+    { name: "Toothbrush", description: "+ mini toothpaste", checked: true },
+    { name: "Deodorant", description: "Travel size", checked: true },
+  ],
+  "Security": [
+    { name: "TSA lock", description: "For the suitcase", checked: false },
+    { name: "Anti-RFID pouch", description: "Bank card protection", checked: false },
+  ],
+};
+
+export const baseCategories = new Proxy({} as Record<string, ChecklistItem[]>, {
+  get: (_t, prop) => (isEn() ? baseCategoriesEn : baseCategoriesFr)[prop as string],
+  ownKeys: () => Reflect.ownKeys(isEn() ? baseCategoriesEn : baseCategoriesFr),
+  getOwnPropertyDescriptor: (_t, prop) =>
+    Object.getOwnPropertyDescriptor(isEn() ? baseCategoriesEn : baseCategoriesFr, prop as string),
+});
+
+const modeExtrasFr: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
   minimaliste: {},
   confort: {
     "Confort supplémentaire": [
@@ -133,7 +189,93 @@ export const modeExtras: Record<LuggageMode, Record<string, ChecklistItem[]>> = 
   },
 };
 
-export const transportExtras: Record<TransportMode, Record<string, ChecklistItem[]>> = {
+const modeExtrasEn: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
+  minimaliste: {},
+  confort: {
+    "Extra comfort": [
+      { name: "Travel pillow", description: "Memory foam", checked: true },
+      { name: "Sleep mask", description: "Silk quality", checked: true },
+      { name: "Earplugs", description: "Noise cancelling", checked: true },
+    ],
+  },
+  stylée: {
+    "Style & Look": [
+      { name: "Coordinated outfits (×3)", description: "Complete looks", checked: true },
+      { name: "Elegant shoes", description: "Versatile", checked: true },
+      { name: "Makeup bag", description: "Beauty essentials", checked: false },
+    ],
+  },
+  aventure: {
+    "Adventure gear": [
+      { name: "Swiss army knife", description: "Multi-purpose (checked baggage)", checked: true },
+      { name: "Headlamp", description: "USB rechargeable", checked: true },
+      { name: "Portable water filter", description: "Essential for trekking", checked: false },
+    ],
+  },
+  business: {
+    "Business": [
+      { name: "Suit", description: "In garment bag", checked: true },
+      { name: "Formal shoes", description: "Polished", checked: true },
+      { name: "Laptop", description: "+ charger + mouse", checked: true },
+      { name: "Business cards", description: "Plenty of them", checked: true },
+    ],
+  },
+  photo: {
+    "Photo / video gear": [
+      { name: "Camera", description: "Body + lenses", checked: true },
+      { name: "Carbon tripod", description: "Light and stable", checked: true },
+      { name: "Batteries (×4)", description: "Charged", checked: true },
+      { name: "SD cards (256GB)", description: "×2 minimum", checked: true },
+    ],
+  },
+  randonnée: {
+    "Hiking gear": [
+      { name: "Trekking shoes", description: "Broken in", checked: true },
+      { name: "30-50L backpack", description: "With hip belt", checked: true },
+      { name: "Water bottle / Camelbak", description: "2L minimum", checked: true },
+      { name: "Rain poncho", description: "Also covers the backpack", checked: true },
+    ],
+  },
+  plage: {
+    "Beach essentials": [
+      { name: "Swimsuits (×2)", description: "For rotating", checked: true },
+      { name: "Sarong / XL towel", description: "Multi-purpose", checked: true },
+      { name: "Flip-flops / sandals", description: "Water resistant", checked: true },
+      { name: "SPF 50 sunscreen", description: "Waterproof", checked: true },
+      { name: "Waterproof bag", description: "For phone + keys", checked: true },
+    ],
+  },
+  roadtrip: {
+    "Road trip essentials": [
+      { name: "Foldable cooler", description: "For snacks and drinks", checked: true },
+      { name: "Phone mount", description: "For navigation", checked: true },
+      { name: "Car charger cable", description: "USB-C + Lightning", checked: true },
+      { name: "Car first-aid kit", description: "Mandatory in some countries", checked: true },
+    ],
+  },
+  urbain: {
+    "City break essentials 🏙️": [
+      { name: "Comfortable sneakers", description: "Stylish and good for long walks", checked: true },
+      { name: "Anti-theft shoulder bag", description: "Keeps your belongings safe in the city", checked: true },
+      { name: "Versatile jacket", description: "Day & night", checked: true },
+      { name: "Transit card / app", description: "Metro, bus, bikes", checked: false },
+    ],
+  },
+  luxe: {
+    "Luxury essentials 💎": [
+      { name: "Premium hard-shell suitcase", description: "Cabin + hold", checked: true },
+      { name: "Evening outfit", description: "Tuxedo / cocktail dress", checked: true },
+      { name: "Leather toiletry bag", description: "High-end care products", checked: true },
+      { name: "Discreet jewellery", description: "Hotel safe recommended", checked: false },
+    ],
+  },
+};
+
+export const modeExtras = new Proxy({} as Record<LuggageMode, Record<string, ChecklistItem[]>>, {
+  get: (_t, prop) => (isEn() ? modeExtrasEn : modeExtrasFr)[prop as LuggageMode],
+});
+
+const transportExtrasFr: Record<TransportMode, Record<string, ChecklistItem[]>> = {
   avion: {
     "Spécial Avion ✈️": [
       { name: "Liquides en flacons <100ml", description: "Sac transparent zip", checked: true },
@@ -171,20 +313,65 @@ export const transportExtras: Record<TransportMode, Record<string, ChecklistItem
   },
 };
 
+const transportExtrasEn: Record<TransportMode, Record<string, ChecklistItem[]>> = {
+  avion: {
+    "Flight special ✈️": [
+      { name: "Liquids in <100ml bottles", description: "Clear zip bag", checked: true },
+      { name: "Neck pillow", description: "For long-haul flights", checked: false },
+      { name: "Earplugs / mask", description: "In-flight sleep", checked: true },
+      { name: "Accessible ID", description: "For security checks", checked: true },
+      { name: "Power bank <100Wh", description: "Mandatory in cabin", checked: true },
+    ],
+  },
+  train: {
+    "Train special 🚆": [
+      { name: "Printed ticket / e-ticket", description: "Show to the conductor", checked: true },
+      { name: "Snacks & water bottle", description: "Buffet car is often expensive", checked: false },
+      { name: "Book / podcast", description: "For the journey", checked: false },
+    ],
+  },
+  voiture: {
+    "Car special 🚗": [
+      { name: "Licence & registration", description: "Mandatory documents", checked: true },
+      { name: "Hi-vis vest & warning triangle", description: "Mandatory in the EU", checked: true },
+      { name: "GPS phone mount", description: "Hands-free navigation", checked: true },
+      { name: "12V charger cable", description: "USB-C + Lightning", checked: true },
+      { name: "Toll pass / vignette", description: "Depending on countries crossed", checked: false },
+      { name: "Cooler / snacks", description: "For roadside breaks", checked: false },
+    ],
+  },
+  bateau: {
+    "Boat special 🚢": [
+      { name: "Seasickness remedy", description: "Motion sickness tablets", checked: true },
+      { name: "Waterproof windbreaker", description: "Wind at sea", checked: true },
+      { name: "Non-slip shoes", description: "Wet decks", checked: true },
+      { name: "SPF 50 sunscreen", description: "Water glare", checked: true },
+      { name: "Waterproof bag", description: "Phone/papers protection", checked: false },
+    ],
+  },
+};
+
+export const transportExtras = new Proxy({} as Record<TransportMode, Record<string, ChecklistItem[]>>, {
+  get: (_t, prop) => (isEn() ? transportExtrasEn : transportExtrasFr)[prop as TransportMode],
+});
+
 export function buildCategories(mode: LuggageMode, transport: TransportMode): Record<string, ChecklistItem[]> {
-  return { ...baseCategories, ...(modeExtras[mode] || {}), ...(transportExtras[transport] || {}) };
+  const base = isEn() ? baseCategoriesEn : baseCategoriesFr;
+  const modeSet = (isEn() ? modeExtrasEn : modeExtrasFr)[mode] || {};
+  const transportSet = (isEn() ? transportExtrasEn : transportExtrasFr)[transport] || {};
+  return { ...base, ...modeSet, ...transportSet };
 }
 
 export function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): LuggageMode | null {
   const all = [...(tripTypes || []), ...(objectives || [])].join(" ").toLowerCase();
-  if (all.includes("plage") || all.includes("balnéaire") || all.includes("mer")) return "plage";
-  if (all.includes("rando") || all.includes("trek") || all.includes("nature")) return "randonnée";
+  if (all.includes("plage") || all.includes("balnéaire") || all.includes("mer") || all.includes("beach")) return "plage";
+  if (all.includes("rando") || all.includes("trek") || all.includes("nature") || all.includes("hik")) return "randonnée";
   if (all.includes("business") || all.includes("professionnel")) return "business";
-  if (all.includes("road") || all.includes("voiture")) return "roadtrip";
-  if (all.includes("photo") || all.includes("créat")) return "photo";
-  if (all.includes("aventure") || all.includes("sport")) return "aventure";
-  if (all.includes("luxe") || all.includes("premium")) return "luxe";
+  if (all.includes("road") || all.includes("voiture") || all.includes("car")) return "roadtrip";
+  if (all.includes("photo") || all.includes("créat") || all.includes("creativ")) return "photo";
+  if (all.includes("aventure") || all.includes("adventure") || all.includes("sport")) return "aventure";
+  if (all.includes("luxe") || all.includes("luxury") || all.includes("premium")) return "luxe";
   if (all.includes("city") || all.includes("urbain") || all.includes("ville")) return "urbain";
-  if (all.includes("confort")) return "confort";
+  if (all.includes("confort") || all.includes("comfort")) return "confort";
   return null;
 }
