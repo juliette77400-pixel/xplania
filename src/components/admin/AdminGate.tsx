@@ -1,4 +1,5 @@
 import { ShieldCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useIsAdmin, useAdminFlag } from "@/hooks/useIsAdmin";
 
 /**
@@ -9,17 +10,18 @@ import { useIsAdmin, useAdminFlag } from "@/hooks/useIsAdmin";
  * driven by `hasUnlimitedAccess()` and by the RLS-verified role.
  */
 const AdminGate = () => {
+  const { t } = useTranslation();
   useIsAdmin();
   const isAdmin = useAdminFlag();
   if (!isAdmin) return null;
   return (
     <div
       className="fixed bottom-3 left-3 z-[9999] pointer-events-none select-none rounded-full border border-emerald-400/50 bg-emerald-500/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300 shadow-lg backdrop-blur-md flex items-center gap-1.5"
-      aria-label="Mode Admin"
-      title="Accès illimité — restrictions freemium désactivées"
+      aria-label={t("ui2.AdminGate.ariaLabel")}
+      title={t("ui2.AdminGate.title")}
     >
       <ShieldCheck className="h-3 w-3" />
-      Mode Admin
+      {t("ui2.AdminGate.badge")}
     </div>
   );
 };
