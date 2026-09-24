@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +23,7 @@ interface ChunkRow {
 }
 
 export default function AdminSeedRag() {
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [rows, setRows] = useState<ChunkRow[]>(
@@ -95,7 +97,7 @@ export default function AdminSeedRag() {
         }),
       );
 
-      toast.success(`Insertion : ${seedRes.inserted} nouveaux, ${seedRes.skipped} déjà présents, ${seedRes.errors} erreurs`);
+      toast.success(t("ui2.AdminSeedRag.insertToast", { inserted: seedRes.inserted, skipped: seedRes.skipped, errors: seedRes.errors }));
 
       // 2. Trigger embeddings (batched, may need several passes)
       let remaining = Infinity;
@@ -109,7 +111,7 @@ export default function AdminSeedRag() {
         if (embedErr) throw new Error(embedErr.message || "embed failed");
         remaining = embedRes?.remaining ?? 0;
         setEmbedRemaining(remaining);
-        toast.info(`Embeddings : ${embedRes.embedded} générés, ${remaining} restants`);
+        toast.info(t("ui2.AdminSeedRag.embedToast", { embedded: embedRes.embedded, remaining }));
         if (embedRes.embedded === 0) break;
       }
 
@@ -122,7 +124,7 @@ export default function AdminSeedRag() {
               : r,
           ),
         );
-        toast.success("Tous les chunks sont indexés et vectorisés ✨");
+        toast.success(t("ui2.AdminSeedRag.allIndexedToast"));
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : "unknown";
@@ -146,8 +148,8 @@ export default function AdminSeedRag() {
         <AppNavbar />
         <div className="container mx-auto p-8 max-w-md text-center space-y-4">
           <ShieldAlert className="mx-auto h-12 w-12 text-destructive" />
-          <h1 className="text-2xl font-semibold">Accès refusé</h1>
-          <p className="text-muted-foreground">Cette page est réservée aux administrateurs.</p>
+          <h1 className="text-2xl font-semibold">{t("ui2.AdminSeedRag.accessDeniedTitle")}</h1>
+          <p className="text-muted-foreground">{t("ui2.AdminSeedRag.accessDeniedDesc")}</p>
         </div>
       </div>
     );
