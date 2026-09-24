@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -11,29 +12,37 @@ import { Loader2, Save, Sliders, Sparkles, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useDestinationSuggestions } from "@/hooks/useDestinationSuggestions";
 
-const DIMENSIONS = [
-  { key: "culture", label: "Culture", hint: "Musées, temples, histoire, patrimoine" },
-  { key: "adventure", label: "Aventure", hint: "Trek, sports extrêmes, sortir de sa zone" },
-  { key: "nature", label: "Nature", hint: "Forêts, montagnes, mer, faune sauvage" },
-  { key: "comfort", label: "Confort", hint: "Hôtels, transports faciles, sans imprévu" },
-  { key: "budget", label: "Budget serré", hint: "Voyages économiques, backpack" },
-  { key: "food", label: "Gastronomie", hint: "Cuisine locale, chefs, marchés" },
-  { key: "authenticity", label: "Authenticité", hint: "Éviter les foules touristiques, du vrai" },
-  { key: "social", label: "Social", hint: "Rencontres, groupes, fêtes locales" },
-  { key: "wellbeing", label: "Bien-être", hint: "Spa, yoga, retraites, calme" },
-  { key: "nomad", label: "Nomade digital", hint: "Coworking, wifi, séjours longs" },
-  { key: "luxury", label: "Luxe", hint: "Palaces, expériences premium" },
-  { key: "organization", label: "Organisation", hint: "Itinéraire cadré, planification" },
+const DIMENSION_KEYS = [
+  "culture",
+  "adventure",
+  "nature",
+  "comfort",
+  "budget",
+  "food",
+  "authenticity",
+  "social",
+  "wellbeing",
+  "nomad",
+  "luxury",
+  "organization",
 ] as const;
 
-type ScoreKey = typeof DIMENSIONS[number]["key"];
+type ScoreKey = typeof DIMENSION_KEYS[number];
 
 export default function TravelerProfileAdjust() {
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
+
+  const DIMENSIONS = DIMENSION_KEYS.map((key) => ({
+    key,
+    label: t(`ui2.TravelerProfileAdjust.dimensions.${key}.label`),
+    hint: t(`ui2.TravelerProfileAdjust.dimensions.${key}.hint`),
+  }));
+
   const [scores, setScores] = useState<Record<ScoreKey, number>>(() =>
-    DIMENSIONS.reduce((acc, d) => ({ ...acc, [d.key]: 50 }), {} as Record<ScoreKey, number>),
+    DIMENSION_KEYS.reduce((acc, d) => ({ ...acc, [d]: 50 }), {} as Record<ScoreKey, number>),
   );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -53,9 +62,9 @@ export default function TravelerProfileAdjust() {
         .maybeSingle();
       if (data) {
         setScores(
-          DIMENSIONS.reduce((acc, d) => {
-            const raw = (data as any)[`${d.key}_score`] ?? 0;
-            return { ...acc, [d.key]: Math.max(0, Math.min(100, raw)) };
+          DIMENSION_KEYS.reduce((acc, d) => {
+            const raw = (data as any)[`${d}_score`] ?? 0;
+            return { ...acc, [d]: Math.max(0, Math.min(100, raw)) };
           }, {} as Record<ScoreKey, number>),
         );
         setBadge(data.badge ?? null);
@@ -68,17 +77,17 @@ export default function TravelerProfileAdjust() {
     if (!user) return;
     setSaving(true);
     try {
-      const patch = DIMENSIONS.reduce((acc, d) => ({ ...acc, [`${d.key}_score`]: scores[d.key] }), {} as Record<string, number>);
+      const patch = DIMENSION_KEYS.reduce((acc, d) => ({ ...acc, [`${d}_score`]: scores[d] }), {} as Record<string, number>);
       const { error } = await supabase
         .from("traveler_profiles")
         .update(patch as never)
         .eq("user_id", user.id);
       if (error) throw error;
-      toast.success("Scores mis à jour — recommandations rafraîchies");
+      toast.success(t("ui2.TravelerProfileAdjust.toastUpdated"));
       qc.invalidateQueries({ queryKey: ["xplania-destinations"] });
       refetchPreview();
     } catch (e: any) {
-      toast.error(e?.message || "Échec sauvegarde");
+      toast.error(e?.message || t("ui2.TravelerProfileAdjust.toastSaveError"));
     } finally {
       setSaving(false);
     }
@@ -97,14 +106,14 @@ export default function TravelerProfileAdjust() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-6">
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Sliders className="h-7 w-7 text-primary" /> Ajuster mon profil voyageur
+            <Sliders className="h-7 w-7 text-primary" /> {t("ui2.TravelerProfileAdjust.title")}
           </h1>
           <p className="text-muted-foreground mt-2">
-            Affine manuellement chaque dimension. Xplania recalculera tes recommandations en direct.
+            {t("ui2.TravelerProfileAdjust.subtitle")}
           </p>
           {badge && (
             <p className="mt-2 text-sm">
-              Badge actuel : <span className="font-semibold text-primary">{badge}</span>
+              {t("ui2.TravelerProfileAdjust.badgeCurrent")} <span className="font-semibold text-primary">{badge}</span>
             </p>
           )}
         </div>
@@ -112,7 +121,7 @@ export default function TravelerProfileAdjust() {
         <div className="grid md:grid-cols-[1fr_320px] gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">12 dimensions</CardTitle>
+              <CardTitle className="text-lg">{t("ui2.TravelerProfileAdjust.dimensionsTitle")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {DIMENSIONS.map((d) => (
@@ -135,10 +144,10 @@ export default function TravelerProfileAdjust() {
               ))}
               <div className="flex gap-2 pt-4 border-t">
                 <Button variant="outline" onClick={() => navigate("/profil-voyageur")}>
-                  Refaire le Tinder
+                  {t("ui2.TravelerProfileAdjust.redoTinder")}
                 </Button>
                 <Button onClick={save} disabled={saving} className="flex-1">
-                  {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Sauvegarde…</> : <><Save className="mr-2 h-4 w-4" />Enregistrer</>}
+                  {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("ui2.TravelerProfileAdjust.saving")}</> : <><Save className="mr-2 h-4 w-4" />{t("ui2.TravelerProfileAdjust.saveBtn")}</>}
                 </Button>
               </div>
             </CardContent>
@@ -147,7 +156,7 @@ export default function TravelerProfileAdjust() {
           <Card className="h-fit sticky top-4">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" /> Aperçu
+                <Sparkles className="h-5 w-5 text-primary" /> {t("ui2.TravelerProfileAdjust.previewTitle")}
               </CardTitle>
               <Button variant="ghost" size="icon" onClick={() => refetchPreview()} disabled={previewFetching}>
                 {previewFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
@@ -155,8 +164,7 @@ export default function TravelerProfileAdjust() {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-xs text-muted-foreground">
-                Top 3 destinations basé sur tes scores <strong>sauvegardés</strong>.
-                Enregistre pour actualiser.
+                {t("ui2.TravelerProfileAdjust.previewHint")}
               </p>
               {(previewDestinations ?? []).map((d) => (
                 <div key={d.slug} className="rounded-lg border p-3">
@@ -168,10 +176,10 @@ export default function TravelerProfileAdjust() {
                 </div>
               ))}
               {previewDestinations?.length === 0 && (
-                <p className="text-xs text-muted-foreground text-center py-4">Aucune destination à afficher.</p>
+                <p className="text-xs text-muted-foreground text-center py-4">{t("ui2.TravelerProfileAdjust.noDestination")}</p>
               )}
               <Button variant="outline" size="sm" className="w-full" onClick={() => navigate("/destinations")}>
-                Voir toutes les destinations
+                {t("ui2.TravelerProfileAdjust.viewAllDestinations")}
               </Button>
             </CardContent>
           </Card>

@@ -30,56 +30,61 @@ interface PreviewItem {
 }
 
 // Curated fallback content per feature × badge, used when no DB rows exist.
-const BADGE_FLAVOR: Record<TravelerBadgeKey, string> = {
-  cultural_explorer: "culture & authenticité",
-  digital_nomad: "workation & mobilité",
-  relaxation: "détente & confort",
-  adventurer: "aventure & sensations",
-  nature: "nature & paysages",
-  gastronomic: "gastronomie & saveurs",
-  wellbeing: "bien-être & lenteur",
-  social: "rencontres & communauté",
-  organized: "planification & sérénité",
-  budget: "petit budget malin",
-  curious: "découverte tous azimuts",
-};
+// Flavor text is looked up via i18n key ui2.Essai.badgeFlavor.<badge> at render time.
 
-const STATIC_PREVIEWS: Record<FeatureKey, (badge: TravelerBadgeKey) => PreviewItem[]> = {
-  discover: (b) => [
-    { title: "Un café confidentiel repéré par la communauté", subtitle: `orienté ${BADGE_FLAVOR[b]}`, meta: "8 avis · 4.6★" },
-    { title: "Une balade au coucher de soleil hors sentiers", subtitle: "moins de 30 min de marche", meta: "gratuit" },
-    { title: "Un lieu insolite à moins d'1h", subtitle: "peu fréquenté en semaine", meta: "conseil de local" },
-  ],
-  mood: (b) => [
-    { title: "Ambiance « slow morning »", subtitle: `mood suggéré pour un profil ${BADGE_FLAVOR[b]}` },
-    { title: "Playlist urbaine feutrée", subtitle: "20 min pour vous poser" },
-    { title: "3 spots calmes autour de vous", subtitle: "cartographiés en direct" },
-  ],
-  carnet: (b) => [
-    { title: "Un carnet type prêt à remplir dès votre 1er voyage", subtitle: `template adapté au profil ${BADGE_FLAVOR[b]}` },
-    { title: "Story auto-générée à chaque étape", subtitle: "récit IA à partir de vos photos" },
-    { title: "Export PDF partageable", subtitle: "en un clic" },
-  ],
-  suivi: (b) => [
-    { title: "Suivi live de votre position", subtitle: `pensé pour un profil ${BADGE_FLAVOR[b]}` },
-    { title: "Alertes météo & sécurité en cours de route", subtitle: "notifications intelligentes" },
-    { title: "Lien à partager à vos proches", subtitle: "carte publique éphémère" },
-  ],
-  "guide-valise": (b) => [
-    { title: "Checklist adaptée à votre destination", subtitle: `optimisée pour un profil ${BADGE_FLAVOR[b]}` },
-    { title: "3 essentiels souvent oubliés", subtitle: "selon la saison" },
-    { title: "Astuces cabine / soute", subtitle: "conformes 2026" },
-  ],
-  "guide-budget": (b) => [
-    { title: "Estimation flash de votre prochain voyage", subtitle: `calibré ${BADGE_FLAVOR[b]}`, meta: "3 postes clés" },
-    { title: "Alertes dépassement en temps réel", subtitle: "par catégorie" },
-    { title: "Comparateur coût de la vie", subtitle: "150 villes couvertes" },
-  ],
-  "guide-visa": (b) => [
-    { title: "Formalités vérifiées en un clic", subtitle: `formatées pour un profil ${BADGE_FLAVOR[b]}` },
-    { title: "Vaccins recommandés & obligatoires", subtitle: "sources OMS + gouvernementales" },
-    { title: "Niveau de sécurité mis à jour", subtitle: "avis récents" },
-  ],
+type TFunc = (key: string, opts?: Record<string, unknown>) => string;
+
+const badgeFlavor = (t: TFunc, b: TravelerBadgeKey) => t(`ui2.Essai.badgeFlavor.${b}`);
+
+const buildStaticPreviews = (t: TFunc, f: FeatureKey, b: TravelerBadgeKey): PreviewItem[] => {
+  const flavor = badgeFlavor(t, b);
+  const p = (key: string) => t(`ui2.Essai.previews.${f}.${key}`, { flavor });
+  switch (f) {
+    case "discover":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle"), meta: p("0.meta") },
+        { title: p("1.title"), subtitle: p("1.subtitle"), meta: p("1.meta") },
+        { title: p("2.title"), subtitle: p("2.subtitle"), meta: p("2.meta") },
+      ];
+    case "mood":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle") },
+        { title: p("1.title"), subtitle: p("1.subtitle") },
+        { title: p("2.title"), subtitle: p("2.subtitle") },
+      ];
+    case "carnet":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle") },
+        { title: p("1.title"), subtitle: p("1.subtitle") },
+        { title: p("2.title"), subtitle: p("2.subtitle") },
+      ];
+    case "suivi":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle") },
+        { title: p("1.title"), subtitle: p("1.subtitle") },
+        { title: p("2.title"), subtitle: p("2.subtitle") },
+      ];
+    case "guide-valise":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle") },
+        { title: p("1.title"), subtitle: p("1.subtitle") },
+        { title: p("2.title"), subtitle: p("2.subtitle") },
+      ];
+    case "guide-budget":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle"), meta: p("0.meta") },
+        { title: p("1.title"), subtitle: p("1.subtitle") },
+        { title: p("2.title"), subtitle: p("2.subtitle") },
+      ];
+    case "guide-visa":
+      return [
+        { title: p("0.title"), subtitle: p("0.subtitle") },
+        { title: p("1.title"), subtitle: p("1.subtitle") },
+        { title: p("2.title"), subtitle: p("2.subtitle") },
+      ];
+    default:
+      return [];
+  }
 };
 
 const OnboardingEssai = () => {
@@ -160,7 +165,7 @@ const OnboardingEssai = () => {
         setItems(dbItems);
         setSource("db");
       } else {
-        setItems(STATIC_PREVIEWS[f](badge));
+        setItems(buildStaticPreviews(t, f, badge));
         setSource("curated");
       }
     })();

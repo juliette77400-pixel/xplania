@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ipGeolocate } from "@/lib/geocoding";
 
 export type Precision = "high" | "balanced" | "low";
@@ -36,6 +37,7 @@ export function useGeolocation({
   ipFallback = true,
   onPosition,
 }: Options) {
+  const { t } = useTranslation();
   const [position, setPosition] = useState<Position | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [permission, setPermission] = useState<PermissionState | "unknown">("unknown");
@@ -51,7 +53,7 @@ export function useGeolocation({
 
   useEffect(() => {
     if (!("geolocation" in navigator)) {
-      setError("Géolocalisation non supportée");
+      setError(t("ui2.useGeolocation.notSupported"));
       return;
     }
     navigator.permissions?.query({ name: "geolocation" as PermissionName })
@@ -116,7 +118,7 @@ export function useGeolocation({
     }, force);
 
     const errCb = (e: GeolocationPositionError) => {
-      setError(e.message || "GPS indisponible");
+      setError(e.message || t("ui2.useGeolocation.gpsUnavailable"));
       tryIp();
     };
 
