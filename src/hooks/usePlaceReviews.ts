@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { pingStreakAction } from "@/lib/streak";
+import i18n from "@/i18n";
 
 export interface PlaceReview {
   id: string;
@@ -88,12 +89,12 @@ export function usePlaceReviews(placeId: string | null) {
       user_id: user.id,
       code: "local_voice",
       name: "Local Voice",
-      description: "5 avis publiés sur des lieux découverts",
+      description: i18n.t("ui2.usePlaceReviews.localVoiceDesc"),
       icon: "🎙️",
     });
     if (!error) {
-      toast.success("🎙️ Badge débloqué : Local Voice", {
-        description: "Tu as partagé 5 avis avec la communauté !",
+      toast.success(i18n.t("ui2.usePlaceReviews.badgeUnlocked"), {
+        description: i18n.t("ui2.usePlaceReviews.badgeUnlockedDesc"),
       });
     }
   }, [user]);
@@ -101,11 +102,11 @@ export function usePlaceReviews(placeId: string | null) {
   const submit = useCallback(
     async (rating: number, comment: string, photoFile: File | null) => {
       if (!user || !placeId) {
-        toast.error("Connecte-toi pour publier un avis");
+        toast.error(i18n.t("ui2.usePlaceReviews.loginToReview"));
         return false;
       }
       if (rating < 1 || rating > 5) {
-        toast.error("Note invalide");
+        toast.error(i18n.t("ui2.usePlaceReviews.invalidRating"));
         return false;
       }
       setSubmitting(true);
@@ -113,7 +114,7 @@ export function usePlaceReviews(placeId: string | null) {
         let photo_url: string | null = null;
         if (photoFile) {
           if (photoFile.size > 5 * 1024 * 1024) {
-            toast.error("Photo trop lourde (max 5 Mo)");
+            toast.error(i18n.t("ui2.usePlaceReviews.photoTooLarge"));
             setSubmitting(false);
             return false;
           }
@@ -134,13 +135,13 @@ export function usePlaceReviews(placeId: string | null) {
           photo_url,
         });
         if (error) throw error;
-        toast.success("Merci pour ton avis ✨");
+        toast.success(i18n.t("ui2.usePlaceReviews.thanks"));
         await refetch();
         await checkLocalVoiceBadge();
         return true;
       } catch (e: any) {
         console.error(e);
-        toast.error(e.message || "Impossible de publier l'avis");
+        toast.error(e.message || i18n.t("ui2.usePlaceReviews.submitFailed"));
         return false;
       } finally {
         setSubmitting(false);

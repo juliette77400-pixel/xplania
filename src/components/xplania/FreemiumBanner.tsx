@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { Sparkles, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePlanStore } from "@/stores/usePlanStore";
+import { useTranslation } from "react-i18next";
 
 const FreemiumBanner = () => {
+  const { t } = useTranslation();
   const { tier, generationsUsed, freeQuota, bannerDismissed, dismissBanner } =
     usePlanStore();
 
@@ -31,35 +33,34 @@ const FreemiumBanner = () => {
               <div className="flex items-center gap-2 mb-1">
                 <p className="text-sm font-bold text-foreground">
                   {generationsUsed >= freeQuota
-                    ? "Vous avez utilisé vos générations gratuites"
-                    : "Profitez de vos générations gratuites"}
+                    ? t("ui2.FreemiumBanner.used")
+                    : t("ui2.FreemiumBanner.enjoy")}
                 </p>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary shrink-0">
                   {generationsUsed}/{freeQuota}
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-                Découvrez nos packs Xplania pour continuer à explorer sans limites :
-                IA, carnet de bord, guide interculturel et plus encore.
+                {t("ui2.FreemiumBanner.description")}
               </p>
               <div className="flex flex-wrap gap-2">
                 <Link
                   to="/offres"
                   className="gradient-button px-4 py-2 rounded-lg text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
                 >
-                  Découvrir Premium
+                  {t("ui2.FreemiumBanner.discoverPremium")}
                 </Link>
                 <button
                   onClick={dismissBanner}
                   className="px-4 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Plus tard
+                  {t("ui2.FreemiumBanner.later")}
                 </button>
               </div>
             </div>
             <button
               onClick={dismissBanner}
-              aria-label="Fermer"
+              aria-label={t("ui2.FreemiumBanner.close")}
               className="text-muted-foreground hover:text-foreground transition-colors shrink-0"
             >
               <X className="w-4 h-4" />
