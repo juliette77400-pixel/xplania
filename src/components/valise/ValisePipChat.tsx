@@ -384,7 +384,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
               <Backpack className="w-4 h-4 text-primary-foreground" />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-bold text-foreground truncate">Pip</p>
+              <p className="text-sm font-bold text-foreground truncate">Ping</p>
               <p className="text-[10px] text-muted-foreground truncate">{t("valise.chatbot.subtitle")}</p>
             </div>
           </div>

@@ -74,7 +74,7 @@ const SuiviPipChat = ({ onAction }: Props) => {
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="fixed bottom-24 right-4 z-40 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-xl flex items-center justify-center hover:scale-105 transition"
-        aria-label="Pip"
+        aria-label="Ping"
       >
         <Sparkles className="w-6 h-6" />
       </button>
@@ -87,7 +87,7 @@ const SuiviPipChat = ({ onAction }: Props) => {
                 <Sparkles className="w-4 h-4 text-primary-foreground" />
               </div>
               <div>
-                <p className="text-sm font-semibold">Pip</p>
+                <p className="text-sm font-semibold">Ping</p>
                 <p className="text-[10px] text-muted-foreground">{t("suiviPip.subtitle")}</p>
               </div>
             </div>

@@ -1677,11 +1677,11 @@
       "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton compagnon de carnet pour {{destination}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
       "greetingNoName": "Salut ! 👋 Je suis Ping, ton compagnon de carnet pour {{destination}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
       "greetings": [
-        "Hey {{name}} ! 📖 C'est Pip. Prêt à donner vie à ton carnet de {{destination}} ? Demande-moi tout.",
-        "Salut {{name}} ! ✨ Moi c'est Pip, ton compagnon de carnet. Tu sais pas quoi noter aujourd'hui pour {{destination}} ? Je t'aide.",
-        "Coucou {{name}} 🌍 Pip à l'appareil. Une question sur ton récit, tes photos, ton partage ? Lâche tout.",
-        "Yo {{name}} ! 😎 C'est Pip. On regarde ensemble comment rendre ton carnet de {{destination}} inoubliable ?",
-        "Hello {{name}} ! 👋 Pip ici. Idée de bloc, prompt d'écriture, export PDF — pose-moi la question."
+        "Hey {{name}} ! 📖 C'est Ping. Prêt à donner vie à ton carnet de {{destination}} ? Demande-moi tout.",
+        "Salut {{name}} ! ✨ Moi c'est Ping, ton compagnon de carnet. Tu sais pas quoi noter aujourd'hui pour {{destination}} ? Je t'aide.",
+        "Coucou {{name}} 🌍 Ping à l'appareil. Une question sur ton récit, tes photos, ton partage ? Lâche tout.",
+        "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble comment rendre ton carnet de {{destination}} inoubliable ?",
+        "Hello {{name}} ! 👋 Ping ici. Idée de bloc, prompt d'écriture, export PDF — pose-moi la question."
       ],
       "emptyState": "Pose n'importe quelle question sur ton carnet pour {{destination}} — quoi noter, comment générer ton récit, comment partager, comment épingler un document… Je connais ton carnet en détail.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
@@ -2820,11 +2820,11 @@
       "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
       "greetingNoName": "Salut ! 👋 Je suis Ping, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
       "greetings": [
-        "Hey {{name}} ! 👋 C'est Pip. Prêt à parler budget pour {{destination}} ? Pose-moi tout ce qui te trotte dans la tête.",
-        "Salut {{name}} ! ✈️ Moi c'est Pip, ton copilote voyage. Tu te demandes si ton budget {{destination}} tient la route ? Je suis là pour t'aider.",
-        "Coucou {{name}} 🌍 Pip à l'appareil. Un doute sur une dépense, une envie de tips locaux à {{destination}} ? Lâche tout.",
-        "Yo {{name}} ! 😎 C'est Pip. On regarde ensemble ton budget pour {{destination}} ? Dis-moi ce qui te tracasse.",
-        "Hello {{name}} ! 👋 Pip ici. Que ce soit ton resto, ton transport ou ton hébergement à {{destination}}, je suis là pour t'aiguiller."
+        "Hey {{name}} ! 👋 C'est Ping. Prêt à parler budget pour {{destination}} ? Pose-moi tout ce qui te trotte dans la tête.",
+        "Salut {{name}} ! ✈️ Moi c'est Ping, ton copilote voyage. Tu te demandes si ton budget {{destination}} tient la route ? Je suis là pour t'aider.",
+        "Coucou {{name}} 🌍 Ping à l'appareil. Un doute sur une dépense, une envie de tips locaux à {{destination}} ? Lâche tout.",
+        "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble ton budget pour {{destination}} ? Dis-moi ce qui te tracasse.",
+        "Hello {{name}} ! 👋 Ping ici. Que ce soit ton resto, ton transport ou ton hébergement à {{destination}}, je suis là pour t'aiguiller."
       ],
       "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
