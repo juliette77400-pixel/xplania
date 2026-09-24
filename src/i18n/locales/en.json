@@ -5293,5 +5293,29 @@
     "ctaText": "Ready to plan your next trip?",
     "ctaButton": "Start for free",
     "footerLink": "Plan a trip with AI"
+  },
+  "journeyIntro": {
+    "kicker": "Welcome to Xplania",
+    "title": "Your journey in 4 steps",
+    "subtitle": "In a few minutes, Xplania gets to know you so it can suggest trips that truly feel like you.",
+    "s1": {
+      "title": "We explain",
+      "text": "You are here: a quick overview of what's ahead."
+    },
+    "s2": {
+      "title": "Your Travel DNA",
+      "time": "≈ 5 min",
+      "text": "React to travel photos: \"I love it\", \"That's me\", \"Not for me\" or \"Skip\". There are no wrong answers."
+    },
+    "s3": {
+      "title": "Try a feature",
+      "text": "Based on your profile, we suggest the most useful tool for you: trip builder, budget, visa, packing…"
+    },
+    "s4": {
+      "title": "Explore all of Xplania",
+      "text": "Open your space: travel journal, challenges and badges, Mood Explorer, local discoveries and much more."
+    },
+    "cta": "Let's go!",
+    "note": "Free, no sign-up needed to start. You can leave at any time."
   }
 }

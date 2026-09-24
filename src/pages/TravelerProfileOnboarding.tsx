@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import TinderCard, { type TinderCardData } from "@/components/tinder/TinderCard";
+import JourneyIntro from "@/components/tinder/JourneyIntro";
 import {
   applyScoreTags,
   BADGE_REWARDS,
@@ -69,6 +70,9 @@ const TravelerProfileOnboarding = () => {
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [introSeen, setIntroSeen] = useState(() => {
+    try { return localStorage.getItem("xplania-journey-intro-seen") === "1"; } catch { return false; }
+  });
   const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const retryTimerRef = useRef<number | null>(null);
   const animatingRef = useRef(false);
@@ -476,6 +480,17 @@ const TravelerProfileOnboarding = () => {
     ? { id: next.id, image_url: next.image_url, phrase: lang === "en" ? next.phrase_en : next.phrase_fr }
     : null;
 
+  if (!introSeen && done === 0) {
+    return (
+      <JourneyIntro
+        onStart={() => {
+          try { localStorage.setItem("xplania-journey-intro-seen", "1"); } catch { /* ignore */ }
+          setIntroSeen(true);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Persistent exit CTA — always reachable, discreet, thumb-friendly on mobile. */}
@@ -585,16 +600,6 @@ const TravelerProfileOnboarding = () => {
 
       <div className="flex-1 flex items-center justify-center px-4 py-6">
         <div className="relative h-[70vh] max-h-[620px] w-full max-w-md">
-          {currentCategory && (
-            <div className="pointer-events-none absolute -top-3 left-1/2 z-10 -translate-x-1/2 -translate-y-full">
-              <div
-                className={`inline-flex items-center gap-1.5 rounded-full border ${currentCategory.border} ${currentCategory.chipBg} px-3 py-1 text-xs font-bold ${currentCategory.accent} shadow-lg backdrop-blur`}
-              >
-                <currentCategory.Icon className="h-3.5 w-3.5" />
-                <span className="uppercase tracking-wide">{t(currentCategory.labelKey, currentCategory.fallback)}</span>
-              </div>
-            </div>
-          )}
           <AnimatePresence>
             {nextUi && (
               <TinderCard
