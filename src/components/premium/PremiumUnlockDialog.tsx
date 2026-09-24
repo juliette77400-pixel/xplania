@@ -117,7 +117,7 @@ const PremiumUnlockDialog = ({ open, onOpenChange, lockedFeature, highlightPack 
                   </div>
                   <div className="shrink-0 text-right">
                     <div className="text-lg font-extrabold leading-none">{p.price.toFixed(2)}€</div>
-                    <div className="text-[10px] text-muted-foreground">{p.suffix}</div>
+                    <div className="text-[10px] text-muted-foreground">{t("premiumDialog.perMonth")}</div>
                   </div>
                 </div>
               </button>

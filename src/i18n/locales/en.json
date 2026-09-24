@@ -4652,5 +4652,20 @@
     },
     "love": "I love it!",
     "answersHint": "✕ Not me · ⏭ Skip · ♥ That's me · ★ I love it"
+  },
+  "tinder": {
+    "cat": {
+      "immersion": "Immersion",
+      "activites": "Activities",
+      "type": "Trip type",
+      "but": "Trip purpose",
+      "transport": "Transport",
+      "budget": "Budget",
+      "ecologie": "Ecology"
+    },
+    "done": "done"
+  },
+  "premiumDialog": {
+    "perMonth": "/month"
   }
 }
