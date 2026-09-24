@@ -892,6 +892,24 @@ export type Database = {
         }
         Relationships: []
       }
+      google_place_cache: {
+        Row: {
+          cache_key: string
+          fetched_at: string
+          payload: Json
+        }
+        Insert: {
+          cache_key: string
+          fetched_at?: string
+          payload: Json
+        }
+        Update: {
+          cache_key?: string
+          fetched_at?: string
+          payload?: Json
+        }
+        Relationships: []
+      }
       hidden_gems: {
         Row: {
           active: boolean
@@ -1551,7 +1569,9 @@ export type Database = {
           emoji: string | null
           id: string
           is_default: boolean
+          is_public: boolean
           name: string
+          share_slug: string | null
           updated_at: string
           user_id: string
         }
@@ -1560,7 +1580,9 @@ export type Database = {
           emoji?: string | null
           id?: string
           is_default?: boolean
+          is_public?: boolean
           name: string
+          share_slug?: string | null
           updated_at?: string
           user_id: string
         }
@@ -1569,7 +1591,9 @@ export type Database = {
           emoji?: string | null
           id?: string
           is_default?: boolean
+          is_public?: boolean
           name?: string
+          share_slug?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -2713,6 +2737,7 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_admin: { Args: never; Returns: boolean }
+      is_public_place_list: { Args: { _list_id: string }; Returns: boolean }
       list_place_ratings_public: {
         Args: { _place_id: string }
         Returns: {
