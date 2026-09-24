@@ -26,20 +26,27 @@ const Leaderboard = () => {
 
   useEffect(() => {
     let cancelled = false;
+    if (!user) {
+      setRows([]);
+      setLoading(false);
+      return;
+    }
     (async () => {
       try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
         const { data, error } = await supabase.functions.invoke("leaderboard-xp");
         if (cancelled) return;
         if (error) throw error;
         setRows((data?.leaderboard as LbRow[]) || []);
       } catch (e) {
-        console.error("[Leaderboard]", e);
+        console.warn("[Leaderboard]", e);
       } finally {
         if (!cancelled) setLoading(false);
       }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [user?.id]);
 
   const top = rows.slice(0, 3);
   const rest = rows.slice(3, 10);
