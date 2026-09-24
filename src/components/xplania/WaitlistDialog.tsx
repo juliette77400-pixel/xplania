@@ -5,11 +5,14 @@ import { useTranslation, Trans } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Sparkles, Check, Rocket, Mail, Loader2, Users, Linkedin, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const WAITLIST_BASELINE = 327;
+/** Shown when the free quota is reached: "40 personnes attendent la version bêta". */
+const BETA_WAITLIST_MIN = 40;
 
 interface Props {
   open: boolean;
@@ -38,6 +41,8 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [count, setCount] = useState<number | null>(null);
+  const [consent, setConsent] = useState(false);
+  const isQuota = source.startsWith("quota:");
 
   useEffect(() => {
     if (!open) return;
@@ -46,16 +51,20 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
       const { data, error } = await supabase.rpc("get_waitlist_count" as never);
       if (cancelled || error) return;
       const real = typeof data === "number" ? data : 0;
-      setCount(WAITLIST_BASELINE + real);
+      setCount(isQuota ? Math.max(BETA_WAITLIST_MIN, real) : WAITLIST_BASELINE + real);
     })();
     return () => { cancelled = true; };
-  }, [open]);
+  }, [open, isQuota]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = emailSchema.safeParse(email);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0].message);
+      return;
+    }
+    if (!consent) {
+      toast.error(t("waitlist.consentRequired"));
       return;
     }
     const liParsed = linkedinSchema.safeParse(linkedin);
@@ -89,6 +98,8 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
         notify_via: cleanLinkedin ? ["email", "linkedin"] : ["email"],
         locale: i18n.language,
         user_id: userData.user?.id ?? null,
+        contact_consent: true,
+        contact_consent_at: new Date().toISOString(),
       } as never,
     } as never);
     setLoading(false);
@@ -131,7 +142,7 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
 
   const handleClose = (o: boolean) => {
     if (!o) {
-      setTimeout(() => { setSuccess(false); setEmail(""); setFirstName(""); setLinkedin(""); }, 200);
+      setTimeout(() => { setSuccess(false); setEmail(""); setFirstName(""); setLinkedin(""); setConsent(false); }, 200);
     }
     onOpenChange(o);
   };
@@ -170,7 +181,7 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
                   <Users className="w-3.5 h-3.5 text-primary" />
                   <span className="text-xs text-foreground">
                     <Trans
-                      i18nKey="waitlist.counter"
+                      i18nKey={isQuota ? "waitlist.counterBeta" : "waitlist.counter"}
                       values={{ count: count.toLocaleString(localeFmt) }}
                       components={{ strong: <strong className="text-primary" /> }}
                     />
@@ -239,10 +250,20 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
                     />
                   </div>
                 </div>
+                <label htmlFor="waitlist-consent" className="flex items-start gap-2 text-xs text-muted-foreground cursor-pointer">
+                  <Checkbox
+                    id="waitlist-consent"
+                    checked={consent}
+                    onCheckedChange={(v) => setConsent(v === true)}
+                    disabled={loading}
+                    className="mt-0.5"
+                  />
+                  <span>{t("waitlist.consentLabel")}</span>
+                </label>
                 <Button
                   type="submit"
                   className="w-full gradient-button text-primary-foreground border-0"
-                  disabled={loading}
+                  disabled={loading || !consent}
                 >
                   {loading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

@@ -996,7 +996,10 @@
     "linkedinMessage": "Bonjour {{name}}, vous avez demandé à être notifié(e) dès que les pass premium Xplania sont disponibles. Nous vous confirmons votre inscription sur la liste d'attente — nous reviendrons vers vous en priorité ! 🌍✨",
     "errorGeneric": "Oups, une erreur est survenue. Réessaye.",
     "successToast": "Tu es sur la liste 🚀",
-    "cooldown": "Cet email est déjà inscrit. Réessaie dans {{days}} jours."
+    "cooldown": "Cet email est déjà inscrit. Réessaie dans {{days}} jours.",
+    "counterBeta": "<strong>{{count}}</strong> personnes attendent la version bêta",
+    "consentLabel": "J'accepte que Xplania conserve mon email et mon profil LinkedIn pour me prévenir quand la version bêta sera prête. Je peux retirer mon accord à tout moment.",
+    "consentRequired": "Coche la case de consentement pour continuer."
   },
   "feedback": {
     "title": "Donner mon feedback",
