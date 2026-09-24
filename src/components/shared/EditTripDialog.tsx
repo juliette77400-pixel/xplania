@@ -29,6 +29,7 @@ interface Props {
 }
 
 const EditTripDialog = ({ trip, variant = "icon", onUpdated, className, stopPropagation = true }: Props) => {
+  const { t } = useTranslation();
   const { updateTrip, updating } = useUpdateTrip();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(trip.title || "");
