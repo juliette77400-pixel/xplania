@@ -1034,7 +1034,33 @@
     "step3Title": "Keep the same copilot",
     "step3Desc": "Xplania stays with you from planning to your travel journal, keeping the journey consistent at every stage.",
     "startCta": "Create my trip",
-    "goToStep": "Go to step {{n}}"
+    "goToStep": "Go to step {{n}}",
+    "stepOf": "Step {{n}} / 3",
+    "besoin": {
+      "title": "What brings you here?",
+      "help": "Pick everything that sounds like you."
+    },
+    "essai": {
+      "tag": "Preview",
+      "helpReal": "Here's real content tailored to your profile.",
+      "help": "A taste of what Xplania will do for you.",
+      "locked": "Unlock the full version in your dashboard.",
+      "unlock": "Unlock everything",
+      "openFeature": "Open the full feature"
+    },
+    "features": {
+      "tag": "Your two strengths",
+      "title": "Two features made for you",
+      "tryIt": "Try this preview",
+      "editNeeds": "Edit my answers",
+      "skip": "Skip and see the dashboard →"
+    },
+    "signup": {
+      "step": "Save your profile",
+      "title": "Create your account",
+      "help": "Create an account so you don't lose your traveler profile, scores and recommendations.",
+      "cta": "Create my account"
+    }
   },
   "auth": {
     "signin": "Sign in",
@@ -4651,7 +4677,27 @@
       }
     },
     "love": "I love it!",
-    "answersHint": "✕ Not me · ⏭ Skip · ♥ That's me · ★ I love it"
+    "answersHint": "✕ Not me · ⏭ Skip · ♥ That's me · ★ I love it",
+    "resetError": "Reset failed.",
+    "loadErrorTitle": "Couldn't load",
+    "loadErrorHint": "Couldn't fetch the cards. Check your connection — we retry every few seconds.",
+    "retryNow": "Retry now",
+    "emptyTitle": "No cards available",
+    "emptyHint": "No cards are available right now. Try again in a moment.",
+    "retry": "Retry",
+    "exit": "Exit",
+    "learnMore": "Learn more about Xplania",
+    "resetting": "Resetting…",
+    "resetCta": "Start over",
+    "exitTitle": "Leave the quiz?",
+    "exitDesc": "Your progress is saved automatically. You can pick up where you left off.",
+    "exitStay": "Continue the quiz",
+    "exitConfirm": "Exit",
+    "retakeLocked": "The quiz can only be taken once. Go Premium to retake it.",
+    "retakeError": "Can't restart the quiz right now.",
+    "saveWarn": "⚠️ This profile isn't saved yet. Create your account so you don't lose it.",
+    "seeFeatures": "Continue",
+    "saveProfileCta": "Create my account to save my profile"
   },
   "tinder": {
     "cat": {

@@ -1034,7 +1034,33 @@
     "step3Title": "Gardez le même copilote",
     "step3Desc": "Xplania vous accompagne de la préparation jusqu'au carnet de souvenirs, avec un voyage qui reste cohérent à chaque étape.",
     "startCta": "Créer mon voyage",
-    "goToStep": "Aller à l'étape {{n}}"
+    "goToStep": "Aller à l'étape {{n}}",
+    "stepOf": "Étape {{n}} / 3",
+    "besoin": {
+      "title": "Qu'est-ce qui vous amène ?",
+      "help": "Choisissez tout ce qui vous ressemble."
+    },
+    "essai": {
+      "tag": "Aperçu",
+      "helpReal": "Voici du contenu réel adapté à votre profil.",
+      "help": "Un avant-goût de ce que Xplania fera pour vous.",
+      "locked": "Débloquez la version complète dans votre dashboard.",
+      "unlock": "Débloquer tout",
+      "openFeature": "Ouvrir la fonctionnalité complète"
+    },
+    "features": {
+      "tag": "Vos deux atouts",
+      "title": "Deux fonctionnalités faites pour vous",
+      "tryIt": "Essayer cet aperçu",
+      "editNeeds": "Modifier mes réponses",
+      "skip": "Passer et voir le dashboard →"
+    },
+    "signup": {
+      "step": "Sauvegardez votre profil",
+      "title": "Créez votre compte",
+      "help": "Créez un compte pour ne pas perdre votre profil de voyageur, vos scores et vos recommandations.",
+      "cta": "Créer mon compte"
+    }
   },
   "auth": {
     "signin": "Connexion",
@@ -4651,7 +4677,27 @@
       }
     },
     "love": "J'adore !",
-    "answersHint": "✕ Pas pour moi · ⏭ Passer · ♥ Ça me correspond · ★ J'adore"
+    "answersHint": "✕ Pas pour moi · ⏭ Passer · ♥ Ça me correspond · ★ J'adore",
+    "resetError": "Échec de la réinitialisation.",
+    "loadErrorTitle": "Chargement impossible",
+    "loadErrorHint": "Impossible de récupérer les cartes. Vérifie ta connexion — on réessaye toutes les quelques secondes.",
+    "retryNow": "Réessayer maintenant",
+    "emptyTitle": "Aucune carte disponible",
+    "emptyHint": "Aucune carte n'est disponible pour le moment. Réessaie dans quelques instants.",
+    "retry": "Réessayer",
+    "exit": "Quitter",
+    "learnMore": "En savoir plus sur Xplania",
+    "resetting": "Réinitialisation…",
+    "resetCta": "Refaire à zéro",
+    "exitTitle": "Quitter le quiz ?",
+    "exitDesc": "Ta progression est sauvegardée automatiquement. Tu pourras reprendre où tu t'es arrêté(e).",
+    "exitStay": "Continuer le quiz",
+    "exitConfirm": "Quitter",
+    "retakeLocked": "Le quiz est réservé à une fois. Passe Premium pour le refaire.",
+    "retakeError": "Impossible de recommencer le quiz pour le moment.",
+    "saveWarn": "⚠️ Ce profil n'est pas encore enregistré. Créez votre compte pour ne pas le perdre.",
+    "seeFeatures": "Continuer",
+    "saveProfileCta": "Créer mon compte pour sauvegarder mon profil"
   },
   "tinder": {
     "cat": {
