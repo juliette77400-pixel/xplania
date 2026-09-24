@@ -5248,5 +5248,49 @@
       "m10": "Tes objectifs sont automatiquement adaptés à la durée de ton voyage.",
       "m11": "👑 Niveau maximum atteint — tu es une vraie Légende !"
     }
+  },
+  "planGuide": {
+    "h1": "Comment planifier un voyage avec l'IA : le guide étape par étape",
+    "intro": "Organiser un voyage demande de jongler entre itinéraire, budget, formalités et valise. Voici comment planifier ton voyage de A à Z, et comment l'IA de Xplania t'aide à chaque étape.",
+    "whyTitle": "Pourquoi utiliser l'IA pour planifier un voyage ?",
+    "whyText": "Un planificateur de voyage IA rassemble en quelques minutes ce qui prend des heures de recherche : il adapte l'itinéraire à tes envies, estime un budget réaliste, vérifie les formalités de ta nationalité et prépare une valise adaptée à la météo. Tu gardes la main sur chaque choix.",
+    "stepsTitle": "Les 6 étapes pour planifier ton voyage",
+    "s1": {
+      "title": "Définis ta façon de voyager",
+      "text": "Avant de choisir une destination, clarifie ce que tu aimes : nature, culture, fête, calme, aventure. Le quiz ADN Voyageur te le dit en quelques minutes.",
+      "cta": "Faire le quiz ADN Voyageur"
+    },
+    "s2": {
+      "title": "Construis ton itinéraire",
+      "text": "Indique tes dates, ta destination et ton budget : l'IA propose un programme jour par jour, avec des lieux précis (quartier et ville), des activités à petit prix et la météo réelle.",
+      "cta": "Créer mon voyage"
+    },
+    "s3": {
+      "title": "Fixe un budget réaliste",
+      "text": "Compare trois scénarios (économique, réaliste, confort), puis suis tes dépenses pendant le voyage avec un classement automatique.",
+      "cta": "Ouvrir le guide budget"
+    },
+    "s4": {
+      "title": "Vérifie visa et formalités",
+      "text": "Passeport, visa, vaccins, sécurité : vérifie les formalités selon ta nationalité et confirme toujours les détails auprès de l'ambassade.",
+      "cta": "Ouvrir le guide visa"
+    },
+    "s5": {
+      "title": "Prépare ta valise",
+      "text": "Une checklist adaptée à la destination, à la météo et à tes activités, avec une vérification IA de ce qui manque.",
+      "cta": "Ouvrir le guide valise"
+    },
+    "s6": {
+      "title": "Découvre sur place",
+      "text": "Une fois arrivé, trouve les meilleurs lieux autour de toi et les pépites locales selon ton humeur.",
+      "cta": "Découvrir autour de moi"
+    },
+    "tipsTitle": "Nos conseils pour un voyage réussi",
+    "t1": "Réserve les transports tôt, mais garde de la souplesse sur les activités.",
+    "t2": "Prévois 10 à 15 % de marge dans ton budget pour les imprévus.",
+    "t3": "Vérifie la validité de ton passeport au moins trois mois avant le départ.",
+    "t4": "Laisse une demi-journée libre pour les découvertes spontanées.",
+    "ctaText": "Prêt à planifier ton prochain voyage ?",
+    "ctaButton": "Commencer gratuitement"
   }
 }

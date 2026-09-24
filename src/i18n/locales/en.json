@@ -5248,5 +5248,49 @@
       "m10": "Your goals are automatically adjusted to your trip duration.",
       "m11": "👑 Max level reached — you are a true Legend!"
     }
+  },
+  "planGuide": {
+    "h1": "How to plan a trip with AI: a step-by-step guide",
+    "intro": "Planning a trip means juggling an itinerary, a budget, travel documents and packing. Here is how to plan your trip from start to finish, and how Xplania's AI helps at every step.",
+    "whyTitle": "Why use AI to plan a trip?",
+    "whyText": "An AI travel planner gathers in minutes what takes hours of research: it tailors the itinerary to your tastes, estimates a realistic budget, checks entry requirements for your nationality and builds a packing list suited to the weather. You stay in control of every choice.",
+    "stepsTitle": "6 steps to plan your trip",
+    "s1": {
+      "title": "Define how you like to travel",
+      "text": "Before picking a destination, clarify what you enjoy: nature, culture, nightlife, calm, adventure. The Travel DNA quiz tells you in a few minutes.",
+      "cta": "Take the Travel DNA quiz"
+    },
+    "s2": {
+      "title": "Build your itinerary",
+      "text": "Enter your dates, destination and budget: the AI suggests a day-by-day plan with precise places (neighbourhood and city), budget-friendly activities and real weather.",
+      "cta": "Create my trip"
+    },
+    "s3": {
+      "title": "Set a realistic budget",
+      "text": "Compare three scenarios (budget, realistic, comfort), then track your spending during the trip with automatic categorisation.",
+      "cta": "Open the budget guide"
+    },
+    "s4": {
+      "title": "Check visas and requirements",
+      "text": "Passport, visa, vaccines, safety: check the requirements for your nationality and always confirm details with the embassy.",
+      "cta": "Open the visa guide"
+    },
+    "s5": {
+      "title": "Pack your suitcase",
+      "text": "A checklist tailored to your destination, the weather and your activities, with an AI check of anything missing.",
+      "cta": "Open the packing guide"
+    },
+    "s6": {
+      "title": "Explore once you arrive",
+      "text": "On the ground, find the best places around you and local gems that match your mood.",
+      "cta": "Discover nearby"
+    },
+    "tipsTitle": "Our tips for a great trip",
+    "t1": "Book transport early, but stay flexible on activities.",
+    "t2": "Keep a 10–15% buffer in your budget for surprises.",
+    "t3": "Check your passport is valid at least three months before you leave.",
+    "t4": "Leave half a day free for spontaneous discoveries.",
+    "ctaText": "Ready to plan your next trip?",
+    "ctaButton": "Start for free"
   }
 }
