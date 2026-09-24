@@ -262,11 +262,12 @@ const TravelerProfileOnboarding = () => {
   }, [t]);
 
   const message = useMemo(() => {
-    if (done < 5) return t("travelerProfile.msg1");
-    if (done < 10) return t("travelerProfile.msg2");
-    if (done < 15) return t("travelerProfile.msg3");
+    const q = Math.max(cards.length, 1) / 4;
+    if (done < q) return t("travelerProfile.msg1");
+    if (done < q * 2) return t("travelerProfile.msg2");
+    if (done < q * 3) return t("travelerProfile.msg3");
     return t("travelerProfile.msg4");
-  }, [done, t]);
+  }, [done, t, cards.length]);
 
   const finalize = useCallback(
     async (finalScores: TravelerScores) => {
@@ -380,6 +381,7 @@ const TravelerProfileOnboarding = () => {
       if (finalizing || !current) return;
       if (e.key === "ArrowRight") handleSwipe("right");
       else if (e.key === "ArrowLeft") handleSwipe("left");
+      else if (e.key === "ArrowUp") handleSwipe("love");
       else if (e.code === "Space") { e.preventDefault(); handleSwipe("skip"); }
     };
     window.addEventListener("keydown", onKey);
@@ -656,6 +658,8 @@ const TravelerProfileOnboarding = () => {
           <Star className="h-6 w-6 fill-current" />
         </button>
       </div>
+
+      <p className="-mt-4 pb-6 text-center text-[11px] text-muted-foreground">{t("travelerProfile.answersHint")}</p>
 
       <AlertDialog open={showExitConfirm} onOpenChange={setShowExitConfirm}>
         <AlertDialogContent>
