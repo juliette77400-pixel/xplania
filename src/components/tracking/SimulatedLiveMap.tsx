@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Navigation, Sparkles, MapPin, ExternalLink } from "lucide-react";
@@ -373,7 +374,7 @@ const SimulatedLiveMap = ({
 
       {!position && allPoints.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center text-center text-sm text-muted-foreground p-6">
-          Active le suivi pour voir ta position et tes étapes en temps réel.
+          {i18n.t("ui2.auto2.m0")}
         </div>
       )}
     </div>

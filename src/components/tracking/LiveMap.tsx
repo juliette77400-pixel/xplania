@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, CircleMarker } from "react-leaflet";
 import L from "leaflet";
@@ -256,7 +257,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                     target="_blank"
                     rel="noopener"
                   >
-                    Itinéraire ↗
+                    {i18n.t("ui2.auto2.m6")}
                   </a>
                   {onPoiAddToCarnet && (
                     <button
@@ -304,7 +305,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                     target="_blank"
                     rel="noopener"
                   >
-                    Itinéraire ↗
+                    {i18n.t("ui2.auto2.m6")}
                   </a>
                   {onAiPinAddToCarnet && (
                     <button

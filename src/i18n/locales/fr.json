@@ -5233,6 +5233,20 @@
       "activeTrip": "Voyage actif",
       "noActiveTrip": "Aucun voyage actif — crée ou sélectionne un voyage pour adapter tes objectifs.",
       "yourRank": "Ton rang : #{{rank}}"
+    },
+    "auto2": {
+      "m0": "Active le suivi pour voir ta position et tes étapes en temps réel.",
+      "m1": "Ajuste les seuils utilisés par la fonction de vérification. Affecte toutes les nouvelles réclamations.",
+      "m2": "Aucune photo trouvée pour cette ville.",
+      "m3": "Aucune réclamation à afficher.",
+      "m4": "Chaque action compte : une note, une photo, une visite, un favori… tout te rapproche du prochain palier.",
+      "m5": "Continue d'explorer pour atteindre le suivant.",
+      "m6": "Itinéraire ↗",
+      "m7": "Pas encore de classement. Sois le premier à débloquer des badges ! ✨",
+      "m8": "Quand une réclamation passe d'« en attente » à « validée » ou « rejetée », ces réglages contrôlent l'envoi de notifications aux voyageurs.",
+      "m9": "Réessayer",
+      "m10": "Tes objectifs sont automatiquement adaptés à la durée de ton voyage.",
+      "m11": "👑 Niveau maximum atteint — tu es une vraie Légende !"
     }
   }
 }

@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -62,7 +63,7 @@ const XpHeader = ({ xp }: Props) => {
             </>
           ) : (
             <p className="text-xs text-amber-400 font-semibold mt-2">
-              👑 Niveau maximum atteint — tu es une vraie Légende !
+              {i18n.t("ui2.auto2.m11")}
             </p>
           )}
         </div>

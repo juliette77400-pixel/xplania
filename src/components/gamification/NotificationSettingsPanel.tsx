@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -65,7 +66,7 @@ export default function NotificationSettingsPanel() {
           <Bell className="w-5 h-5 text-primary" /> Notifications de transitions
         </h2>
         <p className="text-xs text-muted-foreground">
-          Quand une réclamation passe d'« en attente » à « validée » ou « rejetée », ces réglages contrôlent l'envoi de notifications aux voyageurs.
+          {i18n.t("ui2.auto2.m8")}
         </p>
       </div>
 

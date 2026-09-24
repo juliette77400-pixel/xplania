@@ -5233,6 +5233,20 @@
       "activeTrip": "Active trip",
       "noActiveTrip": "No active trip — create or select a trip to tailor your goals.",
       "yourRank": "Your rank: #{{rank}}"
+    },
+    "auto2": {
+      "m0": "Enable tracking to see your real-time position and steps.",
+      "m1": "Adjust the thresholds used by the verification feature. This affects all new claims.",
+      "m2": "No photos found for this city.",
+      "m3": "No claims to display.",
+      "m4": "Every action counts: a rating, a photo, a visit, a favorite… all bring you closer to the next level.",
+      "m5": "Keep exploring to reach the next one.",
+      "m6": "Itinerary ↗",
+      "m7": "No ranking yet. Be the first to unlock badges! ✨",
+      "m8": "When a claim changes from 'pending' to 'validated' or 'rejected', these settings control notification delivery to travelers.",
+      "m9": "Retry",
+      "m10": "Your goals are automatically adjusted to your trip duration.",
+      "m11": "👑 Max level reached — you are a true Legend!"
     }
   }
 }

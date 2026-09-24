@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Crown, Medal, Trophy, Sparkles } from "lucide-react";
@@ -69,7 +70,7 @@ const Leaderboard = () => {
         </div>
       ) : rows.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-8">
-          Pas encore de classement. Sois le premier à débloquer des badges ! ✨
+          {i18n.t("ui2.auto2.m7")}
         </p>
       ) : (
         <>

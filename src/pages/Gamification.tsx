@@ -419,7 +419,7 @@ const GamificationPage = () => {
                     <p className="text-xs text-muted-foreground mb-1">{t("ui2.Gamification.duration")}</p>
                     <p className="text-3xl font-bold text-foreground mb-3">{tripDays || "—"} j</p>
                     <p className="text-xs text-muted-foreground">
-                      Tes objectifs sont automatiquement adaptés à la durée de ton voyage.
+                      {i18n.t("ui2.auto2.m10")}
                     </p>
                   </>
                 ) : (
@@ -467,7 +467,7 @@ const GamificationPage = () => {
 
           <p className="text-muted-foreground mb-2">{t("ui2.Gamification.ctaSubtitle")}</p>
           <p className="text-sm text-muted-foreground/70 max-w-lg mx-auto mb-8">
-            Chaque action compte : une note, une photo, une visite, un favori… tout te rapproche du prochain palier.
+            {i18n.t("ui2.auto2.m4")}
           </p>
 
           <Link

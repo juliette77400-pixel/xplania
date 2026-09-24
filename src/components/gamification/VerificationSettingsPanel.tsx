@@ -66,7 +66,7 @@ export default function VerificationSettingsPanel() {
       <div>
         <h2 className="text-lg font-bold">{t("ui2.VerificationSettingsPanel.title")}</h2>
         <p className="text-xs text-muted-foreground">
-          Ajuste les seuils utilisés par la fonction de vérification. Affecte toutes les nouvelles réclamations.
+          {i18n.t("ui2.auto2.m1")}
         </p>
       </div>
 

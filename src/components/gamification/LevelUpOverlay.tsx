@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -123,7 +124,7 @@ const LevelUpOverlay = ({ level, onClose }: Props) => {
               className="mt-3 text-sm text-muted-foreground"
             >
               Tu viens de franchir un palier 🎉<br />
-              Continue d'explorer pour atteindre le suivant.
+              {i18n.t("ui2.auto2.m5")}
             </motion.p>
 
             <motion.button

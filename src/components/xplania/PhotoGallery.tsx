@@ -81,7 +81,7 @@ const PhotoGallery = ({ query, perPage = 6 }: PhotoGalleryProps) => {
         </div>
       ) : photos.length === 0 ? (
         <p className="text-sm text-muted-foreground py-6 text-center">
-          Aucune photo trouvée pour cette ville.
+          {i18n.t("ui2.auto2.m2")}
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

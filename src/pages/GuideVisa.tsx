@@ -373,7 +373,7 @@ const GuideVisaPage = () => {
               onClick={runGeneration}
               className="px-4 py-2 rounded-xl gradient-button text-primary-foreground text-sm font-semibold"
             >
-              Réessayer
+              {i18n.t("ui2.auto2.m9")}
             </motion.button>
           </motion.div>
         )}
