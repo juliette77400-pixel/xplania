@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Sparkles, ArrowLeft } from "lucide-react";
@@ -15,7 +15,12 @@ import { toast } from "sonner";
 const Auth = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const next = params.get("next") || "/";
+  const location = useLocation();
+  // After sign-in, land on the marketing home ("/home") — never the anonymous
+  // Tinder deck at "/". If the user was bounced here from a protected page,
+  // send them back there instead.
+  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
+  const next = params.get("next") || (from && from !== "/" && from !== "/auth" ? from : "/home");
   const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
