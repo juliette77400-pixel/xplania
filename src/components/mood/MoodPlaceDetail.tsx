@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import SocialReactions from "./SocialReactions";
 import type { MoodPlace } from "@/hooks/useMoodExplorer";
 import { moodByKey } from "@/lib/moods";
+import GooglePlaceInfo from "@/components/shared/GooglePlaceInfo";
+import SaveMoodToList from "./SaveMoodToList";
 
 interface Props {
   place: MoodPlace | null;
@@ -149,6 +151,9 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
                 </a>
               </Button>
             </div>
+
+            <SaveMoodToList place={place} />
+            <GooglePlaceInfo name={place.name} lat={place.lat} lng={place.lng} />
 
             <Separator />
             <SocialReactions place={place} onShared={onSharedReaction} />

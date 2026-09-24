@@ -14,6 +14,7 @@ import ReviewsSection from "./ReviewsSection";
 import RatingsSection from "./RatingsSection";
 import { Separator } from "@/components/ui/separator";
 import AddToItineraryDialog from "./AddToItineraryDialog";
+import GooglePlaceInfo from "@/components/shared/GooglePlaceInfo";
 
 interface Props {
   place: Place | null;
@@ -117,6 +118,7 @@ const PlaceDetailDrawer = ({ place, onClose }: Props) => {
           <div className="space-y-4 px-4 pb-6">
             {place.description && <p className="text-sm text-muted-foreground">{place.description}</p>}
             {place.address && <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />{place.address}</p>}
+            <GooglePlaceInfo name={place.name} lat={place.lat} lng={place.lng} />
             {place.tips && (
               <div className="rounded-xl border border-accent/30 bg-accent/5 p-3">
                 <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-accent">{t("discoverComp.drawer.tipInsider")}</div>
