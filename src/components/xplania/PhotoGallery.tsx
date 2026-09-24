@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Camera, Loader2, ImageOff } from "lucide-react";
@@ -71,7 +72,7 @@ const PhotoGallery = ({ query, perPage = 6 }: PhotoGalleryProps) => {
       {loading ? (
         <div className="flex items-center justify-center gap-3 py-10">
           <Loader2 className="w-5 h-5 text-primary animate-spin" />
-          <p className="text-sm text-muted-foreground">Chargement des photos…</p>
+          <p className="text-sm text-muted-foreground">{i18n.t("ui2.auto.k2")}</p>
         </div>
       ) : error ? (
         <div className="flex items-center gap-3 p-4 rounded-xl bg-destructive/10">

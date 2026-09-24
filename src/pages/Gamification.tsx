@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -372,7 +373,7 @@ const GamificationPage = () => {
 
         {/* ══════ PROGRESSION RHYTHM ══════ */}
         <section className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Ton Rythme de Progression</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{i18n.t("ui2.auto.k16")}</h2>
           <p className="text-muted-foreground mb-8">{t("ui2.Gamification.rhythmSubtitle")}</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -383,7 +384,7 @@ const GamificationPage = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground">{t("ui2.Gamification.moduleActivityTitle")}</h3>
-                  <p className="text-xs text-muted-foreground">Tes contributions actuelles</p>
+                  <p className="text-xs text-muted-foreground">{i18n.t("ui2.auto.k15")}</p>
                 </div>
               </div>
 

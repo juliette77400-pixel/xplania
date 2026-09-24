@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,7 +54,7 @@ export function useMoodEntries() {
   const log = useCallback(
     async (input: LogMoodInput) => {
       if (!user) {
-        toast.error("Connecte-toi pour enregistrer ton humeur");
+        toast.error(i18n.t("ui2.auto.k4"));
         return null;
       }
       const payload = {
@@ -71,7 +72,7 @@ export function useMoodEntries() {
         .single();
       if (error) {
         console.error(error);
-        toast.error("Échec d'enregistrement");
+        toast.error(i18n.t("ui2.auto.k18"));
         return null;
       }
       // Prepend into the shared cache so every consumer stays in sync.
@@ -88,7 +89,7 @@ export function useMoodEntries() {
     async (id: string) => {
       const { error } = await (supabase as any).from("mood_entries").delete().eq("id", id);
       if (error) {
-        toast.error("Échec de suppression");
+        toast.error(i18n.t("ui2.auto.k22"));
         return;
       }
       queryClient.setQueryData<MoodEntry[]>(moodEntriesQueryKey(user?.id), (prev) =>

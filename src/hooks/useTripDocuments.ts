@@ -72,7 +72,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
       contentType: file.type,
     });
     if (upErr) {
-      toast.error("Échec de l'upload");
+      toast.error(i18n.t("ui2.auto.k20"));
       return null;
     }
     const { data, error } = await supabase
@@ -92,7 +92,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
       .single();
     if (error) {
       await supabase.storage.from(BUCKET).remove([path]);
-      toast.error("Échec de l'enregistrement");
+      toast.error(i18n.t("ui2.auto.k19"));
       return null;
     }
     setDocuments((prev) => [data as TripDocument, ...prev]);
@@ -104,7 +104,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
     await supabase.storage.from(BUCKET).remove([doc.file_path]);
     const { error } = await supabase.from("trip_documents").delete().eq("id", doc.id);
     if (error) {
-      toast.error("Échec de la suppression");
+      toast.error(i18n.t("ui2.auto.k21"));
       return;
     }
     setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
@@ -117,7 +117,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
       .update({ day_id: newDayId })
       .eq("id", doc.id);
     if (error) {
-      toast.error("Échec du rattachement");
+      toast.error(i18n.t("ui2.auto.k23"));
       return;
     }
     setDocuments((prev) =>
@@ -133,7 +133,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
       .from(BUCKET)
       .createSignedUrl(doc.file_path, 60 * 10);
     if (error || !data) {
-      toast.error("Impossible d'ouvrir le fichier");
+      toast.error(i18n.t("ui2.auto.k11"));
       return null;
     }
     return data.signedUrl;

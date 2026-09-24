@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -363,7 +364,7 @@ const GuideVisaPage = () => {
           >
             <div className="flex items-center gap-3 mb-2">
               <AlertCircle className="w-5 h-5 text-destructive" />
-              <h3 className="text-base font-bold text-foreground">Erreur de génération</h3>
+              <h3 className="text-base font-bold text-foreground">{i18n.t("ui2.auto.k8")}</h3>
             </div>
             <p className="text-sm text-muted-foreground mb-4">{aiError}</p>
             <motion.button

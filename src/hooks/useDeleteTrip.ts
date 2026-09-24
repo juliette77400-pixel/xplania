@@ -73,7 +73,7 @@ export const useDeleteTrip = () => {
         return true;
       } catch (e: any) {
         console.error("[useDeleteTrip] failed", e);
-        toast.error(e?.message || "Impossible de supprimer ce voyage.");
+        toast.error(e?.message || i18n.t("ui2.auto.k13"));
         return false;
       } finally {
         setDeleting(null);

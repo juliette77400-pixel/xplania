@@ -5201,6 +5201,33 @@
     "PublicSuivi": {
       "linkNotFound": "Lien introuvable ou expiré",
       "liveTrackDesc": "Suivi en direct · {{km}} km parcourus"
+    },
+    "auto": {
+      "k0": "Auto-validation si l'utilisateur est dans le rayon du badge.",
+      "k1": "Chargement",
+      "k2": "Chargement des photos…",
+      "k3": "Connecte-toi pour dupliquer un voyage.",
+      "k4": "Connecte-toi pour enregistrer ton humeur",
+      "k5": "Connecte-toi pour noter ce lieu",
+      "k6": "Connecte-toi pour partager ton ressenti",
+      "k7": "Connecte-toi pour utiliser le Mood Explorer",
+      "k8": "Erreur de génération",
+      "k9": "Erreur recommandation",
+      "k10": "Impossible d'enregistrer la note",
+      "k11": "Impossible d'ouvrir le fichier",
+      "k12": "Impossible de dupliquer ce voyage.",
+      "k13": "Impossible de supprimer ce voyage.",
+      "k14": "Note invalide",
+      "k15": "Tes contributions actuelles",
+      "k16": "Ton Rythme de Progression",
+      "k17": "Voyage introuvable.",
+      "k18": "Échec d'enregistrement",
+      "k19": "Échec de l'enregistrement",
+      "k20": "Échec de l'upload",
+      "k21": "Échec de la suppression",
+      "k22": "Échec de suppression",
+      "k23": "Échec du rattachement",
+      "k24": "Échec partage"
     }
   }
 }

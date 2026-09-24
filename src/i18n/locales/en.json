@@ -5201,6 +5201,33 @@
     "PublicSuivi": {
       "linkNotFound": "Link not found or expired",
       "liveTrackDesc": "Live tracking · {{km}} km travelled"
+    },
+    "auto": {
+      "k0": "Auto-validate if user is within badge radius.",
+      "k1": "Loading",
+      "k2": "Loading photos…",
+      "k3": "Log in to duplicate a trip.",
+      "k4": "Log in to save your mood",
+      "k5": "Log in to rate this place",
+      "k6": "Log in to share your feelings",
+      "k7": "Log in to use Mood Explorer",
+      "k8": "Generation error",
+      "k9": "Recommendation error",
+      "k10": "Failed to save rating",
+      "k11": "Failed to open file",
+      "k12": "Failed to duplicate this trip.",
+      "k13": "Failed to delete this trip.",
+      "k14": "Invalid rating",
+      "k15": "Your current contributions",
+      "k16": "Your Progress Pace",
+      "k17": "Trip not found.",
+      "k18": "Save failed",
+      "k19": "Save failed",
+      "k20": "Upload failed",
+      "k21": "Deletion failed",
+      "k22": "Deletion failed",
+      "k23": "Attachment failed",
+      "k24": "Share failed"
     }
   }
 }

@@ -15,7 +15,7 @@ export const useDuplicateTrip = () => {
   const duplicateTrip = useCallback(
     async (tripId: string): Promise<string | null> => {
       if (!user) {
-        toast.error("Connecte-toi pour dupliquer un voyage.");
+        toast.error(i18n.t("ui2.auto.k3"));
         return null;
       }
       setDuplicating(tripId);
@@ -28,7 +28,7 @@ export const useDuplicateTrip = () => {
           .maybeSingle();
         if (srcErr) throw srcErr;
         if (!src) {
-          toast.error("Voyage introuvable.");
+          toast.error(i18n.t("ui2.auto.k17"));
           return null;
         }
 
@@ -55,7 +55,7 @@ export const useDuplicateTrip = () => {
         return created?.id || null;
       } catch (e: any) {
         console.error("[useDuplicateTrip] failed", e);
-        toast.error(e?.message || "Impossible de dupliquer ce voyage.");
+        toast.error(e?.message || i18n.t("ui2.auto.k12"));
         return null;
       } finally {
         setDuplicating(null);
