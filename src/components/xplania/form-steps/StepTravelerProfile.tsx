@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Users, User, Heart, Users2, Briefcase, Laptop, Backpack, Armchair, GraduationCap, Gem, Footprints, Activity, Globe } from "lucide-react";
+import OptionButton from "./OptionButton";
 import type { TravelFormData } from "@/types/travel";
 
 const TRAVELER_TYPES: { id: string; icon: React.ReactNode }[] = [
@@ -51,18 +52,6 @@ interface Props {
   update: (d: Partial<TravelFormData>) => void;
 }
 
-const SelectButton = ({ selected, label, onClick, icon }: { selected: boolean; label: string; onClick: () => void; icon?: React.ReactNode }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
-      selected ? "gradient-button text-primary-foreground" : "glass-card text-foreground hover:bg-muted"
-    }`}
-  >
-    {icon}
-    {label}
-  </button>
-);
 
 const StepTravelerProfile = ({ data, update }: Props) => {
   const { t } = useTranslation();
@@ -81,7 +70,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         </Label>
         <div className="flex flex-wrap gap-2">
           {TRAVELER_TYPES.map((opt) => (
-            <SelectButton key={opt.id} selected={data.travelerType === opt.id} label={t(`travelForm.options.travelerType.${opt.id}`)} icon={opt.icon} onClick={() => update({ travelerType: opt.id })} />
+            <OptionButton key={opt.id} selected={data.travelerType === opt.id} label={t(`travelForm.options.travelerType.${opt.id}`)} hint={t(`travelForm.optionHints.travelerType.${opt.id}`, { defaultValue: "" })} icon={opt.icon} onClick={() => update({ travelerType: opt.id })} />
           ))}
         </div>
       </div>
@@ -94,6 +83,8 @@ const StepTravelerProfile = ({ data, update }: Props) => {
             min={1}
             max={120}
             value={data.age || ""}
+            placeholder={t("travelForm.fields.agePh")}
+            inputMode="numeric"
             onChange={(e) => update({ age: parseInt(e.target.value) || 0 })}
             className="bg-muted border-border text-foreground"
           />
@@ -104,7 +95,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">{t("travelForm.fields.activityLevel")}</Label>
         <div className="flex flex-wrap gap-2">
           {ACTIVITY_LEVELS.map((opt) => (
-            <SelectButton key={opt.id} selected={data.activityLevel === opt.id} label={t(`travelForm.options.activityLevel.${opt.id}`)} icon={opt.icon} onClick={() => update({ activityLevel: opt.id })} />
+            <OptionButton key={opt.id} selected={data.activityLevel === opt.id} label={t(`travelForm.options.activityLevel.${opt.id}`)} hint={t(`travelForm.optionHints.activityLevel.${opt.id}`, { defaultValue: "" })} icon={opt.icon} onClick={() => update({ activityLevel: opt.id })} />
           ))}
         </div>
       </div>
@@ -113,7 +104,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">{t("travelForm.fields.languages")}</Label>
         <div className="flex flex-wrap gap-2">
           {LANGUAGES.map((lang) => (
-            <SelectButton key={lang.id} selected={languages.includes(lang.id)} label={`${lang.flag} ${t(`travelForm.options.language.${lang.id}`)}`} onClick={() => toggleLanguage(lang.id)} />
+            <OptionButton key={lang.id} selected={languages.includes(lang.id)} label={`${lang.flag} ${t(`travelForm.options.language.${lang.id}`)}`} onClick={() => toggleLanguage(lang.id)} />
           ))}
         </div>
       </div>
@@ -123,15 +114,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
           <Label className="text-foreground font-semibold">{t("travelForm.fields.speaksLocal")}</Label>
           <div className="flex gap-2">
             {["Oui", "Non"].map((opt) => (
-              <SelectButton key={opt} selected={data.speaksLocalLanguage === opt} label={t(opt === "Oui" ? "travelForm.options.yes" : "travelForm.options.no")} onClick={() => update({ speaksLocalLanguage: opt })} />
-            ))}
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-foreground font-semibold">{t("travelForm.fields.needsFrenchGuide")}</Label>
-          <div className="flex gap-2">
-            {["Oui", "Non"].map((opt) => (
-              <SelectButton key={opt} selected={data.needsFrenchGuide === opt} label={t(opt === "Oui" ? "travelForm.options.yes" : "travelForm.options.no")} onClick={() => update({ needsFrenchGuide: opt })} />
+              <OptionButton key={opt} selected={data.speaksLocalLanguage === opt} label={t(opt === "Oui" ? "travelForm.options.yes" : "travelForm.options.no")} onClick={() => update({ speaksLocalLanguage: opt })} />
             ))}
           </div>
         </div>
@@ -141,7 +124,7 @@ const StepTravelerProfile = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">{t("travelForm.fields.experience")}</Label>
         <div className="flex flex-wrap gap-2">
           {EXPERIENCE_LEVELS.map((opt) => (
-            <SelectButton key={opt.id} selected={data.travelExperience === opt.id} label={t(`travelForm.options.experience.${opt.id}`)} icon={opt.icon} onClick={() => update({ travelExperience: opt.id })} />
+            <OptionButton key={opt.id} selected={data.travelExperience === opt.id} label={t(`travelForm.options.experience.${opt.id}`)} hint={t(`travelForm.optionHints.experience.${opt.id}`, { defaultValue: "" })} icon={opt.icon} onClick={() => update({ travelExperience: opt.id })} />
           ))}
         </div>
       </div>

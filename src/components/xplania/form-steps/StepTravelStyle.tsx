@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
 import { Compass, ClipboardList, Scale, Zap, Gauge, Snail, Activity } from "lucide-react";
+import OptionButton from "./OptionButton";
 import type { TravelFormData } from "@/types/travel";
 
 const ORGANIZATION: { id: string; icon: React.ReactNode }[] = [
@@ -20,18 +21,6 @@ interface Props {
   update: (d: Partial<TravelFormData>) => void;
 }
 
-const SelectButton = ({ selected, label, onClick, icon }: { selected: boolean; label: string; onClick: () => void; icon?: React.ReactNode }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`px-5 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
-      selected ? "gradient-button text-primary-foreground" : "glass-card text-foreground hover:bg-muted"
-    }`}
-  >
-    {icon}
-    {label}
-  </button>
-);
 
 const StepTravelStyle = ({ data, update }: Props) => {
   const { t } = useTranslation();
@@ -43,7 +32,7 @@ const StepTravelStyle = ({ data, update }: Props) => {
         </Label>
         <div className="flex flex-wrap gap-3">
           {ORGANIZATION.map((opt) => (
-            <SelectButton key={opt.id} selected={data.organization === opt.id} label={t(`travelForm.options.organization.${opt.id}`)} icon={opt.icon} onClick={() => update({ organization: opt.id })} />
+            <OptionButton large key={opt.id} selected={data.organization === opt.id} label={t(`travelForm.options.organization.${opt.id}`)} hint={t(`travelForm.optionHints.organization.${opt.id}`, { defaultValue: "" })} icon={opt.icon} onClick={() => update({ organization: opt.id })} />
           ))}
         </div>
       </div>
@@ -52,7 +41,7 @@ const StepTravelStyle = ({ data, update }: Props) => {
         <Label className="text-foreground font-semibold">{t("travelForm.fields.rhythm")}</Label>
         <div className="flex flex-wrap gap-3">
           {RHYTHM.map((opt) => (
-            <SelectButton key={opt.id} selected={data.rhythm === opt.id} label={t(`travelForm.options.rhythm.${opt.id}`)} icon={opt.icon} onClick={() => update({ rhythm: opt.id })} />
+            <OptionButton large key={opt.id} selected={data.rhythm === opt.id} label={t(`travelForm.options.rhythm.${opt.id}`)} hint={t(`travelForm.optionHints.rhythm.${opt.id}`, { defaultValue: "" })} icon={opt.icon} onClick={() => update({ rhythm: opt.id })} />
           ))}
         </div>
       </div>
