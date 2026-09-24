@@ -4667,5 +4667,445 @@
   },
   "premiumDialog": {
     "perMonth": "/mois"
+  },
+  "ui2": {
+    "TravelerProfileAdjust": {
+      "title": "Ajuster mon profil voyageur",
+      "subtitle": "Affine manuellement chaque dimension. Xplania recalculera tes recommandations en direct.",
+      "badgeCurrent": "Badge actuel :",
+      "dimensionsTitle": "12 dimensions",
+      "redoTinder": "Refaire le Tinder",
+      "saving": "Sauvegarde…",
+      "saveBtn": "Enregistrer",
+      "previewTitle": "Aperçu",
+      "previewHint": "Top 3 destinations basé sur tes scores sauvegardés. Enregistre pour actualiser.",
+      "noDestination": "Aucune destination à afficher.",
+      "viewAllDestinations": "Voir toutes les destinations",
+      "toastUpdated": "Scores mis à jour — recommandations rafraîchies",
+      "toastSaveError": "Échec sauvegarde",
+      "dimensions": {
+        "culture": {
+          "label": "Culture",
+          "hint": "Musées, temples, histoire, patrimoine"
+        },
+        "adventure": {
+          "label": "Aventure",
+          "hint": "Trek, sports extrêmes, sortir de sa zone"
+        },
+        "nature": {
+          "label": "Nature",
+          "hint": "Forêts, montagnes, mer, faune sauvage"
+        },
+        "comfort": {
+          "label": "Confort",
+          "hint": "Hôtels, transports faciles, sans imprévu"
+        },
+        "budget": {
+          "label": "Budget serré",
+          "hint": "Voyages économiques, backpack"
+        },
+        "food": {
+          "label": "Gastronomie",
+          "hint": "Cuisine locale, chefs, marchés"
+        },
+        "authenticity": {
+          "label": "Authenticité",
+          "hint": "Éviter les foules touristiques, du vrai"
+        },
+        "social": {
+          "label": "Social",
+          "hint": "Rencontres, groupes, fêtes locales"
+        },
+        "wellbeing": {
+          "label": "Bien-être",
+          "hint": "Spa, yoga, retraites, calme"
+        },
+        "nomad": {
+          "label": "Nomade digital",
+          "hint": "Coworking, wifi, séjours longs"
+        },
+        "luxury": {
+          "label": "Luxe",
+          "hint": "Palaces, expériences premium"
+        },
+        "organization": {
+          "label": "Organisation",
+          "hint": "Itinéraire cadré, planification"
+        }
+      }
+    },
+    "AdminAuditPanel": {
+      "actionUpdateSettings": "Modif. règles de vérification",
+      "actionUpdateNotifSettings": "Modif. notifications",
+      "actionValidated": "Validation manuelle",
+      "actionRejected": "Rejet manuel",
+      "csvExported": "CSV exporté",
+      "pdfExported": "PDF exporté",
+      "title": "Journal d'audit admin",
+      "subtitle": "Trace les modifications de règles et les décisions manuelles. 500 dernières entrées filtrables.",
+      "refresh": "Rafraîchir",
+      "from": "Du",
+      "to": "Au",
+      "admin": "Admin",
+      "all": "Tous",
+      "type": "Type",
+      "everyType": "Tout",
+      "settingsAll": "Réglages (toutes)",
+      "manualDecisions": "Décisions manuelles",
+      "verificationRules": "Règles vérification",
+      "notifications": "Notifications",
+      "noEntries": "Aucune entrée pour ces filtres.",
+      "by": "par",
+      "system": "système",
+      "claim": "Réclamation",
+      "reason": "Motif",
+      "filterFrom": "du {{date}}",
+      "filterSince": "depuis le début",
+      "filterTo": "au {{date}}",
+      "filterUntilToday": "jusqu'à aujourd'hui",
+      "filterAdmin": "admin: {{name}}",
+      "filterAllAdmins": "tous admins",
+      "filterType": "type: {{type}}",
+      "filterEntries": "{{count}} entrées",
+      "pdfClaimLine": "Réclamation: {{id}}",
+      "pdfReasonLine": "Motif: {{reason}}"
+    },
+    "GuideValise": {
+      "categoryActivityAdded": "Ajoutés par activité",
+      "categoryOutfitRecommended": "Tenues recommandées",
+      "destinationFallback": "votre destination",
+      "toolLabel": "Valise intelligente"
+    },
+    "PublicCarnet": {
+      "shareDescriptionFallback": "Découvre ce carnet de voyage immersif sur Xplania.",
+      "titleFallback": "Carnet de voyage",
+      "notFound": "Carnet introuvable ou privé",
+      "story": "Le récit",
+      "day": "Jour {{n}}",
+      "backHome": "Xplania"
+    },
+    "TripActionsMenu": {
+      "tripActions": "Actions du voyage",
+      "edit": "Modifier",
+      "duplicate": "Dupliquer ce voyage",
+      "delete": "Supprimer",
+      "deleteTitle": "Supprimer ce voyage ?",
+      "confirmDeleteNamed": "Es-tu sûr(e) de vouloir supprimer {{name}} ?",
+      "confirmDeleteGeneric": "Es-tu sûr(e) de vouloir supprimer ce voyage ?",
+      "irreversibleWarning": "Cette action est irréversible. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.",
+      "cancel": "Annuler",
+      "deleting": "Suppression…",
+      "deletePermanently": "Supprimer définitivement",
+      "editTripTitle": "Modifier ce voyage",
+      "editTripDesc": "Mets à jour le titre, la destination ou les dates.",
+      "labelTitle": "Titre",
+      "labelDestination": "Destination",
+      "labelDeparture": "Départ",
+      "labelReturn": "Retour",
+      "save": "Enregistrer"
+    },
+    "ShareExport": {
+      "pdfTripLine": "Voyage à {{destination}}",
+      "exportPdfHeading": "Exporter en PDF",
+      "exportPdfSubtitle": "Crée un livre souvenir de ton voyage, prêt à imprimer ou à archiver.",
+      "moodLine": "Humeur : {{emoji}} {{score}}/5",
+      "footer": "Carnet généré avec Xplania · {{date}}"
+    },
+    "exploreBadges": {
+      "explorer": "Visite ton premier lieu",
+      "urban_explorer": "Visite 5 lieux urbains",
+      "globe_trotter": "10 lieux visités",
+      "collector": "Ajoute 20 lieux",
+      "city_master": "Complète une ville (8 lieux)",
+      "pathfinder": "Explore 30 lieux",
+      "local_insider": "Visite 5 hidden gems",
+      "voyageur_master": "50 lieux visités",
+      "foodie": "1 spot food enregistré",
+      "food_lover": "5 spots food",
+      "street_food": "3 street-food visités",
+      "gourmet": "10 restaurants visités",
+      "coffee_addict": "5 cafés ajoutés",
+      "sweet_tooth": "3 desserts/pâtisseries",
+      "wine_explorer": "3 bars à vin / dégustations",
+      "michelin_dream": "20 restaurants visités",
+      "museum_visitor": "1 musée visité",
+      "culture_hunter": "5 lieux culturels",
+      "art_lover": "5 musées visités",
+      "history_buff": "5 monuments historiques",
+      "architect_eye": "10 sites architecturaux",
+      "show_lover": "3 spectacles/concerts",
+      "photo_journal": "20 souvenirs photos",
+      "culture_master": "20 lieux culturels visités",
+      "memory_keeper": "10 souvenirs ajoutés",
+      "storyteller": "5 souvenirs avec note",
+      "share_friend": "Partage ta carte 1 fois",
+      "mood_curator": "5 souvenirs avec mood",
+      "travel_blogger": "30 souvenirs ajoutés",
+      "group_traveler": "10 lieux planifiés",
+      "influencer": "50 souvenirs",
+      "social_legend": "100 souvenirs",
+      "nature_lover": "3 spots nature",
+      "mountain_adventurer": "5 spots montagne/parc",
+      "night_explorer": "3 expériences nocturnes",
+      "party_animal": "5 spots nightlife",
+      "water_lover": "3 spots aquatiques",
+      "sunset_chaser": "5 spots panoramiques",
+      "extreme_sport": "3 activités sport",
+      "legendary_explorer": "Tout débloquer en aventure"
+    },
+    "journalUtils": {
+      "block_note": "Note",
+      "block_photo": "Photo",
+      "block_video": "Vidéo",
+      "block_location": "Lieu",
+      "block_mood": "Humeur",
+      "block_audio": "Audio",
+      "block_highlight": "Moment fort",
+      "tone_storytelling_label": "Storytelling",
+      "tone_storytelling_desc": "Récit narratif et engageant",
+      "tone_poetic_label": "Poétique",
+      "tone_poetic_desc": "Style lyrique et imagé",
+      "tone_fun_label": "Fun & léger",
+      "tone_fun_desc": "Ton décontracté et humoristique",
+      "tone_documentary_label": "Documentaire",
+      "tone_documentary_desc": "Style factuel et descriptif",
+      "badge_explorer_label": "🌍 Explorateur",
+      "badge_explorer_trigger": "3 lieux visités",
+      "badge_storyteller_label": "✍️ Storyteller",
+      "badge_storyteller_trigger": "5 notes écrites",
+      "badge_photographer_label": "📸 Photographe",
+      "badge_photographer_trigger": "10 photos ajoutées",
+      "badge_emotional_label": "💖 Émotionnel",
+      "badge_emotional_trigger": "5 humeurs partagées",
+      "badge_highlight_label": "⭐ Curateur",
+      "badge_highlight_trigger": "3 moments forts"
+    },
+    "useQuota": {
+      "warnOne": "Plus que 1 génération gratuite avant la fin ✨",
+      "warnMany": "Plus que {{count}} générations gratuites avant la fin ✨",
+      "warnDesc": "Inscris-toi à la liste premium pour un accès illimité dès l'ouverture."
+    },
+    "useNearbyAlerts": {
+      "title": "✨ {{name}} à {{distance}} m",
+      "bodyFallback": "Hidden gem juste à côté de toi"
+    },
+    "useMoodBadges": {
+      "unlockedToast": "{{icon}} Badge débloqué : {{name}}"
+    },
+    "AdminGate": {
+      "ariaLabel": "Mode Admin",
+      "title": "Accès illimité — restrictions freemium désactivées",
+      "badge": "Mode Admin"
+    },
+    "DeleteTripButton": {
+      "ariaLabel": "Supprimer ce voyage",
+      "label": "Supprimer ce voyage",
+      "short": "Supprimer",
+      "dialogTitle": "Supprimer ce voyage ?",
+      "confirmWithLabelPrefix": "Es-tu sûr(e) de vouloir supprimer",
+      "confirmGeneric": "Es-tu sûr(e) de vouloir supprimer ce voyage ? ",
+      "irreversibleWarning": "Cette action est irréversible. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.",
+      "cancel": "Annuler",
+      "deleting": "Suppression…",
+      "deletePermanently": "Supprimer définitivement"
+    },
+    "Destinations": {
+      "title": "Destinations pour toi",
+      "subtitle": "Suggestions calculées à partir de ton profil voyageur et de l'ADN de chaque destination. Like ❤️ ou écarte ✕ — Xplania apprend en direct.",
+      "saved": "{{name}} sauvegardée ❤️",
+      "dismissed": "{{name}} écartée",
+      "saveFailed": "Impossible d'enregistrer",
+      "noneLeft": "Plus rien à te proposer pour l'instant.",
+      "reload": "Recharger",
+      "originality": "Originalité {{value}}/100",
+      "whyRecommend": "Pourquoi cette recommandation ?",
+      "profileMatch": "Correspondance profil",
+      "originalityScore": "Score d'originalité",
+      "sources": "Sources Xplania (RAG)",
+      "hiddenGems": "Hidden gems associés",
+      "notForMe": "Pas pour moi",
+      "love": "J'adore"
+    },
+    "FreemiumBanner": {
+      "used": "Vous avez utilisé votre génération gratuite",
+      "enjoy": "Vous avez utilisé votre génération gratuite",
+      "description": "Passez à Xplania Premium pour des voyages illimités, des itinéraires ultra-personnalisés et le carnet de bord interactif.",
+      "discoverPremium": "Découvrir Premium",
+      "later": "Plus tard",
+      "close": "Fermer"
+    },
+    "HiddenGems": {
+      "subtitle": "Pépites confidentielles, ateliers d'artisans, lieux évités par les guides. Curatés par la communauté Xplania et notés selon leur originalité.",
+      "searchPlaceholder": "Rechercher (nom, quartier, tag…)",
+      "all": "Toutes",
+      "noResults": "Aucune pépite ne correspond à ta recherche."
+    },
+    "MoodBadges": {
+      "moodCurious": "Tester 3 moods différents",
+      "hiddenHunter": "Sauvegarder un hidden gem",
+      "moodMaster": "Tester les 7 moods",
+      "collector": "10 lieux en favoris",
+      "socialSoul": "Partager un ressenti public",
+      "ambience": {
+        "chill": "Lo-fi calme",
+        "explore": "Folk aventure",
+        "romantic": "Jazz tendre",
+        "food": "Bossa gourmet",
+        "party": "Electro vibes",
+        "nature": "Ambient nature",
+        "focus": "Lo-fi focus"
+      }
+    },
+    "NotificationLogPanel": {
+      "title": "Historique des notifications",
+      "subtitle": "Trace de chaque notification envoyée (in-app / email) lors d'une transition de réclamation.",
+      "refresh": "Rafraîchir",
+      "allChannels": "Tous canaux",
+      "inApp": "In-app",
+      "email": "Email",
+      "allStatuses": "Tous statuts",
+      "none": "Aucune notification enregistrée.",
+      "colDate": "Date",
+      "colChannel": "Canal",
+      "colTransition": "Transition",
+      "colStatus": "Statut",
+      "colUser": "Utilisateur",
+      "colDetails": "Détails"
+    },
+    "TravelPlanResults": {
+      "budgetEstimate": "Estimation du budget",
+      "perDay": "Par jour",
+      "documentsChecklist": "Checklist documents",
+      "luggageList": "Liste de bagages",
+      "culturalTips": "Conseils culturels",
+      "weatherEstimate": "Météo estimée",
+      "localRecommendations": "Recommandations locales"
+    },
+    "badgesFx": {
+      "badgeUnlocked": "Badge débloqué ! {{icon}} {{name}}",
+      "defaultDescription": "Bravo, continue comme ça ✨"
+    },
+    "useExplore": {
+      "mapGenerated": "Carte générée : {{nodes}} points, {{edges}} connexions",
+      "generationFailed": "Échec génération",
+      "failed": "Échec",
+      "placeVisited": "✨ Lieu visité ! Points gagnés",
+      "newPlace": "Nouveau lieu",
+      "addFailed": "Échec ajout",
+      "placeAdded": "Lieu ajouté +10pts",
+      "mediaFailed": "Échec souvenir",
+      "mediaAdded": "Souvenir +20pts",
+      "badgeUnlocked": "🏅 Badge débloqué : {{name}}"
+    },
+    "useGeolocation": {
+      "notSupported": "Géolocalisation non supportée",
+      "gpsUnavailable": "Position GPS indisponible"
+    },
+    "usePlaceReviews": {
+      "localVoiceDesc": "5 avis publiés sur des lieux découverts",
+      "badgeUnlocked": "🎙️ Badge débloqué : Local Voice",
+      "badgeUnlockedDesc": "Tu as partagé 5 avis avec la communauté !",
+      "loginToReview": "Connecte-toi pour publier un avis",
+      "invalidRating": "Note invalide",
+      "photoTooLarge": "Photo trop lourde (max 5 Mo)",
+      "thanks": "Merci pour ton avis ✨",
+      "submitFailed": "Impossible de publier l'avis"
+    },
+    "TripTracker": {
+      "autoCheckin": "Check-in automatique",
+      "stepsSyncedFromTrip": "{{count}} étapes synchronisées depuis ton voyage",
+      "loginToAddJournal": "Connecte-toi pour ajouter à ton carnet",
+      "journalNotReady": "Carnet pas encore prêt — patiente un instant",
+      "addToJournalFailed": "Impossible d'ajouter au carnet",
+      "addedToJournal": "✨ \"{{title}}\" ajouté à ton carnet",
+      "dayOf": "Jour du {{date}}",
+      "dateLocale": "fr-FR",
+      "view": "Voir",
+      "loading": "Chargement…",
+      "live": "EN DIRECT",
+      "paused": "EN PAUSE",
+      "offline": "Hors ligne",
+      "share": "Partager",
+      "all": "Tout",
+      "poi": "Points d'intérêt",
+      "poiAround": "{{count}} POI autour",
+      "aiSuggestions": "✨ Suggestions IA",
+      "stepsSynced": "{{count}} étapes synchronisées",
+      "timelineTab": "📋 Timeline du voyage",
+      "aiSuggestionsTab": "✨ Suggestions IA",
+      "suggestionsPinned": "{{count}} suggestion(s) épinglée(s) sur la carte ⭐"
+    },
+    "Gamification": {
+      "missionShareMood": "Partager 1 émotion dans ton carnet",
+      "rhythmSubtitle": "Aperçu de ton activité Xplania",
+      "moduleActivityTitle": "Activité par module",
+      "statExploreVisited": "Explore — lieux visités",
+      "duration": "Durée",
+      "ctaSubtitle": "Continue ton aventure et débloque des badges épiques."
+    },
+    "AdminSeedRag": {
+      "insertToast": "Insertion : {{inserted}} nouveaux, {{skipped}} déjà présents, {{errors}} erreurs",
+      "embedToast": "Embeddings : {{embedded}} générés, {{remaining}} restants",
+      "allIndexedToast": "Tous les chunks sont indexés et vectorisés ✨",
+      "accessDeniedTitle": "Accès refusé",
+      "accessDeniedDesc": "Cette page est réservée aux administrateurs."
+    },
+    "feature-unlocks": {
+      "culture": "ta curiosité culturelle",
+      "authenticity": "ton goût pour l'authentique",
+      "adventure": "ton âme d'aventurier·e",
+      "nature": "ton amour de la nature",
+      "food": "ta passion food",
+      "social": "ton côté social",
+      "comfort": "ta recherche de confort",
+      "luxury": "ton goût du raffiné",
+      "wellbeing": "ta quête de bien-être",
+      "nomad": "ton mode nomade",
+      "budget": "ta maîtrise du budget",
+      "organization": "ton besoin d'organisation"
+    },
+    "trip-export-all": {
+      "generatedOn": "Généré le {{date}}",
+      "summaryTitle": "Résumé du voyage",
+      "departureLine": "Départ : {{location}}",
+      "durationLine": "Durée : {{duration}} jour(s)",
+      "itineraryTitle": "Itinéraire",
+      "visaTitle": "Visa & Formalités"
+    },
+    "discover-export": {
+      "savedCount_one": "{{count}} lieu sauvegardé",
+      "savedCount_other": "{{count}} lieux sauvegardés",
+      "toDiscoverCount_one": "{{count}} lieu à découvrir :",
+      "toDiscoverCount_other": "{{count}} lieux à découvrir :",
+      "sentFrom": "— Envoyé depuis Xplania"
+    },
+    "moods": {
+      "romantic": "Sunset, intime, élégant",
+      "focus": "Bosser, concentration, café"
+    },
+    "discover": {
+      "experience": "À découvrir"
+    },
+    "useUpdateTrip": {
+      "updated": "Voyage mis à jour ✨",
+      "updateFailed": "Impossible de mettre à jour ce voyage."
+    },
+    "useDeleteTrip": {
+      "mustBeLoggedIn": "Tu dois être connecté pour supprimer un voyage.",
+      "deleted": "Voyage supprimé"
+    },
+    "useDuplicateTrip": {
+      "duplicated": "Voyage dupliqué — modifie les dates pour le replanifier ✨"
+    },
+    "Dashboard": {
+      "reviewProfileTitle": "Revoir ton profil voyageur (mode consultation, aucun score n'est modifié)",
+      "reviewTinder": "Revoir mon Tinder"
+    },
+    "Leaderboard": {
+      "subtitle": "Top voyageurs Xplania (XP cumulés)"
+    },
+    "PhotoGallery": {
+      "subtitle": "Images réelles via Unsplash"
+    }
   }
 }

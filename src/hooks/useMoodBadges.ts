@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { MOOD_BADGES, type BadgeContext } from "@/lib/mood-badges";
+import i18n from "@/i18n";
 
 export interface MoodBadge {
   id: string;
@@ -61,7 +62,7 @@ export function useMoodBadges() {
         ...(prev || []),
       ]);
       toUnlock.forEach((b) =>
-        toast.success(`${b.icon} Badge débloqué : ${b.name}`, { description: b.description }),
+        toast.success(i18n.t("ui2.useMoodBadges.unlockedToast", { icon: b.icon, name: b.name }), { description: b.description }),
       );
     },
     [user, badges, queryClient],

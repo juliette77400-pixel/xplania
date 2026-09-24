@@ -2,6 +2,7 @@
 // Utilise le DropdownMenu shadcn. Stop la propagation pour ne pas ouvrir
 // le voyage quand on clique sur le bouton ⋯.
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MoreVertical, Pencil, Copy, Trash2, Loader2 } from "lucide-react";
 import {
@@ -34,6 +35,7 @@ interface Props {
 }
 
 const TripActionsMenu = ({ trip, onChanged, onDeleted, onDuplicated, className }: Props) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { duplicateTrip, duplicating } = useDuplicateTrip();
   const { deleteTrip, deleting } = useDeleteTrip();
@@ -66,7 +68,7 @@ const TripActionsMenu = ({ trip, onChanged, onDeleted, onDuplicated, className }
         >
           <button
             type="button"
-            aria-label="Actions du voyage"
+            aria-label={t("ui2.TripActionsMenu.tripActions")}
             className={cn(
               "p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors bg-background/70 backdrop-blur-sm border border-border/40",
               className,
@@ -77,17 +79,17 @@ const TripActionsMenu = ({ trip, onChanged, onDeleted, onDuplicated, className }
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setEditOpen(true); }}>
-            <Pencil className="w-4 h-4 mr-2" /> Modifier
+            <Pencil className="w-4 h-4 mr-2" /> {t("ui2.TripActionsMenu.edit")}
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={handleDuplicate} disabled={!!duplicating}>
-            <Copy className="w-4 h-4 mr-2" /> Dupliquer ce voyage
+            <Copy className="w-4 h-4 mr-2" /> {t("ui2.TripActionsMenu.duplicate")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onSelect={(e) => { e.preventDefault(); setConfirmDelete(true); }}
             className="text-destructive focus:text-destructive"
           >
-            <Trash2 className="w-4 h-4 mr-2" /> Supprimer
+            <Trash2 className="w-4 h-4 mr-2" /> {t("ui2.TripActionsMenu.delete")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -105,25 +107,25 @@ const TripActionsMenu = ({ trip, onChanged, onDeleted, onDuplicated, className }
       <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
         <AlertDialogContent onClick={(e) => e.stopPropagation()}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer ce voyage ?</AlertDialogTitle>
+            <AlertDialogTitle>{t("ui2.TripActionsMenu.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
               {(trip.title || trip.destination) ? (
-                <>Es-tu sûr(e) de vouloir supprimer <strong className="text-foreground">{trip.title || trip.destination}</strong> ? <br /></>
-              ) : "Es-tu sûr(e) de vouloir supprimer ce voyage ? "}
-              Cette action est <strong>irréversible</strong>. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.
+                <>{t("ui2.TripActionsMenu.confirmDeleteNamed", { name: trip.title || trip.destination })} <br /></>
+              ) : t("ui2.TripActionsMenu.confirmDeleteGeneric") + " "}
+              {t("ui2.TripActionsMenu.irreversibleWarning")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={!!deleting}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={!!deleting}>{t("ui2.TripActionsMenu.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={!!deleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {deleting === trip.id ? (
-                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Suppression…</>
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t("ui2.TripActionsMenu.deleting")}</>
               ) : (
-                <><Trash2 className="w-4 h-4 mr-2" /> Supprimer définitivement</>
+                <><Trash2 className="w-4 h-4 mr-2" /> {t("ui2.TripActionsMenu.deletePermanently")}</>
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -145,6 +147,7 @@ import { useUpdateTrip } from "@/hooks/useUpdateTrip";
 const EditDialogControlled = ({
   trip, open, setOpen, onUpdated,
 }: { trip: Trip; open: boolean; setOpen: (v: boolean) => void; onUpdated?: () => void }) => {
+  const { t } = useTranslation();
   const { updateTrip, updating } = useUpdateTrip();
   const [title, setTitle] = useState(trip.title || "");
   const [destination, setDestination] = useState(trip.destination || "");
@@ -177,36 +180,36 @@ const EditDialogControlled = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
-          <DialogTitle>Modifier ce voyage</DialogTitle>
+          <DialogTitle>{t("ui2.TripActionsMenu.editTripTitle")}</DialogTitle>
           <DialogDescription>
-            Mets à jour le titre, la destination ou les dates.
+            {t("ui2.TripActionsMenu.editTripDesc")}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3 py-2">
           <div className="space-y-1.5">
-            <Label htmlFor="tam-title">Titre</Label>
+            <Label htmlFor="tam-title">{t("ui2.TripActionsMenu.labelTitle")}</Label>
             <Input id="tam-title" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="tam-dest">Destination</Label>
+            <Label htmlFor="tam-dest">{t("ui2.TripActionsMenu.labelDestination")}</Label>
             <Input id="tam-dest" value={destination} onChange={(e) => setDestination(e.target.value)} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="tam-dep">Départ</Label>
+              <Label htmlFor="tam-dep">{t("ui2.TripActionsMenu.labelDeparture")}</Label>
               <Input id="tam-dep" type="date" value={dep} onChange={(e) => setDep(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="tam-ret">Retour</Label>
+              <Label htmlFor="tam-ret">{t("ui2.TripActionsMenu.labelReturn")}</Label>
               <Input id="tam-ret" type="date" value={ret} onChange={(e) => setRet(e.target.value)} min={dep || undefined} />
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={updating}>Annuler</Button>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={updating}>{t("ui2.TripActionsMenu.cancel")}</Button>
           <Button onClick={handleSave} disabled={updating} className="gradient-button">
             {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-            Enregistrer
+            {t("ui2.TripActionsMenu.save")}
           </Button>
         </DialogFooter>
       </DialogContent>

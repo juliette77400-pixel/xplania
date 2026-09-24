@@ -3,6 +3,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { Place } from "./useDiscover";
+import i18n from "@/i18n";
 
 const COOLDOWN_MS = 10 * 60 * 1000; // 10 min between alerts
 const PROXIMITY_M = 250;
@@ -20,8 +21,8 @@ export function useNearbyAlerts(userPos: { lat: number; lng: number } | null, pl
       const last = lastAlertRef.current[p.id] || 0;
       if (now - last < COOLDOWN_MS) continue;
       lastAlertRef.current[p.id] = now;
-      const title = `✨ ${p.name} à ${(p.distance_km! * 1000).toFixed(0)} m`;
-      const body = p.why_fits || p.description || "Hidden gem juste à côté de toi";
+      const title = i18n.t("ui2.useNearbyAlerts.title", { name: p.name, distance: (p.distance_km! * 1000).toFixed(0) });
+      const body = p.why_fits || p.description || i18n.t("ui2.useNearbyAlerts.bodyFallback");
       notify(title, body);
       supabase.from("discover_notifications").insert({
         user_id: user.id, type: "nearby", place_id: p.id, title, body,

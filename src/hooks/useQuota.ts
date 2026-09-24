@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import i18n from "@/i18n";
 import { useAuth } from "@/hooks/useAuth";
 import {
   type QuotaTool,
@@ -85,10 +86,10 @@ export function useQuota(tool: QuotaTool) {
       warnedThisSession.add(tool);
       toast(
         remainingAfter === 1
-          ? "Plus que 1 génération gratuite avant la fin ✨"
-          : `Plus que ${remainingAfter} générations gratuites avant la fin ✨`,
+          ? i18n.t("ui2.useQuota.warnOne")
+          : i18n.t("ui2.useQuota.warnMany", { count: remainingAfter }),
         {
-          description: "Inscris-toi à la liste premium pour un accès illimité dès l'ouverture.",
+          description: i18n.t("ui2.useQuota.warnDesc"),
           duration: 6000,
         },
       );

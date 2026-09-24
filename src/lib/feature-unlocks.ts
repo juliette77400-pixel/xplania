@@ -14,6 +14,7 @@
 // engine (Mémoire Xplania / RAG).
 // -----------------------------------------------------------------------------
 import type { FeatureKey, TravelerDimension, TravelerScores } from "./traveler-badge";
+import i18n from "@/i18n";
 
 /** Full app catalogue displayed on the result screen. Order = display order. */
 export const ALL_APP_FEATURES: FeatureKey[] = [
@@ -84,6 +85,26 @@ export const SCORE_LABEL_FR: Record<TravelerDimension, string> = {
   budget:       "ta maîtrise du budget",
   organization: "ton besoin d'organisation",
 };
+
+export const SCORE_LABEL_EN: Record<TravelerDimension, string> = {
+  culture:      "your cultural curiosity",
+  authenticity: "your taste for authenticity",
+  adventure:    "your adventurous spirit",
+  nature:       "your love of nature",
+  food:         "your passion for food",
+  social:       "your social side",
+  comfort:      "your quest for comfort",
+  luxury:       "your taste for the refined",
+  wellbeing:    "your quest for wellbeing",
+  nomad:        "your nomadic lifestyle",
+  budget:       "your budget mastery",
+  organization: "your need for organization",
+};
+
+/** Language-aware score label, use this instead of SCORE_LABEL_FR directly. */
+export function getScoreLabel(dim: TravelerDimension): string {
+  return i18n.language?.startsWith("en") ? SCORE_LABEL_EN[dim] : SCORE_LABEL_FR[dim];
+}
 
 /** Sort scores desc and return the dominant non-zero dimension (or null). */
 export function dominantDimension(scores: Partial<TravelerScores>): TravelerDimension | null {
