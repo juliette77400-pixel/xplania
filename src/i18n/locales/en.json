@@ -5366,5 +5366,71 @@
     },
     "cta": "Let's go!",
     "note": "Free, no sign-up needed to start. You can leave at any time."
+  },
+  "gmaps": {
+    "info": {
+      "loading": "Google Maps info…",
+      "title": "Google Maps info",
+      "openNow": "Open",
+      "closedNow": "Closed",
+      "photoBy": "Photo: {{name}}",
+      "hours": "Opening hours",
+      "website": "Website",
+      "openInMaps": "Open in Google Maps"
+    },
+    "categories": {
+      "food": "Food & drinks",
+      "nightlife": "Nightlife",
+      "culture": "Experiences",
+      "nature": "Chill & nature",
+      "chill": "Chill",
+      "experience": "Experiences"
+    },
+    "lists": {
+      "linkCopied": "List link copied",
+      "public": "Public",
+      "shareLink": "Share link",
+      "deleteList": "Delete list",
+      "confirmDelete": "Delete the list \"{{name}}\"?",
+      "addToTrip": "Add to trip",
+      "remove": "Remove",
+      "addToList": "Add to a list",
+      "noCoords": "This place has no location, it can't be saved.",
+      "myLists": "My lists"
+    },
+    "public": {
+      "loading": "Loading…",
+      "missing": "This list doesn't exist or is no longer shared.",
+      "discover": "Discover Xplania",
+      "kicker": "List shared on Xplania",
+      "cta": "Create your own place lists with Xplania."
+    },
+    "map": {
+      "youAreHere": "You are here",
+      "checkpoint": "Point {{label}}",
+      "loading": "Loading map…",
+      "legendPath": "My path (A → Z)",
+      "legendPlanned": "Planned stops"
+    },
+    "route": {
+      "title": "My route",
+      "addStop": "Add a place",
+      "traveled": "Traveled",
+      "planned": "Planned",
+      "remaining": "Remaining",
+      "removeStop": "Remove stop",
+      "birdNote": "Straight-line distances, recalculated with every position and every added stop."
+    },
+    "stop": {
+      "title": "Add a place to your route",
+      "desc": "Search a real place on Google Maps, it gets added to your stops.",
+      "placeholder": "E.g. museum, café, station…",
+      "noDay": "No date",
+      "searching": "Searching…",
+      "noResult": "No place found",
+      "searchError": "Search failed, try again.",
+      "addError": "Couldn't add this place.",
+      "added": "\"{{name}}\" added to your route"
+    }
   }
 }

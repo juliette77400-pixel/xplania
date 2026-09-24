@@ -29,6 +29,13 @@
       "when": 1790267286196,
       "tag": "0003_tighten_docs_and_storage_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790268838241,
+      "tag": "0004_public_place_lists_and_google_cache",
+      "breakpoints": true
     }
   ]
 }

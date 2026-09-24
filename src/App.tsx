@@ -32,6 +32,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
 const Carnets = lazy(() => import("./pages/Carnets.tsx"));
 const Carnet = lazy(() => import("./pages/Carnet.tsx"));
 const PublicCarnet = lazy(() => import("./pages/PublicCarnet.tsx"));
+const PublicList = lazy(() => import("./pages/PublicList.tsx"));
 const Suivi = lazy(() => import("./pages/Suivi.tsx"));
 const SuiviTrip = lazy(() => import("./pages/SuiviTrip.tsx"));
 const PublicSuivi = lazy(() => import("./pages/PublicSuivi.tsx"));
@@ -118,6 +119,7 @@ const App = () => (
             <Route path="/carnets" element={<ProtectedRoute><Carnets /></ProtectedRoute>} />
             <Route path="/carnet/:tripId" element={<ProtectedRoute><Carnet /></ProtectedRoute>} />
             <Route path="/carnet/public/:slug" element={<PublicCarnet />} />
+            <Route path="/liste/:slug" element={<PublicList />} />
             <Route path="/suivi" element={<ProtectedRoute><Suivi /></ProtectedRoute>} />
             <Route path="/suivi/:tripId" element={<ProtectedRoute><SuiviTrip /></ProtectedRoute>} />
             <Route path="/suivi/public/:slug" element={<PublicSuivi />} />
