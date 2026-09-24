@@ -21,6 +21,11 @@ export const LEVELS: Level[] = [
   { index: 6, name: "Légende",             nameEn: "Legend",         emoji: "🏆", minXp: 6000, gradient: "from-yellow-300 via-amber-400 to-orange-500" },
 ];
 
+/** Returns the level label in the current UI language ("en" → nameEn, else French). */
+export function levelName(level: Level, lang?: string): string {
+  return lang?.toLowerCase().startsWith("en") ? level.nameEn : level.name;
+}
+
 export interface LevelProgress {
   level: Level;
   next: Level | null;
