@@ -4,8 +4,11 @@ import { Loader2, BookOpen, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDayLabel } from "@/lib/journal-utils";
 import { setShareMeta, clearShareMeta } from "@/lib/seo";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 
 const PublicCarnet = () => {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const [journal, setJournal] = useState<any>(null);
   const [days, setDays] = useState<any[]>([]);
@@ -29,7 +32,7 @@ const PublicCarnet = () => {
 
       const firstNote = (blocks || []).find((b: any) => b.type === "note");
       const firstNoteText = (firstNote?.content as any)?.text || "";
-      const rawDesc = (s?.content || firstNoteText || "Découvre ce carnet de voyage immersif sur Xplania.").toString();
+      const rawDesc = (s?.content || firstNoteText || i18n.t("ui2.PublicCarnet.shareDescriptionFallback")).toString();
       const description = rawDesc.replace(/\s+/g, " ").trim().slice(0, 155);
 
       let author: string | undefined;
@@ -39,7 +42,7 @@ const PublicCarnet = () => {
       }
 
       setShareMeta({
-        title: j.title || "Carnet de voyage",
+        title: j.title || i18n.t("ui2.PublicCarnet.titleFallback"),
         description,
         ogKind: "carnet",
         slug: slug!,
@@ -54,13 +57,13 @@ const PublicCarnet = () => {
   }, [slug]);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
-  if (!journal) return <div className="min-h-screen flex items-center justify-center bg-background"><p className="text-muted-foreground">Carnet introuvable ou privé</p></div>;
+  if (!journal) return <div className="min-h-screen flex items-center justify-center bg-background"><p className="text-muted-foreground">{t("ui2.PublicCarnet.notFound")}</p></div>;
 
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border backdrop-blur-md bg-background/60 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/home" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> Xplania</Link>
+          <Link to="/home" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> {t("ui2.PublicCarnet.backHome")}</Link>
           <div className="flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /><h1 className="font-bold">{journal.title}</h1></div>
           <div className="w-16" />
         </div>
@@ -69,7 +72,7 @@ const PublicCarnet = () => {
       <main className="container mx-auto px-4 py-12 max-w-3xl space-y-10">
         {story && (
           <section className="glass-card rounded-2xl p-8">
-            <h2 className="text-xs uppercase tracking-wider text-primary font-semibold mb-3">Le récit</h2>
+            <h2 className="text-xs uppercase tracking-wider text-primary font-semibold mb-3">{t("ui2.PublicCarnet.story")}</h2>
             <p className="text-foreground whitespace-pre-wrap leading-relaxed font-serif">{story}</p>
           </section>
         )}
@@ -77,7 +80,7 @@ const PublicCarnet = () => {
         {days.map((d, i) => (
           <section key={d.id} className="space-y-3">
             <div>
-              <p className="text-xs text-primary uppercase tracking-wider font-semibold">Jour {i + 1} · {formatDayLabel(d.date)}</p>
+              <p className="text-xs text-primary uppercase tracking-wider font-semibold">{t("ui2.PublicCarnet.day", { n: i + 1 })} · {formatDayLabel(d.date)}</p>
               {d.title && <h2 className="text-2xl font-bold text-foreground">{d.title}</h2>}
             </div>
             <div className="grid sm:grid-cols-2 gap-3">

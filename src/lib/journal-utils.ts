@@ -1,4 +1,6 @@
 import { differenceInDays, addDays, format, parseISO } from "date-fns";
+import { fr, enUS } from "date-fns/locale";
+import i18n from "@/i18n";
 
 export const buildDateRange = (start?: string | null, end?: string | null): string[] => {
   if (!start) return [];
@@ -10,33 +12,34 @@ export const buildDateRange = (start?: string | null, end?: string | null): stri
 
 export const formatDayLabel = (iso: string) => {
   try {
-    return format(parseISO(iso), "EEEE d MMMM");
+    const locale = i18n.language?.startsWith("fr") ? fr : enUS;
+    return format(parseISO(iso), "EEEE d MMMM", { locale });
   } catch {
     return iso;
   }
 };
 
-export const BLOCK_LABELS: Record<string, { emoji: string; label: string }> = {
-  note: { emoji: "📝", label: "Note" },
-  photo: { emoji: "📸", label: "Photo" },
-  video: { emoji: "🎥", label: "Vidéo" },
-  location: { emoji: "📍", label: "Lieu" },
-  mood: { emoji: "😊", label: "Humeur" },
-  audio: { emoji: "🎧", label: "Audio" },
-  highlight: { emoji: "⭐", label: "Moment fort" },
+export const BLOCK_LABELS: Record<string, { emoji: string; readonly label: string }> = {
+  note: { emoji: "📝", get label() { return i18n.t("ui2.journalUtils.block_note"); } },
+  photo: { emoji: "📸", get label() { return i18n.t("ui2.journalUtils.block_photo"); } },
+  video: { emoji: "🎥", get label() { return i18n.t("ui2.journalUtils.block_video"); } },
+  location: { emoji: "📍", get label() { return i18n.t("ui2.journalUtils.block_location"); } },
+  mood: { emoji: "😊", get label() { return i18n.t("ui2.journalUtils.block_mood"); } },
+  audio: { emoji: "🎧", get label() { return i18n.t("ui2.journalUtils.block_audio"); } },
+  highlight: { emoji: "⭐", get label() { return i18n.t("ui2.journalUtils.block_highlight"); } },
 };
 
 export const TONES = [
-  { value: "storytelling", label: "Storytelling", desc: "Récit narratif et engageant" },
-  { value: "poetic", label: "Poétique", desc: "Style lyrique et imagé" },
-  { value: "fun", label: "Fun & léger", desc: "Ton décontracté et humoristique" },
-  { value: "documentary", label: "Documentaire", desc: "Style factuel et descriptif" },
+  { value: "storytelling", get label() { return i18n.t("ui2.journalUtils.tone_storytelling_label"); }, get desc() { return i18n.t("ui2.journalUtils.tone_storytelling_desc"); } },
+  { value: "poetic", get label() { return i18n.t("ui2.journalUtils.tone_poetic_label"); }, get desc() { return i18n.t("ui2.journalUtils.tone_poetic_desc"); } },
+  { value: "fun", get label() { return i18n.t("ui2.journalUtils.tone_fun_label"); }, get desc() { return i18n.t("ui2.journalUtils.tone_fun_desc"); } },
+  { value: "documentary", get label() { return i18n.t("ui2.journalUtils.tone_documentary_label"); }, get desc() { return i18n.t("ui2.journalUtils.tone_documentary_desc"); } },
 ];
 
 export const BADGES = {
-  explorer: { code: "explorer", label: "🌍 Explorateur", trigger: "3 lieux visités" },
-  storyteller: { code: "storyteller", label: "✍️ Storyteller", trigger: "5 notes écrites" },
-  photographer: { code: "photographer", label: "📸 Photographe", trigger: "10 photos ajoutées" },
-  emotional: { code: "emotional", label: "💖 Émotionnel", trigger: "5 humeurs partagées" },
-  highlight: { code: "highlight", label: "⭐ Curateur", trigger: "3 moments forts" },
+  explorer: { code: "explorer", get label() { return i18n.t("ui2.journalUtils.badge_explorer_label"); }, get trigger() { return i18n.t("ui2.journalUtils.badge_explorer_trigger"); } },
+  storyteller: { code: "storyteller", get label() { return i18n.t("ui2.journalUtils.badge_storyteller_label"); }, get trigger() { return i18n.t("ui2.journalUtils.badge_storyteller_trigger"); } },
+  photographer: { code: "photographer", get label() { return i18n.t("ui2.journalUtils.badge_photographer_label"); }, get trigger() { return i18n.t("ui2.journalUtils.badge_photographer_trigger"); } },
+  emotional: { code: "emotional", get label() { return i18n.t("ui2.journalUtils.badge_emotional_label"); }, get trigger() { return i18n.t("ui2.journalUtils.badge_emotional_trigger"); } },
+  highlight: { code: "highlight", get label() { return i18n.t("ui2.journalUtils.badge_highlight_label"); }, get trigger() { return i18n.t("ui2.journalUtils.badge_highlight_trigger"); } },
 };
