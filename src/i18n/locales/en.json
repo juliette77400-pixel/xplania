@@ -427,10 +427,22 @@
     "progressTitle": "Your progress",
     "progressDesc": "Missions and habits remain available without distracting from your trip.",
     "phases": {
-      "prepare": { "title": "Prepare", "desc": "Budget, paperwork and packing tailored to the same trip." },
-      "explore": { "title": "Explore", "desc": "Places selected around your wishes, mood and context." },
-      "travel": { "title": "Travel", "desc": "Track the trip and find the right cues at the right time." },
-      "relive": { "title": "Relive", "desc": "Turn your steps and emotions into lasting memories." }
+      "prepare": {
+        "title": "Prepare",
+        "desc": "Budget, paperwork and packing tailored to the same trip."
+      },
+      "explore": {
+        "title": "Explore",
+        "desc": "Places selected around your wishes, mood and context."
+      },
+      "travel": {
+        "title": "Travel",
+        "desc": "Track the trip and find the right cues at the right time."
+      },
+      "relive": {
+        "title": "Relive",
+        "desc": "Turn your steps and emotions into lasting memories."
+      }
     },
     "greeting": "Hi {{name}} 👋",
     "tripsActive_one": "You have {{count}} trip in progress.",
@@ -1329,11 +1341,10 @@
       "tripTypeOtherLabel": "Specify your trip type",
       "tripTypeOtherPh": "e.g. Humanitarian trip, road trip in a van...",
       "whoTravels": "Who is travelling?",
-      "age": "Approximate age",
+      "age": "Your age",
       "activityLevel": "Activity level",
       "languages": "Spoken languages",
       "speaksLocal": "Do you speak the local language?",
-      "needsFrenchGuide": "Need a French-speaking guide?",
       "experience": "Travel experience level",
       "objective": "Main goal of the trip",
       "otherObjective": "Other goal",
@@ -1377,7 +1388,10 @@
       "baggageType": "Baggage type",
       "inspirationsLabel": "What inspires you for this trip?",
       "inspirationsPh": "Landscapes, volcanoes, villages, beaches, road trip, hidden spots...",
-      "inspirationsHint": "Optional — you can leave it blank and start the generation right away."
+      "inspirationsHint": "Optional — you can leave it blank and start the generation right away.",
+      "agePh": "e.g. 34",
+      "durationAuto": "Calculated automatically from your dates",
+      "durationValue": "{{days}} days ({{nights}} nights)"
     },
     "options": {
       "yes": "Yes",
@@ -1607,7 +1621,60 @@
       "secLocal": "Local recommendations",
       "placesCount_one": "{{count}} place",
       "placesCount_other": "{{count}} places"
-    }
+    },
+    "optionHints": {
+      "tripType": {
+        "Exploration": "See as many different places as possible, off the beaten track",
+        "Relaxation": "Rest: beach, spa, light schedule",
+        "Aventure": "Hikes, thrills, wild nature",
+        "Culture": "Museums, monuments, history and traditions",
+        "Gastronomie": "Local food, markets, restaurants",
+        "Sport": "Surfing, cycling, skiing, diving… sport on site",
+        "Photographie": "Photogenic spots, sunrise/sunset light",
+        "Spiritualité": "Temples, retreats, meditation, sacred places",
+        "Voyage slow": "Few stops, take your time, live like a local",
+        "Autre": "Describe it just below"
+      },
+      "travelerType": {
+        "Solo": "You travel alone",
+        "Couple": "As a couple",
+        "Famille avec enfants": "Kid-friendly activities",
+        "Groupe d'amis": "With friends",
+        "Voyage professionnel": "Business trip with some free time",
+        "Digital nomad": "You work remotely on site",
+        "Backpacker": "Backpack, small budget, freedom",
+        "Retraité(e)": "Comfortable pace",
+        "Étudiant": "Tight budget, good deals",
+        "Lune de miel": "Romantic and special",
+        "Aventurier solo": "Alone and looking for challenges"
+      },
+      "activityLevel": {
+        "Sédentaire": "Little walking, short trips",
+        "Modéré": "A few hours of walking a day",
+        "Actif": "Long days, easy hikes",
+        "Très actif": "Hard hikes, intense sport"
+      },
+      "experience": {
+        "Premier voyage": "We explain everything step by step",
+        "Voyage occasionnel": "1–2 trips a year",
+        "Voyageur régulier": "You travel often and know the basics",
+        "Grand explorateur": "You've travelled a lot, want the unusual"
+      },
+      "organization": {
+        "Planifié": "Everything planned day by day",
+        "Équilibré": "A basic plan with free time",
+        "Spontané": "You decide on the spot"
+      },
+      "rhythm": {
+        "Intensif": "Lots of visits every day",
+        "Modéré": "2–3 activities a day",
+        "Tranquille": "One activity a day, lots of breaks"
+      }
+    },
+    "goToFeatures": "Choose my features",
+    "goToFeaturesHint": "Your trip is ready! On to the next step.",
+    "realWeather": "Real weather",
+    "cheap": "Budget-friendly"
   },
   "common2": {
     "home": "Home",
@@ -4338,22 +4405,70 @@
     "rewardsSubtitle": "Your badge earns you:",
     "points": "adventure points",
     "unlocks": {
-      "title": { "name": "Traveler title", "description": "Your badge is shown on your profile." },
-      "content_culture": { "name": "Culture pack", "description": "Enhanced cultural recommendations in Discover." },
-      "content_nomad": { "name": "Nomad pack", "description": "Coworking and connectivity sheets per city." },
-      "content_relax": { "name": "Relax pack", "description": "Curated hotels and spas." },
-      "content_adventure": { "name": "Adventure pack", "description": "Trek routes, sports and thrills prioritized." },
-      "content_nature": { "name": "Nature pack", "description": "Parks, reserves and hikes highlighted first." },
-      "content_food": { "name": "Foodie pack", "description": "Local tables and starred restaurants surfaced first." },
-      "content_wellbeing": { "name": "Wellbeing pack", "description": "Retreats, yoga and spas prioritized." },
-      "content_social": { "name": "Social pack", "description": "Events and lively venues surfaced first." },
-      "content_planning": { "name": "Planning pack", "description": "Ready-to-customize itinerary templates." },
-      "content_budget": { "name": "Budget pack", "description": "Deals and cheaper alternatives favored." },
-      "ai_tone_curator": { "name": "AI — curator tone", "description": "Your travel AI speaks like a cultured guide." },
-      "ai_tone_pragmatic": { "name": "AI — efficient tone", "description": "Short, action-oriented answers." },
-      "ai_tone_bold": { "name": "AI — bold tone", "description": "Direct tone that pushes you out of your comfort zone." },
-      "ai_tone_soft": { "name": "AI — gentle tone", "description": "Soft, caring tone that helps you unwind." },
-      "ai_tone_warm": { "name": "AI — warm tone", "description": "Friendly tone, like a local showing you their city." }
+      "title": {
+        "name": "Traveler title",
+        "description": "Your badge is shown on your profile."
+      },
+      "content_culture": {
+        "name": "Culture pack",
+        "description": "Enhanced cultural recommendations in Discover."
+      },
+      "content_nomad": {
+        "name": "Nomad pack",
+        "description": "Coworking and connectivity sheets per city."
+      },
+      "content_relax": {
+        "name": "Relax pack",
+        "description": "Curated hotels and spas."
+      },
+      "content_adventure": {
+        "name": "Adventure pack",
+        "description": "Trek routes, sports and thrills prioritized."
+      },
+      "content_nature": {
+        "name": "Nature pack",
+        "description": "Parks, reserves and hikes highlighted first."
+      },
+      "content_food": {
+        "name": "Foodie pack",
+        "description": "Local tables and starred restaurants surfaced first."
+      },
+      "content_wellbeing": {
+        "name": "Wellbeing pack",
+        "description": "Retreats, yoga and spas prioritized."
+      },
+      "content_social": {
+        "name": "Social pack",
+        "description": "Events and lively venues surfaced first."
+      },
+      "content_planning": {
+        "name": "Planning pack",
+        "description": "Ready-to-customize itinerary templates."
+      },
+      "content_budget": {
+        "name": "Budget pack",
+        "description": "Deals and cheaper alternatives favored."
+      },
+      "ai_tone_curator": {
+        "name": "AI — curator tone",
+        "description": "Your travel AI speaks like a cultured guide."
+      },
+      "ai_tone_pragmatic": {
+        "name": "AI — efficient tone",
+        "description": "Short, action-oriented answers."
+      },
+      "ai_tone_bold": {
+        "name": "AI — bold tone",
+        "description": "Direct tone that pushes you out of your comfort zone."
+      },
+      "ai_tone_soft": {
+        "name": "AI — gentle tone",
+        "description": "Soft, caring tone that helps you unwind."
+      },
+      "ai_tone_warm": {
+        "name": "AI — warm tone",
+        "description": "Friendly tone, like a local showing you their city."
+      }
     },
     "dimensions": {
       "culture": "Culture",
@@ -4370,26 +4485,80 @@
       "organization": "Planning"
     },
     "badges": {
-      "cultural_explorer": { "name": "Cultural Explorer", "description": "You travel to understand people, their traditions and stories. Museums, local markets, craft workshops — that's where your journey means the most." },
-      "digital_nomad": { "name": "Digital Nomad", "description": "Your desk changes windows every month. You look for places where you can work well, live well, and stay a while." },
-      "relaxation": { "name": "Comfort Traveler", "description": "For you, traveling is resting, treating yourself and unwinding in a beautiful setting." },
-      "adventurer": { "name": "Adventurer", "description": "The beaten path bores you. You want effort, raw nature, and stories to tell when you get back." },
-      "nature": { "name": "Nature Traveler", "description": "You recharge in wide open spaces, far from noise, in tune with the wild." },
-      "gastronomic": { "name": "Foodie Traveler", "description": "Your itinerary follows your palate: Michelin tables, street food, buzzing markets." },
-      "wellbeing": { "name": "Wellbeing Traveler", "description": "You travel to reconnect: yoga, spa, silence and soothing landscapes." },
-      "social": { "name": "Social Traveler", "description": "Your best memories are the people you meet. You thrive with local culture and fellow travelers." },
-      "organized": { "name": "Organized Traveler", "description": "You like everything planned, from the visa to the last museum. Peace of mind starts with preparation." },
-      "budget": { "name": "Budget Traveler", "description": "You prove you can see the world without breaking the bank. You optimize everything without sacrificing the experience." },
-      "curious": { "name": "Curious Traveler", "description": "Your profile is open and eclectic. You try a bit of everything and let your desires guide you." }
+      "cultural_explorer": {
+        "name": "Cultural Explorer",
+        "description": "You travel to understand people, their traditions and stories. Museums, local markets, craft workshops — that's where your journey means the most."
+      },
+      "digital_nomad": {
+        "name": "Digital Nomad",
+        "description": "Your desk changes windows every month. You look for places where you can work well, live well, and stay a while."
+      },
+      "relaxation": {
+        "name": "Comfort Traveler",
+        "description": "For you, traveling is resting, treating yourself and unwinding in a beautiful setting."
+      },
+      "adventurer": {
+        "name": "Adventurer",
+        "description": "The beaten path bores you. You want effort, raw nature, and stories to tell when you get back."
+      },
+      "nature": {
+        "name": "Nature Traveler",
+        "description": "You recharge in wide open spaces, far from noise, in tune with the wild."
+      },
+      "gastronomic": {
+        "name": "Foodie Traveler",
+        "description": "Your itinerary follows your palate: Michelin tables, street food, buzzing markets."
+      },
+      "wellbeing": {
+        "name": "Wellbeing Traveler",
+        "description": "You travel to reconnect: yoga, spa, silence and soothing landscapes."
+      },
+      "social": {
+        "name": "Social Traveler",
+        "description": "Your best memories are the people you meet. You thrive with local culture and fellow travelers."
+      },
+      "organized": {
+        "name": "Organized Traveler",
+        "description": "You like everything planned, from the visa to the last museum. Peace of mind starts with preparation."
+      },
+      "budget": {
+        "name": "Budget Traveler",
+        "description": "You prove you can see the world without breaking the bank. You optimize everything without sacrificing the experience."
+      },
+      "curious": {
+        "name": "Curious Traveler",
+        "description": "Your profile is open and eclectic. You try a bit of everything and let your desires guide you."
+      }
     },
     "features": {
-      "discover": { "name": "Discover", "description": "Local spots and hidden gems tailored to your profile." },
-      "carnet": { "name": "Travel Journal", "description": "Your smart travel journal with photos, moments and AI-crafted stories." },
-      "suivi": { "name": "Trip Tracker", "description": "Live map, itinerary, check-ins and real-time alerts." },
-      "mood": { "name": "Mood Explorer", "description": "Recommendations based on your current mood." },
-      "guide-valise": { "name": "Packing Guide", "description": "Smart checklist adapted to your destination and style." },
-      "guide-budget": { "name": "Budget Guide", "description": "Expense dashboard with alerts and AI tips." },
-      "guide-visa": { "name": "Visa Guide", "description": "Formalities, vaccines and safety for your destination." }
+      "discover": {
+        "name": "Discover",
+        "description": "Local spots and hidden gems tailored to your profile."
+      },
+      "carnet": {
+        "name": "Travel Journal",
+        "description": "Your smart travel journal with photos, moments and AI-crafted stories."
+      },
+      "suivi": {
+        "name": "Trip Tracker",
+        "description": "Live map, itinerary, check-ins and real-time alerts."
+      },
+      "mood": {
+        "name": "Mood Explorer",
+        "description": "Recommendations based on your current mood."
+      },
+      "guide-valise": {
+        "name": "Packing Guide",
+        "description": "Smart checklist adapted to your destination and style."
+      },
+      "guide-budget": {
+        "name": "Budget Guide",
+        "description": "Expense dashboard with alerts and AI tips."
+      },
+      "guide-visa": {
+        "name": "Visa Guide",
+        "description": "Formalities, vaccines and safety for your destination."
+      }
     }
   }
 }

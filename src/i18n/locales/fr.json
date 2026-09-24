@@ -427,10 +427,22 @@
     "progressTitle": "Votre progression",
     "progressDesc": "Missions et habitudes restent disponibles, sans détourner l'attention de votre voyage.",
     "phases": {
-      "prepare": { "title": "Préparer", "desc": "Budget, formalités et valise adaptés au même voyage." },
-      "explore": { "title": "Explorer", "desc": "Des lieux choisis selon vos envies, votre humeur et votre contexte." },
-      "travel": { "title": "Voyager", "desc": "Suivez le séjour et retrouvez les bons repères au bon moment." },
-      "relive": { "title": "Revivre", "desc": "Transformez vos étapes et émotions en souvenirs durables." }
+      "prepare": {
+        "title": "Préparer",
+        "desc": "Budget, formalités et valise adaptés au même voyage."
+      },
+      "explore": {
+        "title": "Explorer",
+        "desc": "Des lieux choisis selon vos envies, votre humeur et votre contexte."
+      },
+      "travel": {
+        "title": "Voyager",
+        "desc": "Suivez le séjour et retrouvez les bons repères au bon moment."
+      },
+      "relive": {
+        "title": "Revivre",
+        "desc": "Transformez vos étapes et émotions en souvenirs durables."
+      }
     },
     "greeting": "Bonjour {{name}} 👋",
     "tripsActive_one": "Tu as {{count}} voyage en cours.",
@@ -1329,11 +1341,10 @@
       "tripTypeOtherLabel": "Précisez votre type de voyage",
       "tripTypeOtherPh": "Ex : Voyage humanitaire, road trip en van...",
       "whoTravels": "Qui voyage ?",
-      "age": "Âge approximatif",
+      "age": "Ton âge",
       "activityLevel": "Niveau d'activité",
       "languages": "Langues parlées",
       "speaksLocal": "Parle-t-on la langue locale ?",
-      "needsFrenchGuide": "Guide français nécessaire ?",
       "experience": "Niveau d'expérience voyage",
       "objective": "Objectif principal du voyage",
       "otherObjective": "Autre objectif",
@@ -1375,9 +1386,12 @@
       "envSensitivity": "Sensibilité environnementale",
       "culturalImmersion": "Souhaitez-vous vivre une immersion culturelle ?",
       "baggageType": "Type de bagage",
-      "inspirationsLabel": "Qu'est-ce qui vous inspire pour ce voyage ?",
+      "inspirationsLabel": "Qu'est-ce qui t'inspire pour ce voyage ?",
       "inspirationsPh": "Paysages, volcans, villages, plages, road trip, lieux cachés...",
-      "inspirationsHint": "Optionnel — vous pouvez laisser vide et lancer la génération directement."
+      "inspirationsHint": "Optionnel — tu peux laisser vide et lancer la génération directement.",
+      "agePh": "Ex : 34",
+      "durationAuto": "Calculée automatiquement à partir de tes dates",
+      "durationValue": "{{days}} jours ({{nights}} nuits)"
     },
     "options": {
       "yes": "Oui",
@@ -1607,7 +1621,60 @@
       "secLocal": "Recommandations locales",
       "placesCount_one": "{{count}} lieu",
       "placesCount_other": "{{count}} lieux"
-    }
+    },
+    "optionHints": {
+      "tripType": {
+        "Exploration": "Voir un maximum de lieux différents et sortir des sentiers battus",
+        "Relaxation": "Se reposer : plage, spa, peu de programme",
+        "Aventure": "Randos, sensations, nature sauvage",
+        "Culture": "Musées, monuments, histoire et traditions",
+        "Gastronomie": "Goûter la cuisine locale, marchés, restos",
+        "Sport": "Surf, vélo, ski, plongée… du sport sur place",
+        "Photographie": "Spots photogéniques, lumière du lever/coucher",
+        "Spiritualité": "Temples, retraites, méditation, lieux sacrés",
+        "Voyage slow": "Peu d'étapes, prendre son temps, vivre comme un local",
+        "Autre": "Précise ton envie juste en dessous"
+      },
+      "travelerType": {
+        "Solo": "Tu pars seul(e)",
+        "Couple": "À deux",
+        "Famille avec enfants": "Activités adaptées aux enfants",
+        "Groupe d'amis": "Entre potes, ambiance et partage",
+        "Voyage professionnel": "Déplacement pro avec un peu de temps libre",
+        "Digital nomad": "Tu travailles à distance sur place",
+        "Backpacker": "Sac à dos, petit budget, liberté",
+        "Retraité(e)": "Rythme confortable",
+        "Étudiant": "Budget serré, bons plans",
+        "Lune de miel": "Romantique et spécial",
+        "Aventurier solo": "Seul(e) et en quête de défis"
+      },
+      "activityLevel": {
+        "Sédentaire": "Peu de marche, trajets courts",
+        "Modéré": "Quelques heures de marche par jour",
+        "Actif": "Longues journées, randos faciles",
+        "Très actif": "Randos difficiles, sport intense"
+      },
+      "experience": {
+        "Premier voyage": "On t'explique tout pas à pas",
+        "Voyage occasionnel": "1 à 2 voyages par an",
+        "Voyageur régulier": "Tu voyages souvent et connais les bases",
+        "Grand explorateur": "Tu as beaucoup voyagé, envie d'insolite"
+      },
+      "organization": {
+        "Planifié": "Tout est prévu jour par jour",
+        "Équilibré": "Un plan de base avec du temps libre",
+        "Spontané": "Tu décides sur place"
+      },
+      "rhythm": {
+        "Intensif": "Beaucoup de visites chaque jour",
+        "Modéré": "2 à 3 activités par jour",
+        "Tranquille": "Une activité par jour, beaucoup de pauses"
+      }
+    },
+    "goToFeatures": "Choisir mes fonctionnalités",
+    "goToFeaturesHint": "Ton voyage est prêt ! Passe à l'étape suivante.",
+    "realWeather": "Météo réelle",
+    "cheap": "Petit budget"
   },
   "common2": {
     "home": "Accueil",
@@ -4338,22 +4405,70 @@
     "rewardsSubtitle": "Ton badge te fait gagner :",
     "points": "points d'aventure",
     "unlocks": {
-      "title": { "name": "Titre voyageur", "description": "Ton badge s'affiche sur ton profil." },
-      "content_culture": { "name": "Pack Culture", "description": "Recommandations culturelles enrichies dans Discover." },
-      "content_nomad": { "name": "Pack Nomade", "description": "Fiches coworking et connectivité par ville." },
-      "content_relax": { "name": "Pack Détente", "description": "Sélection d'hôtels et spas soigneusement choisis." },
-      "content_adventure": { "name": "Pack Aventure", "description": "Itinéraires trek, sports et frissons prioritaires." },
-      "content_nature": { "name": "Pack Nature", "description": "Parcs, réserves et randonnées mises en avant." },
-      "content_food": { "name": "Pack Gastronomie", "description": "Tables locales et étoilées poussées d'abord." },
-      "content_wellbeing": { "name": "Pack Bien-être", "description": "Retraites, yoga et spas mis en priorité." },
-      "content_social": { "name": "Pack Social", "description": "Événements et lieux animés remontés en premier." },
-      "content_planning": { "name": "Pack Organisation", "description": "Modèles d'itinéraires prêts à personnaliser." },
-      "content_budget": { "name": "Pack Budget", "description": "Bons plans et alternatives économiques favorisées." },
-      "ai_tone_curator": { "name": "IA — ton curateur", "description": "Ton IA voyage parle comme un guide culturel érudit." },
-      "ai_tone_pragmatic": { "name": "IA — ton efficace", "description": "Réponses concises et orientées action." },
-      "ai_tone_bold": { "name": "IA — ton aventurier", "description": "Ton direct qui pousse à sortir de ta zone de confort." },
-      "ai_tone_soft": { "name": "IA — ton apaisant", "description": "Ton doux et bienveillant, propice à la déconnexion." },
-      "ai_tone_warm": { "name": "IA — ton chaleureux", "description": "Ton complice, comme un ami qui te fait découvrir sa ville." }
+      "title": {
+        "name": "Titre voyageur",
+        "description": "Ton badge s'affiche sur ton profil."
+      },
+      "content_culture": {
+        "name": "Pack Culture",
+        "description": "Recommandations culturelles enrichies dans Discover."
+      },
+      "content_nomad": {
+        "name": "Pack Nomade",
+        "description": "Fiches coworking et connectivité par ville."
+      },
+      "content_relax": {
+        "name": "Pack Détente",
+        "description": "Sélection d'hôtels et spas soigneusement choisis."
+      },
+      "content_adventure": {
+        "name": "Pack Aventure",
+        "description": "Itinéraires trek, sports et frissons prioritaires."
+      },
+      "content_nature": {
+        "name": "Pack Nature",
+        "description": "Parcs, réserves et randonnées mises en avant."
+      },
+      "content_food": {
+        "name": "Pack Gastronomie",
+        "description": "Tables locales et étoilées poussées d'abord."
+      },
+      "content_wellbeing": {
+        "name": "Pack Bien-être",
+        "description": "Retraites, yoga et spas mis en priorité."
+      },
+      "content_social": {
+        "name": "Pack Social",
+        "description": "Événements et lieux animés remontés en premier."
+      },
+      "content_planning": {
+        "name": "Pack Organisation",
+        "description": "Modèles d'itinéraires prêts à personnaliser."
+      },
+      "content_budget": {
+        "name": "Pack Budget",
+        "description": "Bons plans et alternatives économiques favorisées."
+      },
+      "ai_tone_curator": {
+        "name": "IA — ton curateur",
+        "description": "Ton IA voyage parle comme un guide culturel érudit."
+      },
+      "ai_tone_pragmatic": {
+        "name": "IA — ton efficace",
+        "description": "Réponses concises et orientées action."
+      },
+      "ai_tone_bold": {
+        "name": "IA — ton aventurier",
+        "description": "Ton direct qui pousse à sortir de ta zone de confort."
+      },
+      "ai_tone_soft": {
+        "name": "IA — ton apaisant",
+        "description": "Ton doux et bienveillant, propice à la déconnexion."
+      },
+      "ai_tone_warm": {
+        "name": "IA — ton chaleureux",
+        "description": "Ton complice, comme un ami qui te fait découvrir sa ville."
+      }
     },
     "dimensions": {
       "culture": "Culture",
@@ -4370,26 +4485,80 @@
       "organization": "Organisation"
     },
     "badges": {
-      "cultural_explorer": { "name": "Explorateur culturel", "description": "Tu voyages pour comprendre les gens, leurs traditions et leurs récits. Musées, marchés locaux, ateliers d'artisans — c'est là que ton voyage prend son sens." },
-      "digital_nomad": { "name": "Digital Nomad", "description": "Ton bureau change de fenêtre chaque mois. Tu cherches des lieux où bien travailler, bien vivre et t'installer un moment." },
-      "relaxation": { "name": "Voyageur détente", "description": "Pour toi, voyager c'est se reposer, se faire plaisir et lâcher prise dans un cadre soigné." },
-      "adventurer": { "name": "Aventurier", "description": "Les sentiers battus t'ennuient. Tu cherches l'effort, la nature brute et les histoires à raconter au retour." },
-      "nature": { "name": "Voyageur nature", "description": "Tu recharges tes batteries dans les grands espaces, loin du bruit, au rythme du vivant." },
-      "gastronomic": { "name": "Voyageur gastronomique", "description": "Ton itinéraire suit ton palais : tables étoilées, cuisines de rue, marchés vivants." },
-      "wellbeing": { "name": "Voyageur bien-être", "description": "Tu voyages pour te retrouver : yoga, spa, silence et paysages qui apaisent." },
-      "social": { "name": "Voyageur social", "description": "Tes plus beaux souvenirs sont des rencontres. Tu vibres avec la culture locale et les autres voyageurs." },
-      "organized": { "name": "Voyageur organisé", "description": "Tu aimes que tout soit prévu, du visa au dernier musée. La sérénité passe par la préparation." },
-      "budget": { "name": "Voyageur économe", "description": "Tu prouves qu'on peut voir le monde sans se ruiner. Tu optimises tout, sans sacrifier l'expérience." },
-      "curious": { "name": "Voyageur curieux", "description": "Ton profil est ouvert et éclectique. Tu goûtes à tout et laisses tes envies te guider." }
+      "cultural_explorer": {
+        "name": "Explorateur culturel",
+        "description": "Tu voyages pour comprendre les gens, leurs traditions et leurs récits. Musées, marchés locaux, ateliers d'artisans — c'est là que ton voyage prend son sens."
+      },
+      "digital_nomad": {
+        "name": "Digital Nomad",
+        "description": "Ton bureau change de fenêtre chaque mois. Tu cherches des lieux où bien travailler, bien vivre et t'installer un moment."
+      },
+      "relaxation": {
+        "name": "Voyageur détente",
+        "description": "Pour toi, voyager c'est se reposer, se faire plaisir et lâcher prise dans un cadre soigné."
+      },
+      "adventurer": {
+        "name": "Aventurier",
+        "description": "Les sentiers battus t'ennuient. Tu cherches l'effort, la nature brute et les histoires à raconter au retour."
+      },
+      "nature": {
+        "name": "Voyageur nature",
+        "description": "Tu recharges tes batteries dans les grands espaces, loin du bruit, au rythme du vivant."
+      },
+      "gastronomic": {
+        "name": "Voyageur gastronomique",
+        "description": "Ton itinéraire suit ton palais : tables étoilées, cuisines de rue, marchés vivants."
+      },
+      "wellbeing": {
+        "name": "Voyageur bien-être",
+        "description": "Tu voyages pour te retrouver : yoga, spa, silence et paysages qui apaisent."
+      },
+      "social": {
+        "name": "Voyageur social",
+        "description": "Tes plus beaux souvenirs sont des rencontres. Tu vibres avec la culture locale et les autres voyageurs."
+      },
+      "organized": {
+        "name": "Voyageur organisé",
+        "description": "Tu aimes que tout soit prévu, du visa au dernier musée. La sérénité passe par la préparation."
+      },
+      "budget": {
+        "name": "Voyageur économe",
+        "description": "Tu prouves qu'on peut voir le monde sans se ruiner. Tu optimises tout, sans sacrifier l'expérience."
+      },
+      "curious": {
+        "name": "Voyageur curieux",
+        "description": "Ton profil est ouvert et éclectique. Tu goûtes à tout et laisses tes envies te guider."
+      }
     },
     "features": {
-      "discover": { "name": "Discover", "description": "Lieux locaux et pépites cachées, personnalisés selon ton profil." },
-      "carnet": { "name": "Carnet de bord", "description": "Ton journal de voyage intelligent avec photos, moments et récits IA." },
-      "suivi": { "name": "Suivi de voyage", "description": "Carte live, itinéraire, check-ins et alertes en temps réel." },
-      "mood": { "name": "Mood Explorer", "description": "Des recommandations selon ton humeur du moment." },
-      "guide-valise": { "name": "Guide Valise", "description": "Checklist intelligente adaptée à ta destination et ton style." },
-      "guide-budget": { "name": "Guide Budget", "description": "Tableau de bord de tes dépenses avec alertes et conseils IA." },
-      "guide-visa": { "name": "Guide Visa", "description": "Formalités, vaccins et sécurité pour ton pays de destination." }
+      "discover": {
+        "name": "Discover",
+        "description": "Lieux locaux et pépites cachées, personnalisés selon ton profil."
+      },
+      "carnet": {
+        "name": "Carnet de bord",
+        "description": "Ton journal de voyage intelligent avec photos, moments et récits IA."
+      },
+      "suivi": {
+        "name": "Suivi de voyage",
+        "description": "Carte live, itinéraire, check-ins et alertes en temps réel."
+      },
+      "mood": {
+        "name": "Mood Explorer",
+        "description": "Des recommandations selon ton humeur du moment."
+      },
+      "guide-valise": {
+        "name": "Guide Valise",
+        "description": "Checklist intelligente adaptée à ta destination et ton style."
+      },
+      "guide-budget": {
+        "name": "Guide Budget",
+        "description": "Tableau de bord de tes dépenses avec alertes et conseils IA."
+      },
+      "guide-visa": {
+        "name": "Guide Visa",
+        "description": "Formalités, vaccins et sécurité pour ton pays de destination."
+      }
     }
   }
 }
