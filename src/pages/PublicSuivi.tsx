@@ -7,8 +7,10 @@ import LiveTimeline from "@/components/tracking/LiveTimeline";
 import LiveStats from "@/components/tracking/LiveStats";
 import { TripActivity, TripTracking } from "@/hooks/useTracking";
 import { setShareMeta } from "@/lib/seo";
+import { useTranslation } from "react-i18next";
 
 const PublicSuivi = () => {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const [tracking, setTracking] = useState<TripTracking | null>(null);
   const [activities, setActivities] = useState<TripActivity[]>([]);
@@ -20,12 +22,12 @@ const PublicSuivi = () => {
     let cancel = false;
     const load = async () => {
       const { data: tRows } = await (supabase as any).rpc("get_public_trip_tracking", { _slug: slug });
-      const t = Array.isArray(tRows) ? tRows[0] : tRows;
-      if (cancel || !t) { setLoading(false); return; }
-      setTracking(t as TripTracking);
+      const trackingRow = Array.isArray(tRows) ? tRows[0] : tRows;
+      if (cancel || !trackingRow) { setLoading(false); return; }
+      setTracking(trackingRow as TripTracking);
       setShareMeta({
         title: "Suivi de voyage en direct",
-        description: `Suis ce voyage en temps réel · ${Number(t.total_distance_km || 0).toFixed(1)} km parcourus`,
+        description: t("ui2.PublicSuivi.liveTrackDesc", { km: Number(trackingRow.total_distance_km || 0).toFixed(1) }),
         ogKind: "suivi",
         slug: slug!,
       });
@@ -46,7 +48,7 @@ const PublicSuivi = () => {
     return <div className="min-h-screen flex items-center justify-center bg-background"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>;
   }
   if (!tracking) {
-    return <div className="min-h-screen flex items-center justify-center bg-background"><p className="text-muted-foreground">Lien introuvable ou désactivé</p></div>;
+    return <div className="min-h-screen flex items-center justify-center bg-background"><p className="text-muted-foreground">{t("ui2.PublicSuivi.linkNotFound")}</p></div>;
   }
 
   const livePos = tracking.last_lat && tracking.last_lng

@@ -4,6 +4,7 @@
 export interface Level {
   index: number;
   name: string;
+  nameEn: string;
   emoji: string;
   minXp: number;
   /** gradient tailwind classes for badge/header */
@@ -11,14 +12,19 @@ export interface Level {
 }
 
 export const LEVELS: Level[] = [
-  { index: 0, name: "Explorateur novice", emoji: "🌱", minXp: 0,    gradient: "from-slate-400 to-slate-500" },
-  { index: 1, name: "Voyageur",            emoji: "🧭", minXp: 200,  gradient: "from-cyan-400 to-blue-500" },
-  { index: 2, name: "Aventurier",          emoji: "🏔️", minXp: 600,  gradient: "from-emerald-400 to-teal-500" },
-  { index: 3, name: "Globe-trotter",       emoji: "🌍", minXp: 1200, gradient: "from-violet-400 to-purple-500" },
-  { index: 4, name: "Pathfinder",          emoji: "⚡", minXp: 2200, gradient: "from-fuchsia-400 to-pink-500" },
-  { index: 5, name: "Maître voyageur",     emoji: "👑", minXp: 3800, gradient: "from-amber-400 to-orange-500" },
-  { index: 6, name: "Légende",             emoji: "🏆", minXp: 6000, gradient: "from-yellow-300 via-amber-400 to-orange-500" },
+  { index: 0, name: "Explorateur novice", nameEn: "Novice Explorer", emoji: "🌱", minXp: 0,    gradient: "from-slate-400 to-slate-500" },
+  { index: 1, name: "Voyageur",            nameEn: "Traveler",       emoji: "🧭", minXp: 200,  gradient: "from-cyan-400 to-blue-500" },
+  { index: 2, name: "Aventurier",          nameEn: "Adventurer",     emoji: "🏔️", minXp: 600,  gradient: "from-emerald-400 to-teal-500" },
+  { index: 3, name: "Globe-trotter",       nameEn: "Globe-trotter",  emoji: "🌍", minXp: 1200, gradient: "from-violet-400 to-purple-500" },
+  { index: 4, name: "Pathfinder",          nameEn: "Pathfinder",     emoji: "⚡", minXp: 2200, gradient: "from-fuchsia-400 to-pink-500" },
+  { index: 5, name: "Maître voyageur",     nameEn: "Master Traveler", emoji: "👑", minXp: 3800, gradient: "from-amber-400 to-orange-500" },
+  { index: 6, name: "Légende",             nameEn: "Legend",         emoji: "🏆", minXp: 6000, gradient: "from-yellow-300 via-amber-400 to-orange-500" },
 ];
+
+/** Returns the level label in the current UI language ("en" → nameEn, else French). */
+export function levelName(level: Level, lang?: string): string {
+  return lang?.toLowerCase().startsWith("en") ? level.nameEn : level.name;
+}
 
 export interface LevelProgress {
   level: Level;

@@ -1,6 +1,7 @@
 // ✨ NEW (Tâche 3) — Modale d'édition d'un voyage : titre, destination, dates.
 import { useState, useEffect } from "react";
 import { Pencil, Loader2, Save } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter,
   DialogHeader, DialogTitle, DialogTrigger,
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const EditTripDialog = ({ trip, variant = "icon", onUpdated, className, stopPropagation = true }: Props) => {
+  const { t } = useTranslation();
   const { updateTrip, updating } = useUpdateTrip();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(trip.title || "");
@@ -72,7 +74,7 @@ const EditTripDialog = ({ trip, variant = "icon", onUpdated, className, stopProp
             type="button"
             onClick={stop}
             onPointerDown={stop}
-            aria-label="Modifier ce voyage"
+            aria-label={t("ui2.EditTripDialog.editTrip")}
             className={cn(
               "p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors",
               className,
@@ -91,42 +93,42 @@ const EditTripDialog = ({ trip, variant = "icon", onUpdated, className, stopProp
             )}
           >
             <Pencil className="w-4 h-4" />
-            <span>Modifier ce voyage</span>
+            <span>{t("ui2.EditTripDialog.editTrip")}</span>
           </button>
         )}
       </DialogTrigger>
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
-          <DialogTitle>Modifier ce voyage</DialogTitle>
+          <DialogTitle>{t("ui2.EditTripDialog.editTrip")}</DialogTitle>
           <DialogDescription>
-            Mets à jour le titre, la destination ou les dates. Les recommandations IA déjà générées ne seront pas écrasées.
+            {t("ui2.EditTripDialog.description")}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3 py-2">
           <div className="space-y-1.5">
-            <Label htmlFor="trip-title">Titre</Label>
-            <Input id="trip-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Mon voyage à Lisbonne" />
+            <Label htmlFor="trip-title">{t("ui2.EditTripDialog.titleLabel")}</Label>
+            <Input id="trip-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("ui2.EditTripDialog.titlePh")} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="trip-dest">Destination</Label>
+            <Label htmlFor="trip-dest">{t("ui2.EditTripDialog.destinationLabel")}</Label>
             <Input id="trip-dest" value={destination} onChange={(e) => setDestination(e.target.value)} placeholder="Portugal" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="trip-dep">Départ</Label>
+              <Label htmlFor="trip-dep">{t("ui2.EditTripDialog.departure")}</Label>
               <Input id="trip-dep" type="date" value={dep} onChange={(e) => setDep(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="trip-ret">Retour</Label>
+              <Label htmlFor="trip-ret">{t("ui2.EditTripDialog.returnLabel")}</Label>
               <Input id="trip-ret" type="date" value={ret} onChange={(e) => setRet(e.target.value)} min={dep || undefined} />
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={updating}>Annuler</Button>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={updating}>{t("ui2.EditTripDialog.cancel")}</Button>
           <Button onClick={handleSave} disabled={updating} className="gradient-button">
             {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-            Enregistrer
+            {t("ui2.EditTripDialog.save")}
           </Button>
         </DialogFooter>
       </DialogContent>

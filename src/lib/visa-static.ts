@@ -10,36 +10,45 @@ import {
   Shield,
   Stethoscope,
 } from "lucide-react";
+import i18n from "@/i18n";
 
-export const GENERATION_STEPS = [
-  { icon: Brain, label: "Xplania analyse votre profil voyageur…" },
-  { icon: Search, label: "Xplania consulte les autorités…" },
-  { icon: ShieldCheck, label: "Vérification des formalités visa…" },
-  { icon: Syringe, label: "Analyse des recommandations sanitaires…" },
-  { icon: ListChecks, label: "Génération de votre checklist…" },
-  { icon: CheckCircle, label: "Formalités prêtes !" },
-];
+export function getGenerationSteps() {
+  return [
+    { icon: Brain, label: i18n.t("ui2.visaStatic.steps.analyzeProfile") },
+    { icon: Search, label: i18n.t("ui2.visaStatic.steps.checkAuthorities") },
+    { icon: ShieldCheck, label: i18n.t("ui2.visaStatic.steps.checkVisaRules") },
+    { icon: Syringe, label: i18n.t("ui2.visaStatic.steps.analyzeHealth") },
+    { icon: ListChecks, label: i18n.t("ui2.visaStatic.steps.generateChecklist") },
+    { icon: CheckCircle, label: i18n.t("ui2.visaStatic.steps.ready") },
+  ];
+}
 
-export const generalDocuments = [
-  "Passeport valide minimum 6 mois après ton retour prévu.",
-  "Réservations d'hébergement pour toute la durée du séjour.",
-  "Billet d'avion aller-retour ou preuve de continuation du voyage.",
-  "Assurance voyage couvrant les frais médicaux et le rapatriement.",
-  "Copies de tous tes documents importants conservées séparément.",
-  "Documents spécifiques selon ta destination et ton activité prévue.",
-];
+export function getGeneralDocuments(): string[] {
+  return [
+    i18n.t("ui2.visaStatic.generalDocuments.passport"),
+    i18n.t("ui2.visaStatic.generalDocuments.accommodation"),
+    i18n.t("ui2.visaStatic.generalDocuments.flightTicket"),
+    i18n.t("ui2.visaStatic.generalDocuments.insurance"),
+    i18n.t("ui2.visaStatic.generalDocuments.copies"),
+    i18n.t("ui2.visaStatic.generalDocuments.specificDocs"),
+  ];
+}
 
-export const staticAlerts = [
-  { icon: Shield, text: "Vérifie la validité de ton passeport. De nombreux pays exigent une validité d'au moins 6 mois après la date de retour prévue." },
-  { icon: Stethoscope, text: "Certaines destinations exigent une assurance voyage obligatoire. Renseigne-toi avant de partir pour éviter les mauvaises surprises." },
-];
+export function getStaticAlerts() {
+  return [
+    { icon: Shield, text: i18n.t("ui2.visaStatic.alerts.passportValidity") },
+    { icon: Stethoscope, text: i18n.t("ui2.visaStatic.alerts.mandatoryInsurance") },
+  ];
+}
 
-export const staticTips = [
-  { num: 1, text: "Garde une copie digitale de tous tes documents importants dans le cloud. Cela te sauvera en cas de perte ou de vol." },
-  { num: 2, text: "Note les coordonnées de l'ambassade ou du consulat de ton pays dans ta destination. C'est essentiel en cas d'urgence." },
-  { num: 3, text: "Renseigne-toi sur les restrictions douanières. Chaque pays a ses règles concernant l'importation de produits alimentaires, médicaments et objets de valeur." },
-  { num: 4, text: "Vérifie les recommandations sanitaires et les vaccins obligatoires pour ta destination sur le site de ton ministère des Affaires étrangères." },
-];
+export function getStaticTips() {
+  return [
+    { num: 1, text: i18n.t("ui2.visaStatic.tips.digitalCopy") },
+    { num: 2, text: i18n.t("ui2.visaStatic.tips.embassyContact") },
+    { num: 3, text: i18n.t("ui2.visaStatic.tips.customsRestrictions") },
+    { num: 4, text: i18n.t("ui2.visaStatic.tips.healthRecommendations") },
+  ];
+}
 
 export interface VisaAIResult {
   visa: {
@@ -74,15 +83,17 @@ export interface VisaAIResult {
   };
 }
 
-export const securityLevelConfig: Record<
+export function getSecurityLevelConfig(): Record<
   string,
   { color: string; bg: string; border: string; label: string }
-> = {
-  safe: { color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20", label: "🟢 Sûr" },
-  moderate: { color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20", label: "🟡 Modéré" },
-  caution: { color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", label: "🟠 Vigilance" },
-  danger: { color: "text-destructive", bg: "bg-destructive/10", border: "border-destructive/20", label: "🔴 Danger" },
-};
+> {
+  return {
+    safe: { color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20", label: i18n.t("ui2.visaStatic.security.safe") },
+    moderate: { color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20", label: i18n.t("ui2.visaStatic.security.moderate") },
+    caution: { color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", label: i18n.t("ui2.visaStatic.security.caution") },
+    danger: { color: "text-destructive", bg: "bg-destructive/10", border: "border-destructive/20", label: i18n.t("ui2.visaStatic.security.danger") },
+  };
+}
 
 export const priorityConfig: Record<string, { color: string; bg: string }> = {
   obligatoire: { color: "text-destructive", bg: "bg-destructive/10" },

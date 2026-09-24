@@ -26,11 +26,11 @@ import VisaPipChat from "@/components/visa/VisaPipChat";
 import VaccinesGuide from "@/components/visa/VaccinesGuide";
 import SafetyGuide from "@/components/visa/SafetyGuide";
 import {
-  GENERATION_STEPS,
-  generalDocuments,
-  staticAlerts,
-  staticTips,
-  securityLevelConfig,
+  getGenerationSteps,
+  getGeneralDocuments,
+  getStaticAlerts,
+  getStaticTips,
+  getSecurityLevelConfig,
   priorityConfig,
   type VisaAIResult,
 } from "@/lib/visa-static";
@@ -130,6 +130,7 @@ const GuideVisaPage = () => {
     setAiError(null);
 
     const stepPromise = (async () => {
+      const GENERATION_STEPS = getGenerationSteps();
       for (let i = 0; i < GENERATION_STEPS.length - 1; i++) {
         await new Promise((r) => setTimeout(r, 700));
         setGenStep(i + 1);
@@ -166,7 +167,7 @@ const GuideVisaPage = () => {
       }
 
       setAiResult(data);
-      setGenStep(GENERATION_STEPS.length);
+      setGenStep(getGenerationSteps().length);
       await new Promise((r) => setTimeout(r, 400));
       setHasGenerated(true);
       setCheckedItems({});
@@ -196,6 +197,7 @@ const GuideVisaPage = () => {
   const doneChecklist = checklist.filter((c) => checkedItems[c.item]).length;
 
   const secLevel = aiResult?.security?.level || "safe";
+  const securityLevelConfig = getSecurityLevelConfig();
   const secConfig = securityLevelConfig[secLevel] || securityLevelConfig.safe;
 
   return (
@@ -316,7 +318,7 @@ const GuideVisaPage = () => {
               </motion.div>
 
               <div className="space-y-3 max-w-md mx-auto">
-                {GENERATION_STEPS.map((step, i) => {
+                {getGenerationSteps().map((step, i) => {
                   const isActive = i === genStep;
                   const isDone = i < genStep;
                   const Icon = step.icon;
@@ -344,7 +346,7 @@ const GuideVisaPage = () => {
                 <motion.div
                   className="h-full rounded-full bg-gradient-to-r from-secondary to-primary"
                   initial={{ width: "0%" }}
-                  animate={{ width: `${((genStep + 1) / GENERATION_STEPS.length) * 100}%` }}
+                  animate={{ width: `${((genStep + 1) / getGenerationSteps().length) * 100}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>
@@ -556,7 +558,7 @@ const GuideVisaPage = () => {
                   <h3 className="text-base font-bold text-foreground">Documents généraux à préparer</h3>
                 </div>
                 <ul className="space-y-2">
-                  {generalDocuments.map((doc, i) => (
+                  {getGeneralDocuments().map((doc, i) => (
                     <li key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
                       <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                       <p className="text-sm text-foreground">{doc}</p>
@@ -577,7 +579,7 @@ const GuideVisaPage = () => {
                   <h3 className="text-base font-bold text-foreground">Alertes importantes</h3>
                 </div>
                 <div className="space-y-3">
-                  {staticAlerts.map((alert, i) => (
+                  {getStaticAlerts().map((alert, i) => (
                     <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-destructive/5 border border-destructive/10">
                       <alert.icon className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                       <p className="text-sm text-foreground">{alert.text}</p>
@@ -598,7 +600,7 @@ const GuideVisaPage = () => {
                   <h3 className="text-base font-bold text-foreground">Astuces pratiques</h3>
                 </div>
                 <div className="space-y-3">
-                  {staticTips.map((tip) => (
+                  {getStaticTips().map((tip) => (
                     <div key={tip.num} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
                       <span className="flex items-center justify-center w-7 h-7 rounded-full gradient-button text-xs font-bold text-primary-foreground shrink-0">
                         {tip.num}

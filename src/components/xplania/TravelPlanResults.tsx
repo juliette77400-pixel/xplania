@@ -1,4 +1,5 @@
 import { Wallet, FileText, Luggage, Globe, CloudSun, MapPin, CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { TravelFormData, TravelPlan } from "@/types/travel";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const TravelPlanResults = ({ plan, formData }: Props) => {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6">
       {/* Budget */}
@@ -16,11 +18,11 @@ const TravelPlanResults = ({ plan, formData }: Props) => {
             <Wallet className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground">Estimation du budget</p>
+            <p className="text-sm font-semibold text-foreground">{t("ui2.TravelPlanResults.budgetEstimate")}</p>
             <p className="text-2xl font-bold gradient-text">{plan.budgetEstimate.total} €</p>
           </div>
           <div className="ml-auto text-right">
-            <p className="text-xs text-muted-foreground">Par jour</p>
+            <p className="text-xs text-muted-foreground">{t("ui2.TravelPlanResults.perDay")}</p>
             <p className="text-lg font-bold text-foreground">{plan.budgetEstimate.perDay} €</p>
           </div>
         </div>
@@ -38,7 +40,7 @@ const TravelPlanResults = ({ plan, formData }: Props) => {
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-center gap-3 mb-4">
           <FileText className="w-5 h-5 text-primary" />
-          <p className="text-sm font-semibold text-foreground">Checklist documents</p>
+          <p className="text-sm font-semibold text-foreground">{t("ui2.TravelPlanResults.documentsChecklist")}</p>
         </div>
         <ul className="space-y-2">
           {plan.documents.map((doc) => (
@@ -54,7 +56,7 @@ const TravelPlanResults = ({ plan, formData }: Props) => {
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-center gap-3 mb-4">
           <Luggage className="w-5 h-5 text-primary" />
-          <p className="text-sm font-semibold text-foreground">Liste de bagages</p>
+          <p className="text-sm font-semibold text-foreground">{t("ui2.TravelPlanResults.luggageList")}</p>
         </div>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {plan.luggage.map((item) => (
@@ -70,7 +72,7 @@ const TravelPlanResults = ({ plan, formData }: Props) => {
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-center gap-3 mb-4">
           <Globe className="w-5 h-5 text-primary" />
-          <p className="text-sm font-semibold text-foreground">Conseils culturels</p>
+          <p className="text-sm font-semibold text-foreground">{t("ui2.TravelPlanResults.culturalTips")}</p>
         </div>
         <ul className="space-y-2">
           {plan.culturalTips.map((tip) => (
@@ -86,7 +88,7 @@ const TravelPlanResults = ({ plan, formData }: Props) => {
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-center gap-3 mb-3">
           <CloudSun className="w-5 h-5 text-primary" />
-          <p className="text-sm font-semibold text-foreground">Météo estimée</p>
+          <p className="text-sm font-semibold text-foreground">{t("ui2.TravelPlanResults.weatherEstimate")}</p>
         </div>
         <p className="text-sm text-muted-foreground">{plan.weatherInfo}</p>
       </div>
@@ -95,7 +97,7 @@ const TravelPlanResults = ({ plan, formData }: Props) => {
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-center gap-3 mb-4">
           <MapPin className="w-5 h-5 text-primary" />
-          <p className="text-sm font-semibold text-foreground">Recommandations locales</p>
+          <p className="text-sm font-semibold text-foreground">{t("ui2.TravelPlanResults.localRecommendations")}</p>
         </div>
         <ul className="space-y-2">
           {plan.localRecommendations.map((rec) => (

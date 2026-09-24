@@ -1,3 +1,5 @@
+import i18n from "@/i18n";
+
 export type DiscoverCategory = "food" | "nightlife" | "culture" | "nature" | "chill" | "experience";
 
 export const CATEGORIES: { key: DiscoverCategory; label: string; emoji: string; color: string }[] = [
@@ -6,7 +8,7 @@ export const CATEGORIES: { key: DiscoverCategory; label: string; emoji: string; 
   { key: "culture", label: "Experiences", emoji: "🎭", color: "hsl(45 90% 55%)" },
   { key: "nature", label: "Chill & Nature", emoji: "🌿", color: "hsl(155 70% 45%)" },
   { key: "chill", label: "Cosy spots", emoji: "📚", color: "hsl(220 75% 60%)" },
-  { key: "experience", label: "À découvrir", emoji: "✨", color: "hsl(190 90% 55%)" },
+  { key: "experience", get label() { return i18n.language.startsWith("en") ? i18n.t("ui2.discover.experience", { defaultValue: "To discover" }) : "À découvrir"; }, emoji: "✨", color: "hsl(190 90% 55%)" },
 ];
 
 export const categoryByKey = (k: string) => CATEGORIES.find((c) => c.key === k);

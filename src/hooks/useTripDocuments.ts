@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 import { toast } from "sonner";
+import i18n from "@/i18n";
 
 export type TripDocument = {
   id: string;
@@ -95,7 +96,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
       return null;
     }
     setDocuments((prev) => [data as TripDocument, ...prev]);
-    toast.success("Document ajouté");
+    toast.success(i18n.t("ui2.useTripDocuments.docAdded"));
     return data as TripDocument;
   };
 
@@ -107,7 +108,7 @@ export function useTripDocuments(tripId?: string, options?: { dayId?: string | n
       return;
     }
     setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
-    toast.success("Document supprimé");
+    toast.success(i18n.t("ui2.useTripDocuments.docDeleted"));
   };
 
   const linkToDay = async (doc: TripDocument, newDayId: string | null) => {

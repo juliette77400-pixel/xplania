@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Save, Bell } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Settings = {
   id: string;
@@ -17,6 +18,7 @@ type Settings = {
 };
 
 export default function NotificationSettingsPanel() {
+  const { t } = useTranslation();
   const [s, setS] = useState<Settings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -49,7 +51,7 @@ export default function NotificationSettingsPanel() {
       .eq("id", "default");
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success("Notifications mises à jour ✓");
+    toast.success(t("ui2.NotificationSettingsPanel.updated"));
     load();
   };
 
@@ -69,11 +71,11 @@ export default function NotificationSettingsPanel() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex items-center justify-between rounded-lg border border-border p-3">
-          <Label className="text-sm">Notifier sur « validée »</Label>
+          <Label className="text-sm">{t("ui2.NotificationSettingsPanel.notifyValidated")}</Label>
           <Switch checked={s.enabled_validated} onCheckedChange={(v) => setS({ ...s, enabled_validated: v })} />
         </div>
         <div className="flex items-center justify-between rounded-lg border border-border p-3">
-          <Label className="text-sm">Notifier sur « rejetée »</Label>
+          <Label className="text-sm">{t("ui2.NotificationSettingsPanel.notifyRejected")}</Label>
           <Switch checked={s.enabled_rejected} onCheckedChange={(v) => setS({ ...s, enabled_rejected: v })} />
         </div>
       </div>
@@ -89,7 +91,7 @@ export default function NotificationSettingsPanel() {
         <div className="flex items-center justify-between rounded-lg border border-border p-3 opacity-80">
           <div>
             <Label className="text-sm">Canal : email</Label>
-            <p className="text-[11px] text-muted-foreground">Bientôt — file d'envoi prête côté serveur.</p>
+            <p className="text-[11px] text-muted-foreground">{t("ui2.NotificationSettingsPanel.soonServerReady")}</p>
           </div>
           <Switch checked={s.channel_email} onCheckedChange={(v) => setS({ ...s, channel_email: v })} />
         </div>
@@ -97,15 +99,15 @@ export default function NotificationSettingsPanel() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="rounded-lg border border-border p-3">
-          <Label className="text-sm">Fréquence</Label>
+          <Label className="text-sm">{t("ui2.NotificationSettingsPanel.frequency")}</Label>
           <Select value={s.frequency} onValueChange={(v: "instant" | "daily") => setS({ ...s, frequency: v })}>
             <SelectTrigger className="mt-2"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="instant">Instantanée</SelectItem>
-              <SelectItem value="daily">Récap quotidien (bientôt)</SelectItem>
+              <SelectItem value="instant">{t("ui2.NotificationSettingsPanel.instant")}</SelectItem>
+              <SelectItem value="daily">{t("ui2.NotificationSettingsPanel.dailyRecapSoon")}</SelectItem>
             </SelectContent>
           </Select>
-          <p className="text-[11px] text-muted-foreground mt-1">Seul l'envoi instantané est actif aujourd'hui.</p>
+          <p className="text-[11px] text-muted-foreground mt-1">{t("ui2.NotificationSettingsPanel.onlyInstantActive")}</p>
         </div>
       </div>
 

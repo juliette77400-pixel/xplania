@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Gem, Search, MapPin, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface HiddenGemRow {
   id: string;
@@ -26,6 +27,7 @@ interface HiddenGemRow {
 }
 
 export default function HiddenGems() {
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [query, setQuery] = useState("");
   const [destFilter, setDestFilter] = useState<string>("all");
@@ -78,8 +80,7 @@ export default function HiddenGems() {
             <Gem className="h-8 w-8 text-primary" /> Hidden Gems Xplania
           </h1>
           <p className="text-muted-foreground mt-2">
-            Pépites confidentielles, ateliers d'artisans, lieux évités par les guides.
-            Curatés par la communauté Xplania et notés selon leur originalité.
+{t("ui2.HiddenGems.subtitle")}
           </p>
         </div>
 
@@ -87,7 +88,7 @@ export default function HiddenGems() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Rechercher (nom, quartier, tag…)"
+              placeholder={t("ui2.HiddenGems.searchPlaceholder")}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="pl-9"
@@ -99,7 +100,7 @@ export default function HiddenGems() {
               size="sm"
               onClick={() => setDestFilter("all")}
             >
-              Toutes
+              {t("ui2.HiddenGems.all")}
             </Button>
             {destinationsInList.map(([slug, name]) => (
               <Button
@@ -124,7 +125,7 @@ export default function HiddenGems() {
           <Card className="text-center py-12">
             <CardContent>
               <Sparkles className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">Aucune pépite ne correspond à ta recherche.</p>
+              <p className="text-muted-foreground">{t("ui2.HiddenGems.noResults")}</p>
             </CardContent>
           </Card>
         )}

@@ -10,6 +10,7 @@ import {
   Download, FileText, Filter,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type AuditRow = {
   id: string;
@@ -24,11 +25,11 @@ type AuditRow = {
   actor_name?: string | null;
 };
 
-const ACTION_LABEL: Record<string, string> = {
-  update_settings: "Modif. règles de vérification",
-  update_notif_settings: "Modif. notifications",
-  manual_decision_validated: "Validation manuelle",
-  manual_decision_rejected: "Rejet manuel",
+const ACTION_KEY: Record<string, string> = {
+  update_settings: "actionUpdateSettings",
+  update_notif_settings: "actionUpdateNotifSettings",
+  manual_decision_validated: "actionValidated",
+  manual_decision_rejected: "actionRejected",
 };
 
 function diffJson(before: any, after: any): string[] {
@@ -51,6 +52,8 @@ function csvEscape(v: any): string {
 }
 
 export default function AdminAuditPanel() {
+  const { t } = useTranslation();
+  const actionLabel = (action: string) => t(`ui2.AdminAuditPanel.${ACTION_KEY[action]}`, { defaultValue: action });
   const [rows, setRows] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -113,7 +116,7 @@ export default function AdminAuditPanel() {
       lines.push([
         r.created_at,
         r.actor_name || r.actor_id || "",
-        ACTION_LABEL[r.action] ?? r.action,
+        actionLabel(r.action),
         r.entity_type,
         r.entity_id || "",
         reason,
@@ -127,7 +130,7 @@ export default function AdminAuditPanel() {
     a.download = `audit-admin-${stamp()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("CSV exporté");
+    toast.success(t("ui2.AdminAuditPanel.csvExported"));
   };
 
   const exportPdf = async () => {
@@ -140,16 +143,16 @@ export default function AdminAuditPanel() {
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("Journal d'audit admin", margin, y);
+    doc.text(t("ui2.AdminAuditPanel.title"), margin, y);
     y += 18;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     const filterLine = [
-      from ? `du ${from}` : "depuis le début",
-      to ? `au ${to}` : "jusqu'à aujourd'hui",
-      actorId !== "all" ? `admin: ${actors.find(([id]) => id === actorId)?.[1] || actorId}` : "tous admins",
-      `type: ${actionFilter}`,
-      `${rows.length} entrées`,
+      from ? t("ui2.AdminAuditPanel.filterFrom", { date: from }) : t("ui2.AdminAuditPanel.filterSince"),
+      to ? t("ui2.AdminAuditPanel.filterTo", { date: to }) : t("ui2.AdminAuditPanel.filterUntilToday"),
+      actorId !== "all" ? t("ui2.AdminAuditPanel.filterAdmin", { name: actors.find(([id]) => id === actorId)?.[1] || actorId }) : t("ui2.AdminAuditPanel.filterAllAdmins"),
+      t("ui2.AdminAuditPanel.filterType", { type: actionFilter }),
+      t("ui2.AdminAuditPanel.filterEntries", { count: rows.length }),
     ].join(" · ");
     doc.text(filterLine, margin, y);
     y += 16;
@@ -167,8 +170,8 @@ export default function AdminAuditPanel() {
 
     for (const r of rows) {
       const date = new Date(r.created_at).toLocaleString();
-      const actor = r.actor_name || r.actor_id?.slice(0, 8) || "système";
-      const label = ACTION_LABEL[r.action] ?? r.action;
+      const actor = r.actor_name || r.actor_id?.slice(0, 8) || t("ui2.AdminAuditPanel.system");
+      const label = actionLabel(r.action);
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
@@ -177,7 +180,7 @@ export default function AdminAuditPanel() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(110);
-      doc.text(`${date}  ·  par ${actor}`, margin, y + 12);
+      doc.text(`${date}  ·  ${t("ui2.AdminAuditPanel.by")} ${actor}`, margin, y + 12);
       doc.setTextColor(0);
       y += 24;
 
@@ -185,8 +188,8 @@ export default function AdminAuditPanel() {
       if (r.entity_type.endsWith("_settings")) {
         details.push(...diffJson(r.before_data, r.after_data));
       } else if (r.entity_type === "gam_badge_claim") {
-        details.push(`Réclamation: ${r.entity_id?.slice(0, 8) ?? "?"}`);
-        if (r.after_data?.review_reason) details.push(`Motif: ${r.after_data.review_reason}`);
+        details.push(t("ui2.AdminAuditPanel.pdfClaimLine", { id: r.entity_id?.slice(0, 8) ?? "?" }));
+        if (r.after_data?.review_reason) details.push(t("ui2.AdminAuditPanel.pdfReasonLine", { reason: r.after_data.review_reason }));
       }
       doc.setFontSize(9);
       for (const d of details) {
@@ -205,7 +208,7 @@ export default function AdminAuditPanel() {
     }
 
     doc.save(`audit-admin-${stamp()}.pdf`);
-    toast.success("PDF exporté");
+    toast.success(t("ui2.AdminAuditPanel.pdfExported"));
   };
 
   return (
@@ -213,10 +216,10 @@ export default function AdminAuditPanel() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-lg font-bold flex items-center gap-2">
-            <ScrollText className="w-5 h-5 text-primary" /> Journal d'audit admin
+            <ScrollText className="w-5 h-5 text-primary" /> {t("ui2.AdminAuditPanel.title")}
           </h2>
           <p className="text-xs text-muted-foreground">
-            Trace les modifications de règles et les décisions manuelles. 500 dernières entrées filtrables.
+            {t("ui2.AdminAuditPanel.subtitle")}
           </p>
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -226,7 +229,7 @@ export default function AdminAuditPanel() {
           <Button size="sm" variant="outline" onClick={exportPdf} disabled={rows.length === 0}>
             <FileText className="w-4 h-4 mr-1" /> PDF
           </Button>
-          <Button size="sm" variant="ghost" onClick={load} aria-label="Rafraîchir">
+          <Button size="sm" variant="ghost" onClick={load} aria-label={t("ui2.AdminAuditPanel.refresh")}>
             <RefreshCw className="w-4 h-4" />
           </Button>
         </div>
@@ -234,19 +237,19 @@ export default function AdminAuditPanel() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 rounded-xl border border-border bg-background/40 p-3">
         <div>
-          <Label className="text-[11px] flex items-center gap-1"><Filter className="w-3 h-3" /> Du</Label>
+          <Label className="text-[11px] flex items-center gap-1"><Filter className="w-3 h-3" /> {t("ui2.AdminAuditPanel.from")}</Label>
           <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="h-8 text-xs" />
         </div>
         <div>
-          <Label className="text-[11px]">Au</Label>
+          <Label className="text-[11px]">{t("ui2.AdminAuditPanel.to")}</Label>
           <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="h-8 text-xs" />
         </div>
         <div>
-          <Label className="text-[11px]">Admin</Label>
+          <Label className="text-[11px]">{t("ui2.AdminAuditPanel.admin")}</Label>
           <Select value={actorId} onValueChange={setActorId}>
             <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous</SelectItem>
+              <SelectItem value="all">{t("ui2.AdminAuditPanel.all")}</SelectItem>
               {actors.map(([id, name]) => (
                 <SelectItem key={id} value={id}>{name}</SelectItem>
               ))}
@@ -254,17 +257,17 @@ export default function AdminAuditPanel() {
           </Select>
         </div>
         <div>
-          <Label className="text-[11px]">Type</Label>
+          <Label className="text-[11px]">{t("ui2.AdminAuditPanel.type")}</Label>
           <Select value={actionFilter} onValueChange={setActionFilter}>
             <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tout</SelectItem>
-              <SelectItem value="settings">Réglages (toutes)</SelectItem>
-              <SelectItem value="decisions">Décisions manuelles</SelectItem>
-              <SelectItem value="manual_decision_validated">Validations</SelectItem>
-              <SelectItem value="manual_decision_rejected">Rejets</SelectItem>
-              <SelectItem value="update_settings">Règles vérification</SelectItem>
-              <SelectItem value="update_notif_settings">Notifications</SelectItem>
+              <SelectItem value="all">{t("ui2.AdminAuditPanel.everyType")}</SelectItem>
+              <SelectItem value="settings">{t("ui2.AdminAuditPanel.settingsAll")}</SelectItem>
+              <SelectItem value="decisions">{t("ui2.AdminAuditPanel.manualDecisions")}</SelectItem>
+              <SelectItem value="manual_decision_validated">{t("ui2.AdminAuditPanel.actionValidated")}</SelectItem>
+              <SelectItem value="manual_decision_rejected">{t("ui2.AdminAuditPanel.actionRejected")}</SelectItem>
+              <SelectItem value="update_settings">{t("ui2.AdminAuditPanel.verificationRules")}</SelectItem>
+              <SelectItem value="update_notif_settings">{t("ui2.AdminAuditPanel.notifications")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -273,7 +276,7 @@ export default function AdminAuditPanel() {
       {loading ? (
         <div className="py-6 text-center"><Loader2 className="w-5 h-5 animate-spin inline text-primary" /></div>
       ) : rows.length === 0 ? (
-        <div className="text-center text-sm text-muted-foreground py-6">Aucune entrée pour ces filtres.</div>
+        <div className="text-center text-sm text-muted-foreground py-6">{t("ui2.AdminAuditPanel.noEntries")}</div>
       ) : (
         <ul className="space-y-2 max-h-[480px] overflow-y-auto pr-1">
           {rows.map((r) => {
@@ -289,10 +292,10 @@ export default function AdminAuditPanel() {
                     {isValidated && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
                     {isRejected && <XCircle className="w-3.5 h-3.5 text-destructive" />}
                     <Badge variant="secondary" className="text-[10px]">
-                      {ACTION_LABEL[r.action] ?? r.action}
+                      {actionLabel(r.action)}
                     </Badge>
                     <span className="text-muted-foreground">
-                      par <span className="text-foreground">{r.actor_name || r.actor_id?.slice(0, 8) || "système"}</span>
+                      {t("ui2.AdminAuditPanel.by")} <span className="text-foreground">{r.actor_name || r.actor_id?.slice(0, 8) || t("ui2.AdminAuditPanel.system")}</span>
                     </span>
                   </div>
                   <span className="text-muted-foreground">{new Date(r.created_at).toLocaleString()}</span>
@@ -306,9 +309,9 @@ export default function AdminAuditPanel() {
 
                 {(isValidated || isRejected) && (
                   <div className="mt-2 text-muted-foreground space-y-0.5">
-                    <div>Réclamation : <span className="font-mono text-foreground">{r.entity_id?.slice(0, 8)}</span></div>
+                    <div>{t("ui2.AdminAuditPanel.claim")} : <span className="font-mono text-foreground">{r.entity_id?.slice(0, 8)}</span></div>
                     {r.after_data?.review_reason && (
-                      <div>Motif : <span className="text-foreground">{r.after_data.review_reason}</span></div>
+                      <div>{t("ui2.AdminAuditPanel.reason")} : <span className="text-foreground">{r.after_data.review_reason}</span></div>
                     )}
                   </div>
                 )}

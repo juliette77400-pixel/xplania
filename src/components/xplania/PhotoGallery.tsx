@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Camera, Loader2, ImageOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
 
 export interface UnsplashPhoto {
   id: string;
@@ -20,6 +21,7 @@ interface PhotoGalleryProps {
 }
 
 const PhotoGallery = ({ query, perPage = 6 }: PhotoGalleryProps) => {
+  const { t } = useTranslation();
   const [photos, setPhotos] = useState<UnsplashPhoto[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +64,7 @@ const PhotoGallery = ({ query, perPage = 6 }: PhotoGalleryProps) => {
         </div>
         <div>
           <h3 className="text-base font-bold text-foreground">Photos de {query}</h3>
-          <p className="text-xs text-muted-foreground">Images réelles via Unsplash</p>
+          <p className="text-xs text-muted-foreground">{t("ui2.PhotoGallery.subtitle")}</p>
         </div>
       </div>
 

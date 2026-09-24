@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { EXPLORE_BADGES } from "@/lib/explore-badges";
 import { pingStreakAction } from "@/lib/streak";
+import i18n from "@/i18n";
 
 export interface ExploreNode {
   id: string;
@@ -122,10 +123,10 @@ export const useExplore = (tripId: string | undefined) => {
     try {
       const { data, error } = await supabase.functions.invoke("explore-seed", { body: { tripId } });
       if (error) throw error;
-      toast.success(`Carte générée : ${data?.nodes || 0} points, ${data?.edges || 0} connexions`);
+      toast.success(i18n.t("ui2.useExplore.mapGenerated", { nodes: data?.nodes || 0, edges: data?.edges || 0 }));
       await reload();
     } catch (e: any) {
-      toast.error(e?.message || "Échec génération");
+      toast.error(e?.message || i18n.t("ui2.useExplore.generationFailed"));
     } finally {
       setSeeding(false);
     }
@@ -135,9 +136,9 @@ export const useExplore = (tripId: string | undefined) => {
     const { error } = await supabase.from("explore_nodes")
       .update({ status: "visited", visited_at: new Date().toISOString() })
       .eq("id", nodeId);
-    if (error) { toast.error("Échec"); return; }
+    if (error) { toast.error(i18n.t("ui2.useExplore.failed")); return; }
     pingStreakAction("explore:visit"); // ✨ NEW (gamif)
-    toast.success("✨ Lieu visité ! Points gagnés");
+    toast.success(i18n.t("ui2.useExplore.placeVisited"));
   }, []);
 
   const setNodeStatus = useCallback(async (nodeId: string, status: ExploreNode["status"]) => {
@@ -153,7 +154,7 @@ export const useExplore = (tripId: string | undefined) => {
       trip_id: tripId,
       user_id: user.id,
       level: input.level || 2,
-      name: input.name || "Nouveau lieu",
+      name: input.name || i18n.t("ui2.useExplore.newPlace"),
       type: input.type || "place",
       status: "planned",
       points: input.points ?? 50,
@@ -164,7 +165,7 @@ export const useExplore = (tripId: string | undefined) => {
       position_x: input.position_x ?? Math.random() * 600 - 300,
       position_y: input.position_y ?? Math.random() * 600 - 300,
     });
-    if (error) toast.error("Échec ajout"); else toast.success("Lieu ajouté +10pts");
+    if (error) toast.error(i18n.t("ui2.useExplore.addFailed")); else toast.success(i18n.t("ui2.useExplore.placeAdded"));
   }, [user, tripId]);
 
   const deleteNode = useCallback(async (nodeId: string) => {
@@ -182,7 +183,7 @@ export const useExplore = (tripId: string | undefined) => {
       url: payload.url || null,
       mood: payload.mood || null,
     });
-    if (error) toast.error("Échec souvenir"); else toast.success("Souvenir +20pts");
+    if (error) toast.error(i18n.t("ui2.useExplore.mediaFailed")); else toast.success(i18n.t("ui2.useExplore.mediaAdded"));
   }, [user, tripId]);
 
   // Auto check badges
@@ -199,7 +200,7 @@ export const useExplore = (tripId: string | undefined) => {
           description: def.description,
           icon: def.icon,
         }).then(({ error }) => {
-          if (!error) toast.success(`🏅 Badge débloqué : ${def.name}`, { duration: 4000 });
+          if (!error) toast.success(i18n.t("ui2.useExplore.badgeUnlocked", { name: def.name }), { duration: 4000 });
         });
       }
     });

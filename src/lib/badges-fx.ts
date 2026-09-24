@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
+import i18n from "@/i18n";
 
 /**
  * Trigger a dopamine-friendly badge unlock feedback:
@@ -44,8 +45,8 @@ export function celebrateUnlock(opts: {
     // confetti may fail in non-browser env; silently ignore
   }
 
-  toast.success(`Badge débloqué ! ${icon} ${name}`, {
-    description: description || "Bravo, continue comme ça ✨",
+  toast.success(i18n.t("ui2.badgesFx.badgeUnlocked", { icon, name }), {
+    description: description || i18n.t("ui2.badgesFx.defaultDescription"),
     duration: 5000,
   });
 }

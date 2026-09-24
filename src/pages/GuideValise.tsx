@@ -33,9 +33,8 @@ import { buildCategories, detectSuggestedMode } from "./guide-valise-data";
 const GuideValisePage = () => {
   useHydrateActiveTrip();
   const { tripData } = useTravelStore();
-  const { t, i18n } = useTranslation();
-  const isFr = i18n.language.startsWith("fr");
-  const destination = tripData?.destination || (isFr ? "votre destination" : "your destination");
+  const { t } = useTranslation();
+  const destination = tripData?.destination || t("ui2.GuideValise.destinationFallback");
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;
 
   const suggestedMode = useMemo(
@@ -143,12 +142,12 @@ const GuideValisePage = () => {
   }, []);
 
   const addActivityItems = useCallback((items: string[]) => {
-    addItemsToCategory("Ajoutés par activité", items);
-  }, [addItemsToCategory]);
+    addItemsToCategory(t("ui2.GuideValise.categoryActivityAdded"), items);
+  }, [addItemsToCategory, t]);
 
   const addOutfitItems = useCallback((items: string[]) => {
-    addItemsToCategory("Tenues recommandées", items);
-  }, [addItemsToCategory]);
+    addItemsToCategory(t("ui2.GuideValise.categoryOutfitRecommended"), items);
+  }, [addItemsToCategory, t]);
 
 
   const runGeneration = useCallback(async () => {
@@ -256,8 +255,8 @@ const GuideValisePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
-      <QuotaBanner tool="valise" toolLabel="Valise intelligente" />
-      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Valise intelligente" />
+      <QuotaBanner tool="valise" toolLabel={t("ui2.GuideValise.toolLabel")} />
+      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName={t("ui2.GuideValise.toolLabel")} />
       <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
         <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} checkedItems={checkedItems} totalItems={totalItems} />
 
