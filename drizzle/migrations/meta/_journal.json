@@ -8,6 +8,13 @@
       "when": 1790265315494,
       "tag": "0000_profile_personalization",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790265570469,
+      "tag": "0001_lille_beta_challenges_and_more_badges",
+      "breakpoints": true
     }
   ]
 }
