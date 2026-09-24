@@ -5432,5 +5432,11 @@
       "addError": "Couldn't add this place.",
       "added": "\"{{name}}\" added to your route"
     }
+  },
+  "invokeError": {
+    "rateLimit": "Too many requests in a short time. Wait a minute and try again.",
+    "quota": "You've reached your AI generation limit for now.",
+    "auth": "Your session expired, please sign in again.",
+    "server": "The service is temporarily unavailable. Please try again shortly."
   }
 }
