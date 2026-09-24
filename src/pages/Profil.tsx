@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ProfileStats from "@/components/profil/ProfileStats";
 import BadgeShowcase from "@/components/profil/BadgeShowcase";
+import ProfilePersonalization from "@/components/profil/ProfilePersonalization";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
@@ -126,6 +127,7 @@ const Profil = () => {
           </Card>
         )}
 
+        {!loading && <ProfilePersonalization />}
         {!loading && <ProfileStats />}
         {!loading && <BadgeShowcase />}
 
