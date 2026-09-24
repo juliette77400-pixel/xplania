@@ -1,3 +1,4 @@
+import { friendlyInvokeError } from "@/lib/invoke-error";
 import { useState } from "react";
 import { Sparkles, Loader2, Utensils, Mountain, Building2, ShoppingBag, Moon, Gem, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -46,7 +47,7 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
     });
     setLoading(false);
     if (error) {
-      toast.error(error.message || t("trackingComp.suggestions.error"));
+      toast.error(await friendlyInvokeError(error));
       return;
     }
     onSuggestions(data?.suggestions || []);
