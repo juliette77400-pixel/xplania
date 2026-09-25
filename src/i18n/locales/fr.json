@@ -5440,5 +5440,28 @@
     "quota": "Tu as atteint ta limite de générations IA pour le moment.",
     "auth": "Ta session a expiré, reconnecte-toi.",
     "server": "Le service est momentanément indisponible. Réessaie dans quelques instants."
+  },
+  "tripStats": {
+    "title": "Statistiques du voyage",
+    "km": "Kilomètres parcourus",
+    "places": "Lieux visités",
+    "days": "Jours",
+    "photos": "Photos",
+    "budget": "Budget réel vs prévu",
+    "budgetLine": "{{spent}} € dépensés sur {{planned}} € prévus",
+    "noBudget": "Remplis le Guide Budget pour comparer tes dépenses."
+  },
+  "routeCover": {
+    "label": "Mon parcours",
+    "empty": "Ton parcours A→Z apparaîtra ici dès que tu ajoutes des étapes.",
+    "cta": "Ouvrir le Suivi live"
+  },
+  "souvenir": {
+    "tab": "Souvenir",
+    "label": "Album souvenir",
+    "print": "Télécharger en PDF",
+    "copyLink": "Copier le lien public",
+    "makePublic": "Rendre public",
+    "copied": "Lien copié !"
   }
 }

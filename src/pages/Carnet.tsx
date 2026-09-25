@@ -30,8 +30,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { toast } from "sonner";
 import CarnetOnboardingChat from "@/components/journal/CarnetOnboardingChat";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTripStats } from "@/hooks/useTripStats";
+import TripStatsCard from "@/components/journal/TripStatsCard";
+import RouteCover from "@/components/journal/RouteCover";
+import SouvenirAlbum from "@/components/journal/SouvenirAlbum";
 
-type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share";
+type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share" | "souvenir";
 
 const Carnet = () => {
   const { tripId } = useParams<{ tripId: string }>();
@@ -47,7 +51,8 @@ const Carnet = () => {
   const [activeTab, setActiveTab] = useState<CarnetSection>("timeline");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { regenerate: regenerateCover } = useJournalCover(tripId || "", destination);
+  const { regenerate: regenerateCover, cover } = useJournalCover(tripId || "", destination);
+  const stats = useTripStats(tripId, destination, tripMeta?.departure_date);
 
   const handleRegenCover = async (mode: "unsplash" | "ai") => {
     if (!destination || regenLoading) return;
@@ -170,6 +175,8 @@ const Carnet = () => {
       </header>
 
       <main className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
+        <RouteCover tripId={tripId!} title={journal.title} destination={destination} stats={stats} />
+
         {/* ✨ NEW (Tâche 4) — Utilities (countdown / météo / devise) si voyage à venir ou en cours */}
         {!isTripEnded && tripMeta?.departure_date && (
           <TripUtilitiesPanel
@@ -204,11 +211,12 @@ const Carnet = () => {
           </div>
         ) : (
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as CarnetSection)}>
-            <TabsList className="grid grid-cols-3 sm:grid-cols-5 max-w-3xl mx-auto mb-6">
+            <TabsList className="grid grid-cols-3 sm:grid-cols-6 max-w-4xl mx-auto mb-6">
               <TabsTrigger value="timeline">📖 {t("carnet.tabPages")}</TabsTrigger>
               <TabsTrigger value="story">✨ {t("carnet.tabStory")}</TabsTrigger>
               <TabsTrigger value="insights">📊 {t("carnet.tabInsights")}</TabsTrigger>
               <TabsTrigger value="docs">📎 {t("carnet.tabDocs", "Docs")}</TabsTrigger>
+              <TabsTrigger value="souvenir">🎞️ {t("souvenir.tab")}</TabsTrigger>
               <TabsTrigger value="share">🔗 {t("carnet.tabShare")}</TabsTrigger>
             </TabsList>
 
@@ -290,6 +298,7 @@ const Carnet = () => {
             </TabsContent>
 
             <TabsContent value="insights">
+              <div className="mb-6"><TripStatsCard stats={stats} days={days} /></div>
               <div className="grid md:grid-cols-2 gap-6">
                 <InsightsPanel days={days} />
                 <BadgesBar journalId={journal.id} days={days} />
@@ -299,6 +308,18 @@ const Carnet = () => {
             {/* ✨ NEW (Tâche 3) — Onglet Documents */}
             <TabsContent value="docs">
               {tripId && <TripDocumentsManager tripId={tripId} days={days} />}
+            </TabsContent>
+
+            <TabsContent value="souvenir">
+              <SouvenirAlbum
+                title={journal.title}
+                destination={destination}
+                cover={cover}
+                days={days}
+                isPublic={journal.is_public}
+                publicSlug={journal.public_slug}
+                onShare={() => setShareOpen(true)}
+              />
             </TabsContent>
 
             <TabsContent value="share">

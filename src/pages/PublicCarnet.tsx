@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Loader2, BookOpen, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDayLabel } from "@/lib/journal-utils";
 import { setShareMeta, clearShareMeta } from "@/lib/seo";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
+import SouvenirAlbum from "@/components/journal/SouvenirAlbum";
 
 const PublicCarnet = () => {
   const { t } = useTranslation();
@@ -77,33 +77,7 @@ const PublicCarnet = () => {
           </section>
         )}
 
-        {days.map((d, i) => (
-          <section key={d.id} className="space-y-3">
-            <div>
-              <p className="text-xs text-primary uppercase tracking-wider font-semibold">{t("ui2.PublicCarnet.day", { n: i + 1 })} · {formatDayLabel(d.date)}</p>
-              {d.title && <h2 className="text-2xl font-bold text-foreground">{d.title}</h2>}
-            </div>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {d.blocks.map((b: any) => {
-                const c = b.content || {};
-                return (
-                  <div key={b.id} className="glass-card rounded-xl p-4">
-                    {b.type === "note" && <p className="text-sm text-foreground whitespace-pre-wrap">{c.text}</p>}
-                    {b.type === "highlight" && <p className="text-sm font-medium text-foreground">⭐ {c.text}</p>}
-                    {b.type === "location" && <p className="text-sm text-foreground">📍 {c.name}</p>}
-                    {b.type === "mood" && <p className="text-3xl">{c.emoji}</p>}
-                    {b.type === "photo" && c.url && (
-                      <div className="space-y-1">
-                        <img src={c.url} alt={c.caption || ""} className="rounded-lg w-full" />
-                        {c.caption && <p className="text-xs text-muted-foreground italic">{c.caption}</p>}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        ))}
+        <SouvenirAlbum readOnly title={journal.title} destination="" cover={journal.cover_url} days={days} />
       </main>
     </div>
   );
