@@ -22,4 +22,10 @@ i18n
     },
   });
 
+const syncHtmlLang = (lng?: string) => {
+  if (typeof document !== "undefined") document.documentElement.lang = lng?.startsWith("en") ? "en" : "fr";
+};
+syncHtmlLang(i18n.language);
+i18n.on("languageChanged", syncHtmlLang);
+
 export default i18n;
