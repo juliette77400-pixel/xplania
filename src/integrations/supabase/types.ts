@@ -2665,6 +2665,17 @@ export type Database = {
       }
     }
     Functions: {
+      auto_journal_block: {
+        Args: {
+          _content: Json
+          _date: string
+          _source_id: string
+          _trip_id: string
+          _type: string
+          _user_id: string
+        }
+        Returns: undefined
+      }
       can_retake_quiz: { Args: never; Returns: Json }
       consume_quota: {
         Args: { _tool: Database["public"]["Enums"]["quota_tool"] }

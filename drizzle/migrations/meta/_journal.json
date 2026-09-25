@@ -36,6 +36,13 @@
       "when": 1790268838241,
       "tag": "0004_public_place_lists_and_google_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790323584553,
+      "tag": "0005_auto_journal_timeline",
+      "breakpoints": true
     }
   ]
 }
