@@ -5440,5 +5440,28 @@
     "quota": "You've reached your AI generation limit for now.",
     "auth": "Your session expired, please sign in again.",
     "server": "The service is temporarily unavailable. Please try again shortly."
+  },
+  "tripStats": {
+    "title": "Trip statistics",
+    "km": "Kilometres travelled",
+    "places": "Places visited",
+    "days": "Days",
+    "photos": "Photos",
+    "budget": "Actual vs planned budget",
+    "budgetLine": "€{{spent}} spent of €{{planned}} planned",
+    "noBudget": "Fill in the Budget Guide to compare your spending."
+  },
+  "routeCover": {
+    "label": "My route",
+    "empty": "Your A→Z route will appear here once you add stops.",
+    "cta": "Open Live tracking"
+  },
+  "souvenir": {
+    "tab": "Keepsake",
+    "label": "Keepsake album",
+    "print": "Download as PDF",
+    "copyLink": "Copy public link",
+    "makePublic": "Make public",
+    "copied": "Link copied!"
   }
 }
