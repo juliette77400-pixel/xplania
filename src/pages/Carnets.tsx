@@ -49,7 +49,7 @@ const Carnets = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" aria-busy="true" aria-label={t("common.loading")}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5" aria-busy="true" aria-label={t("common.loading")}>
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} className="h-56 rounded-2xl" />
             ))}
@@ -60,7 +60,7 @@ const Carnets = () => {
             <Link to="/home#create" className="text-primary hover:underline">{t("carnets.createFirst")}</Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
             {trips.map((tr, i) => (
               <div key={tr.id} className="relative group">
                 <NotebookCard trip={tr} index={i} onOpen={() => open(tr)} />

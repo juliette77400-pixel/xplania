@@ -57,7 +57,7 @@ export default function UserNotificationHistory() {
       </div>
 
       <div className="flex flex-wrap gap-2 justify-center mb-4">
-        <div className="flex gap-1">
+        <div className="flex flex-wrap justify-center gap-1">
           {(["all", "in_app", "email"] as const).map((c) => (
             <Button
               key={c}
@@ -69,7 +69,7 @@ export default function UserNotificationHistory() {
             </Button>
           ))}
         </div>
-        <div className="flex gap-1">
+        <div className="flex flex-wrap justify-center gap-1">
           {(["all", "sent", "skipped", "queued", "error"] as const).map((s) => (
             <Button
               key={s}

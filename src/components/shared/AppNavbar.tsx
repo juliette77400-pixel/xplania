@@ -148,14 +148,17 @@ const AppNavbar = () => {
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex min-w-0 items-center gap-0.5 shrink-0 xs:gap-1.5">
           {/* Added: global search bar (Cmd+K) — bar on desktop, icon on mobile */}
           <GlobalSearch variant="bar" />
           <div className="md:hidden">
             <GlobalSearch variant="icon" />
           </div>
-          <LanguageSwitcher variant="minimal" />
-          <ThemeToggle />
+          {/* Responsive: on very narrow screens (<400px) these live in the mobile menu instead */}
+          <div className="hidden xs:flex items-center gap-1.5">
+            <LanguageSwitcher variant="minimal" />
+            <ThemeToggle />
+          </div>
           {user && <NotificationsBell />}
           {user ? (
             <DropdownMenu>
@@ -234,11 +237,11 @@ const AppNavbar = () => {
             <SheetTrigger aria-label={t("appNav.openMenu")} className="lg:hidden p-2 rounded-lg hover:bg-muted">
               <Menu className="w-5 h-5" />
             </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] p-0 overflow-y-auto">
+            <SheetContent side="right" className="w-[min(88vw,320px)] max-w-full p-0 overflow-y-auto overscroll-contain">
               <div className="flex items-center justify-between border-b border-border p-4">
                 <span className="font-bold gradient-text">Xplania</span>
-                <button onClick={() => setOpen(false)} className="p-1 rounded hover:bg-muted">
-                  <X className="w-4 h-4" />
+                <button onClick={() => setOpen(false)} aria-label={t("appNav.openMenu")} className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-muted">
+                  <X className="w-5 h-5" />
                 </button>
               </div>
               <div className="p-2">
@@ -259,7 +262,7 @@ const AppNavbar = () => {
                           key={it.to}
                           to={it.to}
                           onClick={() => setOpen(false)}
-                          className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm ${
+                          className={`flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2 text-sm ${
                             active ? "bg-primary/15 text-primary font-semibold" : "text-foreground hover:bg-muted/60"
                           }`}
                         >
@@ -273,6 +276,11 @@ const AppNavbar = () => {
                     })}
                   </div>
                 ))}
+                {/* Responsive: language + theme controls for very narrow screens */}
+                <div className="mt-3 flex items-center gap-2 border-t border-border px-3 pt-3 xs:hidden">
+                  <LanguageSwitcher variant="minimal" />
+                  <ThemeToggle />
+                </div>
                 <div className="mt-3 border-t border-border pt-3">
                   {user ? (
                     <button
