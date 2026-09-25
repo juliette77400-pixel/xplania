@@ -233,7 +233,7 @@
   "globalSearch": {
     "aria": "Rechercher dans Xplania",
     "placeholder": "Rechercher…",
-    "inputPlaceholder": "Tapez pour rechercher une page, un outil…",
+    "inputPlaceholder": "Tape pour rechercher une page, un outil…",
     "empty": "Aucun résultat.",
     "groupNav": "Navigation",
     "groupExplore": "Explorer",
@@ -245,23 +245,23 @@
   "onboardingTour": {
     "stepLabel": "Étape {{n}} / {{total}}",
     "goTo": "Aller à l'étape {{n}}",
-    "step1Title": "Votre voyage commence ici",
-    "step1Desc": "Créez un voyage et votre copilote rassemble destination, dates, budget et préférences dans un espace unique.",
+    "step1Title": "Ton voyage commence ici",
+    "step1Desc": "Crée un voyage et ton copilote rassemble destination, dates, budget et préférences dans un espace unique.",
     "cta1": "Ouvrir mon espace",
-    "step2Title": "Explorez selon vos envies",
-    "step2Desc": "Xplania utilise votre humeur et votre contexte pour proposer des lieux pertinents, pas une liste générique.",
+    "step2Title": "Explore selon tes envies",
+    "step2Desc": "Xplania utilise ton humeur et ton contexte pour proposer des lieux pertinents, pas une liste générique.",
     "cta2": "Explorer maintenant",
-    "step3Title": "Gardez le cap sur place",
-    "step3Desc": "Suivi, carte et suggestions locales restent reliés au voyage que vous avez préparé.",
+    "step3Title": "Garde le cap sur place",
+    "step3Desc": "Suivi, carte et suggestions locales restent reliés au voyage que tu as préparé.",
     "cta3": "Voir le suivi",
-    "step4Title": "Transformez le voyage en souvenir",
-    "step4Desc": "Vos étapes, photos et émotions alimentent un carnet vivant que vous pouvez conserver et partager.",
+    "step4Title": "Transforme le voyage en souvenir",
+    "step4Desc": "Tes étapes, photos et émotions alimentent un carnet vivant que tu peux conserver et partager.",
     "cta4": "Ouvrir mes carnets",
-    "step5Title": "Suivez et explorez en live",
-    "step5Desc": "Carte de voyage, suivi GPS, badges et statistiques — toute votre aventure réunie.",
+    "step5Title": "Suis et explore en live",
+    "step5Desc": "Carte de voyage, suivi GPS, badges et statistiques — toute ton aventure réunie.",
     "cta5": "Voir la carte",
-    "step6Title": "Personnalisez votre profil",
-    "step6Desc": "Ajoutez votre nom et votre avatar pour une expérience sur-mesure et cohérente.",
+    "step6Title": "Personnalise ton profil",
+    "step6Desc": "Ajoute ton nom et ton avatar pour une expérience sur-mesure et cohérente.",
     "cta6": "Compléter mon profil"
   },
   "hero": {
@@ -285,7 +285,7 @@
     "toolMood": "Mood",
     "toolDiscover": "Discover",
     "earlyExplorer": "Programme Early Explorer",
-    "earlyExplorerDesc": "Rejoignez la communauté de bêta-testeurs"
+    "earlyExplorerDesc": "Rejoins la communauté de bêta-testeurs"
   },
   "features": {
     "tag": "8 outils, 1 seule app",
@@ -297,39 +297,39 @@
       "valise": {
         "title": "Valise intelligente",
         "tagline": "Une checklist sur-mesure de ce qu'il faut emporter.",
-        "description": "On génère automatiquement la liste de bagages adaptée à votre destination, à la météo prévue et à la durée du séjour. Adieu les oublis et les valises trop lourdes.",
+        "description": "On génère automatiquement la liste de bagages adaptée à ta destination, à la météo prévue et à la durée du séjour. Adieu les oublis et les valises trop lourdes.",
         "benefit1": "Ne plus rien oublier d'essentiel",
-        "benefit2": "Optimiser l'espace dans vos bagages",
+        "benefit2": "Optimise l'espace dans tes bagages",
         "cta": "Préparer ma valise"
       },
       "budget": {
         "title": "Guide budget",
-        "tagline": "Estimez et suivez vos dépenses pendant le voyage.",
-        "description": "On estime le coût total de votre voyage selon le pays et votre style, et vous suivez vos dépenses au fil des jours pour rester dans le cadre prévu.",
+        "tagline": "Estime et suis tes dépenses pendant le voyage.",
+        "description": "On estime le coût total de ton voyage selon le pays et ton style, et tu suis tes dépenses au fil des jours pour rester dans le cadre prévu.",
         "benefit1": "Éviter les mauvaises surprises",
         "benefit2": "Adapter le budget au coût de la vie local",
         "cta": "Estimer mon budget"
       },
       "visa": {
         "title": "Guide visa & démarches",
-        "tagline": "Sachez exactement quels papiers préparer avant de partir.",
-        "description": "On vous donne la liste précise des documents requis selon votre nationalité et votre destination : visa, passeport, vaccins, assurances.",
+        "tagline": "Sache exactement quels papiers préparer avant de partir.",
+        "description": "On te donne la liste précise des documents requis selon ta nationalité et ta destination : visa, passeport, vaccins, assurances.",
         "benefit1": "Simplifier les démarches administratives",
         "benefit2": "Avoir tous les documents requis le jour J",
         "cta": "Voir mes démarches"
       },
       "journal": {
         "title": "Carnet de bord",
-        "tagline": "Documentez et revivez votre voyage en quelques clics.",
-        "description": "Notes, photos, humeurs et lieux jour par jour. L'IA transforme vos souvenirs en récit immersif, exportable en PDF et partageable en lien public.",
+        "tagline": "Documente et revis ton voyage en quelques clics.",
+        "description": "Notes, photos, humeurs et lieux jour par jour. L'IA transforme tes souvenirs en récit immersif, exportable en PDF et partageable en lien public.",
         "benefit1": "Garder une trace émotionnelle de chaque voyage",
-        "benefit2": "Partager vos souvenirs avec vos proches",
+        "benefit2": "Partage tes souvenirs avec tes proches",
         "cta": "Ouvrir mes carnets"
       },
       "tracking": {
         "title": "Suivi de Voyage",
-        "tagline": "Votre compagnon en temps réel pendant le séjour.",
-        "description": "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon votre position, météo et humeur.",
+        "tagline": "Ton compagnon en temps réel pendant le séjour.",
+        "description": "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon ta position, météo et humeur.",
         "benefit1": "Suivre sa progression et ses stats en direct",
         "benefit2": "Recevoir des suggestions contextuelles à proximité",
         "cta": "Activer le suivi live"
@@ -364,48 +364,48 @@
     "title": "Comment fonctionne Xplania",
     "subtitle": "Une approche simple en trois étapes pour voyager sereinement",
     "soon": "Bientôt",
-    "step1Title": "Dites-nous où vous voulez aller",
-    "step1Desc": "Destination, dates, type de voyage : on vous pose juste les bonnes questions, ni trop, ni trop peu.",
-    "step2Title": "L'IA prépare votre voyage",
-    "step2Desc": "En quelques secondes, vous recevez votre budget, votre liste de bagages et vos démarches visa, prêts à l'emploi.",
-    "step3Title": "Vivez le voyage sereinement",
+    "step1Title": "Dis-nous où tu veux aller",
+    "step1Desc": "Destination, dates, type de voyage : on te pose juste les bonnes questions, ni trop, ni trop peu.",
+    "step2Title": "L'IA prépare ton voyage",
+    "step2Desc": "En quelques secondes, tu reçois ton budget, ta liste de bagages et tes démarches visa, prêts à l'emploi.",
+    "step3Title": "Vis le voyage sereinement",
     "step3Desc": "Carnet de bord, suivi live, mood explorer et recommandations en temps réel : tout est déjà disponible dans la bêta."
   },
   "benefits": {
-    "titlePart1": "Voyagez l'esprit léger,",
+    "titlePart1": "Voyage l'esprit léger,",
     "titlePart2": "l'IA s'occupe du reste",
-    "subtitle": "Xplania n'est pas juste un site, c'est votre copilote de voyage intelligent. Nous éliminons la charge mentale du budget, des visas et des bagages pour vous laisser l'essentiel : le plaisir de découvrir.",
+    "subtitle": "Xplania n'est pas juste un site, c'est ton copilote de voyage intelligent. Nous éliminons la charge mentale du budget, des visas et des bagages pour te laisser l'essentiel : le plaisir de découvrir.",
     "timeTitle": "Gain de temps",
-    "timeDesc": "Ne passez plus des heures à chercher des infos contradictoires sur les visas ou le budget. Xplania centralise tout.",
+    "timeDesc": "Ne passe plus des heures à chercher des infos contradictoires sur les visas ou le budget. Xplania centralise tout.",
     "calmTitle": "Sérénité totale",
-    "calmDesc": "Partez avec la certitude de n'avoir rien oublié grâce à une planification intelligente et personnalisée.",
+    "calmDesc": "Pars avec la certitude de n'avoir rien oublié grâce à une planification intelligente et personnalisée.",
     "controlTitle": "Contrôle absolu",
-    "controlDesc": "Gérez votre budget en temps réel avec des estimations basées sur le coût de la vie local."
+    "controlDesc": "Gère ton budget en temps réel avec des estimations basées sur le coût de la vie local."
   },
   "beta": {
     "titlePart1": "Pourquoi participer à la",
     "titlePart2": "bêta Xplania",
-    "subtitle": "Rejoignez une communauté exclusive de voyageurs passionnés qui façonnent le futur du voyage",
+    "subtitle": "Rejoins une communauté exclusive de voyageurs passionnés qui façonnent le futur du voyage",
     "feedbackTitle": "Feedback direct",
-    "feedbackDesc": "Votre retour améliore directement le produit. Chaque suggestion compte pour créer l'outil de voyage idéal.",
+    "feedbackDesc": "Ton retour améliore directement le produit. Chaque suggestion compte pour créer l'outil de voyage idéal.",
     "earlyTitle": "Accès anticipé",
-    "earlyDesc": "Découvrez les nouvelles fonctionnalités avant tout le monde et testez les innovations en avant-première.",
+    "earlyDesc": "Découvre les nouvelles fonctionnalités avant tout le monde et teste les innovations en avant-première.",
     "communityTitle": "Communauté exclusive",
-    "communityDesc": "Rejoignez les Early Explorers et participez à la création du futur du voyage intelligent.",
-    "shareTitle": "Partagez votre expérience",
-    "shareSubtitle": "Votre feedback est essentiel pour améliorer Xplania et créer l'outil de voyage parfait",
+    "communityDesc": "Rejoins les Early Explorers et participe à la création du futur du voyage intelligent.",
+    "shareTitle": "Partage ton expérience",
+    "shareSubtitle": "Ton feedback est essentiel pour améliorer Xplania et créer l'outil de voyage parfait",
     "shareCta": "Donner mon feedback"
   },
   "dashboard": {
-    "title": "Votre voyage en un coup d'œil",
+    "title": "Ton voyage en un coup d'œil",
     "subtitle": "Un tableau de bord intuitif qui centralise toutes les informations essentielles",
     "tabOverview": "Vue d'ensemble",
     "tabBudget": "Budget",
     "tabVisa": "Visa",
     "tabSuitcase": "Valise",
     "modifyTrip": "Modifier mon voyage",
-    "createFirstTitle": "Créez votre premier voyage",
-    "createFirstDesc": "Renseignez votre destination et vos dates pour découvrir un tableau de bord personnalisé avec budget estimé, exigences visa et recommandations bagages.",
+    "createFirstTitle": "Crée ton premier voyage",
+    "createFirstDesc": "Renseigne ta destination et tes dates pour découvrir un tableau de bord personnalisé avec budget estimé, exigences visa et recommandations bagages.",
     "smartBudget": "Budget intelligent",
     "requiredDocs": "Documents requis",
     "luggageList": "Liste de bagages",
@@ -416,24 +416,24 @@
     "totalBudget": "Budget total",
     "perDay": "Par jour",
     "breakdown": "Répartition détaillée",
-    "yourConstraints": "Vos contraintes budget :",
+    "yourConstraints": "Tes contraintes budget :",
     "visaGuide": "Guide Visa & Documents",
     "visaGuideDesc": "Documents nécessaires pour {{destination}}",
-    "noVisaData": "Aucune donnée de documents disponible. Générez un plan de voyage pour voir les résultats.",
+    "noVisaData": "Aucune donnée de documents disponible. Génère un plan de voyage pour voir les résultats.",
     "suitcaseGuide": "Guide Valise",
     "suitcaseGuideDesc": "Checklist personnalisée pour {{destination}} · {{days}} jours",
-    "noLuggageData": "Aucune donnée de bagages disponible. Générez un plan de voyage pour voir les résultats.",
-    "yourLuggageTypes": "Vos types de bagages :"
+    "noLuggageData": "Aucune donnée de bagages disponible. Génère un plan de voyage pour voir les résultats.",
+    "yourLuggageTypes": "Tes types de bagages :"
   },
   "myDashboard": {
     "kicker": "Mon espace Xplania",
     "greetingSimple": "Bonjour",
-    "copilotKicker": "Votre copilote aujourd'hui",
+    "copilotKicker": "Ton copilote aujourd'hui",
     "nextTripTitle": "Le prochain voyage en un coup d'œil",
-    "journeyTitle": "Que voulez-vous faire maintenant ?",
-    "journeyDesc": "Xplania adapte ses capacités au moment de votre voyage.",
-    "progressTitle": "Votre progression",
-    "progressDesc": "Missions et habitudes restent disponibles, sans détourner l'attention de votre voyage.",
+    "journeyTitle": "Que veux-tu faire maintenant ?",
+    "journeyDesc": "Xplania adapte ses capacités au moment de ton voyage.",
+    "progressTitle": "Ta progression",
+    "progressDesc": "Missions et habitudes restent disponibles, sans détourner l'attention de ton voyage.",
     "phases": {
       "prepare": {
         "title": "Préparer",
@@ -441,15 +441,15 @@
       },
       "explore": {
         "title": "Explorer",
-        "desc": "Des lieux choisis selon vos envies, votre humeur et votre contexte."
+        "desc": "Des lieux choisis selon tes envies, ton humeur et ton contexte."
       },
       "travel": {
         "title": "Voyager",
-        "desc": "Suivez le séjour et retrouvez les bons repères au bon moment."
+        "desc": "Suis le séjour et retrouve les bons repères au bon moment."
       },
       "relive": {
         "title": "Revivre",
-        "desc": "Transformez vos étapes et émotions en souvenirs durables."
+        "desc": "Transforme tes étapes et émotions en souvenirs durables."
       }
     },
     "greeting": "Bonjour {{name}} 👋",
@@ -475,7 +475,7 @@
   },
   "guideBudget": {
     "toastGenerated": "Budget prévisionnel généré ! 💰",
-    "toastRecalc": "Xplania recalcule votre budget…",
+    "toastRecalc": "Xplania recalcule ton budget…",
     "toastRecalcDone": "Budget recalculé !",
     "toastAdjusted": "{{key}} ajusté par l'IA",
     "regenerate": "Regénérer le budget",
@@ -501,12 +501,12 @@
   },
   "guideVisa": {
     "title": "Visa & Démarches Administratives",
-    "heroKicker": "Votre copilote vérifie les formalités",
-    "contextKicker": "Votre situation",
-    "contextHelp": "Le résultat dépend de votre destination et de votre nationalité.",
+    "heroKicker": "Ton copilote vérifie les formalités",
+    "contextKicker": "Ta situation",
+    "contextHelp": "Le résultat dépend de ta destination et de ta nationalité.",
     "resourcesKicker": "Pour aller plus loin",
-    "resourcesTitle": "Sources et repères pour préparer votre départ",
-    "resourcesHelp": "Retrouvez le processus, la santé, la sécurité et les informations pratiques après votre résultat.",
+    "resourcesTitle": "Sources et repères pour préparer ton départ",
+    "resourcesHelp": "Retrouve le processus, la santé, la sécurité et les informations pratiques après ton résultat.",
     "subtitle": "Les informations essentielles avant ton départ, pour un voyage en toute sérénité.",
     "checkBtn": "Vérifier mes besoins",
     "selectDestination": "Sélectionne ta destination",
@@ -522,17 +522,17 @@
     "analyzing": "Analyse en cours…",
     "errSelectDest": "Sélectionne une destination d'abord !",
     "errTitle": "Erreur de génération",
-    "errIncomplete": "Réponse IA incomplète. Réessayez.",
+    "errIncomplete": "Réponse IA incomplète. Réessaie.",
     "errAi": "Erreur lors de l'appel IA",
     "errUnknown": "Erreur inconnue",
     "errToast": "Erreur lors de la génération",
     "successToast": "Formalités vérifiées par l'IA ! 📋",
     "regenLoading": "Xplania reconsulte les autorités…",
-    "stepProfile": "Xplania analyse votre profil voyageur…",
+    "stepProfile": "Xplania analyse ton profil voyageur…",
     "stepAuthorities": "Xplania consulte les autorités…",
     "stepVisa": "Vérification des formalités visa…",
     "stepHealth": "Analyse des recommandations sanitaires…",
-    "stepChecklist": "Génération de votre checklist…",
+    "stepChecklist": "Génération de ta checklist…",
     "stepDone": "Formalités prêtes !",
     "secSafe": "🟢 Sûr",
     "secModerate": "🟡 Modéré",
@@ -854,7 +854,7 @@
     }
   },
   "footer": {
-    "tagline": "Votre copilote de voyage intelligent. Planifiez, préparez et vivez vos voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
+    "tagline": "Ton copilote de voyage intelligent. Planifie, prépare et vis tes voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
     "version": "Version 0.1 • Bêta Privée",
     "featuresTitle": "Fonctionnalités",
     "contactTitle": "Contact Xplania",
@@ -1001,7 +1001,7 @@
     "linkedinLabel": "Recevoir aussi une notification via LinkedIn (optionnel)",
     "linkedinPlaceholder": "https://linkedin.com/in/ton-profil",
     "linkedinFallbackName": "voyageur",
-    "linkedinMessage": "Bonjour {{name}}, vous avez demandé à être notifié(e) dès que les pass premium Xplania sont disponibles. Nous vous confirmons votre inscription sur la liste d'attente — nous reviendrons vers vous en priorité ! 🌍✨",
+    "linkedinMessage": "Bonjour {{name}}, tu as demandé à être notifié(e) dès que les pass premium Xplania sont disponibles. Nous te confirmons ton inscription sur la liste d'attente — nous reviendrons vers toi en priorité ! 🌍✨",
     "errorGeneric": "Oups, une erreur est survenue. Réessaye.",
     "successToast": "Tu es sur la liste 🚀",
     "cooldown": "Cet email est déjà inscrit. Réessaie dans {{days}} jours.",
@@ -1012,55 +1012,55 @@
   "feedback": {
     "title": "Donner mon feedback",
     "emailLabel": "Email",
-    "emailPlaceholder": "votre@email.com",
+    "emailPlaceholder": "ton@email.com",
     "ratingLabel": "Note",
     "suggestionsLabel": "Suggestions d'amélioration",
-    "suggestionsPlaceholder": "Partagez vos idées, suggestions ou retours...",
+    "suggestionsPlaceholder": "Partage tes idées, suggestions ou retours...",
     "problemsLabel": "Problèmes rencontrés",
-    "problemsPlaceholder": "Décrivez les bugs ou problèmes rencontrés...",
+    "problemsPlaceholder": "Décris les bugs ou problèmes rencontrés...",
     "submit": "Envoyer mon feedback",
     "sending": "Envoi en cours...",
-    "errorRequired": "Veuillez remplir tous les champs et donner une note",
-    "errorSend": "Une erreur est survenue lors de l'envoi. Vérifiez la console.",
-    "successToast": "Merci pour votre feedback, vous contribuez à améliorer Xplania ✨",
+    "errorRequired": "Remplis tous les champs et donne une note",
+    "errorSend": "Une erreur est survenue lors de l'envoi. Vérifie la console.",
+    "successToast": "Merci pour ton feedback, tu contribues à améliorer Xplania ✨",
     "thanks": "Merci !",
-    "thanksDesc": "Merci pour votre feedback, vous contribuez à améliorer Xplania ✨"
+    "thanksDesc": "Merci pour ton feedback, tu contribues à améliorer Xplania ✨"
   },
   "onboarding": {
     "dialogTitle": "Découvrir Xplania",
     "stepLabel": "Étape {{n}} / 3",
-    "step1Title": "Commencez par votre voyage",
-    "step1Desc": "Indiquez votre destination, vos dates et votre façon de voyager. Quelques réponses suffisent pour donner à Ping le bon contexte.",
+    "step1Title": "Commence par ton voyage",
+    "step1Desc": "Indique ta destination, tes dates et ta façon de voyager. Quelques réponses suffisent pour donner à Ping le bon contexte.",
     "step2Title": "Ping relie chaque détail",
     "step2Desc": "Budget, formalités, valise et recommandations sont personnalisés ensemble — pas générés comme des outils isolés.",
-    "step3Title": "Gardez le même copilote",
-    "step3Desc": "Xplania vous accompagne de la préparation jusqu'au carnet de souvenirs, avec un voyage qui reste cohérent à chaque étape.",
+    "step3Title": "Garde le même copilote",
+    "step3Desc": "Xplania t'accompagne de la préparation jusqu'au carnet de souvenirs, avec un voyage qui reste cohérent à chaque étape.",
     "startCta": "Créer mon voyage",
     "goToStep": "Aller à l'étape {{n}}",
     "stepOf": "Étape {{n}} / 3",
     "besoin": {
-      "title": "Qu'est-ce qui vous amène ?",
-      "help": "Choisissez tout ce qui vous ressemble."
+      "title": "Qu'est-ce qui t'amène ?",
+      "help": "Choisis tout ce qui te ressemble."
     },
     "essai": {
       "tag": "Aperçu",
-      "helpReal": "Voici du contenu réel adapté à votre profil.",
-      "help": "Un avant-goût de ce que Xplania fera pour vous.",
-      "locked": "Débloquez la version complète dans votre dashboard.",
+      "helpReal": "Voici du contenu réel adapté à ton profil.",
+      "help": "Un avant-goût de ce que Xplania fera pour toi.",
+      "locked": "Débloque la version complète dans ton dashboard.",
       "unlock": "Débloquer tout",
       "openFeature": "Ouvrir la fonctionnalité complète"
     },
     "features": {
-      "tag": "Vos deux atouts",
-      "title": "Deux fonctionnalités faites pour vous",
+      "tag": "Tes deux atouts",
+      "title": "Deux fonctionnalités faites pour toi",
       "tryIt": "Essayer cet aperçu",
       "editNeeds": "Modifier mes réponses",
       "skip": "Passer et voir le dashboard →"
     },
     "signup": {
-      "step": "Sauvegardez votre profil",
-      "title": "Créez votre compte",
-      "help": "Créez un compte pour ne pas perdre votre profil de voyageur, vos scores et vos recommandations.",
+      "step": "Sauvegarde ton profil",
+      "title": "Crée ton compte",
+      "help": "Crée un compte pour ne pas perdre ton profil de voyageur, tes scores et tes recommandations.",
       "cta": "Créer mon compte"
     }
   },
@@ -1252,8 +1252,8 @@
   "offres": {
     "back": "Retour à l'accueil",
     "tag": "Offres Xplania",
-    "title": "Choisissez la formule qui vous correspond",
-    "subtitle": "Démarrez gratuitement, puis composez votre abonnement pack par pack.",
+    "title": "Choisis la formule qui te correspond",
+    "subtitle": "Démarre gratuitement, puis compose ton abonnement pack par pack.",
     "free": "Gratuit",
     "freeTagline": "Pour découvrir Xplania",
     "current": "Actuel",
@@ -1264,8 +1264,8 @@
     "generationsUsed": "{{used}} / {{total}} générations utilisées",
     "remainingCount": "{{n}} restante(s)",
     "packsTitle": "Nos packs à la carte",
-    "packsSubtitle": "Choisissez vos packs et la durée qui vous convient.",
-    "perTripNote": "Idéal pour les voyageurs occasionnels qui partent 1 à 2 fois par an. Payez uniquement quand vous en avez besoin, sans engagement.",
+    "packsSubtitle": "Choisis tes packs et la durée qui te convient.",
+    "perTripNote": "Idéal pour les voyageurs occasionnels qui partent 1 à 2 fois par an. Paye uniquement quand tu en as besoin, sans engagement.",
     "billing": {
       "monthly": "Mensuel",
       "yearly": "Annuel",
@@ -1284,8 +1284,8 @@
     "recommended": "Recommandé",
     "premium": "Premium",
     "notifyMe": "Notifie-moi au lancement",
-    "comboTag": "Économisez en combinant",
-    "comboTitle": "Combinez vos packs et économisez",
+    "comboTag": "Économise en combinant",
+    "comboTitle": "Combine tes packs et économise",
     "comboSubtitle": "2 packs → −15 % | 3 packs → −20 % | 4 packs → −25 %",
     "doublePacks": "Packs doubles",
     "doubleDiscount": "−12 à −15 %",
@@ -1340,13 +1340,13 @@
   },
   "quotaReached": {
     "title": "Limite gratuite atteinte",
-    "desc": "Vous avez utilisé vos 3 générations gratuites 🎉 Passez à une formule payante pour continuer à explorer sans limites.",
+    "desc": "Tu as utilisé tes 3 générations gratuites 🎉 Passe à une formule payante pour continuer à explorer sans limites.",
     "later": "Plus tard",
     "seeOffers": "Voir les offres"
   },
   "travelForm": {
-    "modeTitle": "Comment voulez-vous planifier ?",
-    "modeSubtitle": "Choisissez la profondeur du questionnaire qui vous convient.",
+    "modeTitle": "Comment veux-tu planifier ?",
+    "modeSubtitle": "Choisis la profondeur du questionnaire qui te convient.",
     "changeMode": "Changer de mode",
     "back": "Retour",
     "resume": "Reprendre",
@@ -1355,9 +1355,9 @@
     "lastStep": "Dernière étape",
     "generate": "Générer mon plan IA",
     "generating": "Analyse en cours...",
-    "yourPlan": "Votre plan de voyage",
+    "yourPlan": "Ton plan de voyage",
     "retry": "Réessayer",
-    "errorGeneric": "Erreur inconnue. Veuillez réessayer.",
+    "errorGeneric": "Erreur inconnue. Réessaie.",
     "errorTitle": "Erreur de génération",
     "errorServer": "Erreur serveur ({{status}})",
     "errorNoRecs": "Aucune recommandation reçue",
@@ -1367,35 +1367,35 @@
     "stepCrash": "Cette étape a rencontré un problème",
     "stepCrashHint": "Tes réponses sont sauvegardées. Réessaie ou reviens à l'étape précédente.",
     "successTitle": "✨ Plan de voyage généré !",
-    "successDesc": "Vos recommandations pour {{destination}} sont prêtes.",
+    "successDesc": "Tes recommandations pour {{destination}} sont prêtes.",
     "steps": {
       "basic": {
         "label": "Informations de base",
-        "description": "Où et quand souhaitez-vous partir ?"
+        "description": "Où et quand souhaites-tu partir ?"
       },
       "profile": {
         "label": "Profil du voyageur",
-        "description": "Parlez-nous de vous pour personnaliser votre voyage"
+        "description": "Parle-nous de toi pour personnaliser ton voyage"
       },
       "objectives": {
         "label": "Objectif du voyage",
-        "description": "Que souhaitez-vous vivre pendant ce voyage ?"
+        "description": "Que souhaites-tu vivre pendant ce voyage ?"
       },
       "style": {
         "label": "Style de voyage",
-        "description": "Comment aimez-vous voyager ?"
+        "description": "Comment aimes-tu voyager ?"
       },
       "budget": {
         "label": "Budget",
-        "description": "Définissez votre enveloppe budgétaire"
+        "description": "Définis ton enveloppe budgétaire"
       },
       "accommodation": {
         "label": "Hébergement",
-        "description": "Quel type de logement préférez-vous ?"
+        "description": "Quel type de logement préfères-tu ?"
       },
       "transport": {
         "label": "Transport",
-        "description": "Comment comptez-vous vous déplacer ?"
+        "description": "Comment comptes-tu te déplacer ?"
       },
       "constraints": {
         "label": "Contraintes",
@@ -1403,7 +1403,7 @@
       },
       "environment": {
         "label": "Environnement",
-        "description": "Vos préférences d'environnement et bagages"
+        "description": "Tes préférences d'environnement et bagages"
       },
       "inspirations": {
         "label": "Inspirations",
@@ -1411,8 +1411,8 @@
       }
     },
     "modeSelector": {
-      "title": "Choisissez votre niveau de personnalisation",
-      "subtitle": "Vous pourrez toujours changer plus tard depuis le formulaire.",
+      "title": "Choisis ton niveau de personnalisation",
+      "subtitle": "Tu pourras toujours changer plus tard depuis le formulaire.",
       "choose": "Choisir",
       "popular": "Populaire",
       "quick": {
@@ -1426,7 +1426,7 @@
       "custom": {
         "title": "Plan personnalisé",
         "duration": "≈ 3 min",
-        "description": "On affine vos centres d'intérêt et le rythme souhaité pour un voyage qui vous ressemble.",
+        "description": "On affine tes centres d'intérêt et le rythme souhaité pour un voyage qui te ressemble.",
         "h1": "8 à 10 questions",
         "h2": "Recommandations ciblées",
         "h3": "Bon équilibre"
@@ -1447,13 +1447,13 @@
       "arrivalCityPh": "Ex : Tokyo",
       "arrivalCityHint": "Cette ville est utilisée pour la météo et les photos en temps réel.",
       "departure": "Lieu de départ",
-      "departurePh": "Tapez une ville, un aéroport ou un code IATA...",
+      "departurePh": "Tape une ville, un aéroport ou un code IATA...",
       "departureDate": "Date de départ",
       "returnDate": "Date de retour",
       "duration": "Durée du séjour",
       "durationPh": "Ex : 14 jours",
       "tripType": "Type de voyage",
-      "tripTypeOtherLabel": "Précisez votre type de voyage",
+      "tripTypeOtherLabel": "Précise ton type de voyage",
       "tripTypeOtherPh": "Ex : Voyage humanitaire, road trip en van...",
       "whoTravels": "Qui voyage ?",
       "age": "Ton âge",
@@ -1464,42 +1464,42 @@
       "objective": "Objectif principal du voyage",
       "otherObjective": "Autre objectif",
       "otherObjectivePh": "Objectif particulier...",
-      "feelings": "Comment voulez-vous vous sentir ?",
-      "priorities": "Ce qui compte le plus pour vous",
+      "feelings": "Comment veux-tu te sentir ?",
+      "priorities": "Ce qui compte le plus pour toi",
       "organization": "Organisation du voyage",
       "rhythm": "Rythme du voyage",
       "totalBudget": "Budget total du voyage (€)",
-      "totalBudgetHint": "Entrez votre budget total pour ce voyage (en €).",
+      "totalBudgetHint": "Entre ton budget total pour ce voyage (en €).",
       "perDay": "Budget par jour",
       "days": "{{n}} jours",
       "spendingPriorities": "Priorité de dépense",
       "accommodationType": "Type d'hébergement",
-      "accommodationOtherPh": "Précisez le type d'hébergement...",
+      "accommodationOtherPh": "Précise le type d'hébergement...",
       "standing": "Standing",
-      "alreadyBooked": "Avez-vous déjà réservé ?",
+      "alreadyBooked": "As-tu déjà réservé ?",
       "stopover": "Escale",
       "stopoverCount": "Combien d'escales ?",
       "localTransport": "Transport local",
       "intlPermit": "Permis international",
       "constraints": "Contraintes importantes",
       "childrenCount": "Nombre d'enfants",
-      "animalDetails": "Précisez l'animal (nature/taille)",
+      "animalDetails": "Précise l'animal (nature/taille)",
       "animalDetailsPh": "Ex : Chien de petite taille, chat...",
       "mobilityDetails": "Besoins spécifiques en assistance",
       "mobilityDetailsPh": "Ex : Fauteuil roulant, canne, assistance aéroport...",
-      "budgetDetails": "Détaillez vos contraintes financières",
+      "budgetDetails": "Détaille tes contraintes financières",
       "budgetDetailsPh": "Ex : Maximum 800€ tout compris, hébergement économique...",
-      "timeDetails": "Précisez vos contraintes de durée",
+      "timeDetails": "Précise tes contraintes de durée",
       "timeDetailsPh": "Ex : Seulement 3 jours, départ impératif le vendredi...",
       "importantNotes": "Éléments importants à savoir",
       "importantNotesPh": "Peur de l'eau, vertige, phobies, préférences, contraintes particulières...",
       "diet": "Régime alimentaire",
       "otherDiet": "Autre régime",
-      "otherDietPh": "Précisez...",
+      "otherDietPh": "Précise...",
       "connectivity": "Connectivité souhaitée",
       "climate": "Préférence climatique",
       "envSensitivity": "Sensibilité environnementale",
-      "culturalImmersion": "Souhaitez-vous vivre une immersion culturelle ?",
+      "culturalImmersion": "Souhaites-tu vivre une immersion culturelle ?",
       "baggageType": "Type de bagage",
       "inspirationsLabel": "Qu'est-ce qui t'inspire pour ce voyage ?",
       "inspirationsPh": "Paysages, volcans, villages, plages, road trip, lieux cachés...",
@@ -1687,7 +1687,7 @@
       }
     },
     "preview": {
-      "kicker": "Aperçu de votre voyage",
+      "kicker": "Aperçu de ton voyage",
       "destinationFallback": "Destination à choisir",
       "destination": "Destination",
       "departure": "Départ",
@@ -1702,15 +1702,15 @@
     },
     "dashboard": {
       "loadingTitle": "Analyse en cours pour {{destination}}...",
-      "loadingDesc": "Notre IA génère des recommandations ultra-personnalisées basées sur votre profil de voyageur.",
+      "loadingDesc": "Notre IA génère des recommandations ultra-personnalisées basées sur ton profil de voyageur.",
       "errorTitle": "Oups, une erreur est survenue",
-      "destinationFallback": "votre destination",
-      "kickerDest": "Votre destination",
+      "destinationFallback": "ta destination",
+      "kickerDest": "Ta destination",
       "datesUndefined": "Dates à définir",
       "daysUnit": "jours",
       "successHead": "Plan généré !",
-      "successDesc": "Cliquez sur chaque section pour voir les détails.",
-      "secSummary": "Résumé de votre voyage",
+      "successDesc": "Clique sur chaque section pour voir les détails.",
+      "secSummary": "Résumé de ton voyage",
       "secSummarySub": "{{destination}} · {{days}} jours · {{dates}}",
       "labelDestination": "Destination",
       "labelDeparture": "Départ",
@@ -1904,7 +1904,7 @@
   "suivi": {
     "title": "Suivi de Voyage",
     "kicker": "Compagnon de voyage",
-    "heroTitle": "Suivez votre voyage en direct",
+    "heroTitle": "Suis ton voyage en direct",
     "heroDesc": "Carte live, timeline dynamique, check-in auto et suggestions IA hyper locales.",
     "empty": "Crée d'abord un voyage pour activer le suivi.",
     "createTrip": "Créer mon voyage →",
@@ -2549,7 +2549,7 @@
         }
       }
     },
-    "aiTipAnalyzing": "L'IA de Xplania analyse et adapte votre liste…",
+    "aiTipAnalyzing": "L'IA de Xplania analyse et adapte ta liste…",
     "aiTipRegenerate": "Nouveau conseil",
     "genTitle": "Génération IA en cours…",
     "genDone": "Terminé",
@@ -2859,8 +2859,8 @@
       }
     },
     "genSteps": {
-      "s1": "Xplania analyse vos préférences…",
-      "s2": "Xplania calcule votre budget optimal…",
+      "s1": "Xplania analyse tes préférences…",
+      "s2": "Xplania calcule ton budget optimal…",
       "s3": "Optimisation des catégories en cours…",
       "s4": "Budget personnalisé prêt !"
     },
@@ -4224,10 +4224,10 @@
   "tripDocs": {
     "title": "Documents du voyage",
     "pageDocs": "Documents de cette page",
-    "hint": "Stockez vos billets, passeport, réservations (PDF ou images, max 10 Mo). Vous pouvez aussi les épingler à une page du carnet.",
+    "hint": "Stocke tes billets, passeport, réservations (PDF ou images, max 10 Mo). Tu peux aussi les épingler à une page du carnet.",
     "upload": "Ajouter",
     "open": "Ouvrir",
-    "empty": "Aucun document pour ce voyage. Ajoutez vos billets ou réservations !",
+    "empty": "Aucun document pour ce voyage. Ajoute tes billets ou réservations !",
     "emptyPage": "Aucun document épinglé à cette page.",
     "pinToPage": "Épingler à…",
     "noPage": "Aucune page",
@@ -4711,7 +4711,7 @@
     "exitConfirm": "Quitter",
     "retakeLocked": "Le quiz est réservé à une fois. Passe Premium pour le refaire.",
     "retakeError": "Impossible de recommencer le quiz pour le moment.",
-    "saveWarn": "⚠️ Ce profil n'est pas encore enregistré. Créez votre compte pour ne pas le perdre.",
+    "saveWarn": "⚠️ Ce profil n'est pas encore enregistré. Crée ton compte pour ne pas le perdre.",
     "seeFeatures": "Continuer",
     "saveProfileCta": "Créer mon compte pour sauvegarder mon profil"
   },
@@ -4835,7 +4835,7 @@
     "GuideValise": {
       "categoryActivityAdded": "Ajoutés par activité",
       "categoryOutfitRecommended": "Tenues recommandées",
-      "destinationFallback": "votre destination",
+      "destinationFallback": "ta destination",
       "toolLabel": "Valise intelligente"
     },
     "PublicCarnet": {
@@ -4989,9 +4989,9 @@
       "love": "J'adore"
     },
     "FreemiumBanner": {
-      "used": "Vous avez utilisé votre génération gratuite",
-      "enjoy": "Vous avez utilisé votre génération gratuite",
-      "description": "Passez à Xplania Premium pour des voyages illimités, des itinéraires ultra-personnalisés et le carnet de bord interactif.",
+      "used": "Tu as utilisé ta génération gratuite",
+      "enjoy": "Tu as utilisé ta génération gratuite",
+      "description": "Passe à Xplania Premium pour des voyages illimités, des itinéraires ultra-personnalisés et le carnet de bord interactif.",
       "discoverPremium": "Découvrir Premium",
       "later": "Plus tard",
       "close": "Fermer"
