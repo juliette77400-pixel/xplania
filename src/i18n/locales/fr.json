@@ -1207,6 +1207,20 @@
         "p9": "Le lieu le plus insolite que j'ai visité…",
         "p10": "En voyage, je suis plutôt du genre à…"
       }
+    },
+    "avatar": {
+      "add": "Ajouter une photo",
+      "change": "Modifier",
+      "remove": "Supprimer",
+      "cropTitle": "Ajuste ta photo de profil",
+      "zoom": "Taille (glisse pour zoomer, déplace la photo pour la cadrer)",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "saved": "Photo de profil enregistrée",
+      "removed": "Photo de profil supprimée",
+      "error": "Impossible d'enregistrer la photo, réessaie.",
+      "badType": "Choisis une image (JPG, PNG…)",
+      "tooBig": "Image trop lourde (10 Mo maximum)"
     }
   },
   "notFound": {

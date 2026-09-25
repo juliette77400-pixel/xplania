@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +14,7 @@ import { toast } from "sonner";
 import ProfileStats from "@/components/profil/ProfileStats";
 import BadgeShowcase from "@/components/profil/BadgeShowcase";
 import ProfilePersonalization from "@/components/profil/ProfilePersonalization";
+import AvatarEditor from "@/components/profil/AvatarEditor";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
@@ -87,10 +87,9 @@ const Profil = () => {
         ) : (
           <Card className="p-6 space-y-5">
             <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20 border-2 border-primary/30">
-                <AvatarImage src={avatarUrl} alt={displayName} />
-                <AvatarFallback className="text-xl gradient-button text-primary-foreground">{initials}</AvatarFallback>
-              </Avatar>
+              {user && (
+                <AvatarEditor userId={user.id} avatarUrl={avatarUrl} initials={initials} alt={displayName} onChange={setAvatarUrl} />
+              )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{displayName || t("profil.anonymousTraveler")}</p>
                 <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
@@ -113,11 +112,6 @@ const Profil = () => {
                 <UserIcon className="w-3.5 h-3.5" /> {t("profil.displayName")}
               </Label>
               <Input id="name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={t("profil.displayNamePlaceholder")} />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="avatar">{t("profil.avatarUrl")}</Label>
-              <Input id="avatar" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)} placeholder="https://..." />
             </div>
 
             <Button onClick={handleSave} disabled={saving} className="w-full gradient-button">

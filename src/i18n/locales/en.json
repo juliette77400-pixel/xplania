@@ -1207,6 +1207,20 @@
         "p9": "The most unusual place I've visited…",
         "p10": "When traveling, I'm the kind of person who…"
       }
+    },
+    "avatar": {
+      "add": "Add a photo",
+      "change": "Change",
+      "remove": "Remove",
+      "cropTitle": "Adjust your profile photo",
+      "zoom": "Size (slide to zoom, drag the photo to frame it)",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "Profile photo saved",
+      "removed": "Profile photo removed",
+      "error": "Couldn't save the photo, please try again.",
+      "badType": "Please choose an image (JPG, PNG…)",
+      "tooBig": "Image too large (10 MB max)"
     }
   },
   "notFound": {
