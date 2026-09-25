@@ -19,10 +19,12 @@ export interface TemplateEntry {
  */
 import { template as tripReminder } from './trip-reminder.tsx'
 import { template as budgetAlert } from './budget-alert.tsx'
+import { template as weatherAlert } from './weather-alert.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'trip-reminder': tripReminder,
   'budget-alert': budgetAlert,
+  'weather-alert': weatherAlert,
   // Add templates here as they are created, e.g.:
   // 'welcome': welcomeTemplate,
 }
