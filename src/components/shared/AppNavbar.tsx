@@ -276,6 +276,11 @@ const AppNavbar = () => {
                     })}
                   </div>
                 ))}
+                {/* Responsive: language + theme controls for very narrow screens */}
+                <div className="mt-3 flex items-center gap-2 border-t border-border px-3 pt-3 xs:hidden">
+                  <LanguageSwitcher variant="minimal" />
+                  <ThemeToggle />
+                </div>
                 <div className="mt-3 border-t border-border pt-3">
                   {user ? (
                     <button
