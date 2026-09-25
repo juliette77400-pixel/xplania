@@ -220,6 +220,25 @@ const GuideBudgetPage = () => {
     }
   }, [categories, expenses, hasGenerated, hydratedFromStorage, regenCount, generatedContextKey, storageKey]);
 
+  // Email alert once when real spending reaches 80% of the planned budget.
+  useEffect(() => {
+    if (!hydratedFromStorage || !hasGenerated || totalBudget <= 0) return;
+    const spent = expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+    if (spent / totalBudget < 0.8) return;
+    const flag = `${storageKey}::alert80`;
+    if (localStorage.getItem(flag)) return;
+    localStorage.setItem(flag, "1");
+    import("@/integrations/supabase/client").then(({ supabase }) =>
+      supabase.auth.getSession().then(({ data }) => {
+        if (!data.session) { localStorage.removeItem(flag); return; }
+        supabase.functions.invoke("budget-alert", {
+          body: { budgetKey: storageKey, destination, spent, planned: totalBudget, lang: locale },
+        }).then(({ error }) => { if (error) localStorage.removeItem(flag); });
+      })
+    );
+  }, [expenses, totalBudget, hasGenerated, hydratedFromStorage, storageKey, destination, locale]);
+
+
   const monthLabel = useMemo(() => {
     const ref = tripData?.departureDate ? new Date(tripData.departureDate) : new Date();
     return ref.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", { month: "long" });
