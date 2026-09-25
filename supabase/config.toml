@@ -19,3 +19,12 @@ project_id = "alhhvpqtskymltokcgov"
     verify_jwt = false
   [functions.weather]
     verify_jwt = false
+
+[functions.preview-transactional-email]
+verify_jwt = false
+
+[functions.trip-reminders]
+verify_jwt = false
+
+[functions.budget-alert]
+verify_jwt = false
