@@ -355,7 +355,7 @@ const Carnet = () => {
         journalTitle={journal.title}
         destination={destination}
         days={days}
-        activeSection={activeTab}
+        activeSection={activeTab === "souvenir" ? "share" : activeTab}
         activeDay={activeDay}
         hasStory={false}
         isPublic={!!journal?.is_public}
