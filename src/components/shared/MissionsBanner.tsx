@@ -55,7 +55,7 @@ const MissionsBanner = () => {
         <button
           onClick={dismiss}
           aria-label={t("missionsBanner.dismiss")}
-          className="p-1 rounded hover:bg-muted/60 shrink-0"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg hover:bg-muted/60"
         >
           <X className="w-3 h-3 text-muted-foreground" />
         </button>
