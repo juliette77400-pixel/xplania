@@ -148,14 +148,17 @@ const AppNavbar = () => {
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex min-w-0 items-center gap-0.5 shrink-0 xs:gap-1.5">
           {/* Added: global search bar (Cmd+K) — bar on desktop, icon on mobile */}
           <GlobalSearch variant="bar" />
           <div className="md:hidden">
             <GlobalSearch variant="icon" />
           </div>
-          <LanguageSwitcher variant="minimal" />
-          <ThemeToggle />
+          {/* Responsive: on very narrow screens (<400px) these live in the mobile menu instead */}
+          <div className="hidden xs:flex items-center gap-1.5">
+            <LanguageSwitcher variant="minimal" />
+            <ThemeToggle />
+          </div>
           {user && <NotificationsBell />}
           {user ? (
             <DropdownMenu>
