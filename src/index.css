@@ -107,9 +107,87 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground font-sans;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    /* Jamais de défilement horizontal involontaire (clip préserve position: sticky) */
+    overflow-x: clip;
+  }
+
+  /* Les médias ne débordent jamais de leur conteneur */
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  img,
+  video {
+    height: auto;
+  }
+
+  /* Titres et longs mots : jamais coupés ni débordants sur petits écrans */
+  h1, h2, h3, h4 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Empêche le zoom automatique du clavier iOS sur les champs */
+  @media (max-width: 767px) {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+  /* Cibles tactiles confortables sur écrans tactiles */
+  @media (pointer: coarse) {
+    [role="tab"],
+    [role="menuitem"],
+    [role="option"] {
+      min-height: 40px;
+    }
+  }
+}
+
+/* Hauteur réelle du viewport sur mobile (barres d'adresse dynamiques) */
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+  .h-screen {
+    height: 100dvh;
+  }
+  .max-h-screen {
+    max-height: 100dvh;
+  }
+}
+
+@layer utilities {
+  /* Zones sûres (encoches iPhone, barres gestuelles Android) */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
+  .px-safe {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
   }
 }
 

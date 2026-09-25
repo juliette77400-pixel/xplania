@@ -376,7 +376,7 @@ const GamificationPage = () => {
           <h2 className="text-2xl font-bold text-foreground mb-2">{i18n.t("ui2.auto.k16")}</h2>
           <p className="text-muted-foreground mb-8">{t("ui2.Gamification.rhythmSubtitle")}</p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 text-left">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center">

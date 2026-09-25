@@ -69,14 +69,14 @@ export default function NotificationLogPanel() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           {(["all", "in_app", "email"] as const).map((c) => (
             <Button key={c} size="sm" variant={channel === c ? "default" : "outline"} onClick={() => setChannel(c)}>
               {c === "all" ? t("ui2.NotificationLogPanel.allChannels") : c === "in_app" ? t("ui2.NotificationLogPanel.inApp") : t("ui2.NotificationLogPanel.email")}
             </Button>
           ))}
         </div>
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           {(["all", "sent", "skipped", "queued", "error"] as const).map((s) => (
             <Button key={s} size="sm" variant={status === s ? "default" : "outline"} onClick={() => setStatus(s)}>
               {s === "all" ? t("ui2.NotificationLogPanel.allStatuses") : s}
