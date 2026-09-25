@@ -494,7 +494,7 @@ const TravelerProfileOnboarding = () => {
     : null;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" translate="no">
       {/* Persistent exit CTA — always reachable, discreet, thumb-friendly on mobile. */}
       <button
         type="button"
@@ -534,9 +534,11 @@ const TravelerProfileOnboarding = () => {
               className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive disabled:opacity-50"
             >
               <RotateCcw className="h-3 w-3" />
-              {resetting
-                ? t("travelerProfile.resetting", "Réinitialisation…")
-                : t("travelerProfile.resetCta", "Refaire à zéro")}
+              <span>
+                {resetting
+                  ? t("travelerProfile.resetting", "Réinitialisation…")
+                  : t("travelerProfile.resetCta", "Refaire à zéro")}
+              </span>
             </button>
           )}
         </div>
@@ -585,14 +587,13 @@ const TravelerProfileOnboarding = () => {
                 >
                   <cat.Icon className="h-3.5 w-3.5" />
                   <span>{t(cat.labelKey, cat.fallback)}</span>
-                  {complete ? (
-                    <span className="ml-1 text-[10px] font-bold">✓</span>
-                  ) : (
-                    <span className="ml-1 text-[10px] tabular-nums opacity-80">
-                      {stat.done}/{stat.total}
-                    </span>
-                  )}
-                  {isFilterOn && <X className="ml-0.5 h-3 w-3 opacity-70" />}
+                  <span
+                    translate="no"
+                    className={`ml-1 text-[10px] ${complete ? "font-bold" : "tabular-nums opacity-80"}`}
+                  >
+                    {complete ? "✓" : `${stat.done}/${stat.total}`}
+                  </span>
+                  <X className={`ml-0.5 h-3 w-3 opacity-70 ${isFilterOn ? "" : "hidden"}`} />
                 </button>
               );
             })}
