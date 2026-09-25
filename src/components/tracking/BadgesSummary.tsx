@@ -34,9 +34,9 @@ const BadgesSummary = ({ tripId }: Props) => {
     const load = async () => {
       let q = supabase
         .from("explore_badges")
-        .select("id, name, icon, trip_id, created_at")
+        .select("id, name, icon, trip_id, unlocked_at")
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
+        .order("unlocked_at", { ascending: false })
         .limit(3);
       if (tripId) q = q.eq("trip_id", tripId);
       const { data } = await q;
