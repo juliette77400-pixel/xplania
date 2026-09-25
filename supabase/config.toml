@@ -1,27 +1,21 @@
 project_id = "alhhvpqtskymltokcgov"
 
-[functions.travel-recommendations]
-verify_jwt = false
-
-[functions.weather]
-verify_jwt = false
-
-[functions.discover-osm]
-verify_jwt = false
-
-[functions.discover-enrich]
-verify_jwt = false
-
-[functions.discover-search]
-verify_jwt = false
-
-[functions.og-image]
-verify_jwt = false
-
-[functions.notify-waitlist]
-verify_jwt = false
-
-[functions.delete-account]
-verify_jwt = false
-
-
+[functions]
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.delete-account]
+    verify_jwt = false
+  [functions.discover-enrich]
+    verify_jwt = false
+  [functions.discover-osm]
+    verify_jwt = false
+  [functions.discover-search]
+    verify_jwt = false
+  [functions.notify-waitlist]
+    verify_jwt = false
+  [functions.og-image]
+    verify_jwt = false
+  [functions.travel-recommendations]
+    verify_jwt = false
+  [functions.weather]
+    verify_jwt = false
