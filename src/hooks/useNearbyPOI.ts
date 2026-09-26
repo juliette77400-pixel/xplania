@@ -39,8 +39,8 @@ async function fetchOverpass(
 
   const res = await fetch("https://overpass-api.de/api/interpreter", {
     method: "POST",
-    body: query,
-    headers: { "Content-Type": "text/plain" },
+    body: new URLSearchParams({ data: query }).toString(),
+    headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
   });
   if (!res.ok) throw new Error("overpass_failed");
   const json = await res.json();
