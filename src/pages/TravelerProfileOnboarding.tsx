@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
 import { Heart, Star, SkipForward, X, Loader2, Info, RefreshCw, RotateCcw, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -85,6 +86,7 @@ const TravelerProfileOnboarding = () => {
   useEffect(() => {
     setLocalOnboarding({ step: "tinder" });
     trackOnboardingEvent("step_view", { step: "tinder" });
+    track("quiz_started");
 
     let cancelled = false;
     (async () => {
@@ -292,6 +294,7 @@ const TravelerProfileOnboarding = () => {
         badge: badge.key,
         authed: !!user,
       });
+      track("quiz_completed", { badge: badge.key });
 
       if (user) {
         const row: Record<string, number | string | string[] | null> = {
