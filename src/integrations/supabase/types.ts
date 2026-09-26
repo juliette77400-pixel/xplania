@@ -1822,6 +1822,21 @@ export type Database = {
         }
         Relationships: []
       }
+      places_search_counters: {
+        Row: {
+          day: string
+          searches: number
+        }
+        Insert: {
+          day: string
+          searches?: number
+        }
+        Update: {
+          day?: string
+          searches?: number
+        }
+        Relationships: []
+      }
       premium_waitlist: {
         Row: {
           created_at: string
@@ -2882,6 +2897,7 @@ export type Database = {
         Returns: boolean
       }
       record_map_load: { Args: never; Returns: number }
+      record_places_search: { Args: never; Returns: number }
       record_quiz_completion: { Args: never; Returns: Json }
       subscribe_to_waitlist: {
         Args: {
