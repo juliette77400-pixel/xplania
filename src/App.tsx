@@ -14,6 +14,8 @@ import PipChatSkeleton from "./components/shared/PipChatSkeleton";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 import OnboardingSyncGate from "./components/onboarding/OnboardingSyncGate";
 import AdminGate from "./components/admin/AdminGate";
+const CookieBanner = lazy(() => import("./components/shared/CookieBanner"));
+import RouteTracker from "./components/shared/RouteTracker";
 
 // The Tinder deck is now the anonymous landing screen at "/". Keep it eager
 // so first paint is fast. The classic marketing landing moves to "/home".
@@ -96,6 +98,7 @@ const App = () => (
               {i18n.t("a11y.skipToContent")}
             </a>
             <RouteMeta />
+            <RouteTracker />
             <OnboardingSyncGate />
             <AdminGate />
             <Suspense fallback={<PageLoader />}>
@@ -162,6 +165,7 @@ const App = () => (
             </Routes>
             </Suspense>
             <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
+            <Suspense fallback={null}><CookieBanner /></Suspense>
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
