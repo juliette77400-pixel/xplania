@@ -2375,6 +2375,38 @@ export type Database = {
           },
         ]
       }
+      trip_reminder_checks: {
+        Row: {
+          done_at: string
+          id: string
+          item: string
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          done_at?: string
+          id?: string
+          item: string
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          done_at?: string
+          id?: string
+          item?: string
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_reminder_checks_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trip_tracking: {
         Row: {
           created_at: string
@@ -2484,38 +2516,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
-      }
-      trip_reminder_checks: {
-        Row: {
-          done_at: string
-          id: string
-          item: string
-          trip_id: string
-          user_id: string
-        }
-        Insert: {
-          done_at?: string
-          id?: string
-          item: string
-          trip_id: string
-          user_id: string
-        }
-        Update: {
-          done_at?: string
-          id?: string
-          item?: string
-          trip_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "trip_reminder_checks_trip_id_fkey"
-            columns: ["trip_id"]
-            isOneToOne: false
-            referencedRelation: "trips"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       usage_counters: {
         Row: {
