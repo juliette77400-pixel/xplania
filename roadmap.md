@@ -27,7 +27,7 @@
 - [x] Pages légales : retour accueil selon connexion
 - [x] 8 hooks vers React Query
 ## Audit UX/SEO — lot 1
-- [ ] Page « Xplania vs ChatGPT »
-- [ ] Contrastes couleurs (clair/sombre)
-- [ ] Titres/images de partage par page
-- [ ] Aligner le texte lu par Google sur l'accueil (quiz)
+- [x] Page « Xplania vs ChatGPT »
+- [x] Contrastes couleurs (clair/sombre)
+- [x] Titres/images de partage par page
+- [x] Aligner le texte lu par Google sur l'accueil (quiz)
