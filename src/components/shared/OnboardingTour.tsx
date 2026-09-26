@@ -31,6 +31,7 @@ const OnboardingTour = () => {
     if (typeof window === "undefined") return;
     const seen = localStorage.getItem(storageKey(user.id));
     if (!seen) {
+      localStorage.setItem(storageKey(user.id), "1");
       const tm = setTimeout(() => setOpen(true), 800);
       return () => clearTimeout(tm);
     }
