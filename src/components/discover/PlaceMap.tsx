@@ -4,8 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import "@/lib/leaflet-global";
-import "leaflet.markercluster";
+import { loadMarkerCluster } from "@/lib/leaflet-global";
 import { Locate } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Place } from "@/hooks/useDiscover";
@@ -47,6 +46,9 @@ const Cluster = ({ places, onSelect }: { places: Place[]; onSelect: (p: Place) =
   onSelectRef.current = onSelect;
 
   useEffect(() => {
+    let cancelled = false;
+    loadMarkerCluster().then(() => {
+    if (cancelled) return;
     // @ts-ignore
     const group = (L as any).markerClusterGroup({
       showCoverageOnHover: false,
@@ -75,9 +77,11 @@ const Cluster = ({ places, onSelect }: { places: Place[]; onSelect: (p: Place) =
         /* noop */
       }
     }
+    }).catch(() => { /* noop */ });
 
     return () => {
-      if (groupRef.current) map.removeLayer(groupRef.current);
+      cancelled = true;
+      if (groupRef.current) { map.removeLayer(groupRef.current); groupRef.current = null; }
     };
   }, [places, map]);
 

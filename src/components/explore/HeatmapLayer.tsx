@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
-import "@/lib/leaflet-global";
-import "leaflet.heat";
+import { loadHeat } from "@/lib/leaflet-global";
 import type { ExploreNode } from "@/hooks/useExplore";
 
 interface Props { nodes: ExploreNode[]; }
@@ -15,14 +14,19 @@ const HeatmapLayer = ({ nodes }: Props) => {
       return [n.lat!, n.lng!, intensity] as [number, number, number];
     });
     if (pts.length === 0) return;
-    // @ts-ignore
-    const layer = L.heatLayer(pts, {
-      radius: 35,
-      blur: 25,
-      maxZoom: 17,
-      gradient: { 0.2: "#06b6d4", 0.5: "#a855f7", 0.8: "#ec4899", 1.0: "#f59e0b" },
-    }).addTo(map);
-    return () => { map.removeLayer(layer); };
+    let layer: L.Layer | null = null;
+    let cancelled = false;
+    loadHeat().then(() => {
+      if (cancelled) return;
+      // @ts-ignore
+      layer = L.heatLayer(pts, {
+        radius: 35,
+        blur: 25,
+        maxZoom: 17,
+        gradient: { 0.2: "#06b6d4", 0.5: "#a855f7", 0.8: "#ec4899", 1.0: "#f59e0b" },
+      }).addTo(map);
+    }).catch(() => { /* heatmap is optional */ });
+    return () => { cancelled = true; if (layer) map.removeLayer(layer); };
   }, [nodes, map]);
   return null;
 };
