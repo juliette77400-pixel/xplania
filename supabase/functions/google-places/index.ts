@@ -25,7 +25,7 @@ function locationBias(lat?: number, lng?: number, radius = 5000) {
 
 async function gateway(path: string, init: RequestInit & { fieldMask?: string }) {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  const GOOGLE_MAPS_API_KEY = Deno.env.get("GOOGLE_MAPS_API_KEY");
+  const GOOGLE_MAPS_API_KEY = Deno.env.get("GOOGLE_MAPS_API_KEY_1") ?? Deno.env.get("GOOGLE_MAPS_API_KEY");
   if (!LOVABLE_API_KEY || !GOOGLE_MAPS_API_KEY) throw new Error("Missing Google Maps connector credentials");
   const res = await fetch(`${GATEWAY_URL}${path}`, {
     ...init,
