@@ -408,6 +408,7 @@ const TravelerProfileOnboarding = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
+        <h1 className="sr-only">{t("travelerProfile.pageH1")}</h1>
         <div className="mx-auto w-full max-w-md px-4 pt-6 sm:pt-10 space-y-3">
           <div className="flex items-center justify-between">
             <div className="h-4 w-32 rounded bg-muted animate-pulse" />
@@ -437,6 +438,7 @@ const TravelerProfileOnboarding = () => {
   if (loadError) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <h1 className="sr-only">{t("travelerProfile.pageH1")}</h1>
         <div className="h-12 w-12 rounded-full bg-destructive/15 flex items-center justify-center">
           <RefreshCw className="h-6 w-6 text-destructive" />
         </div>
@@ -459,6 +461,7 @@ const TravelerProfileOnboarding = () => {
   if (!loading && cards.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <h1 className="sr-only">{t("travelerProfile.pageH1")}</h1>
         <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
           <Info className="h-6 w-6 text-muted-foreground" />
         </div>
@@ -480,6 +483,7 @@ const TravelerProfileOnboarding = () => {
   if (finalizing) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background">
+        <h1 className="sr-only">{t("travelerProfile.pageH1")}</h1>
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
         <p className="text-lg font-semibold text-muted-foreground">{t("travelerProfile.computing")}</p>
       </div>
@@ -495,6 +499,7 @@ const TravelerProfileOnboarding = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col" translate="no">
+        <h1 className="sr-only">{t("travelerProfile.pageH1")}</h1>
       {/* Persistent exit CTA — always reachable, discreet, thumb-friendly on mobile. */}
       <button
         type="button"

@@ -4729,7 +4729,8 @@
     "retakeError": "Impossible de recommencer le quiz pour le moment.",
     "saveWarn": "⚠️ Ce profil n'est pas encore enregistré. Crée ton compte pour ne pas le perdre.",
     "seeFeatures": "Continuer",
-    "saveProfileCta": "Créer mon compte pour sauvegarder mon profil"
+    "saveProfileCta": "Créer mon compte pour sauvegarder mon profil",
+    "pageH1": "Ton ADN Voyageur — quiz de profil voyageur"
   },
   "tinder": {
     "cat": {

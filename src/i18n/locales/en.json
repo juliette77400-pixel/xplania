@@ -4729,7 +4729,8 @@
     "retakeError": "Can't restart the quiz right now.",
     "saveWarn": "⚠️ This profile isn't saved yet. Create your account so you don't lose it.",
     "seeFeatures": "Continue",
-    "saveProfileCta": "Create my account to save my profile"
+    "saveProfileCta": "Create my account to save my profile",
+    "pageH1": "Your Travel DNA — traveler profile quiz"
   },
   "tinder": {
     "cat": {

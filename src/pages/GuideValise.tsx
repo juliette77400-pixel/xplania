@@ -8,7 +8,6 @@ import WeatherSection from "@/components/valise/WeatherSection";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
 import TransportSelector, { type TransportMode } from "@/components/valise/TransportSelector";
 import ShareTripDialog from "@/components/valise/ShareTripDialog";
-import { exportValisePdf } from "@/lib/valise-export";
 import AiTipCard from "@/components/valise/AiTipCard";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import MissingItemsCheck from "@/components/valise/MissingItemsCheck";
@@ -182,7 +181,8 @@ const GuideValisePage = () => {
     [luggageMode, transport, t]
   );
 
-  const handleExportPdf = useCallback(() => {
+  const handleExportPdf = useCallback(async () => {
+    const { exportValisePdf } = await import("@/lib/valise-export");
     exportValisePdf({ destination, days, mode: luggageMode, transport, categories });
     toast.success(t("guideValise.toastPdf"), { description: t("guideValise.toastPdfDesc") });
   }, [destination, days, luggageMode, transport, categories, t]);
