@@ -83,7 +83,7 @@ const AppNavbar = () => {
     <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-14 items-center justify-between gap-2 px-3 sm:px-6">
         {/* Brand */}
-        <Link to="/app" className="flex items-center gap-2 shrink-0">
+        <Link to="/app" aria-label="Xplania" className="flex items-center gap-2 shrink-0">
           <div className="w-8 h-8 rounded-lg gradient-button flex items-center justify-center">
             <Plane className="w-4 h-4 text-primary-foreground" />
           </div>
