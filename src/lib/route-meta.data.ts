@@ -42,6 +42,10 @@ export const META: Record<string, Meta> = {
     fr: ["Découvrir autour de moi — Xplania", "Les meilleurs lieux autour de toi : restaurants, culture, nature et pépites locales sur une carte."],
     en: ["Discover nearby — Xplania", "The best places around you: food, culture, nature and local gems on one map."],
   },
+  "/destinations": {
+    fr: ["Destinations faites pour toi — Xplania", "Des destinations choisies selon ton ADN Voyageur : culture, nature, budget et pépites peu touristiques."],
+    en: ["Destinations made for you — Xplania", "Destinations picked from your Traveler DNA: culture, nature, budget and off-the-beaten-path gems."],
+  },
   "/a-propos": {
     fr: ["À propos de Xplania", "Découvre l'histoire de Xplania, l'assistant de voyage IA qui rend chaque voyage plus personnel."],
     en: ["About Xplania", "Learn the story behind Xplania, the AI travel assistant that makes every trip more personal."],
