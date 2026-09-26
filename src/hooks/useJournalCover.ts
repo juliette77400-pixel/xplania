@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Trip {
@@ -22,58 +22,65 @@ const invokeJournalCover = async (destination: string, mode: CoverMode) => {
   });
 };
 
-export const useJournalCover = (tripId: string, destination: string | null) => {
-  const [cover, setCover] = useState<string | null>(cache.get(tripId) || null);
+const fetchCover = async (tripId: string, destination: string): Promise<string | null> => {
+  if (cache.has(tripId)) return cache.get(tripId)!;
 
-  useEffect(() => {
-    if (!tripId || !destination) return;
-    if (cache.has(tripId)) {
-      setCover(cache.get(tripId)!);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      // Check journals.cover_url first
-      const { data: j } = await supabase
-        .from("journals")
-        .select("cover_url")
-        .eq("trip_id", tripId)
-        .maybeSingle();
-      if (j?.cover_url) {
-        cache.set(tripId, j.cover_url);
-        if (!cancelled) setCover(j.cover_url);
-        return;
-      }
-      const { data, error } = await invokeJournalCover(destination, "unsplash");
-      if (cancelled || error) return;
+  const { data: j } = await supabase
+    .from("journals")
+    .select("cover_url")
+    .eq("trip_id", tripId)
+    .maybeSingle();
+  if (j?.cover_url) {
+    cache.set(tripId, j.cover_url);
+    return j.cover_url;
+  }
+
+  const { data, error } = await invokeJournalCover(destination, "unsplash");
+  if (error) return null;
+  const url = (data as any)?.url || null;
+  if (url) {
+    cache.set(tripId, url);
+    await supabase
+      .from("journals")
+      .update({ cover_url: url, cover_source: "unsplash" })
+      .eq("trip_id", tripId);
+  }
+  return url;
+};
+
+export const useJournalCover = (tripId: string, destination: string | null) => {
+  const queryClient = useQueryClient();
+
+  const { data: cover } = useQuery({
+    queryKey: ["journal-cover", tripId, destination],
+    queryFn: () => fetchCover(tripId, destination as string),
+    enabled: !!tripId && !!destination,
+    initialData: cache.get(tripId) || null,
+  });
+
+  const regenerateMutation = useMutation({
+    mutationFn: async (mode: CoverMode) => {
+      if (!destination) return null;
+      const { data, error } = await invokeJournalCover(destination, mode);
+      if (error) return null;
       const url = (data as any)?.url || null;
       if (url) {
         cache.set(tripId, url);
-        setCover(url);
-        // Persist on journal row if it exists
         await supabase
           .from("journals")
-          .update({ cover_url: url, cover_source: "unsplash" })
+          .update({ cover_url: url, cover_source: mode })
           .eq("trip_id", tripId);
       }
-    })();
-    return () => { cancelled = true; };
-  }, [tripId, destination]);
+      return url;
+    },
+    onSuccess: (url) => {
+      if (url) queryClient.setQueryData(["journal-cover", tripId, destination], url);
+    },
+  });
 
   const regenerate = async (mode: CoverMode = "ai") => {
-    if (!destination) return;
-    const { data, error } = await invokeJournalCover(destination, mode);
-    if (error) return;
-    const url = (data as any)?.url;
-    if (url) {
-      cache.set(tripId, url);
-      setCover(url);
-      await supabase
-        .from("journals")
-        .update({ cover_url: url, cover_source: mode })
-        .eq("trip_id", tripId);
-    }
+    await regenerateMutation.mutateAsync(mode);
   };
 
-  return { cover, regenerate };
+  return { cover: cover ?? null, regenerate };
 };

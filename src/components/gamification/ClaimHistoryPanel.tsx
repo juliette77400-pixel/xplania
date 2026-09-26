@@ -26,6 +26,7 @@ export default function ClaimHistoryPanel() {
   const lang = (i18n.language?.startsWith("en") ? "en" : "fr") as "fr" | "en";
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [filter, setFilter] = useState<"all" | "submitted" | "validated" | "rejected">("all");
 
   useEffect(() => {
@@ -37,7 +38,12 @@ export default function ClaimHistoryPanel() {
       .order("created_at", { ascending: false })
       .limit(100);
     q.then(({ data, error }) => {
-      if (error) console.warn(error);
+      if (error) {
+        console.warn(error);
+        setError(true);
+      } else {
+        setError(false);
+      }
       setRows((data || []) as any);
       setLoading(false);
     });
@@ -65,6 +71,12 @@ export default function ClaimHistoryPanel() {
             : "Verdicts, reasons and moderation status of your badges."}
         </p>
       </div>
+
+      {error && (
+        <p className="mb-4 text-center text-xs text-destructive">
+          {lang === "fr" ? "Impossible de charger ton historique de réclamations." : "Couldn't load your claim history."}
+        </p>
+      )}
 
       <div className="flex gap-2 flex-wrap justify-center mb-4">
         {(["all", "submitted", "validated", "rejected"] as const).map((f) => (

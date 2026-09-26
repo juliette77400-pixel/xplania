@@ -59,7 +59,7 @@ const Leaderboard = () => {
           <Trophy className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-xl font-bold text-foreground leading-tight">Leaderboard global</h2>
+          <h2 className="text-xl font-bold text-foreground leading-tight">{t("ui2.Leaderboard.globalTitle")}</h2>
           <p className="text-xs text-muted-foreground">{t("ui2.Leaderboard.subtitle")}</p>
         </div>
         {myRank >= 0 && (

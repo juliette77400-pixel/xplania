@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 import { ALL_LEGAL_KEYS, getLegalPath, LegalKey } from "@/lib/legal-routes";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Props {
   legalKey?: LegalKey;
@@ -32,6 +33,7 @@ const renderBody = (text: string) => {
 const Legal = ({ legalKey }: Props) => {
   const { type } = useParams<{ type: string }>();
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
 
   // Resolve key: explicit prop wins (new dedicated routes), else legacy /legal/:type param
   const resolved: LegalKey | null = legalKey
@@ -60,7 +62,7 @@ const Legal = ({ legalKey }: Props) => {
     <div className="min-h-screen bg-background pt-24 pb-16 px-4">
       <div className="container mx-auto max-w-3xl">
         <Link
-          to="/home"
+          to={user ? "/app" : "/home"}
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />

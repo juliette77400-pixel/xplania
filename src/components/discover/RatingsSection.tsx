@@ -53,7 +53,7 @@ const StarRating = ({
 const RatingsSection = ({ placeId }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { ratings, loading, submitting, submit, remove, userRating, avg } = usePlaceRatings(placeId);
+  const { ratings, loading, error, submitting, submit, remove, userRating, avg } = usePlaceRatings(placeId);
   const [open, setOpen] = useState(false);
   const [stars, setStars] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
@@ -189,7 +189,11 @@ const RatingsSection = ({ placeId }: Props) => {
         </div>
       )}
 
-      {!loading && ratings.length === 0 && (
+      {!loading && error && (
+        <p className="py-4 text-center text-xs text-destructive">{t("errors.loadRatings")}</p>
+      )}
+
+      {!loading && !error && ratings.length === 0 && (
         <p className="py-4 text-center text-xs text-muted-foreground">{t("discoverComp.ratings.empty")}</p>
       )}
 

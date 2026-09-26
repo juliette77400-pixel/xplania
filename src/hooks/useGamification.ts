@@ -78,11 +78,16 @@ export function useGamification() {
     async (categoryIds: string[]) => {
       if (!user) return;
       // Replace all
-      await supabase.from("gam_user_category_prefs").delete().eq("user_id", user.id);
+      const { error: delError } = await supabase
+        .from("gam_user_category_prefs")
+        .delete()
+        .eq("user_id", user.id);
+      if (delError) throw delError;
       if (categoryIds.length) {
-        await supabase.from("gam_user_category_prefs").insert(
+        const { error: insError } = await supabase.from("gam_user_category_prefs").insert(
           categoryIds.map((category_id) => ({ user_id: user.id, category_id })),
         );
+        if (insError) throw insError;
       }
       setData((prev) => ({ ...prev, prefs: categoryIds }));
     },
@@ -92,10 +97,11 @@ export function useGamification() {
   const setVisibilityRemote = useCallback(
     async (v: GamVisibility) => {
       if (!user) return;
-      await supabase.from("gam_user_settings").upsert(
+      const { error } = await supabase.from("gam_user_settings").upsert(
         { user_id: user.id, competition_visibility: v },
         { onConflict: "user_id" },
       );
+      if (error) throw error;
       setData((prev) => ({ ...prev, visibility: v }));
     },
     [user, setData],

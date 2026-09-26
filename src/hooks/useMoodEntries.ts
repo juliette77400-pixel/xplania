@@ -32,7 +32,7 @@ export function useMoodEntries() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isError } = useQuery({
     queryKey: moodEntriesQueryKey(user?.id),
     enabled: !!user,
     queryFn: async () => {
@@ -43,10 +43,7 @@ export function useMoodEntries() {
         .order("entry_date", { ascending: false })
         .order("created_at", { ascending: false })
         .limit(200);
-      if (error) {
-        console.error(error);
-        return [] as MoodEntry[];
-      }
+      if (error) throw error;
       return (data as MoodEntry[]) || [];
     },
   });
@@ -102,6 +99,7 @@ export function useMoodEntries() {
   return {
     entries: data ?? [],
     loading: user ? isLoading : false,
+    error: user ? isError : false,
     log,
     remove,
     reload: refetch,

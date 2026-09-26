@@ -18,3 +18,11 @@
 - [x] Photo/Création -> Déplacement professionnel
 - [x] Codes culturels selon pays
 - [x] Boutons fonctionnels, bouton "Découvrir d'autres fonctionnalités"
+## Corrections audit
+- [x] Politique de confidentialité : Google Maps, OpenWeatherMap, Unsplash, EmailJS
+- [x] Textes FR en version EN (Visa, Classement, Suivi public, Admin badges)
+- [x] Badges : erreurs d'enregistrement préférences/visibilité
+- [x] Erreurs sans message (avis/notes Découvrir, historique badges, expériences…)
+- [x] Mot de passe oublié : lien expiré
+- [x] Pages légales : retour accueil selon connexion
+- [x] 8 hooks vers React Query

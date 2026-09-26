@@ -21,7 +21,7 @@ export const gamMissionsQueryKey = (userId: string | undefined) =>
 export function useGamMissions() {
   const { user } = useAuth();
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isError } = useQuery({
     queryKey: gamMissionsQueryKey(user?.id),
     enabled: !!user,
     queryFn: async () => {
@@ -43,7 +43,7 @@ export function useGamMissions() {
 
       if (error) {
         console.warn(error);
-        return [] as MissionRow[];
+        throw error;
       }
       const rows = (data || []) as any as MissionRow[];
 
@@ -64,5 +64,5 @@ export function useGamMissions() {
     },
   });
 
-  return { missions: data ?? [], loading: user ? isLoading : false, refetch };
+  return { missions: data ?? [], loading: user ? isLoading : false, error: user ? isError : false, refetch };
 }

@@ -20,7 +20,7 @@ function timeLeft(endIso: string): string {
 const MissionsPanel = () => {
   const { i18n } = useTranslation();
   const isFr = i18n.language?.startsWith("fr");
-  const { missions, loading } = useGamMissions();
+  const { missions, loading, error } = useGamMissions();
   const { badges } = useGamification();
   const [active, setActive] = useState<BadgeWithClaim | null>(null);
 
@@ -99,6 +99,10 @@ const MissionsPanel = () => {
 
       {loading ? (
         <div className="py-10 text-center"><Loader2 className="w-5 h-5 animate-spin inline text-primary" /></div>
+      ) : error ? (
+        <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-8 text-center text-sm text-destructive">
+          {isFr ? "Impossible de charger tes missions." : "Couldn't load your missions."}
+        </div>
       ) : missions.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
           {isFr

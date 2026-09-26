@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Position, haversineKm } from "@/hooks/useGeolocation";
@@ -20,6 +21,23 @@ export function useCheckIn(
   const dwellStartRef = useRef<Record<string, number>>({});
   const lastTriggeredRef = useRef<Set<string>>(new Set());
 
+  const checkInMutation = useMutation({
+    mutationFn: async ({ act, pos, dist, trip }: { act: TripActivity; pos: Position; dist: number; trip: string }) => {
+      await supabase.from("trip_checkins").insert({
+        trip_id: trip, activity_id: act.id, user_id: user!.id,
+        lat: pos.lat, lng: pos.lng, distance_m: dist * 1000,
+      });
+      await supabase.from("trip_activities")
+        .update({ status: "done", completed_at: new Date().toISOString() })
+        .eq("id", act.id);
+      return act;
+    },
+    onSuccess: (act) => {
+      toast.success(i18n.t("ui2.useCheckIn.arrived", { title: act.title }));
+      onCheckIn?.(act);
+    },
+  });
+
   useEffect(() => {
     if (!tripId || !user || !position) return;
     const now = Date.now();
@@ -32,21 +50,12 @@ export function useCheckIn(
           dwellStartRef.current[act.id] = now;
         } else if (now - dwellStartRef.current[act.id] >= DWELL_MS) {
           lastTriggeredRef.current.add(act.id);
-          (async () => {
-            await supabase.from("trip_checkins").insert({
-              trip_id: tripId, activity_id: act.id, user_id: user.id,
-              lat: position.lat, lng: position.lng, distance_m: dist * 1000,
-            });
-            await supabase.from("trip_activities")
-              .update({ status: "done", completed_at: new Date().toISOString() })
-              .eq("id", act.id);
-            toast.success(i18n.t("ui2.useCheckIn.arrived", { title: act.title }));
-            onCheckIn?.(act);
-          })();
+          checkInMutation.mutate({ act, pos: position, dist, trip: tripId });
         }
       } else {
         delete dwellStartRef.current[act.id];
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [position, activities, tripId, user, onCheckIn]);
 }

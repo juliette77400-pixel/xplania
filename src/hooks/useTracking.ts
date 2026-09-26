@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Position, haversineKm } from "@/hooks/useGeolocation";
@@ -34,28 +35,55 @@ export interface TripActivity {
   position: number;
 }
 
+interface TrackingData {
+  tracking: TripTracking | null;
+  activities: TripActivity[];
+  positions: { lat: number; lng: number; recorded_at: string }[];
+}
+
+const fetchTrackingData = async (tripId: string): Promise<TrackingData> => {
+  const [{ data: t }, { data: a }, { data: p }] = await Promise.all([
+    supabase.from("trip_tracking").select("*").eq("trip_id", tripId).maybeSingle(),
+    supabase.from("trip_activities").select("*").eq("trip_id", tripId).order("day_date").order("position"),
+    supabase.from("trip_positions").select("lat,lng,recorded_at").eq("trip_id", tripId).order("recorded_at"),
+  ]);
+  return {
+    tracking: (t as TripTracking) ?? null,
+    activities: (a || []) as TripActivity[],
+    positions: p || [],
+  };
+};
+
 export function useTracking(tripId?: string) {
   const { user } = useAuth();
-  const [tracking, setTracking] = useState<TripTracking | null>(null);
-  const [activities, setActivities] = useState<TripActivity[]>([]);
-  const [positions, setPositions] = useState<{ lat: number; lng: number; recorded_at: string }[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const queryKey = ["tracking", tripId, user?.id];
+
+  const { data, isLoading } = useQuery({
+    queryKey,
+    queryFn: () => fetchTrackingData(tripId!),
+    enabled: !!tripId && !!user,
+  });
+
+  const tracking = data?.tracking ?? null;
+  const activities = data?.activities ?? [];
+  const positions = data?.positions ?? [];
+  const loading = !tripId || !user ? false : isLoading;
+
+  // Keep a ref to the latest tracking value so recordPosition can stay stable
+  // without depending on the `tracking` object identity.
+  const trackingRef = useRef<TripTracking | null>(tracking);
+  useEffect(() => { trackingRef.current = tracking; }, [tracking]);
 
   const load = useCallback(async () => {
-    if (!tripId || !user) return;
-    setLoading(true);
-    const [{ data: t }, { data: a }, { data: p }] = await Promise.all([
-      supabase.from("trip_tracking").select("*").eq("trip_id", tripId).maybeSingle(),
-      supabase.from("trip_activities").select("*").eq("trip_id", tripId).order("day_date").order("position"),
-      supabase.from("trip_positions").select("lat,lng,recorded_at").eq("trip_id", tripId).order("recorded_at"),
-    ]);
-    setTracking(t as TripTracking | null);
-    setActivities((a || []) as TripActivity[]);
-    setPositions(p || []);
-    setLoading(false);
-  }, [tripId, user]);
+    await queryClient.invalidateQueries({ queryKey });
+  }, [queryClient, queryKey]);
 
-  useEffect(() => { load(); }, [load]);
+  const setTracking = useCallback((t: TripTracking) => {
+    queryClient.setQueryData<TrackingData | undefined>(queryKey, (prev) =>
+      prev ? { ...prev, tracking: t } : { tracking: t, activities: [], positions: [] },
+    );
+  }, [queryClient, queryKey]);
 
   // Realtime updates
   useEffect(() => {
@@ -70,7 +98,7 @@ export function useTracking(tripId?: string) {
 
   const ensureTracking = useCallback(async () => {
     if (!tripId || !user) return null;
-    if (tracking) return tracking;
+    if (trackingRef.current) return trackingRef.current;
     const { data, error } = await supabase
       .from("trip_tracking")
       .insert({ trip_id: tripId, user_id: user.id })
@@ -78,7 +106,7 @@ export function useTracking(tripId?: string) {
     if (error) throw error;
     setTracking(data as TripTracking);
     return data as TripTracking;
-  }, [tripId, user, tracking]);
+  }, [tripId, user, setTracking]);
 
   const startTracking = useCallback(async (precision: "high" | "balanced" | "low" = "balanced") => {
     const t = await ensureTracking();
@@ -89,7 +117,7 @@ export function useTracking(tripId?: string) {
       .eq("trip_id", tripId)
       .select().single();
     setTracking(data as TripTracking);
-  }, [ensureTracking, tripId, user]);
+  }, [ensureTracking, tripId, user, setTracking]);
 
   const stopTracking = useCallback(async () => {
     if (!tripId) return;
@@ -99,33 +127,36 @@ export function useTracking(tripId?: string) {
       .eq("trip_id", tripId)
       .select().single();
     setTracking(data as TripTracking);
-  }, [tripId]);
+  }, [tripId, setTracking]);
 
   const updatePrecision = useCallback(async (precision: "high" | "balanced" | "low") => {
-    if (!tripId || !tracking) return;
+    if (!tripId || !trackingRef.current) return;
     const { data } = await supabase
       .from("trip_tracking")
-      .update({ settings: { ...tracking.settings, precision } })
+      .update({ settings: { ...trackingRef.current.settings, precision } })
       .eq("trip_id", tripId)
       .select().single();
     setTracking(data as TripTracking);
-  }, [tripId, tracking]);
+  }, [tripId, setTracking]);
 
   const toggleShare = useCallback(async (enabled: boolean) => {
-    if (!tripId || !tracking) return;
-    const slug = tracking.share_slug || (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32);
+    if (!tripId || !trackingRef.current) return;
+    const slug = trackingRef.current.share_slug || (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32);
     const { data } = await supabase
       .from("trip_tracking")
       .update({ share_enabled: enabled, share_slug: slug })
       .eq("trip_id", tripId)
       .select().single();
     setTracking(data as TripTracking);
-  }, [tripId, tracking]);
+  }, [tripId, setTracking]);
 
+  // Stable: depends only on tripId/user (not the tracking object), reads
+  // the latest tracking value via trackingRef.
   const recordPosition = useCallback(async (p: Position) => {
-    if (!tripId || !user || !tracking?.is_active) return;
-    const last = tracking.last_lat && tracking.last_lng
-      ? { lat: tracking.last_lat, lng: tracking.last_lng } : null;
+    const currentTracking = trackingRef.current;
+    if (!tripId || !user || !currentTracking?.is_active) return;
+    const last = currentTracking.last_lat && currentTracking.last_lng
+      ? { lat: currentTracking.last_lat, lng: currentTracking.last_lng } : null;
     const delta = last ? haversineKm(last, p) : 0;
     // Skip jitter < 10m
     if (last && delta < 0.01) return;
@@ -134,7 +165,7 @@ export function useTracking(tripId?: string) {
       trip_id: tripId, user_id: user.id, lat: p.lat, lng: p.lng,
       accuracy: p.accuracy, speed: p.speed,
     });
-    const newDist = Number(tracking.total_distance_km) + delta;
+    const newDist = Number(currentTracking.total_distance_km) + delta;
     const { data } = await supabase
       .from("trip_tracking")
       .update({
@@ -144,7 +175,7 @@ export function useTracking(tripId?: string) {
       .eq("trip_id", tripId)
       .select().single();
     setTracking(data as TripTracking);
-  }, [tripId, user, tracking]);
+  }, [tripId, user, setTracking]);
 
   const updateActivityStatus = useCallback(async (id: string, status: TripActivity["status"]) => {
     const patch: any = { status };

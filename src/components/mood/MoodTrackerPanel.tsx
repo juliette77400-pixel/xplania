@@ -26,7 +26,7 @@ const EMOJI = ["", "😞", "😕", "😐", "🙂", "😍"];
 
 const MoodTrackerPanel = () => {
   const { t, i18n } = useTranslation();
-  const { entries, loading, log, remove } = useMoodEntries();
+  const { entries, loading, error, log, remove } = useMoodEntries();
   const [period, setPeriod] = useState<Period>("week");
   const [logOpen, setLogOpen] = useState(false);
 
@@ -67,6 +67,11 @@ const MoodTrackerPanel = () => {
 
   return (
     <section className="space-y-4">
+      {error && (
+        <p className="rounded-lg border border-destructive/30 bg-destructive/5 p-2 text-center text-xs text-destructive">
+          {t("errors.loadMoodEntries")}
+        </p>
+      )}
       <header className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h3 className="text-lg font-bold text-foreground">{t("moodComp.tracker.title")}</h3>

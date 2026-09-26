@@ -38,13 +38,13 @@ export function usePlaceRatings(placeId: string | null) {
   const { user } = useAuth();
   const [submitting, setSubmitting] = useState(false);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isError } = useQuery({
     queryKey: placeRatingsQueryKey(placeId, user?.id),
     enabled: !!placeId,
     queryFn: async () => {
       // Public listing via RPC — does NOT expose user_id of other raters.
       const { data, error } = await supabase.rpc("list_place_ratings_public", { _place_id: placeId! });
-      if (error) console.error(error);
+      if (error) throw error;
       const list = ((data as any[]) || []).map((r) => ({
         id: r.id,
         place_id: r.place_id,
@@ -143,6 +143,7 @@ export function usePlaceRatings(placeId: string | null) {
   return {
     ratings,
     loading: placeId ? isLoading : false,
+    error: placeId ? isError : false,
     submitting,
     submit,
     remove,

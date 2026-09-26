@@ -55,6 +55,7 @@ export function useMoodBadges() {
       const { data, error } = await supabase.from("mood_badges").insert(rows).select("*");
       if (error) {
         console.error(error);
+        toast.error(i18n.t("errors.badgeUnlockFailed"));
         return;
       }
       queryClient.setQueryData<MoodBadge[]>(moodBadgesQueryKey(user.id), (prev) => [
