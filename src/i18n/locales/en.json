@@ -5672,5 +5672,15 @@
     "emptyState": "No data yet — visitors who accept cookies will show up here.",
     "restrictedTitle": "Restricted access",
     "restrictedDesc": "This page is for the administrator only."
+  },
+  "help": {
+    "label": "Need help?",
+    "subject": "Xplania beta – an issue",
+    "body": "Hello,\n\nI have an issue on this page: {{page}}\n\nWhat happens:\n\n"
+  },
+  "report": {
+    "cta": "Report this journal",
+    "subject": "Xplania – journal report",
+    "body": "Hello,\n\nI am reporting the journal \"{{title}}\": {{page}}\n\nReason:\n\n"
   }
 }

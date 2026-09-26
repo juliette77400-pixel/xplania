@@ -5672,5 +5672,15 @@
     "emptyState": "Aucune donnée pour l'instant — les visiteurs qui acceptent les cookies apparaîtront ici.",
     "restrictedTitle": "Accès réservé",
     "restrictedDesc": "Cette page est réservée à l'administratrice."
+  },
+  "help": {
+    "label": "Un souci ?",
+    "subject": "Xplania bêta – un souci",
+    "body": "Bonjour,\n\nJ'ai un souci sur cette page : {{page}}\n\nCe qui se passe :\n\n"
+  },
+  "report": {
+    "cta": "Signaler ce carnet",
+    "subject": "Xplania – signalement d'un carnet",
+    "body": "Bonjour,\n\nJe signale le carnet « {{title}} » : {{page}}\n\nRaison :\n\n"
   }
 }
