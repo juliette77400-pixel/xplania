@@ -142,8 +142,9 @@ const PlaceMap = ({ places, userPos, onSelect }: Props) => {
         preferCanvas
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution="&copy; OpenStreetMap, &copy; CARTO"
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="xp-dark-tiles"
+          attribution="&copy; OpenStreetMap, "
         />
         {userPos && <UserDot pos={userPos} />}
         <Cluster places={places} onSelect={onSelect} />

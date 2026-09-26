@@ -185,8 +185,9 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap &copy; CARTO"
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          attribution="&copy; OpenStreetMap "
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="xp-dark-tiles"
         />
         {!position && allPoints.length > 1 ? <FitBounds points={allPoints} /> : null}
 

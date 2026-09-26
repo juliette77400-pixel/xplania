@@ -56,8 +56,9 @@ const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
       </button>
       <MapContainer center={center} zoom={12} style={{ height: "100%", width: "100%", background: "hsl(220 30% 8%)" }}>
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; OSM &copy; CARTO'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="xp-dark-tiles"
+          attribution='&copy; OSM '
         />
         <FitBounds nodes={geoNodes} />
         {heatmap && <HeatmapLayer nodes={geoNodes} />}

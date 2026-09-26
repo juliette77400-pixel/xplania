@@ -266,3 +266,6 @@
 /* Hide scrollbars on horizontal tab lists (mobile) */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Fond de carte OSM gratuit, assombri pour le thème Xplania */
+.xp-dark-tiles { filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9) saturate(0.6); }
