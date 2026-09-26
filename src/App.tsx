@@ -58,6 +58,7 @@ const TravelerProfileAdjust = lazy(() => import("./pages/TravelerProfileAdjust.t
 const Destinations = lazy(() => import("./pages/Destinations.tsx"));
 const HiddenGems = lazy(() => import("./pages/HiddenGems.tsx"));
 const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
+const AdminStats = lazy(() => import("./pages/AdminStats.tsx"));
 const OnbWelcome = lazy(() => import("./pages/onboarding/Welcome.tsx"));
 const OnbBesoin = lazy(() => import("./pages/onboarding/Besoin.tsx"));
 const OnbQualif = lazy(() => import("./pages/onboarding/Qualif.tsx"));
@@ -140,6 +141,7 @@ const App = () => (
             <Route path="/gamification" element={<ProtectedRoute><Gamification /></ProtectedRoute>} />
             <Route path="/admin/badges" element={<ProtectedRoute><AdminBadges /></ProtectedRoute>} />
             <Route path="/admin/seed-rag" element={<ProtectedRoute><AdminSeedRag /></ProtectedRoute>} />
+            <Route path="/admin/stats" element={<ProtectedRoute><AdminStats /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
