@@ -99,7 +99,7 @@ const GamCatalog = () => {
           <Sparkles className="w-5 h-5 text-primary" />
           <h2 className="text-2xl font-bold">{t("gam.catalog.title")}</h2>
         </div>
-        <p className="text-sm text-muted-foreground">{t("gam.catalog.subtitle")}</p>
+        <p className="text-sm text-muted-foreground">{t("gam.catalog.subtitle", { count: totalAll })}</p>
 
         {/* Global progress */}
         <div className="rounded-xl border border-border bg-card/40 p-3 sm:p-4 space-y-2">

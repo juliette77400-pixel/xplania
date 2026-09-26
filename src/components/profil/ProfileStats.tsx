@@ -10,7 +10,8 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { getStreakDisplay } from "@/lib/streak";
-import { computeXp, getLevelProgress, LEVELS } from "@/lib/xp-levels";
+import { getLevelProgress, LEVELS } from "@/lib/xp-levels";
+import { useMyXp } from "@/hooks/useMyXp";
 
 interface Stats {
   trips: number;
@@ -25,6 +26,7 @@ const ProfileStats = () => {
   const { user } = useAuth();
   const { t, i18n } = useTranslation();
   const [stats, setStats] = useState<Stats | null>(null);
+  const myXp = useMyXp();
 
   useEffect(() => {
     if (!user) return;
@@ -48,26 +50,14 @@ const ProfileStats = () => {
       const moods = (journalBlocks.data || []).filter((b: any) => b.type === "mood").length;
       const notes = (journalBlocks.data || []).filter((b: any) => b.type === "note").length;
       const km = (tracking.data || []).reduce((acc: number, t: any) => acc + Number(t.total_distance_km || 0), 0);
-      const totalBadges = (exploreBadges.count || 0) + (journalBadges.count || 0) + (moodBadges.count || 0);
 
-      const xp = computeXp({
-        exploreVisited: visited,
-        journalNotes: notes,
-        journalPhotos: photos,
-        journalLocations: 0,
-        journalMoods: moods,
-        moodFavorites: 0,
-        moodHiddenGems: 0,
-        badgesTotal: totalBadges,
-        placeReviews: reviews.count || 0,
-        moodReactions: moodReactions.count || 0,
-      });
+      const xp = 0;
       const lvl = getLevelProgress(xp).level.index;
       const streak = getStreakDisplay().streak;
 
       setStats({
         trips: trips.count || 0,
-        badges: totalBadges,
+        badges: 0,
         xp,
         level: lvl,
         streak,
@@ -77,7 +67,11 @@ const ProfileStats = () => {
     return () => { cancel = true; };
   }, [user]);
 
-  if (!stats) {
+  const shown = stats && !myXp.loading
+    ? { ...stats, xp: myXp.xp, badges: myXp.badges, level: getLevelProgress(myXp.xp).level.index }
+    : null;
+
+  if (!shown) {
     return (
       <Card className="p-6">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -88,14 +82,14 @@ const ProfileStats = () => {
   }
 
   const items = [
-    { icon: Plane, label: t("profil.stats.trips"), value: stats.trips, color: "from-cyan-400 to-blue-500" },
-    { icon: Award, label: t("profil.stats.badges"), value: stats.badges, color: "from-amber-400 to-orange-500" },
-    { icon: Zap, label: `${t("profil.stats.level")} ${stats.level}`, value: `${stats.xp} XP`, color: "from-purple-400 to-fuchsia-500" },
-    { icon: Flame, label: t("profil.stats.streak"), value: `${stats.streak}j`, color: "from-rose-400 to-red-500" },
-    { icon: MapIcon, label: t("profil.stats.km"), value: stats.km, color: "from-emerald-400 to-teal-500" },
+    { icon: Plane, label: t("profil.shown.trips"), value: shown.trips, color: "from-cyan-400 to-blue-500" },
+    { icon: Award, label: t("profil.shown.badges"), value: shown.badges, color: "from-amber-400 to-orange-500" },
+    { icon: Zap, label: `${t("profil.shown.level")} ${shown.level}`, value: `${shown.xp} XP`, color: "from-purple-400 to-fuchsia-500" },
+    { icon: Flame, label: t("profil.shown.streak"), value: `${shown.streak}j`, color: "from-rose-400 to-red-500" },
+    { icon: MapIcon, label: t("profil.shown.km"), value: shown.km, color: "from-emerald-400 to-teal-500" },
   ];
 
-  const progress = getLevelProgress(stats.xp);
+  const progress = getLevelProgress(shown.xp);
   const lvl = progress.level;
   const next = progress.next;
 
@@ -110,19 +104,19 @@ const ProfileStats = () => {
             </div>
             <div className="min-w-0">
               <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
-                {t("profil.stats.level")} {lvl.index}
+                {t("profil.shown.level")} {lvl.index}
               </p>
               <p className="text-sm font-bold truncate">{levelName(lvl, i18n.language)}</p>
             </div>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-sm font-bold">{stats.xp} <span className="text-xs text-muted-foreground font-medium">XP</span></p>
+            <p className="text-sm font-bold">{shown.xp} <span className="text-xs text-muted-foreground font-medium">XP</span></p>
             {next ? (
               <p className="text-xs text-muted-foreground">
-                {t("profil.stats.xpToNext", { xp: progress.xpForNext, level: levelName(next, i18n.language) })}
+                {t("profil.shown.xpToNext", { xp: progress.xpForNext, level: levelName(next, i18n.language) })}
               </p>
             ) : (
-              <p className="text-xs text-amber-500 font-semibold">{t("profil.stats.maxLevel")}</p>
+              <p className="text-xs text-amber-500 font-semibold">{t("profil.shown.maxLevel")}</p>
             )}
           </div>
         </div>
@@ -131,7 +125,7 @@ const ProfileStats = () => {
 
       {/* Stats grid */}
       <div>
-        <h2 className="text-sm font-bold mb-3">{t("profil.stats.title")}</h2>
+        <h2 className="text-sm font-bold mb-3">{t("profil.shown.title")}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {items.map((it) => {
             const Icon = it.icon;

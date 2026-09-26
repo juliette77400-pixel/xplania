@@ -3094,7 +3094,7 @@
   "gam": {
     "catalog": {
       "title": "Xplania Catalog",
-      "subtitle": "260 badges to unlock by proving your adventures (geo, photo or ticket).",
+      "subtitle": "{{count}} badges to unlock by proving your adventures (geo, photo or ticket).",
       "all": "All",
       "points": "{{n}} validated points",
       "validated": "{{n}} validated",
@@ -3172,7 +3172,8 @@
         "queued": "Queued",
         "error": "Error"
       }
-    }
+    },
+    "levelOf": "Level {{n}} / {{total}}"
   },
   "discoverComp": {
     "kicker": "Discover",

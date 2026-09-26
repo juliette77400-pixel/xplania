@@ -16,7 +16,8 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { adaptToTripDuration, celebrateUnlock } from "@/lib/badges-fx";
-import { computeXp, getLevelProgress } from "@/lib/xp-levels";
+import { getLevelProgress } from "@/lib/xp-levels";
+import { useMyXp } from "@/hooks/useMyXp";
 import XpHeader from "@/components/gamification/XpHeader";
 import Leaderboard from "@/components/gamification/Leaderboard";
 import LevelUpOverlay from "@/components/gamification/LevelUpOverlay";
@@ -274,22 +275,7 @@ const GamificationPage = () => {
 
   // XP — derived from real activity counts (single source of truth)
   const totalBadges = counts.exploreBadgesOwned + counts.journalBadgesOwned + counts.moodBadgesOwned;
-  const totalXp = useMemo(
-    () =>
-      computeXp({
-        exploreVisited: counts.exploreVisited,
-        journalNotes: counts.journalNotes,
-        journalPhotos: counts.journalPhotos,
-        journalLocations: counts.journalLocations,
-        journalMoods: counts.journalMoods,
-        moodFavorites: counts.moodFavorites,
-        moodHiddenGems: counts.moodHiddenGems,
-        badgesTotal: totalBadges,
-        placeReviews: counts.placeReviews,     // ✨ NEW (gamif)
-        moodReactions: counts.moodReactions,   // ✨ NEW (gamif)
-      }),
-    [counts, totalBadges],
-  );
+  const { xp: totalXp } = useMyXp();
 
   // ── Level-up detection: compare current level vs last seen in localStorage ──
   const [levelUp, setLevelUp] = useState<ReturnType<typeof getLevelProgress>["level"] | null>(null);
