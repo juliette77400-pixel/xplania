@@ -2892,6 +2892,10 @@ export type Database = {
         }
         Returns: Json
       }
+      verify_cron_secret: {
+        Args: { _name: string; _secret: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
