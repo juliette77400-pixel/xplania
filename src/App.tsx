@@ -48,6 +48,7 @@ const Parametres = lazy(() => import("./pages/Parametres.tsx"));
 const Legal = lazy(() => import("./pages/Legal.tsx"));
 const Trust = lazy(() => import("./pages/Trust.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
+const XplaniaVsChatgpt = lazy(() => import("./pages/XplaniaVsChatgpt.tsx"));
 const GuidePlanTrip = lazy(() => import("./pages/GuidePlanTrip.tsx"));
 
 const TravelerProfileResult = lazy(() => import("./pages/TravelerProfileResult.tsx"));
@@ -136,6 +137,7 @@ const App = () => (
             <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/blog/how-to-plan-a-trip-with-ai" element={<GuidePlanTrip />} />
             <Route path="/about" element={<About />} />
+            <Route path="/xplania-vs-chatgpt" element={<XplaniaVsChatgpt />} />
             <Route path="/a-propos" element={<About />} />
             {/* Localized legal routes (FR + EN canonical URLs) */}
             <Route path="/mentions-legales" element={<Legal legalKey="mentions" />} />

@@ -26,3 +26,8 @@
 - [x] Mot de passe oublié : lien expiré
 - [x] Pages légales : retour accueil selon connexion
 - [x] 8 hooks vers React Query
+## Audit UX/SEO — lot 1
+- [x] Page « Xplania vs ChatGPT »
+- [x] Contrastes couleurs (clair/sombre)
+- [x] Titres/images de partage par page
+- [x] Aligner le texte lu par Google sur l'accueil (quiz)

@@ -21,7 +21,7 @@ function upsertLink(rel: string, href: string) {
   el.setAttribute("href", href);
 }
 
-function upsertJsonLd(id: string, data: Record<string, unknown>) {
+export function upsertJsonLd(id: string, data: Record<string, unknown>) {
   let el = document.head.querySelector<HTMLScriptElement>(`script[type="application/ld+json"][data-id="${id}"]`);
   if (!el) {
     el = document.createElement("script");
