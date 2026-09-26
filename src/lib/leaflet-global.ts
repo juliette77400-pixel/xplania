@@ -17,6 +17,7 @@ export const loadMarkerCluster = () => {
 
 export const loadHeat = () => {
   (window as unknown as { L: typeof L }).L = L;
+  // @ts-ignore - leaflet.heat ships no type declarations
   heatPromise ??= import("leaflet.heat");
   return heatPromise;
 };
