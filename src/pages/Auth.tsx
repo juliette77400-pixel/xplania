@@ -101,7 +101,7 @@ const Auth = () => {
           <span className="text-2xl font-bold gradient-text">Xplania</span>
         </Link>
         <p className="mb-8 text-center text-xs font-medium text-muted-foreground">
-          {t("differentiation.tagline")}
+          {t("home.differentiation.tagline")}
         </p>
 
         <div className="glass-card rounded-2xl p-8">
