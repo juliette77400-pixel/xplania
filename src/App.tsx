@@ -168,6 +168,7 @@ const App = () => (
             </Suspense>
             <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
             <Suspense fallback={null}><CookieBanner /></Suspense>
+            <HelpButton />
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
