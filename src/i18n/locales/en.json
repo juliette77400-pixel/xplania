@@ -5648,5 +5648,29 @@
       "heading": "Cookies and analytics",
       "body": "Xplania only uses first-party analytics cookies to understand how the site is used and to improve it. We do not use any advertising cookies and we never sell or share this data with third parties. Analytics is only enabled with your consent, given via the cookie banner. You can withdraw your consent at any time from the \"Manage cookies\" button at the bottom of every page. Collected data (visited pages, key actions, device, referrer) is kept for a maximum of 13 months, then deleted."
     }
+  },
+  "adminStats": {
+    "pageTitle": "Statistics",
+    "pageDesc": "Visitors who accepted cookies, sign-ups and drop-offs.",
+    "periodDays": "{{count}} days",
+    "kpiVisitors": "Unique visitors",
+    "kpiPageViews": "Page views",
+    "kpiSignups": "Completed sign-ups",
+    "kpiTrips": "Trips created",
+    "chartTitle": "Visitors per day",
+    "topPagesTitle": "Most viewed pages",
+    "sourcesTitle": "Where visitors come from",
+    "funnelTitle": "Journey and drop-offs",
+    "funnelStep": {
+      "page_view": "Visit",
+      "quiz_started": "Quiz started",
+      "quiz_completed": "Quiz completed",
+      "signup_started": "Sign-up started",
+      "signup_completed": "Sign-up completed",
+      "trip_created": "Trip created"
+    },
+    "emptyState": "No data yet — visitors who accept cookies will show up here.",
+    "restrictedTitle": "Restricted access",
+    "restrictedDesc": "This page is for the administrator only."
   }
 }
