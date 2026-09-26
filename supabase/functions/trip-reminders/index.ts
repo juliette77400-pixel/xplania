@@ -7,6 +7,8 @@ import { sendTemplateEmail } from '../_shared/transactional-email-templates/send
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
   const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
+  const { data: okSecret } = await admin.rpc('verify_cron_secret', { _name: 'trip-reminders', _secret: req.headers.get('x-cron-secret') ?? '' })
+  if (okSecret !== true) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   const target = new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10)
   const { data: trips, error } = await admin.from('trips').select('id,user_id,destination,departure_date').eq('departure_date', target).limit(500)
   if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
