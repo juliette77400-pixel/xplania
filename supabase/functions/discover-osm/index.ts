@@ -59,8 +59,8 @@ serve(async (req) => {
 
     const endpoints = [
       "https://overpass-api.de/api/interpreter",
+      "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
       "https://overpass.kumi.systems/api/interpreter",
-      "https://overpass.openstreetmap.ru/api/interpreter",
     ];
     let ov: any = null;
     let lastErr = "";
@@ -68,8 +68,13 @@ serve(async (req) => {
       try {
         const ovResp = await fetch(url, {
           method: "POST",
-          headers: { "Content-Type": "text/plain", "User-Agent": "Xplania/1.0" },
-          body: query,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+            "User-Agent": "Xplania/1.0 (https://xplania.app)",
+          },
+          body: new URLSearchParams({ data: query }).toString(),
+          signal: AbortSignal.timeout(25000),
         });
         if (ovResp.ok) { ov = await ovResp.json(); break; }
         lastErr = `${url} ${ovResp.status}`;
