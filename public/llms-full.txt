@@ -7,7 +7,6 @@
 - Traveler profile quiz (/): swipe cards about travel preferences; you get a traveler badge, reward points and two recommended tools.
 - Trip planner (/dashboard): multi-step form (destination, dates, budget, travel style, companions) that produces personalized recommendations.
 - Budget guide (/guide-budget): realistic per-day budget, manual expense tracking with charts, live currency converter, AI alerts and saving tips, PDF export.
-- Packing guide (/guide-valise): packing checklist adapted to destination, weather, luggage type (cabin, checked, backpack) and activities; outfit ideas and cultural tips.
 - Visa & vaccines guide (/guide-visa): visa formalities, recommended vaccines and safety advice, summarized from official sources (France Diplomatie, Institut Pasteur, WHO). Always check official sites before travelling.
 - Mood Explorer (/mood): place recommendations based on your current mood, with map and badges.
 - Discover (/discover): local places from OpenStreetMap enriched by AI, natural-language search, saved lists.
@@ -23,7 +22,7 @@
 
 ## Privacy
 
-EU hosting, no resale of data, sharing is opt-in, account and data can be deleted anytime. Details on /trust and /privacy-policy.
+EU hosting, no resale of data, sharing is opt-in, account and data can be deleted anytime. Details on /securite and /politique-de-confidentialite.
 
 ## Contact
 

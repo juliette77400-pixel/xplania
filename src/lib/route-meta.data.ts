@@ -65,4 +65,4 @@ export const SELF_MANAGED = [/^\/carnet\/public\//, /^\/suivi\/public\//, /^\/le
 // Routes that must never be indexed by search engines (auth flows, no content
 // value for SEO). RouteMeta sets a robots noindex meta tag at runtime for
 // these, and the build-time prerender plugin bakes it into their static HTML.
-export const NOINDEX_ROUTES = ["/auth", "/reset-password"];
+export const NOINDEX_ROUTES = ["/auth", "/reset-password", "/guide-valise"];
