@@ -871,7 +871,7 @@
   "legal": {
     "backHome": "Back to home",
     "lastUpdated": "Last updated",
-    "updateDate": "June 20, 2026",
+    "updateDate": "September 26, 2026",
     "contactNote": "For any question, write to us at",
     "seeAlso": "See also",
     "mentions": {
@@ -916,7 +916,7 @@
         },
         {
           "heading": "Sub-processors and third-party services",
-          "body": "To run Xplania we rely on a small number of trusted providers. None of them resells your data. Each one is bound by contract.\n\n1) Lovable Labs Incorporated (United States)\n   • Role: no-code platform hosting the website, the app and the Lovable Cloud backend.\n   • Data transmitted: all technical data needed to operate the service (account, trip content, logs).\n   • Privacy policy: https://lovable.dev/privacy\n   • Terms: https://lovable.dev/terms\n\n2) Supabase Inc. (United States)\n   • Role: database and authentication hosting (underlying Lovable Cloud).\n   • Data transmitted: email, hashed password, trip content, uploaded photos.\n   • Privacy policy: https://supabase.com/privacy\n\n3) Google LLC — Gemini API (United States)\n   • Role: AI engine used by the Ping (visa guide) and Maya (budget guide) assistants to generate answers.\n   • Data transmitted: the content of the message you send to the assistant (destination, travel context). No email or account identifier is transmitted.\n   • Gemini API terms: https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (United States)\n   • Role: receives the emails sent through the feedback and contact forms. The feedback form relies on EmailJS to relay the message to the Xplania team's Gmail inbox.\n   • Data transmitted: your email, rating, suggestions, reported problems.\n   • Google privacy policy: https://policies.google.com/privacy\n\nThis list will be kept up to date. Any meaningful change will be communicated to you."
+          "body": "To run Xplania we rely on a small number of trusted providers. None of them resells your data. Each one is bound by contract.\n\n1) Lovable Labs Incorporated (United States)\n   • Role: no-code platform hosting the website, the app and the Lovable Cloud backend.\n   • Data transmitted: all technical data needed to operate the service (account, trip content, logs).\n   • Privacy policy: https://lovable.dev/privacy\n   • Terms: https://lovable.dev/terms\n\n2) Supabase Inc. (United States)\n   • Role: database and authentication hosting (underlying Lovable Cloud).\n   • Data transmitted: email, hashed password, trip content, uploaded photos.\n   • Privacy policy: https://supabase.com/privacy\n\n3) Google LLC — Gemini API (United States)\n   • Role: AI engine used by the Ping (visa guide) and Maya (budget guide) assistants to generate answers.\n   • Data transmitted: the content of the message you send to the assistant (destination, travel context). No email or account identifier is transmitted.\n   • Gemini API terms: https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (United States)\n   • Role: receives the emails sent through the contact form.\n   • Data transmitted: your email, rating, suggestions, reported problems.\n   • Google privacy policy: https://policies.google.com/privacy\n\n5) Google LLC — Google Maps Platform (United States)\n   • Role: displays maps and places (Maps JavaScript, Places, geocoding) within the app.\n   • Data transmitted: the places, addresses and coordinates of your trips.\n   • Privacy policy: https://policies.google.com/privacy\n\n6) OpenWeather Ltd (United Kingdom) — OpenWeatherMap\n   • Role: displays the weather for your destination.\n   • Data transmitted: the city and coordinates of your destination.\n   • Privacy policy: https://openweather.co.uk/privacy-policy\n\n7) Open-Meteo\n   • Role: weather forecasts and historical weather used for some travel recommendations.\n   • Data transmitted: the geographic coordinates of your destination.\n   • Terms: https://open-meteo.com/en/terms\n\n8) Unsplash Inc. (United States)\n   • Role: supplies photos illustrating your destinations.\n   • Data transmitted: search terms (e.g. the destination name). No personal account data is transmitted.\n   • Privacy policy: https://unsplash.com/privacy\n\n9) EmailJS\n   • Role: relays messages sent through the feedback form to the Xplania team's email inbox.\n   • Data transmitted: the message and email you enter in the form.\n   • Privacy policy: https://www.emailjs.com/legal/privacy-policy/\n\nThis list will be kept up to date. Any meaningful change will be communicated to you."
         },
         {
           "heading": "Data transfers outside the European Union",
@@ -1088,7 +1088,10 @@
     "newPasswordLabel": "New password",
     "submit": "Update",
     "verifying": "Verifying link…",
-    "success": "Password updated ✅"
+    "success": "Password updated ✅",
+    "expiredTitle": "Link expired",
+    "expiredMessage": "This link has expired or is no longer valid.",
+    "backToAuth": "Back to sign in"
   },
   "profil": {
     "title": "My profile",
@@ -5164,7 +5167,8 @@
       "reviewTinder": "Review my Traveler DNA"
     },
     "Leaderboard": {
-      "subtitle": "Top Xplania travelers (cumulative XP)"
+      "subtitle": "Top Xplania travelers (cumulative XP)",
+      "globalTitle": "Global leaderboard"
     },
     "PhotoGallery": {
       "subtitle": "Real photos via Unsplash"
@@ -5258,11 +5262,22 @@
       "filterValidated": "Validated",
       "moderateDesc": "Review submitted proofs and validate or reject badges.",
       "restrictedDesc": "This page is for administrators only.",
-      "restrictedTitle": "Restricted access"
+      "restrictedTitle": "Restricted access",
+      "pageTitle": "Badge validation",
+      "byLabel": "By",
+      "pointsLabel": "pts",
+      "methodLabel": "Method:",
+      "submittedOn": "Submitted",
+      "proofAlt": "Proof",
+      "reasonPlaceholder": "Validation/rejection reason (optional)",
+      "validateBtn": "Validate",
+      "rejectBtn": "Reject"
     },
     "PublicSuivi": {
       "linkNotFound": "Link not found or expired",
-      "liveTrackDesc": "Live tracking · {{km}} km travelled"
+      "liveTrackDesc": "Live tracking · {{km}} km travelled",
+      "pageTitle": "Public trip tracking",
+      "liveTitleMeta": "Live trip tracking"
     },
     "auto": {
       "k0": "Auto-validate if user is within badge radius.",
@@ -5477,5 +5492,13 @@
     "copyLink": "Copy public link",
     "makePublic": "Make public",
     "copied": "Link copied!"
+  },
+  "errors": {
+    "loadRatings": "Couldn't load ratings. Try again later.",
+    "loadReviews": "Couldn't load reviews. Try again later.",
+    "loadClaimHistory": "Couldn't load your claim history.",
+    "loadMoodEntries": "Couldn't load your mood journal.",
+    "loadMissions": "Couldn't load your missions.",
+    "badgeUnlockFailed": "Couldn't save your new badge."
   }
 }

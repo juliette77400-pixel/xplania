@@ -140,7 +140,7 @@ export default function AdminBadges() {
       <main className="container mx-auto max-w-5xl px-4 py-10 space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold">Validation des badges</h1>
+            <h1 className="text-2xl font-bold">{t("ui2.AdminBadges.pageTitle")}</h1>
             <p className="text-sm text-muted-foreground">{t("ui2.AdminBadges.moderateDesc")}</p>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -171,7 +171,7 @@ export default function AdminBadges() {
                   <div>
                     <h3 className="font-bold text-foreground">{badgeName(c)}</h3>
                     <p className="text-xs text-muted-foreground">
-                      Par <span className="text-foreground">{c.profiles?.display_name || c.user_id.slice(0, 8)}</span> · {c.gam_badges?.points ?? 0} pts
+                      {t("ui2.AdminBadges.byLabel")} <span className="text-foreground">{c.profiles?.display_name || c.user_id.slice(0, 8)}</span> · {c.gam_badges?.points ?? 0} {t("ui2.AdminBadges.pointsLabel")}
                     </p>
                   </div>
                   <Badge variant={c.status === "validated" ? "default" : c.status === "rejected" ? "destructive" : "secondary"}>
@@ -183,8 +183,8 @@ export default function AdminBadges() {
                   {c.proof_type === "geo" && <MapPin className="w-3.5 h-3.5" />}
                   {c.proof_type === "photo" && <ImageIcon className="w-3.5 h-3.5" />}
                   {c.proof_type === "ticket" && <FileText className="w-3.5 h-3.5" />}
-                  Méthode : <span className="text-foreground font-medium">{c.proof_type ?? "—"}</span>
-                  {c.submitted_at && <> · Soumis {new Date(c.submitted_at).toLocaleDateString()}</>}
+                  {t("ui2.AdminBadges.methodLabel")} <span className="text-foreground font-medium">{c.proof_type ?? "—"}</span>
+                  {c.submitted_at && <> · {t("ui2.AdminBadges.submittedOn")} {new Date(c.submitted_at).toLocaleDateString()}</>}
                 </div>
 
                 {c.geo_lat !== null && c.geo_lng !== null && (
@@ -201,7 +201,7 @@ export default function AdminBadges() {
 
                 {c.proof_url && signedUrls[c.proof_url] && (
                   <a href={signedUrls[c.proof_url]} target="_blank" rel="noreferrer" className="block">
-                    <img src={signedUrls[c.proof_url]} alt="Preuve" className="rounded-lg border border-border max-h-48 object-cover w-full" />
+                    <img src={signedUrls[c.proof_url]} alt={t("ui2.AdminBadges.proofAlt")} className="rounded-lg border border-border max-h-48 object-cover w-full" />
                   </a>
                 )}
 
@@ -212,7 +212,7 @@ export default function AdminBadges() {
                 )}
 
                 <Textarea
-                  placeholder="Motif de validation/rejet (optionnel)"
+                  placeholder={t("ui2.AdminBadges.reasonPlaceholder")}
                   value={reasonDraft[c.id] ?? c.review_reason ?? ""}
                   onChange={(e) => setReasonDraft((p) => ({ ...p, [c.id]: e.target.value }))}
                   className="text-xs min-h-[60px]"
@@ -221,10 +221,10 @@ export default function AdminBadges() {
                 {c.status === "submitted" && (
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1 bg-emerald-500 hover:bg-emerald-600" onClick={() => decide(c, "validated")}>
-                      <CheckCircle2 className="w-4 h-4 mr-1" /> Valider
+                      <CheckCircle2 className="w-4 h-4 mr-1" /> {t("ui2.AdminBadges.validateBtn")}
                     </Button>
                     <Button size="sm" variant="destructive" className="flex-1" onClick={() => decide(c, "rejected")}>
-                      <XCircle className="w-4 h-4 mr-1" /> Rejeter
+                      <XCircle className="w-4 h-4 mr-1" /> {t("ui2.AdminBadges.rejectBtn")}
                     </Button>
                   </div>
                 )}

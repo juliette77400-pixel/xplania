@@ -44,7 +44,7 @@ const StarRating = ({ value, onChange, size = 24 }: { value: number; onChange?: 
 const ReviewsSection = ({ placeId }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { reviews, loading, submitting, submit, userReview } = usePlaceReviews(placeId);
+  const { reviews, loading, error, submitting, submit, userReview } = usePlaceReviews(placeId);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
@@ -152,7 +152,11 @@ const ReviewsSection = ({ placeId }: Props) => {
         </div>
       )}
 
-      {!loading && reviews.length === 0 && (
+      {!loading && error && (
+        <p className="py-4 text-center text-xs text-destructive">{t("errors.loadReviews")}</p>
+      )}
+
+      {!loading && !error && reviews.length === 0 && (
         <p className="py-4 text-center text-xs text-muted-foreground">
           {t("discoverComp.reviews.empty")}
         </p>

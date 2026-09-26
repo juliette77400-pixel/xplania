@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useEffect } from "react";
 
 export interface OfficialSafety {
   level: 1 | 2 | 3 | 4;
@@ -29,66 +31,31 @@ export interface OfficialInfo {
   locale: "fr" | "en";
 }
 
-// In-memory cache by `${destination}|${locale}` (TTL 30min)
-const cache = new Map<string, { data: OfficialInfo; t: number }>();
 const TTL = 30 * 60 * 1000;
 
 const REFRESH_EVENT = "xplania-official-refresh";
 
+const fetchOfficialInfo = async (destination: string, locale: "fr" | "en"): Promise<OfficialInfo> => {
+  const { data: resp, error: err } = await supabase.functions.invoke(
+    "visa-official-info",
+    { body: { destination, locale } },
+  );
+  if (err) throw new Error(err.message);
+  if (!resp || resp.error) throw new Error(resp?.error || "no_data");
+  return resp as OfficialInfo;
+};
+
 export function useOfficialInfo(destination: string | undefined, locale: "fr" | "en") {
-  const [data, setData] = useState<OfficialInfo | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const callIdRef = useRef(0);
+  const queryClient = useQueryClient();
+  const enabled = !!destination && destination.length >= 2;
+  const queryKey = ["official-info", destination?.toLowerCase(), locale];
 
-  const getKey = useCallback(
-    () => (destination ? `${destination.toLowerCase()}|${locale}` : ""),
-    [destination, locale],
-  );
-
-  const fetchData = useCallback(
-    async (skipCache = false) => {
-      if (!destination || destination.length < 2) {
-        setData(null);
-        setError(null);
-        return;
-      }
-      const key = getKey();
-      if (!skipCache) {
-        const hit = cache.get(key);
-        if (hit && Date.now() - hit.t < TTL) {
-          setData(hit.data);
-          return;
-        }
-      }
-
-      setLoading(true);
-      setError(null);
-      const callId = ++callIdRef.current;
-
-      try {
-        const { data: resp, error: err } = await supabase.functions.invoke(
-          "visa-official-info",
-          { body: { destination, locale } },
-        );
-        if (callIdRef.current !== callId) return;
-        if (err) throw new Error(err.message);
-        if (!resp || resp.error) throw new Error(resp?.error || "no_data");
-        cache.set(key, { data: resp as OfficialInfo, t: Date.now() });
-        setData(resp as OfficialInfo);
-      } catch (e) {
-        if (callIdRef.current !== callId) return;
-        setError(e instanceof Error ? e.message : "error");
-      } finally {
-        if (callIdRef.current === callId) setLoading(false);
-      }
-    },
-    [destination, locale, getKey],
-  );
-
-  useEffect(() => {
-    fetchData(false);
-  }, [fetchData]);
+  const { data, isFetching, error } = useQuery({
+    queryKey,
+    queryFn: () => fetchOfficialInfo(destination as string, locale),
+    enabled,
+    staleTime: TTL,
+  });
 
   // Sync across instances: when another section refreshes the same destination,
   // pick up the updated cache without re-triggering a network request.
@@ -98,25 +65,28 @@ export function useOfficialInfo(destination: string | undefined, locale: "fr" | 
       const detail = (e as CustomEvent<{ destination: string; locale: "fr" | "en" }>).detail;
       if (!detail || !destination) return;
       if (detail.destination.toLowerCase() === destination.toLowerCase() && detail.locale === locale) {
-        fetchData(false);
+        queryClient.invalidateQueries({ queryKey });
       }
     };
     window.addEventListener(REFRESH_EVENT, onRefresh);
     return () => window.removeEventListener(REFRESH_EVENT, onRefresh);
-  }, [destination, locale, fetchData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination, locale]);
 
-  const refresh = useCallback(() => {
-    const key = getKey();
-    if (key) cache.delete(key);
-    return fetchData(true).then(() => {
-      if (typeof window !== "undefined" && destination) {
-        window.dispatchEvent(
-          new CustomEvent(REFRESH_EVENT, { detail: { destination, locale } }),
-        );
-      }
-    });
-  }, [fetchData, getKey, destination, locale]);
+  const refresh = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey, refetchType: "active" });
+    if (typeof window !== "undefined" && destination) {
+      window.dispatchEvent(
+        new CustomEvent(REFRESH_EVENT, { detail: { destination, locale } }),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination, locale]);
 
-  return { data, loading, error, refresh };
+  return {
+    data: data ?? null,
+    loading: enabled && isFetching,
+    error: error ? (error instanceof Error ? error.message : "error") : null,
+    refresh,
+  };
 }
-

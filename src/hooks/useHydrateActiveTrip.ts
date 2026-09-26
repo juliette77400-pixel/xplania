@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,7 +21,6 @@ export const useHydrateActiveTrip = () => {
   const setTripData = useTravelStore((s) => s.setTripData);
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
   const { user } = useAuth();
-  const [checkedLatest, setCheckedLatest] = useState(false);
 
   useEffect(() => {
     if (tripId && !tripData?.destination) {
@@ -39,32 +39,34 @@ export const useHydrateActiveTrip = () => {
     }
   }, [arrivalCity, departureDate, destination, returnDate, setTripData, tripData?.destination, tripId]);
 
+  const shouldFetchLatest = !tripId && !tripData?.destination && !!user;
+
+  const { data: latestTrip } = useQuery({
+    queryKey: ["latest-trip", user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("trips")
+        .select("id, destination, arrival_city, departure_date, return_date")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data ?? null;
+    },
+    enabled: shouldFetchLatest,
+    staleTime: Infinity,
+  });
+
   useEffect(() => {
-    if (tripId || tripData?.destination || !user || checkedLatest) return;
-
-    let cancelled = false;
-    setCheckedLatest(true);
-    supabase
-      .from("trips")
-      .select("id, destination, arrival_city, departure_date, return_date")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (cancelled || !data?.id) return;
-        setActiveTrip({
-          tripId: data.id,
-          destination: data.destination,
-          arrivalCity: data.arrival_city,
-          departureDate: data.departure_date,
-          returnDate: data.return_date,
-        });
-        hydrateTravelStoreFromTrip(data.id);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [checkedLatest, setActiveTrip, tripData?.destination, tripId, user]);
+    if (!latestTrip?.id) return;
+    setActiveTrip({
+      tripId: latestTrip.id,
+      destination: latestTrip.destination,
+      arrivalCity: latestTrip.arrival_city,
+      departureDate: latestTrip.departure_date,
+      returnDate: latestTrip.return_date,
+    });
+    hydrateTravelStoreFromTrip(latestTrip.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestTrip?.id]);
 };

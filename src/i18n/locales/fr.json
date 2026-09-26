@@ -565,7 +565,7 @@
     "touristPolice": "👮 Police touristique",
     "generalDocsTitle": "Documents généraux à préparer",
     "alertsTitle": "Alertes importantes",
-    "tipsTitle": "Conseils pratiques",
+    "tipsTitle": "Astuces pratiques",
     "inlineDisclaimer": "ℹ️ Vérifie toujours ces informations sur le site officiel de l'ambassade (diplomatie.gouv.fr).",
     "disclaimer": {
       "title": "Avis important —",
@@ -871,7 +871,7 @@
   "legal": {
     "backHome": "Retour à l'accueil",
     "lastUpdated": "Dernière mise à jour",
-    "updateDate": "20 juin 2026",
+    "updateDate": "26 septembre 2026",
     "contactNote": "Pour toute question, écris-nous à",
     "seeAlso": "À lire aussi",
     "mentions": {
@@ -916,7 +916,7 @@
         },
         {
           "heading": "Sous-traitants et services tiers",
-          "body": "Pour faire fonctionner Xplania, nous nous appuyons sur un nombre limité de prestataires de confiance. Aucun ne revend tes données. Chacun est encadré contractuellement.\n\n1) Lovable Labs Incorporated (États-Unis)\n   • Rôle : plateforme no-code qui héberge le site, l'application et le backend Lovable Cloud.\n   • Données transmises : toutes les données techniques nécessaires au fonctionnement (compte, contenu de voyage, logs).\n   • Politique de confidentialité : https://lovable.dev/privacy\n   • Conditions : https://lovable.dev/terms\n\n2) Supabase Inc. (États-Unis)\n   • Rôle : hébergement de la base de données et du service d'authentification (sous-jacent à Lovable Cloud).\n   • Données transmises : email, mot de passe haché, contenu de tes voyages, photos uploadées.\n   • Politique de confidentialité : https://supabase.com/privacy\n\n3) Google LLC — API Gemini (États-Unis)\n   • Rôle : moteur d'intelligence artificielle utilisé par les assistants Ping (guide visa) et Maya (guide budget) pour générer leurs réponses.\n   • Données transmises : le contenu du message que tu envoies à l'assistant (destination, contexte de voyage). Aucun email ni identifiant de compte n'est transmis.\n   • Conditions API Gemini : https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (États-Unis)\n   • Rôle : réception des emails envoyés via le formulaire de feedback et de contact. Le formulaire de feedback transite par EmailJS pour acheminer le message vers la boîte Gmail de l'équipe Xplania.\n   • Données transmises : ton email, ta note, tes suggestions, les problèmes rapportés.\n   • Politique de confidentialité Google : https://policies.google.com/privacy\n\nCette liste sera tenue à jour. Toute évolution importante te sera communiquée."
+          "body": "Pour faire fonctionner Xplania, nous nous appuyons sur un nombre limité de prestataires de confiance. Aucun ne revend tes données. Chacun est encadré contractuellement.\n\n1) Lovable Labs Incorporated (États-Unis)\n   • Rôle : plateforme no-code qui héberge le site, l'application et le backend Lovable Cloud.\n   • Données transmises : toutes les données techniques nécessaires au fonctionnement (compte, contenu de voyage, logs).\n   • Politique de confidentialité : https://lovable.dev/privacy\n   • Conditions : https://lovable.dev/terms\n\n2) Supabase Inc. (États-Unis)\n   • Rôle : hébergement de la base de données et du service d'authentification (sous-jacent à Lovable Cloud).\n   • Données transmises : email, mot de passe haché, contenu de tes voyages, photos uploadées.\n   • Politique de confidentialité : https://supabase.com/privacy\n\n3) Google LLC — API Gemini (États-Unis)\n   • Rôle : moteur d'intelligence artificielle utilisé par les assistants Ping (guide visa) et Maya (guide budget) pour générer leurs réponses.\n   • Données transmises : le contenu du message que tu envoies à l'assistant (destination, contexte de voyage). Aucun email ni identifiant de compte n'est transmis.\n   • Conditions API Gemini : https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (États-Unis)\n   • Rôle : réception des emails envoyés via le formulaire de contact.\n   • Données transmises : ton email, ta note, tes suggestions, les problèmes rapportés.\n   • Politique de confidentialité Google : https://policies.google.com/privacy\n\n5) Google LLC — Google Maps Platform (États-Unis)\n   • Rôle : affichage des cartes et des lieux (Maps JavaScript, Places, géocodage) dans l'application.\n   • Données transmises : les lieux, adresses et coordonnées de tes voyages.\n   • Politique de confidentialité : https://policies.google.com/privacy\n\n6) OpenWeather Ltd (Royaume-Uni) — OpenWeatherMap\n   • Rôle : affichage de la météo de ta destination.\n   • Données transmises : la ville et les coordonnées de ta destination.\n   • Politique de confidentialité : https://openweather.co.uk/privacy-policy\n\n7) Open-Meteo\n   • Rôle : prévisions météo et historique météo utilisés pour certaines recommandations de voyage.\n   • Données transmises : les coordonnées géographiques de ta destination.\n   • Conditions : https://open-meteo.com/en/terms\n\n8) Unsplash Inc. (États-Unis)\n   • Rôle : fourniture de photos illustrant tes destinations.\n   • Données transmises : les termes de recherche (ex. le nom de la destination). Aucune donnée personnelle de compte n'est transmise.\n   • Politique de confidentialité : https://unsplash.com/privacy\n\n9) EmailJS\n   • Rôle : acheminement des messages envoyés via le formulaire de feedback vers la boîte email de l'équipe Xplania.\n   • Données transmises : le message et l'email que tu saisis dans le formulaire.\n   • Politique de confidentialité : https://www.emailjs.com/legal/privacy-policy/\n\nCette liste sera tenue à jour. Toute évolution importante te sera communiquée."
         },
         {
           "heading": "Transferts de données hors Union européenne",
@@ -1088,7 +1088,10 @@
     "newPasswordLabel": "Nouveau mot de passe",
     "submit": "Mettre à jour",
     "verifying": "Vérification du lien…",
-    "success": "Mot de passe mis à jour ✅"
+    "success": "Mot de passe mis à jour ✅",
+    "expiredTitle": "Lien expiré",
+    "expiredMessage": "Ce lien a expiré ou n'est plus valide.",
+    "backToAuth": "Retourner à la connexion"
   },
   "profil": {
     "title": "Mon profil",
@@ -5164,7 +5167,8 @@
       "reviewTinder": "Revoir mon ADN Voyageur"
     },
     "Leaderboard": {
-      "subtitle": "Top voyageurs Xplania (XP cumulés)"
+      "subtitle": "Top voyageurs Xplania (XP cumulés)",
+      "globalTitle": "Classement général"
     },
     "PhotoGallery": {
       "subtitle": "Images réelles via Unsplash"
@@ -5258,11 +5262,22 @@
       "filterValidated": "Validées",
       "moderateDesc": "Examine les preuves envoyées et valide ou refuse les badges.",
       "restrictedDesc": "Cette page est réservée aux administrateurs.",
-      "restrictedTitle": "Accès restreint"
+      "restrictedTitle": "Accès restreint",
+      "pageTitle": "Validation des badges",
+      "byLabel": "Par",
+      "pointsLabel": "pts",
+      "methodLabel": "Méthode :",
+      "submittedOn": "Soumis",
+      "proofAlt": "Preuve",
+      "reasonPlaceholder": "Motif de validation/rejet (optionnel)",
+      "validateBtn": "Valider",
+      "rejectBtn": "Rejeter"
     },
     "PublicSuivi": {
       "linkNotFound": "Lien introuvable ou expiré",
-      "liveTrackDesc": "Suivi en direct · {{km}} km parcourus"
+      "liveTrackDesc": "Suivi en direct · {{km}} km parcourus",
+      "pageTitle": "Suivi de voyage public",
+      "liveTitleMeta": "Suivi de voyage en direct"
     },
     "auto": {
       "k0": "Auto-validation si l'utilisateur est dans le rayon du badge.",
@@ -5477,5 +5492,13 @@
     "copyLink": "Copier le lien public",
     "makePublic": "Rendre public",
     "copied": "Lien copié !"
+  },
+  "errors": {
+    "loadRatings": "Impossible de charger les notes. Réessaie plus tard.",
+    "loadReviews": "Impossible de charger les avis. Réessaie plus tard.",
+    "loadClaimHistory": "Impossible de charger ton historique de réclamations.",
+    "loadMoodEntries": "Impossible de charger ton journal d'humeur.",
+    "loadMissions": "Impossible de charger tes missions.",
+    "badgeUnlockFailed": "Impossible d'enregistrer ton nouveau badge."
   }
 }

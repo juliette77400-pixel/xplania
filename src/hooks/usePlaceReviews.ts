@@ -26,7 +26,7 @@ export function usePlaceReviews(placeId: string | null) {
   const { user } = useAuth();
   const [submitting, setSubmitting] = useState(false);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isError } = useQuery({
     queryKey: placeReviewsQueryKey(placeId),
     enabled: !!placeId,
     queryFn: async () => {
@@ -36,7 +36,7 @@ export function usePlaceReviews(placeId: string | null) {
         .eq("place_id", placeId!)
         .order("created_at", { ascending: false })
         .limit(20);
-      if (error) console.error(error);
+      if (error) throw error;
       const list = (data as any[]) || [];
       // Resolve signed URLs for photo paths (bucket is private; we only stored the storage path)
       await Promise.all(
@@ -155,6 +155,7 @@ export function usePlaceReviews(placeId: string | null) {
   return {
     reviews,
     loading: placeId ? isLoading : false,
+    error: placeId ? isError : false,
     submitting,
     submit,
     userReview,

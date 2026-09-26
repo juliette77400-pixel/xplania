@@ -527,7 +527,7 @@ const GuideVisaPage = () => {
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <Phone className="w-5 h-5 text-primary" />
-                    <h3 className="text-base font-bold text-foreground">Contacts d'urgence</h3>
+                    <h3 className="text-base font-bold text-foreground">{t("guideVisa.emergencyContacts")}</h3>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="p-3 rounded-xl bg-muted/30">
@@ -578,7 +578,7 @@ const GuideVisaPage = () => {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <AlertTriangle className="w-5 h-5 text-destructive" />
-                  <h3 className="text-base font-bold text-foreground">Alertes importantes</h3>
+                  <h3 className="text-base font-bold text-foreground">{t("guideVisa.alertsTitle")}</h3>
                 </div>
                 <div className="space-y-3">
                   {getStaticAlerts().map((alert, i) => (
@@ -599,7 +599,7 @@ const GuideVisaPage = () => {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <Lightbulb className="w-5 h-5 text-primary" />
-                  <h3 className="text-base font-bold text-foreground">Astuces pratiques</h3>
+                  <h3 className="text-base font-bold text-foreground">{t("guideVisa.tipsTitle")}</h3>
                 </div>
                 <div className="space-y-3">
                   {getStaticTips().map((tip) => (
