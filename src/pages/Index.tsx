@@ -79,6 +79,7 @@ const Index = () => {
             onTripGenerated={async (data, recs) => {
               setTripData(data);
               setRecommendations(recs);
+              track("itinerary_generated", { destination: data.destination });
               if (user) {
                 const { data: trip } = await supabase
                   .from("trips")
