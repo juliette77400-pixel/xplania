@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { RotateCcw, Check, FileDown } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
@@ -330,6 +331,7 @@ const GuideBudgetPage = () => {
       setGeneratedContextKey(budgetContextKey);
       setHasGenerated(true);
       setRegenCount((n) => n + 1);
+      track("guide_generated", { guide: "budget" });
       toast.success(t("guideBudget.toastGenerated"));
     } finally {
       setIsGenerating(false);

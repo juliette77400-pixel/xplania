@@ -18,6 +18,7 @@ import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
 import ValisePipChat from "@/components/valise/ValisePipChat";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
@@ -162,6 +163,7 @@ const GuideValisePage = () => {
     await new Promise((r) => setTimeout(r, 400));
     setIsGenerating(false);
     setActiveSection(7);
+    track("guide_generated", { guide: "valise" });
     toast.success(t("guideValise.toastValiseReady"), { description: t("guideValise.toastValiseReadyDesc") });
   }, [t, consume, reached]);
 
