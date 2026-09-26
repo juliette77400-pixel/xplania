@@ -66,7 +66,7 @@ class ErrorBoundary extends Component<Props, State> {
             </Button>
             {this.props.showHomeLink && (
               <Button asChild variant="outline" size="sm">
-                <a href="/">
+                <a href="/home">
                   <Home className="w-4 h-4 mr-2" />
                   {t("errorBoundary.home")}
                 </a>
