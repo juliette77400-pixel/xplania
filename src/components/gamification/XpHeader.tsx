@@ -32,7 +32,7 @@ const XpHeader = ({ xp }: Props) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <p className="text-xs sm:text-xs uppercase tracking-wider text-primary font-semibold">
-              Niveau {level.index + 1} / {LEVELS.length}
+              {t("gam.levelOf", { n: level.index + 1, total: LEVELS.length })}
             </p>
             <span className="text-xs text-muted-foreground hidden sm:inline">·</span>
             <span className="inline-flex items-center gap-1 text-xs sm:text-xs font-bold text-amber-400">

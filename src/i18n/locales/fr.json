@@ -3094,7 +3094,7 @@
   "gam": {
     "catalog": {
       "title": "Catalogue Xplania",
-      "subtitle": "260 badges à débloquer en prouvant tes aventures (géoloc, photo ou billet).",
+      "subtitle": "{{count}} badges à débloquer en prouvant tes aventures (géoloc, photo ou billet).",
       "all": "Tous",
       "points": "{{n}} points validés",
       "validated": "{{n}} validés",
@@ -3172,7 +3172,8 @@
         "queued": "En file",
         "error": "Erreur"
       }
-    }
+    },
+    "levelOf": "Niveau {{n}} / {{total}}"
   },
   "discoverComp": {
     "kicker": "Discover",
