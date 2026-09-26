@@ -5617,5 +5617,15 @@
   },
   "a11y": {
     "skipToContent": "Skip to content"
+  },
+  "reminders": {
+    "checklistTitle": "Before you leave",
+    "items": {
+      "passport": "🛂 Valid passport or ID card",
+      "visa": "📄 Visa or entry authorisation if required",
+      "vaccines": "💉 Recommended vaccines for the destination",
+      "insurance": "🛡️ Travel insurance purchased",
+      "packing": "🧳 Suitcase packed"
+    }
   }
 }

@@ -11,16 +11,30 @@ Deno.serve(async (req) => {
   const { data: trips, error } = await admin.from('trips').select('id,user_id,destination,departure_date').eq('departure_date', target).limit(500)
   if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
 
+  const REMINDER_ITEMS = ['passport', 'visa', 'vaccines', 'insurance', 'packing']
   let sent = 0
   for (const t of trips || []) {
     try {
+      const { data: checks } = await admin.from('trip_reminder_checks').select('item').eq('trip_id', t.id).eq('user_id', t.user_id)
+      const doneItems = new Set((checks || []).map((c: { item: string }) => c.item))
+      const allDone = REMINDER_ITEMS.every((i) => doneItems.has(i))
+      if (allDone) continue // ✨ tout est prêt : pas de mail de formalités
+
       const { data: u } = await admin.auth.admin.getUserById(t.user_id)
       const email = u?.user?.email
       if (!email) continue
       const lang = (u.user.user_metadata?.lang === 'en') ? 'en' : 'fr'
       const dateLabel = new Date(t.departure_date + 'T12:00:00Z').toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+      const remainingItems = REMINDER_ITEMS.filter((i) => !doneItems.has(i))
       const r = await sendTemplateEmail('trip-reminder', email, {
-        templateData: { destination: t.destination || '', departureDate: dateLabel, tripUrl: `https://xplania.app/carnet/${t.id}`, lang },
+        templateData: {
+          destination: t.destination || '',
+          departureDate: dateLabel,
+          tripUrl: `https://xplania.app/carnet/${t.id}`,
+          checklistUrl: `https://xplania.app/carnet/${t.id}`,
+          remainingItems,
+          lang,
+        },
         idempotencyKey: `trip-reminder-j7-${t.id}-${t.departure_date}`,
       })
       if (r.sent) sent++
