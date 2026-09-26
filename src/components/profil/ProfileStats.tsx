@@ -10,7 +10,8 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { getStreakDisplay } from "@/lib/streak";
-import { computeXp, getLevelProgress, LEVELS } from "@/lib/xp-levels";
+import { getLevelProgress, LEVELS } from "@/lib/xp-levels";
+import { useMyXp } from "@/hooks/useMyXp";
 
 interface Stats {
   trips: number;
@@ -25,6 +26,7 @@ const ProfileStats = () => {
   const { user } = useAuth();
   const { t, i18n } = useTranslation();
   const [stats, setStats] = useState<Stats | null>(null);
+  const myXp = useMyXp();
 
   useEffect(() => {
     if (!user) return;
@@ -48,26 +50,14 @@ const ProfileStats = () => {
       const moods = (journalBlocks.data || []).filter((b: any) => b.type === "mood").length;
       const notes = (journalBlocks.data || []).filter((b: any) => b.type === "note").length;
       const km = (tracking.data || []).reduce((acc: number, t: any) => acc + Number(t.total_distance_km || 0), 0);
-      const totalBadges = (exploreBadges.count || 0) + (journalBadges.count || 0) + (moodBadges.count || 0);
 
-      const xp = computeXp({
-        exploreVisited: visited,
-        journalNotes: notes,
-        journalPhotos: photos,
-        journalLocations: 0,
-        journalMoods: moods,
-        moodFavorites: 0,
-        moodHiddenGems: 0,
-        badgesTotal: totalBadges,
-        placeReviews: reviews.count || 0,
-        moodReactions: moodReactions.count || 0,
-      });
+      const xp = 0;
       const lvl = getLevelProgress(xp).level.index;
       const streak = getStreakDisplay().streak;
 
       setStats({
         trips: trips.count || 0,
-        badges: totalBadges,
+        badges: 0,
         xp,
         level: lvl,
         streak,
@@ -77,7 +67,11 @@ const ProfileStats = () => {
     return () => { cancel = true; };
   }, [user]);
 
-  if (!stats) {
+  const shown = stats && !myXp.loading
+    ? { ...stats, xp: myXp.xp, badges: myXp.badges, level: getLevelProgress(myXp.xp).level.index }
+    : null;
+
+  if (!shown) {
     return (
       <Card className="p-6">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
