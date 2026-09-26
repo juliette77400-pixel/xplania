@@ -2,29 +2,32 @@ import * as React from 'npm:react@18.3.1'
 import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
 
-interface Props { destination?: string; departureDate?: string; tripUrl?: string; lang?: string }
+interface Props { destination?: string; departureDate?: string; tripUrl?: string; checklistUrl?: string; remainingItems?: string[]; lang?: string }
 
 const COPY = {
   fr: {
     preview: (d: string) => `J-7 : ton voyage à ${d} approche !`,
     title: (d: string) => `Plus que 7 jours avant ${d} ✈️`,
     intro: (date: string) => `Ton départ est prévu le ${date}. Voici ta liste de vérification avant de partir :`,
-    items: ['🛂 Passeport ou carte d\'identité valide', '📄 Visa ou autorisation d\'entrée si nécessaire', '💉 Vaccins recommandés pour la destination', '🛡️ Assurance voyage souscrite', '🧳 Valise préparée avec le Guide Valise'],
+    itemLabels: { passport: '🛂 Passeport ou carte d\'identité valide', visa: '📄 Visa ou autorisation d\'entrée si nécessaire', vaccines: '💉 Vaccins recommandés pour la destination', insurance: '🛡️ Assurance voyage souscrite', packing: '🧳 Valise préparée avec le Guide Valise' } as Record<string, string>,
     cta: 'Ouvrir mon voyage',
+    done: "C'est fait ✔ — voir ma checklist",
     footer: 'Bon voyage avec Xplania 🌍',
   },
   en: {
     preview: (d: string) => `7 days to go: your trip to ${d} is coming up!`,
     title: (d: string) => `Only 7 days until ${d} ✈️`,
     intro: (date: string) => `You leave on ${date}. Here is your pre-departure checklist:`,
-    items: ['🛂 Valid passport or ID card', '📄 Visa or entry authorisation if required', '💉 Recommended vaccines for the destination', '🛡️ Travel insurance purchased', '🧳 Suitcase packed with the Packing Guide'],
+    itemLabels: { passport: '🛂 Valid passport or ID card', visa: '📄 Visa or entry authorisation if required', vaccines: '💉 Recommended vaccines for the destination', insurance: '🛡️ Travel insurance purchased', packing: '🧳 Suitcase packed with the Packing Guide' } as Record<string, string>,
     cta: 'Open my trip',
+    done: "It's done ✔ — see my checklist",
     footer: 'Have a great trip with Xplania 🌍',
   },
 }
 
-const TripReminderEmail = ({ destination = 'ta destination', departureDate = '', tripUrl = 'https://xplania.app', lang = 'fr' }: Props) => {
+const TripReminderEmail = ({ destination = 'ta destination', departureDate = '', tripUrl = 'https://xplania.app', checklistUrl, remainingItems, lang = 'fr' }: Props) => {
   const c = lang === 'en' ? COPY.en : COPY.fr
+  const items = (remainingItems && remainingItems.length ? remainingItems : Object.keys(c.itemLabels)).map((k) => c.itemLabels[k]).filter(Boolean)
   return (
     <Html lang={lang === 'en' ? 'en' : 'fr'} dir="ltr">
       <Head />
@@ -35,9 +38,10 @@ const TripReminderEmail = ({ destination = 'ta destination', departureDate = '',
           <Heading style={h1}>{c.title(destination)}</Heading>
           <Text style={text}>{c.intro(departureDate)}</Text>
           <Section style={box}>
-            {c.items.map((i) => <Text key={i} style={item}>{i}</Text>)}
+            {items.map((i) => <Text key={i} style={item}>{i}</Text>)}
           </Section>
           <Button href={tripUrl} style={button}>{c.cta}</Button>
+          <Text style={doneLink}><a href={checklistUrl || tripUrl} style={link}>{c.done}</a></Text>
           <Text style={footer}>{c.footer}</Text>
         </Container>
       </Body>
@@ -61,3 +65,5 @@ const box = { backgroundColor: '#f1f5f9', borderRadius: '12px', padding: '8px 16
 const item = { fontSize: '14px', color: '#0f1629', margin: '6px 0' }
 const button = { backgroundColor: '#7c3aed', color: '#ffffff', fontSize: '14px', borderRadius: '10px', padding: '12px 20px', textDecoration: 'none' }
 const footer = { fontSize: '12px', color: '#94a3b8', margin: '28px 0 0' }
+const doneLink = { fontSize: '13px', margin: '14px 0 0' }
+const link = { color: '#06b6d4', textDecoration: 'underline' }

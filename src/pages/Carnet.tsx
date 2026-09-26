@@ -185,6 +185,7 @@ const Carnet = () => {
             destination={destination}
             departureDate={tripMeta.departure_date}
             returnDate={tripMeta.return_date}
+            tripId={tripId}
           />
         )}
 

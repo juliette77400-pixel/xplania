@@ -5,15 +5,17 @@ import { Card } from "@/components/ui/card";
 import TripCountdown from "./TripCountdown";
 import DestinationWeather from "./DestinationWeather";
 import CurrencyConverter from "./CurrencyConverter";
+import TripReminderChecklist from "./TripReminderChecklist";
 
 interface Props {
   destination?: string | null;
   departureDate?: string | null;
   returnDate?: string | null;
   variant?: "full" | "compact";
+  tripId?: string;
 }
 
-const TripUtilitiesPanel = ({ destination, departureDate, returnDate, variant = "full" }: Props) => {
+const TripUtilitiesPanel = ({ destination, departureDate, returnDate, variant = "full", tripId }: Props) => {
   const { t } = useTranslation();
 
   if (variant === "compact") {
@@ -41,6 +43,11 @@ const TripUtilitiesPanel = ({ destination, departureDate, returnDate, variant = 
       <div className="border-t border-border/50 pt-4">
         <CurrencyConverter destination={destination} />
       </div>
+      {tripId && (
+        <div className="border-t border-border/50 pt-4">
+          <TripReminderChecklist tripId={tripId} />
+        </div>
+      )}
     </Card>
   );
 };

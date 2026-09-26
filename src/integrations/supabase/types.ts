@@ -58,6 +58,54 @@ export type Database = {
           },
         ]
       }
+      analytics_events: {
+        Row: {
+          created_at: string
+          device: string | null
+          event: string
+          id: string
+          lang: string | null
+          path: string | null
+          props: Json
+          referrer: string | null
+          session_id: string
+          user_id: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          created_at?: string
+          device?: string | null
+          event: string
+          id?: string
+          lang?: string | null
+          path?: string | null
+          props?: Json
+          referrer?: string | null
+          session_id: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          created_at?: string
+          device?: string | null
+          event?: string
+          id?: string
+          lang?: string | null
+          path?: string | null
+          props?: Json
+          referrer?: string | null
+          session_id?: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       destinations: {
         Row: {
           active: boolean
@@ -2368,6 +2416,38 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "trip_positions_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trip_reminder_checks: {
+        Row: {
+          done_at: string
+          id: string
+          item: string
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          done_at?: string
+          id?: string
+          item: string
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          done_at?: string
+          id?: string
+          item?: string
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_reminder_checks_trip_id_fkey"
             columns: ["trip_id"]
             isOneToOne: false
             referencedRelation: "trips"

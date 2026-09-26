@@ -9,17 +9,16 @@ Xplania combines several travel tools in one app: an AI trip planner, a smart pa
 - [Traveler quiz](/): Swipe-based traveler profile quiz (entry point of the app).
 - [Home](/home): Product overview, features, FAQ and signup.
 - [Budget guide](/guide-budget): Build a realistic per-day budget with AI tips and a live currency converter.
-- [Packing guide](/guide-valise): Generate a smart packing list adapted to destination, weather and trip style.
 - [Visa & vaccines guide](/guide-visa): Visa formalities, vaccines and safety advisories synthesized from official sources (France Diplomatie, Institut Pasteur, WHO).
 - [Plans & pricing](/offres): Free quota, premium packs and launch waitlist.
-- [About](/about): What Xplania is, who it's for and the team behind it.
-- [Trust & security](/trust): How Xplania protects user data, opt-in sharing model and security contact.
+- [About](/a-propos): What Xplania is, who it's for and the team behind it.
+- [Trust & security](/securite): How Xplania protects user data, opt-in sharing model and security contact.
 
 ## Legal
 
-- [Privacy policy](/privacy-policy): What data is collected and how it is used.
-- [Terms of use](/terms-of-use): Rules for using the service.
-- [Legal notice](/legal-notice): Publisher and hosting information.
+- [Privacy policy](/politique-de-confidentialite): What data is collected and how it is used.
+- [Terms of use](/conditions-utilisation): Rules for using the service.
+- [Legal notice](/mentions-legales): Publisher and hosting information.
 
 ## Full description
 

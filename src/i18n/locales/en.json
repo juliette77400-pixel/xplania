@@ -872,7 +872,8 @@
     "legalTitle": "Legal",
     "legalMentions": "Legal notice",
     "legalCgu": "Terms of use",
-    "legalConfidentialite": "Privacy policy"
+    "legalConfidentialite": "Privacy policy",
+    "manageCookies": "Manage cookies"
   },
   "legal": {
     "backHome": "Back to home",
@@ -943,6 +944,10 @@
         {
           "heading": "Updates to this policy",
           "body": "This policy may evolve (new provider, new feature, regulatory change). Any meaningful change will be notified by email to registered users and the update date above will be updated."
+        },
+        {
+          "heading": "Cookies and analytics",
+          "body": "Xplania only uses first-party analytics cookies to understand how the site is used and to improve it. We do not use any advertising cookies and we never sell or share this data with third parties. Analytics is only enabled with your consent, given via the cookie banner. You can withdraw your consent at any time from the \"Manage cookies\" button at the bottom of every page. Collected data (visited pages, key actions, device, referrer) is kept for a maximum of 13 months, then deleted."
         }
       ]
     },
@@ -5617,5 +5622,31 @@
   },
   "a11y": {
     "skipToContent": "Skip to content"
+  },
+  "reminders": {
+    "checklistTitle": "Before you leave",
+    "items": {
+      "passport": "🛂 Valid passport or ID card",
+      "visa": "📄 Visa or entry authorisation if required",
+      "vaccines": "💉 Recommended vaccines for the destination",
+      "insurance": "🛡️ Travel insurance purchased",
+      "packing": "🧳 Suitcase packed"
+    }
+  },
+  "cookies": {
+    "bannerTitle": "We use cookies",
+    "bannerText": "Xplania uses first-party analytics cookies to understand how the site is used and improve it. No ads, no data resale. You choose, and you can change your mind anytime via \"Manage cookies\".",
+    "acceptAll": "Accept all",
+    "rejectAll": "Reject all",
+    "customize": "Customize",
+    "save": "Save",
+    "analyticsLabel": "Analytics",
+    "analyticsDesc": "Helps us understand how you use Xplania (internal statistics only)."
+  },
+  "analytics": {
+    "privacy": {
+      "heading": "Cookies and analytics",
+      "body": "Xplania only uses first-party analytics cookies to understand how the site is used and to improve it. We do not use any advertising cookies and we never sell or share this data with third parties. Analytics is only enabled with your consent, given via the cookie banner. You can withdraw your consent at any time from the \"Manage cookies\" button at the bottom of every page. Collected data (visited pages, key actions, device, referrer) is kept for a maximum of 13 months, then deleted."
+    }
   }
 }

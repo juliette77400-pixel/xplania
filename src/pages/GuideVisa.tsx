@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
@@ -174,6 +175,7 @@ const GuideVisaPage = () => {
       await new Promise((r) => setTimeout(r, 400));
       setHasGenerated(true);
       setCheckedItems({});
+      track("guide_generated", { guide: "visa" });
       toast.success(t("guideVisa.successToast"));
     } catch (e) {
       console.error("visa-info error:", e);

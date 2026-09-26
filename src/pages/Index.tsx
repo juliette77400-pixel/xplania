@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { track } from "@/lib/analytics";
 import { useAuth } from "@/hooks/useAuth";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
@@ -78,6 +79,7 @@ const Index = () => {
             onTripGenerated={async (data, recs) => {
               setTripData(data);
               setRecommendations(recs);
+              track("itinerary_generated", { destination: data.destination });
               if (user) {
                 const { data: trip } = await supabase
                   .from("trips")
@@ -96,6 +98,7 @@ const Index = () => {
                   .select("id")
                   .single();
                 if (trip) {
+                  track("trip_created", { trip_id: trip.id });
                   // Refresh cached trips list so the new trip shows up elsewhere.
                   queryClient.invalidateQueries({ queryKey: ["trips"] });
                   setCurrentTripId(trip.id);

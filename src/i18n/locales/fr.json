@@ -872,7 +872,8 @@
     "legalTitle": "Légal",
     "legalMentions": "Mentions légales",
     "legalCgu": "Conditions d'utilisation",
-    "legalConfidentialite": "Politique de confidentialité"
+    "legalConfidentialite": "Politique de confidentialité",
+    "manageCookies": "Gérer les cookies"
   },
   "legal": {
     "backHome": "Retour à l'accueil",
@@ -943,6 +944,10 @@
         {
           "heading": "Mises à jour de cette politique",
           "body": "Cette politique peut évoluer (nouveau prestataire, nouvelle fonctionnalité, évolution réglementaire). Toute modification importante sera notifiée par email aux utilisateurs inscrits et la date de mise à jour ci-dessus sera modifiée."
+        },
+        {
+          "heading": "Cookies et mesure d'audience",
+          "body": "Xplania utilise uniquement des cookies de mesure d'audience internes (première partie) pour comprendre comment le site est utilisé et l'améliorer. Nous n'utilisons aucun cookie publicitaire et ne revendons ni ne partageons jamais ces données avec des tiers. La mesure d'audience n'est activée qu'avec ton consentement, donné via la bannière de cookies. Tu peux retirer ton consentement à tout moment depuis le bouton « Gérer les cookies » en bas de chaque page. Les données collectées (pages visitées, actions clés, appareil, provenance) sont conservées 13 mois maximum, puis supprimées."
         }
       ]
     },
@@ -5617,5 +5622,31 @@
   },
   "a11y": {
     "skipToContent": "Aller au contenu"
+  },
+  "reminders": {
+    "checklistTitle": "Avant le départ",
+    "items": {
+      "passport": "🛂 Passeport ou carte d'identité valide",
+      "visa": "📄 Visa ou autorisation d'entrée si nécessaire",
+      "vaccines": "💉 Vaccins recommandés pour la destination",
+      "insurance": "🛡️ Assurance voyage souscrite",
+      "packing": "🧳 Valise préparée"
+    }
+  },
+  "cookies": {
+    "bannerTitle": "On utilise des cookies",
+    "bannerText": "Xplania utilise des cookies de mesure d'audience internes pour comprendre l'usage du site et l'améliorer. Aucune publicité, aucune revente de données. Tu choisis, et tu peux changer d'avis à tout moment via « Gérer les cookies ».",
+    "acceptAll": "Tout accepter",
+    "rejectAll": "Tout refuser",
+    "customize": "Personnaliser",
+    "save": "Enregistrer",
+    "analyticsLabel": "Mesure d'audience",
+    "analyticsDesc": "Nous aide à comprendre comment tu utilises Xplania (statistiques internes uniquement)."
+  },
+  "analytics": {
+    "privacy": {
+      "heading": "Cookies et mesure d'audience",
+      "body": "Xplania utilise uniquement des cookies de mesure d'audience internes (première partie) pour comprendre comment le site est utilisé et l'améliorer. Nous n'utilisons aucun cookie publicitaire et ne revendons ni ne partageons jamais ces données avec des tiers. La mesure d'audience n'est activée qu'avec ton consentement, donné via la bannière de cookies. Tu peux retirer ton consentement à tout moment depuis le bouton « Gérer les cookies » en bas de chaque page. Les données collectées (pages visitées, actions clés, appareil, provenance) sont conservées 13 mois maximum, puis supprimées."
+    }
   }
 }
