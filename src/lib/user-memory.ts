@@ -87,28 +87,28 @@ export async function saveExperience(item: {
   type: ItemType;
   label?: string;
   metadata?: Record<string, unknown>;
-}): Promise<void> {
+}): Promise<boolean> {
   const { data: userData } = await supabase.auth.getUser();
   const user = userData?.user;
-  if (!user) return;
-  try {
-    const { data: mem } = await supabase
-      .from("user_memory")
-      .select("saved_experiences")
-      .eq("user_id", user.id)
-      .maybeSingle();
-    const list = Array.isArray(mem?.saved_experiences) ? [...(mem?.saved_experiences as any[])] : [];
-    if (!list.some((x) => x?.key === item.key && x?.type === item.type)) {
-      list.unshift({ ...item, saved_at: new Date().toISOString() });
-    }
-    const { error } = await supabase
-      .from("user_memory")
-      .upsert(
-        { user_id: user.id, saved_experiences: list.slice(0, 100) },
-        { onConflict: "user_id" },
-      );
-    if (error) console.error("saveExperience error", error);
-  } catch (e) {
-    console.error("saveExperience exception", e);
+  if (!user) return false;
+  const { data: mem } = await supabase
+    .from("user_memory")
+    .select("saved_experiences")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  const list = Array.isArray(mem?.saved_experiences) ? [...(mem?.saved_experiences as any[])] : [];
+  if (!list.some((x) => x?.key === item.key && x?.type === item.type)) {
+    list.unshift({ ...item, saved_at: new Date().toISOString() });
   }
+  const { error } = await supabase
+    .from("user_memory")
+    .upsert(
+      { user_id: user.id, saved_experiences: list.slice(0, 100) },
+      { onConflict: "user_id" },
+    );
+  if (error) {
+    console.error("saveExperience error", error);
+    throw error;
+  }
+  return true;
 }

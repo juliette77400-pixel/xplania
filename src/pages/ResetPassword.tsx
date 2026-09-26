@@ -13,15 +13,37 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
+  const [expired, setExpired] = useState(false);
 
   useEffect(() => {
+    const hash = window.location.hash?.replace(/^#/, "");
+    const search = window.location.search?.replace(/^\?/, "");
+    const params = new URLSearchParams(hash || search || "");
+    const errorCode = params.get("error_code") || params.get("error");
+    const errorDescription = params.get("error_description");
+    if (errorCode || errorDescription) {
+      setExpired(true);
+      return;
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") setReady(true);
     });
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) setReady(true);
     });
-    return () => subscription.unsubscribe();
+
+    const timeout = window.setTimeout(() => {
+      setReady((current) => {
+        if (!current) setExpired(true);
+        return current;
+      });
+    }, 8000);
+
+    return () => {
+      subscription.unsubscribe();
+      window.clearTimeout(timeout);
+    };
   }, []);
 
   const submit = async (e: React.FormEvent) => {
@@ -35,6 +57,20 @@ const ResetPassword = () => {
       navigate("/app");
     }
   };
+
+  if (expired) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
+        <div className="glass-card rounded-2xl p-8 w-full max-w-md space-y-4 text-center">
+          <h1 className="text-2xl font-bold text-foreground">{t("resetPassword.expiredTitle")}</h1>
+          <p className="text-sm text-muted-foreground">{t("resetPassword.expiredMessage")}</p>
+          <Button className="w-full" onClick={() => navigate("/auth")}>
+            {t("resetPassword.backToAuth")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
