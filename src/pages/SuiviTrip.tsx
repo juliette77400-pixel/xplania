@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import TripTracker from "@/components/tracking/TripTracker";
+const TripTracker = lazy(() => import("@/components/tracking/TripTracker"));
 import QuickJump from "@/components/shared/QuickJump";
 import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 import SuiviPipChat from "@/components/tracking/SuiviPipChat";
@@ -58,7 +58,9 @@ const SuiviTrip = () => {
         </div>
       </header>
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-6 max-w-7xl">
-        <TripTracker tripId={tripId} destination={destination} />
+        <Suspense fallback={<div className="h-[600px] w-full rounded-2xl bg-muted animate-pulse" />}>
+          <TripTracker tripId={tripId} destination={destination} />
+        </Suspense>
       </main>
       <QuickJump />
       <SuiviPipChat

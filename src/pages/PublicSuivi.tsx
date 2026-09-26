@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { Activity, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import LiveMap from "@/components/tracking/SimulatedLiveMap";
+const LiveMap = lazy(() => import("@/components/tracking/SimulatedLiveMap"));
 import LiveTimeline from "@/components/tracking/LiveTimeline";
 import LiveStats from "@/components/tracking/LiveStats";
 import { TripActivity, TripTracking } from "@/hooks/useTracking";
@@ -65,7 +65,9 @@ const PublicSuivi = () => {
         </div>
       </header>
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-6 max-w-6xl space-y-4">
-        <LiveMap position={livePos} activities={activities} positions={positions} height="500px" />
+        <Suspense fallback={<div className="h-[500px] w-full rounded-2xl bg-muted animate-pulse" />}>
+          <LiveMap position={livePos} activities={activities} positions={positions} height="500px" />
+        </Suspense>
         <LiveStats tracking={tracking} activities={activities} />
         <LiveTimeline activities={activities} onStatusChange={() => {}} readOnly />
       </main>

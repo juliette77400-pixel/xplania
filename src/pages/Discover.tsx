@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DiscoverHero from "@/components/discover/DiscoverHero";
 import PlaceCarousel from "@/components/discover/PlaceCarousel";
-import PlaceMap from "@/components/discover/PlaceMap";
+const PlaceMap = lazy(() => import("@/components/discover/PlaceMap"));
 import PlaceDetailDrawer from "@/components/discover/PlaceDetailDrawer";
 import SmartSearch from "@/components/discover/SmartSearch";
 import ListsView from "@/components/discover/ListsView";
@@ -184,7 +184,9 @@ const Discover = () => {
           </TabsContent>
 
           <TabsContent value="map" className="pt-6">
-            <PlaceMap places={filteredPlaces} userPos={userPos} onSelect={setSelected} />
+            <Suspense fallback={<Skeleton className="h-[520px] w-full rounded-2xl" />}>
+              <PlaceMap places={filteredPlaces} userPos={userPos} onSelect={setSelected} />
+            </Suspense>
           </TabsContent>
 
           <TabsContent value="search" className="pt-6">
