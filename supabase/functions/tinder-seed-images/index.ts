@@ -23,6 +23,10 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+    const { data: isAdmin } = await admin.rpc("has_role", { _user_id: auth.userId, _role: "admin" });
+    if (isAdmin !== true) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     const { data: cards, error } = await admin
       .from("tinder_cards")

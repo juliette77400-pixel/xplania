@@ -48,9 +48,11 @@ Deno.serve(async (req) => {
       sb.from("explore_nodes").select("user_id, status").eq("status", "visited"),
       sb.from("journal_blocks").select("user_id, type"),
       sb.from("mood_favorites").select("user_id, place_id, mood_places!inner(hidden_gem)"),
-      sb.from("explore_badges").select("user_id"),
-      sb.from("journal_badges").select("user_id"),
-      sb.from("mood_badges").select("user_id"),
+      // Only server-validated badge claims count toward XP: self-reported
+      // explore/journal/mood badge rows are written by the client and cannot be trusted.
+      sb.from("gam_badge_claims").select("user_id").eq("status", "validated"),
+      Promise.resolve({ data: [] as any[] }),
+      Promise.resolve({ data: [] as any[] }),
       sb.from("gam_user_settings").select("user_id, competition_visibility"),
     ]);
 

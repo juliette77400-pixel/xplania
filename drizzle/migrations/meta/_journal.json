@@ -85,6 +85,13 @@
       "when": 1790429134001,
       "tag": "0011_admin_can_hide_journals",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790429412387,
+      "tag": "0012_cron_secret_trip_reminders",
+      "breakpoints": true
     }
   ]
 }
