@@ -19,6 +19,7 @@ const OnboardingDialog = ({ onCreateTrip }: Props) => {
 
   useEffect(() => {
     if (user || typeof window === "undefined" || localStorage.getItem(STORAGE_KEY)) return;
+    localStorage.setItem(STORAGE_KEY, "1");
     const timer = window.setTimeout(() => setOpen(true), 900);
     return () => window.clearTimeout(timer);
   }, [user]);
