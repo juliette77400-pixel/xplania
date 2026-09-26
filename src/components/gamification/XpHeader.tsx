@@ -10,7 +10,7 @@ interface Props {
 }
 
 const XpHeader = ({ xp }: Props) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { level, next, xpInLevel, xpForNext, pct } = getLevelProgress(xp);
 
   return (

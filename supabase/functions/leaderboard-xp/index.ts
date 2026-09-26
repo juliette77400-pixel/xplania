@@ -14,12 +14,14 @@ const corsHeaders = {
 const XP = {
   exploreVisited: 20,
   journalNotes: 10,
-  journalPhotos: 8,
+  journalPhotos: 15,
   journalLocations: 12,
   journalMoods: 15,
   moodFavorites: 10,
   moodHiddenGems: 25,
   badgesTotal: 50,
+  placeReviews: 25,
+  moodReactions: 12,
 };
 
 interface Row {
@@ -43,7 +45,7 @@ Deno.serve(async (req) => {
     const sb = createClient(SUPABASE_URL, SERVICE_KEY);
 
     // Pull all relevant rows (limited dataset → fine for beta).
-    const [profiles, nodes, blocks, favs, eb, jb, mb, settings] = await Promise.all([
+    const [profiles, nodes, blocks, favs, eb, jb, mb, settings, reviews, reactions] = await Promise.all([
       sb.from("profiles").select("user_id, display_name, avatar_url").limit(2000),
       sb.from("explore_nodes").select("user_id, status").eq("status", "visited"),
       sb.from("journal_blocks").select("user_id, type"),
@@ -54,6 +56,8 @@ Deno.serve(async (req) => {
       Promise.resolve({ data: [] as any[] }),
       Promise.resolve({ data: [] as any[] }),
       sb.from("gam_user_settings").select("user_id, competition_visibility"),
+      sb.from("place_reviews").select("user_id"),
+      sb.from("mood_reactions").select("user_id"),
     ]);
 
     // Build visibility map (default: public)
@@ -64,12 +68,12 @@ Deno.serve(async (req) => {
 
     const stats = new Map<string, {
       visited: number; notes: number; photos: number; locations: number;
-      moods: number; favorites: number; hiddenGems: number; badges: number;
+      moods: number; favorites: number; hiddenGems: number; badges: number; reviews: number; reactions: number;
     }>();
     const get = (id: string) => {
       let s = stats.get(id);
       if (!s) {
-        s = { visited: 0, notes: 0, photos: 0, locations: 0, moods: 0, favorites: 0, hiddenGems: 0, badges: 0 };
+        s = { visited: 0, notes: 0, photos: 0, locations: 0, moods: 0, favorites: 0, hiddenGems: 0, badges: 0, reviews: 0, reactions: 0 };
         stats.set(id, s);
       }
       return s;
@@ -92,12 +96,16 @@ Deno.serve(async (req) => {
       get(r.user_id).badges++;
     });
 
+    (reviews.data || []).forEach((r: any) => { get(r.user_id).reviews++; });
+    (reactions.data || []).forEach((r: any) => { get(r.user_id).reactions++; });
+
     const profileMap = new Map<string, { display_name: string | null; avatar_url: string | null }>();
     (profiles.data || []).forEach((p: any) => {
       profileMap.set(p.user_id, { display_name: p.display_name, avatar_url: p.avatar_url });
     });
 
     const rows: Row[] = [];
+    let me = { xp: 0, badges: 0 };
     stats.forEach((s, user_id) => {
       const xp =
         s.visited * XP.exploreVisited +
@@ -107,7 +115,10 @@ Deno.serve(async (req) => {
         s.moods * XP.journalMoods +
         s.favorites * XP.moodFavorites +
         s.hiddenGems * XP.moodHiddenGems +
-        s.badges * XP.badgesTotal;
+        s.badges * XP.badgesTotal +
+        s.reviews * XP.placeReviews +
+        s.reactions * XP.moodReactions;
+      if (user_id === auth.userId) me = { xp, badges: s.badges };
       if (xp <= 0) return;
       const vis = visibility.get(user_id) || "public";
       if (vis === "private") return; // exclude entirely
@@ -125,7 +136,7 @@ Deno.serve(async (req) => {
 
     rows.sort((a, b) => b.xp - a.xp);
 
-    return new Response(JSON.stringify({ leaderboard: rows.slice(0, 50) }), {
+    return new Response(JSON.stringify({ leaderboard: rows.slice(0, 50), me }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
