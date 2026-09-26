@@ -5,8 +5,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import "@/lib/leaflet-global";
-import "leaflet.markercluster";
+import { loadMarkerCluster } from "@/lib/leaflet-global";
 import type { MoodPlace } from "@/hooks/useMoodExplorer";
 import { moodByKey } from "@/lib/moods";
 
@@ -43,7 +42,10 @@ const ClusteredMarkers = ({ places, onSelect }: { places: MoodPlace[]; onSelect?
   const groupRef = useRef<any>(null);
 
   useEffect(() => {
-    // @ts-ignore - markerClusterGroup added by side-effect import
+    let cancelled = false;
+    loadMarkerCluster().then(() => {
+    if (cancelled) return;
+    // @ts-ignore - markerClusterGroup added by lazy plugin import
     const group = (L as any).markerClusterGroup({
       showCoverageOnHover: false,
       spiderfyOnMaxZoom: true,
@@ -70,13 +72,14 @@ const ClusteredMarkers = ({ places, onSelect }: { places: MoodPlace[]; onSelect?
     map.addLayer(group);
     groupRef.current = group;
 
-    // Fit bounds
     const pts = places.filter((p) => p.lat != null && p.lng != null).map((p) => [p.lat!, p.lng!] as [number, number]);
     if (pts.length > 0) {
       map.fitBounds(L.latLngBounds(pts).pad(0.3));
     }
+    }).catch(() => { /* noop */ });
 
     return () => {
+      cancelled = true;
       if (groupRef.current) {
         map.removeLayer(groupRef.current);
         groupRef.current = null;
