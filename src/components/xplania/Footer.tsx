@@ -158,6 +158,15 @@ const Footer = (_: Props) => {
               </li>
               <li>
                 <Link
+                  to="/xplania-vs-chatgpt"
+                  className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <Sparkles className="w-4 h-4 group-hover:text-primary transition-colors" />
+                  {t("vsChatgpt.footerLink")}
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/blog/how-to-plan-a-trip-with-ai"
                   className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
                 >

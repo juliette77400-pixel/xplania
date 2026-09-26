@@ -5500,5 +5500,105 @@
     "loadMoodEntries": "Couldn't load your mood journal.",
     "loadMissions": "Couldn't load your missions.",
     "badgeUnlockFailed": "Couldn't save your new badge."
+  },
+  "vsChatgpt": {
+    "metaTitle": "Xplania vs ChatGPT — the alternative to plan your trip",
+    "metaDescription": "ChatGPT generates answers. Xplania supports your whole trip: itinerary, budget, packing, live tracking and travel journal. An honest comparison.",
+    "badge": "Comparison",
+    "h1": "Xplania, the ChatGPT alternative to plan your trip",
+    "intro": "Xplania is an AI travel assistant built for travelers who want to prepare and live their trip without juggling ten different tools: personalized itinerary, real-time budget tracking, weather-based packing, live tracking during the trip, and an automatic travel journal. It's free during the beta. Xplania was founded by Juliette Noel, in France.",
+    "tagline": "ChatGPT generates. Xplania accompanies.",
+    "tableTitle": "Detailed comparison",
+    "table": {
+      "feature": "Feature",
+      "chatgpt": "ChatGPT",
+      "xplania": "Xplania",
+      "rows": {
+        "itineraire": {
+          "label": "Personalized itinerary",
+          "chatgpt": "Can suggest a text itinerary on request",
+          "xplania": "Personalized itinerary generated and editable in the app"
+        },
+        "adn": {
+          "label": "Traveler DNA profile",
+          "chatgpt": "Not available",
+          "xplania": "Traveler DNA quiz to tailor recommendations"
+        },
+        "budget": {
+          "label": "Real-time budget tracking",
+          "chatgpt": "Can estimate a budget on request, no tracking",
+          "xplania": "Budget tracked in real time during the trip"
+        },
+        "visa": {
+          "label": "Visa / travel requirements",
+          "chatgpt": "Can give general info, to be double-checked",
+          "xplania": "Built-in visa and requirements guide for your trip"
+        },
+        "valise": {
+          "label": "Packing based on weather and activities",
+          "chatgpt": "Can list general ideas on request",
+          "xplania": "Packing checklist tailored to weather and planned activities"
+        },
+        "gps": {
+          "label": "Live GPS tracking during the trip",
+          "chatgpt": "Not available",
+          "xplania": "Live GPS tracking during the trip"
+        },
+        "carnet": {
+          "label": "Automatic travel journal",
+          "chatgpt": "Not available",
+          "xplania": "Travel journal generated automatically during the trip"
+        },
+        "humeur": {
+          "label": "Recommendations based on your mood",
+          "chatgpt": "Not natively available",
+          "xplania": "Mood Explorer: ideas based on how you feel right now"
+        },
+        "memoire": {
+          "label": "Remembers your tastes across trips",
+          "chatgpt": "No persistent memory across trips",
+          "xplania": "Xplania remembers your profile and preferences from trip to trip"
+        },
+        "alertes": {
+          "label": "T-7 / weather email alerts",
+          "chatgpt": "Not available",
+          "xplania": "Email alerts before departure and about the weather"
+        }
+      }
+    },
+    "when": {
+      "title": "When to use ChatGPT, when to use Xplania",
+      "chatgptTitle": "ChatGPT",
+      "chatgptText": "Useful for a quick question, writing a text, or brainstorming travel ideas through conversation.",
+      "xplaniaTitle": "Xplania",
+      "xplaniaText": "Useful to actually prepare and live your trip: a structured itinerary, tracked budget, packing, requirements, live tracking and an automatic travel journal, all free during the beta."
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": {
+        "q1": {
+          "q": "Does Xplania replace ChatGPT?",
+          "a": "No. ChatGPT is a general-purpose conversational assistant. Xplania is a dedicated tool for organizing and tracking a trip in practice, with features ChatGPT doesn't offer, like live GPS tracking or an automatic travel journal."
+        },
+        "q2": {
+          "q": "Is Xplania free?",
+          "a": "Yes, Xplania is free during the beta."
+        },
+        "q3": {
+          "q": "Who created Xplania?",
+          "a": "Xplania was founded by Juliette Noel, in France."
+        },
+        "q4": {
+          "q": "Can I use ChatGPT and Xplania together?",
+          "a": "Yes, some travelers use ChatGPT for quick questions and Xplania to organize and track their trip end to end."
+        },
+        "q5": {
+          "q": "Does Xplania have an automatic travel journal?",
+          "a": "Yes, Xplania automatically generates a travel journal during your trip, which ChatGPT does not offer."
+        }
+      }
+    },
+    "cta": "Get started with Xplania",
+    "footerLink": "Xplania vs ChatGPT"
   }
 }
