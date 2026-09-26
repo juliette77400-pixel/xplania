@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
+import "@/lib/leaflet-global";
 import "leaflet.heat";
 import type { ExploreNode } from "@/hooks/useExplore";
 
