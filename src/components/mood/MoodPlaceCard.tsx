@@ -27,7 +27,7 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn(
+      className={cn("interactive-card",
         "relative rounded-3xl overflow-hidden border border-border bg-card shadow-xl flex flex-col",
         fullscreen ? "min-h-[70vh]" : "min-h-[420px]",
       )}

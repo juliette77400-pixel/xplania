@@ -239,7 +239,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
               { icon: <CalendarDays className="w-4 h-4 text-primary" />, label: t("travelForm.dashboard.labelDates"), value: datesLabel },
               { icon: <Users className="w-4 h-4 text-primary" />, label: t("travelForm.dashboard.labelTraveler"), value: tOpt("travelerType", formData.travelerType) },
             ].map((item) => (
-              <div key={item.label} className="flex items-start gap-2 p-3 rounded-xl bg-muted/50">
+              <div key={item.label} className="flex items-start gap-2 p-3 rounded-xl bg-muted/50 interactive-card">
                 {item.icon}
                 <div>
                   <p className="text-xs text-muted-foreground">{item.label}</p>
@@ -321,7 +321,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {rec.activities.map((act, i) => (
-                <div key={i} className="rounded-xl bg-muted/30 overflow-hidden flex flex-col">
+                <div key={i} className="rounded-xl bg-muted/30 overflow-hidden flex flex-col interactive-card">
                   <div className="relative h-28 w-full overflow-hidden bg-muted">
                     <img
                       src={activityImage(formData.destination, toText(act.name) || String(act.type), 480, 280)}
@@ -359,7 +359,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
           >
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {rec.budgetBreakdown.map((b, i) => (
-                <div key={i} className="p-3 rounded-lg bg-muted/50">
+                <div key={i} className="p-3 rounded-lg bg-muted/50 interactive-card">
                   <p className="text-xs text-muted-foreground">{toText(b.category)}</p>
                   <p className="text-sm font-bold text-foreground">{toText(b.amount)} €</p>
                   <p className="text-xs text-primary mt-1">{toText(b.tip)}</p>

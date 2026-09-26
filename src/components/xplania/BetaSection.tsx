@@ -40,7 +40,7 @@ const BetaSection = ({ onFeedback }: Props) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              className="glass-card rounded-2xl p-8 text-center"
+              className="glass-card rounded-2xl p-8 text-center interactive-card"
             >
               <div className="w-14 h-14 mx-auto rounded-2xl gradient-button flex items-center justify-center mb-5">
                 <c.icon className="w-6 h-6 text-primary-foreground" />
