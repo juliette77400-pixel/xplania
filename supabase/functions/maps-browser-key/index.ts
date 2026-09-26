@@ -26,7 +26,7 @@ serve(async (req) => {
   const auth = await requireAuth(req, corsHeaders);
   if (auth instanceof Response) return auth;
 
-  const key = Deno.env.get("GOOGLE_API_KEY");
+  const key = Deno.env.get("GOOGLE_MAPS_BROWSER_KEY_1") ?? Deno.env.get("GOOGLE_API_KEY");
   if (!key) return json({ error: "maps_key_missing" }, 500);
 
   // Atomic per-day counter, service-role only (RLS-locked table).
