@@ -40,14 +40,14 @@ const TripParamsCard = ({ trip }: Props) => {
       <div className="flex items-center gap-2 mb-3">
         <Radio className="w-3.5 h-3.5 text-green-500 animate-pulse" />
         <h3 className="text-sm font-semibold">{t("suiviTrip.params.title")}</h3>
-        <span className="text-[10px] text-muted-foreground ml-auto">
+        <span className="text-xs text-muted-foreground ml-auto">
           {t("suiviTrip.params.live")}
         </span>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {items.map(({ icon: Icon, label, value }) => (
           <div key={label} className="rounded-xl bg-muted/30 p-2.5">
-            <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+            <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground mb-1">
               <Icon className="w-3 h-3" />
               {label}
             </div>

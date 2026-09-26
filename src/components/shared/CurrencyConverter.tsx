@@ -209,7 +209,7 @@ const CurrencyConverter = ({ destination, defaultFrom = "EUR" }: Props) => {
         </div>
       )}
 
-      <p className="text-[11px] text-muted-foreground text-center">
+      <p className="text-xs text-muted-foreground text-center">
         ⚠️ {t("currency.disclaimer")}
       </p>
     </section>

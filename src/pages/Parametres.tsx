@@ -55,7 +55,7 @@ const Parametres = () => {
                 <TabsTrigger
                   key={tt.value}
                   value={tt.value}
-                  className="flex flex-col sm:flex-row items-center gap-1 sm:gap-1.5 py-2 px-2 text-[11px] sm:text-xs data-[state=active]:bg-background"
+                  className="flex flex-col sm:flex-row items-center gap-1 sm:gap-1.5 py-2 px-2 text-xs sm:text-xs data-[state=active]:bg-background"
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span className="truncate">{t(tt.key)}</span>

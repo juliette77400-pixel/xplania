@@ -121,7 +121,7 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
               <div className="flex flex-wrap gap-1.5">
                 <Tag className="w-3.5 h-3.5 text-muted-foreground self-center" />
                 {place.tags.slice(0, 8).map((tag) => (
-                  <span key={tag} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                  <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
                     #{tag}
                   </span>
                 ))}

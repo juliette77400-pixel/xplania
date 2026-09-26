@@ -96,7 +96,7 @@ const Profil = () => {
                   <Mail className="w-3 h-3 shrink-0" /> {user?.email}
                 </p>
                 {formattedMemberSince && (
-                  <p className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                     <CalendarDays className="w-3 h-3 shrink-0" /> {t("profil.memberSince", { date: formattedMemberSince })}
                   </p>
                 )}

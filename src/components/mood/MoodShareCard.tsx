@@ -127,7 +127,7 @@ const MoodShareCard = ({ open, onOpenChange, mood, placesCount, topPlaceName, ci
           <div className="text-xs opacity-75">
             {placesCount} {t("moodComp.share.placesFound")}
           </div>
-          <div className="pt-2 text-[11px] opacity-70">xplania.lovable.app</div>
+          <div className="pt-2 text-xs opacity-70">xplania.lovable.app</div>
         </div>
       </div>
     </div>

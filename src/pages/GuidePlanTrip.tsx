@@ -19,7 +19,7 @@ export default function GuidePlanTrip() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <AppNavbar />
-      <main className="container mx-auto max-w-3xl px-4 py-16">
+      <main id="main-content" tabIndex={-1} className="container mx-auto max-w-3xl px-4 py-16">
         <article>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{t("planGuide.h1")}</h1>
           <p className="text-lg text-muted-foreground mb-10">{t("planGuide.intro")}</p>
@@ -30,7 +30,7 @@ export default function GuidePlanTrip() {
           <h2 className="text-2xl font-semibold mb-6">{t("planGuide.stepsTitle")}</h2>
           <ol className="space-y-6 mb-12">
             {STEPS.map((s, i) => (
-              <li key={s.key} className="rounded-xl border border-border bg-card p-5">
+              <li key={s.key} className="rounded-xl border border-border bg-card p-5 interactive-card">
                 <h3 className="text-lg font-semibold mb-2">
                   {i + 1}. {t(`planGuide.${s.key}.title`)}
                 </h3>
@@ -47,7 +47,7 @@ export default function GuidePlanTrip() {
             {["t1", "t2", "t3", "t4"].map((k) => <li key={k}>{t(`planGuide.${k}`)}</li>)}
           </ul>
 
-          <div className="rounded-xl border border-border bg-card p-6 text-center">
+          <div className="rounded-xl border border-border bg-card p-6 text-center interactive-card">
             <p className="text-lg font-semibold mb-4">{t("planGuide.ctaText")}</p>
             <Button asChild><Link to="/">{t("planGuide.ctaButton")}</Link></Button>
           </div>

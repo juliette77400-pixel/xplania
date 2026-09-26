@@ -61,7 +61,7 @@ const TodayFocus = ({ activities, position, onMarkInProgress }: Props) => {
             <MapPin className="w-4 h-4" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] uppercase tracking-wider text-primary/80 font-semibold">
+            <p className="text-xs uppercase tracking-wider text-primary/80 font-semibold">
               {t("trackingComp.today.nextStep")}
             </p>
             <p className="text-sm font-semibold text-foreground truncate">{next.title}</p>

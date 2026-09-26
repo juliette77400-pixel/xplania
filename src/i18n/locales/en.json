@@ -851,7 +851,13 @@
       "regenerate": "Regenerate formalities",
       "continuePrep": "Continue my preparations",
       "toValise": "Continue to the packing guide"
-    }
+    },
+    "rotatingSteps": [
+      "Ping is checking entry requirements…",
+      "Ping is reviewing 2026 rules…",
+      "Ping is gathering useful contacts…",
+      "Ping is preparing your safety tips…"
+    ]
   },
   "footer": {
     "tagline": "Your intelligent travel copilot. Plan, prepare and live your trips powered by artificial intelligence. Xplania centralizes budget, documents and packing so you can travel light-hearted.",
@@ -912,11 +918,11 @@
         },
         {
           "heading": "Data collected, purposes, legal bases and retention",
-          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Maya (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
+          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Ping (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
         },
         {
           "heading": "Sub-processors and third-party services",
-          "body": "To run Xplania we rely on a small number of trusted providers. None of them resells your data. Each one is bound by contract.\n\n1) Lovable Labs Incorporated (United States)\n   • Role: no-code platform hosting the website, the app and the Lovable Cloud backend.\n   • Data transmitted: all technical data needed to operate the service (account, trip content, logs).\n   • Privacy policy: https://lovable.dev/privacy\n   • Terms: https://lovable.dev/terms\n\n2) Supabase Inc. (United States)\n   • Role: database and authentication hosting (underlying Lovable Cloud).\n   • Data transmitted: email, hashed password, trip content, uploaded photos.\n   • Privacy policy: https://supabase.com/privacy\n\n3) Google LLC — Gemini API (United States)\n   • Role: AI engine used by the Ping (visa guide) and Maya (budget guide) assistants to generate answers.\n   • Data transmitted: the content of the message you send to the assistant (destination, travel context). No email or account identifier is transmitted.\n   • Gemini API terms: https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (United States)\n   • Role: receives the emails sent through the contact form.\n   • Data transmitted: your email, rating, suggestions, reported problems.\n   • Google privacy policy: https://policies.google.com/privacy\n\n5) Google LLC — Google Maps Platform (United States)\n   • Role: displays maps and places (Maps JavaScript, Places, geocoding) within the app.\n   • Data transmitted: the places, addresses and coordinates of your trips.\n   • Privacy policy: https://policies.google.com/privacy\n\n6) OpenWeather Ltd (United Kingdom) — OpenWeatherMap\n   • Role: displays the weather for your destination.\n   • Data transmitted: the city and coordinates of your destination.\n   • Privacy policy: https://openweather.co.uk/privacy-policy\n\n7) Open-Meteo\n   • Role: weather forecasts and historical weather used for some travel recommendations.\n   • Data transmitted: the geographic coordinates of your destination.\n   • Terms: https://open-meteo.com/en/terms\n\n8) Unsplash Inc. (United States)\n   • Role: supplies photos illustrating your destinations.\n   • Data transmitted: search terms (e.g. the destination name). No personal account data is transmitted.\n   • Privacy policy: https://unsplash.com/privacy\n\n9) EmailJS\n   • Role: relays messages sent through the feedback form to the Xplania team's email inbox.\n   • Data transmitted: the message and email you enter in the form.\n   • Privacy policy: https://www.emailjs.com/legal/privacy-policy/\n\nThis list will be kept up to date. Any meaningful change will be communicated to you."
+          "body": "To run Xplania we rely on a small number of trusted providers. None of them resells your data. Each one is bound by contract.\n\n1) Lovable Labs Incorporated (United States)\n   • Role: no-code platform hosting the website, the app and the Lovable Cloud backend.\n   • Data transmitted: all technical data needed to operate the service (account, trip content, logs).\n   • Privacy policy: https://lovable.dev/privacy\n   • Terms: https://lovable.dev/terms\n\n2) Supabase Inc. (United States)\n   • Role: database and authentication hosting (underlying Lovable Cloud).\n   • Data transmitted: email, hashed password, trip content, uploaded photos.\n   • Privacy policy: https://supabase.com/privacy\n\n3) Google LLC — Gemini API (United States)\n   • Role: AI engine used by the Ping (visa guide) and Ping (budget guide) assistants to generate answers.\n   • Data transmitted: the content of the message you send to the assistant (destination, travel context). No email or account identifier is transmitted.\n   • Gemini API terms: https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (United States)\n   • Role: receives the emails sent through the contact form.\n   • Data transmitted: your email, rating, suggestions, reported problems.\n   • Google privacy policy: https://policies.google.com/privacy\n\n5) Google LLC — Google Maps Platform (United States)\n   • Role: displays maps and places (Maps JavaScript, Places, geocoding) within the app.\n   • Data transmitted: the places, addresses and coordinates of your trips.\n   • Privacy policy: https://policies.google.com/privacy\n\n6) OpenWeather Ltd (United Kingdom) — OpenWeatherMap\n   • Role: displays the weather for your destination.\n   • Data transmitted: the city and coordinates of your destination.\n   • Privacy policy: https://openweather.co.uk/privacy-policy\n\n7) Open-Meteo\n   • Role: weather forecasts and historical weather used for some travel recommendations.\n   • Data transmitted: the geographic coordinates of your destination.\n   • Terms: https://open-meteo.com/en/terms\n\n8) Unsplash Inc. (United States)\n   • Role: supplies photos illustrating your destinations.\n   • Data transmitted: search terms (e.g. the destination name). No personal account data is transmitted.\n   • Privacy policy: https://unsplash.com/privacy\n\n9) EmailJS\n   • Role: relays messages sent through the feedback form to the Xplania team's email inbox.\n   • Data transmitted: the message and email you enter in the form.\n   • Privacy policy: https://www.emailjs.com/legal/privacy-policy/\n\nThis list will be kept up to date. Any meaningful change will be communicated to you."
         },
         {
           "heading": "Data transfers outside the European Union",
@@ -1738,7 +1744,14 @@
       "itemsCount_other": "{{count}} items",
       "secLocal": "Local recommendations",
       "placesCount_one": "{{count}} place",
-      "placesCount_other": "{{count}} places"
+      "placesCount_other": "{{count}} places",
+      "rotatingSteps": [
+        "Ping is analyzing {{destination}}…",
+        "Ping is scouting the best neighborhoods…",
+        "Ping is checking the weather…",
+        "Ping is balancing your budget…",
+        "Ping is polishing your itinerary…"
+      ]
     },
     "optionHints": {
       "tripType": {
@@ -4716,7 +4729,8 @@
     "retakeError": "Can't restart the quiz right now.",
     "saveWarn": "⚠️ This profile isn't saved yet. Create your account so you don't lose it.",
     "seeFeatures": "Continue",
-    "saveProfileCta": "Create my account to save my profile"
+    "saveProfileCta": "Create my account to save my profile",
+    "pageH1": "Your Travel DNA — traveler profile quiz"
   },
   "tinder": {
     "cat": {
@@ -5600,5 +5614,8 @@
     },
     "cta": "Get started with Xplania",
     "footerLink": "Xplania vs ChatGPT"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
   }
 }

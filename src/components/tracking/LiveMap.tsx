@@ -252,7 +252,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                 )}
                 <div className="flex gap-1.5 pt-1">
                   <a
-                    className="text-[11px] underline text-primary"
+                    className="text-xs underline text-primary"
                     href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
                     target="_blank"
                     rel="noopener"
@@ -261,7 +261,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                   </a>
                   {onPoiAddToCarnet && (
                     <button
-                      className="text-[11px] underline text-primary ml-auto"
+                      className="text-xs underline text-primary ml-auto"
                       onClick={() => onPoiAddToCarnet(p)}
                     >
                       + Carnet
@@ -293,14 +293,14 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                   <Sparkles className="w-3.5 h-3.5" style={{ color: "#f59e0b" }} />
                   <strong>{p.title}</strong>
                 </div>
-                <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full inline-block" style={{ background: "#f59e0b22", color: "#b45309" }}>
+                <span className="text-xs uppercase tracking-wider px-2 py-0.5 rounded-full inline-block" style={{ background: "#f59e0b22", color: "#b45309" }}>
                   IA · {p.category}
                 </span>
                 {p.description && <p className="text-xs">{p.description}</p>}
                 {p.reason && <p className="text-xs italic text-muted-foreground">→ {p.reason}</p>}
                 <div className="flex gap-1.5 pt-1">
                   <a
-                    className="text-[11px] underline text-primary"
+                    className="text-xs underline text-primary"
                     href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
                     target="_blank"
                     rel="noopener"
@@ -309,7 +309,7 @@ const LiveMap = ({ position, activities, positions, filter, height = "500px", po
                   </a>
                   {onAiPinAddToCarnet && (
                     <button
-                      className="text-[11px] underline text-primary ml-auto"
+                      className="text-xs underline text-primary ml-auto"
                       onClick={() => onAiPinAddToCarnet(p)}
                     >
                       + Carnet

@@ -21,7 +21,7 @@ const TripUtilitiesPanel = ({ destination, departureDate, returnDate, variant = 
       <Card className="p-4 bg-card/60 backdrop-blur-sm border-primary/20">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="space-y-1.5">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-semibold">{t("tripUtils.kicker")}</p>
+            <p className="text-xs uppercase tracking-widest text-primary font-semibold">{t("tripUtils.kicker")}</p>
             <div className="flex items-center gap-3 flex-wrap">
               <TripCountdown departureDate={departureDate} returnDate={returnDate} compact />
               <DestinationWeather destination={destination} compact />

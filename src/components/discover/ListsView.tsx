@@ -57,7 +57,7 @@ const ListsView = ({ onSelect }: Props) => {
               <h2 className="flex items-center gap-2 text-lg font-semibold">
                 <span>{list.emoji || "📍"}</span>{list.name}
                 <span className="text-xs font-normal text-muted-foreground">({listPlaces.length})</span>
-                {list.is_public && <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">{t("gmaps.lists.public")}</span>}
+                {list.is_public && <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">{t("gmaps.lists.public")}</span>}
               </h2>
               <div className="flex flex-wrap gap-1.5">
                 {listPlaces.length > 0 && (

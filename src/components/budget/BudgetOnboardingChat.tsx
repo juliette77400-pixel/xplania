@@ -309,7 +309,7 @@ const BudgetOnboardingChat = ({
           <div className="flex items-center gap-1">
             <button
               onClick={() => setMode(mode === "guided" ? "qa" : "guided")}
-              className="text-[11px] font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
+              className="text-xs font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
             >
               {mode === "guided" ? t("budget.qa.askButton") : t("budget.qa.backToGuide")}
             </button>
@@ -409,7 +409,7 @@ const BudgetOnboardingChat = ({
                     document.getElementById("currency-converter")?.scrollIntoView({ behavior: "smooth", block: "center" });
                   }, 50);
                 }}
-                className="text-[11px] font-semibold px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap"
+                className="text-xs font-semibold px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap"
               >
                 {t("budget.qa.convertBtn")}
               </button>

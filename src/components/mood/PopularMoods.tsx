@@ -36,7 +36,7 @@ const PopularMoods = ({ onSelectMood }: Props) => {
                 <button
                   key={mood}
                   onClick={() => onSelectMood?.(mood)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/60 backdrop-blur-sm hover:border-primary/40 transition-all"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/60 backdrop-blur-sm interactive-card"
                 >
                   <span className="text-lg">{m?.emoji || "✨"}</span>
                   <span className="text-sm font-medium">{label}</span>
@@ -61,7 +61,7 @@ const PopularMoods = ({ onSelectMood }: Props) => {
               const m = moodByKey(r.mood);
               const label = m ? t(`moodComp.moods.${m.key}.label`, { defaultValue: m.label }) : r.mood;
               return (
-                <div key={r.id} className="rounded-lg border border-border bg-card/40 p-2.5 text-sm flex gap-2">
+                <div key={r.id} className="rounded-lg border border-border bg-card/40 p-2.5 text-sm flex gap-2 interactive-card">
                   <span className="text-2xl shrink-0">{r.emoji || m?.emoji || "✨"}</span>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs">
@@ -69,7 +69,7 @@ const PopularMoods = ({ onSelectMood }: Props) => {
                       {r.place_name && <span className="text-muted-foreground"> · {r.place_name}</span>}
                     </div>
                     {r.comment && <p className="text-xs text-foreground/80 line-clamp-1">{r.comment}</p>}
-                    <p className="text-[10px] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: dateLocale })}
                     </p>
                   </div>

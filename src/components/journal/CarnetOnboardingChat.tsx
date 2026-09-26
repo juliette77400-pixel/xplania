@@ -437,7 +437,7 @@ const CarnetOnboardingChat = ({
           <div className="flex items-center gap-1">
             <button
               onClick={() => setMode(mode === "guided" ? "qa" : "guided")}
-              className="text-[11px] font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
+              className="text-xs font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
             >
               {mode === "guided" ? t("carnet.qa.askButton") : t("carnet.qa.backToGuide")}
             </button>
@@ -541,7 +541,7 @@ const CarnetOnboardingChat = ({
         {mode === "qa" && (
           <>
             {showContext && (
-              <div className="border-b border-border/40 bg-muted/30 px-3 py-2 text-[11px] text-foreground space-y-1">
+              <div className="border-b border-border/40 bg-muted/30 px-3 py-2 text-xs text-foreground space-y-1">
                 <div className="flex items-center gap-1.5 font-semibold text-primary">
                   <Info className="w-3 h-3" /> {t("carnet.qa.contextTitle")}
                 </div>
@@ -560,7 +560,7 @@ const CarnetOnboardingChat = ({
                     <div className="text-foreground font-medium mb-1">{t("carnet.qa.ctxBlocksDetail")} ({ctx.blocksDetail.length})</div>
                     <div className="max-h-28 overflow-y-auto space-y-0.5 pr-1">
                       {ctx.blocksDetail.slice(0, 40).map((b, i) => (
-                        <div key={i} className="text-[10px] text-muted-foreground">
+                        <div key={i} className="text-xs text-muted-foreground">
                           <span className="text-primary font-mono">[{b.type}]</span> <span className="text-foreground">{b.day}</span>
                           {b.preview ? <span> · {b.preview}</span> : null}
                         </div>
@@ -571,7 +571,7 @@ const CarnetOnboardingChat = ({
                 <div className="mt-2 flex justify-end">
                   <button
                     onClick={copyPayload}
-                    className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
+                    className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md bg-primary/15 hover:bg-primary/25 text-primary"
                   >
                     {payloadCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                     {payloadCopied ? t("carnet.qa.payloadCopied") : t("carnet.qa.copyPayload")}
@@ -599,7 +599,7 @@ const CarnetOnboardingChat = ({
                     <button
                       onClick={() => { setPreviewIdx(i); setPreviewContent(m.content); }}
                       disabled={insertingIdx === i}
-                      className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50"
+                      className="mt-1 inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50"
                       title={t("carnet.qa.insertHint")}
                     >
                       <Pencil className="w-3 h-3" />
@@ -608,7 +608,7 @@ const CarnetOnboardingChat = ({
                   )}
                   {m.role === "assistant" && previewIdx === i && (
                     <div className="mt-2 w-full max-w-[95%] rounded-lg border border-primary/30 bg-background/60 p-2 space-y-2">
-                      <div className="text-[10px] font-semibold text-primary uppercase tracking-wide">
+                      <div className="text-xs font-semibold text-primary uppercase tracking-wide">
                         {t("carnet.qa.previewTitle", { section: t(`carnet.onboarding.focus.${activeSection}`) })}
                       </div>
                       <textarea
@@ -620,7 +620,7 @@ const CarnetOnboardingChat = ({
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => { setPreviewIdx(null); setPreviewContent(""); }}
-                          className="text-[11px] font-semibold px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-foreground"
+                          className="text-xs font-semibold px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-foreground"
                         >
                           {t("carnet.qa.previewCancel")}
                         </button>
@@ -631,7 +631,7 @@ const CarnetOnboardingChat = ({
                             setPreviewContent("");
                           }}
                           disabled={insertingIdx === i || !previewContent.trim()}
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-md gradient-button text-primary-foreground disabled:opacity-50"
+                          className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md gradient-button text-primary-foreground disabled:opacity-50"
                         >
                           {insertingIdx === i ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
                           {activeSection === "story"

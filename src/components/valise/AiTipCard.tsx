@@ -182,7 +182,7 @@ const AiTipCard = ({ mode, isLoading, destination }: AiTipCardProps) => {
                 type="button"
                 onClick={() => void fetchTip(true)}
                 disabled={loadingDynamic}
-                className="ml-auto inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
+                className="ml-auto inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
                 title={t("valise.aiTipRegenerate", { defaultValue: lang === "en" ? "New tip" : "Nouveau conseil" })}
                 aria-label={t("valise.aiTipRegenerate", { defaultValue: lang === "en" ? "New tip" : "Nouveau conseil" })}
               >

@@ -52,7 +52,7 @@ const PlaceCard = ({ place, onClick, saved, onToggleSave }: Props) => {
         {place.why_fits && <p className="line-clamp-2 text-xs italic text-muted-foreground">"{place.why_fits}"</p>}
         <div className="flex flex-wrap gap-1 pt-0.5">
           {(place.tags || []).slice(0, 3).map((t) => (
-            <span key={t} className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] text-primary">#{t}</span>
+            <span key={t} className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">#{t}</span>
           ))}
         </div>
       </div>

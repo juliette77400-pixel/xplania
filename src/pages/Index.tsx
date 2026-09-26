@@ -58,15 +58,17 @@ const Index = () => {
         <button onClick={handleCreateTrip}>create</button>
         <button onClick={scrollToFeedback}>fb</button>
       </div>
-      <HeroSection onCreateTrip={handleCreateTrip} />
-      <DualAudienceSection />
-      <DifferentiationSection />
-      <JourneyTimelineSection />
-      <FeaturesSection />
-      <BetaSection onFeedback={() => setFeedbackOpen(true)} />
-      <FaqSection />
-      <FinalCtaSection onCreateTrip={handleCreateTrip} />
-      <Footer onCreateTrip={handleCreateTrip} />
+      <main id="main-content" tabIndex={-1}>
+        <HeroSection onCreateTrip={handleCreateTrip} />
+        <DualAudienceSection />
+        <DifferentiationSection />
+        <JourneyTimelineSection />
+        <FeaturesSection />
+        <BetaSection onFeedback={() => setFeedbackOpen(true)} />
+        <FaqSection />
+        <FinalCtaSection onCreateTrip={handleCreateTrip} />
+        <Footer onCreateTrip={handleCreateTrip} />
+      </main>
       {travelFormOpen && (
         <Suspense fallback={<DialogSkeleton size="lg" />}>
           <TravelFormDialog

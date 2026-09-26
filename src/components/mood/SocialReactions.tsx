@@ -125,7 +125,7 @@ const SocialReactions = ({ place, onShared }: Props) => {
               <div key={r.id} className="rounded-lg border border-border bg-background/40 p-2.5 text-sm flex gap-2">
                 <span className="text-2xl shrink-0">{r.emoji || m?.emoji || "✨"}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <span className="font-medium text-foreground">{label}</span>
                     <span>·</span>
                     <span>{formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: dateLocale })}</span>

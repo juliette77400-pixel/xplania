@@ -1,9 +1,8 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RotateCcw, Check, FileDown } from "lucide-react";
-import { exportBudgetPdf } from "@/lib/budget-pdf";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { toast } from "sonner";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -22,7 +21,7 @@ import BudgetGenerationAnim, { STEPS } from "@/components/budget/BudgetGeneratio
 import BudgetAiResult from "@/components/budget/BudgetAiResult";
 import BudgetForecast, { defaultCategories, type BudgetCategory } from "@/components/budget/BudgetForecast";
 import ExpenseTracker from "@/components/budget/ExpenseTracker";
-import BudgetCharts from "@/components/budget/BudgetCharts";
+const BudgetCharts = lazy(() => import("@/components/budget/BudgetCharts"));
 import BudgetAlerts from "@/components/budget/BudgetAlerts";
 import BudgetSavingTips from "@/components/budget/BudgetSavingTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
@@ -142,6 +141,7 @@ const GuideBudgetPage = () => {
   const handleExportPdf = useCallback(async () => {
     setIsExporting(true);
     try {
+      const { exportBudgetPdf } = await import("@/lib/budget-pdf");
       await exportBudgetPdf({
         destination,
         tripData,
@@ -440,7 +440,7 @@ const GuideBudgetPage = () => {
       <QuotaBanner tool="budget" toolLabel="Budget" />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
-      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
 
         {!hasGenerated && !isGenerating && (
@@ -523,7 +523,9 @@ const GuideBudgetPage = () => {
                 sectionId="charts"
               >
                 <div ref={chartRef}>
-                  <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                  <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
+                    <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                  </Suspense>
                 </div>
               </CollapsibleSection>
 
@@ -571,7 +573,7 @@ const GuideBudgetPage = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </main>
 
       {hasGenerated && (
         <BudgetOnboardingChat

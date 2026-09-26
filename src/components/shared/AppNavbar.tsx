@@ -126,7 +126,7 @@ const AppNavbar = () => {
               {GROUPS.map((g, gi) => (
                 <div key={g.labelKey}>
                   {gi > 0 && <DropdownMenuSeparator />}
-                  <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">{t(g.labelKey)}</DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-xs uppercase tracking-wider text-muted-foreground">{t(g.labelKey)}</DropdownMenuLabel>
                   {g.items.map((m) => {
                     const Icon = m.icon;
                     return (
@@ -207,7 +207,7 @@ const AppNavbar = () => {
                   <TooltipTrigger asChild>
                     <Link
                       to="/offres"
-                      className="hidden md:flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-600 hover:bg-amber-500/15 transition-colors"
+                      className="hidden md:flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-600 hover:bg-amber-500/15 transition-colors"
                       aria-label={t("appNav.quotaTooltip")}
                     >
                       <Zap className="w-3 h-3" />
@@ -219,7 +219,7 @@ const AppNavbar = () => {
                     <p className="font-semibold mb-1">{t("appNav.quotaTitle")}</p>
                     <p className="text-muted-foreground mb-2">{t("appNav.quotaTooltip")}</p>
                     {!dev && (
-                      <div className="space-y-0.5 text-[11px]">
+                      <div className="space-y-0.5 text-xs">
                         <div className="flex justify-between gap-3"><span>{t("appNav.suitcase")}</span><span className="font-mono">{getRemaining("valise")}</span></div>
                         <div className="flex justify-between gap-3"><span>{t("appNav.budget")}</span><span className="font-mono">{getRemaining("budget")}</span></div>
                         <div className="flex justify-between gap-3"><span>{t("appNav.visa")}</span><span className="font-mono">{getRemaining("visa")}</span></div>
@@ -252,7 +252,7 @@ const AppNavbar = () => {
                   ] }] : [])].map((g) => (
                   <div key={g.labelKey || "home"} className="mb-2">
                     {g.labelKey && (
-                      <p className="px-3 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{t(g.labelKey)}</p>
+                      <p className="px-3 pt-3 pb-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">{t(g.labelKey)}</p>
                     )}
                     {g.items.map((it: NavItem) => {
                       const Icon = it.icon;

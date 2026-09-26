@@ -30,7 +30,7 @@ const GooglePlaceInfo = ({ name, lat, lng }: Props) => {
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-wider text-primary">{t("gmaps.info.title")}</p>
         {g.open_now !== null && (
-          <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${g.open_now ? "bg-primary/15 text-primary" : "bg-destructive/15 text-destructive"}`}>
+          <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${g.open_now ? "bg-primary/15 text-primary" : "bg-destructive/15 text-destructive"}`}>
             {g.open_now ? t("gmaps.info.openNow") : t("gmaps.info.closedNow")}
           </span>
         )}
@@ -39,7 +39,7 @@ const GooglePlaceInfo = ({ name, lat, lng }: Props) => {
         <figure className="overflow-hidden rounded-lg">
           <img src={g.photo_uri} alt={g.name} className="h-40 w-full object-cover" loading="lazy" />
           {g.photo_attribution && (
-            <figcaption className="px-1 pt-1 text-[10px] text-muted-foreground">{t("gmaps.info.photoBy", { name: g.photo_attribution })}</figcaption>
+            <figcaption className="px-1 pt-1 text-xs text-muted-foreground">{t("gmaps.info.photoBy", { name: g.photo_attribution })}</figcaption>
           )}
         </figure>
       )}

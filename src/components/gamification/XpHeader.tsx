@@ -31,11 +31,11 @@ const XpHeader = ({ xp }: Props) => {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-[10px] sm:text-xs uppercase tracking-wider text-primary font-semibold">
+            <p className="text-xs sm:text-xs uppercase tracking-wider text-primary font-semibold">
               Niveau {level.index + 1} / {LEVELS.length}
             </p>
-            <span className="text-[10px] text-muted-foreground hidden sm:inline">·</span>
-            <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-amber-400">
+            <span className="text-xs text-muted-foreground hidden sm:inline">·</span>
+            <span className="inline-flex items-center gap-1 text-xs sm:text-xs font-bold text-amber-400">
               <Sparkles className="w-3 h-3" /> {xp.toLocaleString()} XP
             </span>
           </div>
@@ -53,7 +53,7 @@ const XpHeader = ({ xp }: Props) => {
                   className={cn("h-full rounded-full bg-gradient-to-r", level.gradient)}
                 />
               </div>
-              <p className="text-[11px] sm:text-xs text-muted-foreground mt-1.5">
+              <p className="text-xs sm:text-xs text-muted-foreground mt-1.5">
                 <span className="font-bold text-foreground tabular-nums">{xpForNext.toLocaleString()} XP</span>{" "}
                 {i18n.language?.startsWith("en") ? "to reach" : "pour passer"}{" "}
                 <span className="font-semibold text-foreground">

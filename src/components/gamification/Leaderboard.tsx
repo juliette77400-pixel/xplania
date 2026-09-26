@@ -119,7 +119,7 @@ const Leaderboard = () => {
                   <p className="mt-2 text-xs font-bold text-foreground truncate">
                     {r.display_name || "Voyageur"}
                   </p>
-                  <p className="text-[10px] text-muted-foreground truncate">{levelName(lvl, i18n.language)}</p>
+                  <p className="text-xs text-muted-foreground truncate">{levelName(lvl, i18n.language)}</p>
                   <p className="mt-1 text-sm font-bold text-amber-400 inline-flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> {r.xp.toLocaleString()}
                   </p>
@@ -152,9 +152,9 @@ const Leaderboard = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-foreground truncate">
-                        {r.display_name || "Voyageur"} {isMe && <span className="text-[10px] text-primary">(toi)</span>}
+                        {r.display_name || "Voyageur"} {isMe && <span className="text-xs text-primary">(toi)</span>}
                       </p>
-                      <p className="text-[10px] text-muted-foreground truncate">{levelName(lvl, i18n.language)}</p>
+                      <p className="text-xs text-muted-foreground truncate">{levelName(lvl, i18n.language)}</p>
                     </div>
                     <span className="text-sm font-bold text-amber-400 tabular-nums">
                       {r.xp.toLocaleString()} XP

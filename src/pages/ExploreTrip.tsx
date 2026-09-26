@@ -63,7 +63,7 @@ const ExploreTrip = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-6 max-w-7xl space-y-5">
+      <main id="main-content" tabIndex={-1} className="relative container mx-auto px-4 py-6 max-w-7xl space-y-5">
         {explore.loading ? (
           <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
         ) : explore.nodes.length === 0 ? (

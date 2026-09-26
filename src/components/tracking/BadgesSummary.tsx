@@ -86,7 +86,7 @@ const BadgesSummary = ({ tripId }: Props) => {
       <div className="flex items-center gap-4">
         <div className="text-center px-3">
           <p className="text-2xl font-bold text-amber-500">{summary.unlocked}</p>
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">
             {t("suiviTrip.badges.unlocked")}
           </p>
         </div>

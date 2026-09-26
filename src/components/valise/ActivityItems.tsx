@@ -70,7 +70,7 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-base font-bold text-foreground">{t("valise.activitiesTitle")}</h3>
         {highlighted.size > 0 && (
-          <span className="text-[10px] px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
+          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
             {t("valise.activitiesDetected", { count: highlighted.size })}
           </span>
         )}
@@ -102,12 +102,12 @@ const ActivityItems = ({ objectives, onAddToChecklist }: ActivityItemsProps) => 
                   <span className={isHighlighted ? "text-primary" : "text-muted-foreground"}>{icon}</span>
                   <div>
                     <p className="text-sm font-semibold text-foreground">{activity}</p>
-                    <p className="text-[10px] text-muted-foreground">{t("valise.activitiesItemsCount", { count: items.length })}</p>
+                    <p className="text-xs text-muted-foreground">{t("valise.activitiesItemsCount", { count: items.length })}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {isHighlighted && !isAdded && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium">
                       {t("valise.activitiesRecommended")}
                     </span>
                   )}

@@ -39,11 +39,11 @@ const ShareGameCard = ({ destination, progress, badges, nodes }: Props) => {
       <div ref={ref} className="rounded-2xl p-6 bg-gradient-to-br from-[hsl(280_60%_15%)] via-[hsl(220_50%_10%)] to-[hsl(190_60%_15%)] border border-primary/30 shadow-[0_0_60px_rgba(168,85,247,0.25)]">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-primary/80">{t("x2.tmKicker")}</p>
+            <p className="text-xs uppercase tracking-widest text-primary/80">{t("x2.tmKicker")}</p>
             <h3 className="text-2xl font-black text-white">{destination || t("x2.myTrip")}</h3>
           </div>
           <div className="text-right">
-            <p className="text-[10px] uppercase tracking-widest text-primary/80">{t("x2.score")}</p>
+            <p className="text-xs uppercase tracking-widest text-primary/80">{t("x2.score")}</p>
             <p className="text-3xl font-black text-white">{progress?.total_points || 0}</p>
           </div>
         </div>
@@ -51,15 +51,15 @@ const ShareGameCard = ({ destination, progress, badges, nodes }: Props) => {
         <div className="grid grid-cols-3 gap-2 mb-4">
           <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-center">
             <p className="text-2xl font-bold text-white">{visited}</p>
-            <p className="text-[10px] text-white/60 uppercase">{t("x2.places")}</p>
+            <p className="text-xs text-white/60 uppercase">{t("x2.places")}</p>
           </div>
           <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-center">
             <p className="text-2xl font-bold text-white">{progress?.cities_completed || 0}</p>
-            <p className="text-[10px] text-white/60 uppercase">{t("x2.cities")}</p>
+            <p className="text-xs text-white/60 uppercase">{t("x2.cities")}</p>
           </div>
           <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-center">
             <p className="text-2xl font-bold text-white">{badges.length}</p>
-            <p className="text-[10px] text-white/60 uppercase">{t("x2.badgesShort")}</p>
+            <p className="text-xs text-white/60 uppercase">{t("x2.badgesShort")}</p>
           </div>
         </div>
 
@@ -73,7 +73,7 @@ const ShareGameCard = ({ destination, progress, badges, nodes }: Props) => {
           </div>
         )}
 
-        <p className="text-[10px] text-white/40 text-center pt-2 border-t border-white/10">{t("x2.shareTagline")}</p>
+        <p className="text-xs text-white/40 text-center pt-2 border-t border-white/10">{t("x2.shareTagline")}</p>
       </div>
 
       <div className="flex gap-2">

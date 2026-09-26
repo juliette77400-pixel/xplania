@@ -166,7 +166,7 @@ const Offres = () => {
               <p className="text-xs text-muted-foreground">{t("offres.freeTagline")}</p>
             </div>
             {tier === "free" && (
-              <span className="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
+              <span className="ml-auto text-xs font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
                 {t("offres.current")}
               </span>
             )}
@@ -191,7 +191,7 @@ const Offres = () => {
               <span className="text-xs font-semibold text-foreground">
                 {t("offres.generationsUsed", { used: generationsUsed, total: freeQuota })}
               </span>
-              <span className="text-[10px] font-medium text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 {t("offres.remainingCount", { n: Math.max(0, freeQuota - generationsUsed) })}
               </span>
             </div>
@@ -263,12 +263,12 @@ const Offres = () => {
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     {pack.recommended && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/30 text-primary-foreground">
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary/30 text-primary-foreground">
                         {t("offres.recommended")}
                       </span>
                     )}
                     {pack.premium && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent/20 text-accent">
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-accent/20 text-accent">
                         <Star className="w-2.5 h-2.5 fill-current" />
                         {t("offres.premium")}
                       </span>
@@ -291,7 +291,7 @@ const Offres = () => {
                     {t(`offres.suffix.${billing}`)}
                   </span>
                   {billing === "yearly" && pack.hasYearlyNote && (
-                    <p className="text-[11px] text-primary mt-1">{t("offres.yearlyNote")}</p>
+                    <p className="text-xs text-primary mt-1">{t("offres.yearlyNote")}</p>
                   )}
                 </div>
 
@@ -338,7 +338,7 @@ const Offres = () => {
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-foreground">{t("offres.doublePacks")}</h3>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
                   {t("offres.doubleDiscount")}
                 </span>
               </div>
@@ -363,7 +363,7 @@ const Offres = () => {
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-foreground">{t("offres.triplePacks")}</h3>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
                   {t("offres.tripleDiscount")}
                 </span>
               </div>

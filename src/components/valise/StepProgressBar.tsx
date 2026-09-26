@@ -32,7 +32,7 @@ const StepProgressBar = ({ currentStep }: StepProgressBarProps) => {
                 {i + 1}
               </motion.div>
               <p
-                className={`text-[10px] text-center leading-tight font-medium ${
+                className={`text-xs text-center leading-tight font-medium ${
                   isCurrent ? "text-primary" : isActive ? "text-foreground/70" : "text-muted-foreground/40"
                 }`}
               >

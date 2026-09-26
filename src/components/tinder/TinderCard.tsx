@@ -90,7 +90,7 @@ export default function TinderCard({ card, onSwipe, isTop, category }: Props) {
 
         {category && CatIcon && (
           <div
-            className={`absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border ${category.border} ${category.chipBg} px-2.5 py-1 text-[11px] font-semibold ${category.accent} backdrop-blur-md`}
+            className={`absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border ${category.border} ${category.chipBg} px-2.5 py-1 text-xs font-semibold ${category.accent} backdrop-blur-md`}
           >
             <CatIcon className="h-3.5 w-3.5" />
             <span className="uppercase tracking-wide">{t(category.labelKey, category.fallback)}</span>

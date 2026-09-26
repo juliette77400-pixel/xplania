@@ -85,14 +85,14 @@ export default function NotificationSettingsPanel() {
         <div className="flex items-center justify-between rounded-lg border border-border p-3">
           <div>
             <Label className="text-sm">Canal : in-app</Label>
-            <p className="text-[11px] text-muted-foreground">Cloche de notification de l'app.</p>
+            <p className="text-xs text-muted-foreground">Cloche de notification de l'app.</p>
           </div>
           <Switch checked={s.channel_in_app} onCheckedChange={(v) => setS({ ...s, channel_in_app: v })} />
         </div>
         <div className="flex items-center justify-between rounded-lg border border-border p-3 opacity-80">
           <div>
             <Label className="text-sm">Canal : email</Label>
-            <p className="text-[11px] text-muted-foreground">{t("ui2.NotificationSettingsPanel.soonServerReady")}</p>
+            <p className="text-xs text-muted-foreground">{t("ui2.NotificationSettingsPanel.soonServerReady")}</p>
           </div>
           <Switch checked={s.channel_email} onCheckedChange={(v) => setS({ ...s, channel_email: v })} />
         </div>
@@ -108,7 +108,7 @@ export default function NotificationSettingsPanel() {
               <SelectItem value="daily">{t("ui2.NotificationSettingsPanel.dailyRecapSoon")}</SelectItem>
             </SelectContent>
           </Select>
-          <p className="text-[11px] text-muted-foreground mt-1">{t("ui2.NotificationSettingsPanel.onlyInstantActive")}</p>
+          <p className="text-xs text-muted-foreground mt-1">{t("ui2.NotificationSettingsPanel.onlyInstantActive")}</p>
         </div>
       </div>
 

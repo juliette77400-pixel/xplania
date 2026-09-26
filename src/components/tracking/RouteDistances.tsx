@@ -52,7 +52,7 @@ const RouteDistances = ({ tripId, position, activities, positions, onChanged }: 
           <div key={label} className="rounded-xl bg-muted/40 p-2">
             <Icon className="mx-auto mb-1 h-4 w-4 text-primary" />
             <p className="text-lg font-bold">{fmt(v)}</p>
-            <p className="text-[11px] text-muted-foreground">{label}</p>
+            <p className="text-xs text-muted-foreground">{label}</p>
           </div>
         ))}
       </div>
@@ -62,8 +62,8 @@ const RouteDistances = ({ tripId, position, activities, positions, onChanged }: 
             const leg = i > 0 ? haversineKm({ lat: stops[i - 1].lat!, lng: stops[i - 1].lng! }, { lat: s.lat!, lng: s.lng! }) : null;
             return (
               <li key={s.id} className="flex items-center gap-2 text-sm">
-                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-[11px] font-bold text-primary">{i + 1}</span>
-                <span className="min-w-0 flex-1 truncate">{s.title}{s.day_date && <span className="ml-1.5 text-[11px] text-muted-foreground">· {new Date(s.day_date + "T00:00:00").toLocaleDateString(t("ui2.TripTracker.dateLocale"), { day: "numeric", month: "short" })}</span>}</span>
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-xs font-bold text-primary">{i + 1}</span>
+                <span className="min-w-0 flex-1 truncate">{s.title}{s.day_date && <span className="ml-1.5 text-xs text-muted-foreground">· {new Date(s.day_date + "T00:00:00").toLocaleDateString(t("ui2.TripTracker.dateLocale"), { day: "numeric", month: "short" })}</span>}</span>
                 {leg !== null && <span className="text-xs text-muted-foreground">+{fmt(leg)}</span>}
                 {s.source === "manual" && (
                   <button aria-label={t("gmaps.route.removeStop")} onClick={() => remove(s.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-3.5 w-3.5" /></button>
@@ -73,7 +73,7 @@ const RouteDistances = ({ tripId, position, activities, positions, onChanged }: 
           })}
         </ol>
       )}
-      <p className="text-[11px] text-muted-foreground">{t("gmaps.route.birdNote")}</p>
+      <p className="text-xs text-muted-foreground">{t("gmaps.route.birdNote")}</p>
       <AddStopDialog open={open} onOpenChange={setOpen} tripId={tripId} activities={activities}
         near={position ?? (stops[0] ? { lat: stops[0].lat!, lng: stops[0].lng! } : null)} onAdded={onChanged} />
     </section>

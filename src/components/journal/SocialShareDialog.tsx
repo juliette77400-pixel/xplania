@@ -97,11 +97,11 @@ const SocialShareDialog = ({ open, onOpenChange, destination, title, cover, day 
             )}
             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/85" />
             <div className="relative h-full flex flex-col justify-between p-5">
-              <div className="text-[10px] tracking-[0.25em] uppercase opacity-90">Xplania · Carnet</div>
+              <div className="text-xs tracking-[0.25em] uppercase opacity-90">Xplania · Carnet</div>
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold leading-tight drop-shadow">{destination || title}</h2>
                 {txt && <p className="text-xs leading-relaxed opacity-95 line-clamp-6 font-serif italic">"{txt}"</p>}
-                <div className="text-[10px] opacity-70 pt-2">xplania.app</div>
+                <div className="text-xs opacity-70 pt-2">xplania.app</div>
               </div>
             </div>
           </div>

@@ -308,7 +308,7 @@ const TripTracker = ({ tripId, destination }: Props) => {
           />
 
           {showPois && pois.length > 0 && (
-            <div className="flex items-center gap-3 flex-wrap text-[11px] text-muted-foreground px-1">
+            <div className="flex items-center gap-3 flex-wrap text-xs text-muted-foreground px-1">
               <span className="font-semibold">{t("ui2.TripTracker.poiAround", { count: filteredPois.length })}</span>
               {(Object.entries(POI_LABELS) as [keyof typeof POI_LABELS, string][]).map(([cat, label]) => (
                 <span key={cat} className="flex items-center gap-1">

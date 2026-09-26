@@ -315,7 +315,7 @@ const GamificationPage = () => {
     <div className="min-h-screen bg-background">
       <AppNavbar />
 
-      <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-12">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-12">
 
         {/* ══════ XP LEVEL HEADER ══════ */}
         <XpHeader xp={totalXp} />
@@ -349,7 +349,7 @@ const GamificationPage = () => {
                 <p className="text-xl sm:text-2xl font-bold gradient-text leading-tight truncate">
                   {s.value}{s.suffix || ""}
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 leading-tight">
+                <p className="text-xs sm:text-xs text-muted-foreground mt-1 leading-tight">
                   <span className="sm:hidden">{s.short}</span>
                   <span className="hidden sm:inline">{s.label}</span>
                 </p>

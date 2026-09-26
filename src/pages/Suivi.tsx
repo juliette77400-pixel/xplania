@@ -26,7 +26,7 @@ const Suivi = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-10 max-w-4xl">
+      <main id="main-content" tabIndex={-1} className="relative container mx-auto px-4 py-10 max-w-4xl">
         <div className="text-center mb-10">
           <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">{t("suivi.kicker")}</p>
           <h2 className="text-3xl font-bold text-foreground mb-3">{t("suivi.heroTitle")}</h2>

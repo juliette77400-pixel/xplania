@@ -1,7 +1,7 @@
 import RouteMeta from "@/components/shared/RouteMeta";
 import i18n from "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -89,6 +89,12 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[9999] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground focus:shadow-lg"
+            >
+              {i18n.t("a11y.skipToContent")}
+            </a>
             <RouteMeta />
             <OnboardingSyncGate />
             <AdminGate />
@@ -136,18 +142,19 @@ const App = () => (
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/blog/how-to-plan-a-trip-with-ai" element={<GuidePlanTrip />} />
-            <Route path="/about" element={<About />} />
             <Route path="/xplania-vs-chatgpt" element={<XplaniaVsChatgpt />} />
+            {/* Canonical FR routes. EN duplicate slugs redirect to the FR canonical URL. */}
             <Route path="/a-propos" element={<About />} />
-            {/* Localized legal routes (FR + EN canonical URLs) */}
+            <Route path="/about" element={<Navigate to="/a-propos" replace />} />
+            {/* Localized legal routes: FR is canonical, EN slugs redirect */}
             <Route path="/mentions-legales" element={<Legal legalKey="mentions" />} />
-            <Route path="/legal-notice" element={<Legal legalKey="mentions" />} />
+            <Route path="/legal-notice" element={<Navigate to="/mentions-legales" replace />} />
             <Route path="/politique-de-confidentialite" element={<Legal legalKey="confidentialite" />} />
-            <Route path="/privacy-policy" element={<Legal legalKey="confidentialite" />} />
+            <Route path="/privacy-policy" element={<Navigate to="/politique-de-confidentialite" replace />} />
             <Route path="/conditions-utilisation" element={<Legal legalKey="cgu" />} />
-            <Route path="/terms-of-use" element={<Legal legalKey="cgu" />} />
-            <Route path="/trust" element={<Trust />} />
+            <Route path="/terms-of-use" element={<Navigate to="/conditions-utilisation" replace />} />
             <Route path="/securite" element={<Trust />} />
+            <Route path="/trust" element={<Navigate to="/securite" replace />} />
             {/* Legacy fallback */}
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />

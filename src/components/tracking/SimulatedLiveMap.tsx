@@ -157,7 +157,7 @@ const SimulatedLiveMap = ({
       </svg>
 
       {/* Decorative compass label */}
-      <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/60 backdrop-blur-md border border-border text-[10px] uppercase tracking-wider text-muted-foreground">
+      <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/60 backdrop-blur-md border border-border text-xs uppercase tracking-wider text-muted-foreground">
         <MapPin className="w-3 h-3 text-primary" /> Live preview
       </div>
 

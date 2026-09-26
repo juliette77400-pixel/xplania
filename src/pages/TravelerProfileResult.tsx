@@ -354,7 +354,7 @@ const TravelerProfileResult = () => {
                     to={to}
                     className="group relative overflow-hidden rounded-2xl border border-primary/50 bg-gradient-to-br from-primary/10 via-card to-secondary/5 p-6 transition hover:-translate-y-1 hover:border-primary hover:shadow-lg"
                   >
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-primary">
                       <Sparkles className="h-3 w-3" />
                       {t("travelerProfile.freeAccess", { defaultValue: "Accès gratuit" })}
                     </div>
@@ -382,7 +382,7 @@ const TravelerProfileResult = () => {
                   {/* frosted overlay for the locked look */}
                   <div className="pointer-events-none absolute inset-0 bg-background/40 backdrop-blur-[1px]" />
                   <div className="relative">
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                       <Lock className="h-3 w-3" />
                       {t("travelerProfile.premium", { defaultValue: "Premium" })}
                     </div>

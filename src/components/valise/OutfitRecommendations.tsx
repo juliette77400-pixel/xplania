@@ -195,7 +195,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2 justify-center sm:justify-start">
               {t("valise.outfitsTitle")}
               {aiOutfits && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/15 text-primary text-[10px] font-semibold">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/15 text-primary text-xs font-semibold">
                   <Sparkles className="w-3 h-3" /> {t("valise.outfitsAiBadge")}
                 </span>
               )}
@@ -254,7 +254,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
                     {outfit.emoji}
                   </span>
                   {outfit.badge && (
-                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider border border-white/20">
+                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20">
                       {outfit.badge}
                     </span>
                   )}
@@ -277,7 +277,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
                       {outfit.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-0.5 rounded-md bg-muted/50 text-[10px] font-medium text-muted-foreground"
+                          className="px-2 py-0.5 rounded-md bg-muted/50 text-xs font-medium text-muted-foreground"
                         >
                           {tag}
                         </span>
@@ -341,7 +341,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
                   <div className="p-3 rounded-xl bg-primary/5 flex items-start gap-2">
                     <CloudSun className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] font-semibold text-muted-foreground uppercase">{t("valise.outfitsWeatherTip")}</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase">{t("valise.outfitsWeatherTip")}</p>
                       <p className="text-xs text-foreground mt-0.5">{selectedOutfit.weatherTip}</p>
                     </div>
                   </div>
@@ -350,7 +350,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
                   <div className="p-3 rounded-xl bg-secondary/5 flex items-start gap-2">
                     <Thermometer className="w-4 h-4 text-secondary mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] font-semibold text-muted-foreground uppercase">{t("valise.outfitsCulturalTip")}</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase">{t("valise.outfitsCulturalTip")}</p>
                       <p className="text-xs text-foreground mt-0.5">{selectedOutfit.culturalTip}</p>
                     </div>
                   </div>

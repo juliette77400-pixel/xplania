@@ -93,7 +93,7 @@ const TripSummaryDashboard = ({ tripData }: TripSummaryDashboardProps) => {
           >
             <div className="flex items-center gap-2 mb-1.5">
               <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              <span className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
                 {item.label}
               </span>
             </div>
@@ -109,7 +109,7 @@ const TripSummaryDashboard = ({ tripData }: TripSummaryDashboardProps) => {
           {t("budget.summaryMoreContext")}
         </summary>
         <div className="grid grid-cols-2 gap-3 border-t border-border/60 p-4 sm:grid-cols-4">
-          {items.slice(4).map((item) => <div key={item.label} className="min-w-0"><div className="mb-1 flex items-center gap-1.5"><item.icon className={`h-3.5 w-3.5 ${item.color}`} /><span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{item.label}</span></div><p className="truncate text-sm font-semibold text-foreground">{item.value}</p></div>)}
+          {items.slice(4).map((item) => <div key={item.label} className="min-w-0"><div className="mb-1 flex items-center gap-1.5"><item.icon className={`h-3.5 w-3.5 ${item.color}`} /><span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{item.label}</span></div><p className="truncate text-sm font-semibold text-foreground">{item.value}</p></div>)}
         </div>
       </details>
 

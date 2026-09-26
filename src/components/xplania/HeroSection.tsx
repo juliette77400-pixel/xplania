@@ -36,7 +36,7 @@ const copy = {
 };
 
 const HeroSection = ({ onCreateTrip }: Props) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const c = i18n.language.startsWith("fr") ? copy.fr : copy.en;
 
   return (
@@ -59,6 +59,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-muted-foreground">
             {c.proof.map((item) => <span key={item} className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" />{item}</span>)}
           </div>
+          <p className="mt-5 text-sm font-semibold italic text-primary/80">{t("differentiation.tagline")}</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: .96, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: .7, delay: .12 }} className="relative mx-auto w-full max-w-xl">

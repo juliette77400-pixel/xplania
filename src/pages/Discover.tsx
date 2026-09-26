@@ -96,7 +96,7 @@ const Discover = () => {
     return (
       <div className="min-h-screen bg-background">
         <AppNavbar />
-        <main className="mx-auto max-w-3xl px-4 py-6 md:py-10">
+        <main id="main-content" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-6 md:py-10">
           <DiscoverEntry onSubmit={handleEntrySubmit} onOpenPip={() => setPipOpen(true)} />
         </main>
         <QuickJump />
@@ -115,7 +115,7 @@ const Discover = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
-      <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 md:py-10">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-6xl space-y-6 px-4 py-6 md:py-10">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"

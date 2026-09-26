@@ -5,7 +5,7 @@ import path from "path";
 import fs from "fs";
 import { componentTagger } from "lovable-tagger";
 import { VitePWA } from "vite-plugin-pwa";
-import { META } from "./src/lib/route-meta.data";
+import { META, NOINDEX_ROUTES } from "./src/lib/route-meta.data";
 
 const SITE = "https://xplania.app";
 
@@ -22,6 +22,13 @@ function escapeHtml(str: string): string {
 // route-specific <title>, meta description, canonical, og:*/twitter:* tags,
 // so crawlers/social scrapers get correct per-route social previews without
 // SSR. Skips "/" (root index.html already reflects it).
+// Auth/reset-password have no SEO value; give them a minimal FR/EN meta entry
+// so the loop below still generates a prerendered file with a noindex tag.
+const NOINDEX_META: Record<string, { title: string; description: string }> = {
+  "/auth": { title: "Connexion — Xplania", description: "Connecte-toi ou crée un compte Xplania." },
+  "/reset-password": { title: "Réinitialiser le mot de passe — Xplania", description: "Réinitialise le mot de passe de ton compte Xplania." },
+};
+
 function staticRouteMetaPlugin(): Plugin {
   let config: ResolvedConfig;
   return {
@@ -38,9 +45,14 @@ function staticRouteMetaPlugin(): Plugin {
       if (!fs.existsSync(indexPath)) return;
       const baseHtml = fs.readFileSync(indexPath, "utf-8");
 
-      for (const [route, meta] of Object.entries(META)) {
-        if (route === "/") continue;
-        const [title, description] = meta.fr;
+      const routes: [string, string, string][] = [
+        ...Object.entries(META)
+          .filter(([route]) => route !== "/")
+          .map(([route, meta]) => [route, meta.fr[0], meta.fr[1]] as [string, string, string]),
+        ...NOINDEX_ROUTES.map((route) => [route, NOINDEX_META[route]?.title ?? "Xplania", NOINDEX_META[route]?.description ?? ""] as [string, string, string]),
+      ];
+
+      for (const [route, title, description] of routes) {
         const url = `${SITE}${route}`;
         const eTitle = escapeHtml(title);
         const eDesc = escapeHtml(description);
@@ -76,6 +88,14 @@ function staticRouteMetaPlugin(): Plugin {
           /<meta name="twitter:description" content=".*?"\s*\/?>/s,
           `<meta name="twitter:description" content="${eDesc}" />`
         );
+
+        if (NOINDEX_ROUTES.includes(route)) {
+          if (/<meta name="robots"/.test(html)) {
+            html = html.replace(/<meta name="robots" content=".*?"\s*\/?>/s, '<meta name="robots" content="noindex,follow" />');
+          } else {
+            html = html.replace("<head>", '<head>\n    <meta name="robots" content="noindex,follow" />');
+          }
+        }
 
         const routeDir = path.join(outDir, route.replace(/^\//, ""));
         fs.mkdirSync(routeDir, { recursive: true });

@@ -64,7 +64,7 @@ const PublicSuivi = () => {
           <span className={`ml-2 w-2 h-2 rounded-full ${tracking.is_active ? "bg-green-500 animate-pulse" : "bg-muted-foreground"}`} />
         </div>
       </header>
-      <main className="container mx-auto px-4 py-6 max-w-6xl space-y-4">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-6 max-w-6xl space-y-4">
         <LiveMap position={livePos} activities={activities} positions={positions} height="500px" />
         <LiveStats tracking={tracking} activities={activities} />
         <LiveTimeline activities={activities} onStatusChange={() => {}} readOnly />

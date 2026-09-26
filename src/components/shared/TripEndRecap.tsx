@@ -81,7 +81,7 @@ const TripEndRecap = ({ trip, onShare }: Props) => {
   return (
     <Card className="p-6 bg-gradient-to-br from-primary/5 via-card to-accent/10 border-primary/30 space-y-5">
       <div className="text-center space-y-1">
-        <p className="text-[10px] uppercase tracking-widest text-primary font-bold">{t("tripRecap.kicker")}</p>
+        <p className="text-xs uppercase tracking-widest text-primary font-bold">{t("tripRecap.kicker")}</p>
         <h2 className="text-xl sm:text-2xl font-bold gradient-text">
           {t("tripRecap.title", { destination: trip.destination || trip.title || "" })}
         </h2>
@@ -103,7 +103,7 @@ const TripEndRecap = ({ trip, onShare }: Props) => {
           >
             <tile.icon className="w-4 h-4 text-primary mb-1" />
             <div className="text-xl font-bold">{tile.value}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-wider">{tile.label}</div>
+            <div className="text-xs text-muted-foreground uppercase tracking-wider">{tile.label}</div>
           </motion.div>
         ))}
       </div>

@@ -48,7 +48,7 @@ const MissionsPanel = () => {
             {isMonthly ? <Trophy className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider border border-primary/40 text-primary rounded-full px-2 py-0.5">
+            <span className="text-xs font-bold uppercase tracking-wider border border-primary/40 text-primary rounded-full px-2 py-0.5">
               {isMonthly ? (isFr ? "Mensuel" : "Monthly") : (isFr ? "Hebdo" : "Weekly")}
             </span>
             <span className="text-xs font-bold border border-amber-500/40 text-amber-400 rounded-full px-2 py-0.5">
@@ -60,13 +60,13 @@ const MissionsPanel = () => {
           <h3 className="font-bold text-foreground">{name}</h3>
           <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{desc}</p>
           {cat && (
-            <p className="text-[10px] mt-2 uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs mt-2 uppercase tracking-wider text-muted-foreground">
               {isFr ? cat.name_fr : cat.name_en}
             </p>
           )}
         </div>
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[11px] text-muted-foreground inline-flex items-center gap-1">
+          <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
             <Clock className="w-3 h-3" /> {timeLeft(m.end_date)}
           </span>
           {m.done ? (

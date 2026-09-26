@@ -202,7 +202,7 @@ const SafetyGuide = ({ destination }: SafetyGuideProps) => {
 
       {/* Official link */}
       <div className="pt-2 border-t border-border/40 flex flex-wrap items-center gap-2 justify-between">
-        <p className="text-[11px] text-muted-foreground italic">
+        <p className="text-xs text-muted-foreground italic">
           {destination
             ? t("guideVisa.safetyGuide.disclaimerWithDest", { destination })
             : t("guideVisa.safetyGuide.disclaimer")}

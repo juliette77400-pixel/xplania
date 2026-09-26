@@ -34,7 +34,7 @@ const NextTripUtilitiesCard = ({ trips }: Props) => {
     <Card className="p-5 bg-gradient-to-br from-primary/10 via-card to-accent/10 border-primary/30">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] uppercase tracking-widest text-primary font-semibold flex items-center gap-1">
+          <p className="text-xs uppercase tracking-widest text-primary font-semibold flex items-center gap-1">
             <Plane className="w-3 h-3" /> {t("tripUtils.nextTrip")}
           </p>
           <h3 className="font-bold text-base mt-1">{next.title || next.destination}</h3>

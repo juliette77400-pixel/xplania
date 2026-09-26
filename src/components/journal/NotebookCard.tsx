@@ -67,7 +67,7 @@ const NotebookCard = ({ trip, onOpen, index = 0 }: Props) => {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-primary/10" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/90 backdrop-blur text-[10px] uppercase tracking-wider font-semibold text-foreground">
+        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/90 backdrop-blur text-xs uppercase tracking-wider font-semibold text-foreground">
           <BookOpen className="w-3 h-3" /> {t("carnets.kicker")}
         </div>
         <div className="absolute bottom-3 left-3 right-3 text-white">

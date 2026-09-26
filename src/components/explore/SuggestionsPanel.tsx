@@ -59,7 +59,7 @@ const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground mb-1">{s.description}</p>
-            <p className="text-[11px] text-primary/80 italic">→ {s.reason}</p>
+            <p className="text-xs text-primary/80 italic">→ {s.reason}</p>
           </div>
         ))}
       </div>

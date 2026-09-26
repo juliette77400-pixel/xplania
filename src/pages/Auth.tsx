@@ -88,10 +88,13 @@ const Auth = () => {
         animate={{ opacity: 1, y: 0 }}
         className="relative z-10 w-full max-w-md"
       >
-        <Link to="/home" className="flex items-center justify-center gap-2 mb-8">
+        <Link to="/home" className="flex items-center justify-center gap-2 mb-2">
           <Sparkles className="w-6 h-6 text-primary" />
           <span className="text-2xl font-bold gradient-text">Xplania</span>
         </Link>
+        <p className="mb-8 text-center text-xs font-medium text-muted-foreground">
+          {t("differentiation.tagline")}
+        </p>
 
         <div className="glass-card rounded-2xl p-8">
           <Tabs defaultValue="signin">

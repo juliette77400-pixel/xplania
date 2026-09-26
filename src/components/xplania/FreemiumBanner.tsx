@@ -36,7 +36,7 @@ const FreemiumBanner = () => {
                     ? t("ui2.FreemiumBanner.used")
                     : t("ui2.FreemiumBanner.enjoy")}
                 </p>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary shrink-0">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary shrink-0">
                   {generationsUsed}/{freeQuota}
                 </span>
               </div>

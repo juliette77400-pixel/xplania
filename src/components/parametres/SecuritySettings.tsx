@@ -296,7 +296,7 @@ const SecuritySettings = () => {
                       {i.identity_data?.email ?? user?.email}
                     </span>
                   </div>
-                  <span className="text-[11px] text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {t("settings.security.linked.primary")}
                   </span>
                 </div>

@@ -127,7 +127,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Thermometer className="w-4 h-4 text-primary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherTemp")}</p>
+                  <p className="text-xs text-muted-foreground uppercase">{t("valise.weatherTemp")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.temperature}</p>
                 </div>
               </div>
@@ -136,7 +136,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Thermometer className="w-4 h-4 text-secondary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherFeel")}</p>
+                  <p className="text-xs text-muted-foreground uppercase">{t("valise.weatherFeel")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.feelsLike}</p>
                 </div>
               </div>
@@ -145,7 +145,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Droplets className="w-4 h-4 text-primary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherHumidity")}</p>
+                  <p className="text-xs text-muted-foreground uppercase">{t("valise.weatherHumidity")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.humidity}</p>
                 </div>
               </div>
@@ -154,7 +154,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
                 <Wind className="w-4 h-4 text-primary" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">{t("valise.weatherWind")}</p>
+                  <p className="text-xs text-muted-foreground uppercase">{t("valise.weatherWind")}</p>
                   <p className="text-sm font-semibold text-foreground">{weather.wind}</p>
                 </div>
               </div>

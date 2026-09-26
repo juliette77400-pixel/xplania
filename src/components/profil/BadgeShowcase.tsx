@@ -136,7 +136,7 @@ const BadgeShowcase = () => {
               title={b.name}
             >
               <div className="text-2xl mb-1">{b.icon || "🏅"}</div>
-              <p className="text-[10px] font-semibold leading-tight line-clamp-2">{b.name}</p>
+              <p className="text-xs font-semibold leading-tight line-clamp-2">{b.name}</p>
               <Badge variant="secondary" className="absolute -top-1.5 -right-1.5 text-[9px] h-4 px-1.5">
                 +{b.points}
               </Badge>
@@ -156,7 +156,7 @@ const BadgeShowcase = () => {
                 <div className="text-lg shrink-0 opacity-70">{b.icon || "🎯"}</div>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-semibold truncate">{b.name}</p>
-                  <p className="text-[10px] text-muted-foreground line-clamp-2">{b.description}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{b.description}</p>
                 </div>
               </div>
             ))}

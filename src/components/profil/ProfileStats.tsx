@@ -109,20 +109,20 @@ const ProfileStats = () => {
               {lvl.emoji}
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-semibold">
+              <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
                 {t("profil.stats.level")} {lvl.index}
               </p>
               <p className="text-sm font-bold truncate">{levelName(lvl, i18n.language)}</p>
             </div>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-sm font-bold">{stats.xp} <span className="text-[10px] text-muted-foreground font-medium">XP</span></p>
+            <p className="text-sm font-bold">{stats.xp} <span className="text-xs text-muted-foreground font-medium">XP</span></p>
             {next ? (
-              <p className="text-[10px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {t("profil.stats.xpToNext", { xp: progress.xpForNext, level: levelName(next, i18n.language) })}
               </p>
             ) : (
-              <p className="text-[10px] text-amber-500 font-semibold">{t("profil.stats.maxLevel")}</p>
+              <p className="text-xs text-amber-500 font-semibold">{t("profil.stats.maxLevel")}</p>
             )}
           </div>
         </div>
@@ -141,7 +141,7 @@ const ProfileStats = () => {
                   <Icon className="w-4 h-4 text-white" />
                 </div>
                 <p className="text-base font-bold leading-none">{it.value}</p>
-                <p className="text-[10px] text-muted-foreground mt-1 leading-tight">{it.label}</p>
+                <p className="text-xs text-muted-foreground mt-1 leading-tight">{it.label}</p>
               </div>
             );
           })}

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { META, SELF_MANAGED } from "@/lib/route-meta.data";
+import { META, SELF_MANAGED, NOINDEX_ROUTES } from "@/lib/route-meta.data";
 
 const BASE = "https://xplania.app";
 
@@ -30,6 +30,8 @@ export default function RouteMeta() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
+    setMeta("name", "robots", NOINDEX_ROUTES.includes(pathname) ? "noindex,follow" : "index,follow");
+
     if (SELF_MANAGED.some((r) => r.test(pathname))) return;
     const url = `${BASE}${pathname === "/" ? "/" : pathname.replace(/\/$/, "")}`;
     setCanonical(url);

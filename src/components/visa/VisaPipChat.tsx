@@ -180,7 +180,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
             </div>
             <div className="min-w-0">
               <p className="text-sm font-bold text-foreground truncate">Ping</p>
-              <p className="text-[10px] text-muted-foreground truncate">{t("guideVisa.chatbot.subtitle")}</p>
+              <p className="text-xs text-muted-foreground truncate">{t("guideVisa.chatbot.subtitle")}</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
@@ -197,10 +197,10 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
 
         {/* Quick nav */}
         <div className="flex items-center gap-1 px-2 py-1.5 border-b border-border/40 overflow-x-auto">
-          <button onClick={() => setStage("qa")} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">📋 {t("guideVisa.chatbot.nav.process")}</button>
-          <button onClick={() => { document.getElementById("currency-converter")?.scrollIntoView({ behavior: "smooth", block: "center" }); }} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">💱 {t("guideVisa.chatbot.nav.convert")}</button>
-          <button onClick={() => askPip(isFr ? `Quels conseils sécurité pour ${ctxDest || "ma destination"} ?` : `Safety tips for ${ctxDest || "my destination"}?`)} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🛡️ {t("guideVisa.chatbot.nav.safety")}</button>
-          <a href={officialUrl} target="_blank" rel="noopener noreferrer" className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap inline-flex items-center gap-1">🏛️ {t("guideVisa.chatbot.nav.embassy")}<ExternalLink className="w-2.5 h-2.5" /></a>
+          <button onClick={() => setStage("qa")} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">📋 {t("guideVisa.chatbot.nav.process")}</button>
+          <button onClick={() => { document.getElementById("currency-converter")?.scrollIntoView({ behavior: "smooth", block: "center" }); }} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">💱 {t("guideVisa.chatbot.nav.convert")}</button>
+          <button onClick={() => askPip(isFr ? `Quels conseils sécurité pour ${ctxDest || "ma destination"} ?` : `Safety tips for ${ctxDest || "my destination"}?`)} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🛡️ {t("guideVisa.chatbot.nav.safety")}</button>
+          <a href={officialUrl} target="_blank" rel="noopener noreferrer" className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap inline-flex items-center gap-1">🏛️ {t("guideVisa.chatbot.nav.embassy")}<ExternalLink className="w-2.5 h-2.5" /></a>
         </div>
 
         {/* Body */}
@@ -299,7 +299,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
             <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}>
               {m.content}
               {m.role === "assistant" && (
-                <div className="text-[10px] text-muted-foreground mt-1.5">
+                <div className="text-xs text-muted-foreground mt-1.5">
                   {t("guideVisa.chatbot.disclaimer")}
                 </div>
               )}

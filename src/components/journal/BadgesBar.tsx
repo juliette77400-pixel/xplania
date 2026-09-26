@@ -90,7 +90,7 @@ const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
           <span className="text-xs text-muted-foreground">({unlockedCount}/{totalCount})</span>
           <div className="flex-1" />
           {tripDurationDays != null && (
-            <span className="text-[10px] text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {t("j2.badgesAdaptedDays", { n: tripDurationDays })}
             </span>
           )}
@@ -160,7 +160,7 @@ const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
                         />
                         <span
                           className={cn(
-                            "text-[10px] font-semibold tabular-nums shrink-0",
+                            "text-xs font-semibold tabular-nums shrink-0",
                             isUnlocked ? "text-emerald-400" : "text-muted-foreground"
                           )}
                         >
@@ -172,7 +172,7 @@ const BadgesBar = ({ journalId, days, tripDurationDays }: Props) => {
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-[240px]">
                   <p className="text-xs font-semibold">{def.label}</p>
-                  <p className="text-[11px] text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {isUnlocked
                       ? t("j2.badgeUnlocked")
                       : t("j2.badgeNeed", { n: Math.max(0, def.target - def.current), kind: def.kind })}

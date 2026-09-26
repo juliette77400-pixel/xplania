@@ -159,7 +159,7 @@ const BudgetForecast = ({ totalBudget, categories, onUpdateCategory, onAiAdjust,
                 </div>
 
                 {cat.aiExplanation && diff !== 0 && (
-                  <p className="text-[11px] text-muted-foreground italic mt-1.5 flex items-start gap-1">
+                  <p className="text-xs text-muted-foreground italic mt-1.5 flex items-start gap-1">
                     <Sparkles className="w-2.5 h-2.5 mt-0.5 text-primary/70 shrink-0" />
                     {cat.aiExplanation}
                   </p>

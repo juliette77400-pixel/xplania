@@ -57,7 +57,7 @@ const NotificationsBell = () => {
           {unreadCount > 0 && (
             <button
               onClick={markAllRead}
-              className="flex items-center gap-1 text-[11px] text-primary hover:underline"
+              className="flex items-center gap-1 text-xs text-primary hover:underline"
             >
               <Check className="w-3 h-3" /> {t("notifBell.markAll")}
             </button>
@@ -84,9 +84,9 @@ const NotificationsBell = () => {
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold text-foreground truncate">{n.title}</p>
                     {n.body && (
-                      <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">{n.body}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{n.body}</p>
                     )}
-                    <p className="text-[10px] text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {formatDistanceToNow(new Date(n.sent_at), { addSuffix: true, locale })}
                     </p>
                   </div>

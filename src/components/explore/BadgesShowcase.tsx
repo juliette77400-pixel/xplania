@@ -145,7 +145,7 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
                     <div className="flex items-center gap-2 font-semibold">
                       <span className="text-lg">{b.icon}</span>
                       <span>{b.name}</span>
-                      <span className={cn("text-[10px] uppercase font-bold", r.label)}>· {b.rarity}</span>
+                      <span className={cn("text-xs uppercase font-bold", r.label)}>· {b.rarity}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{b.description}</p>
                     {unlocked ? (
@@ -154,7 +154,7 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
                       </p>
                     ) : (
                       <div className="space-y-1">
-                        <div className="flex items-center justify-between text-[11px]">
+                        <div className="flex items-center justify-between text-xs">
                           <span className="font-medium">{t("x2.progress")}</span>
                           <span className="text-muted-foreground">{prog.current}/{prog.target}</span>
                         </div>

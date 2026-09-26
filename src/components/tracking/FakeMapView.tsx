@@ -136,7 +136,7 @@ const FakeMapView = ({ destination, progressKm, totalKm, stages = [], height = 3
             style={{ width: `${ratio * 100}%` }}
           />
         </div>
-        <p className="text-[11px] text-muted-foreground/70 mt-2 italic">
+        <p className="text-xs text-muted-foreground/70 mt-2 italic">
           {t("suiviTrip.fakeMap.disclaimer")}
         </p>
       </div>

@@ -73,7 +73,7 @@ export default function VerificationSettingsPanel() {
       <div className="flex items-center justify-between gap-3">
         <div>
           <Label className="text-sm">{t("ui2.VerificationSettingsPanel.autoGeo")}</Label>
-          <p className="text-[11px] text-muted-foreground">{i18n.t("ui2.auto.k0")}</p>
+          <p className="text-xs text-muted-foreground">{i18n.t("ui2.auto.k0")}</p>
         </div>
         <Switch checked={s.geo_auto_validate} onCheckedChange={(v) => setS({ ...s, geo_auto_validate: v })} />
       </div>
@@ -81,7 +81,7 @@ export default function VerificationSettingsPanel() {
       <div className="flex items-center justify-between gap-3">
         <div>
           <Label className="text-sm">Valider auto. par EXIF photo</Label>
-          <p className="text-[11px] text-muted-foreground">Auto-validation si le GPS de la photo correspond.</p>
+          <p className="text-xs text-muted-foreground">Auto-validation si le GPS de la photo correspond.</p>
         </div>
         <Switch checked={s.exif_auto_validate} onCheckedChange={(v) => setS({ ...s, exif_auto_validate: v })} />
       </div>
@@ -94,7 +94,7 @@ export default function VerificationSettingsPanel() {
             value={s.ai_auto_validate_threshold}
             onChange={(e) => setS({ ...s, ai_auto_validate_threshold: Number(e.target.value) })}
           />
-          <p className="text-[11px] text-muted-foreground mt-1">Verdict IA "validated" et confiance ≥ ce seuil → auto-validation.</p>
+          <p className="text-xs text-muted-foreground mt-1">Verdict IA "validated" et confiance ≥ ce seuil → auto-validation.</p>
         </div>
         <div>
           <Label htmlFor="rth" className="text-sm">Seuil IA de rejet (0–1)</Label>
@@ -103,14 +103,14 @@ export default function VerificationSettingsPanel() {
             value={s.ai_auto_reject_threshold}
             onChange={(e) => setS({ ...s, ai_auto_reject_threshold: Number(e.target.value) })}
           />
-          <p className="text-[11px] text-muted-foreground mt-1">Verdict IA "rejected" et confiance ≥ ce seuil → auto-rejet.</p>
+          <p className="text-xs text-muted-foreground mt-1">Verdict IA "rejected" et confiance ≥ ce seuil → auto-rejet.</p>
         </div>
       </div>
 
       <div className="flex items-center justify-between gap-3 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
         <div>
           <Label className="text-sm">{t("ui2.VerificationSettingsPanel.forceManual")}</Label>
-          <p className="text-[11px] text-muted-foreground">Aucune auto-validation ni auto-rejet. Toutes les preuves passent par l'admin.</p>
+          <p className="text-xs text-muted-foreground">Aucune auto-validation ni auto-rejet. Toutes les preuves passent par l'admin.</p>
         </div>
         <Switch checked={s.force_manual_review} onCheckedChange={(v) => setS({ ...s, force_manual_review: v })} />
       </div>

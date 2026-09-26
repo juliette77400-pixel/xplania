@@ -65,7 +65,7 @@ const MoodSelector = ({ loading, onSubmit }: Props) => {
             >
               <div className="text-3xl mb-1">{m.emoji}</div>
               <div className={cn("font-bold text-sm", active && m.glow)}>{label}</div>
-              <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{description}</div>
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5">{description}</div>
             </motion.button>
           );
         })}

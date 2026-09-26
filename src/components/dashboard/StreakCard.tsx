@@ -43,7 +43,7 @@ const StreakCard = () => {
               <Trophy className="w-3.5 h-3.5" />
               <span className="text-xs font-bold">{s.best}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">{t("streakCard.record")}</p>
+            <p className="text-xs text-muted-foreground">{t("streakCard.record")}</p>
           </div>
         )}
       </div>

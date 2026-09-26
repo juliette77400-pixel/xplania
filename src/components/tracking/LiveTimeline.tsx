@@ -62,7 +62,7 @@ const LiveTimeline = ({ activities, onStatusChange, readOnly }: Props) => {
                   ? date
                   : new Date(date).toLocaleDateString(dateLocale, { weekday: "long", day: "numeric", month: "long" })}
               </h4>
-              <span className="text-[11px] text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {t("trackingComp.timeline.stepsCount", { count: items.length, done: doneCount, total: items.length })}
               </span>
             </div>
@@ -86,7 +86,7 @@ const LiveTimeline = ({ activities, onStatusChange, readOnly }: Props) => {
                         transition={{ delay: i * 0.04 }}
                         className="glass-card rounded-xl p-3 flex items-center gap-3 group relative"
                       >
-                        <span className="absolute -left-1.5 top-3 text-[10px] font-bold text-muted-foreground bg-background px-1 rounded">
+                        <span className="absolute -left-1.5 top-3 text-xs font-bold text-muted-foreground bg-background px-1 rounded">
                           {i + 1}
                         </span>
 
@@ -124,12 +124,12 @@ const LiveTimeline = ({ activities, onStatusChange, readOnly }: Props) => {
                           </a>
                         )}
                         {a.source !== "manual" && (
-                          <span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary capitalize">{a.source}</span>
+                          <span className="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary capitalize">{a.source}</span>
                         )}
                       </motion.div>
 
                       {distKm !== null && distKm > 0.05 && (
-                        <div className="flex items-center gap-2 ml-12 my-1.5 text-[11px] text-muted-foreground">
+                        <div className="flex items-center gap-2 ml-12 my-1.5 text-xs text-muted-foreground">
                           <ArrowDown className="w-3 h-3 text-primary/60" />
                           <Footprints className="w-3 h-3" />
                           <span className="font-mono">{distKm < 1 ? `${Math.round(distKm * 1000)} m` : `${distKm.toFixed(1)} km`}</span>

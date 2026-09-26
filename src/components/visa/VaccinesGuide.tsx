@@ -178,7 +178,7 @@ const VaccinesGuide = ({ destination }: VaccinesGuideProps) => {
             </a>
           ))}
         </div>
-        <p className="text-[11px] text-muted-foreground italic">
+        <p className="text-xs text-muted-foreground italic">
           {destination
             ? t("guideVisa.vaccinesGuide.disclaimerWithDest", { destination })
             : t("guideVisa.vaccinesGuide.disclaimer")}

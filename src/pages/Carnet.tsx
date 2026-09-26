@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ import TripUtilitiesPanel from "@/components/shared/TripUtilitiesPanel";
 import TripEndRecap from "@/components/shared/TripEndRecap";
 import ShareCarnetDialog from "@/components/shared/ShareCarnetDialog";
 import SocialShareDialog from "@/components/journal/SocialShareDialog";
-import PagePdfExportButton from "@/components/journal/PagePdfExportButton";
+const PagePdfExportButton = lazy(() => import("@/components/journal/PagePdfExportButton"));
 import { useJournalCover } from "@/hooks/useJournalCover";
 import { Button } from "@/components/ui/button";
 import { Image as ImageIcon } from "lucide-react";
@@ -32,7 +32,7 @@ import CarnetOnboardingChat from "@/components/journal/CarnetOnboardingChat";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTripStats } from "@/hooks/useTripStats";
 import TripStatsCard from "@/components/journal/TripStatsCard";
-import RouteCover from "@/components/journal/RouteCover";
+const RouteCover = lazy(() => import("@/components/journal/RouteCover"));
 import SouvenirAlbum from "@/components/journal/SouvenirAlbum";
 
 type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share" | "souvenir";
@@ -174,8 +174,10 @@ const Carnet = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
-        <RouteCover tripId={tripId!} title={journal.title} destination={destination} stats={stats} />
+      <main id="main-content" tabIndex={-1} className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
+        <Suspense fallback={<Skeleton className="h-48 sm:h-64 w-full rounded-2xl" />}>
+          <RouteCover tripId={tripId!} title={journal.title} destination={destination} stats={stats} />
+        </Suspense>
 
         {/* ✨ NEW (Tâche 4) — Utilities (countdown / météo / devise) si voyage à venir ou en cours */}
         {!isTripEnded && tripMeta?.departure_date && (
@@ -256,7 +258,11 @@ const Carnet = () => {
                     </button>
                     <span className="text-xs text-muted-foreground">{activeIdx + 1} / {days.length}</span>
                     <div className="flex items-center gap-2">
-                      {activeDay && <PagePdfExportButton day={activeDay} destination={destination} />}
+                      {activeDay && (
+                        <Suspense fallback={<div className="h-9 w-24 rounded-lg bg-muted animate-pulse" />}>
+                          <PagePdfExportButton day={activeDay} destination={destination} />
+                        </Suspense>
+                      )}
                       <Button size="sm" variant="outline" onClick={() => setSocialOpen(true)}>
                         <ImageIcon className="w-4 h-4" /> {t("social.btnShort")}
                       </Button>

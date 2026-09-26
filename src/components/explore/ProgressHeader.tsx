@@ -49,7 +49,7 @@ const ProgressHeader = ({ progress, cityName }: Props) => {
           >
             <s.icon className={`w-4 h-4 ${s.color}`} />
             <span className="text-lg font-bold text-foreground">{s.value}</span>
-            <span className="text-[10px] text-muted-foreground uppercase">{s.label}</span>
+            <span className="text-xs text-muted-foreground uppercase">{s.label}</span>
           </motion.div>
         ))}
       </div>

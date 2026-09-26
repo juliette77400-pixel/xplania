@@ -168,13 +168,13 @@ const ReviewsSection = ({ placeId }: Props) => {
             <div className="mb-1.5 flex items-center gap-2">
               <Avatar className="h-7 w-7">
                 <AvatarImage src={r.author?.avatar_url ?? undefined} />
-                <AvatarFallback className="text-[10px]">
+                <AvatarFallback className="text-xs">
                   {(r.author?.display_name ?? "?").slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="truncate text-xs font-medium">{r.author?.display_name || t("discoverComp.reviews.anonAuthor")}</p>
-                <p className="text-[10px] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: dateLocale })}
                 </p>
               </div>

@@ -166,7 +166,7 @@ const StoryGenerator = ({ journalId, destination, days, initialTone, onSaved }: 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 rounded-xl bg-muted/30 border border-border space-y-2">
           {usedMode && (
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full bg-primary/15 text-primary font-semibold flex items-center gap-1">
+              <span className="text-xs uppercase tracking-wider px-2 py-1 rounded-full bg-primary/15 text-primary font-semibold flex items-center gap-1">
                 {usedMode === "auto" ? <><UserRound className="w-3 h-3" /> {t("j2.usedAuto")}</> : <><Palette className="w-3 h-3" /> {t("j2.usedTone", { tone: usedTone })}</>}
               </span>
             </div>

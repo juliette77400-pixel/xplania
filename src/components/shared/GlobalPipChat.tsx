@@ -84,7 +84,7 @@ const GlobalPipChat = () => {
             <div className="px-4 py-3 border-b border-border flex items-center gap-2 bg-background/80 backdrop-blur">
               <Sparkles className="w-4 h-4 text-primary" />
               <p className="font-semibold text-sm">{t("pip.title")}</p>
-              {freeMode && <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground ml-auto">{t("pip.freeMode")}</span>}
+              {freeMode && <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground ml-auto">{t("pip.freeMode")}</span>}
             </div>
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2 min-h-[160px]">
               {msgs.length === 0 && (

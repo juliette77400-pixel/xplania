@@ -71,10 +71,10 @@ const QuickJump = ({ title, compact = false, max }: Props) => {
               </div>
               <div className="text-sm font-bold text-foreground">{t(it.labelKey)}</div>
               {!compact && (
-                <div className="text-[11px] text-muted-foreground mt-0.5">{t(it.descKey)}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">{t(it.descKey)}</div>
               )}
               {tripId && it.contextual && (
-                <div className="text-[10px] text-primary mt-1 font-medium">{t("quickJump.openMyTrip")}</div>
+                <div className="text-xs text-primary mt-1 font-medium">{t("quickJump.openMyTrip")}</div>
               )}
             </Link>
           );

@@ -54,7 +54,7 @@ class ErrorBoundary extends Component<Props, State> {
               {t("errorBoundary.subtitle")}
             </p>
             {this.state.error.message && (
-              <p className="text-[11px] text-muted-foreground/80 mt-2 font-mono break-all">
+              <p className="text-xs text-muted-foreground/80 mt-2 font-mono break-all">
                 {this.state.error.message}
               </p>
             )}

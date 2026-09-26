@@ -124,7 +124,7 @@ const ChecklistSection = ({ categories, onToggle, onAdd, onRemove, isLoading }: 
                 </div>
                 <div className="text-left">
                   <h3 className="text-sm font-bold text-foreground leading-tight">{category}</h3>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {checkedCount}/{items.length} • {pct}%
                   </p>
                 </div>

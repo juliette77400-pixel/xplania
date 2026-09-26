@@ -23,6 +23,7 @@ import { countryList } from "@/lib/countries";
 import { Skeleton } from "@/components/ui/skeleton";
 import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
 import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
+import RotatingStatusMessage from "@/components/shared/RotatingStatusMessage";
 
 import VisaPipChat from "@/components/visa/VisaPipChat";
 import VaccinesGuide from "@/components/visa/VaccinesGuide";
@@ -352,6 +353,11 @@ const GuideVisaPage = () => {
                   transition={{ duration: 0.5 }}
                 />
               </div>
+
+              <RotatingStatusMessage
+                messages={(t("guideVisa.rotatingSteps", { returnObjects: true }) as string[])}
+                className="text-xs font-medium text-secondary"
+              />
             </motion.div>
           )}
         </AnimatePresence>

@@ -86,14 +86,14 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
                   <p className="text-xs text-primary/80 mt-1 italic">→ {s.reason}</p>
                   <div className="flex items-center gap-3 mt-2">
                     {s.lat && s.lng && (
-                      <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <MapPin className="w-3 h-3" /> {t("trackingComp.suggestions.pinOnMap")}
                       </span>
                     )}
                     {onAddToCarnet && (
                       <button
                         onClick={() => onAddToCarnet(s)}
-                        className="text-[11px] text-primary hover:underline ml-auto"
+                        className="text-xs text-primary hover:underline ml-auto"
                       >
                         {t("trackingComp.suggestions.addToCarnet")}
                       </button>

@@ -25,7 +25,7 @@ const Explore = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-10 max-w-4xl">
+      <main id="main-content" tabIndex={-1} className="relative container mx-auto px-4 py-10 max-w-4xl">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{t("explorePage.h2")}</h2>
           <p className="text-muted-foreground text-sm">{t("explorePage.subtitle")}</p>

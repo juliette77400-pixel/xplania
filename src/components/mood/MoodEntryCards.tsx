@@ -26,7 +26,7 @@ const MoodEntryCards = ({ onPickPip, onPickForm, onPickSolo, disabled }: Props) 
         <button
           onClick={onPickPip}
           disabled={disabled}
-          className="group text-left rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-5 hover:border-primary/50 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="group text-left rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-5 interactive-card disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary/40"
         >
           <div className="flex items-start gap-3">
             <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-foreground shrink-0">
@@ -46,7 +46,7 @@ const MoodEntryCards = ({ onPickPip, onPickForm, onPickSolo, disabled }: Props) 
         <button
           onClick={onPickForm}
           disabled={disabled}
-          className="group text-left rounded-2xl border border-border bg-card/50 p-5 hover:border-primary/40 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="group text-left rounded-2xl border border-border bg-card/50 p-5 interactive-card disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary/40"
         >
           <div className="flex items-start gap-3">
             <div className="w-11 h-11 rounded-xl bg-muted flex items-center justify-center text-foreground shrink-0">

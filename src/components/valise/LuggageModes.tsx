@@ -55,7 +55,7 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
         </p>
       </div>
       {suggestedMode && (
-        <span className="text-[10px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-semibold animate-pulse">
+        <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-semibold animate-pulse">
           {t("valise.modesAiSuggestion", { label: t(`valise.modesLabels.${suggestedMode}`) })}
         </span>
       )}
@@ -106,7 +106,7 @@ const LuggageModes = ({ activeMode, onSelect, suggestedMode, isLoading }: Luggag
                 <span className="text-base leading-none">{mode.emoji}</span>
                 <span className="text-sm font-bold text-foreground">{label}</span>
               </div>
-              <p className="text-[10px] text-muted-foreground line-clamp-1">{desc}</p>
+              <p className="text-xs text-muted-foreground line-clamp-1">{desc}</p>
             </div>
           </motion.button>
         );

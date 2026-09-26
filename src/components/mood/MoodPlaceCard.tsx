@@ -27,7 +27,7 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn(
+      className={cn("interactive-card",
         "relative rounded-3xl overflow-hidden border border-border bg-card shadow-xl flex flex-col",
         fullscreen ? "min-h-[70vh]" : "min-h-[420px]",
       )}
@@ -88,7 +88,7 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
 
         <div className="flex flex-wrap gap-1.5">
           {place.tags?.slice(0, 4).map((tag) => (
-            <span key={tag} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+            <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
               #{tag}
             </span>
           ))}

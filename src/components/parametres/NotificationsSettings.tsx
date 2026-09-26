@@ -78,7 +78,7 @@ const NotificationsSettings = () => {
         <div className="mt-0.5 text-primary">{icon}</div>
         <div>
           <Label className="text-sm font-medium">{title}</Label>
-          <p className="text-[11px] text-muted-foreground">{hint}</p>
+          <p className="text-xs text-muted-foreground">{hint}</p>
         </div>
       </div>
       <Switch checked={prefs[key]} onCheckedChange={(v) => update({ [key]: v } as any)} />
