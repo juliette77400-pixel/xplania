@@ -47,8 +47,18 @@ function loadWithKey(key: string, channel: string): Promise<any> {
   const w = window as any;
   return new Promise((resolve, reject) => {
     const timer = window.setTimeout(() => reject(new Error("google_maps_timeout")), 12000);
-    w.__xplaniaGmapsReady = () => { window.clearTimeout(timer); resolve(w.google.maps); };
-    w.gm_authFailure = () => { window.clearTimeout(timer); reject(new Error("google_maps_auth")); };
+    let settled = false;
+    w.__xplaniaGmapsReady = () => { settled = true; window.clearTimeout(timer); resolve(w.google.maps); };
+    // Google calls gm_authFailure when a map is created with a refused key
+    // (e.g. RefererNotAllowedMapError) — often AFTER the script has loaded.
+    // Before load: reject so the loader can retry. After: tell mounted maps
+    // to switch to the Leaflet fallback, and drop the cached promise.
+    w.gm_authFailure = () => {
+      window.clearTimeout(timer);
+      if (!settled) { reject(new Error("google_maps_auth")); return; }
+      promise = null;
+      window.dispatchEvent(new Event("gmaps-auth-failure"));
+    };
     const s = document.createElement("script");
     s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&callback=__xplaniaGmapsReady&channel=${channel}&v=weekly`;
     s.async = true;

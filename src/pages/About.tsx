@@ -101,7 +101,7 @@ const About = () => {
           >
             <Quote className="w-8 h-8 text-primary mx-auto mb-4 opacity-60" />
             <blockquote className="text-2xl md:text-3xl font-medium italic text-primary leading-snug">
-              « {t("about.trigger.quote")} »
+              {t("about.trigger.quote")}
             </blockquote>
             <figcaption className="mt-4 text-sm text-muted-foreground">
               {t("about.trigger.quoteAuthor")}
