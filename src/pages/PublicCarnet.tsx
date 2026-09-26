@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Loader2, BookOpen, ArrowLeft } from "lucide-react";
+import { Loader2, BookOpen, ArrowLeft, Flag } from "lucide-react";
+import { SUPPORT_EMAIL } from "@/components/shared/HelpButton";
 import { supabase } from "@/integrations/supabase/client";
 import { setShareMeta, clearShareMeta } from "@/lib/seo";
 import { useTranslation } from "react-i18next";
@@ -78,6 +79,14 @@ const PublicCarnet = () => {
         )}
 
         <SouvenirAlbum readOnly title={journal.title} destination="" cover={journal.cover_url} days={days} />
+        <div className="flex justify-center">
+          <a
+            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(t("report.subject"))}&body=${encodeURIComponent(t("report.body", { page: `https://xplania.app/carnet/public/${slug}`, title: journal.title }))}`}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-destructive min-h-[44px]"
+          >
+            <Flag className="w-4 h-4" aria-hidden="true" /> {t("report.cta")}
+          </a>
+        </div>
       </main>
     </div>
   );

@@ -14,6 +14,7 @@ import PipChatSkeleton from "./components/shared/PipChatSkeleton";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 import OnboardingSyncGate from "./components/onboarding/OnboardingSyncGate";
 import AdminGate from "./components/admin/AdminGate";
+import HelpButton from "@/components/shared/HelpButton";
 const CookieBanner = lazy(() => import("./components/shared/CookieBanner"));
 import RouteTracker from "./components/shared/RouteTracker";
 
@@ -168,6 +169,7 @@ const App = () => (
             </Suspense>
             <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
             <Suspense fallback={null}><CookieBanner /></Suspense>
+            <HelpButton />
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>

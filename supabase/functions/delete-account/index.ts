@@ -51,7 +51,32 @@ Deno.serve(async (req) => {
     }
 
     const adminClient = createClient(SUPABASE_URL, SERVICE_KEY);
-    const { error: delErr } = await adminClient.auth.admin.deleteUser(userData.user.id);
+    const uid = userData.user.id;
+
+    // Remove every stored file (photos, audio, documents, proofs, avatar) under `${uid}/`.
+    const BUCKETS = ["journal-media", "trip-documents", "badge-proofs", "place-reviews", "avatars"];
+    const collect = async (bucket: string, prefix: string, acc: string[], depth = 0) => {
+      if (depth > 4) return;
+      for (let offset = 0; ; offset += 1000) {
+        const { data, error } = await adminClient.storage.from(bucket).list(prefix, { limit: 1000, offset });
+        if (error || !data?.length) break;
+        for (const it of data) {
+          const p = `${prefix}/${it.name}`;
+          if (it.id) acc.push(p);
+          else await collect(bucket, p, acc, depth + 1);
+        }
+        if (data.length < 1000) break;
+      }
+    };
+    for (const bucket of BUCKETS) {
+      const paths: string[] = [];
+      await collect(bucket, uid, paths);
+      for (let i = 0; i < paths.length; i += 100) {
+        await adminClient.storage.from(bucket).remove(paths.slice(i, i + 100));
+      }
+    }
+
+    const { error: delErr } = await adminClient.auth.admin.deleteUser(uid);
     if (delErr) {
       return new Response(JSON.stringify({ error: delErr.message }), {
         status: 500,
