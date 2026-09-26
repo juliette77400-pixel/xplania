@@ -5681,6 +5681,10 @@
   "report": {
     "cta": "Report this journal",
     "subject": "Xplania – journal report",
-    "body": "Hello,\n\nI am reporting the journal \"{{title}}\": {{page}}\n\nReason:\n\n"
+    "body": "Hello,\n\nI am reporting the journal \"{{title}}\": {{page}}\n\nReason:\n\n",
+    "hide": "Hide this journal",
+    "hideConfirm": "Hide this journal? It will no longer be public. Its author can publish it again.",
+    "hidden": "Journal hidden.",
+    "hideError": "Could not hide this journal."
   }
 }

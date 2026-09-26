@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Loader2, BookOpen, ArrowLeft, Flag } from "lucide-react";
 import { SUPPORT_EMAIL } from "@/components/shared/HelpButton";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { setShareMeta, clearShareMeta } from "@/lib/seo";
 import { useTranslation } from "react-i18next";
@@ -15,6 +18,17 @@ const PublicCarnet = () => {
   const [days, setDays] = useState<any[]>([]);
   const [story, setStory] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const { isAdmin } = useIsAdmin();
+  const [hiding, setHiding] = useState(false);
+  const hideJournal = async () => {
+    if (!journal || !window.confirm(t("report.hideConfirm"))) return;
+    setHiding(true);
+    const { data, error } = await supabase.from("journals").update({ is_public: false }).eq("id", journal.id).select("id");
+    setHiding(false);
+    if (error || !data?.length) { toast.error(t("report.hideError")); return; }
+    toast.success(t("report.hidden"));
+    setJournal(null);
+  };
 
   useEffect(() => {
     if (!slug) return;
@@ -86,6 +100,11 @@ const PublicCarnet = () => {
           >
             <Flag className="w-4 h-4" aria-hidden="true" /> {t("report.cta")}
           </a>
+          {isAdmin && (
+            <Button variant="destructive" size="sm" className="ml-4 min-h-[44px]" disabled={hiding} onClick={hideJournal}>
+              {t("report.hide")}
+            </Button>
+          )}
         </div>
       </main>
     </div>

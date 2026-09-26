@@ -5681,6 +5681,10 @@
   "report": {
     "cta": "Signaler ce carnet",
     "subject": "Xplania – signalement d'un carnet",
-    "body": "Bonjour,\n\nJe signale le carnet « {{title}} » : {{page}}\n\nRaison :\n\n"
+    "body": "Bonjour,\n\nJe signale le carnet « {{title}} » : {{page}}\n\nRaison :\n\n",
+    "hide": "Masquer ce carnet",
+    "hideConfirm": "Masquer ce carnet ? Il ne sera plus visible publiquement. Son auteur pourra le republier.",
+    "hidden": "Carnet masqué.",
+    "hideError": "Impossible de masquer ce carnet."
   }
 }
