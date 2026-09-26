@@ -57,6 +57,13 @@
       "when": 1790426918320,
       "tag": "0007_trip_reminder_checks",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790426960277,
+      "tag": "0008_analytics_events",
+      "breakpoints": true
     }
   ]
 }
