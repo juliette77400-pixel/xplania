@@ -5648,5 +5648,29 @@
       "heading": "Cookies et mesure d'audience",
       "body": "Xplania utilise uniquement des cookies de mesure d'audience internes (première partie) pour comprendre comment le site est utilisé et l'améliorer. Nous n'utilisons aucun cookie publicitaire et ne revendons ni ne partageons jamais ces données avec des tiers. La mesure d'audience n'est activée qu'avec ton consentement, donné via la bannière de cookies. Tu peux retirer ton consentement à tout moment depuis le bouton « Gérer les cookies » en bas de chaque page. Les données collectées (pages visitées, actions clés, appareil, provenance) sont conservées 13 mois maximum, puis supprimées."
     }
+  },
+  "adminStats": {
+    "pageTitle": "Statistiques",
+    "pageDesc": "Visiteurs qui ont accepté les cookies, inscriptions et abandons.",
+    "periodDays": "{{count}} jours",
+    "kpiVisitors": "Visiteurs uniques",
+    "kpiPageViews": "Pages vues",
+    "kpiSignups": "Inscriptions terminées",
+    "kpiTrips": "Voyages créés",
+    "chartTitle": "Visiteurs par jour",
+    "topPagesTitle": "Pages les plus vues",
+    "sourcesTitle": "D'où viennent les visiteurs",
+    "funnelTitle": "Parcours et abandons",
+    "funnelStep": {
+      "page_view": "Visite",
+      "quiz_started": "Quiz commencé",
+      "quiz_completed": "Quiz terminé",
+      "signup_started": "Inscription commencée",
+      "signup_completed": "Inscription terminée",
+      "trip_created": "Voyage créé"
+    },
+    "emptyState": "Aucune donnée pour l'instant — les visiteurs qui acceptent les cookies apparaîtront ici.",
+    "restrictedTitle": "Accès réservé",
+    "restrictedDesc": "Cette page est réservée à l'administratrice."
   }
 }
