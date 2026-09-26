@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    track("signup_started");
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email,
@@ -45,7 +47,10 @@ const Auth = () => {
     });
     setLoading(false);
     if (error) toast.error(error.message);
-    else toast.success(t("auth.signupSuccess"));
+    else {
+      track("signup_completed");
+      toast.success(t("auth.signupSuccess"));
+    }
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -54,7 +59,10 @@ const Auth = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) toast.error(error.message);
-    else navigate(next);
+    else {
+      track("login");
+      navigate(next);
+    }
   };
 
   const handleGoogle = async () => {

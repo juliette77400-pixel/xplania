@@ -6,6 +6,7 @@ import {
   BookOpen, Activity, Compass, Heart, MapPinned, Trophy,
 } from "lucide-react";
 import { getLegalPath } from "@/lib/legal-routes";
+import { openConsentSettings } from "@/lib/consent";
 
 const stars = Array.from({ length: 40 }, (_, i) => ({
   id: i,
@@ -202,6 +203,14 @@ const Footer = (_: Props) => {
           <Link to={getLegalPath("confidentialite", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalConfidentialite")}
           </Link>
+          <span className="text-muted-foreground/30">·</span>
+          <button
+            type="button"
+            onClick={openConsentSettings}
+            className="text-muted-foreground hover:text-primary transition-colors"
+          >
+            {t("footer.manageCookies")}
+          </button>
         </div>
 
         <div className="text-center space-y-1">
