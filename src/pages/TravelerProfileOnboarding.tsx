@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { track } from "@/lib/analytics";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTravelerProfile } from "@/hooks/useTravelerProfile";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -256,6 +257,18 @@ const TravelerProfileOnboarding = () => {
   const progressText = total > 0
     ? t("travelerProfile.questionOf", { current: questionNumber, total, defaultValue: "Question {{current}}/{{total}}" })
     : "";
+
+  // A signed-in traveler who already finished the quiz must never get stuck on
+  // the "C'est fini !" screen (e.g. after an error "Retry" or landing on "/").
+  const { data: savedProfile } = useTravelerProfile();
+  const quizAlreadyCompleted =
+    !!savedProfile?.completed_at || savedProfile?.onboarding_step === "done";
+  useEffect(() => {
+    if (!user || loading || finalizing || resetting) return;
+    if (total > 0 && done >= total && quizAlreadyCompleted) {
+      navigate("/app", { replace: true });
+    }
+  }, [user, loading, finalizing, resetting, total, done, quizAlreadyCompleted, navigate]);
 
   const jumpToCategory = useCallback((k: CategoryKey, opts: { complete?: boolean } = {}) => {
     if (animatingRef.current) return;
