@@ -29,6 +29,64 @@ function mapCategory(tags: Record<string, string>): { category: string; subcateg
   return { category: "experience" };
 }
 
+const GOOGLE_DAILY_LIMIT = 150;
+const GOOGLE_QUERY: Record<string, string> = {
+  food: "restaurants et cafés",
+  nightlife: "bars et vie nocturne",
+  culture: "musées et galeries",
+  nature: "parcs et jardins",
+  chill: "cafés calmes et bibliothèques",
+  experience: "attractions touristiques et points de vue",
+  all: "lieux à découvrir",
+};
+
+async function searchGoogle(category: string, lat: number, lng: number, radius: number) {
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  const GOOGLE_MAPS_API_KEY = Deno.env.get("GOOGLE_MAPS_API_KEY_1") ?? Deno.env.get("GOOGLE_MAPS_API_KEY");
+  if (!LOVABLE_API_KEY || !GOOGLE_MAPS_API_KEY) return null;
+
+  const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  const { data: used, error: cErr } = await admin.rpc("record_places_search");
+  if (cErr || typeof used !== "number" || used > GOOGLE_DAILY_LIMIT) return null; // fail closed → OSM
+
+  const cat = GOOGLE_QUERY[category] ? category : "all";
+  const res = await fetch("https://connector-gateway.lovable.dev/google_maps/places/v1/places:searchText", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      "X-Connection-Api-Key": GOOGLE_MAPS_API_KEY,
+      "Content-Type": "application/json",
+      "X-Goog-FieldMask": "places.id,places.displayName,places.location,places.formattedAddress,places.primaryType",
+    },
+    body: JSON.stringify({
+      textQuery: GOOGLE_QUERY[cat],
+      pageSize: 20,
+      languageCode: "fr",
+      locationBias: { circle: { center: { latitude: lat, longitude: lng }, radius: Math.max(500, radius) } },
+    }),
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!res.ok) {
+    console.error(`Google searchText [${res.status}]: ${(await res.text()).slice(0, 300)}`);
+    return null;
+  }
+  const j = await res.json();
+  return ((j.places || []) as any[])
+    .filter((p) => p.id && p.location && p.displayName?.text)
+    .map((p) => ({
+      source: "google",
+      osm_id: p.id,
+      name: p.displayName.text,
+      category: cat === "all" ? "experience" : cat,
+      subcategory: p.primaryType ?? null,
+      lat: p.location.latitude,
+      lng: p.location.longitude,
+      address: p.formattedAddress ?? null,
+      tags: [cat === "all" ? "experience" : cat, p.primaryType].filter(Boolean),
+      score: 60,
+    }));
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   const __auth = await requireAuth(req, corsHeaders);
@@ -56,6 +114,23 @@ serve(async (req) => {
       node${filter}(around:${radius},${lat},${lng});
       way${filter}(around:${radius},${lat},${lng});
     );out center 60;`;
+
+    // 1) Google Places Text Search first ("like typing in Google Maps"),
+    //    capped at GOOGLE_DAILY_LIMIT searches/day for everyone (stays in free tier).
+    //    Over the cap or on any error → free OpenStreetMap fallback below.
+    try {
+      const googlePlaces = await searchGoogle(category as string, lat, lng, Math.min(Number(radius) || 1500, 50000));
+      if (googlePlaces && googlePlaces.length) {
+        const supaG = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+        const { data, error } = await supaG.from("places").upsert(googlePlaces, { onConflict: "source,osm_id", ignoreDuplicates: false }).select("id,name,category,subcategory,lat,lng,tags,address,image_url,description,why_fits,hidden_gem,score,rating_avg,rating_count");
+        if (!error && data?.length) {
+          return new Response(JSON.stringify({ inserted: data.length, places: data, source: "google" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        if (error) console.error("Google upsert error", error);
+      }
+    } catch (e) {
+      console.error("Google search failed, falling back to OSM", e instanceof Error ? e.message : e);
+    }
 
     const endpoints = [
       "https://overpass-api.de/api/interpreter",

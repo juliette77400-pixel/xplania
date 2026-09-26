@@ -92,6 +92,13 @@
       "when": 1790429412387,
       "tag": "0012_cron_secret_trip_reminders",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790435637621,
+      "tag": "0013_places_search_daily_counter",
+      "breakpoints": true
     }
   ]
 }
