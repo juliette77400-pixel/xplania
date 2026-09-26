@@ -58,7 +58,7 @@ const ExploreMap = ({ nodes, edges, onSelect }: Props) => {
         <TileLayer
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           className="xp-dark-tiles"
-          attribution='&copy; OSM '
+          attribution='&copy; OpenStreetMap'
         />
         <FitBounds nodes={geoNodes} />
         {heatmap && <HeatmapLayer nodes={geoNodes} />}

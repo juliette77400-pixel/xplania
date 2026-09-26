@@ -144,7 +144,7 @@ const PlaceMap = ({ places, userPos, onSelect }: Props) => {
         <TileLayer
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           className="xp-dark-tiles"
-          attribution="&copy; OpenStreetMap, "
+          attribution="&copy; OpenStreetMap"
         />
         {userPos && <UserDot pos={userPos} />}
         <Cluster places={places} onSelect={onSelect} />
