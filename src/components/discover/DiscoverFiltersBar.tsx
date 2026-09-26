@@ -41,7 +41,7 @@ const DiscoverFiltersBar = ({ value, onChange, resultCount }: Props) => {
       <div className="flex items-center gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
         {/* Distance chips */}
         <div className="flex items-center gap-1 shrink-0">
-          <span className="text-[11px] text-muted-foreground mr-1">{t("discoverFilters.distance")}</span>
+          <span className="text-xs text-muted-foreground mr-1">{t("discoverFilters.distance")}</span>
           {DISTANCE_PRESETS.map((d) => {
             const active = value.distanceKm === d;
             return (
@@ -102,7 +102,7 @@ const DiscoverFiltersBar = ({ value, onChange, resultCount }: Props) => {
 
         {/* Sort */}
         <div className="flex shrink-0 items-center gap-1">
-          <span className="text-[11px] text-muted-foreground mr-1">{t("discoverFilters.sort")}</span>
+          <span className="text-xs text-muted-foreground mr-1">{t("discoverFilters.sort")}</span>
           {(["near", "rating", "score"] as SortBy[]).map((s) => {
             const active = value.sortBy === s;
             return (
@@ -132,7 +132,7 @@ const DiscoverFiltersBar = ({ value, onChange, resultCount }: Props) => {
           </button>
         )}
       </div>
-      <p className="mt-1 text-[11px] text-muted-foreground">
+      <p className="mt-1 text-xs text-muted-foreground">
         {t("discoverFilters.results", { count: resultCount })}
       </p>
     </div>

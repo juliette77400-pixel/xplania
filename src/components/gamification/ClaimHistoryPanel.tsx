@@ -128,7 +128,7 @@ export default function ClaimHistoryPanel() {
                       {auto && <> · {lang === "fr" ? "auto" : "auto"}</>}
                     </p>
                   </div>
-                  <span className="text-[11px] text-muted-foreground">{c.gam_badges?.points ?? 0} pts</span>
+                  <span className="text-xs text-muted-foreground">{c.gam_badges?.points ?? 0} pts</span>
                 </summary>
 
                 <div className="px-4 pb-4 space-y-2 text-xs">

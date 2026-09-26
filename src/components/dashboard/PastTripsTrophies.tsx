@@ -48,10 +48,10 @@ const PastTripsTrophies = ({ trips }: Props) => {
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${m.grad} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform`}>
                   {m.emoji}
                 </div>
-                <p className="text-[11px] font-semibold line-clamp-1 w-full">
+                <p className="text-xs font-semibold line-clamp-1 w-full">
                   {tr.title || tr.destination || t("trophies.fallbackTrip")}
                 </p>
-                <p className="text-[10px] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {tr.return_date && new Date(tr.return_date).toLocaleDateString(undefined, { month: "short", year: "numeric" })}
                 </p>
               </Link>

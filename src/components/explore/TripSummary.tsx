@@ -66,7 +66,7 @@ const TripSummary = ({ tripId }: Props) => {
             ].map((s) => (
               <div key={s.label} className="rounded-xl bg-background/40 border border-border/60 p-3 text-center">
                 <p className="text-xl font-bold text-primary">{s.value}</p>
-                <p className="text-[10px] text-muted-foreground uppercase">{s.label}</p>
+                <p className="text-xs text-muted-foreground uppercase">{s.label}</p>
               </div>
             ))}
           </div>

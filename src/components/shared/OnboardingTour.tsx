@@ -57,7 +57,7 @@ const OnboardingTour = () => {
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
-      <DialogContent className="max-w-lg p-0 overflow-hidden bg-background border-border sm:rounded-3xl" aria-describedby="tour-description">
+      <DialogContent role="dialog" aria-modal="true" className="max-w-lg p-0 overflow-hidden bg-background border-border sm:rounded-3xl" aria-describedby="tour-description">
         <div className="relative">
           <div
             className="absolute inset-0 opacity-20 pointer-events-none"
@@ -83,7 +83,7 @@ const OnboardingTour = () => {
                 <div className="w-16 h-16 mx-auto rounded-2xl gradient-button flex items-center justify-center mb-5">
                   <Icon className="w-8 h-8 text-primary-foreground" />
                 </div>
-                <span className="inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-primary/15 text-primary mb-3 uppercase tracking-wider">
+                <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-primary/15 text-primary mb-3 uppercase tracking-wider">
                   {t("onboardingTour.stepLabel", { n: step + 1, total: STEP_KEYS.length })}
                 </span>
                 <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">

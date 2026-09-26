@@ -57,7 +57,7 @@ const SuiviTrip = () => {
           </div>
         </div>
       </header>
-      <main className="container mx-auto px-4 py-6 max-w-7xl">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-6 max-w-7xl">
         <TripTracker tripId={tripId} destination={destination} />
       </main>
       <QuickJump />

@@ -70,7 +70,7 @@ const GenerationAnimation = ({ isGenerating, currentStep }: GenerationAnimationP
                       <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="ml-auto text-[10px] text-primary font-medium"
+                        className="ml-auto text-xs text-primary font-medium"
                       >
                         {t("valise.genDone")}
                       </motion.span>
@@ -88,7 +88,7 @@ const GenerationAnimation = ({ isGenerating, currentStep }: GenerationAnimationP
                 transition={{ duration: 0.4, ease: "easeOut" }}
               />
             </div>
-            <p className="text-[10px] text-muted-foreground text-right mt-1">
+            <p className="text-xs text-muted-foreground text-right mt-1">
               {Math.round((currentStep / STEP_KEYS.length) * 100)}%
             </p>
           </div>

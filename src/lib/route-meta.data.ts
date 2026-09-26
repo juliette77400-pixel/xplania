@@ -42,11 +42,11 @@ export const META: Record<string, Meta> = {
     fr: ["Découvrir autour de moi — Xplania", "Les meilleurs lieux autour de toi : restaurants, culture, nature et pépites locales sur une carte."],
     en: ["Discover nearby — Xplania", "The best places around you: food, culture, nature and local gems on one map."],
   },
-  "/about": {
+  "/a-propos": {
     fr: ["À propos de Xplania", "Découvre l'histoire de Xplania, l'assistant de voyage IA qui rend chaque voyage plus personnel."],
     en: ["About Xplania", "Learn the story behind Xplania, the AI travel assistant that makes every trip more personal."],
   },
-  "/trust": {
+  "/securite": {
     fr: ["Sécurité et confiance — Xplania", "Comment Xplania protège tes données, ta vie privée et la fiabilité des informations de voyage."],
     en: ["Trust & security — Xplania", "How Xplania protects your data, your privacy and the reliability of travel information."],
   },
@@ -59,8 +59,10 @@ META["/blog/how-to-plan-a-trip-with-ai"] = {
   fr: ["Comment planifier un voyage avec l'IA — Xplania", "Guide étape par étape pour planifier un voyage avec l'IA : itinéraire, budget, visa, valise et découvertes locales."],
   en: ["How to plan a trip with AI — Xplania", "Step-by-step guide to plan a trip with an AI travel planner: itinerary, budget, visa, packing and local tips."],
 };
-META["/a-propos"] = META["/about"];
-META["/securite"] = META["/trust"];
-
 // Pages that manage their own head (public shares, legal).
-export const SELF_MANAGED = [/^\/carnet\/public\//, /^\/suivi\/public\//, /^\/legal/, /^\/mentions-legales/, /^\/legal-notice/, /^\/politique-de-confidentialite/, /^\/privacy-policy/, /^\/conditions-utilisation/, /^\/terms-of-use/];
+export const SELF_MANAGED = [/^\/carnet\/public\//, /^\/suivi\/public\//, /^\/legal/, /^\/mentions-legales/, /^\/politique-de-confidentialite/, /^\/conditions-utilisation/];
+
+// Routes that must never be indexed by search engines (auth flows, no content
+// value for SEO). RouteMeta sets a robots noindex meta tag at runtime for
+// these, and the build-time prerender plugin bakes it into their static HTML.
+export const NOINDEX_ROUTES = ["/auth", "/reset-password"];

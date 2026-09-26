@@ -66,7 +66,7 @@ const ReplayMode = ({ nodes }: Props) => {
               const color = TYPE_COLORS[n.type] || "hsl(190 90% 60%)";
               return (
                 <div key={n.id} className="flex flex-col items-center gap-2 flex-1 min-w-0">
-                  <div className={`text-[10px] uppercase tracking-wide ${reached ? "text-foreground" : "text-muted-foreground/60"} h-4`}>
+                  <div className={`text-xs uppercase tracking-wide ${reached ? "text-foreground" : "text-muted-foreground/60"} h-4`}>
                     {formatDate(n.visited_at)}
                   </div>
                   <motion.div
@@ -93,7 +93,7 @@ const ReplayMode = ({ nodes }: Props) => {
                       />
                     )}
                   </motion.div>
-                  <div className={`text-[11px] font-medium text-center max-w-[110px] truncate ${reached ? "text-foreground" : "text-muted-foreground/70"}`}>
+                  <div className={`text-xs font-medium text-center max-w-[110px] truncate ${reached ? "text-foreground" : "text-muted-foreground/70"}`}>
                     {n.name}
                   </div>
                   <div className="text-[9px] uppercase text-muted-foreground/60 tracking-wide">{n.type}</div>

@@ -48,11 +48,11 @@ const WeeklyMissionsCard = () => {
       <div className="flex items-center justify-between gap-2">
         <h2 className="text-sm font-bold flex items-center gap-2">
           <Target className="w-4 h-4 text-primary" /> {t("weeklyMissionsCard.title")}
-          <span className="ml-1 inline-flex items-center justify-center rounded-full bg-primary/15 text-primary text-[10px] font-bold px-1.5 py-0.5 min-w-[26px]">
+          <span className="ml-1 inline-flex items-center justify-center rounded-full bg-primary/15 text-primary text-xs font-bold px-1.5 py-0.5 min-w-[26px]">
             {doneCount}/{MISSIONS.length}
           </span>
         </h2>
-        <Link to="/gamification" className="text-[10px] text-primary hover:underline flex items-center gap-1 shrink-0">
+        <Link to="/gamification" className="text-xs text-primary hover:underline flex items-center gap-1 shrink-0">
           <Clock className="w-3 h-3" /> {timeLeft}
         </Link>
       </div>
@@ -71,7 +71,7 @@ const WeeklyMissionsCard = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <p className={`text-xs font-semibold truncate ${m.done ? "line-through text-muted-foreground" : ""}`}>{m.title}</p>
-                  <span className="text-[10px] font-bold text-primary shrink-0">+{m.xp} XP</span>
+                  <span className="text-xs font-bold text-primary shrink-0">+{m.xp} XP</span>
                 </div>
                 <Progress value={m.pct} className="h-1.5 mt-1" />
               </div>

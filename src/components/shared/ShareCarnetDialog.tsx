@@ -166,7 +166,7 @@ const ShareCarnetDialog = ({
                     className="w-full rounded-lg border border-border"
                     loading="lazy"
                   />
-                  <p className="text-[10px] text-muted-foreground mt-2">{t("shareDialog.ogHint")}</p>
+                  <p className="text-xs text-muted-foreground mt-2">{t("shareDialog.ogHint")}</p>
                 </div>
               </details>
             </>

@@ -70,7 +70,7 @@ const MoodAmbience = ({ mood }: Props) => {
           <span className="text-2xl">{moodDef?.emoji}</span>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-medium">{ambience.label}</div>
-            <div className="text-[11px] text-muted-foreground">{t("moodComp.ambience.moodAmbience", { mood: moodLabel })}</div>
+            <div className="text-xs text-muted-foreground">{t("moodComp.ambience.moodAmbience", { mood: moodLabel })}</div>
           </div>
         </div>
         <audio
@@ -95,7 +95,7 @@ const MoodAmbience = ({ mood }: Props) => {
           step={5}
           disabled={muted}
         />
-        <p className="text-[10px] text-muted-foreground text-center">
+        <p className="text-xs text-muted-foreground text-center">
           {t("moodComp.ambience.enableSound")}
         </p>
       </PopoverContent>

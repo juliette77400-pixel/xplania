@@ -157,7 +157,7 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
             {t("valise.culturalTitle", { destination })}
             {aiTips && (
               <span
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/15 text-primary text-[10px] font-semibold"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/15 text-primary text-xs font-semibold"
                 aria-label={t("valise.culturalAiBadge")}
               >
                 <Sparkles className="w-3 h-3" aria-hidden="true" /> {t("valise.culturalAiBadge")}

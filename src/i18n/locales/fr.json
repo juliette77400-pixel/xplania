@@ -851,7 +851,13 @@
       "regenerate": "Régénérer les formalités",
       "continuePrep": "Continuer mes préparatifs",
       "toValise": "Continuer vers le guide valise"
-    }
+    },
+    "rotatingSteps": [
+      "Ping vérifie les formalités d'entrée…",
+      "Ping consulte les règles 2026…",
+      "Ping rassemble les contacts utiles…",
+      "Ping prépare tes conseils sécurité…"
+    ]
   },
   "footer": {
     "tagline": "Ton copilote de voyage intelligent. Planifie, prépare et vis tes voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
@@ -916,7 +922,7 @@
         },
         {
           "heading": "Sous-traitants et services tiers",
-          "body": "Pour faire fonctionner Xplania, nous nous appuyons sur un nombre limité de prestataires de confiance. Aucun ne revend tes données. Chacun est encadré contractuellement.\n\n1) Lovable Labs Incorporated (États-Unis)\n   • Rôle : plateforme no-code qui héberge le site, l'application et le backend Lovable Cloud.\n   • Données transmises : toutes les données techniques nécessaires au fonctionnement (compte, contenu de voyage, logs).\n   • Politique de confidentialité : https://lovable.dev/privacy\n   • Conditions : https://lovable.dev/terms\n\n2) Supabase Inc. (États-Unis)\n   • Rôle : hébergement de la base de données et du service d'authentification (sous-jacent à Lovable Cloud).\n   • Données transmises : email, mot de passe haché, contenu de tes voyages, photos uploadées.\n   • Politique de confidentialité : https://supabase.com/privacy\n\n3) Google LLC — API Gemini (États-Unis)\n   • Rôle : moteur d'intelligence artificielle utilisé par les assistants Ping (guide visa) et Maya (guide budget) pour générer leurs réponses.\n   • Données transmises : le contenu du message que tu envoies à l'assistant (destination, contexte de voyage). Aucun email ni identifiant de compte n'est transmis.\n   • Conditions API Gemini : https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (États-Unis)\n   • Rôle : réception des emails envoyés via le formulaire de contact.\n   • Données transmises : ton email, ta note, tes suggestions, les problèmes rapportés.\n   • Politique de confidentialité Google : https://policies.google.com/privacy\n\n5) Google LLC — Google Maps Platform (États-Unis)\n   • Rôle : affichage des cartes et des lieux (Maps JavaScript, Places, géocodage) dans l'application.\n   • Données transmises : les lieux, adresses et coordonnées de tes voyages.\n   • Politique de confidentialité : https://policies.google.com/privacy\n\n6) OpenWeather Ltd (Royaume-Uni) — OpenWeatherMap\n   • Rôle : affichage de la météo de ta destination.\n   • Données transmises : la ville et les coordonnées de ta destination.\n   • Politique de confidentialité : https://openweather.co.uk/privacy-policy\n\n7) Open-Meteo\n   • Rôle : prévisions météo et historique météo utilisés pour certaines recommandations de voyage.\n   • Données transmises : les coordonnées géographiques de ta destination.\n   • Conditions : https://open-meteo.com/en/terms\n\n8) Unsplash Inc. (États-Unis)\n   • Rôle : fourniture de photos illustrant tes destinations.\n   • Données transmises : les termes de recherche (ex. le nom de la destination). Aucune donnée personnelle de compte n'est transmise.\n   • Politique de confidentialité : https://unsplash.com/privacy\n\n9) EmailJS\n   • Rôle : acheminement des messages envoyés via le formulaire de feedback vers la boîte email de l'équipe Xplania.\n   • Données transmises : le message et l'email que tu saisis dans le formulaire.\n   • Politique de confidentialité : https://www.emailjs.com/legal/privacy-policy/\n\nCette liste sera tenue à jour. Toute évolution importante te sera communiquée."
+          "body": "Pour faire fonctionner Xplania, nous nous appuyons sur un nombre limité de prestataires de confiance. Aucun ne revend tes données. Chacun est encadré contractuellement.\n\n1) Lovable Labs Incorporated (États-Unis)\n   • Rôle : plateforme no-code qui héberge le site, l'application et le backend Lovable Cloud.\n   • Données transmises : toutes les données techniques nécessaires au fonctionnement (compte, contenu de voyage, logs).\n   • Politique de confidentialité : https://lovable.dev/privacy\n   • Conditions : https://lovable.dev/terms\n\n2) Supabase Inc. (États-Unis)\n   • Rôle : hébergement de la base de données et du service d'authentification (sous-jacent à Lovable Cloud).\n   • Données transmises : email, mot de passe haché, contenu de tes voyages, photos uploadées.\n   • Politique de confidentialité : https://supabase.com/privacy\n\n3) Google LLC — API Gemini (États-Unis)\n   • Rôle : moteur d'intelligence artificielle utilisé par les assistants Ping (guide visa) et Ping (guide budget) pour générer leurs réponses.\n   • Données transmises : le contenu du message que tu envoies à l'assistant (destination, contexte de voyage). Aucun email ni identifiant de compte n'est transmis.\n   • Conditions API Gemini : https://ai.google.dev/gemini-api/terms\n\n4) Google LLC — Workspace / Gmail (États-Unis)\n   • Rôle : réception des emails envoyés via le formulaire de contact.\n   • Données transmises : ton email, ta note, tes suggestions, les problèmes rapportés.\n   • Politique de confidentialité Google : https://policies.google.com/privacy\n\n5) Google LLC — Google Maps Platform (États-Unis)\n   • Rôle : affichage des cartes et des lieux (Maps JavaScript, Places, géocodage) dans l'application.\n   • Données transmises : les lieux, adresses et coordonnées de tes voyages.\n   • Politique de confidentialité : https://policies.google.com/privacy\n\n6) OpenWeather Ltd (Royaume-Uni) — OpenWeatherMap\n   • Rôle : affichage de la météo de ta destination.\n   • Données transmises : la ville et les coordonnées de ta destination.\n   • Politique de confidentialité : https://openweather.co.uk/privacy-policy\n\n7) Open-Meteo\n   • Rôle : prévisions météo et historique météo utilisés pour certaines recommandations de voyage.\n   • Données transmises : les coordonnées géographiques de ta destination.\n   • Conditions : https://open-meteo.com/en/terms\n\n8) Unsplash Inc. (États-Unis)\n   • Rôle : fourniture de photos illustrant tes destinations.\n   • Données transmises : les termes de recherche (ex. le nom de la destination). Aucune donnée personnelle de compte n'est transmise.\n   • Politique de confidentialité : https://unsplash.com/privacy\n\n9) EmailJS\n   • Rôle : acheminement des messages envoyés via le formulaire de feedback vers la boîte email de l'équipe Xplania.\n   • Données transmises : le message et l'email que tu saisis dans le formulaire.\n   • Politique de confidentialité : https://www.emailjs.com/legal/privacy-policy/\n\nCette liste sera tenue à jour. Toute évolution importante te sera communiquée."
         },
         {
           "heading": "Transferts de données hors Union européenne",
@@ -1738,7 +1744,14 @@
       "itemsCount_other": "{{count}} éléments",
       "secLocal": "Recommandations locales",
       "placesCount_one": "{{count}} lieu",
-      "placesCount_other": "{{count}} lieux"
+      "placesCount_other": "{{count}} lieux",
+      "rotatingSteps": [
+        "Ping analyse {{destination}}…",
+        "Ping cherche les meilleurs quartiers…",
+        "Ping vérifie la météo…",
+        "Ping équilibre ton budget…",
+        "Ping peaufine ton itinéraire…"
+      ]
     },
     "optionHints": {
       "tripType": {
@@ -5600,5 +5613,8 @@
     },
     "cta": "Commencer avec Xplania",
     "footerLink": "Xplania vs ChatGPT"
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu"
   }
 }

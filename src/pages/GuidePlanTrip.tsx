@@ -19,7 +19,7 @@ export default function GuidePlanTrip() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <AppNavbar />
-      <main className="container mx-auto max-w-3xl px-4 py-16">
+      <main id="main-content" tabIndex={-1} className="container mx-auto max-w-3xl px-4 py-16">
         <article>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{t("planGuide.h1")}</h1>
           <p className="text-lg text-muted-foreground mb-10">{t("planGuide.intro")}</p>

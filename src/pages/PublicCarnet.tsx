@@ -69,7 +69,7 @@ const PublicCarnet = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12 max-w-3xl space-y-10">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-12 max-w-3xl space-y-10">
         {story && (
           <section className="glass-card rounded-2xl p-8">
             <h2 className="text-xs uppercase tracking-wider text-primary font-semibold mb-3">{t("ui2.PublicCarnet.story")}</h2>

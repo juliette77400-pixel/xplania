@@ -111,13 +111,13 @@ const PremiumUnlockDialog = ({ open, onOpenChange, lockedFeature, highlightPack 
                     <div className="truncate text-sm font-bold">
                       {t(`offres.packs.${p.id}.name`, { defaultValue: p.id })}
                     </div>
-                    <div className="truncate text-[11px] text-muted-foreground">
+                    <div className="truncate text-xs text-muted-foreground">
                       {t(`offres.packs.${p.id}.tagline`, { defaultValue: "" })}
                     </div>
                   </div>
                   <div className="shrink-0 text-right">
                     <div className="text-lg font-extrabold leading-none">{p.price.toFixed(2)}€</div>
-                    <div className="text-[10px] text-muted-foreground">{t("premiumDialog.perMonth")}</div>
+                    <div className="text-xs text-muted-foreground">{t("premiumDialog.perMonth")}</div>
                   </div>
                 </div>
               </button>

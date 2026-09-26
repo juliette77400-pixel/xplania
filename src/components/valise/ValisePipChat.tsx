@@ -385,7 +385,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             </div>
             <div className="min-w-0">
               <p className="text-sm font-bold text-foreground truncate">Ping</p>
-              <p className="text-[10px] text-muted-foreground truncate">{t("valise.chatbot.subtitle")}</p>
+              <p className="text-xs text-muted-foreground truncate">{t("valise.chatbot.subtitle")}</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
@@ -394,7 +394,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
                 onClick={retryNow}
                 title={!online ? t("valise.chatbot.offline.retryNow") : t("valise.chatbot.offline.replaying", { count: queueLen })}
                 aria-label={!online ? t("valise.chatbot.offline.retryNow") : t("valise.chatbot.offline.replaying", { count: queueLen })}
-                className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition-colors"
+                className="flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition-colors"
               >
                 <WifiOff className="w-3 h-3" />
                 {!online ? t("valise.chatbot.offline.short") : `↻ ${queueLen}`}
@@ -413,12 +413,12 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
 
         {/* Quick nav */}
         <div className="flex items-center gap-1 px-2 py-1.5 border-b border-border/40 overflow-x-auto">
-          <button onClick={() => askPip(isFr ? `Donne-moi un résumé météo pour ${ctxDest || "ma destination"} pendant mes dates.` : `Give me a weather summary for ${ctxDest || "my destination"} during my dates.`)} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🌤️ {t("valise.chatbot.nav.weather")}</button>
-          <button onClick={() => askPip(isFr ? `Propose-moi une liste de packing complète pour ce voyage.` : `Suggest a complete packing list for this trip.`)} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🧴 {t("valise.chatbot.nav.list")}</button>
-          <button onClick={() => askPip(isFr ? `Donne-moi 3 idées de tenues complètes pour ce voyage.` : `Give me 3 complete outfit ideas for this trip.`)} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">👗 {t("valise.chatbot.nav.outfits")}</button>
-          <button onClick={() => askPip(isFr ? `Tes meilleurs conseils packing variés et précis pour mon contexte.` : `Your best varied and precise packing tips for my context.`)} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🤖 {t("valise.chatbot.nav.tips")}</button>
-          <button onClick={() => askPip(isFr ? `Conseils culturels précis pour ${ctxDest || "ma destination"} (dress code, coutumes, mots utiles).` : `Precise cultural tips for ${ctxDest || "my destination"} (dress code, customs, useful words).`)} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🌍 {t("valise.chatbot.nav.culture")}</button>
-          <button onClick={() => scrollToId("weather-section")} className="text-[11px] px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🔄 {t("valise.chatbot.nav.adapt")}</button>
+          <button onClick={() => askPip(isFr ? `Donne-moi un résumé météo pour ${ctxDest || "ma destination"} pendant mes dates.` : `Give me a weather summary for ${ctxDest || "my destination"} during my dates.`)} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🌤️ {t("valise.chatbot.nav.weather")}</button>
+          <button onClick={() => askPip(isFr ? `Propose-moi une liste de packing complète pour ce voyage.` : `Suggest a complete packing list for this trip.`)} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🧴 {t("valise.chatbot.nav.list")}</button>
+          <button onClick={() => askPip(isFr ? `Donne-moi 3 idées de tenues complètes pour ce voyage.` : `Give me 3 complete outfit ideas for this trip.`)} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">👗 {t("valise.chatbot.nav.outfits")}</button>
+          <button onClick={() => askPip(isFr ? `Tes meilleurs conseils packing variés et précis pour mon contexte.` : `Your best varied and precise packing tips for my context.`)} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🤖 {t("valise.chatbot.nav.tips")}</button>
+          <button onClick={() => askPip(isFr ? `Conseils culturels précis pour ${ctxDest || "ma destination"} (dress code, coutumes, mots utiles).` : `Precise cultural tips for ${ctxDest || "my destination"} (dress code, customs, useful words).`)} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🌍 {t("valise.chatbot.nav.culture")}</button>
+          <button onClick={() => scrollToId("weather-section")} className="text-xs px-2 py-1 rounded-md hover:bg-primary/10 text-foreground whitespace-nowrap">🔄 {t("valise.chatbot.nav.adapt")}</button>
         </div>
 
         {/* Body */}
@@ -577,7 +577,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"} ${m.pending ? "opacity-70 italic" : ""}`}>
               {m.content}
               {m.pending && (
-                <span className="ml-2 inline-flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-300 align-middle">
+                <span className="ml-2 inline-flex items-center gap-1 text-xs text-amber-600 dark:text-amber-300 align-middle">
                   <WifiOff className="w-3 h-3" />
                 </span>
               )}

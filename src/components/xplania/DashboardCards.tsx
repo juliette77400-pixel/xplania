@@ -19,6 +19,7 @@ import { useDestinationImage } from "@/hooks/useDestinationImage";
 import FreemiumBanner from "@/components/xplania/FreemiumBanner";
 import PhotoGallery from "@/components/xplania/PhotoGallery";
 import WeatherSection from "@/components/valise/WeatherSection";
+import RotatingStatusMessage from "@/components/shared/RotatingStatusMessage";
 
 interface Props {
   formData: TravelFormData;
@@ -81,6 +82,10 @@ const LoadingState = ({ destination }: { destination: string }) => {
         <p className="text-sm text-muted-foreground max-w-md mx-auto">
           {t("travelForm.dashboard.loadingDesc")}
         </p>
+        <RotatingStatusMessage
+          messages={(t("travelForm.dashboard.rotatingSteps", { destination, returnObjects: true }) as string[])}
+          className="mt-3 text-xs font-medium text-primary"
+        />
         <div className="mt-6 h-1.5 w-64 mx-auto rounded-full bg-muted overflow-hidden">
           <motion.div
             className="h-full rounded-full"
@@ -257,14 +262,14 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
               <p className="text-sm font-semibold text-foreground">
                 {toText(rec.weather.temperature)}
                 {rec.weather.source && (
-                  <span className="ml-2 text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  <span className="ml-2 text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                     {t("travelForm.realWeather")}
                   </span>
                 )}
               </p>
               {rec.weather.forecast && <p className="text-xs text-muted-foreground">{toText(rec.weather.forecast)}</p>}
               {rec.weather.advice && <p className="text-xs text-foreground/80">{toText(rec.weather.advice)}</p>}
-              {rec.weather.source && <p className="text-[10px] text-muted-foreground">{toText(rec.weather.source)}</p>}
+              {rec.weather.source && <p className="text-xs text-muted-foreground">{toText(rec.weather.source)}</p>}
             </div>
           )}
           <WeatherSection destination={formData.arrivalCity || formData.destination} />
@@ -334,7 +339,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                     <p className="text-xs font-medium text-primary flex items-center gap-2">
                       ≈ {toText(act.estimatedCost)}
                       {act.budgetFriendly && (
-                        <span className="text-[10px] font-semibold bg-primary/10 px-2 py-0.5 rounded-full">{t("travelForm.cheap")}</span>
+                        <span className="text-xs font-semibold bg-primary/10 px-2 py-0.5 rounded-full">{t("travelForm.cheap")}</span>
                       )}
                     </p>
                   </div>
@@ -357,7 +362,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                 <div key={i} className="p-3 rounded-lg bg-muted/50">
                   <p className="text-xs text-muted-foreground">{toText(b.category)}</p>
                   <p className="text-sm font-bold text-foreground">{toText(b.amount)} €</p>
-                  <p className="text-[10px] text-primary mt-1">{toText(b.tip)}</p>
+                  <p className="text-xs text-primary mt-1">{toText(b.tip)}</p>
                 </div>
               ))}
             </div>
@@ -420,7 +425,7 @@ const DashboardCards = ({ formData, recommendations, loading, error }: Props) =>
                     loading="lazy"
                   />
                   <div className="min-w-0 flex-1">
-                    <span className="inline-block text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full capitalize mb-1">
+                    <span className="inline-block text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full capitalize mb-1">
                       {toText(item.category)}
                     </span>
                     <p className="text-sm font-semibold text-foreground">{toText(item.name)}</p>

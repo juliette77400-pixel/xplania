@@ -69,7 +69,7 @@ const PopularMoods = ({ onSelectMood }: Props) => {
                       {r.place_name && <span className="text-muted-foreground"> · {r.place_name}</span>}
                     </div>
                     {r.comment && <p className="text-xs text-foreground/80 line-clamp-1">{r.comment}</p>}
-                    <p className="text-[10px] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: dateLocale })}
                     </p>
                   </div>

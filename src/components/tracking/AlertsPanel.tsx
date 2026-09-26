@@ -163,12 +163,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
           <Bell className="w-4 h-4 text-primary" />
           <h3 className="font-semibold text-sm sm:text-base">{t("suiviAlerts.title")}</h3>
           {unreadCount > 0 && (
-            <Badge variant="default" className="h-5 text-[10px] px-1.5">
+            <Badge variant="default" className="h-5 text-xs px-1.5">
               {unreadCount}
             </Badge>
           )}
           {!isOnline && (
-            <Badge variant="outline" className="h-5 text-[10px] px-1.5 border-amber-500/40 text-amber-500">
+            <Badge variant="outline" className="h-5 text-xs px-1.5 border-amber-500/40 text-amber-500">
               {t("suiviAlerts.offlineBadge")}
               {cachedAt && ` · ${new Date(cachedAt).toLocaleTimeString(locale === "en" ? "en" : "fr-FR", { hour: "2-digit", minute: "2-digit" })}`}
             </Badge>
@@ -207,12 +207,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-semibold text-sm text-foreground">{a.title}</span>
-                    <Badge variant="outline" className="text-[10px] h-4 px-1.5 capitalize">
+                    <Badge variant="outline" className="text-xs h-4 px-1.5 capitalize">
                       {t(`suiviAlerts.category.${a.category}`, a.category)}
                     </Badge>
                   </div>
                   <p className="text-xs text-foreground/80 mt-1">{a.message}</p>
-                  <div className="flex items-center gap-3 mt-2 text-[11px]">
+                  <div className="flex items-center gap-3 mt-2 text-xs">
                     {a.link && (
                       <a
                         href={a.link}

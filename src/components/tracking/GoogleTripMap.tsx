@@ -135,7 +135,7 @@ const GoogleTripMap = ({ position, activities, positions, height = 440 }: Props)
     <div className="relative overflow-hidden rounded-2xl border border-border shadow-lg" style={{ height }}>
       <div ref={el} className="h-full w-full" />
       {!ready && <div className="absolute inset-0 grid place-items-center bg-card/60 text-sm text-muted-foreground">{t("gmaps.map.loading")}</div>}
-      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-2 rounded-xl bg-background/80 px-3 py-2 text-[11px] backdrop-blur-md">
+      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-2 rounded-xl bg-background/80 px-3 py-2 text-xs backdrop-blur-md">
         <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded-full bg-cyan-400" />{t("gmaps.map.legendPath")}</span>
         <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded-full bg-purple-500" />{t("gmaps.map.legendPlanned")}</span>
       </div>

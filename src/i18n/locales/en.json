@@ -851,7 +851,13 @@
       "regenerate": "Regenerate formalities",
       "continuePrep": "Continue my preparations",
       "toValise": "Continue to the packing guide"
-    }
+    },
+    "rotatingSteps": [
+      "Ping is checking entry requirements…",
+      "Ping is reviewing 2026 rules…",
+      "Ping is gathering useful contacts…",
+      "Ping is preparing your safety tips…"
+    ]
   },
   "footer": {
     "tagline": "Your intelligent travel copilot. Plan, prepare and live your trips powered by artificial intelligence. Xplania centralizes budget, documents and packing so you can travel light-hearted.",
@@ -912,7 +918,7 @@
         },
         {
           "heading": "Data collected, purposes, legal bases and retention",
-          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Maya (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
+          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Ping (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
         },
         {
           "heading": "Sub-processors and third-party services",
@@ -1738,7 +1744,14 @@
       "itemsCount_other": "{{count}} items",
       "secLocal": "Local recommendations",
       "placesCount_one": "{{count}} place",
-      "placesCount_other": "{{count}} places"
+      "placesCount_other": "{{count}} places",
+      "rotatingSteps": [
+        "Ping is analyzing {{destination}}…",
+        "Ping is scouting the best neighborhoods…",
+        "Ping is checking the weather…",
+        "Ping is balancing your budget…",
+        "Ping is polishing your itinerary…"
+      ]
     },
     "optionHints": {
       "tripType": {
@@ -5600,5 +5613,8 @@
     },
     "cta": "Get started with Xplania",
     "footerLink": "Xplania vs ChatGPT"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
   }
 }

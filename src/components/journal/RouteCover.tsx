@@ -29,7 +29,7 @@ const RouteCover = ({ tripId, title, destination, stats }: Props) => {
         </div>
       )}
       <div className="absolute top-3 left-3 rounded-xl bg-background/80 backdrop-blur px-3 py-2 pointer-events-none">
-        <p className="text-[10px] uppercase tracking-wider text-primary font-semibold">{t("routeCover.label")}</p>
+        <p className="text-xs uppercase tracking-wider text-primary font-semibold">{t("routeCover.label")}</p>
         <p className="text-sm font-bold text-foreground">{destination || title}</p>
       </div>
     </section>

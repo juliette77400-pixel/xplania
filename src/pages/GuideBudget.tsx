@@ -440,7 +440,7 @@ const GuideBudgetPage = () => {
       <QuotaBanner tool="budget" toolLabel="Budget" />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
-      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
 
         {!hasGenerated && !isGenerating && (
@@ -571,7 +571,7 @@ const GuideBudgetPage = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </main>
 
       {hasGenerated && (
         <BudgetOnboardingChat

@@ -87,7 +87,7 @@ const BudgetSavingTips = ({ destination, tips, loading, failed, onRefresh }: Pro
                 <h3 className="text-sm font-bold text-foreground">{tip.title}</h3>
               </div>
               {(tip.zone || tip.city) && (
-                <p className="text-[11px] text-primary mb-1">📍 {[tip.zone, tip.city].filter(Boolean).join(" · ")}</p>
+                <p className="text-xs text-primary mb-1">📍 {[tip.zone, tip.city].filter(Boolean).join(" · ")}</p>
               )}
               <p className="text-xs text-muted-foreground leading-relaxed">{tip.body}</p>
             </motion.div>

@@ -117,7 +117,7 @@ const ProfilePersonalization = () => {
       <div className="space-y-2">
         <Label htmlFor="bio">{t("profil.perso.bio")}</Label>
         <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX))} placeholder={t("profil.perso.bioPlaceholder")} rows={3} />
-        <p className="text-[11px] text-muted-foreground text-right">{bio.length}/{BIO_MAX}</p>
+        <p className="text-xs text-muted-foreground text-right">{bio.length}/{BIO_MAX}</p>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
@@ -165,7 +165,7 @@ const ProfilePersonalization = () => {
       <div className="space-y-3">
         <div>
           <Label className="flex items-center gap-1.5"><MessageCircleHeart className="w-3.5 h-3.5" /> {t("profil.perso.promptsTitle")}</Label>
-          <p className="text-[11px] text-muted-foreground">{t("profil.perso.promptsHint", { max: MAX_PROMPTS })}</p>
+          <p className="text-xs text-muted-foreground">{t("profil.perso.promptsHint", { max: MAX_PROMPTS })}</p>
         </div>
         {prompts.map((p, i) => (
           <div key={i} className="rounded-xl border border-border bg-muted/30 p-3 space-y-2">

@@ -138,7 +138,7 @@ const ExpenseTracker = ({ categories, expenses = [], onRemoveExpense }: Props) =
                         <p className="font-semibold text-foreground truncate">
                           {exp.comment || catLabel}
                         </p>
-                        <p className="text-[11px] text-muted-foreground truncate">
+                        <p className="text-xs text-muted-foreground truncate">
                           {catLabel} · {dateStr}
                         </p>
                       </div>

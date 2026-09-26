@@ -21,7 +21,7 @@ const OptionButton = ({ selected, label, hint, icon, onClick, large }: Props) =>
   >
     <span className="flex items-center gap-2 font-semibold">{icon}{label}</span>
     {hint && (
-      <span className={`mt-0.5 text-[11px] leading-snug font-normal ${selected ? "text-primary-foreground/85" : "text-muted-foreground"}`}>
+      <span className={`mt-0.5 text-xs leading-snug font-normal ${selected ? "text-primary-foreground/85" : "text-muted-foreground"}`}>
         {hint}
       </span>
     )}

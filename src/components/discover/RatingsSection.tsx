@@ -203,7 +203,7 @@ const RatingsSection = ({ placeId }: Props) => {
             <div className="mb-1.5 flex items-center gap-2">
               <Avatar className="h-7 w-7">
                 <AvatarImage src={r.author?.avatar_url ?? undefined} />
-                <AvatarFallback className="text-[10px]">
+                <AvatarFallback className="text-xs">
                   {(r.author?.display_name ?? "?").slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -211,7 +211,7 @@ const RatingsSection = ({ placeId }: Props) => {
                 <p className="truncate text-xs font-medium">
                   {r.author?.display_name || t("discoverComp.ratings.anonAuthor")}
                 </p>
-                <p className="text-[10px] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {formatDistanceToNow(new Date(r.updated_at), { addSuffix: true, locale: dateLocale })}
                 </p>
               </div>
@@ -220,7 +220,7 @@ const RatingsSection = ({ placeId }: Props) => {
             {r.tags && r.tags.length > 0 && (
               <div className="mb-1.5 flex flex-wrap gap-1">
                 {r.tags.map((tag) => (
-                  <span key={tag} className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] text-primary">
+                  <span key={tag} className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
                     #{t(`discoverComp.ratings.tags.${tag}`, tag)}
                   </span>
                 ))}

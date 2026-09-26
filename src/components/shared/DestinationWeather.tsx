@@ -80,7 +80,7 @@ const DestinationWeather = ({ destination, compact }: Props) => {
       )}
       <div className="leading-tight">
         <div className="font-semibold">{data.temperature}</div>
-        <div className="text-[11px] text-muted-foreground capitalize">{data.conditions}</div>
+        <div className="text-xs text-muted-foreground capitalize">{data.conditions}</div>
       </div>
     </div>
   );

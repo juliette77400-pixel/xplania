@@ -40,7 +40,7 @@ const ValiseHeader = ({ checkedItems, totalItems, userName }: ValiseHeaderProps)
         </div>
         <div className="text-right">
           <p className="text-sm font-bold text-primary">{checkedItems}/{totalItems}</p>
-          <p className="text-[10px] text-muted-foreground">{t("valise.headerSelected")}</p>
+          <p className="text-xs text-muted-foreground">{t("valise.headerSelected")}</p>
         </div>
       </div>
     </div>

@@ -42,7 +42,7 @@ const Carnets = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-10 max-w-6xl">
+      <main id="main-content" tabIndex={-1} className="relative container mx-auto px-4 py-10 max-w-6xl">
         <div className="mb-8 max-w-2xl">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">{t("carnets.heroTitle")}</h2>
           <p className="text-muted-foreground mt-2">{t("carnets.heroDesc")}</p>

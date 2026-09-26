@@ -43,10 +43,10 @@ const BadgeCard = ({
     )}
   >
     <BadgeMedal badge={b} size="md" />
-    <span className="text-[11px] font-medium line-clamp-2 leading-tight mt-1">
+    <span className="text-xs font-medium line-clamp-2 leading-tight mt-1">
       {isFr ? b.name_fr : b.name_en}
     </span>
-    <span className="text-[10px] text-muted-foreground">{b.points} pts</span>
+    <span className="text-xs text-muted-foreground">{b.points} pts</span>
   </motion.button>
 );
 
@@ -234,7 +234,7 @@ const GamCatalog = () => {
                                 <p className="text-sm font-medium truncate">
                                   {isFr ? c.name_fr : c.name_en}
                                 </p>
-                                <p className="text-[11px] text-muted-foreground">
+                                <p className="text-xs text-muted-foreground">
                                   {t("gam.catalog.catProgress", {
                                     unlocked: catUnlocked,
                                     total: catTotal,

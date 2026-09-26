@@ -233,7 +233,7 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-[11px] font-medium text-muted-foreground pl-1">
+                  <label className="block text-xs font-medium text-muted-foreground pl-1">
                     {t("waitlist.linkedinLabel")}
                   </label>
                   <div className="relative">
@@ -274,7 +274,7 @@ const WaitlistDialog = ({ open, onOpenChange, source, pack, title, teaser }: Pro
                     </>
                   )}
                 </Button>
-                <p className="text-[11px] text-center text-muted-foreground">
+                <p className="text-xs text-center text-muted-foreground">
                   {t("waitlist.noCard")}
                 </p>
               </form>

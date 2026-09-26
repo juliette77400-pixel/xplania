@@ -122,7 +122,7 @@ export default function AdminBadges() {
     return (
       <div className="min-h-screen bg-background">
         <AppNavbar />
-        <main className="container mx-auto max-w-2xl px-4 py-20 text-center">
+        <main id="main-content" tabIndex={-1} className="container mx-auto max-w-2xl px-4 py-20 text-center">
           <ShieldAlert className="w-12 h-12 mx-auto text-destructive mb-4" />
           <h1 className="text-2xl font-bold mb-2">{t("ui2.AdminBadges.restrictedTitle")}</h1>
           <p className="text-muted-foreground">{t("ui2.AdminBadges.restrictedDesc")}</p>
@@ -137,7 +137,7 @@ export default function AdminBadges() {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
-      <main className="container mx-auto max-w-5xl px-4 py-10 space-y-6">
+      <main id="main-content" tabIndex={-1} className="container mx-auto max-w-5xl px-4 py-10 space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h1 className="text-2xl font-bold">{t("ui2.AdminBadges.pageTitle")}</h1>

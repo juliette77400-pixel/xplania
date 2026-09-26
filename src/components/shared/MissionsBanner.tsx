@@ -49,7 +49,7 @@ const MissionsBanner = () => {
           <span className="font-semibold">{t("missionsBanner.title")}</span>
           <span className="text-muted-foreground"> · {t("missionsBanner.progress", { done, total })}</span>
         </p>
-        <Link to="/gamification" className="hidden sm:inline-flex items-center gap-1 text-[11px] text-primary hover:underline shrink-0">
+        <Link to="/gamification" className="hidden sm:inline-flex items-center gap-1 text-xs text-primary hover:underline shrink-0">
           {t("missionsBanner.cta")} <ArrowRight className="w-3 h-3" />
         </Link>
         <button

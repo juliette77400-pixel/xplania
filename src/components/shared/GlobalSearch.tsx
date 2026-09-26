@@ -85,7 +85,7 @@ const GlobalSearch = ({ variant = "icon" }: Props) => {
         >
           <Search className="w-3.5 h-3.5" />
           <span className="flex-1 text-left">{t("globalSearch.placeholder")}</span>
-          <kbd className="ml-auto rounded bg-background px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground border border-border">⌘K</kbd>
+          <kbd className="ml-auto rounded bg-background px-1.5 py-0.5 text-xs font-mono text-muted-foreground border border-border">⌘K</kbd>
         </button>
       ) : (
         <button

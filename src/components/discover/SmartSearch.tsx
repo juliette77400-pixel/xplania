@@ -87,7 +87,7 @@ const SmartSearch = ({ userPos, onSelect }: Props) => {
                   <MapPin className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                   <div className="min-w-0">
                     <p className="font-medium text-foreground truncate">{s.name || s.label}</p>
-                    <p className="text-[11px] text-muted-foreground truncate">
+                    <p className="text-xs text-muted-foreground truncate">
                       {[s.city, s.country].filter(Boolean).join(", ")}
                       {s.type && <span className="ml-1 text-primary/70">· {s.type}</span>}
                     </p>

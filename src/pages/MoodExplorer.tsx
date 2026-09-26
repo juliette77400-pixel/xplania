@@ -119,7 +119,7 @@ const MoodExplorer = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
-      <div className="max-w-5xl mx-auto px-4 py-6 md:py-10 space-y-6">
+      <main id="main-content" tabIndex={-1} className="max-w-5xl mx-auto px-4 py-6 md:py-10 space-y-6">
         <QuotaBanner tool="mood" toolLabel="Mood Explorer" />
 
         <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -270,7 +270,7 @@ const MoodExplorer = () => {
             </Button>
           </div>
         )}
-      </div>
+      </main>
 
       <MoodPlaceDetail
         place={detailsPlace}

@@ -102,7 +102,7 @@ const BudgetAlerts = ({ categories, deals, loading }: Props) => {
                   {section.items.map((item: BudgetPlace, j: number) => (
                     <li key={j} className="text-xs text-muted-foreground">
                       <p className="font-semibold text-foreground">{item.name}</p>
-                      <p className="text-[11px] text-primary">📍 {[item.zone, item.city].filter(Boolean).join(" · ")}</p>
+                      <p className="text-xs text-primary">📍 {[item.zone, item.city].filter(Boolean).join(" · ")}</p>
                       <p className="mt-0.5 leading-relaxed">{item.detail}</p>
                     </li>
                   ))}

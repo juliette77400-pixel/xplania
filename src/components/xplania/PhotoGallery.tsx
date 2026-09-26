@@ -100,7 +100,7 @@ const PhotoGallery = ({ query, perPage = 6 }: PhotoGalleryProps) => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent p-2">
-                <p className="text-[10px] text-foreground/90 truncate">
+                <p className="text-xs text-foreground/90 truncate">
                   Photo by{" "}
                   {p.photographerUrl ? (
                     <a

@@ -84,7 +84,7 @@ const MoodAiAnalysis = ({ mood, energyLevel, placesCount }: Props) => {
                 className={`h-full bg-gradient-to-r ${g.color} rounded-full`}
               />
             </div>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{g.level}</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">{g.level}</p>
           </motion.div>
         ))}
       </div>

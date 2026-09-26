@@ -174,7 +174,7 @@ const Carnet = () => {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
+      <main id="main-content" tabIndex={-1} className="relative container mx-auto px-4 py-6 sm:py-8 max-w-6xl space-y-6">
         <RouteCover tripId={tripId!} title={journal.title} destination={destination} stats={stats} />
 
         {/* ✨ NEW (Tâche 4) — Utilities (countdown / météo / devise) si voyage à venir ou en cours */}

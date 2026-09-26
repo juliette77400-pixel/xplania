@@ -315,7 +315,7 @@ const GamificationPage = () => {
     <div className="min-h-screen bg-background">
       <AppNavbar />
 
-      <main className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-12">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-6xl py-10 space-y-12">
 
         {/* ══════ XP LEVEL HEADER ══════ */}
         <XpHeader xp={totalXp} />

@@ -237,15 +237,15 @@ export default function AdminAuditPanel() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 rounded-xl border border-border bg-background/40 p-3">
         <div>
-          <Label className="text-[11px] flex items-center gap-1"><Filter className="w-3 h-3" /> {t("ui2.AdminAuditPanel.from")}</Label>
+          <Label className="text-xs flex items-center gap-1"><Filter className="w-3 h-3" /> {t("ui2.AdminAuditPanel.from")}</Label>
           <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="h-8 text-xs" />
         </div>
         <div>
-          <Label className="text-[11px]">{t("ui2.AdminAuditPanel.to")}</Label>
+          <Label className="text-xs">{t("ui2.AdminAuditPanel.to")}</Label>
           <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="h-8 text-xs" />
         </div>
         <div>
-          <Label className="text-[11px]">{t("ui2.AdminAuditPanel.admin")}</Label>
+          <Label className="text-xs">{t("ui2.AdminAuditPanel.admin")}</Label>
           <Select value={actorId} onValueChange={setActorId}>
             <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -257,7 +257,7 @@ export default function AdminAuditPanel() {
           </Select>
         </div>
         <div>
-          <Label className="text-[11px]">{t("ui2.AdminAuditPanel.type")}</Label>
+          <Label className="text-xs">{t("ui2.AdminAuditPanel.type")}</Label>
           <Select value={actionFilter} onValueChange={setActionFilter}>
             <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -291,7 +291,7 @@ export default function AdminAuditPanel() {
                     {isSettings && <SettingsIcon className="w-3.5 h-3.5 text-primary" />}
                     {isValidated && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
                     {isRejected && <XCircle className="w-3.5 h-3.5 text-destructive" />}
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="secondary" className="text-xs">
                       {actionLabel(r.action)}
                     </Badge>
                     <span className="text-muted-foreground">
@@ -303,7 +303,7 @@ export default function AdminAuditPanel() {
 
                 {isSettings && changes.length > 0 && (
                   <ul className="mt-2 ml-5 list-disc text-muted-foreground">
-                    {changes.map((c, i) => <li key={i} className="font-mono text-[11px]">{c}</li>)}
+                    {changes.map((c, i) => <li key={i} className="font-mono text-xs">{c}</li>)}
                   </ul>
                 )}
 

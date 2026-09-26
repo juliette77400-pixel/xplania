@@ -99,7 +99,7 @@ const ProfilePreferences = () => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm">{t("profil.prefs.notifyInApp")}</p>
-            <p className="text-[11px] text-muted-foreground">{t("profil.prefs.notifyInAppHint")}</p>
+            <p className="text-xs text-muted-foreground">{t("profil.prefs.notifyInAppHint")}</p>
           </div>
           <Switch checked={prefs.notifyInApp} onCheckedChange={(v) => update("notifyInApp", v)} />
         </div>
@@ -107,7 +107,7 @@ const ProfilePreferences = () => {
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm">{t("profil.prefs.notifyBrowser")}</p>
-            <p className="text-[11px] text-muted-foreground truncate">
+            <p className="text-xs text-muted-foreground truncate">
               {permission === "granted" ? t("profil.prefs.notifyAllowed") : permission === "denied" ? t("profil.prefs.notifyBlocked") : t("profil.prefs.notifyAsk")}
             </p>
           </div>

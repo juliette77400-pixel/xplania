@@ -88,7 +88,7 @@ const SuiviPipChat = ({ onAction }: Props) => {
               </div>
               <div>
                 <p className="text-sm font-semibold">Ping</p>
-                <p className="text-[10px] text-muted-foreground">{t("suiviPip.subtitle")}</p>
+                <p className="text-xs text-muted-foreground">{t("suiviPip.subtitle")}</p>
               </div>
             </div>
             <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground" aria-label="close">

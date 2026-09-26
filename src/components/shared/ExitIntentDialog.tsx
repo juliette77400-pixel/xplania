@@ -146,7 +146,7 @@ const ExitIntentDialog = () => {
                   <Download className="w-4 h-4" />
                   {submitting ? t("exitIntent.sending") : t("exitIntent.cta")}
                 </button>
-                <p className="text-[11px] text-center text-muted-foreground">
+                <p className="text-xs text-center text-muted-foreground">
                   {t("exitIntent.privacy")}
                 </p>
               </form>

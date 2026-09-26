@@ -123,7 +123,7 @@ const AlertSubscriptionDialog = ({ open, onOpenChange, tripId }: Props) => {
                 </label>
               ))}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">{t("suiviAlerts.sub.transactionalNote")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("suiviAlerts.sub.transactionalNote")}</p>
           </div>
 
           {channels.includes("email") && (

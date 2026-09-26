@@ -49,7 +49,7 @@ const PublicList = () => {
               <article key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card/40">
                 {p.image_url && <img src={p.image_url} alt={p.name} className="h-36 w-full object-cover" loading="lazy" />}
                 <div className="space-y-1.5 p-3">
-                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{c?.emoji} {t(`gmaps.categories.${p.category}`, { defaultValue: c?.label ?? p.category })}</p>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground">{c?.emoji} {t(`gmaps.categories.${p.category}`, { defaultValue: c?.label ?? p.category })}</p>
                   <h2 className="font-semibold">{p.name}</h2>
                   {p.address && <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />{p.address}</p>}
                   {p.description && <p className="text-sm text-muted-foreground">{p.description}</p>}
