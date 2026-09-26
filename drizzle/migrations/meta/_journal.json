@@ -78,6 +78,13 @@
       "when": 1790428539418,
       "tag": "0010_tighten_places_and_journal_media",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790429134001,
+      "tag": "0011_admin_can_hide_journals",
+      "breakpoints": true
     }
   ]
 }
