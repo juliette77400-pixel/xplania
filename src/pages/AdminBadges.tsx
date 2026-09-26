@@ -206,7 +206,7 @@ export default function AdminBadges() {
                 )}
 
                 {c.ai_analysis && (
-                  <pre className="text-[10px] bg-muted/40 rounded p-2 overflow-x-auto max-h-32">
+                  <pre className="text-xs bg-muted/40 rounded p-2 overflow-x-auto max-h-32">
                     {JSON.stringify(c.ai_analysis, null, 2)}
                   </pre>
                 )}

@@ -246,7 +246,7 @@ const OnboardingEssai = () => {
                       <div className="text-xs text-muted-foreground">{it.subtitle}</div>
                     )}
                     {it.meta && (
-                      <div className="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+                      <div className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary">
                         <Star className="h-3 w-3" /> {it.meta}
                       </div>
                     )}

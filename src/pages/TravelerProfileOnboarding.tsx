@@ -443,7 +443,7 @@ const TravelerProfileOnboarding = () => {
         <div className="max-w-md space-y-1">
           <h2 className="text-lg font-bold">{t("travelerProfile.loadErrorTitle", "Chargement impossible")}</h2>
           <p className="text-sm text-muted-foreground">{t("travelerProfile.loadErrorHint", "Impossible de récupérer les cartes. Vérifie ta connexion — on réessaye toutes les quelques secondes.")}</p>
-          <p className="text-[11px] font-mono text-muted-foreground/70 break-all pt-1">{loadError}</p>
+          <p className="text-xs font-mono text-muted-foreground/70 break-all pt-1">{loadError}</p>
         </div>
         <button
           onClick={() => setRetryTick((n) => n + 1)}
@@ -589,7 +589,7 @@ const TravelerProfileOnboarding = () => {
                   <span>{t(cat.labelKey, cat.fallback)}</span>
                   <span
                     translate="no"
-                    className={`ml-1 text-[10px] ${complete ? "font-bold" : "tabular-nums opacity-80"}`}
+                    className={`ml-1 text-xs ${complete ? "font-bold" : "tabular-nums opacity-80"}`}
                   >
                     {complete ? "✓" : `${stat.done}/${stat.total}`}
                   </span>
@@ -667,7 +667,7 @@ const TravelerProfileOnboarding = () => {
         </button>
       </div>
 
-      <p className="-mt-4 pb-6 text-center text-[11px] text-muted-foreground">{t("travelerProfile.answersHint")}</p>
+      <p className="-mt-4 pb-6 text-center text-xs text-muted-foreground">{t("travelerProfile.answersHint")}</p>
 
       <AlertDialog open={showExitConfirm} onOpenChange={setShowExitConfirm}>
         <AlertDialogContent>

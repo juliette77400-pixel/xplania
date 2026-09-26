@@ -249,6 +249,21 @@
   }
 }
 
+.interactive-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.interactive-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-elegant, 0 12px 30px -12px hsl(var(--primary) / 0.25));
+}
+@media (prefers-reduced-motion: reduce) {
+  .interactive-card,
+  .interactive-card:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
 /* Hide scrollbars on horizontal tab lists (mobile) */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
