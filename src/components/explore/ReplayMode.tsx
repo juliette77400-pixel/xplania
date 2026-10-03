@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { MapContainer, TileLayer, Marker, Polyline, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -8,6 +11,24 @@ import { TYPE_COLORS } from "@/lib/explore-badges";
 import { useTranslation } from "react-i18next";
 
 interface Props { nodes: ExploreNode[]; }
+
+// Fits the map to the whole route so the full itinerary is visible.
+const FitRoute = ({ pts }: { pts: [number, number][] }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (pts.length === 1) map.setView(pts[0], 13);
+    else if (pts.length > 1) map.fitBounds(L.latLngBounds(pts).pad(0.25));
+  }, [pts, map]);
+  return null;
+};
+
+const dotIcon = (color: string, current: boolean) =>
+  L.divIcon({
+    className: "replay-marker",
+    html: `<div style="width:${current ? 18 : 12}px;height:${current ? 18 : 12}px;border-radius:50%;background:${color};border:2px solid white;box-shadow:0 0 ${current ? 18 : 8}px ${color};"></div>`,
+    iconSize: [current ? 18 : 12, current ? 18 : 12],
+    iconAnchor: [(current ? 18 : 12) / 2, (current ? 18 : 12) / 2],
+  });
 
 const ReplayMode = ({ nodes }: Props) => {
   const { t, i18n } = useTranslation();
@@ -47,8 +68,35 @@ const ReplayMode = ({ nodes }: Props) => {
 
   const progressPct = total <= 1 ? 100 : (step / total) * 100;
 
+  // Geographic route: the visited places that have coordinates, and the segment
+  // of that route reached at the current step (so the line is traced place by
+  // place like a map itinerary).
+  const geoVisited = useMemo(() => visitedSorted.filter((n) => n.lat != null && n.lng != null), [visitedSorted]);
+  const allRoute = useMemo(() => geoVisited.map((n) => [n.lat!, n.lng!] as [number, number]), [geoVisited]);
+  const reachedGeo = visitedSorted
+    .slice(0, Math.max(step, 0))
+    .filter((n) => n.lat != null && n.lng != null);
+  const reachedRoute = reachedGeo.map((n) => [n.lat!, n.lng!] as [number, number]);
+
   return (
     <div className="space-y-5">
+      {allRoute.length >= 2 && (
+        <div className="rounded-2xl overflow-hidden border border-border h-[360px]">
+          <MapContainer center={allRoute[0]} zoom={12} style={{ height: "100%", width: "100%", background: "hsl(220 30% 8%)" }} scrollWheelZoom={false}>
+            <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" className="xp-dark-tiles" attribution="&copy; OpenStreetMap" />
+            <FitRoute pts={allRoute} />
+            {/* Faint full itinerary for context */}
+            <Polyline positions={allRoute} pathOptions={{ color: "hsl(190 90% 60%)", weight: 2, opacity: 0.2, dashArray: "4 6" }} />
+            {/* Traced route up to the current step */}
+            {reachedRoute.length >= 2 && (
+              <Polyline positions={reachedRoute} pathOptions={{ color: "hsl(190 90% 60%)", weight: 4, opacity: 0.95 }} />
+            )}
+            {reachedGeo.map((n, i) => (
+              <Marker key={n.id} position={[n.lat!, n.lng!]} icon={dotIcon(TYPE_COLORS[n.type] || "hsl(190 90% 60%)", i === reachedGeo.length - 1)} />
+            ))}
+          </MapContainer>
+        </div>
+      )}
       <div className="rounded-2xl border border-border bg-gradient-to-b from-card/60 to-card/30 p-6 md:p-8 overflow-x-auto">
         <div className="min-w-[640px] relative py-10">
           <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-2 rounded-full bg-muted/40" />
