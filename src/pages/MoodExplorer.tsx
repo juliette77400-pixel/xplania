@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users, LineChart as LineChartIcon } from "lucide-react";
+import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users, LineChart as LineChartIcon, Star } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useMoodExplorer, type MoodPlace } from "@/hooks/useMoodExplorer";
@@ -99,9 +99,9 @@ const MoodExplorer = () => {
       mood_selection_id: (history[0] as any)?.id ?? null,
       source: "mood_explorer",
     });
-    // Open the rating popup shortly after, so users can rate the moment
-    const t = window.setTimeout(() => setRatingOpen(true), 1200);
-    return () => window.clearTimeout(t);
+    // NB: we no longer auto-open the rating popup here. Asking "how was it?"
+    // right after the recommendations land is premature (the user hasn't been
+    // anywhere yet). Rating is now opt-in via the "Noter ce moment" button.
   }, [activeMood, places.length, history, logMoodEntry]);
 
   const handleRatingSubmit = async (rating: number, note: string) => {
@@ -195,7 +195,14 @@ const MoodExplorer = () => {
               <TabsTrigger value="social" className="shrink-0"><Users className="w-4 h-4 mr-1" /> <span className="hidden sm:inline">Social</span><span className="sm:hidden">👥</span></TabsTrigger>
             </TabsList>
 
-            <TabsContent value="feed" className="mt-4">
+            <TabsContent value="feed" className="mt-4 space-y-3">
+              <button
+                onClick={() => setRatingOpen(true)}
+                className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-left text-sm text-muted-foreground transition hover:bg-muted/50"
+              >
+                <span>{t("moodComp.rating.cta")}</span>
+                <Star className="h-4 w-4 shrink-0 text-amber-400" />
+              </button>
               <MoodFeed
                 places={places}
                 isFavorite={isFavorite}
