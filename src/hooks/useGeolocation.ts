@@ -66,8 +66,7 @@ export function useGeolocation({
   useEffect(() => {
     if (!enabled) return;
 
-    const cleanup = () => {
-      if (watchIdRef.current !== null && "geolocation" in navigator) {
+    const cleanup = () => {      if (watchIdRef.current !== null && "geolocation" in navigator) {
         navigator.geolocation.clearWatch(watchIdRef.current);
         watchIdRef.current = null;
       }
@@ -146,6 +145,17 @@ export function useGeolocation({
 
     return cleanup;
   }, [enabled, precision, effectiveThrottle, ipFallback]);
+
+  // Privacy (RGPD): when geolocation is turned off (e.g. the user stops live
+  // tracking), drop the last known position so it is no longer kept in memory
+  // or shown on the map.
+  useEffect(() => {
+    if (!enabled) {
+      setPosition(null);
+      setError(null);
+      ipTriedRef.current = false;
+    }
+  }, [enabled]);
 
   return { position, error, permission };
 }

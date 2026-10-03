@@ -333,7 +333,10 @@ const TripTracker = ({ tripId, destination }: Props) => {
             tracking={trip}
             isOnline={isOnline}
             onStart={tracking.startTracking}
-            onStop={tracking.stopTracking}
+            onStop={async () => {
+              await tracking.stopTracking();
+              toast.success(t("trackingComp.tracker.stoppedLocationOff"));
+            }}
             onPrecisionChange={tracking.updatePrecision}
             onToggleShare={tracking.toggleShare}
             onOpenShare={() => setShareOpen(true)}

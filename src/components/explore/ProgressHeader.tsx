@@ -37,6 +37,9 @@ const ProgressHeader = ({ progress, cityName }: Props) => {
       </div>
 
       <Progress value={pct} className="h-2" />
+      <p className="text-xs text-muted-foreground -mt-1">
+        {t("x2.exploredHelp", { visited, total })}
+      </p>
 
       <div className="grid grid-cols-4 gap-3">
         {stats.map((s, i) => (

@@ -2828,7 +2828,8 @@
     "trackerOver": "Dépassé",
     "trackerWarn": "Attention",
     "trackerOk": "OK",
-    "trackerSplit": "Répartition",
+    "trackerSplit": "Répartition du budget (survole un segment)",
+    "splitTooltip": "{{label}} — {{spent}}€ dépensé sur {{planned}}€ prévu · {{pct}}% du budget total",
     "forecastTitle": "Budget Prévisionnel",
     "forecastSubtitle": "Répartition intelligente de ton budget par catégorie",
     "forecastPlanned": "Budget prévu",
@@ -3758,7 +3759,8 @@
       "kicker": "Suivi de voyage en direct",
       "myTrip": "Mon voyage",
       "positionShared": "Position partagée • {{km}} km parcourus",
-      "enableGeo": "Active la géolocalisation pour démarrer le suivi temps réel"
+      "enableGeo": "Active la géolocalisation pour démarrer le suivi temps réel",
+      "stoppedLocationOff": "Suivi arrêté — ta localisation n'est plus suivie ni affichée."
     }
   },
   "journalComp": {
@@ -4230,6 +4232,7 @@
     "stCities": "Villes",
     "stBadges": "Badges",
     "explored": "exploré",
+    "exploredHelp": "Ta progression = lieux de ta carte marqués comme visités ({{visited}}/{{total}}). Ouvre un lieu puis valide-le comme visité pour la faire grimper.",
     "badgesCollection": "Collection de badges",
     "allChip": "Tous · {{n}}",
     "unlocked": "Débloqué",

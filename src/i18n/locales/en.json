@@ -2828,7 +2828,8 @@
     "trackerOver": "Over",
     "trackerWarn": "Warning",
     "trackerOk": "OK",
-    "trackerSplit": "Breakdown",
+    "trackerSplit": "Budget breakdown (hover a segment)",
+    "splitTooltip": "{{label}} — {{spent}}€ spent of {{planned}}€ planned · {{pct}}% of total budget",
     "forecastTitle": "Forecast Budget",
     "forecastSubtitle": "Smart distribution of your budget by category",
     "forecastPlanned": "Planned budget",
@@ -3758,7 +3759,8 @@
       "kicker": "Live trip tracking",
       "myTrip": "My trip",
       "positionShared": "Position shared • {{km}} km traveled",
-      "enableGeo": "Enable geolocation to start live tracking"
+      "enableGeo": "Enable geolocation to start live tracking",
+      "stoppedLocationOff": "Tracking stopped — your location is no longer tracked or shown."
     }
   },
   "journalComp": {
@@ -4230,6 +4232,7 @@
     "stCities": "Cities",
     "stBadges": "Badges",
     "explored": "explored",
+    "exploredHelp": "Your progress = places on your map marked as visited ({{visited}}/{{total}}). Open a place and mark it as visited to move it up.",
     "badgesCollection": "Badge collection",
     "allChip": "All · {{n}}",
     "unlocked": "Unlocked",
