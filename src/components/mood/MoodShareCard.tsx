@@ -4,6 +4,7 @@ import { toPng } from "html-to-image";
 import { Share2, Download, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { moodByKey } from "@/lib/moods";
 import { toast } from "sonner";
@@ -28,6 +29,8 @@ const MoodShareCard = ({ open, onOpenChange, mood, placesCount, topPlaceName, ci
   const [busy, setBusy] = useState(false);
   const [format, setFormat] = useState<"story" | "square">("story");
   const m = mood ? moodByKey(mood) : null;
+  const [message, setMessage] = useState("");
+  const [theme, setTheme] = useState<"cosmos" | "aurora" | "sunset">("cosmos");
 
   const exportNode = async (node: HTMLDivElement | null): Promise<Blob | null> => {
     if (!node) return null;
@@ -45,7 +48,7 @@ const MoodShareCard = ({ open, onOpenChange, mood, placesCount, topPlaceName, ci
       const file = new File([blob], `mood-${mood ?? "moment"}-${format}.png`, { type: "image/png" });
       const shareData: ShareData = {
         title: t("moodComp.share.title"),
-        text: `${m?.emoji ?? "🎭"} ${m?.label ?? ""} — Xplania`,
+        text: `${m?.emoji ?? "🎭"} ${message.trim() || m?.label || ""} — https://xplania.app`,
         files: [file],
       };
       if (typeof navigator !== "undefined" && (navigator as any).canShare?.({ files: [file] })) {
@@ -91,80 +94,41 @@ const MoodShareCard = ({ open, onOpenChange, mood, placesCount, topPlaceName, ci
     }
   };
 
-  const StoryCard = (
-    <div
-      ref={storyRef}
-      style={{ width: 360, height: 640 }}
-      className="rounded-2xl p-6 flex flex-col justify-between text-white shadow-xl"
-    >
-      <div
-        className="absolute inset-0 -z-10 rounded-2xl"
-        style={{
-          background:
-            "linear-gradient(135deg, hsl(255 70% 25%) 0%, hsl(200 80% 30%) 50%, hsl(280 70% 35%) 100%)",
-        }}
-      />
-      <div className="relative h-full flex flex-col justify-between rounded-2xl p-6"
-        style={{
-          background:
-            "linear-gradient(135deg, hsl(255 70% 25%) 0%, hsl(200 80% 30%) 50%, hsl(280 70% 35%) 100%)",
-          width: 360 - 0, height: 640 - 0
-        }}
-      >
-        <div>
-          <div className="text-xs uppercase tracking-widest opacity-75">Xplania · Mood Explorer</div>
-          {city && <div className="text-sm mt-1 opacity-90">{city}</div>}
-        </div>
-        <div className="text-center space-y-3">
-          <div className="text-7xl">{m?.emoji ?? "🎭"}</div>
-          <div className="text-3xl font-bold">{m?.label ?? "Mon moment"}</div>
-          <div className="text-base opacity-90">{m?.description}</div>
-        </div>
-        <div className="space-y-2">
-          {topPlaceName && (
-            <div className="text-sm opacity-90 line-clamp-2">📍 {topPlaceName}</div>
-          )}
-          <div className="text-xs opacity-75">
-            {placesCount} {t("moodComp.share.placesFound")}
-          </div>
-          <div className="pt-2 text-xs opacity-70">xplania.lovable.app</div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const SquareCard = (
-    <div
-      ref={squareRef}
-      style={{ width: 480, height: 480 }}
-      className="rounded-2xl text-white shadow-xl overflow-hidden"
-    >
-      <div
-        className="w-full h-full p-8 flex flex-col justify-between"
-        style={{
-          background:
-            "linear-gradient(135deg, hsl(255 70% 25%) 0%, hsl(200 80% 30%) 50%, hsl(280 70% 35%) 100%)",
-        }}
-      >
+  const THEMES = {
+    cosmos: "linear-gradient(160deg, hsl(230 60% 12%) 0%, hsl(265 70% 30%) 55%, hsl(190 85% 40%) 100%)",
+    aurora: "linear-gradient(160deg, hsl(190 90% 35%) 0%, hsl(220 70% 25%) 60%, hsl(280 70% 35%) 100%)",
+    sunset: "linear-gradient(160deg, hsl(330 70% 40%) 0%, hsl(275 65% 30%) 60%, hsl(230 60% 15%) 100%)",
+  } as const;
+  const renderCard = (ref: React.RefObject<HTMLDivElement>, w: number, h: number, big: boolean) => (
+    <div ref={ref} style={{ width: w, height: h, background: THEMES[theme], fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+      className="relative overflow-hidden rounded-2xl text-white shadow-xl">
+      <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(1px 1px at 20% 30%, #fff8, transparent), radial-gradient(1px 1px at 70% 15%, #fff9, transparent), radial-gradient(1.5px 1.5px at 85% 60%, #fff7, transparent), radial-gradient(1px 1px at 35% 80%, #fff8, transparent)" }} />
+      <div className="relative flex h-full flex-col justify-between p-7">
         <div className="flex items-start justify-between">
-          <div>
-            <div className="text-xs uppercase tracking-widest opacity-75">Xplania</div>
-            <div className="text-sm opacity-90">Mood Explorer</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.25em] opacity-80">Xplania · Mood</div>
+          {city && <div className="rounded-full bg-white/15 px-3 py-1 text-xs">📍 {city}</div>}
+        </div>
+        <div className="space-y-3 text-center">
+          <div className={big ? "text-8xl" : "text-6xl"}>{m?.emoji ?? "🎭"}</div>
+          <div className="text-3xl font-extrabold">{m?.label ?? t("moodComp.share.title")}</div>
+          {message.trim() ? (
+            <div className="mx-auto max-w-[90%] text-lg italic leading-snug">« {message.trim()} »</div>
+          ) : (
+            <div className="text-base opacity-90">{m?.description}</div>
+          )}
+        </div>
+        <div className="space-y-2 rounded-xl bg-black/25 p-3 backdrop-blur">
+          {topPlaceName && <div className="line-clamp-2 text-sm font-medium">✨ {topPlaceName}</div>}
+          <div className="flex items-center justify-between text-xs opacity-80">
+            <span>{placesCount} {t("moodComp.share.placesFound")}</span>
+            <span className="font-semibold">xplania.app</span>
           </div>
-          {city && <div className="text-xs opacity-80 text-right">{city}</div>}
-        </div>
-        <div className="text-center space-y-2">
-          <div className="text-6xl">{m?.emoji ?? "🎭"}</div>
-          <div className="text-3xl font-bold">{m?.label ?? "Mon moment"}</div>
-          <div className="text-sm opacity-90">{m?.description}</div>
-        </div>
-        <div className="space-y-1">
-          {topPlaceName && <div className="text-sm opacity-90 line-clamp-1">📍 {topPlaceName}</div>}
-          <div className="text-xs opacity-70">{placesCount} {t("moodComp.share.placesFound")} · xplania.lovable.app</div>
         </div>
       </div>
     </div>
   );
+  const StoryCard = renderCard(storyRef, 360, 640, true);
+  const SquareCard = renderCard(squareRef, 480, 480, false);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -174,6 +138,18 @@ const MoodShareCard = ({ open, onOpenChange, mood, placesCount, topPlaceName, ci
             <Share2 className="w-5 h-5" /> {t("moodComp.share.title")}
           </DialogTitle>
         </DialogHeader>
+
+        <div className="space-y-2">
+          <Input value={message} maxLength={80} onChange={(e) => setMessage(e.target.value)}
+            placeholder={t("moodComp.share.messagePh")} aria-label={t("moodComp.share.messagePh")} />
+          <div className="flex gap-2">
+            {(["cosmos", "aurora", "sunset"] as const).map((k) => (
+              <button key={k} type="button" onClick={() => setTheme(k)} aria-label={k}
+                className={`h-8 w-8 rounded-full border-2 ${theme === k ? "border-primary" : "border-transparent"}`}
+                style={{ background: THEMES[k] }} />
+            ))}
+          </div>
+        </div>
 
         <Tabs value={format} onValueChange={(v) => setFormat(v as "story" | "square")}>
           <TabsList className="grid w-full grid-cols-2">
