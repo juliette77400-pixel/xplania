@@ -4273,7 +4273,12 @@
     "cities": "Villes",
     "badgesShort": "Badges",
     "shareTitle": "Mon voyage {{dest}}",
-    "shareText": "{{pts}} pts sur Xplania ✨"
+    "shareText": "{{pts}} pts sur Xplania ✨",
+    "locUse": "Utiliser ma position pour des lieux autour de moi",
+    "locOff": "Position activée — appuie pour la désactiver",
+    "locOn": "Position activée : les suggestions seront autour de toi",
+    "locDenied": "Position refusée. Autorise-la dans ton navigateur.",
+    "locUnavailable": "La localisation n'est pas disponible sur cet appareil."
   },
   "tripDocs": {
     "title": "Documents du voyage",

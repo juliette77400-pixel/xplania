@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sparkles, Loader2, Plus } from "lucide-react";
+import { Sparkles, Loader2, Plus, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,11 +18,21 @@ const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
   const { t } = useTranslation();
   const [items, setItems] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
+  const [pos, setPos] = useState<{ lat: number; lng: number } | null>(null);
+
+  const useMyLocation = () => {
+    if (!navigator.geolocation) { toast.error(t("x2.locUnavailable")); return; }
+    navigator.geolocation.getCurrentPosition(
+      (p) => { setPos({ lat: p.coords.latitude, lng: p.coords.longitude }); toast.success(t("x2.locOn")); },
+      () => toast.error(t("x2.locDenied")),
+      { enableHighAccuracy: false, timeout: 10000 },
+    );
+  };
 
   const fetchSuggestions = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("explore-suggest", { body: { tripId } });
+      const { data, error } = await supabase.functions.invoke("explore-suggest", { body: { tripId, ...(pos ?? {}) } });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setItems(data?.suggestions || []);
@@ -43,6 +53,9 @@ const SuggestionsPanel = ({ tripId, cityNode, onAdd }: Props) => {
           {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : t("x2.suggest")}
         </Button>
       </div>
+      <button type="button" onClick={pos ? () => setPos(null) : useMyLocation} className="flex items-center gap-1.5 text-xs text-primary hover:underline">
+        <MapPin className="w-3 h-3" /> {pos ? t("x2.locOff") : t("x2.locUse")}
+      </button>
       {items.length === 0 && !loading && (
         <p className="text-xs text-muted-foreground">{t("x2.suggestHint")}</p>
       )}

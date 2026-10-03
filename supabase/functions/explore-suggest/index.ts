@@ -22,7 +22,10 @@ Deno.serve(async (req) => {
   if (__quota) return __quota;
 
   try {
-    const { tripId } = await req.json();
+    const body = await req.json();
+    const tripId = body?.tripId;
+    const lat = typeof body?.lat === "number" && Math.abs(body.lat) <= 90 ? body.lat : null;
+    const lng = typeof body?.lng === "number" && Math.abs(body.lng) <= 180 ? body.lng : null;
     if (!tripId) throw new Error("tripId required");
 
     const authHeader = req.headers.get("Authorization") || "";
@@ -49,6 +52,7 @@ Deno.serve(async (req) => {
 Lieux déjà visités: ${visited.join(", ") || "aucun"}.
 Lieux planifiés: ${planned.join(", ") || "aucun"}.
 Répartition: ${JSON.stringify(types)}.
+${lat !== null && lng !== null ? `Position actuelle du voyageur : ${lat.toFixed(4)}, ${lng.toFixed(4)}. Propose en priorité des lieux à moins de 3 km de cette position.` : ""}
 
 Suggère 4 prochains lieux PRÉCIS et LOCAUX à explorer (noms réels), en équilibrant les types manquants. Évite les doublons.`;
 

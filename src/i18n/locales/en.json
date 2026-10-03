@@ -4273,7 +4273,12 @@
     "cities": "Cities",
     "badgesShort": "Badges",
     "shareTitle": "My trip {{dest}}",
-    "shareText": "{{pts}} pts on Xplania ✨"
+    "shareText": "{{pts}} pts on Xplania ✨",
+    "locUse": "Use my location for places around me",
+    "locOff": "Location on — tap to turn off",
+    "locOn": "Location on: suggestions will be around you",
+    "locDenied": "Location denied. Allow it in your browser.",
+    "locUnavailable": "Location isn't available on this device."
   },
   "tripDocs": {
     "title": "Trip documents",
