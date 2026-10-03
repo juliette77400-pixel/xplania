@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { countryContext } from "../_shared/country-facts.ts";
-import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";
+import { generateJson, generateJsonSplit, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota } from "../_shared/quota-guard.ts";
@@ -157,7 +157,7 @@ Génère les informations complètes de formalités pour ce voyage.`;
               };
     let visaInfo: unknown;
     try {
-      visaInfo = await generateJson({ instructions: systemPrompt + countryContext(destination, locale), input: userPrompt, schema: SCHEMA, name: "visa_info" });
+      visaInfo = await generateJsonSplit({ instructions: systemPrompt + countryContext(destination, locale), input: userPrompt, schema: SCHEMA, name: "visa_info", parts: [["visa", "emergency_contacts"], ["security"], ["health"], ["checklist"]] });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;
