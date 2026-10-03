@@ -3031,7 +3031,9 @@
         "tips": "Ces astuces sont liées à {{destination}} et à ton budget actuel. Tu peux les relancer si tu modifies fortement ton budget."
       },
       "regenerate": "Relancer la génération",
-      "gotIt": "C'est parti !"
+      "gotIt": "C'est parti !",
+      "launcherTitle": "Besoin d'aide sur ton budget ?",
+      "launcherDesc": "Ping t'explique chaque partie, répond à tes questions et ajuste tes dépenses."
     },
     "autoSaved": "Sauvegardé automatiquement",
     "autoSavedAt": "Sauvegardé automatiquement · {{time}}",

@@ -277,9 +277,13 @@ const BudgetOnboardingChat = ({
       <button
         onClick={() => setOpen(true)}
         aria-label={t("budget.onboarding.title")}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full gradient-button text-primary-foreground shadow-2xl flex items-center justify-center hover:opacity-90"
+        className="fixed bottom-6 right-6 z-50 flex max-w-[min(300px,calc(100vw-3rem))] items-center gap-3 rounded-2xl gradient-button px-4 py-3 text-left text-primary-foreground shadow-2xl hover:opacity-90"
       >
-        <MessageCircle className="w-5 h-5" />
+        <MessageCircle className="h-5 w-5 shrink-0" />
+        <span className="min-w-0">
+          <span className="block text-sm font-semibold">{t("budget.onboarding.launcherTitle")}</span>
+          <span className="block text-xs leading-snug opacity-90">{t("budget.onboarding.launcherDesc")}</span>
+        </span>
       </button>
     );
   }

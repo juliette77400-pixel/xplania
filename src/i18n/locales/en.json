@@ -3031,7 +3031,9 @@
         "tips": "These tips are tied to {{destination}} and your current budget. Refresh them if you significantly change your budget."
       },
       "regenerate": "Regenerate budget",
-      "gotIt": "Got it!"
+      "gotIt": "Got it!",
+      "launcherTitle": "Need help with your budget?",
+      "launcherDesc": "Ping explains each section, answers your questions and adjusts your spending."
     },
     "autoSaved": "Saved automatically",
     "autoSavedAt": "Saved automatically · {{time}}",
