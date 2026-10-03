@@ -5,6 +5,7 @@ import { ArrowRight, Mail, ShieldCheck, School, Check, Quote, Plane, Compass, Bo
 import AppNavbar from "@/components/shared/AppNavbar";
 import Footer from "@/components/xplania/Footer";
 import pipMascot from "@/assets/pip-mascot.png.asset.json";
+import Testimonials from "@/components/xplania/Testimonials";
 
 type Block = { title: string; items: string[] };
 type Card = { title: string; desc: string };
@@ -177,6 +178,8 @@ const Schools = () => {
             </div>
           </div>
         </section>
+
+        <Testimonials />
 
         <section className="py-20">
           <div className="container mx-auto max-w-3xl px-6">
