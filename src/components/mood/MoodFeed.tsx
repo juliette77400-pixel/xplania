@@ -21,7 +21,8 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props
 
   const next = () => setIndex((i) => Math.min(i + 1, places.length - 1));
   const prev = () => setIndex((i) => Math.max(i - 1, 0));
-  const place = places[index];
+  const safeIndex = Math.min(index, places.length - 1);
+  const place = places[safeIndex];
 
   return (
     <div className="space-y-3">
@@ -30,7 +31,7 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props
           variant="outline"
           size="sm"
           onClick={prev}
-          disabled={index === 0}
+          disabled={safeIndex === 0}
           aria-label={t("moodComp.feed.prev")}
           className="gap-1"
         >
@@ -38,13 +39,13 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props
           <span className="hidden sm:inline">{t("moodComp.feed.prev")}</span>
         </Button>
         <span className="text-xs text-muted-foreground tabular-nums">
-          {index + 1} / {places.length}
+          {safeIndex + 1} / {places.length}
         </span>
         <Button
           variant="outline"
           size="sm"
           onClick={next}
-          disabled={index === places.length - 1}
+          disabled={safeIndex === places.length - 1}
           aria-label={t("moodComp.feed.next")}
           className="gap-1"
         >
@@ -57,12 +58,12 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props
         <AnimatePresence mode="wait">
           <motion.div
             key={place.id}
-            drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.4}
             onDragEnd={(_, info) => {
-              if (info.offset.y < -80) next();
-              else if (info.offset.y > 80) prev();
+              if (info.offset.x < -80) next();
+              else if (info.offset.x > 80) prev();
             }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,10 +81,10 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props
         </AnimatePresence>
 
         <div className="absolute right-2 sm:right-3 bottom-3 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2 flex flex-row sm:flex-col gap-2 z-20">
-          <Button size="icon" variant="secondary" onClick={prev} disabled={index === 0} aria-label={t("moodComp.feed.prev")} className="rounded-full backdrop-blur-md bg-background/70 h-9 w-9 sm:h-10 sm:w-10">
+          <Button size="icon" variant="secondary" onClick={prev} disabled={safeIndex === 0} aria-label={t("moodComp.feed.prev")} className="rounded-full backdrop-blur-md bg-background/70 h-9 w-9 sm:h-10 sm:w-10">
             <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
-          <Button size="icon" variant="secondary" onClick={next} disabled={index === places.length - 1} aria-label={t("moodComp.feed.next")} className="rounded-full backdrop-blur-md bg-background/70 h-9 w-9 sm:h-10 sm:w-10">
+          <Button size="icon" variant="secondary" onClick={next} disabled={safeIndex === places.length - 1} aria-label={t("moodComp.feed.next")} className="rounded-full backdrop-blur-md bg-background/70 h-9 w-9 sm:h-10 sm:w-10">
             <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
         </div>
