@@ -429,7 +429,7 @@ const GuideVisaPage = () => {
                         {aiResult.visa?.required ? "Visa requis" : "Sans visa"}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">{aiResult.visa?.details || "—"}</p>
+                    <p className="text-sm text-muted-foreground mt-3 leading-relaxed whitespace-pre-line">{(aiResult.visa?.details || "—").replace(/\. (?=[A-ZÀ-Ý])/g, ".\n\n")}</p>
                     <div className="flex gap-4 mt-3 text-xs text-muted-foreground">
                       <span>⏱ Durée max : {aiResult.visa?.duration || "—"}</span>
                       {aiResult.visa?.cost && <span>💰 Coût : {aiResult.visa.cost}</span>}
@@ -537,19 +537,19 @@ const GuideVisaPage = () => {
                     <Phone className="w-5 h-5 text-primary" />
                     <h3 className="text-base font-bold text-foreground">{t("guideVisa.emergencyContacts")}</h3>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="p-3 rounded-xl bg-muted/30">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl bg-muted/30">
                       <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">🏛 Ambassade / Consulat</p>
-                      <p className="text-sm text-foreground">{aiResult.emergency_contacts.embassy}</p>
+                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{aiResult.emergency_contacts.embassy}</p>
                     </div>
-                    <div className="p-3 rounded-xl bg-muted/30">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">🚨 Urgences locales</p>
-                      <p className="text-sm text-foreground">{aiResult.emergency_contacts.local_emergency}</p>
+                    <div className="p-4 rounded-xl bg-muted/30">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">🚨 Urgences locales</p>
+                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{aiResult.emergency_contacts.local_emergency}</p>
                     </div>
                     {aiResult.emergency_contacts.tourist_police && (
                       <div className="p-3 rounded-xl bg-muted/30">
                         <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">👮 Police touristique</p>
-                        <p className="text-sm text-foreground">{aiResult.emergency_contacts.tourist_police}</p>
+                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{aiResult.emergency_contacts.tourist_police}</p>
                       </div>
                     )}
                   </div>
