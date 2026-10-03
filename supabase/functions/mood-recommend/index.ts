@@ -321,6 +321,7 @@ Donne 8 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
     return new Response(JSON.stringify({
       mood: finalMood,
       selection_id: selection?.id,
+      city: city || null,
       places: inserted,
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
