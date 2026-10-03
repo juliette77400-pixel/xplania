@@ -10,6 +10,33 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchUnsplashImage } from "@/lib/unsplash";
+
+const OUTFIT_QUERY: Record<string, string> = {
+  casualUrban: "casual street style outfit",
+  elegantEvening: "elegant evening outfit fashion",
+  natureExploration: "hiking outfit fashion",
+  beachRelax: "beach summer outfit fashion",
+  businessTravel: "business travel outfit fashion",
+};
+
+/** Free-to-use Unsplash photo behind an outfit card (falls back to the emoji). */
+function OutfitPhoto({ outfit }: { outfit: { id: string; title?: string } }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let alive = true;
+    const q = OUTFIT_QUERY[outfit.id] ?? `${outfit.title ?? "travel"} outfit fashion`;
+    fetchUnsplashImage(q).then((u) => { if (alive) setUrl(u); }).catch(() => {});
+    return () => { alive = false; };
+  }, [outfit.id, outfit.title]);
+  if (!url) return null;
+  return (
+    <>
+      <img src={url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+    </>
+  );
+}
 
 interface Outfit {
   id: string;
@@ -250,6 +277,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
                 className="glass-card rounded-2xl overflow-hidden group text-left cursor-pointer"
               >
                 <div className={`relative h-44 overflow-hidden bg-gradient-to-br ${outfit.gradient} flex items-center justify-center`}>
+                  <OutfitPhoto outfit={outfit} />
                   <span className="text-6xl drop-shadow-lg select-none" aria-hidden="true">
                     {outfit.emoji}
                   </span>
@@ -304,6 +332,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
               </DialogHeader>
 
               <div className={`relative h-48 rounded-xl overflow-hidden mt-2 bg-gradient-to-br ${selectedOutfit.gradient} flex items-center justify-center`}>
+                <OutfitPhoto outfit={selectedOutfit} />
                 <span className="text-7xl drop-shadow-xl select-none" aria-hidden="true">
                   {selectedOutfit.emoji}
                 </span>
