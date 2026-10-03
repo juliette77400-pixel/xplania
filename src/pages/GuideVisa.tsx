@@ -611,11 +611,11 @@ const GuideVisaPage = () => {
                 </div>
                 <div className="space-y-3">
                   {getStaticTips().map((tip) => (
-                    <div key={tip.num} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
+                    <div key={tip.num} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
                       <span className="flex items-center justify-center w-7 h-7 rounded-full gradient-button text-xs font-bold text-primary-foreground shrink-0">
                         {tip.num}
                       </span>
-                      <p className="text-sm text-foreground">{tip.text}</p>
+                      <p className="text-sm leading-relaxed text-foreground">{tip.text}</p>
                     </div>
                   ))}
                 </div>
