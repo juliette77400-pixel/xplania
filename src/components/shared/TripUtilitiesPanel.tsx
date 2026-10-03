@@ -36,6 +36,10 @@ const TripUtilitiesPanel = ({ destination, departureDate, returnDate, variant = 
 
   return (
     <Card className="p-4 sm:p-5 bg-card/60 backdrop-blur-sm border-primary/20 space-y-4">
+      <div>
+        <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5">🧰 {t("tripUtilities.title")}</h3>
+        <p className="text-xs text-muted-foreground">{t("tripUtilities.subtitle")}</p>
+      </div>
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <TripCountdown departureDate={departureDate} returnDate={returnDate} />
         <DestinationWeather destination={destination} />
