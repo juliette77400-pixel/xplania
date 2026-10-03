@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Heart, MapPin, Clock, Gem, Lightbulb, Navigation, ExternalLink, Tag } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils";
 import SocialReactions from "./SocialReactions";
 import type { MoodPlace } from "@/hooks/useMoodExplorer";
 import { moodByKey } from "@/lib/moods";
+import { activityImage, resolvePlaceImage } from "@/lib/unsplash";
 import GooglePlaceInfo from "@/components/shared/GooglePlaceInfo";
 import SaveMoodToList from "./SaveMoodToList";
 
@@ -21,6 +23,21 @@ interface Props {
 
 const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onSharedReaction }: Props) => {
   const { t } = useTranslation();
+
+  // Always show an attractive photo (place image, else royalty-free fallback
+  // upgraded to a topical Unsplash photo when available).
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
+  useEffect(() => {
+    if (!place) return;
+    let alive = true;
+    if (place.image_url) { setImgSrc(place.image_url); return; }
+    setImgSrc(activityImage(place.name, place.category || "travel", 1200, 600));
+    resolvePlaceImage(place.name, place.category || "travel").then((url) => {
+      if (alive && url) setImgSrc(url);
+    });
+    return () => { alive = false; };
+  }, [place?.image_url, place?.name, place?.category]);
+
   if (!place) return null;
   const mood = moodByKey(place.mood);
   const moodLabel = mood ? t(`moodComp.moods.${mood.key}.label`, { defaultValue: mood.label }) : "";
@@ -40,8 +57,8 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
       <DrawerContent className="max-h-[92vh]">
         <div className="mx-auto w-full max-w-2xl overflow-y-auto">
           <div className="relative h-56 w-full overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
-            {place.image_url ? (
-              <img src={place.image_url} alt={place.name} className="h-full w-full object-cover" />
+            {imgSrc ? (
+              <img src={imgSrc} alt={place.name} className="h-full w-full object-cover" />
             ) : (
               <div className="grid h-full place-items-center text-7xl opacity-60">{mood?.emoji ?? "📍"}</div>
             )}
