@@ -100,7 +100,7 @@ export default function UnexpectedHelpDialog({ destination, lat, lng }: { destin
               {help.steps.map((s, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{i + 1}</span>
-                  <div><div className="font-medium">{s.title}</div><div className="text-sm text-muted-foreground">{s.detail}</div></div>
+                  <div><div className="font-medium">{s.title.replace(/^\d+[.)]\s*/, "")}</div><div className="text-sm text-muted-foreground">{s.detail}</div></div>
                 </li>
               ))}
             </ol>
