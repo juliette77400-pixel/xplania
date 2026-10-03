@@ -1,3 +1,4 @@
+import { SAFETY_RULE_FR } from "../_shared/prompts.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
@@ -57,7 +58,7 @@ Suggère 4 prochains lieux PRÉCIS et LOCAUX à explorer (noms réels), en équi
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: "Tu réponds uniquement via l'outil suggest_places." },
+          { role: "system", content: "Tu réponds uniquement via l'outil suggest_places.\n\n" + SAFETY_RULE_FR },
           { role: "user", content: prompt },
         ],
         tools: [{
