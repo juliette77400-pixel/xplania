@@ -310,6 +310,11 @@ const TripTracker = ({ tripId, destination }: Props) => {
             onChanged={tracking.refetch}
           />
 
+          {showPois && !loadingPois && pois.length === 0 && (
+            <p className="rounded-lg border border-dashed border-border bg-muted/20 px-3 py-2 text-xs text-muted-foreground">
+              {geo.position ? t("ui2.TripTracker.poiNone") : t("ui2.TripTracker.poiNeedPosition")}
+            </p>
+          )}
           {showPois && pois.length > 0 && (
             <div className="space-y-2 px-1">
               <div className="flex items-center gap-3 flex-wrap text-xs text-muted-foreground">
