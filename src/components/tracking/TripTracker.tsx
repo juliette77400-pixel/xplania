@@ -26,7 +26,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Activity, MapPin, Radio, Share2 } from "lucide-react";
+import { Activity, MapPin, Radio, Share2, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
@@ -308,20 +308,38 @@ const TripTracker = ({ tripId, destination }: Props) => {
           />
 
           {showPois && pois.length > 0 && (
-            <div className="flex items-center gap-3 flex-wrap text-xs text-muted-foreground px-1">
-              <span className="font-semibold">{t("ui2.TripTracker.poiAround", { count: filteredPois.length })}</span>
-              {(Object.entries(POI_LABELS) as [keyof typeof POI_LABELS, string][]).map(([cat, label]) => (
-                <span key={cat} className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full" style={{ background: POI_COLORS[cat] }} />
-                  {label}
-                </span>
-              ))}
-              {aiPins.length > 0 && (
-                <span className="flex items-center gap-1 ml-2">
-                  <span className="w-2.5 h-2.5 rounded-full border-2 border-amber-400" style={{ background: "#f59e0b" }} />
-                  {t("ui2.TripTracker.aiSuggestions")}
-                </span>
-              )}
+            <div className="space-y-2 px-1">
+              <div className="flex items-center gap-3 flex-wrap text-xs text-muted-foreground">
+                <span className="font-semibold">{t("ui2.TripTracker.poiAround", { count: filteredPois.length })}</span>
+                {(Object.entries(POI_LABELS) as [keyof typeof POI_LABELS, string][]).map(([cat, label]) => (
+                  <span key={cat} className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: POI_COLORS[cat] }} />
+                    {label}
+                  </span>
+                ))}
+                {aiPins.length > 0 && (
+                  <span className="flex items-center gap-1 ml-2">
+                    <span className="w-2.5 h-2.5 rounded-full border-2 border-amber-400" style={{ background: "#f59e0b" }} />
+                    {t("ui2.TripTracker.aiSuggestions")}
+                  </span>
+                )}
+              </div>
+              {/* Clickable POI list — tap one to add it to the carnet. */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {filteredPois.slice(0, 12).map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => handlePoiAdd(p)}
+                    title={t("ui2.TripTracker.poiAddHint")}
+                    className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-left text-sm transition hover:bg-muted/50"
+                  >
+                    <span className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ background: POI_COLORS[p.category] }} />
+                    <span className="min-w-0 flex-1 truncate">{p.name}</span>
+                    <span className="shrink-0 text-xs text-muted-foreground">{POI_LABELS[p.category]}</span>
+                    <Plus className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 

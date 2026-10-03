@@ -5162,7 +5162,8 @@
       "stepsSynced": "{{count}} étapes synchronisées",
       "timelineTab": "📋 Timeline du voyage",
       "aiSuggestionsTab": "✨ Suggestions IA",
-      "suggestionsPinned": "{{count}} suggestion(s) épinglée(s) sur la carte ⭐"
+      "suggestionsPinned": "{{count}} suggestion(s) épinglée(s) sur la carte ⭐",
+      "poiAddHint": "Ajouter ce lieu à mon carnet"
     },
     "Gamification": {
       "missionShareMood": "Partager 1 émotion dans ton carnet",
@@ -5674,7 +5675,9 @@
     "print": "Télécharger en PDF",
     "copyLink": "Copier le lien public",
     "makePublic": "Rendre public",
-    "copied": "Lien copié !"
+    "copied": "Lien copié !",
+    "emptyTitle": "Ton album est encore vide",
+    "emptyHint": "Ajoute des photos et des notes dans les jours de ton carnet : elles apparaîtront ici automatiquement, prêtes à imprimer ou partager."
   },
   "errors": {
     "loadRatings": "Impossible de charger les notes. Réessaie plus tard.",
