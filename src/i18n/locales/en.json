@@ -571,7 +571,8 @@
     "disclaimer": {
       "title": "Important —",
       "body": "For any detail or question, it's always best to check with the embassy or consulate of your destination before leaving. Xplania cannot be held responsible if a problem occurs.",
-      "cta": "Official embassy website"
+      "cta": "Official embassy website",
+      "checkedOn": "Info prepared on {{date}} from known rules. Always double-check before you leave."
     },
     "stepper": {
       "title": "Your visa checklist, made simple 📋",

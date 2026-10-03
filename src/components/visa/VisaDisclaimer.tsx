@@ -18,6 +18,9 @@ const VisaDisclaimer = () => {
         <div className="text-xs sm:text-sm leading-snug">
           <strong className="block sm:inline">{t("guideVisa.disclaimer.title")} </strong>
           <span>{t("guideVisa.disclaimer.body")}</span>
+          <span className="block mt-1 opacity-80">
+            {t("guideVisa.disclaimer.checkedOn", { date: new Date().toLocaleDateString(i18n.language.startsWith("en") ? "en-US" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }) })}
+          </span>
         </div>
       </div>
       <a

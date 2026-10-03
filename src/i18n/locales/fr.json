@@ -571,7 +571,8 @@
     "disclaimer": {
       "title": "Avis important —",
       "body": "Pour tout détail ou toute question, il vaut toujours mieux consulter l'ambassade ou le consulat de ta destination avant de partir. Xplania ne peut pas être tenu responsable en cas de problème.",
-      "cta": "Site officiel de l'ambassade"
+      "cta": "Site officiel de l'ambassade",
+      "checkedOn": "Infos préparées le {{date}} à partir des règles connues. Revérifie toujours avant de partir."
     },
     "stepper": {
       "title": "Ta checklist visa, sans prise de tête 📋",
