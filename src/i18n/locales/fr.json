@@ -5686,7 +5686,8 @@
     "makePublic": "Rendre public",
     "copied": "Lien copié !",
     "emptyTitle": "Ton album est encore vide",
-    "emptyHint": "Ajoute des photos et des notes dans les jours de ton carnet : elles apparaîtront ici automatiquement, prêtes à imprimer ou partager."
+    "emptyHint": "Ajoute des photos et des notes dans les jours de ton carnet : elles apparaîtront ici automatiquement, prêtes à imprimer ou partager.",
+    "addContent": "Ajouter des photos et des notes"
   },
   "errors": {
     "loadRatings": "Impossible de charger les notes. Réessaie plus tard.",

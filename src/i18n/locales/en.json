@@ -5686,7 +5686,8 @@
     "makePublic": "Make public",
     "copied": "Link copied!",
     "emptyTitle": "Your album is still empty",
-    "emptyHint": "Add photos and notes to your carnet days: they'll show up here automatically, ready to print or share."
+    "emptyHint": "Add photos and notes to your carnet days: they'll show up here automatically, ready to print or share.",
+    "addContent": "Add photos and notes"
   },
   "errors": {
     "loadRatings": "Couldn't load ratings. Try again later.",

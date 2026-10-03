@@ -326,6 +326,7 @@ const Carnet = () => {
                 isPublic={journal.is_public}
                 publicSlug={journal.public_slug}
                 onShare={() => setShareOpen(true)}
+                onAddContent={() => setActiveTab("timeline")}
               />
             </TabsContent>
 
