@@ -3610,7 +3610,8 @@
       "downloadBtn": "Télécharger",
       "downloaded": "Image téléchargée",
       "error": "Impossible de générer l'image",
-      "placesFound": "lieux trouvés"
+      "placesFound": "lieux trouvés",
+      "messagePh": "Ton message perso (facultatif)"
     },
     "carnet": {
       "button": "Ajouter au carnet",
@@ -3632,6 +3633,12 @@
       "errorHint": "Une erreur est survenue. Vérifie ta connexion et réessaie.",
       "retry": "Réessayer",
       "noTrips": "Crée un voyage pour utiliser cette fonction."
+    },
+    "trip": {
+      "add": "Ajouter à mon voyage",
+      "done": "Ajouté au voyage",
+      "added": "Ajouté à ton voyage {{trip}} ✨",
+      "error": "Impossible d'ajouter ce lieu"
     }
   },
   "trackingComp": {
@@ -4375,7 +4382,8 @@
       "saveError": "Impossible d'enregistrer"
     },
     "offlineBadge": "Hors ligne",
-    "offlineRefresh": "Connexion requise pour actualiser"
+    "offlineRefresh": "Connexion requise pour actualiser",
+    "enablePush": "Activer les notifications"
   },
   "settings": {
     "title": "Paramètres",
@@ -6076,5 +6084,31 @@
   "tripUtilities": {
     "title": "Outils pratiques du voyage",
     "subtitle": "Compte à rebours, météo, convertisseur de devises et rappels — tout au même endroit pour ton séjour."
+  },
+  "unexpected": {
+    "cta": "Un imprévu ?",
+    "title": "Un imprévu ? Ping t'aide",
+    "intro": "Choisis ce qui se passe et décris en quelques mots. Je te donne les étapes à suivre.",
+    "kinds": {
+      "documents": "Papiers perdus ou volés",
+      "transport": "Retard ou annulation",
+      "health": "Santé",
+      "money": "Argent ou carte",
+      "housing": "Logement",
+      "safety": "Sécurité",
+      "other": "Autre"
+    },
+    "detailsPh": "Ex. : on m'a volé mon passeport dans le métro ce matin",
+    "submit": "Trouver une solution",
+    "continue": "Voir les solutions",
+    "again": "Autre imprévu",
+    "error": "Ping n'a pas pu répondre, réessaie dans un instant.",
+    "disclaimer": "Conseils indicatifs. En cas de danger, appelle d'abord les secours locaux.",
+    "urgency": {
+      "low": "Pas de panique",
+      "medium": "À régler rapidement",
+      "high": "Urgent",
+      "emergency": "Urgence : appelle les secours"
+    }
   }
 }

@@ -21,6 +21,7 @@ import ShareTripDialog from "./ShareTripDialog";
 import TripParamsCard from "./TripParamsCard";
 import BadgesSummary from "./BadgesSummary";
 import AlertsPanel from "./AlertsPanel";
+import UnexpectedHelpDialog from "./UnexpectedHelpDialog";
 import { useLiveTrip } from "@/hooks/useLiveTrip";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
@@ -241,6 +242,8 @@ const TripTracker = ({ tripId, destination }: Props) => {
 
       {/* B6 — Badges condensed summary */}
       <BadgesSummary tripId={tripId} />
+
+      <UnexpectedHelpDialog destination={destination} lat={geo.position?.lat} lng={geo.position?.lng} />
 
       {/* C — Alerts panel (weather, security, events, activities, transport) */}
       <AlertsPanel

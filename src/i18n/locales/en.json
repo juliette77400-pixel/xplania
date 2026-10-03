@@ -3610,7 +3610,8 @@
       "downloadBtn": "Download",
       "downloaded": "Image downloaded",
       "error": "Could not generate image",
-      "placesFound": "places found"
+      "placesFound": "places found",
+      "messagePh": "Your personal message (optional)"
     },
     "carnet": {
       "button": "Add to journal",
@@ -3632,6 +3633,12 @@
       "errorHint": "Something went wrong. Check your connection and try again.",
       "retry": "Retry",
       "noTrips": "Create a trip to use this feature."
+    },
+    "trip": {
+      "add": "Add to my trip",
+      "done": "Added to trip",
+      "added": "Added to your trip {{trip}} ✨",
+      "error": "Couldn't add this place"
     }
   },
   "trackingComp": {
@@ -4375,7 +4382,8 @@
       "saveError": "Could not save"
     },
     "offlineBadge": "Offline",
-    "offlineRefresh": "Connection required to refresh"
+    "offlineRefresh": "Connection required to refresh",
+    "enablePush": "Enable notifications"
   },
   "settings": {
     "title": "Settings",
@@ -6076,5 +6084,31 @@
   "tripUtilities": {
     "title": "Handy trip tools",
     "subtitle": "Countdown, weather, currency converter and reminders — all in one place for your trip."
+  },
+  "unexpected": {
+    "cta": "Something went wrong?",
+    "title": "Something went wrong? Ping helps",
+    "intro": "Pick what's happening and describe it in a few words. I'll give you the steps to follow.",
+    "kinds": {
+      "documents": "Lost or stolen papers",
+      "transport": "Delay or cancellation",
+      "health": "Health",
+      "money": "Money or card",
+      "housing": "Housing",
+      "safety": "Safety",
+      "other": "Other"
+    },
+    "detailsPh": "E.g.: my passport was stolen on the metro this morning",
+    "submit": "Find a solution",
+    "continue": "See solutions",
+    "again": "Another issue",
+    "error": "Ping couldn't answer, try again in a moment.",
+    "disclaimer": "Guidance only. In danger, call local emergency services first.",
+    "urgency": {
+      "low": "No panic",
+      "medium": "Handle soon",
+      "high": "Urgent",
+      "emergency": "Emergency: call for help"
+    }
   }
 }
