@@ -5172,7 +5172,9 @@
       "timelineTab": "📋 Timeline du voyage",
       "aiSuggestionsTab": "✨ Suggestions IA",
       "suggestionsPinned": "{{count}} suggestion(s) épinglée(s) sur la carte ⭐",
-      "poiAddHint": "Ajouter ce lieu à mon carnet"
+      "poiAddHint": "Ajouter ce lieu à mon carnet",
+      "poiNeedPosition": "Active ta position (bouton Démarrer) pour voir les points d'intérêt autour de toi.",
+      "poiNone": "Aucun point d'intérêt trouvé à moins de 600 m. Déplace-toi ou change de filtre."
     },
     "Gamification": {
       "missionShareMood": "Partager 1 émotion dans ton carnet",

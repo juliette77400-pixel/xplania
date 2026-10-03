@@ -5172,7 +5172,9 @@
       "timelineTab": "📋 Trip timeline",
       "aiSuggestionsTab": "✨ AI suggestions",
       "suggestionsPinned": "{{count}} suggestion(s) pinned on the map ⭐",
-      "poiAddHint": "Add this place to my carnet"
+      "poiAddHint": "Add this place to my carnet",
+      "poiNeedPosition": "Turn on your location (Start button) to see points of interest around you.",
+      "poiNone": "No points of interest within 600 m. Move around or change the filter."
     },
     "Gamification": {
       "missionShareMood": "Share 1 emotion in your journal",
