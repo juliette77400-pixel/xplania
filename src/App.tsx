@@ -51,6 +51,7 @@ const Parametres = lazy(() => import("./pages/Parametres.tsx"));
 const Legal = lazy(() => import("./pages/Legal.tsx"));
 const Trust = lazy(() => import("./pages/Trust.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
+const Schools = lazy(() => import("./pages/Schools.tsx"));
 const XplaniaVsChatgpt = lazy(() => import("./pages/XplaniaVsChatgpt.tsx"));
 const GuidePlanTrip = lazy(() => import("./pages/GuidePlanTrip.tsx"));
 
@@ -151,6 +152,8 @@ const App = () => (
             <Route path="/xplania-vs-chatgpt" element={<XplaniaVsChatgpt />} />
             {/* Canonical FR routes. EN duplicate slugs redirect to the FR canonical URL. */}
             <Route path="/a-propos" element={<About />} />
+            <Route path="/ecoles" element={<Schools />} />
+            <Route path="/schools" element={<Navigate to="/ecoles" replace />} />
             <Route path="/about" element={<Navigate to="/a-propos" replace />} />
             {/* Localized legal routes: FR is canonical, EN slugs redirect */}
             <Route path="/mentions-legales" element={<Legal legalKey="mentions" />} />

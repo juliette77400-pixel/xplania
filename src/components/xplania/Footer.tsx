@@ -159,6 +159,15 @@ const Footer = (_: Props) => {
               </li>
               <li>
                 <Link
+                  to="/ecoles"
+                  className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <BookOpen className="w-4 h-4 group-hover:text-primary transition-colors" />
+                  {t("schools.footerLink")}
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/xplania-vs-chatgpt"
                   className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
                 >
