@@ -31,3 +31,8 @@
 - [x] Contrastes couleurs (clair/sombre)
 - [x] Titres/images de partage par page
 - [x] Aligner le texte lu par Google sur l'accueil (quiz)
+## Retour audit accueil (oct. 2026)
+- [x] Haut de page orienté étudiants (Erasmus/stage, slogans, Ping)
+- [x] Essais gratuits : 10/mois partout
+- [ ] Infos par pays pour l'IA (à lancer)
+- [ ] Fiche saashive.com (à faire par Juliette)

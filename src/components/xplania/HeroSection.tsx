@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Check, MapPin, Sparkles, WandSparkles } from "lucide-react";
+import pip from "@/assets/pip-mascot.png.asset.json";
 
 interface Props {
   onCreateTrip: () => void;
@@ -8,30 +9,34 @@ interface Props {
 
 const copy = {
   fr: {
-    eyebrow: "Votre copilote de voyage, propulsé par l’IA",
-    title: "Un seul copilote pour",
-    accent: "tout votre voyage.",
-    subtitle: "Xplania apprend vos envies, prépare chaque détail et reste à vos côtés avant, pendant et après le départ.",
-    primary: "Planifier mon voyage",
-    proof: ["Personnalisé à vos préférences", "Essai gratuit", "FR · EN"],
-    cardLabel: "Ping analyse votre voyage",
-    destination: "Lisbonne · 4 jours",
-    insight: "Un itinéraire culturel et gourmand, adapté à votre rythme et à votre budget.",
-    ready: "Votre voyage est prêt",
-    items: ["Budget ajusté", "Formalités vérifiées", "Valise adaptée à la météo"],
+    eyebrow: "Erasmus, stage, échange : ton copilote de mobilité",
+    title: "Pars serein·e.",
+    accent: "Reviens transformé·e.",
+    subtitle: "Visa, budget serré, logement, arrivée seul·e… Xplania t'accompagne avant, pendant et après ta mobilité. Moins gérer. Plus explorer.",
+    primary: "Préparer ma mobilité",
+    proof: ["Pensé pour les étudiant·es", "10 essais gratuits / mois", "FR · EN"],
+    pains: ["Convention de stage", "Visa & formalités", "Budget étudiant", "Vie sur place", "Badges & défis"],
+    ping: "Moi c'est Ping ! Plus tu voyages, plus je te connais.",
+    cardLabel: "Ping prépare ton semestre",
+    destination: "Erasmus à Lisbonne · 5 mois",
+    insight: "Un plan d'arrivée adapté à ton budget étudiant et à ton profil ADN Voyageur.",
+    ready: "Ta mobilité est prête",
+    items: ["Budget mensuel ajusté", "Formalités vérifiées", "Valise adaptée au climat"],
   },
   en: {
-    eyebrow: "Your AI-powered travel copilot",
-    title: "One copilot for",
-    accent: "your entire journey.",
-    subtitle: "Xplania learns what you like, prepares every detail and stays with you before, during and after your trip.",
-    primary: "Plan my trip",
-    proof: ["Tailored to your preferences", "Free to try", "FR · EN"],
-    cardLabel: "Ping is analyzing your trip",
-    destination: "Lisbon · 4 days",
-    insight: "A cultural and foodie itinerary, tailored to your pace and budget.",
-    ready: "Your trip is ready",
-    items: ["Budget optimized", "Paperwork checked", "Weather-ready packing list"],
+    eyebrow: "Erasmus, internship, exchange: your mobility copilot",
+    title: "Leave with confidence.",
+    accent: "Come back transformed.",
+    subtitle: "Visa, tight budget, housing, arriving alone… Xplania stays with you before, during and after your time abroad. Less managing. More exploring.",
+    primary: "Prepare my mobility",
+    proof: ["Built for students", "10 free tries / month", "FR · EN"],
+    pains: ["Internship agreement", "Visa & paperwork", "Student budget", "Life abroad", "Badges & challenges"],
+    ping: "I'm Ping! The more you travel, the better I know you.",
+    cardLabel: "Ping is preparing your semester",
+    destination: "Erasmus in Lisbon · 5 months",
+    insight: "An arrival plan tailored to your student budget and your Traveler DNA profile.",
+    ready: "Your mobility is ready",
+    items: ["Monthly budget optimized", "Paperwork checked", "Climate-ready packing list"],
   },
 };
 
@@ -58,6 +63,13 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           </div>
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-muted-foreground">
             {c.proof.map((item) => <span key={item} className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" />{item}</span>)}
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {c.pains.map((p) => <span key={p} className="rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-xs font-medium">{p}</span>)}
+          </div>
+          <div className="mt-6 flex items-center gap-3">
+            <img src={pip.url} alt="Ping" className="h-12 w-12 object-contain" loading="lazy" />
+            <p className="text-sm font-medium text-foreground/90">{c.ping}</p>
           </div>
           <p className="mt-5 text-sm font-semibold italic text-primary/80">{t("home.differentiation.tagline")}</p>
         </motion.div>

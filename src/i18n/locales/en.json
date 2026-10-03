@@ -1272,7 +1272,7 @@
     "freeTagline": "To discover Xplania",
     "current": "Current",
     "forever": "/ forever",
-    "freeFeat1": "3 free generations per tool to try the Xplania AI",
+    "freeFeat1": "10 free generations per tool each month to try the Xplania AI",
     "freeFeat2": "Essential guides (suitcase, budget, visa)",
     "freeFeat3": "Preview of advanced features",
     "generationsUsed": "{{used}} / {{total}} generations used",
@@ -1354,7 +1354,7 @@
   },
   "quotaReached": {
     "title": "Free limit reached",
-    "desc": "You've used your 3 free generations 🎉 Upgrade to a paid plan to keep exploring without limits.",
+    "desc": "You've used your 10 free generations this month 🎉 Upgrade to a paid plan to keep exploring without limits.",
     "later": "Later",
     "seeOffers": "See plans"
   },
@@ -3889,7 +3889,7 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes. You get 3 free trip generations to try every tool. No card required, no commitment. Paid packs arrive at public launch for heavier use."
+      "a": "Yes. You get 10 free generations per tool each month to try everything. No card required, no commitment. Paid packs arrive at public launch for heavier use."
     },
     "q2": {
       "q": "What does the AI actually do?",
