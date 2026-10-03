@@ -1272,7 +1272,7 @@
     "freeTagline": "Pour découvrir Xplania",
     "current": "Actuel",
     "forever": "/ pour toujours",
-    "freeFeat1": "3 générations gratuites par outil pour tester l'IA Xplania",
+    "freeFeat1": "10 générations gratuites par mois et par outil pour tester l'IA Xplania",
     "freeFeat2": "Guides essentiels (valise, budget, visa)",
     "freeFeat3": "Aperçu des fonctionnalités avancées",
     "generationsUsed": "{{used}} / {{total}} générations utilisées",
@@ -1354,7 +1354,7 @@
   },
   "quotaReached": {
     "title": "Limite gratuite atteinte",
-    "desc": "Tu as utilisé tes 3 générations gratuites 🎉 Passe à une formule payante pour continuer à explorer sans limites.",
+    "desc": "Tu as utilisé tes 10 générations gratuites du mois 🎉 Passe à une formule payante pour continuer à explorer sans limites.",
     "later": "Plus tard",
     "seeOffers": "Voir les offres"
   },
@@ -3889,7 +3889,7 @@
     "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
     "q1": {
       "q": "Xplania est gratuit ?",
-      "a": "Oui. Tu as 3 générations de voyage gratuites pour découvrir tous les outils. Aucune carte requise, aucun engagement. Les packs payants arrivent avec l'ouverture publique pour les usages plus intensifs."
+      "a": "Oui. Tu as 10 générations gratuites par mois et par outil pour tout découvrir. Aucune carte requise, aucun engagement. Les packs payants arrivent avec l'ouverture publique pour les usages plus intensifs."
     },
     "q2": {
       "q": "À quoi sert l'IA exactement ?",
