@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { countryContext } from "../_shared/country-facts.ts";
-import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";
+import { generateJson, generateJsonSplit, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota } from "../_shared/quota-guard.ts";
@@ -121,7 +121,7 @@ Already shown (do not repeat): ${(avoid as string[]).slice(0, 30).join(" | ") ||
 
     let parsed: unknown;
     try {
-      parsed = await generateJson({ instructions: instructions + countryContext(destination), input, schema: SCHEMA, name: "budget_insights", strict: true });
+      parsed = await generateJsonSplit({ instructions: instructions + countryContext(destination), input, schema: SCHEMA, name: "budget_insights", strict: true, parts: [["scenarios", "analysis"], ["deals"], ["tips"]] });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;

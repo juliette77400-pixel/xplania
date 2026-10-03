@@ -86,3 +86,27 @@ export function aiErrorResponse(e: unknown, cors: Record<string, string>): Respo
     headers: { ...cors, "Content-Type": "application/json" },
   });
 }
+
+/**
+ * Same as generateJson, but splits the top-level fields of an object schema
+ * into groups generated in parallel, then merges them. Much faster for big
+ * structured answers: the user waits for the slowest group only.
+ */
+export async function generateJsonSplit<T = any>(opts: Parameters<typeof generateJson>[0] & { parts: string[][] }): Promise<T> {
+  const props = (opts.schema as any).properties as Record<string, unknown>;
+  const isEN = /\bENGLISH\b/.test(opts.instructions);
+  const results = await Promise.all(opts.parts.map((keys) => {
+    const strict = opts.strict ?? false;
+    const schema: Record<string, unknown> = {
+      type: "object",
+      additionalProperties: false,
+      required: keys,
+      properties: Object.fromEntries(keys.map((k) => [k, props[k]])),
+    };
+    const only = isEN
+      ? `\nFor this request, fill ONLY these fields: ${keys.join(", ")}.`
+      : `\nPour cette demande, remplis UNIQUEMENT ces champs : ${keys.join(", ")}.`;
+    return generateJson({ ...opts, schema, strict, instructions: opts.instructions + only });
+  }));
+  return Object.assign({}, ...results) as T;
+}
