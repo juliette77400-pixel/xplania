@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import TripCountdown from "./TripCountdown";
 import DestinationWeather from "./DestinationWeather";
-import CurrencyConverter from "./CurrencyConverter";
 import TripReminderChecklist from "./TripReminderChecklist";
 
 interface Props {
@@ -43,9 +42,6 @@ const TripUtilitiesPanel = ({ destination, departureDate, returnDate, variant = 
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <TripCountdown departureDate={departureDate} returnDate={returnDate} />
         <DestinationWeather destination={destination} />
-      </div>
-      <div className="border-t border-border/50 pt-4">
-        <CurrencyConverter destination={destination} />
       </div>
       {tripId && (
         <div className="border-t border-border/50 pt-4">
