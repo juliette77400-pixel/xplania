@@ -1785,7 +1785,7 @@
         "Autre": "Précise ton envie juste en dessous"
       },
       "travelerType": {
-        "Solo": "Tu pars seul(e)",
+        "Solo": "Tu pars seul",
         "Couple": "À deux",
         "Famille avec enfants": "Activités adaptées aux enfants",
         "Groupe d'amis": "Entre potes, ambiance et partage",
@@ -1795,7 +1795,7 @@
         "Retraité(e)": "Rythme confortable",
         "Étudiant": "Budget serré, bons plans",
         "Lune de miel": "Romantique et spécial",
-        "Aventurier solo": "Seul(e) et en quête de défis"
+        "Aventurier solo": "Seul et en quête de défis"
       },
       "activityLevel": {
         "Sédentaire": "Peu de marche, trajets courts",
@@ -2217,7 +2217,7 @@
       "empty": "Ta valise est vide — on commence ! 🎒",
       "early": "C'est parti ! {{checked}}/{{total}} cochés 💪",
       "mid": "Bien avancé(e) ! Plus que {{remaining}} éléments à préparer 🧳",
-      "late": "Presque prêt(e) ! Encore {{remaining}} petites choses ✨",
+      "late": "Presque prêt ! Encore {{remaining}} petites choses ✨",
       "almost": "Tu y es presque ! Il reste {{remaining}} item(s) 🔥",
       "done": "Ta valise est prête ! Bon voyage 🚀✈️"
     },
@@ -2234,7 +2234,7 @@
       "allChecked": "Tout est coché — bagage complet ✅",
       "categories": "{{count}} catégories couvertes",
       "topMissing": "Catégorie la moins prête : {{cat}} ({{count}} restants)",
-      "almostReady": "Plus qu'un dernier coup d'œil et tu es prêt(e) ✨"
+      "almostReady": "Plus qu'un dernier coup d'œil et tu es prêt ✨"
     },
     "backDashboard": "Retour au dashboard",
     "chatbot": {
@@ -2258,7 +2258,7 @@
       "qaEmpty": "Pose-moi une question — packing, météo, tenues, culture, sécurité solo… j'ai tout ce qu'il faut 🎒",
       "welcome": "Salut {{name}} ! 🧳 C'est Ping. Je t'aide à préparer ta valise parfaite — météo en temps réel, conseils de packing, tenues adaptées et astuces culturelles. Je te guide étape par étape ?",
       "welcomeYes": "Oui, guide-moi",
-      "welcomeNo": "Je préfère explorer seul(e)",
+      "welcomeNo": "Je préfère explorer seul",
       "computedDays_one": "{{count}} jour",
       "computedDays_other": "{{count}} jours",
       "summary": "Top, voilà ce que j'ai retenu :\n\n📍 Destination : {{destination}}\n📅 Durée : {{duration}}\n🧳 Bagage : {{luggage}}\n🎯 Type de voyage : {{tripType}}\n🎨 Activités : {{activities}}\n\nDis-moi ce que tu veux explorer en premier — météo, liste de packing, tenues, conseils culturels ou astuces solo. Tu peux aussi me poser n'importe quelle question 👇",
@@ -3541,7 +3541,7 @@
       "lvlCalm": "Calme",
       "lvlMotivated": "Très motivé(e)",
       "lvlModerate": "Modéré",
-      "lvlOpen": "Très ouvert(e)",
+      "lvlOpen": "Très ouvert",
       "lvlIntrospective": "Introspectif",
       "lvlImportant": "Important",
       "lvlMinimal": "Minimal",
@@ -4914,8 +4914,8 @@
       "duplicate": "Dupliquer ce voyage",
       "delete": "Supprimer",
       "deleteTitle": "Supprimer ce voyage ?",
-      "confirmDeleteNamed": "Es-tu sûr(e) de vouloir supprimer {{name}} ?",
-      "confirmDeleteGeneric": "Es-tu sûr(e) de vouloir supprimer ce voyage ?",
+      "confirmDeleteNamed": "Es-tu sûr de vouloir supprimer {{name}} ?",
+      "confirmDeleteGeneric": "Es-tu sûr de vouloir supprimer ce voyage ?",
       "irreversibleWarning": "Cette action est irréversible. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.",
       "cancel": "Annuler",
       "deleting": "Suppression…",
@@ -5026,8 +5026,8 @@
       "label": "Supprimer ce voyage",
       "short": "Supprimer",
       "dialogTitle": "Supprimer ce voyage ?",
-      "confirmWithLabelPrefix": "Es-tu sûr(e) de vouloir supprimer",
-      "confirmGeneric": "Es-tu sûr(e) de vouloir supprimer ce voyage ? ",
+      "confirmWithLabelPrefix": "Es-tu sûr de vouloir supprimer",
+      "confirmGeneric": "Es-tu sûr de vouloir supprimer ce voyage ? ",
       "irreversibleWarning": "Cette action est irréversible. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.",
       "cancel": "Annuler",
       "deleting": "Suppression…",

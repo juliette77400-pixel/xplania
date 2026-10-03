@@ -40,6 +40,24 @@ import {
 } from "@/lib/visa-static";
 
 
+// Split a long dynamic paragraph into readable chunks of a few sentences each,
+// so dense AI-generated text doesn't render as one solid wall. Robust to URLs
+// (only breaks before an uppercase letter or digit).
+const toParagraphs = (text: string, perPara = 2): string[] => {
+  const sentences = (text || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(/(?<=\.)\s+(?=[A-ZÀ-Ý0-9])/)
+    .filter(Boolean);
+  if (sentences.length === 0) return [];
+  const paras: string[] = [];
+  for (let i = 0; i < sentences.length; i += perPara) {
+    paras.push(sentences.slice(i, i + perPara).join(" "));
+  }
+  return paras;
+};
+
+
 // ── Skeleton Components ──
 
 const SectionSkeleton = () => (
@@ -429,7 +447,11 @@ const GuideVisaPage = () => {
                         {aiResult.visa?.required ? "Visa requis" : "Sans visa"}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-3 leading-relaxed whitespace-pre-line">{(aiResult.visa?.details || "—").replace(/\. (?=[A-ZÀ-Ý])/g, ".\n\n")}</p>
+                    <div className="mt-3 space-y-2.5">
+                      {toParagraphs(aiResult.visa?.details || "—").map((para, i) => (
+                        <p key={i} className="text-sm text-muted-foreground leading-relaxed">{para}</p>
+                      ))}
+                    </div>
                     <div className="flex gap-4 mt-3 text-xs text-muted-foreground">
                       <span>⏱ Durée max : {aiResult.visa?.duration || "—"}</span>
                       {aiResult.visa?.cost && <span>💰 Coût : {aiResult.visa.cost}</span>}
