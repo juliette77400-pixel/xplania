@@ -1235,6 +1235,16 @@
       "error": "Impossible d'enregistrer la photo, réessaie.",
       "badType": "Choisis une image (JPG, PNG…)",
       "tooBig": "Image trop lourde (10 Mo maximum)"
+    },
+    "shown": {
+      "title": "Mes chiffres",
+      "trips": "Voyages",
+      "badges": "Badges",
+      "level": "Niveau",
+      "streak": "Série",
+      "km": "Km parcourus",
+      "xpToNext": "Encore {{xp}} XP pour {{level}}",
+      "maxLevel": "Niveau maximum atteint 🏆"
     }
   },
   "notFound": {
@@ -3370,7 +3380,8 @@
       "map": "Carte",
       "favorites": "Favoris",
       "badges": "Badges",
-      "social": "Social"
+      "social": "Social",
+      "tracker": "Suivi"
     },
     "tracker": {
       "title": "Mon suivi d'humeurs",
@@ -5347,6 +5358,125 @@
     },
     "GuideVisa": {
       "generalDocs": "Documents généraux à préparer"
+    },
+    "Essai": {
+      "badgeFlavor": {
+        "cultural_explorer": "explorateur·rice culturel·le",
+        "digital_nomad": "nomade digital·e",
+        "relaxation": "amoureux·se de détente",
+        "adventurer": "aventurier·ère",
+        "nature": "amoureux·se de nature",
+        "gastronomic": "gourmand·e",
+        "wellbeing": "adepte du bien-être",
+        "social": "voyageur·se social·e",
+        "organized": "voyageur·se organisé·e",
+        "budget": "voyageur·se malin·e",
+        "curious": "curieux·se"
+      },
+      "previews": {
+        "discover": {
+          "0": {
+            "title": "Un café caché du quartier",
+            "subtitle": "Choisi pour ton profil {{flavor}}",
+            "meta": "⭐ 4,7 · pépite locale"
+          },
+          "1": {
+            "title": "Un musée à taille humaine",
+            "subtitle": "Loin de la foule, riche en découvertes",
+            "meta": "⭐ 4,6 · culture"
+          },
+          "2": {
+            "title": "Un point de vue au coucher du soleil",
+            "subtitle": "Le spot préféré des habitants",
+            "meta": "⭐ 4,8 · à ne pas manquer"
+          }
+        },
+        "mood": {
+          "0": {
+            "title": "Envie de calme ?",
+            "subtitle": "Un parc paisible à 10 min de toi"
+          },
+          "1": {
+            "title": "Besoin d'énergie ?",
+            "subtitle": "Un marché animé à explorer"
+          },
+          "2": {
+            "title": "Humeur créative ?",
+            "subtitle": "Une galerie d'art indépendante"
+          }
+        },
+        "carnet": {
+          "0": {
+            "title": "Jour 1 · L'arrivée",
+            "subtitle": "Tes premières impressions, photos et anecdotes"
+          },
+          "1": {
+            "title": "Jour 2 · La découverte",
+            "subtitle": "Une histoire racontée par l'IA à partir de tes notes"
+          },
+          "2": {
+            "title": "Ton album souvenir",
+            "subtitle": "Exportable en PDF et partageable"
+          }
+        },
+        "suivi": {
+          "0": {
+            "title": "Ta position en direct",
+            "subtitle": "Partage ton trajet avec tes proches en un lien"
+          },
+          "1": {
+            "title": "Tes étapes du jour",
+            "subtitle": "Valide chaque lieu visité d'un simple check-in"
+          },
+          "2": {
+            "title": "Des suggestions sur place",
+            "subtitle": "Ping te propose quoi faire autour de toi"
+          }
+        },
+        "guide-valise": {
+          "0": {
+            "title": "Ta checklist sur mesure",
+            "subtitle": "Adaptée à la météo et à ta destination"
+          },
+          "1": {
+            "title": "Les tenues conseillées",
+            "subtitle": "Pour chaque type de journée prévue"
+          },
+          "2": {
+            "title": "Rien d'oublié",
+            "subtitle": "Ping vérifie les objets essentiels"
+          }
+        },
+        "guide-budget": {
+          "0": {
+            "title": "Ton budget estimé",
+            "subtitle": "Logement, repas, transports et sorties",
+            "meta": "≈ 45 € / jour"
+          },
+          "1": {
+            "title": "Le suivi de tes dépenses",
+            "subtitle": "Graphiques clairs et alertes de dépassement"
+          },
+          "2": {
+            "title": "Des astuces pour économiser",
+            "subtitle": "Bons plans étudiants et locaux"
+          }
+        },
+        "guide-visa": {
+          "0": {
+            "title": "Les formalités à prévoir",
+            "subtitle": "Visa, passeport et documents selon ta nationalité"
+          },
+          "1": {
+            "title": "Santé et vaccins",
+            "subtitle": "Ce qu'il faut faire avant le départ"
+          },
+          "2": {
+            "title": "Sécurité sur place",
+            "subtitle": "Conseils et numéros d'urgence"
+          }
+        }
+      }
     }
   },
   "planGuide": {

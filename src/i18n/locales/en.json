@@ -1235,6 +1235,16 @@
       "error": "Couldn't save the photo, please try again.",
       "badType": "Please choose an image (JPG, PNG…)",
       "tooBig": "Image too large (10 MB max)"
+    },
+    "shown": {
+      "title": "My stats",
+      "trips": "Trips",
+      "badges": "Badges",
+      "level": "Level",
+      "streak": "Streak",
+      "km": "Km traveled",
+      "xpToNext": "{{xp}} XP to {{level}}",
+      "maxLevel": "Max level reached 🏆"
     }
   },
   "notFound": {
@@ -3370,7 +3380,8 @@
       "map": "Map",
       "favorites": "Favorites",
       "badges": "Badges",
-      "social": "Social"
+      "social": "Social",
+      "tracker": "Tracker"
     },
     "tracker": {
       "title": "My mood tracker",
@@ -5347,6 +5358,125 @@
     },
     "GuideVisa": {
       "generalDocs": "General documents to prepare"
+    },
+    "Essai": {
+      "badgeFlavor": {
+        "cultural_explorer": "cultural explorer",
+        "digital_nomad": "digital nomad",
+        "relaxation": "relaxation lover",
+        "adventurer": "adventurer",
+        "nature": "nature lover",
+        "gastronomic": "foodie",
+        "wellbeing": "wellbeing fan",
+        "social": "social traveler",
+        "organized": "organized traveler",
+        "budget": "savvy traveler",
+        "curious": "curious traveler"
+      },
+      "previews": {
+        "discover": {
+          "0": {
+            "title": "A hidden neighborhood café",
+            "subtitle": "Picked for your {{flavor}} profile",
+            "meta": "⭐ 4.7 · local gem"
+          },
+          "1": {
+            "title": "A small, charming museum",
+            "subtitle": "Away from the crowds, full of discoveries",
+            "meta": "⭐ 4.6 · culture"
+          },
+          "2": {
+            "title": "A sunset viewpoint",
+            "subtitle": "The locals' favorite spot",
+            "meta": "⭐ 4.8 · must-see"
+          }
+        },
+        "mood": {
+          "0": {
+            "title": "Feeling calm?",
+            "subtitle": "A peaceful park 10 min away"
+          },
+          "1": {
+            "title": "Need energy?",
+            "subtitle": "A lively market to explore"
+          },
+          "2": {
+            "title": "Feeling creative?",
+            "subtitle": "An independent art gallery"
+          }
+        },
+        "carnet": {
+          "0": {
+            "title": "Day 1 · Arrival",
+            "subtitle": "Your first impressions, photos and stories"
+          },
+          "1": {
+            "title": "Day 2 · Discovery",
+            "subtitle": "A story written by AI from your notes"
+          },
+          "2": {
+            "title": "Your memory album",
+            "subtitle": "Exportable as PDF and shareable"
+          }
+        },
+        "suivi": {
+          "0": {
+            "title": "Your live location",
+            "subtitle": "Share your journey with loved ones via a link"
+          },
+          "1": {
+            "title": "Today's stops",
+            "subtitle": "Check in at each place you visit"
+          },
+          "2": {
+            "title": "On-the-spot suggestions",
+            "subtitle": "Ping suggests what to do around you"
+          }
+        },
+        "guide-valise": {
+          "0": {
+            "title": "Your tailored checklist",
+            "subtitle": "Adapted to the weather and destination"
+          },
+          "1": {
+            "title": "Recommended outfits",
+            "subtitle": "For every type of day planned"
+          },
+          "2": {
+            "title": "Nothing forgotten",
+            "subtitle": "Ping checks the essentials"
+          }
+        },
+        "guide-budget": {
+          "0": {
+            "title": "Your estimated budget",
+            "subtitle": "Housing, meals, transport and outings",
+            "meta": "≈ €45 / day"
+          },
+          "1": {
+            "title": "Expense tracking",
+            "subtitle": "Clear charts and overspending alerts"
+          },
+          "2": {
+            "title": "Money-saving tips",
+            "subtitle": "Student and local deals"
+          }
+        },
+        "guide-visa": {
+          "0": {
+            "title": "Required formalities",
+            "subtitle": "Visa, passport and documents for your nationality"
+          },
+          "1": {
+            "title": "Health and vaccines",
+            "subtitle": "What to do before leaving"
+          },
+          "2": {
+            "title": "Safety on site",
+            "subtitle": "Tips and emergency numbers"
+          }
+        }
+      }
     }
   },
   "planGuide": {
