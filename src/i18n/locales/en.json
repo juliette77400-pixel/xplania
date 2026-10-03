@@ -3090,7 +3090,8 @@
     "scenarioBest": "best value",
     "scenarioApply": "Apply this scenario",
     "scenarioApplied": "Scenario applied to your budget",
-    "dealsEmpty": "Deals appear after generation."
+    "dealsEmpty": "Deals appear after generation.",
+    "disclaimerAdjust": "This budget is an estimate you can adjust anytime. Always double-check your spending and real prices: Xplania helps, but doesn't replace your own checks."
   },
   "gamification": {
     "heroTitle": "Badge Collection",

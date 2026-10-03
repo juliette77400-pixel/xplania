@@ -3090,7 +3090,8 @@
     "scenarioBest": "meilleur rapport qualité-prix",
     "scenarioApply": "Appliquer ce scénario",
     "scenarioApplied": "Scénario appliqué à ton budget",
-    "dealsEmpty": "Les bons plans arrivent après la génération."
+    "dealsEmpty": "Les bons plans arrivent après la génération.",
+    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications."
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
