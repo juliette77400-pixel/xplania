@@ -5690,60 +5690,153 @@
   },
   "schools": {
     "metaTitle": "Xplania for schools and tourism offices",
-    "metaDescription": "A free pilot to support your students abroad: visa, budget, life on site, travel journal. Data-backed report at the end.",
+    "metaDescription": "The travel copilot that supports your students throughout their mobility. Let's test it together with a pilot.",
     "badge": "Schools · Tourism offices",
-    "title": "Support your students before, during and after their mobility",
-    "subtitle": "Erasmus, internship, exchange: Xplania helps every student prepare paperwork, manage their budget and live their stay with peace of mind. Your teams save time, your students leave reassured.",
-    "ctaPrimary": "Request a free pilot",
+    "title": "The travel copilot that supports your students throughout their whole experience",
+    "subtitle": "Less stress, more autonomy and a better experience. Offer your students double support: your team, and Xplania 24/7.",
+    "ctaPrimary": "Propose a pilot",
     "ctaSecondary": "See the app",
-    "problemTitle": "What your students go through",
+    "problemTitle": "Getting mobility approved is only the start of the journey",
+    "problemSubtitle": "Once departure is approved, the student still has to think of everything.",
     "problems": [
-      "Unclear paperwork: visa, insurance, housing, internship agreement",
-      "A budget that's hard to predict in an unknown city",
-      "Feeling isolated once abroad",
-      "International offices that are stretched thin"
+      "Visa",
+      "Housing",
+      "Budget",
+      "Transport",
+      "Packing",
+      "Integration",
+      "Unexpected events",
+      "Cultural adaptation",
+      "Exploring"
     ],
-    "benefitsTitle": "What Xplania brings",
+    "problemQuote": "The information exists, but it's scattered, hard to find, sometimes wrong and never centralized: school, internet, books, groups, forums, apps…",
+    "phasesTitle": "Xplania simplifies every step",
+    "phases": [
+      {
+        "title": "Before: leave prepared",
+        "items": [
+          "Visa guide",
+          "Packing guide",
+          "Budget guide",
+          "Everything centralized, ahead of time"
+        ]
+      },
+      {
+        "title": "During: discover and immerse",
+        "items": [
+          "Live tracking and handling the unexpected",
+          "Cultural guide",
+          "Recommendations and discoveries"
+        ]
+      },
+      {
+        "title": "After: relive the moment",
+        "items": [
+          "Travel journal",
+          "Share the experience artistically",
+          "Pass on and showcase the mobility"
+        ]
+      }
+    ],
+    "benefitsTitle": "The benefits for your students",
     "benefits": [
+      "Less searching",
+      "Less planning alone",
+      "Fewer bad surprises",
+      "Less homesickness",
+      "More exploring",
+      "Meeting people",
+      "Understanding the environment",
+      "Remembering",
+      "Showcasing their mobility"
+    ],
+    "teamQuote": "AI will not replace your support, but it can complement it.",
+    "teamTitle": "Xplania helps you support your students",
+    "team": [
       {
-        "title": "Clear paperwork",
-        "desc": "Visa, formalities and documents by country, with reminders before departure."
+        "title": "Your teams",
+        "desc": "They advise, prepare, supervise and point to the right resources."
       },
       {
-        "title": "Student budget",
-        "desc": "Realistic cost-of-living estimates and expense tracking on site."
+        "title": "Xplania",
+        "desc": "Takes over 24/7, outside your opening hours, on everyday questions."
       },
       {
-        "title": "Life on site",
-        "desc": "Places to discover, trip tracking and advice tailored to each destination."
+        "title": "The student",
+        "desc": "Prepares their mobility calmly, with the right information, feeling supported."
       },
       {
-        "title": "Motivation and memories",
-        "desc": "Badges, challenges and a travel journal to keep track of the experience."
+        "title": "Result",
+        "desc": "Continuous support, resources in one place, a community that helps each other."
       }
     ],
-    "pilotTitle": "The pilot offer",
-    "pilotSubtitle": "Try Xplania with a group of students, no commitment.",
+    "profilesTitle": "Not all mobilities are lived the same way",
+    "profiles": [
+      {
+        "title": "Erasmus / exchange",
+        "items": [
+          "Classes and student life",
+          "Social integration",
+          "Housing",
+          "Cultural immersion",
+          "Long stay"
+        ]
+      },
+      {
+        "title": "Internship abroad / VIE",
+        "items": [
+          "Company and professional integration",
+          "Agreement and more paperwork",
+          "More independent research",
+          "Discovery outside student life"
+        ]
+      }
+    ],
+    "profilesNote": "Xplania adapts the experience to the mobility context instead of offering everyone the same support.",
+    "pilotTitle": "Proposed action",
+    "pilotSubtitle": "Let's test first before deciding what to roll out.",
     "pilotSteps": [
+      "Select a sample of students",
+      "Let them discover Xplania",
+      "Test before the mobility",
+      "Measure results with a form",
+      "Improve and adapt before rollout"
+    ],
+    "pilotNote": "Usage → data → insights → improvement: every mobility teaches us something.",
+    "winTitle": "An experiment that benefits everyone",
+    "win": [
       {
-        "title": "1. Launch",
-        "desc": "Presentation to your students and app access for one semester."
+        "title": "For your institution",
+        "items": [
+          "Extend your support",
+          "Better understand needs",
+          "Showcase experiences",
+          "Enrich the time abroad"
+        ]
       },
       {
-        "title": "2. Support",
-        "desc": "Regular follow-up, student help and adjustments to your needs."
+        "title": "For your students",
+        "items": [
+          "Less mental load",
+          "More autonomy",
+          "More peace of mind",
+          "More immersion and joy"
+        ]
       },
       {
-        "title": "3. Data-backed report",
-        "desc": "Active students, tools used, satisfaction and testimonials."
+        "title": "For Xplania",
+        "items": [
+          "Concrete field feedback",
+          "Building with students",
+          "Improving the product"
+        ]
       }
     ],
-    "pilotNote": "Free during the beta. Pricing then adapted to the number of students.",
     "dataTitle": "Personal data",
-    "dataBody": "Data is hosted in Europe, protected and GDPR-compliant. Each student stays in control of their information and can delete it at any time. The school only receives overall, anonymous statistics.",
+    "dataBody": "Student feedback is anonymized and aggregated before any analysis (including for Xplania Lab). Each student stays in control of their information and can delete it at any time. Xplania follows GDPR rules.",
     "dataLink": "Learn more about security",
-    "contactTitle": "Let's talk about your pilot",
-    "contactBody": "Write to us: we get back to you within 48 hours.",
+    "contactTitle": "So, ready to team up with Ping?",
+    "contactBody": "Write to us to design a pilot with your students together.",
     "mailSubject": "Xplania pilot for our institution",
     "footerLink": "Schools & offices"
   },
