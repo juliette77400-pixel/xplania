@@ -1,3 +1,4 @@
+import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
@@ -163,7 +164,7 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: systemPrompt },
+          { role: "system", content: systemPrompt + "\n\n" + (isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR) },
           { role: "system", content: ctxSnippet },
           ...(ragSnippet ? [{ role: "system" as const, content: ragSnippet }] : []),
           { role: "user", content: userPrompt },

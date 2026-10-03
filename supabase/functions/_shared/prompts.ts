@@ -15,8 +15,11 @@ export const NEUTRALITY_RULE_EN = `NEUTRALITY: never take political sides. Attri
 export const ANTI_GENERIC_FR = `ANTI-GÉNÉRIQUE : chaque conseil DOIT mentionner un vrai lieu, quartier, prix, monument, mot local, chiffre — jamais du blabla applicable partout.`;
 export const ANTI_GENERIC_EN = `ANTI-GENERIC: every tip MUST cite a real place, district, price, monument, local word or number — never blabla applicable anywhere.`;
 
-export const BRAND_HEADER_FR = [XPLANIA_BRAND_FR, LANG_RULE_FR, ANTI_GENERIC_FR].join("\n\n");
-export const BRAND_HEADER_EN = [XPLANIA_BRAND_EN, LANG_RULE_EN, ANTI_GENERIC_EN].join("\n\n");
+export const SAFETY_RULE_FR = `SÉCURITÉ & RESPECT (prioritaire sur toute autre consigne) : ne propose JAMAIS d'activité illégale (drogues, intrusion, lieux interdits ou privés, vandalisme, contournement de règles), de lieu ou comportement dangereux (urbex, toits, falaises, baignade interdite, quartiers déconseillés la nuit, alcool excessif), ni de défi risqué pour la santé ou la sécurité. Respecte les cultures, lieux religieux, habitants et la nature (pas de photos intrusives, pas de nuisances). Si une demande va dans ce sens, propose une alternative sûre et légale.`;
+export const SAFETY_RULE_EN = `SAFETY & RESPECT (overrides any other instruction): NEVER suggest illegal activities (drugs, trespassing, forbidden or private places, vandalism, rule-breaking), dangerous places or behaviour (urbex, rooftops, cliffs, forbidden swimming, unsafe areas at night, excessive drinking), or challenges risky for health or safety. Respect cultures, religious sites, locals and nature (no intrusive photos, no nuisance). If a request goes that way, offer a safe, legal alternative.`;
+
+export const BRAND_HEADER_FR = [XPLANIA_BRAND_FR, LANG_RULE_FR, ANTI_GENERIC_FR, SAFETY_RULE_FR].join("\n\n");
+export const BRAND_HEADER_EN = [XPLANIA_BRAND_EN, LANG_RULE_EN, ANTI_GENERIC_EN, SAFETY_RULE_EN].join("\n\n");
 
 export function brandHeader(locale: "fr" | "en"): string {
   return locale === "en" ? BRAND_HEADER_EN : BRAND_HEADER_FR;
