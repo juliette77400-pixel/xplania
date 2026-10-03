@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -54,10 +54,14 @@ const fetchTrackingData = async (tripId: string): Promise<TrackingData> => {
   };
 };
 
+const EMPTY_ACTIVITIES: TripActivity[] = [];
+const EMPTY_POSITIONS: TrackingData["positions"] = [];
+
 export function useTracking(tripId?: string) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const queryKey = ["tracking", tripId, user?.id];
+  const userId = user?.id;
+  const queryKey = useMemo(() => ["tracking", tripId, userId], [tripId, userId]);
 
   const { data, isLoading } = useQuery({
     queryKey,
@@ -66,8 +70,8 @@ export function useTracking(tripId?: string) {
   });
 
   const tracking = data?.tracking ?? null;
-  const activities = data?.activities ?? [];
-  const positions = data?.positions ?? [];
+  const activities = data?.activities ?? EMPTY_ACTIVITIES;
+  const positions = data?.positions ?? EMPTY_POSITIONS;
   const loading = !tripId || !user ? false : isLoading;
 
   // Keep a ref to the latest tracking value so recordPosition can stay stable
