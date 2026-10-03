@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { Heart, MapPin, Clock, Gem, Lightbulb, Navigation, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { activityImage, resolvePlaceImage } from "@/lib/unsplash";
 import type { MoodPlace } from "@/hooks/useMoodExplorer";
 
 interface Props {
@@ -16,6 +18,26 @@ interface Props {
 
 const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, fullscreen }: Props) => {
   const { t } = useTranslation();
+
+  // Always show an attractive photo: use the place's own image when present,
+  // otherwise a deterministic royalty-free fallback immediately, then upgrade to
+  // a topical Unsplash photo if one is found.
+  const [imgSrc, setImgSrc] = useState<string>(
+    place.image_url || activityImage(place.name, place.category || "travel", 800, 600),
+  );
+  useEffect(() => {
+    let alive = true;
+    if (place.image_url) {
+      setImgSrc(place.image_url);
+      return;
+    }
+    setImgSrc(activityImage(place.name, place.category || "travel", 800, 600));
+    resolvePlaceImage(place.name, place.category || "travel").then((url) => {
+      if (alive && url) setImgSrc(url);
+    });
+    return () => { alive = false; };
+  }, [place.image_url, place.name, place.category]);
+
   const openMaps = () => {
     const q = place.lat && place.lng
       ? `${place.lat},${place.lng}`
@@ -36,9 +58,9 @@ const MoodPlaceCard = ({ place, isFavorite, onToggleFavorite, onOpenDetails, ful
         "relative w-full overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 shrink-0",
         fullscreen ? "h-[40vh]" : "h-56",
       )}>
-        {place.image_url ? (
+        {imgSrc ? (
           <img
-            src={place.image_url}
+            src={imgSrc}
             alt={place.name}
             className="w-full h-full object-cover"
             loading="lazy"
