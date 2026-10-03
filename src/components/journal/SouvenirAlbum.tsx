@@ -19,6 +19,11 @@ interface Props {
 const SouvenirAlbum = ({ title, destination, cover, days, isPublic, publicSlug, onShare, readOnly }: Props) => {
   const { t } = useTranslation();
 
+  // Does the album have anything to show? (a photo with a url, or any non-photo block)
+  const hasContent = days.some((d: any) =>
+    (d.blocks || []).some((b: any) => (b.type === "photo" ? !!b.content?.url : true)),
+  );
+
   const copyLink = () => {
     if (!isPublic || !publicSlug) { onShare?.(); return; }
     navigator.clipboard.writeText(`${window.location.origin}/carnet/public/${publicSlug}`);
@@ -47,6 +52,14 @@ const SouvenirAlbum = ({ title, destination, cover, days, isPublic, publicSlug, 
           {destination && <p className="text-muted-foreground mt-1">{destination}</p>}
         </div>
       </section>
+
+      {!hasContent && (
+        <div className="rounded-2xl border border-dashed border-border bg-muted/20 p-8 text-center print:hidden">
+          <p className="text-4xl">📷</p>
+          <p className="mt-3 text-sm font-semibold text-foreground">{t("souvenir.emptyTitle")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t("souvenir.emptyHint")}</p>
+        </div>
+      )}
 
       {days.map((d, i) => {
         const photos = d.blocks.filter((b: any) => b.type === "photo" && b.content?.url);

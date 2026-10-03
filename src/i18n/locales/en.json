@@ -5162,7 +5162,8 @@
       "stepsSynced": "{{count}} steps synced",
       "timelineTab": "📋 Trip timeline",
       "aiSuggestionsTab": "✨ AI suggestions",
-      "suggestionsPinned": "{{count}} suggestion(s) pinned on the map ⭐"
+      "suggestionsPinned": "{{count}} suggestion(s) pinned on the map ⭐",
+      "poiAddHint": "Add this place to my carnet"
     },
     "Gamification": {
       "missionShareMood": "Share 1 emotion in your journal",
@@ -5674,7 +5675,9 @@
     "print": "Download as PDF",
     "copyLink": "Copy public link",
     "makePublic": "Make public",
-    "copied": "Link copied!"
+    "copied": "Link copied!",
+    "emptyTitle": "Your album is still empty",
+    "emptyHint": "Add photos and notes to your carnet days: they'll show up here automatically, ready to print or share."
   },
   "errors": {
     "loadRatings": "Couldn't load ratings. Try again later.",
