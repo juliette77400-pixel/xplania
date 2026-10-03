@@ -29,7 +29,7 @@ export default function AddMoodToTripButton({ place }: { place: MoodPlace }) {
       lat: place.lat ?? null,
       lng: place.lng ?? null,
       day_date: new Date().toISOString().slice(0, 10),
-      status: "planned",
+      status: "todo",
       position: 999,
       metadata: { mood: place.mood },
     });
