@@ -52,6 +52,7 @@ const TagInput = ({ values, onChange, placeholder, max }: { values: string[]; on
 
 const ProfilePersonalization = () => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
