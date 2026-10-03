@@ -137,9 +137,9 @@ Règles strictes :
 
     // Xplania RAG: retrieve curated knowledge chunks relevant to city + mood
     let ragSnippet = "";
-    if (city_hint) {
-      const slug = String(city_hint).toLowerCase().trim();
-      const query = `${city_hint} ${finalMood} ${free_input ?? ""}`.trim();
+    if (city) {
+      const slug = String(city).toLowerCase().trim();
+      const query = `${city} ${finalMood} ${free_input ?? ""}`.trim();
       const docs = await retrieveTravelDocs(supabase, query, {
         destinationSlug: slug,
         locale: isEN ? "en" : "fr",
