@@ -137,61 +137,82 @@ Activités : au moins 3 des 6 doivent être gratuites ou peu chères par rapport
 localRecommendations : pour chaque lieu, indique la ville exacte et le quartier où il se trouve.
 Météo : décris la météo typique à ces dates précises à destination.`;
 
-    const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Lovable-API-Key": LOVABLE_API_KEY,
-        "X-Lovable-AIG-SDK": "fetch",
-      },
-      body: JSON.stringify({
-        model: "openai/gpt-6-astra",
-        instructions: instructions + countryContext(`${dest} ${city}`, locale),
-        input: profile,
-        stream: true,
-        store: false,
-        reasoning: { effort: "minimal" },
-        text: { format: { type: "json_schema", name: "trip_plan", strict: true, schema: SCHEMA } },
-      }),
-    });
+    // Split the plan into 3 smaller parallel generations: each finishes much faster
+    // than one big answer, so the traveler waits for the slowest part only.
+    const PARTS: string[][] = [
+      ["activities", "localRecommendations"],
+      ["culturalTips", "weather"],
+      ["documents", "luggage", "budgetBreakdown"],
+    ];
+    const props = (SCHEMA as any).properties as Record<string, unknown>;
+    const sysPrompt = instructions + countryContext(`${dest} ${city}`, locale);
 
-    if (!aiRes.ok) {
-      const text = await aiRes.text();
-      console.error("AI gateway error:", aiRes.status, text);
-      if (aiRes.status === 429) return json({ error: isEN ? "Too many requests, try again shortly." : "Trop de requêtes, réessaie dans quelques instants." }, 429);
-      if (aiRes.status === 402) return json({ error: isEN ? "AI credits exhausted." : "Crédits IA insuffisants." }, 402);
-      return json({ error: isEN ? "AI service error" : "Erreur du service IA" }, aiRes.status === 403 ? 403 : 500);
-    }
-
-    // Read SSE stream and accumulate the answer text.
-    let out = "";
-    const reader = aiRes.body!.getReader();
-    const dec = new TextDecoder();
-    let buf = "";
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buf += dec.decode(value, { stream: true });
-      const lines = buf.split("\n");
-      buf = lines.pop() ?? "";
-      for (const line of lines) {
-        if (!line.startsWith("data:")) continue;
-        const payload = line.slice(5).trim();
-        if (!payload || payload === "[DONE]") continue;
-        try {
-          const ev = JSON.parse(payload);
-          if (ev.type === "response.output_text.delta") out += ev.delta ?? "";
-          else if (ev.type === "response.completed" && !out) out = ev.response?.output_text ?? "";
-        } catch { /* ignore partial */ }
+    const generate = async (keys: string[]) => {
+      const schema = obj(Object.fromEntries(keys.map((k) => [k, props[k]])));
+      const only = isEN
+        ? `\nFor this request, fill ONLY these fields: ${keys.join(", ")}.`
+        : `\nPour cette demande, remplis UNIQUEMENT ces champs : ${keys.join(", ")}.`;
+      const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Lovable-API-Key": LOVABLE_API_KEY,
+          "X-Lovable-AIG-SDK": "fetch",
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-6-astra",
+          instructions: sysPrompt + only,
+          input: profile,
+          stream: true,
+          store: false,
+          reasoning: { effort: "low" },
+          text: { format: { type: "json_schema", name: "trip_plan_part", strict: true, schema } },
+        }),
+      });
+      if (!aiRes.ok) {
+        const text = await aiRes.text();
+        console.error("AI gateway error:", aiRes.status, text);
+        throw Object.assign(new Error("ai"), { status: aiRes.status });
       }
-    }
+      let out = "";
+      const reader = aiRes.body!.getReader();
+      const dec = new TextDecoder();
+      let buf = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split("\n");
+        buf = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.startsWith("data:")) continue;
+          const payload = line.slice(5).trim();
+          if (!payload || payload === "[DONE]") continue;
+          try {
+            const ev = JSON.parse(payload);
+            if (ev.type === "response.output_text.delta") out += ev.delta ?? "";
+            else if (ev.type === "response.completed" && !out) out = ev.response?.output_text ?? "";
+          } catch { /* ignore partial */ }
+        }
+      }
+      try {
+        return JSON.parse(out);
+      } catch {
+        console.error("Failed to parse AI response:", out.slice(0, 500));
+        throw Object.assign(new Error("parse"), { status: 500 });
+      }
+    };
 
     let recommendations: any;
     try {
-      recommendations = JSON.parse(out);
-    } catch {
-      console.error("Failed to parse AI response:", out.slice(0, 500));
-      return json({ error: isEN ? "Could not read the generated plan" : "Erreur de lecture du plan généré" }, 500);
+      const parts = await Promise.all(PARTS.map(generate));
+      recommendations = Object.assign({}, ...parts);
+    } catch (err: any) {
+      const status = err?.status ?? 500;
+      if (status === 429) return json({ error: isEN ? "Too many requests, try again shortly." : "Trop de requêtes, réessaie dans quelques instants." }, 429);
+      if (status === 402) return json({ error: isEN ? "AI credits exhausted." : "Crédits IA insuffisants." }, 402);
+      if (err?.message === "parse") return json({ error: isEN ? "Could not read the generated plan" : "Erreur de lecture du plan généré" }, 500);
+      return json({ error: isEN ? "AI service error" : "Erreur du service IA" }, status === 403 ? 403 : 500);
     }
 
     const real = await weatherP;
