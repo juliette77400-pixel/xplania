@@ -92,7 +92,7 @@ const LoadingState = ({ destination }: { destination: string }) => {
             style={{ background: "var(--gradient-primary)" }}
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
-            transition={{ duration: 45, ease: "easeOut" }}
+            transition={{ duration: 18, ease: "easeOut" }}
           />
         </div>
       </motion.div>
