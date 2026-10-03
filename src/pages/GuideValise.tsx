@@ -44,7 +44,12 @@ const GuideValisePage = () => {
 
   const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode || "confort");
   const [transport, setTransport] = useState<TransportMode>("avion");
-  const [categories, setCategories] = useState(() => buildCategories(suggestedMode || "confort", "avion"));
+  const [categories, setCategories] = useState(() => {
+    const base = buildCategories(suggestedMode || "confort", "avion");
+    return Object.fromEntries(
+      Object.entries(base).map(([k, items]) => [k, (items as any[]).map((i) => ({ ...i, checked: false }))]),
+    ) as typeof base;
+  });
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
