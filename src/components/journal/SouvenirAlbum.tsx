@@ -13,10 +13,11 @@ interface Props {
   publicSlug?: string | null;
   onShare?: () => void;
   readOnly?: boolean;
+  onAddContent?: () => void;
 }
 
 /** Frozen, printable "album" layout of a logbook. */
-const SouvenirAlbum = ({ title, destination, cover, days, isPublic, publicSlug, onShare, readOnly }: Props) => {
+const SouvenirAlbum = ({ title, destination, cover, days, isPublic, publicSlug, onShare, readOnly, onAddContent }: Props) => {
   const { t } = useTranslation();
 
   // Does the album have anything to show? (a photo with a url, or any non-photo block)
@@ -58,6 +59,9 @@ const SouvenirAlbum = ({ title, destination, cover, days, isPublic, publicSlug, 
           <p className="text-4xl">📷</p>
           <p className="mt-3 text-sm font-semibold text-foreground">{t("souvenir.emptyTitle")}</p>
           <p className="mt-1 text-xs text-muted-foreground">{t("souvenir.emptyHint")}</p>
+          {!readOnly && onAddContent && (
+            <Button size="sm" className="mt-4" onClick={onAddContent}>{t("souvenir.addContent")}</Button>
+          )}
         </div>
       )}
 

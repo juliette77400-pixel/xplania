@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PROMPT_KEYS = ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"] as const;
 const INTEREST_KEYS = ["food", "hiking", "museums", "beach", "nightlife", "photo", "roadtrip", "wellness", "surf", "architecture", "music", "wildlife", "street_art", "markets"] as const;
@@ -52,6 +53,7 @@ const TagInput = ({ values, onChange, placeholder, max }: { values: string[]; on
 
 const ProfilePersonalization = () => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -102,7 +104,10 @@ const ProfilePersonalization = () => {
     }, { onConflict: "user_id" });
     setSaving(false);
     if (error) toast.error(t("profil.saveError"));
-    else toast.success(t("profil.saveSuccess"));
+    else {
+      toast.success(t("profil.saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: ["gamification", user.id] });
+    }
   };
 
   if (loading) return null;

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { CheckCircle, AlertTriangle, Receipt, Trash2 } from "lucide-react";
@@ -160,32 +161,58 @@ const ExpenseTracker = ({ categories, expenses = [], onRemoveExpense }: Props) =
         )}
       </div>
 
-      <div className="mt-6">
-        <h3 className="text-sm font-semibold text-foreground mb-3">{t("budget.trackerSplit")}</h3>
-        <div className="flex rounded-lg overflow-hidden h-4">
-          {categories.map((cat, i) => {
-            const total = categories.reduce((s, c) => s + c.planned, 0);
-            const pct = total > 0 ? (cat.planned / total) * 100 : 0;
-            const colors = [
-              "bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500",
-              "bg-pink-500", "bg-yellow-500", "bg-red-500",
-            ];
-            const label = t(`budget.categories.${cat.key}`, { defaultValue: cat.key });
-            return (
-              <motion.div
-                key={cat.key}
-                initial={{ width: 0 }}
-                animate={{ width: `${pct}%` }}
-                transition={{ delay: 0.4 + i * 0.06, duration: 0.6 }}
-                className={`${colors[i % colors.length]} h-full`}
-                title={t("budget.splitTooltip", { label, spent: Math.round(cat.spent), planned: Math.round(cat.planned), pct: Math.round(pct) })}
-              />
-            );
-          })}
-        </div>
-      </div>
+      <SplitBar categories={categories} />
     </motion.div>
   );
 };
 
 export default ExpenseTracker;
+
+const SPLIT_COLORS = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500", "bg-pink-500", "bg-yellow-500", "bg-red-500"];
+
+/** Colour bar of the budget split: hover or tap a segment to read its share. */
+function SplitBar({ categories }: { categories: { key: string; planned: number; spent: number }[] }) {
+  const { t } = useTranslation();
+  const [active, setActive] = useState<string | null>(null);
+  const total = categories.reduce((s, c) => s + c.planned, 0);
+  const rows = categories.map((cat, i) => ({
+    ...cat,
+    color: SPLIT_COLORS[i % SPLIT_COLORS.length],
+    pct: total > 0 ? Math.round((cat.planned / total) * 100) : 0,
+    label: t(`budget.categories.${cat.key}`, { defaultValue: cat.key }),
+  }));
+  const current = rows.find((r) => r.key === active);
+  return (
+    <div className="mt-6">
+      <h3 className="text-sm font-semibold text-foreground mb-3">{t("budget.trackerSplit")}</h3>
+      <div className="flex rounded-lg overflow-hidden h-5">
+        {rows.map((r, i) => (
+          <motion.button
+            type="button"
+            key={r.key}
+            initial={{ width: 0 }}
+            animate={{ width: `${r.pct}%` }}
+            transition={{ delay: 0.4 + i * 0.06, duration: 0.6 }}
+            onMouseEnter={() => setActive(r.key)}
+            onFocus={() => setActive(r.key)}
+            onClick={() => setActive(r.key)}
+            aria-label={`${r.label} ${r.pct}%`}
+            className={`${r.color} h-full transition-opacity ${active && active !== r.key ? "opacity-50" : ""}`}
+          />
+        ))}
+      </div>
+      <p className="mt-2 min-h-[1.25rem] text-xs text-muted-foreground" aria-live="polite">
+        {current
+          ? t("budget.splitTooltip", { label: current.label, spent: Math.round(current.spent), planned: Math.round(current.planned), pct: current.pct })
+          : t("budget.splitHint")}
+      </p>
+      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+        {rows.filter((r) => r.pct > 0).map((r) => (
+          <span key={r.key} className="flex items-center gap-1">
+            <span className={`h-2.5 w-2.5 rounded-full ${r.color}`} /> {r.label} {r.pct}%
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}

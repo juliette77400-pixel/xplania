@@ -3094,7 +3094,8 @@
     "scenarioApply": "Appliquer ce scénario",
     "scenarioApplied": "Scénario appliqué à ton budget",
     "dealsEmpty": "Les bons plans arrivent après la génération.",
-    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications."
+    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications.",
+    "splitHint": "Passe la souris ou appuie sur une couleur pour voir sa part du budget."
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
@@ -5172,7 +5173,9 @@
       "timelineTab": "📋 Timeline du voyage",
       "aiSuggestionsTab": "✨ Suggestions IA",
       "suggestionsPinned": "{{count}} suggestion(s) épinglée(s) sur la carte ⭐",
-      "poiAddHint": "Ajouter ce lieu à mon carnet"
+      "poiAddHint": "Ajouter ce lieu à mon carnet",
+      "poiNeedPosition": "Active ta position (bouton Démarrer) pour voir les points d'intérêt autour de toi.",
+      "poiNone": "Aucun point d'intérêt trouvé à moins de 600 m. Déplace-toi ou change de filtre."
     },
     "Gamification": {
       "missionShareMood": "Partager 1 émotion dans ton carnet",
@@ -5686,7 +5689,8 @@
     "makePublic": "Rendre public",
     "copied": "Lien copié !",
     "emptyTitle": "Ton album est encore vide",
-    "emptyHint": "Ajoute des photos et des notes dans les jours de ton carnet : elles apparaîtront ici automatiquement, prêtes à imprimer ou partager."
+    "emptyHint": "Ajoute des photos et des notes dans les jours de ton carnet : elles apparaîtront ici automatiquement, prêtes à imprimer ou partager.",
+    "addContent": "Ajouter des photos et des notes"
   },
   "errors": {
     "loadRatings": "Impossible de charger les notes. Réessaie plus tard.",
