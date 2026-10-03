@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { countryContext } from "../_shared/country-facts.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
@@ -145,7 +146,7 @@ Météo : décris la météo typique à ces dates précises à destination.`;
       },
       body: JSON.stringify({
         model: "openai/gpt-6-astra",
-        instructions,
+        instructions: instructions + countryContext(`${dest} ${city}`, locale),
         input: profile,
         stream: true,
         store: false,

@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { countryContext } from "../_shared/country-facts.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { enforceQuota } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
@@ -86,7 +87,7 @@ Retourne UNIQUEMENT un objet JSON de cette forme exacte :
 PAS de markdown, PAS de commentaire, uniquement le JSON.`;
 
     const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
-    const systemWithCtx = system + (travelerCtx ? "\n\n" + travelerCtx : "");
+    const systemWithCtx = system + countryContext(destination, locale) + (travelerCtx ? "\n\n" + travelerCtx : "");
 
     const user = isEN
       ? `Destination: ${destination}
