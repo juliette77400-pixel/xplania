@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useTravelStore } from "@/stores/useTravelStore";
 import ValiseHero from "@/components/valise/ValiseHero";
@@ -58,6 +59,17 @@ const GuideValisePage = () => {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const { reached, consume } = useQuota("valise");
+
+  // Whether the suitcase has been generated for this destination. The checklist,
+  // readiness % and all result sections only appear (and only count) once the
+  // user has actually generated — fixes the "73% before generating" bug.
+  const genKey = useMemo(() => `valise:gen:v1:${destination}`, [destination]);
+  const [hasGenerated, setHasGenerated] = useState<boolean>(() => {
+    try { return localStorage.getItem(genKey) === "1"; } catch { return false; }
+  });
+  useEffect(() => {
+    try { setHasGenerated(localStorage.getItem(genKey) === "1"); } catch { /* ignore */ }
+  }, [genKey]);
 
   // ── Persistence (localStorage) ─────────────────────────────
   const storageKey = useMemo(
@@ -158,6 +170,9 @@ const GuideValisePage = () => {
   const runGeneration = useCallback(async () => {
     if (reached) { setShowUpgrade(true); return; }
     consume();
+    // Build a fresh checklist that respects the current transport + luggage type,
+    // with nothing checked yet (so readiness starts at 0%).
+    setCategories(buildCategories(luggageMode, transport));
     setIsGenerating(true);
     setGenerationStep(0);
     for (let i = 0; i < STEPS.length; i++) {
@@ -168,9 +183,11 @@ const GuideValisePage = () => {
     await new Promise((r) => setTimeout(r, 400));
     setIsGenerating(false);
     setActiveSection(7);
+    setHasGenerated(true);
+    try { localStorage.setItem(genKey, "1"); } catch { /* ignore */ }
     track("guide_generated", { guide: "valise" });
     toast.success(t("guideValise.toastValiseReady"), { description: t("guideValise.toastValiseReadyDesc") });
-  }, [t, consume, reached]);
+  }, [t, consume, reached, luggageMode, transport, genKey]);
 
   const handleRegenerate = useCallback(
     async (scope: "all" | "clothes" | "activities") => {
@@ -265,7 +282,7 @@ const GuideValisePage = () => {
       <QuotaBanner tool="valise" toolLabel={t("ui2.GuideValise.toolLabel")} />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName={t("ui2.GuideValise.toolLabel")} />
       <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
-        <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} checkedItems={checkedItems} totalItems={totalItems} />
+        <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} checkedItems={checkedItems} totalItems={totalItems} showProgress={hasGenerated} showCta={false} />
 
         <GenerationAnimation isGenerating={isGenerating} currentStep={generationStep} />
 
@@ -285,6 +302,24 @@ const GuideValisePage = () => {
           <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} destination={destination} />
         </div>
 
+        {/* Generate CTA — placed after the transport + luggage-type choices so the
+            suitcase respects them. Hidden once generated. */}
+        {!hasGenerated && (
+          <div className="flex flex-col items-center gap-3 rounded-2xl border border-primary/15 bg-primary/5 p-6 text-center">
+            <p className="max-w-md text-sm text-muted-foreground">{t("valise.generateHint")}</p>
+            <button
+              onClick={runGeneration}
+              disabled={isGenerating}
+              className="gradient-button inline-flex items-center gap-2 rounded-xl px-6 py-3 font-bold text-primary-foreground transition hover:-translate-y-0.5 disabled:opacity-60"
+            >
+              <Sparkles className="h-4 w-4" />
+              {t("valise.heroCta")}
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
+        {hasGenerated && (<>
         {/* Dashboard checklist cards */}
         <div>
           <div className="flex items-center justify-between mb-4">
@@ -381,6 +416,7 @@ const GuideValisePage = () => {
             remainingByCategory={remainingByCategory}
           />
         </CollapsibleSection>
+        </>)}
       </div>
       <QuickJump />
       <ValisePipChat destination={destination} />
