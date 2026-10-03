@@ -4233,7 +4233,7 @@
     "deletePoint": "Delete this point",
     "suggestionsAi": "AI Suggestions",
     "suggest": "Suggest",
-    "suggestHint": "Run AI to discover local places to add to your journey.",
+    "suggestHint": "Tap “Suggest”: the AI picks 4 real places at your destination (food, culture, nature, nightlife…) that complete your route. Add them with “+”, then mark them as visited on site to earn points and unlock badges.",
     "addPlus": "Add",
     "suggestFail": "Suggestions failed",
     "tmKicker": "Travel Map",

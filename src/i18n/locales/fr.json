@@ -4233,7 +4233,7 @@
     "deletePoint": "Supprimer ce point",
     "suggestionsAi": "Suggestions IA",
     "suggest": "Suggérer",
-    "suggestHint": "Lance l'IA pour découvrir des lieux locaux à ajouter à ton parcours.",
+    "suggestHint": "Appuie sur « Suggérer » : l'IA te propose 4 vrais lieux de ta destination (resto, culture, nature, sortie…) qui complètent ton parcours. Ajoute-les avec « + », puis marque-les comme visités sur place pour gagner des points et débloquer des badges.",
     "addPlus": "Ajouter",
     "suggestFail": "Échec suggestions",
     "tmKicker": "Carte de voyage",
