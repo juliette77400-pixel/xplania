@@ -157,7 +157,7 @@ Génère les informations complètes de formalités pour ce voyage.`;
               };
     let visaInfo: unknown;
     try {
-      visaInfo = await generateJsonSplit({ instructions: systemPrompt + countryContext(destination, locale), input: userPrompt, schema: SCHEMA, name: "visa_info", parts: [["visa", "emergency_contacts"], ["security", "health"], ["checklist"]] });
+      visaInfo = await generateJsonSplit({ instructions: systemPrompt + countryContext(destination, locale), input: userPrompt, schema: SCHEMA, name: "visa_info", parts: [["visa", "emergency_contacts"], ["security"], ["health"], ["checklist"]] });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;
