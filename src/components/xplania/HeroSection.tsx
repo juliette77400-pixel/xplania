@@ -10,11 +10,11 @@ interface Props {
 const copy = {
   fr: {
     eyebrow: "Erasmus, stage, échange : ton copilote de mobilité",
-    title: "Pars serein·e.",
-    accent: "Reviens transformé·e.",
-    subtitle: "Visa, budget serré, logement, arrivée seul·e… Xplania t'accompagne avant, pendant et après ta mobilité. Moins gérer. Plus explorer.",
+    title: "Pars serein.",
+    accent: "Reviens transformé.",
+    subtitle: "Visa, budget serré, logement, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité. Moins gérer. Plus explorer.",
     primary: "Préparer ma mobilité",
-    proof: ["Pensé pour les étudiant·es", "10 essais gratuits / mois", "FR · EN"],
+    proof: ["Pensé pour les étudiants", "10 essais gratuits / mois", "FR · EN"],
     pains: ["Convention de stage", "Visa & formalités", "Budget étudiant", "Vie sur place", "Badges & défis"],
     ping: "Moi c'est Ping ! Plus tu voyages, plus je te connais.",
     cardLabel: "Ping prépare ton semestre",

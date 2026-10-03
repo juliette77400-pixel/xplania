@@ -117,8 +117,8 @@ const BadgesShowcase = ({ badges, nodes, mediaCount }: Props) => {
                       "relative aspect-square rounded-2xl flex flex-col items-center justify-center p-1.5 cursor-help transition-all",
                       "ring-1",
                       unlocked
-                        ? cn("bg-gradient-to-br from-card via-card to-primary/15", r.ring, r.glow)
-                        : "bg-muted/10 ring-border/50 opacity-60 grayscale",
+                        ? cn("bg-gradient-to-br from-primary/25 via-card to-secondary/25 ring-2", r.ring, r.glow)
+                        : "bg-muted/5 ring-border/40 border border-dashed border-border opacity-40 grayscale",
                     )}
                   >
                     <div className="text-2xl leading-none">{b.icon}</div>

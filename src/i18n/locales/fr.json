@@ -575,7 +575,7 @@
     },
     "stepper": {
       "title": "Ta checklist visa, sans prise de tête 📋",
-      "reassurance": "💬 Pas sûr·e d'une étape ? Demande à Ping — aucune question n'est trop simple.",
+      "reassurance": "💬 Pas sûr d'une étape ? Demande à Ping — aucune question n'est trop simple.",
       "steps": [
         {
           "title": "Vérifie si tu as besoin d'un visa",
@@ -602,7 +602,7 @@
           "detail": "Copie papier + copie cloud de ton passeport, visa, assurance et réservations. Note le numéro du consulat français le plus proche."
         }
       ],
-      "nationalityNote": "En tant que voyageur·se de nationalité {{nationality}}, voici ce qui s'applique à toi pour {{destination}}."
+      "nationalityNote": "En tant que voyageur de nationalité {{nationality}}, voici ce qui s'applique à toi pour {{destination}}."
     },
     "currencySection": {
       "title": "💱 Convertisseur de devises — taux en temps réel",
@@ -699,9 +699,9 @@
       "levelsTitle": "Niveaux de vigilance France-Diplomatie",
       "levelAria": "Niveau de vigilance",
       "risksTitle": "Risques courants à connaître",
-      "soloTitle": "Voyager seul·e",
+      "soloTitle": "Voyager seul",
       "arianeTitle": "Inscris-toi sur Ariane",
-      "arianeBody": "Service gratuit du ministère de l'Europe et des Affaires étrangères : tu reçois des alertes sécurité par SMS/email et tu peux être contacté·e en cas de crise dans ton pays de destination.",
+      "arianeBody": "Service gratuit du ministère de l'Europe et des Affaires étrangères : tu reçois des alertes sécurité par SMS/email et tu peux être contacté en cas de crise dans ton pays de destination.",
       "arianeCta": "S'inscrire sur Ariane",
       "emergenciesTitle": "Numéros utiles",
       "officialCta": "Fiche officielle France-Diplomatie",
@@ -747,7 +747,7 @@
       "soloTips": [
         "Informe un proche de ton itinéraire et de tes hébergements",
         "Partage ta position en temps réel avec une personne de confiance",
-        "Évite de circuler seul·e la nuit dans des zones inconnues",
+        "Évite de circuler seul la nuit dans des zones inconnues",
         "Garde une copie numérique de tes documents (cloud + email)",
         "Repère le consulat français le plus proche dès ton arrivée"
       ],
@@ -780,7 +780,7 @@
       "levels": {
         "1": {
           "label": "🟢 Niveau 1 — Vigilance normale",
-          "summary": "Selon les autorités françaises, {{destination}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant·e comme partout."
+          "summary": "Selon les autorités françaises, {{destination}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant comme partout."
         },
         "2": {
           "label": "🟡 Niveau 2 — Vigilance renforcée",
@@ -796,13 +796,13 @@
         }
       },
       "solo": {
-        "title": "Voyager seul·e — ce qu'il faut savoir",
+        "title": "Voyager seul — ce qu'il faut savoir",
         "tips": [
           "Informe toujours un proche de ton itinéraire et de tes hébergements",
           "Partage ta position en temps réel avec une personne de confiance",
           "Vérifie les zones à éviter selon les conseils officiels",
           "Note les numéros d'urgence locaux et l'adresse du consulat français",
-          "Rejoins des groupes de voyageur·euses solo sur des forums dédiés"
+          "Rejoins des groupes de voyageurs solo sur des forums dédiés"
         ]
       }
     },
@@ -813,7 +813,7 @@
       "restart": "Recommencer",
       "welcome": "Salut ! 🌍 C'est Ping. Je t'aide à comprendre les visas, la sécurité et les formalités d'entrée — sans prise de tête. Je te guide étape par étape ?",
       "welcomeYes": "✨ Oui, guide-moi",
-      "welcomeNo": "Je préfère explorer seul·e",
+      "welcomeNo": "Je préfère explorer seul",
       "steps": {
         "destination": "Où tu pars ? (tape un pays)",
         "nationality": "Tu voyages avec quel passeport ?",
@@ -825,7 +825,7 @@
         "business": "Business",
         "studies": "Études",
         "couple": "En couple",
-        "solo": "Seul·e",
+        "solo": "Seul",
         "family": "Famille"
       },
       "durations": {
@@ -2037,11 +2037,11 @@
     "title": "Qu'as-tu envie de découvrir ?",
     "subtitle": "Choisis une catégorie pour voir les lieux autour de toi, ou laisse Ping te guider.",
     "optionACategory": "Choisis une catégorie",
-    "optionBPip": "Pas sûr·e de ce que tu cherches ?",
+    "optionBPip": "Pas sûr de ce que tu cherches ?",
     "pipDescription": "Ping te pose 2-3 questions courtes pour viser juste.",
     "askPip": "Demander à Ping",
     "seePlaces": "Voir les lieux",
-    "selectedCount": "{{count}} sélectionnée·s",
+    "selectedCount": "{{count}} sélectionnées",
     "tapHint": "Tape une catégorie (ou double-tape pour y aller direct)",
     "soloShortcut": "Juste une balade en solo, maintenant",
     "cat": {
@@ -2508,7 +2508,7 @@
         },
         "behavior": {
           "title": "💬 Comportements locaux",
-          "text": "Sois patient·e avec le rythme local, souris, dis bonjour en entrant dans un commerce. La discrétion en public est appréciée presque partout."
+          "text": "Sois patient avec le rythme local, souris, dis bonjour en entrant dans un commerce. La discrétion en public est appréciée presque partout."
         }
       },
       "japon": {
@@ -2540,7 +2540,7 @@
         },
         "avoid": {
           "title": "⚠️ À éviter absolument",
-          "text": "Ne photographie pas les gens sans accord (souvent payant). N'entre pas dans les mosquées si tu n'es pas musulman·e (sauf Hassan II à Casablanca). Évite l'alcool en public hors hôtels."
+          "text": "Ne photographie pas les gens sans accord (souvent payant). N'entre pas dans les mosquées si tu n'es pas musulman (sauf Hassan II à Casablanca). Évite l'alcool en public hors hôtels."
         },
         "behavior": {
           "title": "💬 Comportements locaux",
@@ -3141,7 +3141,7 @@
       "submit": "Soumettre ma preuve",
       "submitted": "Preuve envoyée — en attente de validation 🚀",
       "validated": "Badge déjà validé ✓",
-      "pending": "Ta preuve est en cours de vérification. Tu seras notifié·e dès qu'elle est validée.",
+      "pending": "Ta preuve est en cours de vérification. Tu seras notifié dès qu'elle est validée.",
       "rejected": "Preuve refusée",
       "geoFailed": "Impossible d'obtenir ta position. Essaie avec une photo.",
       "photoRequired": "Ajoute une photo pour valider.",
@@ -3927,7 +3927,7 @@
     },
     "q6": {
       "q": "Quand sortent les versions premium ?",
-      "a": "Les offres premium sont prévues pour fin 2026 / début 2027. Inscris-toi à la liste premium pour être prévenu·e en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
+      "a": "Les offres premium sont prévues pour fin 2026 / début 2027. Inscris-toi à la liste premium pour être prévenu en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
     }
   },
   "exitIntent": {
@@ -4223,7 +4223,7 @@
     "suggestHint": "Lance l'IA pour découvrir des lieux locaux à ajouter à ton parcours.",
     "addPlus": "Ajouter",
     "suggestFail": "Échec suggestions",
-    "tmKicker": "Travel Map",
+    "tmKicker": "Carte de voyage",
     "myGameTrip": "Mon voyage gamifié",
     "stPoints": "Points",
     "stVisited": "Visités",
@@ -5177,7 +5177,7 @@
     "feature-unlocks": {
       "culture": "ta curiosité culturelle",
       "authenticity": "ton goût pour l'authentique",
-      "adventure": "ton âme d'aventurier·e",
+      "adventure": "ton âme d'aventurier",
       "nature": "ton amour de la nature",
       "food": "ta passion food",
       "social": "ton côté social",
@@ -5263,7 +5263,7 @@
       "weatherAlt": "Météo"
     },
     "useCheckIn": {
-      "arrived": "Bien arrivé·e à {{title}} !"
+      "arrived": "Bien arrivé à {{title}} !"
     },
     "useMoodExplorer": {
       "noPlaces": "Aucun lieu trouvé pour ce mood",
@@ -5390,16 +5390,16 @@
     "Essai": {
       "badgeFlavor": {
         "cultural_explorer": "explorateur·rice culturel·le",
-        "digital_nomad": "nomade digital·e",
-        "relaxation": "amoureux·se de détente",
+        "digital_nomad": "nomade digital",
+        "relaxation": "amoureux de détente",
         "adventurer": "aventurier·ère",
-        "nature": "amoureux·se de nature",
-        "gastronomic": "gourmand·e",
+        "nature": "amoureux de nature",
+        "gastronomic": "gourmand",
         "wellbeing": "adepte du bien-être",
-        "social": "voyageur·se social·e",
-        "organized": "voyageur·se organisé·e",
-        "budget": "voyageur·se malin·e",
-        "curious": "curieux·se"
+        "social": "voyageur social",
+        "organized": "voyageur organisé",
+        "budget": "voyageur malin",
+        "curious": "curieux"
       },
       "previews": {
         "discover": {
@@ -6004,7 +6004,7 @@
     "start": "Donner mon avis",
     "later": "Plus tard",
     "title": "Ton avis sur Xplania",
-    "npsLabel": "Recommanderais-tu Xplania à un·e ami·e ? (0 = pas du tout, 10 = carrément)",
+    "npsLabel": "Recommanderais-tu Xplania à un ami ? (0 = pas du tout, 10 = carrément)",
     "easeLabel": "Xplania est-il facile à utiliser ?",
     "easeLow": "Compliqué",
     "easeHigh": "Très simple",

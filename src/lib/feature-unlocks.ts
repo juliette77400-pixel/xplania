@@ -74,7 +74,7 @@ export const SCORE_TO_PACK: Record<TravelerDimension, PremiumPackId> = {
 export const SCORE_LABEL_FR: Record<TravelerDimension, string> = {
   culture:      "ta curiosité culturelle",
   authenticity: "ton goût pour l'authentique",
-  adventure:    "ton âme d'aventurier·e",
+  adventure:    "ton âme d'aventurier",
   nature:       "ton amour de la nature",
   food:         "ta passion food",
   social:       "ton côté social",
