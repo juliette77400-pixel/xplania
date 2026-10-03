@@ -150,7 +150,7 @@ Météo : décris la météo typique à ces dates précises à destination.`;
         input: profile,
         stream: true,
         store: false,
-        reasoning: { effort: "none" },
+        reasoning: { effort: "minimal" },
         text: { format: { type: "json_schema", name: "trip_plan", strict: true, schema: SCHEMA } },
       }),
     });
