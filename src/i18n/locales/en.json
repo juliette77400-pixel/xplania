@@ -1716,7 +1716,7 @@
     },
     "dashboard": {
       "loadingTitle": "Analyzing for {{destination}}...",
-      "loadingDesc": "Our AI is generating ultra-personalized recommendations based on your traveler profile. It takes about 30 to 50 seconds: stay on this page, Ping is on it ✨",
+      "loadingDesc": "Our AI is generating ultra-personalized recommendations based on your traveler profile. It takes about 15 to 20 seconds: stay on this page, Ping is on it ✨",
       "errorTitle": "Oops, something went wrong",
       "destinationFallback": "your destination",
       "kickerDest": "Your destination",

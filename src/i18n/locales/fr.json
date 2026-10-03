@@ -1716,7 +1716,7 @@
     },
     "dashboard": {
       "loadingTitle": "Analyse en cours pour {{destination}}...",
-      "loadingDesc": "Notre IA génère des recommandations ultra-personnalisées basées sur ton profil de voyageur. Ça prend environ 30 à 50 secondes : reste sur cette page, Ping s'occupe de tout ✨",
+      "loadingDesc": "Notre IA génère des recommandations ultra-personnalisées basées sur ton profil de voyageur. Ça prend environ 15 à 20 secondes : reste sur cette page, Ping s'occupe de tout ✨",
       "errorTitle": "Oups, une erreur est survenue",
       "destinationFallback": "ta destination",
       "kickerDest": "Ta destination",
