@@ -165,8 +165,9 @@ export const useExplore = (tripId: string | undefined) => {
       position_x: input.position_x ?? Math.random() * 600 - 300,
       position_y: input.position_y ?? Math.random() * 600 - 300,
     });
-    if (error) toast.error(i18n.t("ui2.useExplore.addFailed")); else toast.success(i18n.t("ui2.useExplore.placeAdded"));
-  }, [user, tripId]);
+    if (error) toast.error(i18n.t("ui2.useExplore.addFailed"));
+    else { toast.success(i18n.t("ui2.useExplore.placeAdded")); await reload(); }
+  }, [user, tripId, reload]);
 
   const deleteNode = useCallback(async (nodeId: string) => {
     await supabase.from("explore_nodes").delete().eq("id", nodeId);
