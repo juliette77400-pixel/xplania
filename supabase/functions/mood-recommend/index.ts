@@ -127,9 +127,21 @@ Règles strictes :
 - Adapte à la météo, l'heure et l'historique
 - Toujours répondre via la function call return_mood_places.`;
 
-    const historyStr = history?.length
-      ? (isEN ? `Recent user moods: ${history.map(h => h.mood).join(", ")}.` : `Moods récents de l'utilisateur : ${history.map(h => h.mood).join(", ")}.`)
+    // Low past ratings (1-2/5) teach Ping what to avoid next time.
+    const { data: badRatings } = await supabase
+      .from("mood_entries")
+      .select("mood_tags, note")
+      .eq("user_id", user.id)
+      .lte("satisfaction_rating", 2)
+      .order("created_at", { ascending: false })
+      .limit(5);
+    const badStr = badRatings?.length
+      ? (isEN ? "Past moments the user did NOT enjoy (avoid similar suggestions): " : "Moments que l'utilisateur n'a PAS aimés (évite des propositions similaires) : ") +
+        badRatings.map((r) => `${(r.mood_tags || []).join("/")}${r.note ? ` — « ${String(r.note).slice(0, 120)} »` : ""}`).join(" ; ") + "."
       : "";
+    const historyStr = (history?.length
+      ? (isEN ? `Recent user moods: ${history.map(h => h.mood).join(", ")}.` : `Moods récents de l'utilisateur : ${history.map(h => h.mood).join(", ")}.`)
+      : "") + (badStr ? `\n${badStr}` : "");
 
     // Xplania brain: inject persistent traveler context (profile + memory + history)
     const travelCtx = await buildTravelContext(supabase, user.id);
