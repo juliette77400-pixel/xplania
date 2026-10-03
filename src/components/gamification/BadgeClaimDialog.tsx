@@ -69,9 +69,11 @@ const BadgeClaimDialog = ({ badge, open, onOpenChange }: Props) => {
           setSubmitting(false);
           return;
         }
-        const ext = photo.name.split(".").pop() || "jpg";
+        const { compressImage } = await import("@/lib/compress-image");
+        const small = await compressImage(photo);
+        const ext = small.name.split(".").pop() || "jpg";
         const path = `${user.id}/${badge.id}/${Date.now()}.${ext}`;
-        const { error: upErr } = await supabase.storage.from("badge-proofs").upload(path, photo);
+        const { error: upErr } = await supabase.storage.from("badge-proofs").upload(path, small);
         if (upErr) throw upErr;
         proof_url = path;
       }
