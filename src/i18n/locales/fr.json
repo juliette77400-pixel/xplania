@@ -3416,7 +3416,8 @@
       "subtitle": "Note ce moment d'un emoji, ajoute un mot si tu veux.",
       "notePh": "Quelques mots… (optionnel)",
       "skip": "Plus tard",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "cta": "Déjà sur place ? Note ce moment"
     },
     "hero": {
       "kicker": "Mood Explorer",

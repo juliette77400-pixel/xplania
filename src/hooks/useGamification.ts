@@ -17,11 +17,33 @@ export type BadgeWithClaim = GamBadge & {
   status: GamClaimStatus | "locked";
 };
 
+// Maps the interest keys the user picks on their Profile
+// (ProfilePersonalization INTEREST_KEYS) to gamification category slugs, so
+// profile interests influence which badges are proposed. Unknown slugs are
+// simply ignored at runtime (resolved against the categories that exist).
+const INTEREST_TO_CATEGORY_SLUGS: Record<string, string[]> = {
+  food: ["gastronomie", "food"],
+  hiking: ["nature"],
+  museums: ["culture"],
+  beach: ["nature", "eco"],
+  nightlife: ["nightlife"],
+  photo: ["art", "culture"],
+  roadtrip: ["nature"],
+  wellness: ["wellness"],
+  surf: ["nature"],
+  architecture: ["culture", "art"],
+  music: ["nightlife", "art"],
+  wildlife: ["nature", "eco"],
+  street_art: ["art", "culture"],
+  markets: ["gastronomie", "culture"],
+};
+
 interface GamData {
   categories: GamCategory[];
   badges: GamBadge[];
   claims: GamClaim[];
   prefs: string[];
+  interests: string[];
   visibility: GamVisibility;
   points: number;
 }
@@ -31,6 +53,7 @@ const EMPTY: GamData = {
   badges: [],
   claims: [],
   prefs: [],
+  interests: [],
   visibility: "anonymized",
   points: 0,
 };
@@ -47,19 +70,21 @@ export function useGamification() {
     queryKey,
     enabled: !!user,
     queryFn: async () => {
-      const [catRes, badgeRes, claimsRes, prefsRes, settingsRes, ptsRes] = await Promise.all([
+      const [catRes, badgeRes, claimsRes, prefsRes, settingsRes, ptsRes, profRes] = await Promise.all([
         supabase.from("gam_categories").select("*").eq("active", true).order("position"),
         supabase.from("gam_badges").select("*").eq("active", true),
         supabase.from("gam_badge_claims").select("*").eq("user_id", user!.id),
         supabase.from("gam_user_category_prefs").select("category_id").eq("user_id", user!.id),
         supabase.from("gam_user_settings").select("competition_visibility").eq("user_id", user!.id).maybeSingle(),
         supabase.rpc("gam_user_points", { _user_id: user!.id }),
+        supabase.from("profiles").select("interests").eq("user_id", user!.id).maybeSingle(),
       ]);
       return {
         categories: catRes.data || [],
         badges: badgeRes.data || [],
         claims: claimsRes.data || [],
         prefs: (prefsRes.data || []).map((p: any) => p.category_id),
+        interests: ((profRes.data?.interests as string[] | null) || []),
         visibility: (settingsRes.data?.competition_visibility as GamVisibility) || "anonymized",
         points: (ptsRes.data as number) || 0,
       };
@@ -137,11 +162,25 @@ export function useGamification() {
     [user, setData],
   );
 
-  // Build merged list with status, optionally filtered to user prefs
+  // Profile interests → category ids (resolved against the categories that
+  // actually exist), so picking interests on the Profile surfaces matching
+  // badges without needing the separate picker in Settings.
+  const slugToId = new Map(gam.categories.map((c) => [c.slug, c.id]));
+  const interestCategoryIds = Array.from(
+    new Set(
+      gam.interests
+        .flatMap((k) => INTEREST_TO_CATEGORY_SLUGS[k] || [])
+        .map((slug) => slugToId.get(slug))
+        .filter((id): id is string => !!id),
+    ),
+  );
+  const effectivePrefs = Array.from(new Set([...gam.prefs, ...interestCategoryIds]));
+
+  // Build merged list with status, optionally filtered to the effective prefs
   const visibleBadges: BadgeWithClaim[] = gam.badges
     .filter((b) =>
-      gam.prefs.length === 0 ||
-      gam.prefs.includes(b.category_id) ||
+      effectivePrefs.length === 0 ||
+      effectivePrefs.includes(b.category_id) ||
       // Beta: Lille challenges are always visible so testers can try them.
       gam.categories.find((c) => c.id === b.category_id)?.slug === "lille")
     .map((b) => {

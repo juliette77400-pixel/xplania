@@ -3416,7 +3416,8 @@
       "subtitle": "Rate this moment with an emoji, add a word if you like.",
       "notePh": "A few words… (optional)",
       "skip": "Later",
-      "save": "Save"
+      "save": "Save",
+      "cta": "Already there? Rate this moment"
     },
     "hero": {
       "kicker": "Mood Explorer",
