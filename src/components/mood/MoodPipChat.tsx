@@ -41,6 +41,18 @@ const MOOD_MAP: Record<MoodTag, MoodKey> = {
 
 const SOLO_INTENT = /\b(seule?|solo|toute?\s+seule?|me\s+promener|marcher\s+seul|just\s+a\s+walk|alone|by\s+myself)\b/i;
 
+// Guess the mood from free text so "envie de faire la fête" isn't treated as "calme".
+const FREE_MOOD_RULES: [RegExp, MoodTag][] = [
+  [/(f[eê]te|danser|soir[ée]e|bar|party|dance|club|[ée]nergie|bouger|sport|energ)/i, "energie"],
+  [/(stress|angoiss|anxi|d[ée]bord|fatigu[ée] du travail|overwhelm)/i, "stress"],
+  [/(amis|rencontr|potes|friends|meet|social|ensemble)/i, "connexion"],
+  [/(wow|[ée]merveill|beau|vue|panorama|nature|amaz|view|insolite|d[ée]couvr|explor)/i, "emerveillement"],
+  [/(r[ée]fl[ée]ch|pens|lire|livre|mus[ée]e|calme int|contempl|think|read)/i, "contemplatif"],
+  [/(fatigu|crev[ée]|tired|lazy|flemme)/i, "curiosite_fatiguee"],
+];
+const guessMood = (txt: string): MoodTag =>
+  FREE_MOOD_RULES.find(([re]) => re.test(txt))?.[1] ?? "calme";
+
 const MOOD_TAGS: MoodTag[] = [
   "calme",
   "stress",
@@ -103,7 +115,7 @@ const MoodPipChat = ({ loading, onClose, onSubmit }: Props) => {
 
     // Treat as free-form mood description
     setFreeInput(trimmed);
-    setMood("calme"); // sensible default; free_input dominates the AI prompt
+    setMood(guessMood(trimmed)); // free_input still dominates the AI prompt
     say({ role: "assistant", content: t("moodComp.pip.gotFree") });
     setStep("company");
   };
