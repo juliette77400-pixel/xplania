@@ -3849,7 +3849,7 @@
   },
   "exploreComp": {},
   "testimonials": {
-    "tag": "They tried it",
+    "tag": "They trust us",
     "title": "What early explorers are saying",
     "subtitle": "Real feedback from beta testers — picked for their honesty.",
     "t1": {
@@ -5882,5 +5882,29 @@
     "adminFeature": "Favorite tools",
     "adminComments": "Latest comments",
     "adminEmpty": "No responses yet."
+  },
+  "adminSchools": {
+    "title": "School spaces",
+    "subtitle": "Anonymous figures for students signed up with the school's email address. Click a school to see its report.",
+    "namePh": "School name (e.g. ESTICE)",
+    "domainPh": "Email domain (e.g. estice.fr)",
+    "add": "Add",
+    "delete": "Delete",
+    "confirmDelete": "Delete this school?",
+    "invalid": "Invalid name or domain (or already added).",
+    "empty": "No schools yet.",
+    "loading": "Loading…",
+    "tools": "Tools used",
+    "destinations": "Destinations",
+    "kpi": {
+      "students": "Students signed up",
+      "active30": "Active (30 d)",
+      "quiz": "DNA test done",
+      "trips": "Trips created",
+      "journals": "Journals",
+      "surveys": "Reviews",
+      "nps": "Recommendation /10",
+      "ease": "Ease"
+    }
   }
 }
