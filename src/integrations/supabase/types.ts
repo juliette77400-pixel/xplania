@@ -1980,6 +1980,39 @@ export type Database = {
           },
         ]
       }
+      satisfaction_surveys: {
+        Row: {
+          comment: string | null
+          created_at: string
+          ease: number
+          favorite_feature: string | null
+          id: string
+          nps: number
+          trip_context: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          ease: number
+          favorite_feature?: string | null
+          id?: string
+          nps: number
+          trip_context?: string | null
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          ease?: number
+          favorite_feature?: string | null
+          id?: string
+          nps?: number
+          trip_context?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       tinder_cards: {
         Row: {
           active: boolean
