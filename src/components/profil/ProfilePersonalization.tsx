@@ -102,7 +102,10 @@ const ProfilePersonalization = () => {
     }, { onConflict: "user_id" });
     setSaving(false);
     if (error) toast.error(t("profil.saveError"));
-    else toast.success(t("profil.saveSuccess"));
+    else {
+      toast.success(t("profil.saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: ["gamification", user.id] });
+    }
   };
 
   if (loading) return null;
