@@ -413,16 +413,16 @@
     "createCta": "Créer mon voyage",
     "viewFullGuide": "Voir le guide complet",
     "budgetGuide": "Guide Budget",
-    "budgetGuideDesc": "Estimation personnalisée pour {{destination}} · {{days}} jours",
+    "budgetGuideDesc": "Estimation personnalisée {{destination, pour}} · {{days}} jours",
     "totalBudget": "Budget total",
     "perDay": "Par jour",
     "breakdown": "Répartition détaillée",
     "yourConstraints": "Tes contraintes budget :",
     "visaGuide": "Guide Visa & Documents",
-    "visaGuideDesc": "Documents nécessaires pour {{destination}}",
+    "visaGuideDesc": "Documents nécessaires {{destination, pour}}",
     "noVisaData": "Aucune donnée de documents disponible. Génère un plan de voyage pour voir les résultats.",
     "suitcaseGuide": "Guide Valise",
-    "suitcaseGuideDesc": "Checklist personnalisée pour {{destination}} · {{days}} jours",
+    "suitcaseGuideDesc": "Checklist personnalisée {{destination, pour}} · {{days}} jours",
     "noLuggageData": "Aucune donnée de bagages disponible. Génère un plan de voyage pour voir les résultats.",
     "yourLuggageTypes": "Tes types de bagages :"
   },
@@ -602,7 +602,7 @@
           "detail": "Copie papier + copie cloud de ton passeport, visa, assurance et réservations. Note le numéro du consulat français le plus proche."
         }
       ],
-      "nationalityNote": "En tant que voyageur de nationalité {{nationality}}, voici ce qui s'applique à toi pour {{destination}}."
+      "nationalityNote": "En tant que voyageur de nationalité {{nationality}}, voici ce qui s'applique à toi {{destination, pour}}."
     },
     "currencySection": {
       "title": "💱 Convertisseur de devises — taux en temps réel",
@@ -612,7 +612,7 @@
       "checking": "Vérification auprès des autorités…",
       "verifiedAt": "Vérifié à {{time}}",
       "verifiedAria": "Informations vérifiées à {{time}} via les sources officielles",
-      "liveFor": "Données à jour pour {{destination}}",
+      "liveFor": "Données à jour {{destination, pour}}",
       "viewSource": "Voir la source : {{source}} →",
       "malariaRisk": "Risque paludisme : {{level}}",
       "risk": {
@@ -623,7 +623,7 @@
       },
       "refresh": "Rafraîchir les infos officielles",
       "refreshing": "Rafraîchissement…",
-      "refreshAria": "Mettre à jour les données officielles pour {{destination}}"
+      "refreshAria": "Mettre à jour les données officielles {{destination, pour}}"
     },
     "vaccinesGuide": {
       "title": "💉 Vaccins & santé voyage",
@@ -631,7 +631,7 @@
       "officialTitle": "Sources officielles à consulter",
       "opensNewTab": "ouvre dans un nouvel onglet",
       "disclaimer": "Ces informations sont générales. Consulte un centre de vaccinations internationales 4 à 8 semaines avant le départ pour un avis personnalisé.",
-      "disclaimerWithDest": "Ces informations sont générales pour {{destination}}. Consulte un centre de vaccinations internationales 4 à 8 semaines avant le départ.",
+      "disclaimerWithDest": "Ces informations sont générales {{destination, pour}}. Consulte un centre de vaccinations internationales 4 à 8 semaines avant le départ.",
       "blocks": [
         {
           "icon": "mandatory",
@@ -784,7 +784,7 @@
         },
         "2": {
           "label": "🟡 Niveau 2 — Vigilance renforcée",
-          "summary": "Selon les autorités françaises, une vigilance renforcée est recommandée pour {{destination}}. Consulte la fiche officielle pour les détails."
+          "summary": "Selon les autorités françaises, une vigilance renforcée est recommandée {{destination, pour}}. Consulte la fiche officielle pour les détails."
         },
         "3": {
           "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative",
@@ -834,7 +834,7 @@
         "1to3m": "1–3 mois",
         "gt3m": "+ de 3 mois"
       },
-      "summary": "Voilà ce que j'ai trouvé pour {{destination}} avec un passeport {{nationality}}, {{duration}}, {{tripType}} 🎉\n\nPose-moi toutes tes questions, ou utilise les raccourcis en haut pour aller direct au process visa, à la sécurité ou à l'ambassade.",
+      "summary": "Voilà ce que j'ai trouvé {{destination, pour}} avec un passeport {{nationality}}, {{duration}}, {{tripType}} 🎉\n\nPose-moi toutes tes questions, ou utilise les raccourcis en haut pour aller direct au process visa, à la sécurité ou à l'ambassade.",
       "placeholder": "Pose-moi toutes tes questions sur les visas et formalités…",
       "send": "Envoyer",
       "loading": "Ping réfléchit…",
@@ -1394,7 +1394,7 @@
     "stepCrash": "Cette étape a rencontré un problème",
     "stepCrashHint": "Tes réponses sont sauvegardées. Réessaie ou reviens à l'étape précédente.",
     "successTitle": "✨ Plan de voyage généré !",
-    "successDesc": "Tes recommandations pour {{destination}} sont prêtes.",
+    "successDesc": "Tes recommandations {{destination, pour}} sont prêtes.",
     "steps": {
       "basic": {
         "label": "Informations de base",
@@ -1728,7 +1728,7 @@
       "resume": "Reprendre"
     },
     "dashboard": {
-      "loadingTitle": "Analyse en cours pour {{destination}}...",
+      "loadingTitle": "Analyse en cours {{destination, pour}}...",
       "loadingDesc": "Notre IA génère des recommandations ultra-personnalisées basées sur ton profil de voyageur. Ça prend environ 15 à 20 secondes : reste sur cette page, Ping s'occupe de tout ✨",
       "errorTitle": "Oups, une erreur est survenue",
       "destinationFallback": "ta destination",
@@ -1859,7 +1859,7 @@
     "tabPages": "Pages",
     "onboarding": {
       "title": "Ping, ton compagnon de carnet",
-      "welcome": "Salut ! Ton carnet pour {{destination}} ({{days}} jours) est prêt à être rempli. 📖✨",
+      "welcome": "Salut ! Ton carnet {{destination, pour}} ({{days}} jours) est prêt à être rempli. 📖✨",
       "question": "Tu veux que je te guide à travers les pages et fonctionnalités ?",
       "yes": "Oui, montre-moi",
       "no": "Je préfère explorer seul",
@@ -1878,7 +1878,7 @@
         "share": "Partage & export"
       },
       "sectionHelp": {
-        "timeline": "Tu es sur les pages chronologiques. Clique un jour à gauche puis ajoute des blocs : note, photo, lieu, humeur, audio, moment fort. Plus tu remplis, plus ton carnet pour {{destination}} prend vie.",
+        "timeline": "Tu es sur les pages chronologiques. Clique un jour à gauche puis ajoute des blocs : note, photo, lieu, humeur, audio, moment fort. Plus tu remplis, plus ton carnet {{destination, pour}} prend vie.",
         "story": "Ici, l'IA transforme tes blocs en un vrai récit de voyage. Choisis un ton, laisse l'IA décider, ou utilise « Mon style » qui imite ton écriture.",
         "insights": "Tes stats et badges sur {{destination}} : top lieux, humeurs dominantes, journée la plus heureuse. Ajoute plus de blocs pour débloquer plus de badges.",
         "docs": "Épingle billets, PDF et reçus à un jour précis du carnet. Tu retrouves tout ce qui compte au bon endroit, au bon moment.",
@@ -1891,16 +1891,16 @@
       "placeholder": "Pose ta question sur ton carnet…",
       "send": "Envoyer",
       "loading": "Ping réfléchit…",
-      "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton compagnon de carnet pour {{destination}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
-      "greetingNoName": "Salut ! 👋 Je suis Ping, ton compagnon de carnet pour {{destination}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
+      "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton compagnon de carnet {{destination, pour}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
+      "greetingNoName": "Salut ! 👋 Je suis Ping, ton compagnon de carnet {{destination, pour}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
       "greetings": [
         "Hey {{name}} ! 📖 C'est Ping. Prêt à donner vie à ton carnet de {{destination}} ? Demande-moi tout.",
-        "Salut {{name}} ! ✨ Moi c'est Ping, ton compagnon de carnet. Tu sais pas quoi noter aujourd'hui pour {{destination}} ? Je t'aide.",
+        "Salut {{name}} ! ✨ Moi c'est Ping, ton compagnon de carnet. Tu sais pas quoi noter aujourd'hui {{destination, pour}} ? Je t'aide.",
         "Coucou {{name}} 🌍 Ping à l'appareil. Une question sur ton récit, tes photos, ton partage ? Lâche tout.",
         "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble comment rendre ton carnet de {{destination}} inoubliable ?",
         "Hello {{name}} ! 👋 Ping ici. Idée de bloc, prompt d'écriture, export PDF — pose-moi la question."
       ],
-      "emptyState": "Pose n'importe quelle question sur ton carnet pour {{destination}} — quoi noter, comment générer ton récit, comment partager, comment épingler un document… Je connais ton carnet en détail.",
+      "emptyState": "Pose n'importe quelle question sur ton carnet {{destination, pour}} — quoi noter, comment générer ton récit, comment partager, comment épingler un document… Je connais ton carnet en détail.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
       "expand": "Agrandir",
       "collapse": "Réduire",
@@ -2111,7 +2111,7 @@
     "headerSelected": "sélectionnés",
     "heroBadge": "IA Avancée Xplania",
     "heroTitleA": "L'IA qui prépare",
-    "heroTitleB": "ta valise pour {{destination}}",
+    "heroTitleB": "ta valise {{destination, pour}}",
     "heroDesc": "Xplania analyse la météo réelle, la culture locale et ton style de voyage pour générer une valise parfaitement adaptée en quelques secondes.",
     "heroCta": "🧳 Générer ma valise",
     "heroBadgeWeather": "Météo réelle analysée",
@@ -3001,11 +3001,11 @@
     },
     "onboarding": {
       "title": "Ping, ton copilote budget",
-      "welcome": "Salut ! Ton budget pour {{destination}} ({{days}} jours) est prêt. 🎉",
+      "welcome": "Salut ! Ton budget {{destination, pour}} ({{days}} jours) est prêt. 🎉",
       "question": "Tu veux que je te guide à travers les fonctionnalités ?",
       "yes": "Oui, montre-moi",
       "no": "Je préfère explorer seul",
-      "suggestion": "Top ! Commence par vérifier ta prévision détaillée pour {{destination}} — chaque ligne est modifiable, et l'IA propose des montants adaptés au coût de la vie local.",
+      "suggestion": "Top ! Commence par vérifier ta prévision détaillée {{destination, pour}} — chaque ligne est modifiable, et l'IA propose des montants adaptés au coût de la vie local.",
       "focus": {
         "analysis": "Analyse",
         "forecast": "Prévision",
@@ -3021,7 +3021,7 @@
         "tips": "Astuces locales"
       },
       "sectionHelp": {
-        "analysis": "Ici, tu peux modifier le budget total estimé pour {{destination}}. Xplania répartit ensuite ce montant dans les catégories pour que le reste du guide se mette à jour.",
+        "analysis": "Ici, tu peux modifier le budget total estimé {{destination, pour}}. Xplania répartit ensuite ce montant dans les catégories pour que le reste du guide se mette à jour.",
         "forecast": "Tu es dans le prévisionnel : clique sur un montant de ligne pour l'ajuster, ou accepte une suggestion IA si elle colle mieux à ton voyage.",
         "tracker": "Ici, tu compares ton budget prévu avec tes dépenses réelles. Ajoute une dépense et le restant se recalculera automatiquement.",
         "charts": "Ces graphiques transforment tes dépenses en tendances : prévu vs dépensé, rythme quotidien et risque de dépassement.",
@@ -3038,16 +3038,16 @@
       "placeholder": "Pose ta question sur le budget…",
       "send": "Envoyer",
       "loading": "Ping réfléchit…",
-      "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
-      "greetingNoName": "Salut ! 👋 Je suis Ping, ton copilote de voyage pour {{destination}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
+      "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton copilote de voyage {{destination, pour}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
+      "greetingNoName": "Salut ! 👋 Je suis Ping, ton copilote de voyage {{destination, pour}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
       "greetings": [
-        "Hey {{name}} ! 👋 C'est Ping. Prêt à parler budget pour {{destination}} ? Pose-moi tout ce qui te trotte dans la tête.",
+        "Hey {{name}} ! 👋 C'est Ping. Prêt à parler budget {{destination, pour}} ? Pose-moi tout ce qui te trotte dans la tête.",
         "Salut {{name}} ! ✈️ Moi c'est Ping, ton copilote voyage. Tu te demandes si ton budget {{destination}} tient la route ? Je suis là pour t'aider.",
         "Coucou {{name}} 🌍 Ping à l'appareil. Un doute sur une dépense, une envie de tips locaux à {{destination}} ? Lâche tout.",
-        "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble ton budget pour {{destination}} ? Dis-moi ce qui te tracasse.",
+        "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble ton budget {{destination, pour}} ? Dis-moi ce qui te tracasse.",
         "Hello {{name}} ! 👋 Ping ici. Que ce soit ton resto, ton transport ou ton hébergement à {{destination}}, je suis là pour t'aiguiller."
       ],
-      "emptyState": "Pose n'importe quelle question sur ton budget pour {{destination}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
+      "emptyState": "Pose n'importe quelle question sur ton budget {{destination, pour}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
       "expand": "Agrandir",
       "collapse": "Réduire",
