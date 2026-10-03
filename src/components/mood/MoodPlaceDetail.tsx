@@ -12,6 +12,7 @@ import { moodByKey } from "@/lib/moods";
 import { activityImage, resolvePlaceImage } from "@/lib/unsplash";
 import GooglePlaceInfo from "@/components/shared/GooglePlaceInfo";
 import SaveMoodToList from "./SaveMoodToList";
+import AddMoodToTripButton from "./AddMoodToTripButton";
 
 interface Props {
   place: MoodPlace | null;
@@ -169,6 +170,7 @@ const MoodPlaceDetail = ({ place, isFavorite, onClose, onToggleFavorite, onShare
               </Button>
             </div>
 
+            <AddMoodToTripButton place={place} />
             <SaveMoodToList place={place} />
             <GooglePlaceInfo name={place.name} lat={place.lat} lng={place.lng} />
 
