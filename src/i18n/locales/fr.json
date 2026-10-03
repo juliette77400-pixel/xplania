@@ -3031,7 +3031,9 @@
         "tips": "Ces astuces sont liées à {{destination}} et à ton budget actuel. Tu peux les relancer si tu modifies fortement ton budget."
       },
       "regenerate": "Relancer la génération",
-      "gotIt": "C'est parti !"
+      "gotIt": "C'est parti !",
+      "launcherTitle": "Besoin d'aide sur ton budget ?",
+      "launcherDesc": "Ping t'explique chaque partie, répond à tes questions et ajuste tes dépenses."
     },
     "autoSaved": "Sauvegardé automatiquement",
     "autoSavedAt": "Sauvegardé automatiquement · {{time}}",
@@ -4233,7 +4235,7 @@
     "deletePoint": "Supprimer ce point",
     "suggestionsAi": "Suggestions IA",
     "suggest": "Suggérer",
-    "suggestHint": "Lance l'IA pour découvrir des lieux locaux à ajouter à ton parcours.",
+    "suggestHint": "Appuie sur « Suggérer » : l'IA te propose 4 vrais lieux de ta destination (resto, culture, nature, sortie…) qui complètent ton parcours. Ajoute-les avec « + », puis marque-les comme visités sur place pour gagner des points et débloquer des badges.",
     "addPlus": "Ajouter",
     "suggestFail": "Échec suggestions",
     "tmKicker": "Carte de voyage",
@@ -4273,7 +4275,12 @@
     "cities": "Villes",
     "badgesShort": "Badges",
     "shareTitle": "Mon voyage {{dest}}",
-    "shareText": "{{pts}} pts sur Xplania ✨"
+    "shareText": "{{pts}} pts sur Xplania ✨",
+    "locUse": "Utiliser ma position pour des lieux autour de moi",
+    "locOff": "Position activée — appuie pour la désactiver",
+    "locOn": "Position activée : les suggestions seront autour de toi",
+    "locDenied": "Position refusée. Autorise-la dans ton navigateur.",
+    "locUnavailable": "La localisation n'est pas disponible sur cet appareil."
   },
   "tripDocs": {
     "title": "Documents du voyage",
