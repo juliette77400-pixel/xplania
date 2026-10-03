@@ -34,5 +34,6 @@
 ## Retour audit accueil (oct. 2026)
 - [x] Haut de page orienté étudiants (Erasmus/stage, slogans, Ping)
 - [x] Essais gratuits : 10/mois partout
-- [ ] Infos par pays pour l'IA (à lancer)
+- [x] Infos pays (10 pays) branchées à l'IA
+- [x] Message d'attente 30-50 s
 - [ ] Fiche saashive.com (à faire par Juliette)
