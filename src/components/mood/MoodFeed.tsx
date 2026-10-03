@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import MoodPlaceCard from "./MoodPlaceCard";
@@ -25,9 +25,32 @@ const MoodFeed = ({ places, isFavorite, onToggleFavorite, onOpenDetails }: Props
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
-        <span>{index + 1} / {places.length}</span>
-        <span>{t("moodComp.feed.swipe")}</span>
+      <div className="flex items-center justify-between gap-2 px-1">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={prev}
+          disabled={index === 0}
+          aria-label={t("moodComp.feed.prev")}
+          className="gap-1"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">{t("moodComp.feed.prev")}</span>
+        </Button>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {index + 1} / {places.length}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={next}
+          disabled={index === places.length - 1}
+          aria-label={t("moodComp.feed.next")}
+          className="gap-1"
+        >
+          <span className="hidden sm:inline">{t("moodComp.feed.next")}</span>
+          <ChevronRight className="w-4 h-4" />
+        </Button>
       </div>
 
       <div className="relative">
