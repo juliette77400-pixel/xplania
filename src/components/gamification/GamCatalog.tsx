@@ -209,7 +209,6 @@ const GamCatalog = () => {
                 </h3>
                 <Accordion type="multiple" className="space-y-2">
                   {categories
-                    .filter((c) => prefs.length === 0 || prefs.includes(c.id))
                     .map((c) => {
                       const catLocked = lockedByCat.get(c.id) || [];
                       if (catLocked.length === 0) return null;

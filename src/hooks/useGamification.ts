@@ -22,20 +22,24 @@ export type BadgeWithClaim = GamBadge & {
 // profile interests influence which badges are proposed. Unknown slugs are
 // simply ignored at runtime (resolved against the categories that exist).
 const INTEREST_TO_CATEGORY_SLUGS: Record<string, string[]> = {
-  food: ["gastronomie", "food"],
-  hiking: ["nature"],
+  food: ["gastronomie"],
+  hiking: ["exploration", "eco"],
   museums: ["culture"],
-  beach: ["nature", "eco"],
-  nightlife: ["nightlife"],
-  photo: ["art", "culture"],
-  roadtrip: ["nature"],
-  wellness: ["wellness"],
-  surf: ["nature"],
-  architecture: ["culture", "art"],
-  music: ["nightlife", "art"],
-  wildlife: ["nature", "eco"],
-  street_art: ["art", "culture"],
+  beach: ["exploration", "eco"],
+  nightlife: ["exploration"],
+  photo: ["creativite", "culture"],
+  roadtrip: ["exploration"],
+  wellness: ["spiritualite"],
+  surf: ["exploration"],
+  architecture: ["culture", "creativite"],
+  music: ["creativite", "culture"],
+  wildlife: ["eco", "exploration"],
+  street_art: ["creativite", "culture"],
   markets: ["gastronomie", "culture"],
+  tech: ["technologie"],
+  family: ["famille"],
+  romance: ["romantique"],
+  work: ["travail"],
 };
 
 interface GamData {
