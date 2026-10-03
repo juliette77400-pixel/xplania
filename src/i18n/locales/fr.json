@@ -3094,7 +3094,8 @@
     "scenarioApply": "Appliquer ce scénario",
     "scenarioApplied": "Scénario appliqué à ton budget",
     "dealsEmpty": "Les bons plans arrivent après la génération.",
-    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications."
+    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications.",
+    "splitHint": "Passe la souris ou appuie sur une couleur pour voir sa part du budget."
   },
   "gamification": {
     "heroTitle": "Collection de Badges",

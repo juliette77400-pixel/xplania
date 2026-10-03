@@ -3094,7 +3094,8 @@
     "scenarioApply": "Apply this scenario",
     "scenarioApplied": "Scenario applied to your budget",
     "dealsEmpty": "Deals appear after generation.",
-    "disclaimerAdjust": "This budget is an estimate you can adjust anytime. Always double-check your spending and real prices: Xplania helps, but doesn't replace your own checks."
+    "disclaimerAdjust": "This budget is an estimate you can adjust anytime. Always double-check your spending and real prices: Xplania helps, but doesn't replace your own checks.",
+    "splitHint": "Hover or tap a colour to see its share of the budget."
   },
   "gamification": {
     "heroTitle": "Badge Collection",
