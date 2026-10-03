@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import { toPng } from "html-to-image";
 import { Share2, Download, X } from "lucide-react";
@@ -99,7 +99,7 @@ const MoodShareCard = ({ open, onOpenChange, mood, placesCount, topPlaceName, ci
     aurora: "linear-gradient(160deg, hsl(190 90% 35%) 0%, hsl(220 70% 25%) 60%, hsl(280 70% 35%) 100%)",
     sunset: "linear-gradient(160deg, hsl(330 70% 40%) 0%, hsl(275 65% 30%) 60%, hsl(230 60% 15%) 100%)",
   } as const;
-  const renderCard = (ref: React.RefObject<HTMLDivElement>, w: number, h: number, big: boolean) => (
+  const renderCard = (ref: RefObject<HTMLDivElement>, w: number, h: number, big: boolean) => (
     <div ref={ref} style={{ width: w, height: h, background: THEMES[theme], fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       className="relative overflow-hidden rounded-2xl text-white shadow-xl">
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(1px 1px at 20% 30%, #fff8, transparent), radial-gradient(1px 1px at 70% 15%, #fff9, transparent), radial-gradient(1.5px 1.5px at 85% 60%, #fff7, transparent), radial-gradient(1px 1px at 35% 80%, #fff8, transparent)" }} />
