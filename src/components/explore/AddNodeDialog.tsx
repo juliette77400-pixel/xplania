@@ -55,7 +55,7 @@ const AddNodeDialog = ({ cityId, onAdd }: Props) => {
           {t("x2.writeMyTrip")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md z-[1000]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <PenLine className="w-4 h-4 text-primary" />
