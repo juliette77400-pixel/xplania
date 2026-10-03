@@ -16,7 +16,8 @@
     "back": "Back",
     "letsGo": "Let's go",
     "retry": "Try again",
-    "delete": "Delete"
+    "delete": "Delete",
+    "france": "French"
   },
   "errorBoundary": {
     "title": "Something went wrong",
@@ -857,7 +858,8 @@
       "Ping is reviewing 2026 rules…",
       "Ping is gathering useful contacts…",
       "Ping is preparing your safety tips…"
-    ]
+    ],
+    "errAuth": "Sign in to generate your travel formalities."
   },
   "footer": {
     "tagline": "Your intelligent travel copilot. Plan, prepare and live your trips powered by artificial intelligence. Xplania centralizes budget, documents and packing so you can travel light-hearted.",
@@ -1066,7 +1068,8 @@
       "title": "Two features made for you",
       "tryIt": "Try this preview",
       "editNeeds": "Edit my answers",
-      "skip": "Skip and see the dashboard →"
+      "skip": "Skip and see the dashboard →",
+      "subtitle": "Selected based on your {{badge}} profile."
     },
     "signup": {
       "step": "Save your profile",
@@ -1820,7 +1823,8 @@
     "goToFeatures": "Choose my features",
     "goToFeaturesHint": "Your trip is ready! On to the next step.",
     "realWeather": "Real weather",
-    "cheap": "Budget-friendly"
+    "cheap": "Budget-friendly",
+    "errorAuth": "Sign in to generate a trip."
   },
   "common2": {
     "home": "Home",
@@ -3140,7 +3144,9 @@
       "rejected": "Proof rejected",
       "geoFailed": "Couldn't get your position. Try with a photo.",
       "photoRequired": "Please add a photo to submit.",
-      "error": "Something went wrong."
+      "error": "Something went wrong.",
+      "autoRejected": "Insufficient proof — try again with a better one.",
+      "autoValidated": "Badge automatically validated 🎉"
     },
     "prefs": {
       "title": "My interests",
@@ -4747,7 +4753,19 @@
     "saveWarn": "⚠️ This profile isn't saved yet. Create your account so you don't lose it.",
     "seeFeatures": "Continue",
     "saveProfileCta": "Create my account to save my profile",
-    "pageH1": "Your Travel DNA — traveler profile quiz"
+    "pageH1": "Your Travel DNA — traveler profile quiz",
+    "categoryDone": "Category completed ✓",
+    "clearFilter": "Click to clear the filter",
+    "filterTo": "Filter on this category",
+    "freeAccess": "Free access",
+    "freeIntroDynamic": "Based on {{trait}}, here are your 2 lifetime free accesses.",
+    "freeIntroHint": "Other features are available with Premium.",
+    "freeIntroStatic": "Here are your 2 lifetime free accesses, picked for you.",
+    "premium": "Premium",
+    "questionOf": "Question {{current}}/{{total}}",
+    "topScoresHint": "Your top affinities highlighted",
+    "unlockCta": "Unlock with Premium",
+    "unlockWithPremium": "Unlock {{feature}} with Premium"
   },
   "tinder": {
     "cat": {
@@ -4762,7 +4780,16 @@
     "done": "done"
   },
   "premiumDialog": {
-    "perMonth": "/month"
+    "perMonth": "/month",
+    "benefit1": "All AI tools (visa, budget, packing, mood, journal)",
+    "benefit2": "Unlimited generations & PDF exports",
+    "benefit3": "No commitment, cancel anytime",
+    "cta": "See all plans",
+    "forYou": "For you",
+    "genericFeature": "this feature",
+    "later": "Later",
+    "subtitle": "Go Premium to access {{feature}} and all other features.",
+    "title": "Unlock all of Xplania"
   },
   "ui2": {
     "TravelerProfileAdjust": {

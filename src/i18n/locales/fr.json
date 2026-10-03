@@ -16,7 +16,8 @@
     "back": "Retour",
     "letsGo": "C'est parti",
     "retry": "Réessayer",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "france": "française"
   },
   "errorBoundary": {
     "title": "Une erreur est survenue",
@@ -857,7 +858,8 @@
       "Ping consulte les règles 2026…",
       "Ping rassemble les contacts utiles…",
       "Ping prépare tes conseils sécurité…"
-    ]
+    ],
+    "errAuth": "Connecte-toi pour générer tes formalités."
   },
   "footer": {
     "tagline": "Ton copilote de voyage intelligent. Planifie, prépare et vis tes voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
@@ -1066,7 +1068,8 @@
       "title": "Deux fonctionnalités faites pour toi",
       "tryIt": "Essayer cet aperçu",
       "editNeeds": "Modifier mes réponses",
-      "skip": "Passer et voir le dashboard →"
+      "skip": "Passer et voir le dashboard →",
+      "subtitle": "Sélectionnées d'après ton profil {{badge}}."
     },
     "signup": {
       "step": "Sauvegarde ton profil",
@@ -1820,7 +1823,8 @@
     "goToFeatures": "Choisir mes fonctionnalités",
     "goToFeaturesHint": "Ton voyage est prêt ! Passe à l'étape suivante.",
     "realWeather": "Météo réelle",
-    "cheap": "Petit budget"
+    "cheap": "Petit budget",
+    "errorAuth": "Connecte-toi pour générer un voyage."
   },
   "common2": {
     "home": "Accueil",
@@ -3140,7 +3144,9 @@
       "rejected": "Preuve refusée",
       "geoFailed": "Impossible d'obtenir ta position. Essaie avec une photo.",
       "photoRequired": "Ajoute une photo pour valider.",
-      "error": "Une erreur est survenue."
+      "error": "Une erreur est survenue.",
+      "autoRejected": "Preuve insuffisante — réessaie avec une meilleure preuve.",
+      "autoValidated": "Badge validé automatiquement 🎉"
     },
     "prefs": {
       "title": "Mes centres d'intérêt",
@@ -4747,7 +4753,19 @@
     "saveWarn": "⚠️ Ce profil n'est pas encore enregistré. Crée ton compte pour ne pas le perdre.",
     "seeFeatures": "Continuer",
     "saveProfileCta": "Créer mon compte pour sauvegarder mon profil",
-    "pageH1": "Ton ADN Voyageur — quiz de profil voyageur"
+    "pageH1": "Ton ADN Voyageur — quiz de profil voyageur",
+    "categoryDone": "Catégorie terminée ✓",
+    "clearFilter": "Cliquer pour retirer le filtre",
+    "filterTo": "Filtrer sur cette catégorie",
+    "freeAccess": "Accès gratuit",
+    "freeIntroDynamic": "Basé sur {{trait}}, voici tes 2 accès gratuits à vie.",
+    "freeIntroHint": "Les autres fonctionnalités sont disponibles avec Premium.",
+    "freeIntroStatic": "Voici tes 2 accès gratuits à vie, choisis pour toi.",
+    "premium": "Premium",
+    "questionOf": "Question {{current}}/{{total}}",
+    "topScoresHint": "Tes affinités dominantes en surbrillance",
+    "unlockCta": "Débloquer avec Premium",
+    "unlockWithPremium": "Débloquer {{feature}} avec Premium"
   },
   "tinder": {
     "cat": {
@@ -4762,7 +4780,16 @@
     "done": "terminé"
   },
   "premiumDialog": {
-    "perMonth": "/mois"
+    "perMonth": "/mois",
+    "benefit1": "Toutes les IA (visa, budget, valise, mood, carnet)",
+    "benefit2": "Générations illimitées & exports PDF",
+    "benefit3": "Sans engagement, résiliable à tout moment",
+    "cta": "Voir toutes les offres",
+    "forYou": "Pour toi",
+    "genericFeature": "cette fonctionnalité",
+    "later": "Plus tard",
+    "subtitle": "Passe Premium pour accéder à {{feature}} et à toutes les autres fonctionnalités.",
+    "title": "Débloque tout Xplania"
   },
   "ui2": {
     "TravelerProfileAdjust": {
