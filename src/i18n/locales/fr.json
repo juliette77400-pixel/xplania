@@ -3849,7 +3849,7 @@
   },
   "exploreComp": {},
   "testimonials": {
-    "tag": "Ils ont essayé",
+    "tag": "Ils nous font confiance",
     "title": "Ce que disent les premiers explorateurs",
     "subtitle": "Vrais retours de testeurs de la beta — sélectionnés pour leur honnêteté.",
     "t1": {
@@ -5882,5 +5882,29 @@
     "adminFeature": "Outils préférés",
     "adminComments": "Derniers commentaires",
     "adminEmpty": "Aucune réponse pour l'instant."
+  },
+  "adminSchools": {
+    "title": "Espaces écoles",
+    "subtitle": "Chiffres anonymes des étudiants inscrits avec l'adresse e-mail de l'école. Clique sur une école pour voir son bilan.",
+    "namePh": "Nom de l'école (ex. ESTICE)",
+    "domainPh": "Domaine e-mail (ex. estice.fr)",
+    "add": "Ajouter",
+    "delete": "Supprimer",
+    "confirmDelete": "Supprimer cette école ?",
+    "invalid": "Nom ou domaine invalide (ou déjà ajouté).",
+    "empty": "Aucune école pour l'instant.",
+    "loading": "Chargement…",
+    "tools": "Outils utilisés",
+    "destinations": "Destinations",
+    "kpi": {
+      "students": "Étudiants inscrits",
+      "active30": "Actifs (30 j)",
+      "quiz": "Test ADN terminé",
+      "trips": "Voyages créés",
+      "journals": "Carnets",
+      "surveys": "Avis reçus",
+      "nps": "Recommandation /10",
+      "ease": "Facilité"
+    }
   }
 }

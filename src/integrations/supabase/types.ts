@@ -2013,6 +2013,27 @@ export type Database = {
         }
         Relationships: []
       }
+      schools: {
+        Row: {
+          created_at: string
+          email_domain: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email_domain: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email_domain?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       tinder_cards: {
         Row: {
           active: boolean
@@ -2793,6 +2814,7 @@ export type Database = {
       }
     }
     Functions: {
+      admin_school_stats: { Args: { _school_id: string }; Returns: Json }
       auto_journal_block: {
         Args: {
           _content: Json

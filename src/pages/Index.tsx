@@ -11,6 +11,7 @@ import JourneyTimelineSection from "@/components/xplania/JourneyTimelineSection"
 import DifferentiationSection from "@/components/xplania/DifferentiationSection";
 import FeaturesSection from "@/components/xplania/FeaturesSection";
 import BetaSection from "@/components/xplania/BetaSection";
+import Testimonials from "@/components/xplania/Testimonials";
 import FaqSection from "@/components/xplania/FaqSection";
 import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
@@ -65,6 +66,7 @@ const Index = () => {
         <DifferentiationSection />
         <JourneyTimelineSection />
         <FeaturesSection />
+        <Testimonials />
         <BetaSection onFeedback={() => setFeedbackOpen(true)} />
         <FaqSection />
         <FinalCtaSection onCreateTrip={handleCreateTrip} />
