@@ -5687,5 +5687,107 @@
     "hideConfirm": "Hide this journal? It will no longer be public. Its author can publish it again.",
     "hidden": "Journal hidden.",
     "hideError": "Could not hide this journal."
+  },
+  "schools": {
+    "metaTitle": "Xplania for schools and tourism offices",
+    "metaDescription": "A free pilot to support your students abroad: visa, budget, life on site, travel journal. Data-backed report at the end.",
+    "badge": "Schools · Tourism offices",
+    "title": "Support your students before, during and after their mobility",
+    "subtitle": "Erasmus, internship, exchange: Xplania helps every student prepare paperwork, manage their budget and live their stay with peace of mind. Your teams save time, your students leave reassured.",
+    "ctaPrimary": "Request a free pilot",
+    "ctaSecondary": "See the app",
+    "problemTitle": "What your students go through",
+    "problems": [
+      "Unclear paperwork: visa, insurance, housing, internship agreement",
+      "A budget that's hard to predict in an unknown city",
+      "Feeling isolated once abroad",
+      "International offices that are stretched thin"
+    ],
+    "benefitsTitle": "What Xplania brings",
+    "benefits": [
+      {
+        "title": "Clear paperwork",
+        "desc": "Visa, formalities and documents by country, with reminders before departure."
+      },
+      {
+        "title": "Student budget",
+        "desc": "Realistic cost-of-living estimates and expense tracking on site."
+      },
+      {
+        "title": "Life on site",
+        "desc": "Places to discover, trip tracking and advice tailored to each destination."
+      },
+      {
+        "title": "Motivation and memories",
+        "desc": "Badges, challenges and a travel journal to keep track of the experience."
+      }
+    ],
+    "pilotTitle": "The pilot offer",
+    "pilotSubtitle": "Try Xplania with a group of students, no commitment.",
+    "pilotSteps": [
+      {
+        "title": "1. Launch",
+        "desc": "Presentation to your students and app access for one semester."
+      },
+      {
+        "title": "2. Support",
+        "desc": "Regular follow-up, student help and adjustments to your needs."
+      },
+      {
+        "title": "3. Data-backed report",
+        "desc": "Active students, tools used, satisfaction and testimonials."
+      }
+    ],
+    "pilotNote": "Free during the beta. Pricing then adapted to the number of students.",
+    "dataTitle": "Personal data",
+    "dataBody": "Data is hosted in Europe, protected and GDPR-compliant. Each student stays in control of their information and can delete it at any time. The school only receives overall, anonymous statistics.",
+    "dataLink": "Learn more about security",
+    "contactTitle": "Let's talk about your pilot",
+    "contactBody": "Write to us: we get back to you within 48 hours.",
+    "mailSubject": "Xplania pilot for our institution",
+    "footerLink": "Schools & offices"
+  },
+  "survey": {
+    "cardTitle": "Your opinion matters 💬",
+    "cardDesc": "1 minute to tell us what you think of Xplania and help us improve it.",
+    "start": "Give feedback",
+    "later": "Later",
+    "title": "Your opinion on Xplania",
+    "npsLabel": "Would you recommend Xplania to a friend? (0 = not at all, 10 = absolutely)",
+    "easeLabel": "Is Xplania easy to use?",
+    "easeLow": "Complicated",
+    "easeHigh": "Very easy",
+    "featureLabel": "The tool that helped you most",
+    "contextLabel": "You're going for…",
+    "commentLabel": "Anything else? (optional)",
+    "commentPlaceholder": "What you liked, what's missing, what's blocking…",
+    "submit": "Send",
+    "sending": "Sending…",
+    "required": "Please answer the first two questions",
+    "thanks": "Thank you, this helps a lot! 🙏",
+    "error": "Oops, sending failed. Try again.",
+    "features": {
+      "itinerary": "AI itinerary",
+      "budget": "Budget",
+      "visa": "Visa",
+      "valise": "Packing",
+      "discover": "Discover",
+      "suivi": "Tracking",
+      "carnet": "Journal",
+      "badges": "Badges"
+    },
+    "contexts": {
+      "erasmus": "Erasmus / exchange",
+      "stage": "Internship",
+      "vacances": "Holidays",
+      "autre": "Other"
+    },
+    "adminTitle": "Satisfaction survey",
+    "adminCount": "Responses",
+    "adminNps": "Recommendation score (NPS)",
+    "adminEase": "Average ease",
+    "adminFeature": "Favorite tools",
+    "adminComments": "Latest comments",
+    "adminEmpty": "No responses yet."
   }
 }

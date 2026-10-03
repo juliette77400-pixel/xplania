@@ -16,6 +16,7 @@ import StreakCard from "@/components/dashboard/StreakCard";
 import WeeklyMissionsCard from "@/components/dashboard/WeeklyMissionsCard";
 import PastTripsTrophies from "@/components/dashboard/PastTripsTrophies";
 import NextTripUtilitiesCard from "@/components/dashboard/NextTripUtilitiesCard";
+import SatisfactionSurveyCard from "@/components/dashboard/SatisfactionSurveyCard";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -50,6 +51,8 @@ const Dashboard = () => {
           <Button asChild className="gradient-button h-11 rounded-xl px-5 font-bold text-primary-foreground"><Link to="/home"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createTrip")}</Link></Button>
         </div>
       </motion.header>
+
+      <SatisfactionSurveyCard />
 
       <section aria-labelledby="next-trip-title"><div className="mb-4 flex items-center justify-between"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("myDashboard.copilotKicker")}</p><h2 id="next-trip-title" className="mt-1 text-xl font-bold sm:text-2xl">{t("myDashboard.nextTripTitle")}</h2></div></div><NextTripUtilitiesCard trips={trips} /></section>
 

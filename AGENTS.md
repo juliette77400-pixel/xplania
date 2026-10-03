@@ -1,0 +1,1 @@
+- Satisfaction survey answers live in `satisfaction_surveys` (insert/read own, admins read all); shown as a dismissible card on /app and aggregated in /admin/stats — why: real numbers for school pilot reports.

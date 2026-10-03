@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, ShieldAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import AdminSurveyResults from "@/components/admin/AdminSurveyResults";
 const AdminStatsChart = lazy(() => import("@/components/admin/AdminStatsChart"));
 
 type EventRow = {
@@ -226,6 +227,7 @@ export default function AdminStats() {
             </div>
           </>
         )}
+        <AdminSurveyResults />
       </main>
     </div>
   );

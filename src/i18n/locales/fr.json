@@ -5687,5 +5687,107 @@
     "hideConfirm": "Masquer ce carnet ? Il ne sera plus visible publiquement. Son auteur pourra le republier.",
     "hidden": "Carnet masqué.",
     "hideError": "Impossible de masquer ce carnet."
+  },
+  "schools": {
+    "metaTitle": "Xplania pour les écoles et offices de tourisme",
+    "metaDescription": "Un pilote gratuit pour accompagner vos étudiants en mobilité : visa, budget, vie sur place, carnet de voyage. Bilan chiffré à la fin.",
+    "badge": "Écoles · Offices de tourisme",
+    "title": "Accompagnez vos étudiants avant, pendant et après leur mobilité",
+    "subtitle": "Erasmus, stage, échange : Xplania aide chaque étudiant·e à préparer ses démarches, gérer son budget et vivre sa mobilité sereinement. Vos équipes gagnent du temps, vos étudiants partent rassurés.",
+    "ctaPrimary": "Demander un pilote gratuit",
+    "ctaSecondary": "Voir l'application",
+    "problemTitle": "Ce que vivent vos étudiants",
+    "problems": [
+      "Des démarches floues : visa, assurance, logement, convention de stage",
+      "Un budget difficile à prévoir dans une ville inconnue",
+      "Un sentiment d'isolement une fois sur place",
+      "Des services relations internationales très sollicités"
+    ],
+    "benefitsTitle": "Ce que Xplania apporte",
+    "benefits": [
+      {
+        "title": "Démarches claires",
+        "desc": "Visa, formalités et documents par pays, avec rappels avant le départ."
+      },
+      {
+        "title": "Budget étudiant",
+        "desc": "Estimation réaliste du coût de la vie et suivi des dépenses sur place."
+      },
+      {
+        "title": "Vie sur place",
+        "desc": "Lieux à découvrir, suivi du voyage et conseils adaptés à chaque destination."
+      },
+      {
+        "title": "Motivation et souvenirs",
+        "desc": "Badges, défis et carnet de voyage pour garder une trace de l'expérience."
+      }
+    ],
+    "pilotTitle": "L'offre pilote",
+    "pilotSubtitle": "Testez Xplania avec un groupe d'étudiants, sans engagement.",
+    "pilotSteps": [
+      {
+        "title": "1. Lancement",
+        "desc": "Présentation à vos étudiants et accès à l'application pendant un semestre."
+      },
+      {
+        "title": "2. Accompagnement",
+        "desc": "Suivi régulier, aide aux étudiants et ajustements selon vos besoins."
+      },
+      {
+        "title": "3. Bilan chiffré",
+        "desc": "Nombre d'étudiants actifs, outils utilisés, satisfaction et témoignages."
+      }
+    ],
+    "pilotNote": "Gratuit pendant la bêta. Tarifs adaptés ensuite selon le nombre d'étudiants.",
+    "dataTitle": "Données personnelles",
+    "dataBody": "Les données sont hébergées en Europe, protégées et conformes au RGPD. Chaque étudiant garde la main sur ses informations et peut les supprimer à tout moment. L'école reçoit uniquement des statistiques globales et anonymes.",
+    "dataLink": "En savoir plus sur la sécurité",
+    "contactTitle": "Parlons de votre pilote",
+    "contactBody": "Écrivez-nous : nous revenons vers vous sous 48 h.",
+    "mailSubject": "Pilote Xplania pour notre établissement",
+    "footerLink": "Écoles & offices"
+  },
+  "survey": {
+    "cardTitle": "Ton avis compte 💬",
+    "cardDesc": "1 minute pour nous dire ce que tu penses de Xplania et nous aider à l'améliorer.",
+    "start": "Donner mon avis",
+    "later": "Plus tard",
+    "title": "Ton avis sur Xplania",
+    "npsLabel": "Recommanderais-tu Xplania à un·e ami·e ? (0 = pas du tout, 10 = carrément)",
+    "easeLabel": "Xplania est-il facile à utiliser ?",
+    "easeLow": "Compliqué",
+    "easeHigh": "Très simple",
+    "featureLabel": "L'outil qui t'a le plus servi",
+    "contextLabel": "Tu pars pour…",
+    "commentLabel": "Un mot de plus ? (facultatif)",
+    "commentPlaceholder": "Ce qui t'a plu, ce qui manque, ce qui bloque…",
+    "submit": "Envoyer",
+    "sending": "Envoi…",
+    "required": "Réponds aux deux premières questions",
+    "thanks": "Merci, ça nous aide énormément ! 🙏",
+    "error": "Oups, l'envoi a échoué. Réessaie.",
+    "features": {
+      "itinerary": "Itinéraire IA",
+      "budget": "Budget",
+      "visa": "Visa",
+      "valise": "Valise",
+      "discover": "Découvrir",
+      "suivi": "Suivi",
+      "carnet": "Carnet",
+      "badges": "Badges"
+    },
+    "contexts": {
+      "erasmus": "Erasmus / échange",
+      "stage": "Stage",
+      "vacances": "Vacances",
+      "autre": "Autre"
+    },
+    "adminTitle": "Questionnaire de satisfaction",
+    "adminCount": "Réponses",
+    "adminNps": "Score de recommandation (NPS)",
+    "adminEase": "Facilité moyenne",
+    "adminFeature": "Outils préférés",
+    "adminComments": "Derniers commentaires",
+    "adminEmpty": "Aucune réponse pour l'instant."
   }
 }

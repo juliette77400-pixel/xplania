@@ -99,6 +99,13 @@
       "when": 1790435637621,
       "tag": "0013_places_search_daily_counter",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1791049134364,
+      "tag": "0014_migration",
+      "breakpoints": true
     }
   ]
 }

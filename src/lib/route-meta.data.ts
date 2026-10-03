@@ -50,6 +50,10 @@ export const META: Record<string, Meta> = {
     fr: ["À propos de Xplania", "Découvre l'histoire de Xplania, l'assistant de voyage IA qui rend chaque voyage plus personnel."],
     en: ["About Xplania", "Learn the story behind Xplania, the AI travel assistant that makes every trip more personal."],
   },
+  "/ecoles": {
+    fr: ["Xplania pour les écoles et offices de tourisme", "Un pilote gratuit pour accompagner vos étudiants en mobilité : visa, budget, vie sur place, carnet de voyage."],
+    en: ["Xplania for schools and tourism offices", "A free pilot to support your students abroad: visa, budget, life on site, travel journal."],
+  },
   "/securite": {
     fr: ["Sécurité et confiance — Xplania", "Comment Xplania protège tes données, ta vie privée et la fiabilité des informations de voyage."],
     en: ["Trust & security — Xplania", "How Xplania protects your data, your privacy and the reliability of travel information."],
