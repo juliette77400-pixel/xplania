@@ -6069,5 +6069,9 @@
       "nps": "Recommendation /10",
       "ease": "Ease"
     }
+  },
+  "tripUtilities": {
+    "title": "Handy trip tools",
+    "subtitle": "Countdown, weather, currency converter and reminders — all in one place for your trip."
   }
 }

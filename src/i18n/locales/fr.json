@@ -6069,5 +6069,9 @@
       "nps": "Recommandation /10",
       "ease": "Facilité"
     }
+  },
+  "tripUtilities": {
+    "title": "Outils pratiques du voyage",
+    "subtitle": "Compte à rebours, météo, convertisseur de devises et rappels — tout au même endroit pour ton séjour."
   }
 }
