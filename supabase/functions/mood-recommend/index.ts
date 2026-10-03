@@ -63,6 +63,16 @@ serve(async (req) => {
       locale = "fr",
     } = body || {};
     const isEN = locale === "en";
+    // Resolve the real city from GPS so the AI never drifts to another city (e.g. Paris for Lille).
+    let city = city_hint ? String(city_hint).slice(0, 80) : "";
+    if (!city && typeof lat === "number" && typeof lng === "number") {
+      try {
+        const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=${lat}&lon=${lng}&accept-language=${isEN ? "en" : "fr"}`, {
+          headers: { "User-Agent": "Xplania/1.0 (https://xplania.app)" }, signal: AbortSignal.timeout(4000),
+        });
+        if (r.ok) { const j = await r.json(); const a = j.address || {}; city = a.city || a.town || a.village || a.municipality || ""; }
+      } catch { /* ignore */ }
+    }
 
     if (!mood && !free_input && !surprise) {
       return new Response(JSON.stringify({ error: "mood ou free_input requis" }), {
@@ -127,9 +137,9 @@ Règles strictes :
 
     // Xplania RAG: retrieve curated knowledge chunks relevant to city + mood
     let ragSnippet = "";
-    if (city_hint) {
-      const slug = String(city_hint).toLowerCase().trim();
-      const query = `${city_hint} ${finalMood} ${free_input ?? ""}`.trim();
+    if (city) {
+      const slug = String(city).toLowerCase().trim();
+      const query = `${city} ${finalMood} ${free_input ?? ""}`.trim();
       const docs = await retrieveTravelDocs(supabase, query, {
         destinationSlug: slug,
         locale: isEN ? "en" : "fr",
@@ -143,20 +153,20 @@ Règles strictes :
     const userPrompt = isEN
       ? `Mood sought: "${finalMood}"${free_input ? ` — detail: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Desired energy level (0=calm, 100=energetic): ${energy_level}.` : ""}
-${lat && lng ? `Current position: ${lat}, ${lng}.` : city_hint ? `City: ${city_hint}.` : ""}
+${lat && lng ? `Current position: ${lat}, ${lng}.` : ""} ${city ? `City: ${city}. ALL places MUST be in or right around ${city} (max 15 km), NEVER in another city.` : ""}
 ${weather ? `Weather: ${weather}.` : ""}
 ${time_of_day ? `Moment: ${time_of_day}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
 ${historyStr}
-Give 6 DIVERSE places/experiences (at least 4 different categories) perfectly suited. Include at least 1 hidden_gem and at least 1 unusual place. Reply in ENGLISH.`
+Give 8 DIVERSE places/experiences (at least 4 different categories) perfectly suited. Include at least 1 hidden_gem and at least 1 unusual place. Reply in ENGLISH.`
       : `Mood recherché : "${finalMood}"${free_input ? ` — précision: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Niveau d'énergie souhaité (0=calme, 100=énergique): ${energy_level}.` : ""}
-${lat && lng ? `Position actuelle: ${lat}, ${lng}.` : city_hint ? `Ville: ${city_hint}.` : ""}
+${lat && lng ? `Position actuelle: ${lat}, ${lng}.` : ""} ${city ? `Ville : ${city}. TOUS les lieux DOIVENT être à ${city} ou juste autour (15 km max), JAMAIS dans une autre ville.` : ""}
 ${weather ? `Météo: ${weather}.` : ""}
 ${time_of_day ? `Moment: ${time_of_day}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
 ${historyStr}
-Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) parfaitement adaptés. Inclus au moins 1 hidden_gem et au moins 1 lieu insolite.`;
+Donne 8 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) parfaitement adaptés. Inclus au moins 1 hidden_gem et au moins 1 lieu insolite.`;
 
     const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -228,7 +238,13 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
     const aiData = await aiResp.json();
     const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
     const args = toolCall ? JSON.parse(toolCall.function.arguments) : { places: [] };
-    const places = (args.places || []) as any[];
+    const hav = (a: number, b: number, c: number, d: number) => { const R = 6371, t = Math.PI / 180; const x = Math.sin((c - a) * t / 2) ** 2 + Math.cos(a * t) * Math.cos(c * t) * Math.sin((d - b) * t / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+    let places = (args.places || []) as any[];
+    if (typeof lat === "number" && typeof lng === "number") {
+      places = places
+        .map((p) => (typeof p.lat === "number" && typeof p.lng === "number") ? { ...p, distance_km: Math.round(hav(lat, lng, p.lat, p.lng) * 10) / 10 } : p)
+        .filter((p) => typeof p.distance_km !== "number" || p.distance_km <= 25);
+    }
 
     // Helper: fetch a real Unsplash image for a place (server-side, with cache).
     const UNSPLASH_KEY = Deno.env.get("UNSPLASH_ACCESS_KEY");
@@ -256,7 +272,7 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
     // Resolve images in parallel (max ~6 places).
     const imageUrls = await Promise.all(
       places.map((p) => {
-        const q = `${p.name} ${p.category || finalMood}${city_hint ? " " + city_hint : ""}`.trim();
+        const q = `${p.name} ${p.category || finalMood}${city ? " " + city : ""}`.trim();
         return fetchImage(q);
       }),
     );
@@ -305,6 +321,7 @@ Donne 6 lieux/expériences DIVERSIFIÉS (au moins 4 catégories différentes) pa
     return new Response(JSON.stringify({
       mood: finalMood,
       selection_id: selection?.id,
+      city: city || null,
       places: inserted,
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

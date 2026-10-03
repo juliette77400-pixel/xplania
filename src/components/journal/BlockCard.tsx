@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import type { JournalBlock } from "@/hooks/useJournal";
 import { toast } from "sonner";
 import AudioRecorder from "./AudioRecorder";
+import { compressImage } from "@/lib/compress-image";
 
 interface Props {
   block: JournalBlock;
@@ -46,8 +47,9 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
     onChanged();
   };
 
-  const uploadPhoto = async (file: File) => {
+  const uploadPhoto = async (raw: File) => {
     if (!user) return;
+    const file = await compressImage(raw);
     setUploading(true);
     const path = `${user.id}/${journalId}/${crypto.randomUUID()}-${file.name}`;
     const { error } = await supabase.storage.from("journal-media").upload(path, file);

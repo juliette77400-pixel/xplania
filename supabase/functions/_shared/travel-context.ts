@@ -21,6 +21,7 @@ export type TravelContext = {
     shown_recent: string[];
   };
   recent_moods: string[];
+  journal_places?: string[];
 };
 
 const DIM_KEYS = [
@@ -105,6 +106,16 @@ export async function buildTravelContext(
       .order("created_at", { ascending: false })
       .limit(5);
     if (moods) ctx.recent_moods = moods.map((m: any) => m.mood).filter(Boolean);
+
+    // Carnet → other tools: places the traveler actually logged in their logbook.
+    const { data: blocks } = await supabase
+      .from("journal_blocks")
+      .select("content")
+      .eq("user_id", userId)
+      .eq("type", "location")
+      .order("created_at", { ascending: false })
+      .limit(15);
+    if (blocks) ctx.journal_places = [...new Set(blocks.map((b: any) => b.content?.name).filter((n: unknown) => typeof n === "string" && n.length < 80))] as string[];
   } catch (e) {
     console.error("buildTravelContext error:", e);
   }
@@ -170,6 +181,14 @@ export function contextToPromptSnippet(ctx: TravelContext, locale: "fr" | "en" =
       isEN
         ? `Recent moods: ${ctx.recent_moods.join(", ")}.`
         : `Moods récents : ${ctx.recent_moods.join(", ")}.`,
+    );
+  }
+
+  if (ctx.journal_places?.length) {
+    lines.push(
+      isEN
+        ? `Places already visited (from the logbook — don't re-suggest, use them to infer tastes): ${ctx.journal_places.slice(0, 12).join(", ")}.`
+        : `Lieux déjà visités (d'après le carnet — ne pas reproposer, s'en servir pour deviner ses goûts) : ${ctx.journal_places.slice(0, 12).join(", ")}.`,
     );
   }
 

@@ -59,6 +59,7 @@ export function useMoodExplorer() {
   const qc = useQueryClient();
 
   const [places, setPlaces] = useState<MoodPlace[]>([]);
+  const [city, setCity] = useState<string | null>(null);
   const [activeMood, setActiveMood] = useState<string | null>(null);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -138,6 +139,7 @@ export function useMoodExplorer() {
     },
     onSuccess: ({ data, input }) => {
       setPlaces(data?.places || []);
+      setCity(data?.city || null);
       setActiveMood(data?.mood || input.mood || null);
       qc.invalidateQueries({ queryKey: moodHistoryKey(user?.id) });
       if (!data?.places?.length) toast.info(i18n.t("ui2.useMoodExplorer.noPlaces"));
@@ -231,6 +233,7 @@ export function useMoodExplorer() {
 
   return {
     places,
+    city,
     favorites,
     history,
     loading: recommendMutation.isPending,

@@ -39,12 +39,12 @@
 - [ ] Fiche saashive.com (à faire par Juliette)
 ## Audit oct. 2026 — reste à faire
 - [x] Garde-fous sécurité/respect dans l'IA (Mood, défis Carte de voyage, en-tête commun)
-- [ ] Mood : lieux proposés à Paris pour une demande à Lille (bug de localisation détecté)
+- [x] Mood : lieux proposés à Paris pour une demande à Lille (bug de localisation détecté)
 - [ ] Mood #7 musique hébergée (attend 7 morceaux libres de Juliette)
-- [ ] Mood #9 plus de lieux par catégorie
-- [ ] Suivi #1 alertes + notifications
+- [x] Mood #9 plus de lieux par catégorie
+- [x] Suivi #1 alertes + notifications
 - [ ] Badges #3 import (attend fichier/lien)
-- [ ] Vérif simple visas (date) + badges GPS
-- [ ] Suivi #4 « Un imprévu ? », Mood #6 humeur→itinéraire, Mood #5 partage, Carnet #4 insights
+- [x] Vérif simple visas (date) + badges GPS
+- [x] Suivi #4 « Un imprévu ? », Mood #6 humeur→itinéraire, Mood #5 partage, Carnet #4 insights
 - [ ] UX badges/budget (attend captures)
-- [ ] Compression photos carnet
+- [x] Compression photos carnet

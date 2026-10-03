@@ -40,7 +40,7 @@ const MoodExplorer = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const {
-    places, favorites, history, loading, activeMood, position, weather,
+    places, city, favorites, history, loading, activeMood, position, weather,
     recommend, toggleFavorite, isFavorite, reset, badgeContext,
   } = useMoodExplorer();
 
@@ -297,7 +297,7 @@ const MoodExplorer = () => {
         mood={activeMood}
         placesCount={places.length}
         topPlaceName={places[0]?.name ?? null}
-        city={(position as any)?.city ?? null}
+        city={city}
       />
     </div>
   );

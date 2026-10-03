@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { cacheTripData, readTripData, useOnlineStatus } from "@/hooks/useOfflineCache";
@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import AlertSubscriptionDialog from "./AlertSubscriptionDialog";
+import { useNotifications } from "@/hooks/useNotifications";
 
 interface TripAlert {
   id: string;
@@ -70,6 +71,8 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
   const locale = i18n.language?.startsWith("en") ? "en" : "fr";
   const isOnline = useOnlineStatus();
   const [cachedAt, setCachedAt] = useState<number | null>(null);
+  const notif = useNotifications();
+  const seenRef = useRef<Set<string> | null>(null);
 
   const load = useCallback(async () => {
     if (!isOnline) {
@@ -88,11 +91,30 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
       .eq("dismissed", false)
       .order("created_at", { ascending: false });
     const list = (data || []) as TripAlert[];
+    // Push a device notification for newly arrived important alerts (not on first load).
+    if (seenRef.current) {
+      for (const a of list) {
+        if (!seenRef.current.has(a.id) && a.severity !== "info") notif.notify(a.title, a.message);
+      }
+    }
+    seenRef.current = new Set(list.map((a) => a.id));
     setAlerts(list);
     cacheTripData(tripId, "alerts", list);
     setCachedAt(Date.now());
     setLoading(false);
-  }, [tripId, isOnline]);
+  }, [tripId, isOnline, notif.notify]);
+
+  // Auto-refresh alerts at most every 6 h per trip, so the traveler doesn't have to tap "refresh".
+  useEffect(() => {
+    if (!isOnline || !destination) return;
+    const key = `xplania-alerts-fetched-${tripId}`;
+    const last = Number(localStorage.getItem(key) || 0);
+    if (Date.now() - last < 6 * 3600_000) return;
+    localStorage.setItem(key, String(Date.now()));
+    supabase.functions.invoke("fetch-trip-alerts", { body: { tripId, destination, lat, lng, locale } })
+      .then(() => load()).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tripId, destination, isOnline]);
 
   useEffect(() => {
     load();
@@ -174,7 +196,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
             </Badge>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {"Notification" in window && notif.permission === "default" && (
+            <Button size="sm" variant="ghost" onClick={() => notif.request()} className="h-8 text-xs">
+              🔔 {t("suiviAlerts.enablePush")}
+            </Button>
+          )}
           <Button size="sm" variant="ghost" onClick={() => setSubOpen(true)} className="h-8 text-xs">
             <Bell className="w-3.5 h-3.5 mr-1.5" />
             {t("suiviAlerts.subscribe")}
