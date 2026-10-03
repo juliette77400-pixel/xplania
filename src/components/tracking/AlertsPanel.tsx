@@ -196,7 +196,12 @@ const AlertsPanel = ({ tripId, destination, lat, lng }: Props) => {
             </Badge>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {"Notification" in window && notif.permission === "default" && (
+            <Button size="sm" variant="ghost" onClick={() => notif.request()} className="h-8 text-xs">
+              🔔 {t("suiviAlerts.enablePush")}
+            </Button>
+          )}
           <Button size="sm" variant="ghost" onClick={() => setSubOpen(true)} className="h-8 text-xs">
             <Bell className="w-3.5 h-3.5 mr-1.5" />
             {t("suiviAlerts.subscribe")}
