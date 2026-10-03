@@ -137,10 +137,11 @@ Activités : au moins 3 des 6 doivent être gratuites ou peu chères par rapport
 localRecommendations : pour chaque lieu, indique la ville exacte et le quartier où il se trouve.
 Météo : décris la météo typique à ces dates précises à destination.`;
 
-    // Split the plan into 3 smaller parallel generations: each finishes much faster
+    // Split the plan into 4 smaller parallel generations: each finishes much faster
     // than one big answer, so the traveler waits for the slowest part only.
     const PARTS: string[][] = [
-      ["activities", "localRecommendations"],
+      ["activities"],
+      ["localRecommendations"],
       ["culturalTips", "weather"],
       ["documents", "luggage", "budgetBreakdown"],
     ];
