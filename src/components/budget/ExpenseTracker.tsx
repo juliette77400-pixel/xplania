@@ -178,7 +178,7 @@ const ExpenseTracker = ({ categories, expenses = [], onRemoveExpense }: Props) =
                 animate={{ width: `${pct}%` }}
                 transition={{ delay: 0.4 + i * 0.06, duration: 0.6 }}
                 className={`${colors[i % colors.length]} h-full`}
-                title={`${label}: ${Math.round(pct)}%`}
+                title={t("budget.splitTooltip", { label, spent: Math.round(cat.spent), planned: Math.round(cat.planned), pct: Math.round(pct) })}
               />
             );
           })}
