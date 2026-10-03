@@ -2114,6 +2114,7 @@
     "heroTitleB": "your bag for {{destination}}",
     "heroDesc": "Xplania analyzes real weather, local culture and your travel style to generate a perfectly tailored suitcase in seconds.",
     "heroCta": "🧳 Generate my suitcase",
+    "generateHint": "First pick your transport and luggage type above, then generate: the list will adapt to those choices and your trip criteria.",
     "heroBadgeWeather": "Live weather analyzed",
     "heroBadgeCulture": "Cultural tips",
     "heroBadgeOptimized": "Optimized packing",

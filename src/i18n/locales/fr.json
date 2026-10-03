@@ -2114,6 +2114,7 @@
     "heroTitleB": "ta valise {{destination, pour}}",
     "heroDesc": "Xplania analyse la météo réelle, la culture locale et ton style de voyage pour générer une valise parfaitement adaptée en quelques secondes.",
     "heroCta": "🧳 Générer ma valise",
+    "generateHint": "Choisis d'abord ton transport et ton type de valise ci-dessus, puis génère : la liste s'adaptera à ces choix et aux critères de ton voyage.",
     "heroBadgeWeather": "Météo réelle analysée",
     "heroBadgeCulture": "Conseils culturels",
     "heroBadgeOptimized": "Valise optimisée",
