@@ -9,7 +9,7 @@ interface Props {
 
 const copy = {
   fr: {
-    eyebrow: "Erasmus, stage, échange : ton copilote de mobilité",
+    eyebrow: "Erasmus, stage, échange, voyage pro, découverte : ton copilote de mobilité",
     title: "Pars serein.",
     accent: "Reviens transformé.",
     subtitle: "Visa, budget serré, logement, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité. Moins gérer. Plus explorer.",
@@ -24,7 +24,7 @@ const copy = {
     items: ["Budget mensuel ajusté", "Formalités vérifiées", "Valise adaptée au climat"],
   },
   en: {
-    eyebrow: "Erasmus, internship, exchange: your mobility copilot",
+    eyebrow: "Erasmus, internship, exchange, business trip, discovery: your mobility copilot",
     title: "Leave with confidence.",
     accent: "Come back transformed.",
     subtitle: "Visa, tight budget, housing, arriving alone… Xplania stays with you before, during and after your time abroad. Less managing. More exploring.",
