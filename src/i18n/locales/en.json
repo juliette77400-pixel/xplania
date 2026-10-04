@@ -6209,6 +6209,16 @@
       "work": "Studies & workplace",
       "popculture": "Pop culture",
       "shock": "Culture shock"
-    }
+    },
+    "tipOfDay": "Gesture of the day",
+    "situation": "Role-play",
+    "notQuite": "Almost!",
+    "retry": "Try again",
+    "quizTitle": "Mini-quiz",
+    "quizAvoid": "Which of these is best avoided?",
+    "quizDo": "Which of these is recommended?",
+    "quizScore": "{{score}} / {{total}} correct.",
+    "quizPerfect": "Well done, you've mastered this topic!",
+    "quizKeep": "Reread the tips and try again!"
   }
 }

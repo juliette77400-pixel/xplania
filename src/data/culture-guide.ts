@@ -250,3 +250,75 @@ export function getPrewritten(code: string, pillar: PillarId, lang: "fr" | "en")
   return { ping: raw.ping[lang], dos: raw.dos.map(t), donts: raw.donts.map(t), homeVsHere: raw.homeVsHere.map((h) => h[lang]) };
 }
 export function hasPrewritten(code: string, pillar: PillarId) { return !!SHEETS[code]?.[pillar]; }
+
+// Role-play situations (one per featured country). `correct` = index of the best answer.
+interface RawSituation { q: L; options: L[]; correct: number; ping: L }
+export interface Situation { q: string; options: string[]; correct: number; ping: string }
+const SITUATIONS: Record<string, RawSituation> = {
+  ES: { q: l("Ta coloc t'invite à dîner à 22 h. Tu as faim à 19 h. Que fais-tu ?", "Your flatmate invites you to dinner at 10 pm. You're hungry at 7 pm. What do you do?"),
+    options: [l("Tu manges avant et viens juste boire un verre", "You eat before and just come for a drink"), l("Tu prends une petite tapa vers 19 h et tu dînes avec elle", "You have a small tapa around 7 pm and dine with her"), l("Tu lui demandes d'avancer le dîner", "You ask her to bring dinner forward")],
+    correct: 1, ping: l("La B est parfaite : les tapas servent justement à tenir jusqu'au dîner !", "B is perfect: tapas are exactly what help you last until dinner!") },
+  JP: { q: l("Ton collègue japonais t'invite chez lui. En arrivant, tu…", "Your Japanese colleague invites you home. When you arrive, you…"),
+    options: [l("Gardes tes chaussures, c'est plus pratique", "Keep your shoes on, it's easier"), l("Retires tes chaussures dans l'entrée (genkan)", "Take your shoes off in the entrance (genkan)"), l("Lui fais la bise pour le remercier", "Kiss him on the cheek to say thanks")],
+    correct: 1, ping: l("Exact ! Le genkan sépare l'extérieur de l'intérieur propre.", "Right! The genkan separates outside from the clean inside.") },
+  US: { q: l("Au restaurant à New York, l'addition est de 40 $. Tu laisses…", "At a New York restaurant, the bill is $40. You leave…"),
+    options: [l("Rien, le service est inclus", "Nothing, service is included"), l("Environ 6 à 8 $ de pourboire", "About $6–8 as a tip"), l("1 $ symbolique", "A symbolic $1")],
+    correct: 1, ping: l("Bien joué : 15–20 % est la norme, c'est une partie du salaire du serveur.", "Well done: 15–20% is the norm, it's part of the server's wage.") },
+  GB: { q: l("Arrêt de bus bondé à Londres, le bus arrive. Tu…", "Crowded bus stop in London, the bus arrives. You…"),
+    options: [l("Te faufiles devant pour monter vite", "Squeeze to the front to get on fast"), l("Attends ton tour dans la file", "Wait your turn in the queue"), l("Montes par la porte arrière", "Get on through the back door")],
+    correct: 1, ping: l("Parfait : la file est sacrée, et on te dira sûrement « cheers » !", "Perfect: the queue is sacred, and you'll probably hear “cheers”!") },
+  MX: { q: l("Tu entres dans une petite boutique à Oaxaca. Tu…", "You walk into a small shop in Oaxaca. You…"),
+    options: [l("Dis « buenos días » au vendeur", "Say “buenos días” to the shopkeeper"), l("Regardes les articles sans rien dire", "Browse silently"), l("Demandes directement le prix", "Ask the price straight away")],
+    correct: 0, ping: l("Oui ! Saluer en entrant est la base de la politesse ici.", "Yes! Greeting when you come in is basic politeness here.") },
+  BR: { q: l("Un ami brésilien te demande si tout va bien. Pour dire « ok », tu fais…", "A Brazilian friend asks if you're fine. To say “ok”, you make…"),
+    options: [l("Le cercle avec le pouce et l'index", "A circle with thumb and index"), l("Un pouce levé", "A thumbs-up"), l("Un clin d'œil", "A wink")],
+    correct: 1, ping: l("Bravo : le cercle des doigts est vulgaire au Brésil, le pouce levé est parfait !", "Great: the finger circle is rude in Brazil, the thumbs-up is perfect!") },
+  AU: { q: l("Premier jour de stage à Sydney, ta manager s'appelle Sarah Smith. Tu dis…", "First day of your internship in Sydney, your manager is Sarah Smith. You say…"),
+    options: [l("« Bonjour Madame Smith »", "“Good morning Mrs Smith”"), l("« Hi Sarah! »", "“Hi Sarah!”"), l("Rien, tu attends qu'elle parle", "Nothing, you wait for her")],
+    correct: 1, ping: l("C'est ça : ici, même la manager s'appelle par son prénom.", "That's it: here even the manager goes by her first name.") },
+  CN: { q: l("Un partenaire chinois te tend sa carte de visite. Tu…", "A Chinese partner hands you his business card. You…"),
+    options: [l("La prends à deux mains et la regardes un moment", "Take it with both hands and look at it"), l("La glisses vite dans ta poche", "Slip it quickly into your pocket"), l("Écris un mot dessus", "Write a note on it")],
+    correct: 0, ping: l("Parfait : c'est un signe de respect pour la personne.", "Perfect: it shows respect for the person.") },
+  NL: { q: l("Ta collègue néerlandaise te dit franchement que ta présentation est trop longue. Tu…", "Your Dutch colleague tells you frankly your presentation is too long. You…"),
+    options: [l("Le prends mal, c'est vexant", "Take offence"), l("La remercies et raccourcis", "Thank her and shorten it"), l("L'ignores", "Ignore her")],
+    correct: 1, ping: l("Oui : la franchise est ici une marque de respect, pas une attaque.", "Yes: frankness here is respect, not an attack.") },
+  PL: { q: l("Tu es invité·e chez une famille à Cracovie. Tu apportes…", "You're invited to a family in Kraków. You bring…"),
+    options: [l("Un bouquet de 4 roses", "A bunch of 4 roses"), l("Un bouquet de 5 fleurs", "A bunch of 5 flowers"), l("Rien, ce n'est pas nécessaire", "Nothing, it's not needed")],
+    correct: 1, ping: l("Bien vu : un nombre impair, les nombres pairs sont réservés aux enterrements.", "Good call: odd numbers, even ones are for funerals.") },
+};
+export function getSituation(code: string, lang: "fr" | "en"): Situation | null {
+  const s = SITUATIONS[code];
+  if (!s) return null;
+  return { q: s.q[lang], options: s.options.map((o) => o[lang]), correct: s.correct, ping: s.ping[lang] };
+}
+
+/** "Gesture of the day": one pre-written tip per day, rotating through the country's sheets. */
+export function getTipOfDay(code: string, lang: "fr" | "en"): { pillar: PillarId; tip: Tip; kind: "do" | "dont" } | null {
+  const all: { pillar: PillarId; tip: Tip; kind: "do" | "dont" }[] = [];
+  for (const p of CULTURE_PILLARS) {
+    const c = getPrewritten(code, p.id, lang);
+    if (!c) continue;
+    c.dos.forEach((tip) => all.push({ pillar: p.id, tip, kind: "do" }));
+    c.donts.forEach((tip) => all.push({ pillar: p.id, tip, kind: "dont" }));
+  }
+  if (!all.length) return null;
+  const day = Math.floor(Date.now() / 86_400_000);
+  return all[day % all.length];
+}
+
+/** Mini-quiz built from a pillar's content (works for pre-written and AI sheets). */
+export interface QuizQ { q: "avoid" | "do"; options: string[]; correct: number }
+export function buildQuiz(c: PillarContent): QuizQ[] {
+  const qs: QuizQ[] = [];
+  const n = Math.min(c.donts.length, c.dos.length, 4);
+  for (let i = 0; i < n; i++) {
+    const avoid = i % 2 === 0;
+    const right = avoid ? c.donts[i].text : c.dos[i].text;
+    const wrong = avoid ? [c.dos[i % c.dos.length].text, c.dos[(i + 1) % c.dos.length].text] : [c.donts[i % c.donts.length].text, c.donts[(i + 1) % c.donts.length].text];
+    const opts = Array.from(new Set([right, ...wrong]));
+    const shift = i % opts.length;
+    const rotated = [...opts.slice(shift), ...opts.slice(0, shift)];
+    qs.push({ q: avoid ? "avoid" : "do", options: rotated, correct: rotated.indexOf(right) });
+  }
+  return qs;
+}

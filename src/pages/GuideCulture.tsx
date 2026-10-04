@@ -2,15 +2,15 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { Check, Loader2, Compass, ArrowLeft } from "lucide-react";
+import { Search, Check, Loader2, Compass, ArrowLeft } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HowItWorks from "@/components/shared/HowItWorks";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
-import { CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, type PillarContent, type PillarId } from "@/data/culture-guide";
+import { CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 
 const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 const ALIASES: Record<string, string> = {
@@ -40,14 +40,18 @@ export default function GuideCulture() {
   const [pillar, setPillar] = useState<PillarId | null>(null);
   const [done, setDone] = useState<Record<string, boolean>>(loadProgress);
 
-  const filtered = useMemo(() => {
+  const suggestions = useMemo(() => {
     const n = norm(query);
-    if (!n) return countryList;
-    const alias = ALIASES[n];
-    return countryList.filter((c) => norm(c.name).includes(n) || c.code === alias);
+    if (n.length < 2) return [];
+    return countryList.filter((c) => norm(c.name).includes(n)).slice(0, 6);
   }, [query]);
 
   const choose = (c: string) => { setCode(c); setPillar(null); setNotFound(false); setQuery(""); };
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const c = findCountry(query);
+    if (c) choose(c); else { setNotFound(true); setCode(null); }
+  };
   const toggle = (k: string) => setDone((d) => { const n = { ...d, [k]: !d[k] }; localStorage.setItem(PROGRESS_KEY, JSON.stringify(n)); return n; });
 
   const countryName = code ? getCountryName(code) : "";
@@ -65,27 +69,23 @@ export default function GuideCulture() {
 
         <HowItWorks prefix="culture" />
 
-        <div className="glass-card rounded-2xl p-4 space-y-3">
-          <label className="text-sm font-semibold text-secondary">{t("culture.searchLabel")}</label>
-          <Select value={code ?? ""} onValueChange={(v) => choose(v)}>
-            <SelectTrigger className="bg-muted border-border text-foreground">
-              <SelectValue placeholder={t("culture.searchPlaceholder")} />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
-              <div className="px-2 py-1.5 sticky top-0 bg-popover z-10">
-                <input type="text" placeholder={t("guideVisa.searchPlaceholder")} value={query}
-                  onChange={(e) => setQuery(e.target.value)} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}
-                  className="w-full px-3 py-1.5 text-sm bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-              {filtered.map((c) => <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>)}
-              {filtered.length === 0 && (
-                <div className="px-3 py-3 text-sm text-muted-foreground space-y-1">
-                  <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>
-                  <p>{t("culture.notFoundDesc")}</p>
-                </div>
-              )}
-            </SelectContent>
-          </Select>
+        <form onSubmit={submit} className="glass-card rounded-2xl p-4 space-y-3">
+          <label htmlFor="culture-country" className="text-sm font-semibold text-foreground">{t("culture.searchLabel")}</label>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+              <Input id="culture-country" value={query} onChange={(e) => { setQuery(e.target.value); setNotFound(false); }}
+                placeholder={t("culture.searchPlaceholder")} className="pl-9" autoComplete="off" />
+            </div>
+            <Button type="submit">{t("culture.searchBtn")}</Button>
+          </div>
+          {suggestions.length > 0 && (
+            <ul className="flex flex-wrap gap-2">
+              {suggestions.map((s) => (
+                <li key={s.code}><button type="button" onClick={() => choose(s.code)} className="rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-foreground hover:bg-primary/15">{s.name}</button></li>
+              ))}
+            </ul>
+          )}
           <div>
             <p className="text-xs text-muted-foreground mb-2">{t("culture.featured")}</p>
             <div className="flex flex-wrap gap-2">
@@ -97,7 +97,7 @@ export default function GuideCulture() {
               ))}
             </div>
           </div>
-        </div>
+        </form>
 
         {notFound && (
           <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
@@ -117,6 +117,7 @@ export default function GuideCulture() {
               </div>
               <p className="text-xs text-muted-foreground mt-1">{t("culture.progress", { done: doneCount, total: CULTURE_PILLARS.length })}</p>
             </div>
+            <TipOfDay code={code} lang={lang} onOpen={setPillar} />
             <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
               {CULTURE_PILLARS.map((p) => (
                 <button key={p.id} onClick={() => setPillar(p.id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">
@@ -128,6 +129,7 @@ export default function GuideCulture() {
                 </button>
               ))}
             </div>
+            <SituationCard code={code} lang={lang} />
           </section>
         )}
 
@@ -223,11 +225,88 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
           )}
           {sensitive && <p className="text-xs text-muted-foreground italic">{t("culture.evolving")}</p>}
           {!pre && <p className="text-[11px] text-muted-foreground">{t("culture.aiNote")}</p>}
+          <MiniQuiz key={`${code}-${pillar}`} content={content} />
           <Button variant={done ? "secondary" : "default"} onClick={onToggle}>
             <Check className="h-4 w-4 mr-1" aria-hidden /> {done ? t("culture.understood") : t("culture.markUnderstood")}
           </Button>
         </>
       )}
     </section>
+  );
+}
+
+function TipOfDay({ code, lang, onOpen }: { code: string; lang: "fr" | "en"; onOpen: (p: PillarId) => void }) {
+  const { t } = useTranslation();
+  const tip = getTipOfDay(code, lang);
+  if (!tip) return null;
+  return (
+    <button onClick={() => onOpen(tip.pillar)} className="glass-card w-full rounded-2xl p-4 text-left border border-primary/30">
+      <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")}</p>
+      <p className="mt-1 text-sm text-foreground">{tip.kind === "do" ? "✅" : "⛔"} {tip.tip.text}</p>
+      <p className="text-xs text-muted-foreground">{t("culture.why")} {tip.tip.why}</p>
+    </button>
+  );
+}
+
+function SituationCard({ code, lang }: { code: string; lang: "fr" | "en" }) {
+  const { t } = useTranslation();
+  const [pick, setPick] = useState<number | null>(null);
+  const s = getSituation(code, lang);
+  if (!s) return null;
+  return (
+    <div className="glass-card rounded-2xl p-4 space-y-3">
+      <p className="text-xs font-semibold text-primary">🎭 {t("culture.situation")}</p>
+      <p className="text-sm font-semibold text-foreground">{s.q}</p>
+      <div className="grid gap-2">
+        {s.options.map((o, i) => (
+          <button key={i} onClick={() => setPick(i)} disabled={pick !== null}
+            className={`rounded-xl border px-3 py-2 text-left text-sm ${pick === null ? "border-border hover:border-primary/50" : i === s.correct ? "border-primary bg-primary/15" : i === pick ? "border-destructive bg-destructive/10" : "border-border opacity-60"} text-foreground`}>
+            {String.fromCharCode(65 + i)}. {o}
+          </button>
+        ))}
+      </div>
+      {pick !== null && (
+        <div className="flex gap-2 items-start">
+          <span aria-hidden>🐧</span>
+          <p className="text-sm text-foreground">{pick === s.correct ? "" : `${t("culture.notQuite")} `}{s.ping}</p>
+        </div>
+      )}
+      {pick !== null && <Button variant="ghost" size="sm" onClick={() => setPick(null)}>{t("culture.retry")}</Button>}
+    </div>
+  );
+}
+
+function MiniQuiz({ content }: { content: PillarContent }) {
+  const { t } = useTranslation();
+  const quiz = useMemo(() => buildQuiz(content), [content]);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+  if (quiz.length === 0) return null;
+  const answered = Object.keys(answers).length;
+  const score = quiz.filter((q, i) => answers[i] === q.correct).length;
+  return (
+    <div className="glass-card rounded-2xl p-4 space-y-4">
+      <h3 className="font-semibold text-foreground">🧠 {t("culture.quizTitle")}</h3>
+      {quiz.map((q, i) => (
+        <div key={i} className="space-y-2">
+          <p className="text-sm font-semibold text-foreground">{i + 1}. {t(q.q === "avoid" ? "culture.quizAvoid" : "culture.quizDo")}</p>
+          <div className="grid gap-2">
+            {q.options.map((o, j) => {
+              const a = answers[i];
+              const cls = a === undefined ? "border-border hover:border-primary/50" : j === q.correct ? "border-primary bg-primary/15" : j === a ? "border-destructive bg-destructive/10" : "border-border opacity-60";
+              return (
+                <button key={j} disabled={a !== undefined} onClick={() => setAnswers((x) => ({ ...x, [i]: j }))}
+                  className={`rounded-xl border px-3 py-2 text-left text-sm text-foreground ${cls}`}>{o}</button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      {answered === quiz.length && (
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-sm text-foreground">🐧 {t("culture.quizScore", { score, total: quiz.length })} {score === quiz.length ? t("culture.quizPerfect") : t("culture.quizKeep")}</p>
+          <Button variant="ghost" size="sm" onClick={() => setAnswers({})}>{t("culture.retry")}</Button>
+        </div>
+      )}
+    </div>
   );
 }
