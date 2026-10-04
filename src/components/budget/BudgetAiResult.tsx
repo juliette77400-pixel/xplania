@@ -153,3 +153,7 @@ const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange, i
 };
 
 export default BudgetAiResult;
+
+function splitSentences(text: string): string[] {
+  return String(text || "").split(/(?<=[.!?])\s+(?=[A-ZÀ-Ý])/).filter(Boolean);
+}
