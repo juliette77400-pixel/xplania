@@ -10,30 +10,44 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchUnsplashImage } from "@/lib/unsplash";
+import imgCasual from "@/assets/outfits/casualUrban.jpg";
+import imgEvening from "@/assets/outfits/elegantEvening.jpg";
+import imgNature from "@/assets/outfits/natureExploration.jpg";
+import imgBeach from "@/assets/outfits/beachRelax.jpg";
+import imgBusiness from "@/assets/outfits/businessTravel.jpg";
 
-const OUTFIT_QUERY: Record<string, string> = {
-  casualUrban: "casual street style outfit",
-  elegantEvening: "elegant evening outfit fashion",
-  natureExploration: "hiking outfit fashion",
-  beachRelax: "beach summer outfit fashion",
-  businessTravel: "business travel outfit fashion",
+/** AI illustrations generated once and bundled with the app (never regenerated at runtime). */
+const OUTFIT_IMAGES: Record<string, string> = {
+  casualUrban: imgCasual,
+  elegantEvening: imgEvening,
+  natureExploration: imgNature,
+  beachRelax: imgBeach,
+  businessTravel: imgBusiness,
 };
 
-/** Free-to-use Unsplash photo behind an outfit card (falls back to the emoji). */
-function OutfitPhoto({ outfit }: { outfit: { id: string; title?: string } }) {
-  const [url, setUrl] = useState<string | null>(null);
-  useEffect(() => {
-    let alive = true;
-    const q = OUTFIT_QUERY[outfit.id] ?? `${outfit.title ?? "travel"} outfit fashion`;
-    fetchUnsplashImage(q).then((u) => { if (alive) setUrl(u); }).catch(() => {});
-    return () => { alive = false; };
-  }, [outfit.id, outfit.title]);
-  if (!url) return null;
+const KEYWORDS: [RegExp, string][] = [
+  [/plage|beach|maillot|swim|sea|mer|summer|été/i, "beachRelax"],
+  [/rando|hik|nature|trek|montagne|mountain|outdoor/i, "natureExploration"],
+  [/soir|evening|élégant|elegant|dîner|dinner|chic|party|fête/i, "elegantEvening"],
+  [/business|pro|travail|work|stage|intern|réunion|meeting|bureau|office/i, "businessTravel"],
+];
+
+function pickOutfitImage(outfit: { id: string; title?: string; tags?: string[]; context?: string }) {
+  if (OUTFIT_IMAGES[outfit.id]) return OUTFIT_IMAGES[outfit.id];
+  const hay = [outfit.id, outfit.title, outfit.context, ...(outfit.tags ?? [])].join(" ");
+  for (const [re, key] of KEYWORDS) if (re.test(hay)) return OUTFIT_IMAGES[key];
+  return OUTFIT_IMAGES.casualUrban;
+}
+
+function OutfitPhoto({ outfit }: { outfit: { id: string; title?: string; tags?: string[]; context?: string } }) {
+  const { t } = useTranslation();
   return (
     <>
-      <img src={url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+      <img src={pickOutfitImage(outfit)} alt="" loading="lazy" width={992} height={672} className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+      <span className="absolute bottom-2 right-2 z-10 px-2 py-0.5 rounded-md bg-background/70 backdrop-blur text-[10px] font-medium text-foreground/80">
+        {t("valise.aiIllustration", "Illustration IA")}
+      </span>
     </>
   );
 }
@@ -278,9 +292,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
               >
                 <div className={`relative h-44 overflow-hidden bg-gradient-to-br ${outfit.gradient} flex items-center justify-center`}>
                   <OutfitPhoto outfit={outfit} />
-                  <span className="text-6xl drop-shadow-lg select-none" aria-hidden="true">
-                    {outfit.emoji}
-                  </span>
+                  
                   {outfit.badge && (
                     <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20">
                       {outfit.badge}
@@ -333,9 +345,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
 
               <div className={`relative h-48 rounded-xl overflow-hidden mt-2 bg-gradient-to-br ${selectedOutfit.gradient} flex items-center justify-center`}>
                 <OutfitPhoto outfit={selectedOutfit} />
-                <span className="text-7xl drop-shadow-xl select-none" aria-hidden="true">
-                  {selectedOutfit.emoji}
-                </span>
+                
                 {selectedOutfit.badge && (
                   <span className="absolute bottom-3 left-3 px-3 py-1 rounded-lg bg-white/20 backdrop-blur text-white text-xs font-bold border border-white/20">
                     {selectedOutfit.badge}

@@ -2745,7 +2745,8 @@
       "nothing": "Rien ne manque, ta valise est complète 🎉",
       "error": "La vérification n'a pas pu se faire. Réessaie.",
       "category": "Suggestions de l'IA"
-    }
+    },
+    "aiIllustration": "Illustration IA"
   },
   "budget": {
     "heroBadge": "Propulsé par IA Xplania",
