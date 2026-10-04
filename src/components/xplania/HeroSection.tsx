@@ -14,11 +14,11 @@ const copy = {
     accent: "Reviens transformé.",
     subtitle: "Visa, budget serré, logement, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité. Moins gérer. Plus explorer.",
     primary: "Préparer ma mobilité",
-    proof: ["Pensé pour les étudiants", "10 essais gratuits / mois", "FR · EN"],
-    pains: ["Convention de stage", "Visa & formalités", "Budget étudiant", "Vie sur place", "Badges & défis"],
+    proof: ["Pensé pour les étudiants, voyageurs et pros", "10 essais gratuits / mois", "FR · EN"],
+    pains: ["Visa & formalités", "Budget étudiant", "Vie sur place", "Badges & défis"],
     ping: "Moi c'est Ping ! Plus tu voyages, plus je te connais.",
     cardLabel: "Ping prépare ton semestre",
-    destination: "Erasmus à Lisbonne · 5 mois",
+    destination: "Exemple : Erasmus à Lisbonne · 5 mois",
     insight: "Un plan d'arrivée adapté à ton budget étudiant et à ton profil ADN Voyageur.",
     ready: "Ta mobilité est prête",
     items: ["Budget mensuel ajusté", "Formalités vérifiées", "Valise adaptée au climat"],
@@ -29,11 +29,11 @@ const copy = {
     accent: "Come back transformed.",
     subtitle: "Visa, tight budget, housing, arriving alone… Xplania stays with you before, during and after your time abroad. Less managing. More exploring.",
     primary: "Prepare my mobility",
-    proof: ["Built for students", "10 free tries / month", "FR · EN"],
-    pains: ["Internship agreement", "Visa & paperwork", "Student budget", "Life abroad", "Badges & challenges"],
+    proof: ["Built for students, travelers and professionals", "10 free tries / month", "FR · EN"],
+    pains: ["Visa & paperwork", "Student budget", "Life abroad", "Badges & challenges"],
     ping: "I'm Ping! The more you travel, the better I know you.",
     cardLabel: "Ping is preparing your semester",
-    destination: "Erasmus in Lisbon · 5 months",
+    destination: "Example: Erasmus in Lisbon · 5 months",
     insight: "An arrival plan tailored to your student budget and your Traveler DNA profile.",
     ready: "Your mobility is ready",
     items: ["Monthly budget optimized", "Paperwork checked", "Climate-ready packing list"],
@@ -71,7 +71,6 @@ const HeroSection = ({ onCreateTrip }: Props) => {
             <img src={pip.url} alt="Ping" className="h-12 w-12 object-contain" loading="lazy" />
             <p className="text-sm font-medium text-foreground/90">{c.ping}</p>
           </div>
-          <p className="mt-5 text-sm font-semibold italic text-primary/80">{t("home.differentiation.tagline")}</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: .96, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: .7, delay: .12 }} className="relative mx-auto w-full max-w-xl">
