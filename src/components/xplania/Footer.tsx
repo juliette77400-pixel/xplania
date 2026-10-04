@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
   Plane, Star, Luggage, Wallet, FileText, MessageSquare, Sparkles, Mail,
   BookOpen, Activity, Compass, Heart, MapPinned, Trophy,
+  Globe,
 } from "lucide-react";
 import { getLegalPath } from "@/lib/legal-routes";
 import { openConsentSettings } from "@/lib/consent";
