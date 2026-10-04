@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MessageCircleHeart } from "lucide-react";
 import { toast } from "sonner";
+import emailjs from "@emailjs/browser";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -54,6 +55,14 @@ const SatisfactionSurveyCard = () => {
     });
     setSending(false);
     if (error) return toast.error(t("survey.error"));
+    emailjs.send("service_23bwf9g", "template_2o6dhup", {
+      rating: `Recommandation ${nps}/10 · Facilité ${ease}/5`,
+      suggestions: `[Questionnaire de satisfaction] Outil préféré : ${feature ?? "-"} · Contexte : ${context ?? "-"}\n\nCommentaire : ${comment.trim() || "-"}`,
+      problems: "",
+      user_email: user.email ?? "",
+      date: new Date().toLocaleString("fr-FR"),
+      to_email: "juliettenoel.xplania@gmail.com",
+    }, "g30bYpbP1x83gUEsQ").catch((e) => console.error("EmailJS survey error:", e));
     toast.success(t("survey.thanks"));
     setOpen(false);
     setVisible(false);
