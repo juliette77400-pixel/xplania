@@ -52,7 +52,8 @@
     "descVisa": "Formalités pays",
     "labelTracking": "Suivi de voyage",
     "labelJournal": "Carnet",
-    "labelValise": "Valise"
+    "labelValise": "Valise",
+    "descCulture": "Codes & usages"
   },
   "streakCard": {
     "daysInARow": "jours d'affilée",
@@ -129,7 +130,8 @@
     "groupRelive": "Souvenirs & progression",
     "groupXplania": "Informations",
     "groupAccount": "Mon compte",
-    "dna": "ADN Voyageur"
+    "dna": "ADN Voyageur",
+    "culture": "Guide culturel"
   },
   "about": {
     "metaTitle": "À propos — Xplania, voyager autrement, enfin",
@@ -6157,5 +6159,56 @@
     "howStep2Desc": "Autorise ta position : Xplania te montre les meilleurs lieux proches, sur la carte et en liste.",
     "howStep3Title": "Garde tes coups de cœur",
     "howStep3Desc": "Enregistre les lieux dans tes listes et reçois une alerte quand tu passes à côté."
+  },
+  "culture": {
+    "title": "Guide d'immersion culturelle",
+    "subtitle": "Les codes, usages et petites attentions pour te sentir à l'aise dans ton pays d'accueil.",
+    "howTitle": "Comment ça marche ?",
+    "howStep1Title": "Choisis ton pays",
+    "howStep1Desc": "Tape le nom du pays ou choisis-en un parmi les plus demandés.",
+    "howStep2Title": "Explore les thèmes",
+    "howStep2Desc": "Tenue, table, salutations… ouvre un thème pour voir ce qu'il faut faire et éviter.",
+    "howStep3Title": "Marque « compris »",
+    "howStep3Desc": "Valide chaque thème lu pour suivre ta progression.",
+    "searchLabel": "Dans quel pays pars-tu ?",
+    "searchPlaceholder": "Ex. Japon, Canada, Italie…",
+    "searchBtn": "Voir le guide",
+    "featured": "Fiches prêtes :",
+    "notFoundTitle": "Xplania prépare ces infos 🧭",
+    "notFoundDesc": "On n'a pas encore reconnu ce pays. Vérifie l'orthographe ou choisis un pays dans la liste : nos équipes complètent le guide chaque semaine.",
+    "pillarPending": "Ce thème est encore en préparation pour ce pays. Explore les autres thèmes en attendant, on l'ajoute très vite !",
+    "welcomeFeatured": "Fiche vérifiée par Xplania : plusieurs thèmes sont déjà prêts, les autres se complètent en un clic.",
+    "welcomeOther": "Chaque thème est préparé pour ce pays à ta première ouverture, puis gardé pour tout le monde.",
+    "progress": "{{done}} / {{total}} thèmes compris",
+    "understood": "Compris",
+    "markUnderstood": "Marquer comme compris",
+    "readySheet": "Fiche prête",
+    "aiSheet": "Préparé à l'ouverture",
+    "back": "Tous les thèmes",
+    "loginNeeded": "Connecte-toi pour ouvrir ce thème : il sera préparé pour toi puis gardé pour les prochains voyageurs.",
+    "login": "Se connecter",
+    "loading": "Ping rassemble les codes locaux…",
+    "dos": "À faire",
+    "donts": "À éviter",
+    "why": "Pourquoi ?",
+    "severityLegend": "🟢 anodin · 🟠 maladroit · 🔴 offensant",
+    "homeVsHere": "Chez toi / Ici",
+    "evolving": "Les usages évoluent : observe et adapte-toi. Chaque personne est différente.",
+    "aiNote": "Contenu préparé par l'IA Xplania : à garder comme repère général.",
+    "otherTools": "Santé, sécurité et formalités :",
+    "pillars": {
+      "greetings": "Salutations & politesse",
+      "food": "Gastronomie & table",
+      "social": "Codes sociaux",
+      "dress": "Tenue & vêtements",
+      "gestures": "Gestes & langage corporel",
+      "language": "Langue & expressions",
+      "values": "Valeurs, traditions & religion",
+      "calendar": "Fêtes & calendrier",
+      "sociallife": "Vie sociale",
+      "work": "Études & monde pro",
+      "popculture": "Culture populaire",
+      "shock": "Choc culturel"
+    }
   }
 }

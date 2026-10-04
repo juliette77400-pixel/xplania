@@ -52,7 +52,8 @@
     "descVisa": "Country paperwork",
     "labelTracking": "Live tracking",
     "labelJournal": "Journal",
-    "labelValise": "Packing"
+    "labelValise": "Packing",
+    "descCulture": "Customs & etiquette"
   },
   "streakCard": {
     "daysInARow": "days in a row",
@@ -129,7 +130,8 @@
     "groupRelive": "Memories & progress",
     "groupXplania": "Information",
     "groupAccount": "My account",
-    "dna": "Traveler DNA"
+    "dna": "Traveler DNA",
+    "culture": "Culture guide"
   },
   "about": {
     "metaTitle": "About — Xplania, travel differently at last",
@@ -6157,5 +6159,56 @@
     "howStep2Desc": "Allow your location: Xplania shows the best nearby places, on the map and in a list.",
     "howStep3Title": "Save your favourites",
     "howStep3Desc": "Save places to your lists and get an alert when you walk nearby."
+  },
+  "culture": {
+    "title": "Cultural immersion guide",
+    "subtitle": "The codes, customs and little gestures to feel at ease in your host country.",
+    "howTitle": "How does it work?",
+    "howStep1Title": "Pick your country",
+    "howStep1Desc": "Type the country name or pick one of the most requested.",
+    "howStep2Title": "Explore the topics",
+    "howStep2Desc": "Dress, table, greetings… open a topic to see what to do and avoid.",
+    "howStep3Title": "Mark “understood”",
+    "howStep3Desc": "Check off each topic you read to track your progress.",
+    "searchLabel": "Which country are you going to?",
+    "searchPlaceholder": "E.g. Japan, Canada, Italy…",
+    "searchBtn": "See the guide",
+    "featured": "Ready-made sheets:",
+    "notFoundTitle": "Xplania is preparing this info 🧭",
+    "notFoundDesc": "We didn't recognise this country yet. Check the spelling or pick a country from the list: our team adds to the guide every week.",
+    "pillarPending": "This topic is still being prepared for this country. Explore the other topics meanwhile, we're adding it soon!",
+    "welcomeFeatured": "Sheet checked by Xplania: several topics are ready, the others fill in with one click.",
+    "welcomeOther": "Each topic is prepared for this country the first time it's opened, then kept for everyone.",
+    "progress": "{{done}} / {{total}} topics understood",
+    "understood": "Understood",
+    "markUnderstood": "Mark as understood",
+    "readySheet": "Ready sheet",
+    "aiSheet": "Prepared on opening",
+    "back": "All topics",
+    "loginNeeded": "Sign in to open this topic: it will be prepared for you and kept for future travellers.",
+    "login": "Sign in",
+    "loading": "Ping is gathering local codes…",
+    "dos": "Do",
+    "donts": "Avoid",
+    "why": "Why?",
+    "severityLegend": "🟢 harmless · 🟠 awkward · 🔴 offensive",
+    "homeVsHere": "Home / Here",
+    "evolving": "Customs evolve: observe and adapt. Every person is different.",
+    "aiNote": "Content prepared by Xplania AI: use it as a general guide.",
+    "otherTools": "Health, safety and paperwork:",
+    "pillars": {
+      "greetings": "Greetings & politeness",
+      "food": "Food & table",
+      "social": "Social codes",
+      "dress": "Dress & clothing",
+      "gestures": "Gestures & body language",
+      "language": "Language & expressions",
+      "values": "Values, traditions & religion",
+      "calendar": "Holidays & calendar",
+      "sociallife": "Social life",
+      "work": "Studies & workplace",
+      "popculture": "Pop culture",
+      "shock": "Culture shock"
+    }
   }
 }

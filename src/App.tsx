@@ -28,6 +28,7 @@ const Index = lazy(() => import("./pages/Index.tsx"));
 const GuideBudget = lazy(() => import("./pages/GuideBudget.tsx"));
 const GuideValise = lazy(() => import("./pages/GuideValise.tsx"));
 const GuideVisa = lazy(() => import("./pages/GuideVisa.tsx"));
+const GuideCulture = lazy(() => import("./pages/GuideCulture.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Offres = lazy(() => import("./pages/Offres.tsx"));
 const Auth = lazy(() => import("./pages/Auth.tsx"));
@@ -128,6 +129,7 @@ const App = () => (
             <Route path="/guide-budget" element={<GuideBudget />} />
             <Route path="/guide-valise" element={<ProtectedRoute><GuideValise /></ProtectedRoute>} />
             <Route path="/guide-visa" element={<GuideVisa />} />
+            <Route path="/guide-culture" element={<GuideCulture />} />
             <Route path="/offres" element={<Offres />} />
             <Route path="/carnets" element={<ProtectedRoute><Carnets /></ProtectedRoute>} />
             <Route path="/carnet/:tripId" element={<ProtectedRoute><Carnet /></ProtectedRoute>} />
