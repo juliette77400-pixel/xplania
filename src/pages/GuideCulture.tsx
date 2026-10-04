@@ -96,8 +96,8 @@ export default function GuideCulture() {
                 </button>
               ))}
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
 
         {notFound && (
           <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
