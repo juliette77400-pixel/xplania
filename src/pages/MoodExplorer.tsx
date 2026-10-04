@@ -1,3 +1,4 @@
+import HowItWorks from "@/components/shared/HowItWorks";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Sparkles, Heart, History as HistoryIcon, Map as MapIcon, Trophy, Users, LineChart as LineChartIcon, Star } from "lucide-react";
@@ -121,6 +122,7 @@ const MoodExplorer = () => {
       <AppNavbar />
       <main id="main-content" tabIndex={-1} className="max-w-5xl mx-auto px-4 py-6 md:py-10 space-y-6">
         <QuotaBanner tool="mood" toolLabel="Mood Explorer" />
+        <HowItWorks prefix="howMood" />
 
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div className="flex-1 min-w-0">

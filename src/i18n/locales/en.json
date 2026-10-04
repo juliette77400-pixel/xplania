@@ -6130,5 +6130,32 @@
       "high": "Urgent",
       "emergency": "Emergency: call for help"
     }
+  },
+  "howMood": {
+    "howTitle": "How does it work?",
+    "howStep1Title": "Say how you feel",
+    "howStep1Desc": "Pick a mood, chat with Ping or type what you feel like (e.g. “up for a party”).",
+    "howStep2Title": "Discover suggested places",
+    "howStep2Desc": "Xplania shows nearby places that match your mood, on the map and in a list.",
+    "howStep3Title": "Go and share your feedback",
+    "howStep3Desc": "Add a place to your trip, then rate it: your feedback improves the next ideas."
+  },
+  "howCarnet": {
+    "howTitle": "How does it work?",
+    "howStep1Title": "Open a trip's logbook",
+    "howStep1Desc": "Pick a trip below (or create one) to open its logbook.",
+    "howStep2Title": "Tell your story",
+    "howStep2Desc": "Add pages with your texts, photos and visited places, day by day.",
+    "howStep3Title": "Keep and share your memories",
+    "howStep3Desc": "AI can write your trip story; then export it as a PDF or share it."
+  },
+  "howDiscover": {
+    "howTitle": "How does it work?",
+    "howStep1Title": "Choose what interests you",
+    "howStep1Desc": "Tick one or more interests (food, culture, nature…) or ask Ping.",
+    "howStep2Title": "Explore around you",
+    "howStep2Desc": "Allow your location: Xplania shows the best nearby places, on the map and in a list.",
+    "howStep3Title": "Save your favourites",
+    "howStep3Desc": "Save places to your lists and get an alert when you walk nearby."
   }
 }

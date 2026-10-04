@@ -1,3 +1,4 @@
+import HowItWorks from "@/components/shared/HowItWorks";
 import { useCallback, useMemo, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -97,6 +98,7 @@ const Discover = () => {
       <div className="min-h-screen bg-background">
         <AppNavbar />
         <main id="main-content" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-6 md:py-10">
+          <HowItWorks prefix="howDiscover" className="mb-6" />
           <DiscoverEntry onSubmit={handleEntrySubmit} onOpenPip={() => setPipOpen(true)} />
         </main>
         <QuickJump />
