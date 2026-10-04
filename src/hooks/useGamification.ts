@@ -73,6 +73,7 @@ export function useGamification() {
   const { data, isLoading, refetch } = useQuery<GamData>({
     queryKey,
     enabled: !!user,
+    refetchOnMount: "always",
     queryFn: async () => {
       const [catRes, badgeRes, claimsRes, prefsRes, settingsRes, ptsRes, profRes] = await Promise.all([
         supabase.from("gam_categories").select("*").eq("active", true).order("position"),
@@ -203,6 +204,7 @@ export function useGamification() {
     allBadges: gam.badges,
     claims: gam.claims,
     prefs: gam.prefs,
+    effectivePrefs,
     visibility: gam.visibility,
     points: gam.points,
     setPrefs: setPrefsRemote,
