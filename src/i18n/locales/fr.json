@@ -2104,7 +2104,14 @@
     "regenerate": "Régénérer",
     "tabMap": "Carte",
     "tabReplay": "Replay",
-    "tabSummary": "Résumé"
+    "tabSummary": "Résumé",
+    "howTitle": "Comment ça marche ?",
+    "howStep1Title": "Choisis une étape",
+    "howStep1Desc": "Appuie sur un point de la carte (ou ajoute ta propre étape avec « Ajouter une étape »).",
+    "howStep2Title": "Valide-la sur place",
+    "howStep2Desc": "Une fois sur place, ouvre l'étape et appuie sur « Marquer comme visité » : tu gagnes des points.",
+    "howStep3Title": "Débloque tes badges",
+    "howStep3Desc": "Chaque étape validée fait avancer ta progression et débloque des badges."
   },
   "valise": {
     "headerTitle": "🧳 Valise Intelligente",

@@ -2104,7 +2104,14 @@
     "regenerate": "Regenerate",
     "tabMap": "Map",
     "tabReplay": "Replay",
-    "tabSummary": "Summary"
+    "tabSummary": "Summary",
+    "howTitle": "How does it work?",
+    "howStep1Title": "Pick a stop",
+    "howStep1Desc": "Tap a point on the map (or add your own with “Add a stop”).",
+    "howStep2Title": "Check it in on site",
+    "howStep2Desc": "Once there, open the stop and tap “Mark as visited” to earn points.",
+    "howStep3Title": "Unlock your badges",
+    "howStep3Desc": "Each visited stop boosts your progress and unlocks badges."
   },
   "valise": {
     "headerTitle": "🧳 Smart Suitcase",

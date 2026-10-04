@@ -82,6 +82,20 @@ const ExploreTrip = () => {
         ) : (
           <>
             <ProgressHeader progress={explore.progress} cityName={cityNode?.name || trip?.destination || undefined} />
+            <section aria-label={t("exploreTrip.howTitle")} className="glass-card rounded-2xl p-4 sm:p-5">
+              <h2 className="text-sm font-bold text-foreground mb-3">{t("exploreTrip.howTitle")}</h2>
+              <ol className="grid gap-3 sm:grid-cols-3">
+                {[1, 2, 3].map((n) => (
+                  <li key={n} className="flex gap-3 rounded-xl border border-border bg-muted/30 p-3">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary">{n}</span>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{t(`exploreTrip.howStep${n}Title`)}</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{t(`exploreTrip.howStep${n}Desc`)}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
             <BadgesShowcase badges={explore.badges} nodes={explore.nodes} mediaCount={explore.media.length} />
 
             <div className="grid lg:grid-cols-[1fr_320px] gap-5">
