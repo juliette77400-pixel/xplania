@@ -6209,6 +6209,16 @@
       "work": "Études & monde pro",
       "popculture": "Culture populaire",
       "shock": "Choc culturel"
-    }
+    },
+    "tipOfDay": "Geste du jour",
+    "situation": "Mise en situation",
+    "notQuite": "Presque !",
+    "retry": "Recommencer",
+    "quizTitle": "Mini-quiz",
+    "quizAvoid": "Lequel de ces comportements vaut mieux éviter ?",
+    "quizDo": "Lequel de ces comportements est conseillé ?",
+    "quizScore": "{{score}} / {{total}} bonnes réponses.",
+    "quizPerfect": "Bravo, tu maîtrises ce thème !",
+    "quizKeep": "Relis les conseils et retente ta chance !"
   }
 }
