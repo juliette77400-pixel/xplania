@@ -106,6 +106,33 @@ export type Database = {
         }
         Relationships: []
       }
+      culture_guide_cache: {
+        Row: {
+          content: Json
+          country_code: string
+          created_at: string
+          id: string
+          locale: string
+          pillar: string
+        }
+        Insert: {
+          content: Json
+          country_code: string
+          created_at?: string
+          id?: string
+          locale: string
+          pillar: string
+        }
+        Update: {
+          content?: Json
+          country_code?: string
+          created_at?: string
+          id?: string
+          locale?: string
+          pillar?: string
+        }
+        Relationships: []
+      }
       destinations: {
         Row: {
           active: boolean

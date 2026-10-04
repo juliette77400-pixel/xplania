@@ -1,2 +1,3 @@
 - Satisfaction survey answers live in `satisfaction_surveys` (insert/read own, admins read all); shown as a dismissible card on /app and aggregated in /admin/stats — why: real numbers for school pilot reports.
 - AI safety: every AI prompt must include SAFETY_RULE_* from supabase/functions/_shared/prompts.ts (via brandHeader or explicitly) — why: no illegal/dangerous/disrespectful recommendations.
+- Cultural guide: pre-written country sheets live in src/data/culture-guide.ts; other pillars are AI-generated one at a time by the culture-guide function and cached in culture_guide_cache (server-write only) — why: keep AI cost to one generation per country/pillar/language.

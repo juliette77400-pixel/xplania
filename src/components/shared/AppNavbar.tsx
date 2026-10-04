@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
+import { Globe2,
   Plane, Home, Compass, Activity, BookOpen, Luggage,
   Wallet, FileCheck, Smile, Map, Trophy, Crown, Info,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
@@ -56,6 +56,7 @@ const GROUPS: NavGroup[] = [
   ] },
   { labelKey: "appNav.groupTravel", items: [
     { to: "/suivi", labelKey: "appNav.tracking", icon: Activity },
+    { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
   ] },
   { labelKey: "appNav.groupRelive", items: [
     { to: "/carnets", labelKey: "appNav.journal", icon: BookOpen },
