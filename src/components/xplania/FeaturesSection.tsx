@@ -7,13 +7,13 @@ const copy = {
   fr:{tag:"Les capacités de ton copilote",title:"Tout ce dont tu as besoin, au moment où tu en as besoin.",subtitle:"Plus besoin de naviguer entre des outils isolés. Chaque fonctionnalité partage le même contexte et poursuit le même voyage.", groups:[
     ["Préparer", "Anticipe sans t'éparpiller.", "Ton copilote estime ton budget, prépare une valise adaptée et vérifie tes formalités.", "/guide-budget", "Préparer mon voyage", ["Guide Budget","Guide Valise","Guide Visa"]],
     ["Explorer", "Trouve ce qui te ressemble.", "Il comprend ton humeur et transforme tes envies en lieux pertinents, à retrouver sur ta carte de voyage.", "/mood", "Trouver mon prochain lieu", ["Mood Explorer","Discover","Carte de voyage"]],
-    ["Voyager", "Reste orienté, même en mouvement.", "Il suit ton séjour en direct et te propose des lieux utiles selon l'endroit et le moment.", "/suivi", "Accompagner mon voyage", ["Suivi live","Carte de voyage","Discover"]],
+    ["Voyager", "Reste orienté, même en mouvement.", "Il suit ton séjour en direct et te propose des lieux utiles selon l'endroit et le moment.", "/suivi", "Accompagner mon voyage", ["Suivi live","Carte de voyage","Discover","Guide culturel"]],
     ["Revivre", "Garde plus que des photos.", "Il rassemble tes étapes dans un carnet vivant et récompense tes aventures avec des badges.", "/carnets", "Ouvrir mes carnets", ["Carnet de bord","Badges & progression"]]
   ]},
   en:{tag:"Your copilot's capabilities",title:"Everything you need, exactly when you need it.",subtitle:"No more jumping between isolated tools. Every feature shares the same context and continues the same journey.", groups:[
     ["Prepare", "Anticipate without the overwhelm.", "Your copilot estimates your budget, builds a tailored packing list and checks your paperwork.", "/guide-budget", "Prepare my trip", ["Budget Guide","Suitcase Guide","Visa Guide"]],
     ["Explore", "Find places that feel like you.", "It understands your mood and turns your wishes into relevant places, saved on your travel map.", "/mood", "Find my next place", ["Mood Explorer","Discover","Travel map"]],
-    ["Travel", "Stay oriented while moving.", "It follows your trip live and suggests useful places based on where you are and when.", "/suivi", "Guide my trip", ["Live tracking","Travel map","Discover"]],
+    ["Travel", "Stay oriented while moving.", "It follows your trip live and suggests useful places based on where you are and when.", "/suivi", "Guide my trip", ["Live tracking","Travel map","Discover","Culture guide"]],
     ["Relive", "Keep more than photos.", "It gathers your steps in a living journal and rewards your adventures with badges.", "/carnets", "Open my journals", ["Travel journal","Badges & progress"]]
   ]}
 };
