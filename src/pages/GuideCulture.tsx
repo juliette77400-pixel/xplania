@@ -2,10 +2,10 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Check, Loader2, Compass, ArrowLeft } from "lucide-react";
+import { Check, Loader2, Compass, ArrowLeft } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HowItWorks from "@/components/shared/HowItWorks";
-import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -40,18 +40,14 @@ export default function GuideCulture() {
   const [pillar, setPillar] = useState<PillarId | null>(null);
   const [done, setDone] = useState<Record<string, boolean>>(loadProgress);
 
-  const suggestions = useMemo(() => {
+  const filtered = useMemo(() => {
     const n = norm(query);
-    if (n.length < 2) return [];
-    return countryList.filter((c) => norm(c.name).includes(n)).slice(0, 6);
+    if (!n) return countryList;
+    const alias = ALIASES[n];
+    return countryList.filter((c) => norm(c.name).includes(n) || c.code === alias);
   }, [query]);
 
   const choose = (c: string) => { setCode(c); setPillar(null); setNotFound(false); setQuery(""); };
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const c = findCountry(query);
-    if (c) choose(c); else { setNotFound(true); setCode(null); }
-  };
   const toggle = (k: string) => setDone((d) => { const n = { ...d, [k]: !d[k] }; localStorage.setItem(PROGRESS_KEY, JSON.stringify(n)); return n; });
 
   const countryName = code ? getCountryName(code) : "";
@@ -69,23 +65,27 @@ export default function GuideCulture() {
 
         <HowItWorks prefix="culture" />
 
-        <form onSubmit={submit} className="glass-card rounded-2xl p-4 space-y-3">
-          <label htmlFor="culture-country" className="text-sm font-semibold text-foreground">{t("culture.searchLabel")}</label>
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-              <Input id="culture-country" value={query} onChange={(e) => { setQuery(e.target.value); setNotFound(false); }}
-                placeholder={t("culture.searchPlaceholder")} className="pl-9" autoComplete="off" />
-            </div>
-            <Button type="submit">{t("culture.searchBtn")}</Button>
-          </div>
-          {suggestions.length > 0 && (
-            <ul className="flex flex-wrap gap-2">
-              {suggestions.map((s) => (
-                <li key={s.code}><button type="button" onClick={() => choose(s.code)} className="rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-foreground hover:bg-primary/15">{s.name}</button></li>
-              ))}
-            </ul>
-          )}
+        <div className="glass-card rounded-2xl p-4 space-y-3">
+          <label className="text-sm font-semibold text-secondary">{t("culture.searchLabel")}</label>
+          <Select value={code ?? ""} onValueChange={(v) => choose(v)}>
+            <SelectTrigger className="bg-muted border-border text-foreground">
+              <SelectValue placeholder={t("culture.searchPlaceholder")} />
+            </SelectTrigger>
+            <SelectContent className="max-h-[300px]">
+              <div className="px-2 py-1.5 sticky top-0 bg-popover z-10">
+                <input type="text" placeholder={t("guideVisa.searchPlaceholder")} value={query}
+                  onChange={(e) => setQuery(e.target.value)} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}
+                  className="w-full px-3 py-1.5 text-sm bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary" />
+              </div>
+              {filtered.map((c) => <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>)}
+              {filtered.length === 0 && (
+                <div className="px-3 py-3 text-sm text-muted-foreground space-y-1">
+                  <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>
+                  <p>{t("culture.notFoundDesc")}</p>
+                </div>
+              )}
+            </SelectContent>
+          </Select>
           <div>
             <p className="text-xs text-muted-foreground mb-2">{t("culture.featured")}</p>
             <div className="flex flex-wrap gap-2">
@@ -97,7 +97,7 @@ export default function GuideCulture() {
               ))}
             </div>
           </div>
-        </form>
+        </div>
 
         {notFound && (
           <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">

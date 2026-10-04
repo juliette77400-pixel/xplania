@@ -37,7 +37,7 @@ const Dashboard = () => {
   const phases = [
     { key: "prepare", icon: Luggage, title: t("myDashboard.phases.prepare.title"), desc: t("myDashboard.phases.prepare.desc"), primary: "/guide-budget", links: [[t("appNav.budget"), "/guide-budget"], [t("appNav.visa"), "/guide-visa"], [t("appNav.suitcase"), "/guide-valise"]] },
     { key: "explore", icon: Compass, title: t("myDashboard.phases.explore.title"), desc: t("myDashboard.phases.explore.desc"), primary: "/discover", links: [[t("appNav.discover"), "/discover"], [t("appNav.mood"), "/mood"], [t("appNav.explore"), "/explore"]] },
-    { key: "travel", icon: Activity, title: t("myDashboard.phases.travel.title"), desc: t("myDashboard.phases.travel.desc"), primary: "/suivi", links: [[t("appNav.tracking"), "/suivi"], [t("appNav.badges"), "/gamification"]] },
+    { key: "travel", icon: Activity, title: t("myDashboard.phases.travel.title"), desc: t("myDashboard.phases.travel.desc"), primary: "/suivi", links: [[t("appNav.tracking"), "/suivi"], [t("appNav.culture"), "/guide-culture"], [t("appNav.badges"), "/gamification"]] },
     { key: "relive", icon: BookOpen, title: t("myDashboard.phases.relive.title"), desc: t("myDashboard.phases.relive.desc"), primary: "/carnets", links: [[t("appNav.journal"), "/carnets"], [t("appNav.badges"), "/gamification"]] },
   ];
 
