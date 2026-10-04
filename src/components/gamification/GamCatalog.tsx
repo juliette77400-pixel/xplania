@@ -53,7 +53,7 @@ const BadgeCard = ({
 const GamCatalog = () => {
   const { t, i18n } = useTranslation();
   const isFr = i18n.language?.startsWith("fr");
-  const { loading, badges, categories, prefs, points } = useGamification();
+  const { loading, badges, categories, effectivePrefs: prefs, points } = useGamification();
   const [tab, setTab] = useState<Status>("unlocked");
   const [selectedBadge, setSelectedBadge] = useState<BadgeWithClaim | null>(null);
   // pagination per category id (only relevant inside accordions)
