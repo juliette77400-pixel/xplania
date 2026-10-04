@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
     // Pull all relevant rows (limited dataset → fine for beta).
     const [profiles, nodes, blocks, favs, eb, jb, mb, settings, reviews, reactions] = await Promise.all([
       sb.from("profiles").select("user_id, display_name, avatar_url").limit(2000),
-      sb.from("explore_nodes").select("user_id, status").eq("status", "visited"),
+      Promise.resolve({ data: [] as any[] }), // explore_nodes are client-writable: not counted for leaderboard XP
       sb.from("journal_blocks").select("user_id, type"),
       sb.from("mood_favorites").select("user_id, place_id, mood_places!inner(hidden_gem)"),
       // Only server-validated badge claims count toward XP: self-reported

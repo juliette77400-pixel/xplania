@@ -59,7 +59,7 @@ const Cluster = ({ places, onSelect }: { places: Place[]; onSelect: (p: Place) =
     places.forEach((p) => {
       const m = L.marker([p.lat, p.lng], { icon: buildIcon(p.category, p.hidden_gem, p.distance_km) });
       m.bindPopup(
-        `<div style="min-width:180px;font-family:inherit"><div style="font-weight:600">${p.name}</div>${p.why_fits ? `<div style="font-style:italic;font-size:12px;color:hsl(var(--muted-foreground));margin-top:4px">"${p.why_fits}"</div>` : ""}${p.distance_km != null ? `<div style="font-size:11px;margin-top:4px">📍 ${fmtDist(p.distance_km)}</div>` : ""}</div>`,
+        `<div style="min-width:180px;font-family:inherit"><div style="font-weight:600">${escHtml(p.name)}</div>${p.why_fits ? `<div style="font-style:italic;font-size:12px;color:hsl(var(--muted-foreground));margin-top:4px">"${escHtml(p.why_fits)}"</div>` : ""}${p.distance_km != null ? `<div style="font-size:11px;margin-top:4px">📍 ${fmtDist(p.distance_km)}</div>` : ""}</div>`,
       );
       m.on("click", () => onSelectRef.current(p));
       group.addLayer(m);
@@ -159,3 +159,7 @@ const PlaceMap = ({ places, userPos, onSelect }: Props) => {
 };
 
 export default PlaceMap;
+
+function escHtml(v: unknown): string {
+  return String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" } as Record<string, string>)[c]);
+}

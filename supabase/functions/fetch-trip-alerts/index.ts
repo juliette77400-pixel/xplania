@@ -272,14 +272,16 @@ serve(async (req) => {
             (sevRank[a.severity] ?? 0) >= min
         );
         if (toSend.length > 0) {
+          const esc = (v: unknown) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" } as Record<string, string>)[c]);
+          const safeUrl = (u: unknown) => /^https?:\/\//i.test(String(u ?? "")) ? esc(u) : "";
           const html = `
-            <h2>${locale === "en" ? "Travel alerts" : "Alertes voyage"} — ${destination}</h2>
+            <h2>${locale === "en" ? "Travel alerts" : "Alertes voyage"} — ${esc(destination)}</h2>
             <ul>
               ${toSend
                 .map(
                   (a) =>
-                    `<li><strong>[${a.severity.toUpperCase()}] ${a.title}</strong><br/>${a.message}${
-                      a.link ? `<br/><a href="${a.link}">${a.source || a.link}</a>` : ""
+                    `<li><strong>[${esc(String(a.severity).toUpperCase())}] ${esc(a.title)}</strong><br/>${esc(a.message)}${
+                      safeUrl(a.link) ? `<br/><a href="${safeUrl(a.link)}">${esc(a.source || a.link)}</a>` : ""
                     }</li>`
                 )
                 .join("")}
