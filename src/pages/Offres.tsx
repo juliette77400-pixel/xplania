@@ -11,7 +11,6 @@ import {
   Palette,
   Bot,
   Globe,
-  Glasses,
   Layers,
   Star,
   Bell,
