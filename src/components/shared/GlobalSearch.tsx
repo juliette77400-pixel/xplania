@@ -33,7 +33,7 @@ const ENTRIES: CmdEntry[] = [
   { to: "/mood", labelKey: "appNav.mood", groupKey: "globalSearch.groupExplore", icon: Heart, keywords: "humeur mood emotion" },
   { to: "/explore", labelKey: "appNav.explore", groupKey: "globalSearch.groupExplore", icon: Map, keywords: "carte map travel" },
   { to: "/suivi", labelKey: "appNav.tracking", groupKey: "globalSearch.groupTrip", icon: Activity, keywords: "gps live tracking suivi" },
-  { to: "/guide-culture", labelKey: "appNav.culture", groupKey: "globalSearch.groupTrip", icon: Activity, keywords: "culture culturel codes usages etiquette customs" },
+  { to: "/guide-culture", labelKey: "appNav.culture", groupKey: "globalSearch.groupTrip", icon: Globe, keywords: "culture culturel codes usages etiquette customs" },
   { to: "/carnets", labelKey: "appNav.journal", groupKey: "globalSearch.groupTrip", icon: BookOpen, keywords: "journal carnet bord" },
   { to: "/profil-voyageur", labelKey: "appNav.dna", groupKey: "globalSearch.groupPrepare", icon: Dna, keywords: "adn voyageur dna tinder quiz profil swipe" },
   { to: "/guide-valise", labelKey: "appNav.suitcase", groupKey: "globalSearch.groupTools", icon: Briefcase, keywords: "valise bagage checklist" },

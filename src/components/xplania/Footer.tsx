@@ -40,6 +40,7 @@ const Footer = (_: Props) => {
     { icon: Compass, label: t("features.items.explore.title"), to: "/explore" },
     { icon: Heart, label: t("features.items.mood.title"), to: "/mood" },
     { icon: MapPinned, label: t("features.items.discover.title"), to: "/discover" },
+    { icon: Globe, label: t("appNav.culture"), to: "/guide-culture" },
     { icon: Trophy, label: t("appNav.badges"), to: "/gamification" },
   ];
 
