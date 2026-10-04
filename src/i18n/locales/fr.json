@@ -6130,5 +6130,32 @@
       "high": "Urgent",
       "emergency": "Urgence : appelle les secours"
     }
+  },
+  "howMood": {
+    "howTitle": "Comment ça marche ?",
+    "howStep1Title": "Dis comment tu te sens",
+    "howStep1Desc": "Choisis une humeur, discute avec Ping ou écris ton envie (ex. « envie de faire la fête »).",
+    "howStep2Title": "Découvre les lieux proposés",
+    "howStep2Desc": "Xplania te montre des lieux près de toi adaptés à ton humeur, sur la carte et en liste.",
+    "howStep3Title": "Vas-y et donne ton avis",
+    "howStep3Desc": "Ajoute un lieu à ton voyage, puis note-le : tes avis améliorent les prochaines idées."
+  },
+  "howCarnet": {
+    "howTitle": "Comment ça marche ?",
+    "howStep1Title": "Ouvre le carnet d'un voyage",
+    "howStep1Desc": "Choisis un voyage ci-dessous (ou crée-en un) pour ouvrir son carnet.",
+    "howStep2Title": "Raconte ton voyage",
+    "howStep2Desc": "Ajoute des pages avec tes textes, photos et lieux visités, jour après jour.",
+    "howStep3Title": "Garde et partage tes souvenirs",
+    "howStep3Desc": "L'IA peut écrire le récit de ton voyage ; tu peux ensuite l'exporter en PDF ou le partager."
+  },
+  "howDiscover": {
+    "howTitle": "Comment ça marche ?",
+    "howStep1Title": "Choisis ce qui t'intéresse",
+    "howStep1Desc": "Coche une ou plusieurs envies (manger, culture, nature…) ou demande à Ping.",
+    "howStep2Title": "Explore autour de toi",
+    "howStep2Desc": "Autorise ta position : Xplania te montre les meilleurs lieux proches, sur la carte et en liste.",
+    "howStep3Title": "Garde tes coups de cœur",
+    "howStep3Desc": "Enregistre les lieux dans tes listes et reçois une alerte quand tu passes à côté."
   }
 }

@@ -1,3 +1,4 @@
+import HowItWorks from "@/components/shared/HowItWorks";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { BookOpen, ArrowLeft } from "lucide-react";
@@ -47,6 +48,7 @@ const Carnets = () => {
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">{t("carnets.heroTitle")}</h2>
           <p className="text-muted-foreground mt-2">{t("carnets.heroDesc")}</p>
         </div>
+        <HowItWorks prefix="howCarnet" className="mb-8" />
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5" aria-busy="true" aria-label={t("common.loading")}>
