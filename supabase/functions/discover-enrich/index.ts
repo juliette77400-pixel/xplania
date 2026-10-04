@@ -34,7 +34,8 @@ serve(async (req) => {
 
     const supa = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const { data: places, error } = await supa.from("places")
-      .select("id,name,category,subcategory,address,tags").in("id", placeIds.slice(0, 12)).is("why_fits", null);
+      .select("id,name,category,subcategory,address,tags").in("id", placeIds.slice(0, 12)).is("why_fits", null)
+      .or(`created_by.is.null,created_by.eq.${__auth.userId}`);
     if (error) throw error;
     if (!places || places.length === 0) {
       return new Response(JSON.stringify({ enriched: 0 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -122,7 +123,7 @@ serve(async (req) => {
         tips: item.tips,
         hidden_gem: item.hidden_gem,
         score: Math.max(0, Math.min(100, Math.round(Number(item.score) || 0))),
-      }).eq("id", item.id).is("why_fits", null);
+      }).eq("id", item.id).is("why_fits", null).in("id", places.map((p: any) => p.id));
       if (!upErr) count++;
       const src = places.find((p) => p.id === item.id);
       if (src?.name) shown.push({ item_key: src.name, item_type: "place", source: "discover-enrich", context: { category: src.category } });
