@@ -96,12 +96,19 @@ const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange, i
         </div>
       )}
       {insights?.analysis && (
-        <div className="mt-5 space-y-3">
-          <p className="text-sm text-foreground leading-relaxed">{insights.analysis.summary}</p>
+        <div className="mt-5 space-y-4 max-w-3xl">
+          <div className="space-y-2">
+            {splitSentences(insights.analysis.summary).map((s, i) => (
+              <p key={i} className="text-sm text-foreground leading-relaxed">{s}</p>
+            ))}
+          </div>
           {insights.analysis.points?.length > 0 && (
-            <ul className="space-y-1.5">
+            <ul className="space-y-2.5">
               {insights.analysis.points.map((pt, i) => (
-                <li key={i} className="text-sm text-muted-foreground flex gap-2"><span className="text-primary">•</span>{pt}</li>
+                <li key={i} className="text-sm text-muted-foreground leading-relaxed flex gap-3 rounded-xl bg-muted/30 border border-border p-3">
+                  <span className="text-primary font-bold shrink-0">{i + 1}.</span>
+                  <span>{pt}</span>
+                </li>
               ))}
             </ul>
           )}
@@ -119,7 +126,13 @@ const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange, i
                 <div key={k} className={`p-4 rounded-xl border ${best ? "border-primary bg-primary/10" : "border-border bg-muted/30"}`}>
                   <p className="text-xs font-semibold text-muted-foreground">{t(`budget.scenario.${k}`)}{best && ` · ${t("budget.scenarioBest")}`}</p>
                   <p className="text-xl font-extrabold text-foreground">{Math.round(sc.total)} €</p>
-                  <p className="text-xs text-muted-foreground mt-1">{sc.note}</p>
+                  <ul className="mt-2 space-y-1.5">
+                    {String(sc.note || "").split(/\s*[;]\s*|(?<=[.!?])\s+/).filter(Boolean).map((part, i) => (
+                      <li key={i} className="text-xs text-muted-foreground leading-relaxed flex gap-1.5">
+                        <span className="text-primary">•</span><span>{part}</span>
+                      </li>
+                    ))}
+                  </ul>
                   {onApplyScenario && (
                     <button
                       type="button"
