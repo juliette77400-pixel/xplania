@@ -2745,7 +2745,8 @@
       "nothing": "Nothing missing, your bag is complete 🎉",
       "error": "The check couldn't run. Try again.",
       "category": "AI suggestions"
-    }
+    },
+    "aiIllustration": "AI illustration"
   },
   "budget": {
     "heroBadge": "Powered by Xplania AI",

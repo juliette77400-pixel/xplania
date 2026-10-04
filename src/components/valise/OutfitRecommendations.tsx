@@ -292,9 +292,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
               >
                 <div className={`relative h-44 overflow-hidden bg-gradient-to-br ${outfit.gradient} flex items-center justify-center`}>
                   <OutfitPhoto outfit={outfit} />
-                  <span className="text-6xl drop-shadow-lg select-none" aria-hidden="true">
-                    {outfit.emoji}
-                  </span>
+                  
                   {outfit.badge && (
                     <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20">
                       {outfit.badge}
@@ -347,9 +345,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
 
               <div className={`relative h-48 rounded-xl overflow-hidden mt-2 bg-gradient-to-br ${selectedOutfit.gradient} flex items-center justify-center`}>
                 <OutfitPhoto outfit={selectedOutfit} />
-                <span className="text-7xl drop-shadow-xl select-none" aria-hidden="true">
-                  {selectedOutfit.emoji}
-                </span>
+                
                 {selectedOutfit.badge && (
                   <span className="absolute bottom-3 left-3 px-3 py-1 rounded-lg bg-white/20 backdrop-blur text-white text-xs font-bold border border-white/20">
                     {selectedOutfit.badge}
