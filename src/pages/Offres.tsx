@@ -11,7 +11,6 @@ import {
   Palette,
   Bot,
   Globe,
-  Glasses,
   Layers,
   Star,
   Bell,
@@ -25,7 +24,7 @@ type BillingCycle = "monthly" | "yearly" | "season3" | "season6" | "perTrip";
 const BILLING_KEYS: BillingCycle[] = ["monthly", "yearly", "season3", "season6", "perTrip"];
 
 interface PackDef {
-  id: "admin" | "creatif" | "ia" | "intercultural" | "futur" | "all";
+  id: "admin" | "creatif" | "ia" | "intercultural" | "all";
   icon: React.ReactNode;
   premium?: boolean;
   recommended?: boolean;
@@ -65,14 +64,6 @@ const packs: PackDef[] = [
     hasYearlyNote: true,
   },
   {
-    id: "futur",
-    icon: <Glasses className="w-5 h-5" />,
-    premium: true,
-    featureKeys: ["f1", "f2"],
-    prices: { monthly: 12.99, yearly: 129.9, season3: 45.97, season6: 85.9, perTrip: 15.99 },
-    hasYearlyNote: true,
-  },
-  {
     id: "all",
     icon: <Crown className="w-5 h-5" />,
     recommended: true,
@@ -84,20 +75,14 @@ const packs: PackDef[] = [
 // Bundle definitions reference pack IDs for translatable names
 const doublePacks: { ids: PackDef["id"][]; price: number }[] = [
   { ids: ["admin", "creatif"], price: 11.49 },
-  { ids: ["ia", "futur"], price: 21.99 },
   { ids: ["intercultural", "creatif"], price: 11.89 },
   { ids: ["admin", "ia"], price: 15.79 },
-  { ids: ["admin", "futur"], price: 16.79 },
   { ids: ["intercultural", "ia"], price: 16.29 },
-  { ids: ["intercultural", "futur"], price: 17.09 },
 ];
 
 const triplePacks: { ids: PackDef["id"][]; price: number }[] = [
   { ids: ["admin", "creatif", "intercultural"], price: 15.99 },
   { ids: ["ia", "admin", "creatif"], price: 20.49 },
-  { ids: ["ia", "futur", "admin"], price: 25.49 },
-  { ids: ["ia", "futur", "creatif"], price: 25.99 },
-  { ids: ["ia", "futur", "intercultural"], price: 25.59 },
 ];
 
 const Offres = () => {
