@@ -1,6 +1,6 @@
 // Fetch a notebook cover image for a destination (Unsplash by default, AI fallback/option)
 import { requireAuth } from "../_shared/require-auth.ts";
-import { enforceQuota } from "../_shared/quota-guard.ts";
+import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
@@ -8,7 +8,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-Deno.serve(async (req) => {
+Deno.serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   const __auth = await requireAuth(req, corsHeaders);
   if (__auth instanceof Response) return __auth;
@@ -81,4 +81,4 @@ Deno.serve(async (req) => {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-});
+}));

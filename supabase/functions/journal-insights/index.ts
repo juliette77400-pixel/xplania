@@ -1,12 +1,12 @@
 
 import { requireAuth } from "../_shared/require-auth.ts";
-import { enforceQuota } from "../_shared/quota-guard.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
+import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";// Compute insights from a journal: most-visited places, mood evolution, best moments
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-Deno.serve(async (req) => {
+Deno.serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   const __auth = await requireAuth(req, corsHeaders);
@@ -58,4 +58,4 @@ Deno.serve(async (req) => {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-});
+}));

@@ -2,7 +2,7 @@
 // (France-Diplomatie, Institut Pasteur, OMS / WHO) for a given destination.
 // Returns structured JSON with a "lastChecked" timestamp + source attributions.
 import { requireAuth } from "../_shared/require-auth.ts";
-import { enforceQuota } from "../_shared/quota-guard.ts";
+import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
@@ -88,7 +88,7 @@ Return the up-to-date info as STRICT JSON:
 }`;
 };
 
-Deno.serve(async (req) => {
+Deno.serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
@@ -199,4 +199,4 @@ Deno.serve(async (req) => {
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
-});
+}));

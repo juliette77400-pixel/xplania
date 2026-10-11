@@ -55,7 +55,13 @@ export async function enforceQuota(
       used?: number;
       limit?: number;
     };
-    if (payload.allowed) return null;
+    if (payload.allowed) {
+      if (!payload.admin) {
+        const { data: u } = await client.auth.getUser();
+        if (u?.user?.id) consumed.set(req, { tool, userId: u.user.id });
+      }
+      return null;
+    }
     return new Response(
       JSON.stringify({
         error: "quota_exceeded",
@@ -73,4 +79,35 @@ export async function enforceQuota(
     console.error("[quota-guard] unexpected error", err);
     return null;
   }
+}
+
+// Tracks requests that consumed a quota unit so failures can be refunded.
+const consumed = new WeakMap<Request, { tool: QuotaTool; userId: string }>();
+
+async function refund(req: Request) {
+  const c = consumed.get(req);
+  if (!c) return;
+  consumed.delete(req);
+  try {
+    const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+    const { error } = await admin.rpc("refund_quota", { _user: c.userId, _tool: c.tool });
+    if (error) console.error("[quota-guard] refund failed", error);
+  } catch (err) {
+    console.error("[quota-guard] refund error", err);
+  }
+}
+
+/** Wraps a handler: if the request consumed a quota unit and then failed
+ * (error status or thrown error), the unit is given back to the user. */
+export function withQuotaRefund(handler: (req: Request) => Response | Promise<Response>) {
+  return async (req: Request): Promise<Response> => {
+    try {
+      const res = await handler(req);
+      if (res.status >= 400) await refund(req);
+      return res;
+    } catch (err) {
+      await refund(req);
+      throw err;
+    }
+  };
 }

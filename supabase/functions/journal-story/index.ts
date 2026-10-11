@@ -1,6 +1,6 @@
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
-import { enforceQuota } from "../_shared/quota-guard.ts";
+import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 // Generate an immersive trip story from journal data using Lovable AI
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -21,7 +21,7 @@ const TONE_PROMPTS_EN: Record<string, string> = {
   documentary: "Write in a factual, precise documentary style, reportage-like.",
 };
 
-Deno.serve(async (req) => {
+Deno.serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   const __auth = await requireAuth(req, corsHeaders);
   if (__auth instanceof Response) return __auth;
@@ -134,4 +134,4 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-});
+}));
