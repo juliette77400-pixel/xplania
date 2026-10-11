@@ -90,6 +90,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      <h1 className="sr-only">Xplania</h1>
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
