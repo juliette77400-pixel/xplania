@@ -108,7 +108,8 @@ const App = () => (
             <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* Anonymous Tinder deck is now the landing page. */}
-              <Route path="/" element={<TravelerProfileOnboarding />} />
+              <Route path="/" element={<Index />} />
+              <Route path="/parcours" element={<TravelerProfileOnboarding />} />
               <Route path="/home" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
