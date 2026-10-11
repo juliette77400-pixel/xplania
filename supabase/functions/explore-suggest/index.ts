@@ -2,14 +2,14 @@ import { SAFETY_RULE_FR } from "../_shared/prompts.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
-import { enforceQuota } from "../_shared/quota-guard.ts";
+import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-Deno.serve(async (req) => {
+Deno.serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   const __auth = await requireAuth(req, corsHeaders);
@@ -107,4 +107,4 @@ Suggère 4 prochains lieux PRÉCIS et LOCAUX à explorer (noms réels), en équi
     console.error("explore-suggest error", e);
     return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
-});
+}));

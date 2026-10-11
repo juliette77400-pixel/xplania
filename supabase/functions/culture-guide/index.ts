@@ -4,7 +4,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
-import { enforceQuota } from "../_shared/quota-guard.ts";
+import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { brandHeader, NEUTRALITY_RULE_FR, NEUTRALITY_RULE_EN } from "../_shared/prompts.ts";
 
 const cors = {
@@ -41,7 +41,7 @@ const SCHEMA = {
   additionalProperties: false,
 };
 
-serve(async (req) => {
+serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
   const auth = await requireAuth(req, cors);
   if (auth instanceof Response) return auth;
@@ -79,4 +79,4 @@ serve(async (req) => {
     console.error("[culture-guide]", e);
     return json({ error: "unavailable" }, 500);
   }
-});
+}));

@@ -2981,6 +2981,13 @@ export type Database = {
       record_map_load: { Args: never; Returns: number }
       record_places_search: { Args: never; Returns: number }
       record_quiz_completion: { Args: never; Returns: Json }
+      refund_quota: {
+        Args: {
+          _tool: Database["public"]["Enums"]["quota_tool"]
+          _user: string
+        }
+        Returns: undefined
+      }
       subscribe_to_waitlist: {
         Args: {
           _email: string
