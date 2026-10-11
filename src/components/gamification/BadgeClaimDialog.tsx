@@ -69,8 +69,10 @@ const BadgeClaimDialog = ({ badge, open, onOpenChange }: Props) => {
           setSubmitting(false);
           return;
         }
+        // Keep original "photo" proofs untouched: canvas compression strips EXIF GPS,
+        // which gam-verify-claim uses for automatic location validation.
         const { compressImage } = await import("@/lib/compress-image");
-        const small = await compressImage(photo);
+        const small = proofType === "photo" ? photo : await compressImage(photo);
         const ext = small.name.split(".").pop() || "jpg";
         const path = `${user.id}/${badge.id}/${Date.now()}.${ext}`;
         const { error: upErr } = await supabase.storage.from("badge-proofs").upload(path, small);
