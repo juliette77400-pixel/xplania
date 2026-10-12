@@ -340,7 +340,7 @@
       "explore": {
         "title": "Carte de voyage",
         "tagline": "Ton voyage devient un jeu d'exploration.",
-        "description": "Carte interactive ramifiée, points cliquables, badges à débloquer et progression gamifiée. Chaque lieu visité te fait gagner des points et te rapproche du badge ultime de Globe Trotter.",
+        "description": "Une carte de ton voyage avec des lieux à cocher. Chaque lieu visité te fait gagner des points et des badges.",
         "benefit1": "Explorer son voyage comme un jeu vivant",
         "benefit2": "Débloquer badges et points en visitant",
         "cta": "Lancer l'exploration"
@@ -348,7 +348,7 @@
       "mood": {
         "title": "Mood Explorer",
         "tagline": "Choisis une émotion, on trouve le lieu parfait.",
-        "description": "Tu ne cherches pas un lieu, tu cherches une sensation. Sélectionne ton mood (chill, romantic, food, party…) et reçois des recommandations IA hyper personnalisées selon ta position, la météo et l'heure.",
+        "description": "Choisis ton humeur du moment (calme, romantique, food, fête…). Ping te propose des lieux autour de toi selon la météo et l'heure.",
         "benefit1": "Décider sans réfléchir, en 3 secondes",
         "benefit2": "Phrases émotionnelles qui te parlent vraiment",
         "cta": "Trouver ma vibe"
@@ -356,7 +356,7 @@
       "discover": {
         "title": "Discover",
         "tagline": "Les meilleurs lieux locaux, autour de toi, en temps réel.",
-        "description": "Recommandations contextuelles basées sur ta position, l'heure et la météo. Carte interactive, hidden gems, recherche en langage naturel ('brunch avec vue') et listes personnalisées pour organiser tes coups de cœur.",
+        "description": "Des lieux proches de toi selon l'heure et la météo. Cherche en langage simple (« brunch avec vue ») et garde tes coups de cœur dans des listes.",
         "benefit1": "Découvrir des lieux authentiques près de toi",
         "benefit2": "Recevoir des alertes hidden gem en marchant",
         "cta": "Découvrir autour de moi"
