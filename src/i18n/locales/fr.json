@@ -4530,6 +4530,14 @@
         "confirmCta": "Supprimer définitivement",
         "success": "Compte supprimé. À bientôt."
       }
+    },
+    "revokeShares": {
+      "title": "Couper tous mes liens de partage",
+      "desc": "Rend privés d'un coup tes carnets partagés, ton suivi live partagé et tes listes de lieux publiques. Les anciens liens ne montreront plus rien.",
+      "button": "Couper tous les partages",
+      "confirm": "Couper tous tes liens de partage ? Tu pourras les réactiver un par un.",
+      "done": "Tous tes liens de partage sont coupés.",
+      "error": "Une erreur est survenue, réessaie."
     }
   },
   "home": {
