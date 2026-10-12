@@ -50,7 +50,7 @@
     "descValise": "Checklist intelligente",
     "descBudget": "Dépenses & alertes",
     "descVisa": "Formalités pays",
-    "labelTracking": "Suivi de voyage",
+    "labelTracking": "Suivi live",
     "labelJournal": "Carnet",
     "labelValise": "Valise",
     "descCulture": "Codes & usages"
@@ -105,7 +105,7 @@
     "discover": "Découvrir",
     "mood": "Mood Explorer",
     "explore": "Carte de voyage",
-    "tracking": "Suivi de voyage",
+    "tracking": "Suivi live",
     "suitcase": "Valise",
     "journal": "Carnet",
     "budget": "Budget",
@@ -924,7 +924,7 @@
         },
         {
           "heading": "Données collectées, finalités, bases légales et durées",
-          "body": "Nous limitons la collecte au strict nécessaire. Voici précisément ce qui est traité :\n\n• Adresse email et mot de passe (compte / liste d'attente premium) — finalité : création de compte, authentification, communication produit. Base légale : exécution du contrat (RGPD art. 6.1.b) pour les comptes, consentement (art. 6.1.a) pour la liste d'attente. Conservation : durée de vie du compte + 12 mois d'inactivité, puis suppression. Pour la liste d'attente : jusqu'au lancement + 6 mois ou désinscription.\n\n• Contenu de tes voyages (destinations, dates, activités, journal, photos uploadées, position GPS du suivi en direct) — finalité : faire fonctionner les modules Planificateur, Carnet de bord, Suivi de voyage, Découverte. Base légale : exécution du contrat. Conservation : tant que le compte existe ; suppression à la demande ou à la clôture du compte.\n\n• Géolocalisation approximative ou précise (uniquement quand tu l'actives) — finalité : suggestions à proximité, suivi GPS du voyage. Base légale : consentement explicite via le navigateur. La position n'est stockée que si tu actives le suivi en direct.\n\n• Messages envoyés aux assistants IA Ping (visa) et Ping (budget) — finalité : générer une réponse personnalisée. Base légale : exécution du contrat. Conservation : 30 jours maximum à des fins de qualité, puis suppression.\n\n• Feedback envoyé via le formulaire (note, suggestions, problèmes, email) — finalité : amélioration du produit. Base légale : consentement (envoi volontaire). Conservation : 24 mois.\n\n• Analyses d'usage anonymes (pages, fonctionnalités utilisées) — aucun identifiant personnel associé. Base légale : intérêt légitime à améliorer le service. Conservation : 24 mois."
+          "body": "Nous limitons la collecte au strict nécessaire. Voici précisément ce qui est traité :\n\n• Adresse email et mot de passe (compte / liste d'attente premium) — finalité : création de compte, authentification, communication produit. Base légale : exécution du contrat (RGPD art. 6.1.b) pour les comptes, consentement (art. 6.1.a) pour la liste d'attente. Conservation : durée de vie du compte + 12 mois d'inactivité, puis suppression. Pour la liste d'attente : jusqu'au lancement + 6 mois ou désinscription.\n\n• Contenu de tes voyages (destinations, dates, activités, journal, photos uploadées, position GPS du suivi en direct) — finalité : faire fonctionner les modules Planificateur, Carnet de bord, Suivi live, Découverte. Base légale : exécution du contrat. Conservation : tant que le compte existe ; suppression à la demande ou à la clôture du compte.\n\n• Géolocalisation approximative ou précise (uniquement quand tu l'actives) — finalité : suggestions à proximité, suivi GPS du voyage. Base légale : consentement explicite via le navigateur. La position n'est stockée que si tu actives le suivi en direct.\n\n• Messages envoyés aux assistants IA Ping (visa) et Ping (budget) — finalité : générer une réponse personnalisée. Base légale : exécution du contrat. Conservation : 30 jours maximum à des fins de qualité, puis suppression.\n\n• Feedback envoyé via le formulaire (note, suggestions, problèmes, email) — finalité : amélioration du produit. Base légale : consentement (envoi volontaire). Conservation : 24 mois.\n\n• Analyses d'usage anonymes (pages, fonctionnalités utilisées) — aucun identifiant personnel associé. Base légale : intérêt légitime à améliorer le service. Conservation : 24 mois."
         },
         {
           "heading": "Sous-traitants et services tiers",
@@ -3657,7 +3657,7 @@
   },
   "trackingComp": {
     "live": {
-      "title": "Suivi de voyage en direct",
+      "title": "Suivi live en direct",
       "myTrip": "Mon voyage",
       "active": "Position partagée • {{km}} km parcourus",
       "inactive": "Active la géolocalisation pour démarrer le suivi temps réel",
@@ -3689,7 +3689,7 @@
       "ai": "IA"
     },
     "controls": {
-      "kicker": "Suivi en direct",
+      "kicker": "Suivi live",
       "active": "Actif",
       "paused": "En pause",
       "offline": "Hors ligne",
@@ -3779,7 +3779,7 @@
     "loading": "Chargement…",
     "checkInTitle": "Check-in automatique",
     "tracker": {
-      "kicker": "Suivi de voyage en direct",
+      "kicker": "Suivi live en direct",
       "myTrip": "Mon voyage",
       "positionShared": "Position partagée • {{km}} km parcourus",
       "enableGeo": "Active la géolocalisation pour démarrer le suivi temps réel",
@@ -4752,7 +4752,7 @@
         "description": "Ton journal de voyage intelligent avec photos, moments et récits IA."
       },
       "suivi": {
-        "name": "Suivi de voyage",
+        "name": "Suivi live",
         "description": "Carte live, itinéraire, check-ins et alertes en temps réel."
       },
       "mood": {
@@ -5377,9 +5377,9 @@
     },
     "PublicSuivi": {
       "linkNotFound": "Lien introuvable ou expiré",
-      "liveTrackDesc": "Suivi en direct · {{km}} km parcourus",
-      "pageTitle": "Suivi de voyage public",
-      "liveTitleMeta": "Suivi de voyage en direct"
+      "liveTrackDesc": "Suivi live · {{km}} km parcourus",
+      "pageTitle": "Suivi live public",
+      "liveTitleMeta": "Suivi live en direct"
     },
     "auto": {
       "k0": "Auto-validation si l'utilisateur est dans le rayon du badge.",
@@ -5574,7 +5574,7 @@
     "s4": {
       "title": "Vérifie visa et formalités",
       "text": "Passeport, visa, vaccins, sécurité : vérifie les formalités selon ta nationalité et confirme toujours les détails auprès de l'ambassade.",
-      "cta": "Ouvrir le guide visa"
+      "cta": "Ouvrir le Guide Visa"
     },
     "s5": {
       "title": "Prépare ta valise",
