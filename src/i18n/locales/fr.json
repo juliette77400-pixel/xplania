@@ -3953,6 +3953,14 @@
     "q6": {
       "q": "Quand sortent les versions premium ?",
       "a": "Les offres premium sont prévues pour fin 2026 / début 2027. Inscris-toi à la liste premium pour être prévenu en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
+    },
+    "q7": {
+      "q": "Qu'est-ce qui est disponible pendant la bêta ?",
+      "a": "Tous les outils : Planifier, Budget, Valise, Visa, Guide culturel, Mood Explorer, Découvrir, Suivi live, Carnet de bord, Carte de voyage et badges. Chaque outil IA offre 10 essais gratuits par mois. Si l'IA échoue, l'essai t'est rendu."
+    },
+    "q8": {
+      "q": "Qui peut voir ma position ?",
+      "a": "Personne, sauf si tu actives toi-même le partage dans le Suivi live. Tu peux l'arrêter à tout moment, et ta position n'est plus mise à jour dès que tu coupes le suivi."
     }
   },
   "exitIntent": {

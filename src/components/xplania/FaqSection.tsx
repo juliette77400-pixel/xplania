@@ -11,7 +11,7 @@ import {
 const FaqSection = () => {
   const { t } = useTranslation();
 
-  const faqs = ["q1", "q2", "q3", "q4", "q5", "q6"].map((k) => ({
+  const faqs = ["q1", "q2", "q3", "q7", "q8", "q4", "q5", "q6"].map((k) => ({
     q: t(`faq.${k}.q`),
     a: t(`faq.${k}.a`),
   }));

@@ -3953,6 +3953,14 @@
     "q6": {
       "q": "When does premium launch?",
       "a": "Premium plans are scheduled for late 2026 / early 2027. Join the premium list to get early access and an exclusive launch discount reserved for beta explorers."
+    },
+    "q7": {
+      "q": "What is available during the beta?",
+      "a": "Every tool: Plan, Budget, Suitcase, Visa, Culture guide, Mood Explorer, Discover, Live tracking, Travel journal, Travel map and badges. Each AI tool gives 10 free tries per month. If the AI fails, the try is given back."
+    },
+    "q8": {
+      "q": "Who can see my location?",
+      "a": "Nobody, unless you turn on sharing yourself in Live tracking. You can stop it anytime, and your location stops updating as soon as tracking is off."
     }
   },
   "exitIntent": {
