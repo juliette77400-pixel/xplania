@@ -1097,7 +1097,13 @@
     "signupSuccess": "Vérifie ta boîte mail pour confirmer ton inscription ✉️",
     "googleError": "Connexion Google impossible",
     "resetEmailFirst": "Entre d'abord ton email",
-    "resetSent": "Email de réinitialisation envoyé ✉️"
+    "resetSent": "Email de réinitialisation envoyé ✉️",
+    "errInvalid": "Email ou mot de passe incorrect.",
+    "errNotConfirmed": "Confirme d'abord ton email : regarde ta boîte mail (et les spams).",
+    "errExists": "Un compte existe déjà avec cet email. Connecte-toi ou utilise « Mot de passe oublié ».",
+    "errPassword": "Mot de passe trop faible : au moins 6 caractères.",
+    "errRate": "Trop d'essais. Patiente une minute puis réessaie.",
+    "errGeneric": "Une erreur est survenue. Réessaie dans un instant."
   },
   "resetPassword": {
     "title": "Nouveau mot de passe",
