@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { authErrorKey } from "@/lib/auth-errors";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -49,12 +50,18 @@ const ResetPassword = () => {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    try {
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) toast.error(t(authErrorKey(error.message)));
     else {
       toast.success(t("resetPassword.success"));
       navigate("/app");
+    }
+    } catch {
+      toast.error(t(authErrorKey("Failed to fetch")));
+    } finally {
+      setLoading(false);
     }
   };
 

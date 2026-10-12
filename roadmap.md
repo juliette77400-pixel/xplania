@@ -48,3 +48,8 @@
 - [x] Suivi #4 « Un imprévu ? », Mood #6 humeur→itinéraire, Mood #5 partage, Carnet #4 insights
 - [ ] UX badges/budget (attend captures)
 - [x] Compression photos carnet
+## Vérifications restantes — parcours et textes
+- [ ] Vérifier inscription, confirmation et récupération du mot de passe ; corriger les défauts reproductibles
+- [ ] Vérifier le formulaire de voyage complet, sauvegarde et retour en arrière
+- [ ] Vérifier les exports et le comportement hors connexion
+- [ ] Relire les boutons, noms d’outils et textes FR/EN ; tester les corrections

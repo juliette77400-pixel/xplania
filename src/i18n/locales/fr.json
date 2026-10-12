@@ -17,7 +17,7 @@
     "letsGo": "C'est parti",
     "retry": "Réessayer",
     "delete": "Supprimer",
-    "france": "française"
+    "france": "Français"
   },
   "errorBoundary": {
     "title": "Une erreur est survenue",
@@ -46,7 +46,7 @@
     "descMood": "Selon ton humeur",
     "descExplore": "Carte & badges",
     "descTracking": "Suivi GPS live",
-    "descJournal": "Journal voyage",
+    "descJournal": "Carnet de bord",
     "descValise": "Checklist intelligente",
     "descBudget": "Dépenses & alertes",
     "descVisa": "Formalités pays",
@@ -91,7 +91,7 @@
     "features": "Fonctionnalités",
     "howItWorks": "Comment ça marche",
     "offers": "Offres",
-    "feedback": "Feedback",
+    "feedback": "Avis",
     "login": "Connexion",
     "logout": "Se déconnecter",
     "createTrip": "Créer mon voyage"
@@ -221,7 +221,7 @@
       "intro": "Je m'appelle Juliette, j'ai 22 ans et je suis basée à Lille. J'ai toujours voyagé avec les yeux grands ouverts et le carnet plein — mais avec la frustration de passer des heures à organiser ce qui devrait être simple. Xplania est né de cette contradiction : j'adore voyager, mais je détestais préparer mes voyages.",
       "bullet1": "Étudiante en double master à l'Université Catholique de Lille",
       "bullet2": "Lauréate Pépite France (SNEE)",
-      "bullet3": "Créatrice de contenu & Top 5 Travel Bloggers FR",
+      "bullet3": "Créatrice de contenu & Top 5 des blogueurs voyage français",
       "bullet4": "Passionnée par les expériences interculturelles",
       "body": "Aujourd'hui, elle construit Xplania avec une ambition : transformer la manière dont on vit le voyage."
     },
@@ -286,7 +286,7 @@
     "toolLive": "Suivi live",
     "toolMap": "Carte de voyage",
     "toolMood": "Mood",
-    "toolDiscover": "Discover",
+    "toolDiscover": "Découvrir",
     "earlyExplorer": "Programme Early Explorer",
     "earlyExplorerDesc": "Rejoins la communauté de bêta-testeurs"
   },
@@ -330,7 +330,7 @@
         "cta": "Ouvrir mes carnets"
       },
       "tracking": {
-        "title": "Suivi de Voyage",
+        "title": "Suivi live",
         "tagline": "Ton compagnon en temps réel pendant le séjour.",
         "description": "Carte live, timeline dynamique des étapes, check-in automatique à l'arrivée et suggestions IA hyper locales selon ta position, météo et humeur.",
         "benefit1": "Suivre sa progression et ses stats en direct",
@@ -354,11 +354,11 @@
         "cta": "Trouver ma vibe"
       },
       "discover": {
-        "title": "Discover",
+        "title": "Découvrir",
         "tagline": "Les meilleurs lieux locaux, autour de toi, en temps réel.",
         "description": "Des lieux proches de toi selon l'heure et la météo. Cherche en langage simple (« brunch avec vue ») et garde tes coups de cœur dans des listes.",
         "benefit1": "Découvrir des lieux authentiques près de toi",
-        "benefit2": "Recevoir des alertes hidden gem en marchant",
+        "benefit2": "Recevoir des alertes pépites locales en marchant",
         "cta": "Découvrir autour de moi"
       }
     }
@@ -825,7 +825,7 @@
       },
       "tripTypes": {
         "tourism": "Tourisme",
-        "business": "Business",
+        "business": "Voyage professionnel",
         "studies": "Études",
         "couple": "En couple",
         "solo": "Seul",
@@ -1103,7 +1103,8 @@
     "errExists": "Un compte existe déjà avec cet email. Connecte-toi ou utilise « Mot de passe oublié ».",
     "errPassword": "Mot de passe trop faible : au moins 6 caractères.",
     "errRate": "Trop d'essais. Patiente une minute puis réessaie.",
-    "errGeneric": "Une erreur est survenue. Réessaie dans un instant."
+    "errGeneric": "Une erreur est survenue. Réessaie dans un instant.",
+    "errSamePassword": "Choisis un mot de passe différent de l'ancien."
   },
   "resetPassword": {
     "title": "Nouveau mot de passe",
@@ -1133,7 +1134,7 @@
       "trips": "Voyages",
       "badges": "Badges",
       "level": "Niv.",
-      "streak": "Streak",
+      "streak": "Série",
       "km": "Km parcourus",
       "xpToNext": "{{xp}} XP avant {{level}}",
       "maxLevel": "Niveau maximum atteint 🏆"
@@ -1393,6 +1394,15 @@
     "generating": "Analyse en cours...",
     "yourPlan": "Ton plan de voyage",
     "retry": "Réessayer",
+    "errorAuth": "Connecte-toi pour générer un voyage.",
+    "saveError": "Ton plan est prêt, mais ton voyage n'a pas pu être enregistré. Réessaie l'enregistrement sans relancer l'IA.",
+    "retrySave": "Réessayer l'enregistrement",
+    "validation": {
+      "title": "Vérifie tes réponses",
+      "destination": "Indique le pays et la ville d'arrivée pour continuer.",
+      "dates": "La date de retour doit être après la date de départ ou le même jour.",
+      "duration": "Indique une durée d'au moins un jour, ou renseigne les deux dates."
+    },
     "errorGeneric": "Erreur inconnue. Réessaie.",
     "errorTitle": "Erreur de génération",
     "errorServer": "Erreur serveur ({{status}})",
@@ -2159,7 +2169,7 @@
       "confort": "Confort",
       "stylée": "Stylée",
       "aventure": "Aventure",
-      "business": "Business",
+      "business": "Voyage professionnel",
       "photo": "Créateur",
       "randonnée": "Randonnée",
       "plage": "Plage",
@@ -2299,7 +2309,7 @@
         "mountain": "Montagne",
         "city": "City trip",
         "nature": "Nature / Trek",
-        "business": "Business",
+        "business": "Voyage professionnel",
         "long": "Long séjour",
         "solo": "Solo / Seule",
         "couple": "En couple",
@@ -4984,6 +4994,8 @@
       "save": "Enregistrer"
     },
     "ShareExport": {
+      "memories_one": "{{count}} jour de souvenirs",
+      "memories_other": "{{count}} jours de souvenirs",
       "pdfTripLine": "Voyage à {{destination}}",
       "exportPdfHeading": "Exporter en PDF",
       "exportPdfSubtitle": "Crée un livre souvenir de ton voyage, prêt à imprimer ou à archiver.",
@@ -5247,6 +5259,16 @@
       "organization": "ton besoin d'organisation"
     },
     "trip-export-all": {
+      "notFound": "Voyage introuvable",
+      "loadError": "Impossible de charger le carnet pour l’export. Réessaie.",
+      "coverTitle": "Carnet de voyage complet",
+      "destinationLine": "Destination : {{destination}}",
+      "fromLine": "Du : {{date}}",
+      "toLine": "Au : {{date}}",
+      "day": "Jour {{count}}",
+      "journalTitle": "Journal de voyage",
+      "packingTitle": "Valise et checklist",
+      "photoUnavailable": "Photo indisponible",
       "generatedOn": "Généré le {{date}}",
       "summaryTitle": "Résumé du voyage",
       "departureLine": "Départ : {{location}}",

@@ -1,4 +1,5 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,6 +34,7 @@ const Index = () => {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
   const { user } = useAuth();
+  const location = useLocation();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
@@ -46,6 +48,10 @@ const Index = () => {
     }
     setTravelFormOpen(true);
   };
+
+  useEffect(() => {
+    if (location.hash === "#create") handleCreateTrip();
+  }, [location.hash]);
 
   const scrollToFeedback = () => {
     const el = document.getElementById("feedback");
@@ -83,7 +89,7 @@ const Index = () => {
               setRecommendations(recs);
               track("itinerary_generated", { destination: data.destination });
               if (user) {
-                const { data: trip } = await supabase
+                const { data: trip, error } = await supabase
                   .from("trips")
                   .insert({
                     user_id: user.id,
@@ -99,6 +105,7 @@ const Index = () => {
                   })
                   .select("id")
                   .single();
+                if (error || !trip) throw new Error(t("travelForm.saveError"));
                 if (trip) {
                   track("trip_created", { trip_id: trip.id });
                   // Refresh cached trips list so the new trip shows up elsewhere.

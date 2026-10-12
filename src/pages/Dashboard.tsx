@@ -48,7 +48,7 @@ const Dashboard = () => {
         <div><p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><Sparkles className="mr-1 inline h-3.5 w-3.5" />{t("myDashboard.kicker")}</p><h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{t("myDashboard.greetingSimple")} <span className="gradient-text">{firstName}</span></h1><p className="mt-2 text-sm text-muted-foreground">{activeTrips.length ? t("myDashboard.tripsActive", {count:activeTrips.length}) : t("myDashboard.noTripsCta")}</p></div>
         <div className="flex flex-wrap items-center gap-2">
           <Button asChild variant="outline" className="h-11 rounded-xl px-4 font-semibold" title={t("ui2.Dashboard.reviewProfileTitle")}><Link to="/profil-voyageur"><Heart className="mr-2 h-4 w-4 text-primary" />{t("ui2.Dashboard.reviewTinder")}</Link></Button>
-          <Button asChild className="gradient-button h-11 rounded-xl px-5 font-bold text-primary-foreground"><Link to="/home"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createTrip")}</Link></Button>
+          <Button asChild className="gradient-button h-11 rounded-xl px-5 font-bold text-primary-foreground"><Link to="/home#create"><Plus className="mr-2 h-4 w-4" />{t("myDashboard.createTrip")}</Link></Button>
         </div>
       </motion.header>
 

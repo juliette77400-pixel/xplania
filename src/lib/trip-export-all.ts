@@ -2,6 +2,7 @@
 // jspdf loaded lazily inside exportTripAllInOnePDF.
 import type { jsPDF } from "jspdf";
 import { supabase } from "@/integrations/supabase/client";
+import i18n from "@/i18n";
 
 type TripData = {
   id: string;
@@ -78,12 +79,12 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
     .eq("id", tripId)
     .maybeSingle();
 
-  if (error || !trip) throw new Error("Voyage introuvable");
+  if (error || !trip) throw new Error(i18n.t("ui2.trip-export-all.notFound"));
 
   const t = trip as TripData;
   const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
-  const dest = t.destination || t.arrival_city || "Voyage";
+  const dest = t.destination || t.arrival_city || i18n.t("myDashboard.untitledTrip");
 
   // ===== Cover =====
   doc.setFillColor(15, 23, 42);
@@ -95,7 +96,7 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   doc.setFontSize(14);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(180, 200, 230);
-  doc.text("Carnet de voyage complet", PAGE_W / 2, 70, { align: "center" });
+  doc.text(i18n.t("ui2.trip-export-all.coverTitle"), PAGE_W / 2, 70, { align: "center" });
 
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
@@ -113,12 +114,12 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
     doc.text(dates, PAGE_W / 2, 160, { align: "center" });
   }
   if (t.duration) {
-    doc.text(`${t.duration} jour${t.duration > 1 ? "s" : ""}`, PAGE_W / 2, 168, { align: "center" });
+    doc.text(i18n.t("travelForm.fields.days", { n: t.duration }), PAGE_W / 2, 168, { align: "center" });
   }
 
   doc.setFontSize(9);
   doc.setTextColor(150, 170, 200);
-  doc.text(`Généré le ${new Date().toLocaleDateString()}`, PAGE_W / 2, PAGE_H - 20, { align: "center" });
+  doc.text(i18n.t("ui2.trip-export-all.generatedOn", { date: new Date().toLocaleDateString(i18n.language.startsWith("fr") ? "fr-FR" : "en-US") }), PAGE_W / 2, PAGE_H - 20, { align: "center" });
 
   // ===== Page 2+ : contenu =====
   doc.addPage();
@@ -126,23 +127,23 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   let y = MARGIN;
 
   // Résumé
-  y = section(doc, "Résumé du voyage", y);
-  if (t.departure_location) y = paragraph(doc, `Départ : ${t.departure_location}`, y);
-  if (dest) y = paragraph(doc, `Destination : ${dest}`, y);
-  if (t.departure_date) y = paragraph(doc, `Du : ${t.departure_date}`, y);
-  if (t.return_date) y = paragraph(doc, `Au : ${t.return_date}`, y);
-  if (t.duration) y = paragraph(doc, `Durée : ${t.duration} jour(s)`, y);
+  y = section(doc, i18n.t("ui2.trip-export-all.summaryTitle"), y);
+  if (t.departure_location) y = paragraph(doc, i18n.t("ui2.trip-export-all.departureLine", { location: t.departure_location }), y);
+  if (dest) y = paragraph(doc, i18n.t("ui2.trip-export-all.destinationLine", { destination: dest }), y);
+  if (t.departure_date) y = paragraph(doc, i18n.t("ui2.trip-export-all.fromLine", { date: t.departure_date }), y);
+  if (t.return_date) y = paragraph(doc, i18n.t("ui2.trip-export-all.toLine", { date: t.return_date }), y);
+  if (t.duration) y = paragraph(doc, i18n.t("ui2.trip-export-all.durationLine", { duration: t.duration }), y);
 
   const reco = t.recommendations || {};
   const fd = t.form_data || {};
 
   // Itinéraire
   if (reco.itinerary || reco.itineraire || reco.days) {
-    y = section(doc, "Itinéraire", y);
+    y = section(doc, i18n.t("ui2.trip-export-all.itineraryTitle"), y);
     const items = reco.itinerary || reco.itineraire || reco.days || [];
     if (Array.isArray(items)) {
       items.forEach((item: any, i: number) => {
-        const dayTitle = item.title || item.day || `Jour ${i + 1}`;
+        const dayTitle = item.title || item.day || i18n.t("ui2.trip-export-all.day", { count: i + 1 });
         y = ensureSpace(doc, y, 10);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(11);
@@ -162,10 +163,15 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   }
 
   // Budget
-  if (reco.budget || fd.budget) {
+  if (reco.budgetBreakdown || reco.budget || fd.totalBudget || fd.budget) {
     y = section(doc, "Budget", y);
-    const b = reco.budget || fd.budget;
-    if (typeof b === "object" && b !== null) {
+    const b = reco.budgetBreakdown || reco.budget || fd.totalBudget || fd.budget;
+    if (Array.isArray(b)) {
+      b.forEach((item) => {
+        const value = [item.category || item.label || item.name, item.amount ?? item.cost, item.description].filter(v => v != null && v !== "").join(" — ");
+        y = bullet(doc, value || safeStr(item), y);
+      });
+    } else if (typeof b === "object" && b !== null) {
       Object.entries(b).forEach(([k, v]) => {
         y = bullet(doc, `${k} : ${safeStr(v)}`, y);
       });
@@ -175,9 +181,9 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   }
 
   // Valise / Checklist
-  if (reco.checklist || reco.valise || reco.packing) {
-    y = section(doc, "Valise & Checklist", y);
-    const items = reco.checklist || reco.valise || reco.packing;
+  if (reco.luggage || reco.checklist || reco.valise || reco.packing) {
+    y = section(doc, i18n.t("ui2.trip-export-all.packingTitle"), y);
+    const items = reco.luggage || reco.checklist || reco.valise || reco.packing;
     if (Array.isArray(items)) {
       items.forEach((it: any) => { y = bullet(doc, safeStr(it.label || it.name || it), y); });
     } else if (typeof items === "object") {
@@ -193,9 +199,9 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   }
 
   // Visa / Formalités
-  if (reco.visa || reco.formalities) {
-    y = section(doc, "Visa & Formalités", y);
-    const v = reco.visa || reco.formalities;
+  if (reco.documents || reco.visa || reco.formalities) {
+    y = section(doc, i18n.t("ui2.trip-export-all.visaTitle"), y);
+    const v = reco.documents || reco.visa || reco.formalities;
     if (typeof v === "object" && v !== null && !Array.isArray(v)) {
       Object.entries(v).forEach(([k, val]) => { y = paragraph(doc, `${k} : ${safeStr(val)}`, y); });
     } else if (Array.isArray(v)) {
@@ -206,13 +212,18 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
   }
 
   // Journal
-  const { data: journal } = await supabase
+  const { data: journal, error: journalError } = await supabase
     .from("journals").select("id,title").eq("trip_id", tripId).maybeSingle();
+  if (journalError) throw new Error(i18n.t("ui2.trip-export-all.loadError"));
   if (journal) {
-    const { data: jdays } = await supabase
+    const { data: jdays, error: daysError } = await supabase
       .from("journal_days").select("id,date,title,summary,position").eq("journal_id", journal.id).order("position");
+    if (daysError) throw new Error(i18n.t("ui2.trip-export-all.loadError"));
     if (jdays && jdays.length > 0) {
-      y = section(doc, "Journal de voyage", y);
+      const { data: blocks, error: blocksError } = await supabase.from("journal_blocks")
+        .select("day_id,type,content,position").in("day_id", jdays.map(d => d.id)).order("position");
+      if (blocksError) throw new Error(i18n.t("ui2.trip-export-all.loadError"));
+      y = section(doc, i18n.t("ui2.trip-export-all.journalTitle"), y);
       for (const d of jdays) {
         y = ensureSpace(doc, y, 10);
         doc.setFont("helvetica", "bold");
@@ -220,6 +231,34 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
         doc.text(`${d.date}${d.title ? " — " + d.title : ""}`, MARGIN, y); y += 6;
         doc.setFont("helvetica", "normal");
         if (d.summary) y = paragraph(doc, d.summary, y);
+        for (const block of (blocks || []).filter(b => b.day_id === d.id)) {
+          const content = block.content && typeof block.content === "object" && !Array.isArray(block.content)
+            ? block.content as Record<string, unknown> : {};
+          if (block.type === "photo" && typeof content.url === "string") {
+            try {
+              const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+                const image = new Image();
+                image.crossOrigin = "anonymous";
+                const timer = setTimeout(() => reject(new Error("Image timeout")), 10000);
+                image.onload = () => { clearTimeout(timer); resolve(image); };
+                image.onerror = () => { clearTimeout(timer); reject(new Error("Image unavailable")); };
+                image.src = content.url as string;
+              });
+              const width = Math.min(PAGE_W - MARGIN * 2, 120, 80 * img.width / img.height);
+              const height = width * img.height / img.width;
+              y = ensureSpace(doc, y, height + 8);
+              doc.addImage(img, "JPEG", MARGIN, y, width, height);
+              y += height + 4;
+            } catch {
+              y = paragraph(doc, i18n.t("ui2.trip-export-all.photoUnavailable"), y);
+            }
+            if (content.caption) y = paragraph(doc, safeStr(content.caption), y);
+          } else {
+            const text = content.text || content.name || content.caption ||
+              (block.type === "mood" ? i18n.t("ui2.ShareExport.moodLine", { emoji: content.emoji || "", score: content.score ?? "" }) : "");
+            if (text) y = paragraph(doc, safeStr(text), y);
+          }
+        }
       }
     }
   }

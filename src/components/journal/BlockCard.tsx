@@ -32,18 +32,21 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
   const [aiLoading, setAiLoading] = useState(false);
 
   const persist = async (next: any) => {
+    const { error } = await supabase.from("journal_blocks").update({ content: next }).eq("id", block.id);
+    if (error) { toast.error(t("profil.saveError")); return; }
     setContent(next);
-    await supabase.from("journal_blocks").update({ content: next }).eq("id", block.id);
   };
 
   const save = async () => {
-    await supabase.from("journal_blocks").update({ content }).eq("id", block.id);
+    const { error } = await supabase.from("journal_blocks").update({ content }).eq("id", block.id);
+    if (error) { toast.error(t("profil.saveError")); return; }
     setEditing(false);
     onChanged();
   };
 
   const remove = async () => {
-    await supabase.from("journal_blocks").delete().eq("id", block.id);
+    const { error } = await supabase.from("journal_blocks").delete().eq("id", block.id);
+    if (error) { toast.error(t("auth.errGeneric")); return; }
     onChanged();
   };
 
@@ -176,16 +179,16 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-xl p-4 group relative">
       <div className="flex items-start justify-between mb-2">
         <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1">
-          {block.type}
+           {t(({ note: "j2.blockNote", photo: "j2.blockPhoto", location: "j2.blockLocation", mood: "j2.blockMood", highlight: "j2.blockHighlight", audio: "j2.blockAudio" } as Record<string, string>)[block.type] || "j2.addMemory")}
           {content.ai_enhanced && <Sparkles className="w-3 h-3 text-primary" />}
         </span>
-        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition">
+        <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 transition">
           {block.type !== "photo" && block.type !== "audio" && (
-            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => setEditing(!editing)}>
+            <Button size="icon" variant="ghost" className="h-7 w-7" aria-label={t("ui2.TripActionsMenu.edit")} title={t("ui2.TripActionsMenu.edit")} onClick={() => setEditing(!editing)}>
               <Pencil className="w-3.5 h-3.5" />
             </Button>
           )}
-          <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive" onClick={remove}>
+          <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive" aria-label={t("common.delete")} title={t("common.delete")} onClick={remove}>
             <Trash2 className="w-3.5 h-3.5" />
           </Button>
         </div>
@@ -194,7 +197,7 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
         <div className="space-y-2">
           {renderEdit()}
           <div className="flex gap-2 justify-end">
-            <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>{t("j2.cancelBtn")}</Button>
+            <Button size="sm" variant="ghost" onClick={() => { setContent(block.content || {}); setEditing(false); }}>{t("j2.cancelBtn")}</Button>
             <Button size="sm" onClick={save}>{t("j2.saveBtn")}</Button>
           </div>
         </div>

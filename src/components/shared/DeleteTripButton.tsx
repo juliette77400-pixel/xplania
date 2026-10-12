@@ -51,7 +51,6 @@ const DeleteTripButton = ({
   const stop = (e: React.MouseEvent | React.PointerEvent) => {
     if (stopPropagation) {
       e.stopPropagation();
-      e.preventDefault();
     }
   };
 
