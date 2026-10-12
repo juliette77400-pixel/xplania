@@ -145,11 +145,13 @@ export function useMoodExplorer() {
       if (!data?.places?.length) toast.info(i18n.t("ui2.useMoodExplorer.noPlaces"));
       else toast.success(i18n.t("ui2.useMoodExplorer.placesFound", { count: data.places.length, mood: data.mood }));
     },
-    onError: (e: any) => {
+    onError: (e: any, input: RecommendInput) => {
       if (e?.message === "auth_required") {
         toast.error(i18n.t("ui2.auto.k7"));
       } else {
-        toast.error(e?.message || i18n.t("ui2.auto.k9"));
+        toast.error(e?.message || i18n.t("ui2.auto.k9"), {
+          action: { label: i18n.t("common.retry"), onClick: () => recommendMutation.mutate(input) },
+        });
       }
     },
   });
@@ -199,7 +201,7 @@ export function useMoodExplorer() {
         toast.success(i18n.t("ui2.useMoodExplorer.removedFromFavorites"));
       }
     },
-    onError: (e: any) => {
+    onError: (e: any, input: RecommendInput) => {
       toast.error(e?.message === "auth_required" ? "Connecte-toi" : "Échec sauvegarde");
     },
   });

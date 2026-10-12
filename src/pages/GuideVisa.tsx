@@ -199,7 +199,7 @@ const GuideVisaPage = () => {
       console.error("visa-info error:", e);
       const msg = e instanceof Error ? e.message : t("guideVisa.errUnknown");
       setAiError(msg);
-      toast.error(t("guideVisa.errToast"), { description: msg });
+      toast.error(t("guideVisa.errToast"), { description: msg, action: { label: t("common.retry"), onClick: () => { void runGeneration(); } } });
     } finally {
       setIsGenerating(false);
     }

@@ -47,7 +47,7 @@ const LiveSuggestions = ({ position, destination, weather, suggestions, onSugges
     });
     setLoading(false);
     if (error) {
-      toast.error(await friendlyInvokeError(error));
+      toast.error(await friendlyInvokeError(error), { action: { label: t("common.retry"), onClick: () => { void fetchSuggestions(); } } });
       return;
     }
     onSuggestions(data?.suggestions || []);
