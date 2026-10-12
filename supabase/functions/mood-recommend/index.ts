@@ -165,7 +165,7 @@ Règles strictes :
     const userPrompt = isEN
       ? `Mood sought: "${finalMood}"${free_input ? ` — detail: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Desired energy level (0=calm, 100=energetic): ${energy_level}.` : ""}
-${lat && lng ? `Current position: ${lat}, ${lng}.` : ""} ${city ? `City: ${city}. ALL places MUST be in or right around ${city} (max 15 km), NEVER in another city.` : ""}
+${lat && lng ? `Current position: ${Number(lat).toFixed(3)}, ${Number(lng).toFixed(3)}.` : ""} ${city ? `City: ${city}. ALL places MUST be in or right around ${city} (max 15 km), NEVER in another city.` : ""}
 ${weather ? `Weather: ${weather}.` : ""}
 ${time_of_day ? `Moment: ${time_of_day}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
@@ -173,7 +173,7 @@ ${historyStr}
 Give 8 DIVERSE places/experiences (at least 4 different categories) perfectly suited. Include at least 1 hidden_gem and at least 1 unusual place. Reply in ENGLISH.`
       : `Mood recherché : "${finalMood}"${free_input ? ` — précision: "${free_input}"` : ""}.
 ${energy_level !== undefined ? `Niveau d'énergie souhaité (0=calme, 100=énergique): ${energy_level}.` : ""}
-${lat && lng ? `Position actuelle: ${lat}, ${lng}.` : ""} ${city ? `Ville : ${city}. TOUS les lieux DOIVENT être à ${city} ou juste autour (15 km max), JAMAIS dans une autre ville.` : ""}
+${lat && lng ? `Position actuelle: ${Number(lat).toFixed(3)}, ${Number(lng).toFixed(3)}.` : ""} ${city ? `Ville : ${city}. TOUS les lieux DOIVENT être à ${city} ou juste autour (15 km max), JAMAIS dans une autre ville.` : ""}
 ${weather ? `Météo: ${weather}.` : ""}
 ${time_of_day ? `Moment: ${time_of_day}.` : ""}
 ${budget ? `Budget: ${budget}.` : ""}
