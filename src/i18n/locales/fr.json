@@ -3938,7 +3938,7 @@
     "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
     "q1": {
       "q": "Xplania est gratuit ?",
-      "a": "Oui. Tu as 10 générations gratuites par mois et par outil pour tout découvrir. Aucune carte requise, aucun engagement. Les packs payants arrivent avec l'ouverture publique pour les usages plus intensifs."
+      "a": "Oui, pendant la bêta. Tu as 10 essais gratuits par mois et par outil, sans carte bancaire ni engagement. Pour savoir ce que coûteront les offres ensuite, regarde la page Offres."
     },
     "q2": {
       "q": "À quoi sert l'IA exactement ?",
@@ -3967,7 +3967,8 @@
     "q8": {
       "q": "Qui peut voir ma position ?",
       "a": "Personne, sauf si tu actives toi-même le partage dans le Suivi live. Tu peux l'arrêter à tout moment, et ta position n'est plus mise à jour dès que tu coupes le suivi."
-    }
+    },
+    "seeOffers": "Voir les offres et les prix"
   },
   "exitIntent": {
     "title": "Avant de partir…",

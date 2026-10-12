@@ -12,6 +12,7 @@ const FaqSection = () => {
   const { t } = useTranslation();
 
   const faqs = ["q1", "q2", "q3", "q7", "q8", "q4", "q5", "q6"].map((k) => ({
+    k,
     q: t(`faq.${k}.q`),
     a: t(`faq.${k}.a`),
   }));
@@ -49,6 +50,11 @@ const FaqSection = () => {
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground px-2 sm:px-4 leading-relaxed">
                   {f.a}
+                  {(f.k === "q1" || f.k === "q6" || f.k === "q7") && (
+                    <a href="/offres" className="mt-2 block font-semibold text-primary hover:underline">
+                      {t("faq.seeOffers")} →
+                    </a>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             ))}
