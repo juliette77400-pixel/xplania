@@ -58,7 +58,7 @@ export const useJournal = (tripId: string | undefined): UseJournalResult => {
       // Fetch trip to know dates
       const { data: trip } = await supabase
         .from("trips")
-        .select("departure_date, return_date, destination")
+        .select("departure_date, return_date, destination, duration, created_at")
         .eq("id", tripId!)
         .maybeSingle();
 
@@ -94,8 +94,16 @@ export const useJournal = (tripId: string | undefined): UseJournalResult => {
 
       let allDays = existingDays || [];
 
-      if (allDays.length === 0 && trip?.departure_date) {
-        const range = buildDateRange(trip.departure_date, trip.return_date);
+      // No dates? Fall back to the trip duration (or 1 day) starting today.
+      const fallbackStart = new Date().toISOString().slice(0, 10);
+      const startDate = trip?.departure_date || (trip ? fallbackStart : null);
+      const endDate = trip?.departure_date
+        ? trip.return_date
+        : trip
+          ? new Date(Date.now() + (Math.max(1, Math.min(60, Number(trip.duration) || 1)) - 1) * 86400000).toISOString().slice(0, 10)
+          : null;
+      if (allDays.length === 0 && startDate) {
+        const range = buildDateRange(startDate, endDate);
         if (range.length) {
           const inserts = range.map((date, i) => ({
             journal_id: j!.id,

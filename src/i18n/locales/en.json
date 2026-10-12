@@ -1097,7 +1097,13 @@
     "signupSuccess": "Check your inbox to confirm your sign-up ✉️",
     "googleError": "Google sign-in failed",
     "resetEmailFirst": "Enter your email first",
-    "resetSent": "Reset email sent ✉️"
+    "resetSent": "Reset email sent ✉️",
+    "errInvalid": "Incorrect email or password.",
+    "errNotConfirmed": "Please confirm your email first (check your spam too).",
+    "errExists": "An account already exists with this email. Sign in or use “Forgot password”.",
+    "errPassword": "Password too weak: at least 6 characters.",
+    "errRate": "Too many attempts. Wait a minute and try again.",
+    "errGeneric": "Something went wrong. Please try again."
   },
   "resetPassword": {
     "title": "New password",
@@ -6228,5 +6234,8 @@
     "quizScore": "{{score}} / {{total}} correct.",
     "quizPerfect": "Well done, you've mastered this topic!",
     "quizKeep": "Reread the tips and try again!"
+  },
+  "offlineBanner": {
+    "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
   }
 }

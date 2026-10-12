@@ -12,6 +12,17 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { track } from "@/lib/analytics";
+import i18n from "@/i18n";
+
+const authErrorText = (msg: string) => {
+  const m = msg.toLowerCase();
+  if (m.includes("invalid login")) return i18n.t("auth.errInvalid");
+  if (m.includes("email not confirmed")) return i18n.t("auth.errNotConfirmed");
+  if (m.includes("already registered") || m.includes("already been registered")) return i18n.t("auth.errExists");
+  if (m.includes("password")) return i18n.t("auth.errPassword");
+  if (m.includes("rate") || m.includes("seconds")) return i18n.t("auth.errRate");
+  return i18n.t("auth.errGeneric");
+};
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -46,7 +57,7 @@ const Auth = () => {
       },
     });
     setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) toast.error(authErrorText(error.message));
     else {
       track("signup_completed");
       toast.success(t("auth.signupSuccess"));
@@ -58,7 +69,7 @@ const Auth = () => {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) toast.error(authErrorText(error.message));
     else {
       track("login");
       navigate(next);
@@ -84,7 +95,7 @@ const Auth = () => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
-    if (error) toast.error(error.message);
+    if (error) toast.error(authErrorText(error.message));
     else toast.success(t("auth.resetSent"));
   };
 
