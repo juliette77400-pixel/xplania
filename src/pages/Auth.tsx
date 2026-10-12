@@ -12,17 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { track } from "@/lib/analytics";
-import i18n from "@/i18n";
-
-const authErrorText = (msg: string) => {
-  const m = msg.toLowerCase();
-  if (m.includes("invalid login")) return i18n.t("auth.errInvalid");
-  if (m.includes("email not confirmed")) return i18n.t("auth.errNotConfirmed");
-  if (m.includes("already registered") || m.includes("already been registered")) return i18n.t("auth.errExists");
-  if (m.includes("password")) return i18n.t("auth.errPassword");
-  if (m.includes("rate") || m.includes("seconds")) return i18n.t("auth.errRate");
-  return i18n.t("auth.errGeneric");
-};
+import { authErrorKey } from "@/lib/auth-errors";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -48,6 +38,7 @@ const Auth = () => {
     e.preventDefault();
     track("signup_started");
     setLoading(true);
+    try {
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -57,27 +48,39 @@ const Auth = () => {
       },
     });
     setLoading(false);
-    if (error) toast.error(authErrorText(error.message));
+    if (error) toast.error(t(authErrorKey(error.message)));
     else {
       track("signup_completed");
       toast.success(t("auth.signupSuccess"));
+    }
+    } catch {
+      toast.error(t(authErrorKey("Failed to fetch")));
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    try {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) toast.error(authErrorText(error.message));
+    if (error) toast.error(t(authErrorKey(error.message)));
     else {
       track("login");
       navigate(next);
+    }
+    } catch {
+      toast.error(t(authErrorKey("Failed to fetch")));
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogle = async () => {
     setLoading(true);
+    try {
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: `${window.location.origin}${next}`,
     });
@@ -88,15 +91,29 @@ const Auth = () => {
     }
     if (result.redirected) return;
     navigate(next);
+    } catch {
+      setLoading(false);
+      toast.error(t("auth.googleError"));
+    }
   };
 
   const handleReset = async () => {
-    if (!email) return toast.error(t("auth.resetEmailFirst"));
+    if (!email.trim()) return toast.error(t("auth.resetEmailFirst"));
+    const emailInput = document.getElementById("email-in");
+    if (emailInput instanceof HTMLInputElement && !emailInput.reportValidity()) return;
+    setLoading(true);
+    try {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
-    if (error) toast.error(authErrorText(error.message));
+    setLoading(false);
+    if (error) toast.error(t(authErrorKey(error.message)));
     else toast.success(t("auth.resetSent"));
+    } catch {
+      toast.error(t(authErrorKey("Failed to fetch")));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -142,9 +159,9 @@ const Auth = () => {
                 <Button type="submit" disabled={loading} className="w-full">
                   {t("auth.signInCta")} <ArrowRight className="w-4 h-4" />
                 </Button>
-                <button type="button" onClick={handleReset} className="text-xs text-muted-foreground hover:text-primary w-full text-center">
+                <Button type="button" variant="link" disabled={loading} onClick={handleReset} className="text-xs text-muted-foreground hover:text-primary w-full text-center">
                   {t("auth.forgotPassword")}
-                </button>
+                </Button>
               </form>
             </TabsContent>
 

@@ -28,6 +28,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { validateTravelBasics } from "@/lib/travel-form-validation";
 
 import { MODE_STEPS, STEP_KEYS, defaultFormData, type StepKey } from "./travel-form.config";
 
@@ -35,7 +36,7 @@ import { MODE_STEPS, STEP_KEYS, defaultFormData, type StepKey } from "./travel-f
 interface TravelFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onTripGenerated?: (data: TravelFormData, recs: TravelRecommendations) => void;
+  onTripGenerated?: (data: TravelFormData, recs: TravelRecommendations) => void | Promise<void>;
   onGenerating?: (loading: boolean) => void;
   /** Optional preset to skip mode selector and pre-fill form (used by "Voir un exemple" demo CTA) */
   initialPreset?: { mode: PlanMode; data: Partial<TravelFormData> };
@@ -62,6 +63,8 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
   const [generating, setGenerating] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [direction, setDirection] = useState(1);
   const [previewing, setPreviewing] = useState(false);
   const [resumedBanner, setResumedBanner] = useState<boolean>(!!restored);
@@ -95,8 +98,27 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
     saveTravelProgress(mode, safeStep, formData);
   }, [open, mode, safeStep, formData, showDashboard, initialPreset]);
 
+  const saveGeneratedTrip = async (recs: TravelRecommendations) => {
+    setSaving(true);
+    setSaveError(false);
+    try {
+      await onTripGenerated?.(formData, recs);
+      clearTravelProgress();
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleGenerate = async () => {
+    const validation = validateTravelBasics(formData);
+    if (validation) {
+      toast({ title: t("travelForm.validation.title"), description: t(validation), variant: "destructive" });
+      return;
+    }
     setGenerating(true);
+    setSaveError(false);
     setShowDashboard(true);
     setAiError(null);
     setRecommendations(null);
@@ -154,9 +176,7 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
       }
 
       setRecommendations(data.recommendations);
-      onTripGenerated?.(formData, data.recommendations);
-      // Clear persisted draft only on a successful generation.
-      clearTravelProgress();
+      await saveGeneratedTrip(data.recommendations);
       // Incrément du compteur de générations (freemium)
       try {
         const { usePlanStore } = await import("@/stores/usePlanStore");
@@ -217,6 +237,11 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
   };
 
   const goNext = () => {
+    const validation = currentStepKey === "basic" ? validateTravelBasics(formData) : null;
+    if (validation) {
+      toast({ title: t("travelForm.validation.title"), description: t(validation), variant: "destructive" });
+      return;
+    }
     setDirection(1);
     setStep((s) => s + 1);
   };
@@ -249,7 +274,16 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
             loading={generating}
             error={aiError}
           />
-          {recommendations && !generating && !aiError && (
+          {saveError && recommendations && (
+            <div className="space-y-3 pt-4" role="alert">
+              <p className="text-sm text-destructive">{t("travelForm.saveError")}</p>
+              <Button onClick={() => saveGeneratedTrip(recommendations)} disabled={saving} variant="outline">
+                <RotateCcw className="w-4 h-4 mr-2" />
+                {t("travelForm.retrySave")}
+              </Button>
+            </div>
+          )}
+          {recommendations && !generating && !aiError && !saveError && (
             <div className="flex flex-col items-center gap-2 pt-6 border-t border-border/50 mt-4">
               <p className="text-sm text-muted-foreground">{t("travelForm.goToFeaturesHint")}</p>
               <Button
@@ -262,7 +296,10 @@ const TravelFormDialog = ({ open, onOpenChange, onTripGenerated, onGenerating, i
             </div>
           )}
           {aiError && (
-            <div className="flex justify-center pt-4">
+            <div className="flex justify-center gap-2 pt-4">
+              <Button variant="outline" onClick={() => setShowDashboard(false)}>
+                <ArrowLeft className="w-4 h-4 mr-2" />{t("travelForm.back")}
+              </Button>
               <Button
                 onClick={handleGenerate}
                 className="gradient-button text-primary-foreground border-0"

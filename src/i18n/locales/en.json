@@ -49,7 +49,7 @@
     "descJournal": "Travel journal",
     "descValise": "Smart checklist",
     "descBudget": "Spending & alerts",
-    "descVisa": "Country paperwork",
+    "descVisa": "Visa & paperwork",
     "labelTracking": "Live tracking",
     "labelJournal": "Journal",
     "labelValise": "Packing",
@@ -330,7 +330,7 @@
         "cta": "Open my journals"
       },
       "tracking": {
-        "title": "Live trip tracking",
+        "title": "Live tracking",
         "tagline": "Your real-time companion during the trip.",
         "description": "Live map, dynamic timeline of stops, automatic check-in on arrival and hyper-local AI suggestions based on your location, weather and mood.",
         "benefit1": "Track your progress and stats live",
@@ -1103,7 +1103,8 @@
     "errExists": "An account already exists with this email. Sign in or use “Forgot password”.",
     "errPassword": "Password too weak: at least 6 characters.",
     "errRate": "Too many attempts. Wait a minute and try again.",
-    "errGeneric": "Something went wrong. Please try again."
+    "errGeneric": "Something went wrong. Please try again.",
+    "errSamePassword": "Choose a password different from your previous one."
   },
   "resetPassword": {
     "title": "New password",
@@ -1393,6 +1394,15 @@
     "generating": "Analyzing...",
     "yourPlan": "Your travel plan",
     "retry": "Retry",
+    "errorAuth": "Sign in to generate a trip.",
+    "saveError": "Your plan is ready, but your trip could not be saved. Retry saving without running the AI again.",
+    "retrySave": "Retry saving",
+    "validation": {
+      "title": "Check your answers",
+      "destination": "Enter the country and arrival city to continue.",
+      "dates": "The return date must be on or after the departure date.",
+      "duration": "Enter a stay of at least one day, or provide both dates."
+    },
     "errorGeneric": "Unknown error. Please try again.",
     "errorTitle": "Generation error",
     "errorServer": "Server error ({{status}})",
@@ -4984,6 +4994,8 @@
       "save": "Save"
     },
     "ShareExport": {
+      "memories_one": "{{count}} day of memories",
+      "memories_other": "{{count}} days of memories",
       "pdfTripLine": "Trip to {{destination}}",
       "exportPdfHeading": "Export as PDF",
       "exportPdfSubtitle": "Create a keepsake book of your trip, ready to print or archive.",
@@ -5247,6 +5259,16 @@
       "organization": "your need for organization"
     },
     "trip-export-all": {
+      "notFound": "Trip not found",
+      "loadError": "Unable to load the journal for export. Please try again.",
+      "coverTitle": "Complete travel journal",
+      "destinationLine": "Destination: {{destination}}",
+      "fromLine": "From: {{date}}",
+      "toLine": "To: {{date}}",
+      "day": "Day {{count}}",
+      "journalTitle": "Travel journal",
+      "packingTitle": "Packing and checklist",
+      "photoUnavailable": "Photo unavailable",
       "generatedOn": "Generated on {{date}}",
       "summaryTitle": "Trip summary",
       "departureLine": "Departure: {{location}}",

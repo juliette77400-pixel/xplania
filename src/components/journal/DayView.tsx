@@ -86,7 +86,7 @@ const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Pr
       highlight: { text: "" },
       audio: {},
     };
-    await supabase.from("journal_blocks").insert({
+    const { error } = await supabase.from("journal_blocks").insert({
       day_id: day.id,
       journal_id: journalId,
       user_id: user.id,
@@ -94,6 +94,7 @@ const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Pr
       content: defaults[type] || {},
       position: day.blocks.length,
     });
+    if (error) { toast.error(t("profil.saveError")); return; }
     // ✨ NEW (gamif) — toute création de bloc carnet alimente le streak
     pingStreakAction(`journal:${type}`);
     onChanged();
@@ -101,7 +102,8 @@ const DayView = ({ day, journalId, destination, tripId, allDays, onChanged }: Pr
 
   const saveTitle = async () => {
     if (title === (day.title || "")) return;
-    await supabase.from("journal_days").update({ title }).eq("id", day.id);
+    const { error } = await supabase.from("journal_days").update({ title }).eq("id", day.id);
+    if (error) { toast.error(t("profil.saveError")); return; }
     onChanged();
   };
 

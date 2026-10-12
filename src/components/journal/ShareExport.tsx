@@ -30,18 +30,27 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [includePhotos, setIncludePhotos] = useState(true);
+  const [sharing, setSharing] = useState(false);
   const publicUrl = journal.public_slug ? `${window.location.origin}/carnet/public/${journal.public_slug}` : "";
 
   const togglePublic = async (val: boolean) => {
+    setSharing(true);
     const slug = val && !journal.public_slug ? (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32) : journal.public_slug;
-    await supabase.from("journals").update({ is_public: val, public_slug: slug }).eq("id", journal.id);
+    const { error } = await supabase.from("journals").update({ is_public: val, public_slug: slug }).eq("id", journal.id);
+    setSharing(false);
+    if (error) { toast.error(t("profil.saveError")); return; }
     onUpdated();
     toast.success(val ? t("j2.publishedToast") : t("j2.privateToast"));
   };
 
   const copyLink = async () => {
     if (!publicUrl) return;
-    await navigator.clipboard.writeText(publicUrl);
+    try {
+      await navigator.clipboard.writeText(publicUrl);
+    } catch {
+      toast.error(t("auth.errGeneric"));
+      return;
+    }
     setCopied(true);
     toast.success(t("j2.linkCopied"));
     setTimeout(() => setCopied(false), 2000);
@@ -90,7 +99,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
       doc.setTextColor(180, 200, 220);
       doc.text(t("ui2.ShareExport.pdfTripLine", { destination: destination || "" }), margin, 50);
       doc.setFontSize(10);
-      doc.text(`${days.length} jour${days.length > 1 ? "s" : ""} de souvenirs`, margin, 58);
+       doc.text(t("ui2.ShareExport.memories", { count: days.length }), margin, 58);
       y = 100;
       doc.setTextColor(20, 20, 20);
 
@@ -153,9 +162,12 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
           if (line) {
             doc.setFontSize(10);
             const lines = doc.splitTextToSize(line, contentW);
-            if (y + lines.length * 5 > pageH - 20) { doc.addPage(); y = 20; }
-            doc.text(lines, margin, y);
-            y += lines.length * 5 + 2;
+            for (const textLine of lines) {
+              if (y + 5 > pageH - 20) { doc.addPage(); y = 20; }
+              doc.text(textLine, margin, y);
+              y += 5;
+            }
+            y += 2;
           }
         }
         y += 8;
@@ -192,7 +204,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
               <p className="text-xs text-muted-foreground">{journal.is_public ? t("j2.publicHint") : t("j2.privateHint")}</p>
             </div>
           </div>
-          <Switch checked={journal.is_public} onCheckedChange={togglePublic} />
+          <Switch checked={journal.is_public} onCheckedChange={togglePublic} disabled={sharing} aria-label={t("j2.shareTitle")} />
         </div>
 
         {journal.is_public && publicUrl && (
