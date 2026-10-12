@@ -6234,5 +6234,8 @@
     "quizScore": "{{score}} / {{total}} bonnes réponses.",
     "quizPerfect": "Bravo, tu maîtrises ce thème !",
     "quizKeep": "Relis les conseils et retente ta chance !"
+  },
+  "offlineBanner": {
+    "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
   }
 }

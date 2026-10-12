@@ -6234,5 +6234,8 @@
     "quizScore": "{{score}} / {{total}} correct.",
     "quizPerfect": "Well done, you've mastered this topic!",
     "quizKeep": "Reread the tips and try again!"
+  },
+  "offlineBanner": {
+    "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
   }
 }

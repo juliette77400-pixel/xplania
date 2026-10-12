@@ -1,3 +1,4 @@
+import OfflineBanner from "@/components/shared/OfflineBanner";
 import RouteMeta from "@/components/shared/RouteMeta";
 import i18n from "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -94,6 +95,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <OfflineBanner />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
