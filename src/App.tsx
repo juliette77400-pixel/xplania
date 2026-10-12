@@ -97,7 +97,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <OfflineBanner />
-      <ReportAiButton />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
@@ -108,6 +107,7 @@ const App = () => (
               {i18n.t("a11y.skipToContent")}
             </a>
             <RouteMeta />
+            <ReportAiButton />
             <RouteTracker />
             <OnboardingSyncGate />
             <AdminGate />
