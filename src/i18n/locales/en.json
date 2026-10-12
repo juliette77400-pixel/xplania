@@ -6246,5 +6246,14 @@
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
+  },
+  "reportAi": {
+    "button": "Report an incorrect answer",
+    "title": "Report an AI answer",
+    "desc": "Wrong, outdated or unsuitable info? Tell us what's wrong and we'll fix it.",
+    "placeholder": "E.g. the visa price shown is outdated…",
+    "send": "Send report",
+    "thanks": "Thanks, your report was sent!",
+    "error": "Sending failed, please retry."
   }
 }
