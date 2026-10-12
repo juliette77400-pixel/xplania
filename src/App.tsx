@@ -1,4 +1,5 @@
 import OfflineBanner from "@/components/shared/OfflineBanner";
+import ReportAiButton from "@/components/shared/ReportAiButton";
 import RouteMeta from "@/components/shared/RouteMeta";
 import i18n from "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -106,6 +107,7 @@ const App = () => (
               {i18n.t("a11y.skipToContent")}
             </a>
             <RouteMeta />
+            <ReportAiButton />
             <RouteTracker />
             <OnboardingSyncGate />
             <AdminGate />

@@ -6246,5 +6246,14 @@
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
+  },
+  "reportAi": {
+    "button": "Signaler une réponse incorrecte",
+    "title": "Signaler une réponse de l'IA",
+    "desc": "Une info fausse, dépassée ou inadaptée ? Dis-nous ce qui ne va pas, on corrige.",
+    "placeholder": "Ex. : le prix du visa indiqué n'est plus le bon…",
+    "send": "Envoyer le signalement",
+    "thanks": "Merci, ton signalement est envoyé !",
+    "error": "L'envoi a échoué, réessaie."
   }
 }
