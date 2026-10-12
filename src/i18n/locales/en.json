@@ -3938,7 +3938,7 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes. You get 10 free generations per tool each month to try everything. No card required, no commitment. Paid packs arrive at public launch for heavier use."
+      "a": "Yes, during the beta. You get 10 free tries per month per tool, no card, no commitment. To see what the offers will cost afterwards, check the Offers page."
     },
     "q2": {
       "q": "What does the AI actually do?",
@@ -3967,7 +3967,8 @@
     "q8": {
       "q": "Who can see my location?",
       "a": "Nobody, unless you turn on sharing yourself in Live tracking. You can stop it anytime, and your location stops updating as soon as tracking is off."
-    }
+    },
+    "seeOffers": "See offers and prices"
   },
   "exitIntent": {
     "title": "Before you go…",
