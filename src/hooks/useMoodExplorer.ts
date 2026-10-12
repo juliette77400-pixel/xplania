@@ -201,7 +201,7 @@ export function useMoodExplorer() {
         toast.success(i18n.t("ui2.useMoodExplorer.removedFromFavorites"));
       }
     },
-    onError: (e: any, input: RecommendInput) => {
+    onError: (e: any) => {
       toast.error(e?.message === "auth_required" ? "Connecte-toi" : "Échec sauvegarde");
     },
   });

@@ -141,7 +141,7 @@ const XplaniaVsChatgpt = () => {
                     </td>
                     <td className="p-4 text-muted-foreground align-top">
                       <span className="flex items-start gap-2">
-                        <X className="w-4 h-4 text-muted-foreground/50 mt-0.5 shrink-0" />
+                        <X className="w-4 h-4 text-muted-foreground/70 mt-0.5 shrink-0" />
                         {t(`vsChatgpt.table.rows.${k}.chatgpt`)}
                       </span>
                     </td>

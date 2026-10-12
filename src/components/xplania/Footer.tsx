@@ -206,15 +206,15 @@ const Footer = (_: Props) => {
           <Link to={getLegalPath("mentions", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalMentions")}
           </Link>
-          <span className="text-muted-foreground/30">·</span>
+          <span className="text-muted-foreground/70">·</span>
           <Link to={getLegalPath("cgu", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalCgu")}
           </Link>
-          <span className="text-muted-foreground/30">·</span>
+          <span className="text-muted-foreground/70">·</span>
           <Link to={getLegalPath("confidentialite", i18n.language)} className="text-muted-foreground hover:text-primary transition-colors">
             {t("footer.legalConfidentialite")}
           </Link>
-          <span className="text-muted-foreground/30">·</span>
+          <span className="text-muted-foreground/70">·</span>
           <button
             type="button"
             onClick={openConsentSettings}

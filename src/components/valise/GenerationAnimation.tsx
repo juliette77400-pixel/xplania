@@ -63,7 +63,7 @@ const GenerationAnimation = ({ isGenerating, currentStep }: GenerationAnimationP
                       <div className="w-5 h-5 rounded-full border-2 border-muted-foreground/20 shrink-0" />
                     )}
                     <span className="text-sm mr-1">{EMOJIS[i]}</span>
-                    <p className={`text-sm font-medium ${isDone || isCurrent ? "text-foreground" : "text-muted-foreground/40"}`}>
+                    <p className={`text-sm font-medium ${isDone || isCurrent ? "text-foreground" : "text-muted-foreground/70"}`}>
                       {label}
                     </p>
                     {isDone && (

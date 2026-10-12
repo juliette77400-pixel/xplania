@@ -26,14 +26,14 @@ const StepProgressBar = ({ currentStep }: StepProgressBarProps) => {
                     ? "bg-primary text-primary-foreground shadow-[var(--glow-cyan)]"
                     : isActive
                     ? "bg-primary/30 text-primary"
-                    : "bg-muted/50 text-muted-foreground/50"
+                    : "bg-muted/50 text-muted-foreground/70"
                 }`}
               >
                 {i + 1}
               </motion.div>
               <p
                 className={`text-xs text-center leading-tight font-medium ${
-                  isCurrent ? "text-primary" : isActive ? "text-foreground/70" : "text-muted-foreground/40"
+                  isCurrent ? "text-primary" : isActive ? "text-foreground/70" : "text-muted-foreground/70"
                 }`}
               >
                 {label}
