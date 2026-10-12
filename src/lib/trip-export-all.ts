@@ -233,6 +233,6 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
     doc.text(`Xplania · ${dest} · p.${i - 1}/${total - 1}`, PAGE_W / 2, PAGE_H - 8, { align: "center" });
   }
 
-  const safeName = (t.title || dest).replace(/[^a-z0-9-_]/gi, "_").slice(0, 40);
+  const safeName = (t.title || dest).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-_]/gi, "_").slice(0, 40);
   doc.save(`xplania-${safeName}.pdf`);
 }
