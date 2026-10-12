@@ -11,7 +11,7 @@ const keys = (o: unknown, p = ""): string[] =>
 describe("traductions", () => {
   it("les nouvelles clés existent en FR et en EN", () => {
     const enKeys = new Set(keys(en));
-    for (const k of ["reportAi.button", "settings.revokeShares.button"]) {
+    for (const k of ["reportAi.button", "settings.revokeShares.button", "ui2.TripActionsMenu.edit", "travelForm.saveError", "travelForm.retrySave", "travelForm.validation.destination", "ui2.trip-export-all.photoUnavailable"]) {
       expect(keys(fr)).toContain(k);
       expect(enKeys.has(k)).toBe(true);
     }

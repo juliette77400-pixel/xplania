@@ -50,6 +50,10 @@
 - [x] Compression photos carnet
 ## Vérifications restantes — parcours et textes
 - [ ] Vérifier inscription, confirmation et récupération du mot de passe ; corriger les défauts reproductibles
-- [ ] Vérifier le formulaire de voyage complet, sauvegarde et retour en arrière
-- [ ] Vérifier les exports et le comportement hors connexion
+- [x] Formulaire rapide : destination et durée validées, retour préservé, voyage enregistré et carnet rouvert ; erreurs de sauvegarde signalées avec reprise sans régénération IA
+- [x] Carnet : notes longues et photo enregistrées, PDF complet vérifié (texte intégral et image), notes/photo supprimées puis voyage test supprimé ; confirmation de suppression réparée
+- [x] Hors connexion : bandeau visible et carnet déjà ouvert conservé à l’écran ; aucune sauvegarde hors connexion promise
 - [ ] Relire les boutons, noms d’outils et textes FR/EN ; tester les corrections
+- [x] Connexion : email vide/invalide, mot de passe trop court et lien de récupération expiré vérifiés ; erreurs traduites et exceptions réseau gérées
+- [ ] Vérifier réception et confirmation d’inscription par email et récupération réelle du mot de passe (non exécutées sur le compte de Juliette)
+- [ ] Parcours personnalisés et relecture exhaustive ; essais hors connexion sur vrai téléphone après publication

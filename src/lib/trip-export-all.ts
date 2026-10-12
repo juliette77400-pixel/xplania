@@ -168,7 +168,7 @@ export async function exportTripAllInOnePDF(tripId: string): Promise<void> {
     const b = reco.budgetBreakdown || reco.budget || fd.totalBudget || fd.budget;
     if (Array.isArray(b)) {
       b.forEach((item) => {
-        const value = [item.category || item.label || item.name, item.amount ?? item.cost, item.description].filter(v => v != null && v !== "").join(" — ");
+        const value = [item.category || item.label || item.name, item.amount ?? item.cost, item.tip || item.description].filter(v => v != null && v !== "").join(" — ");
         y = bullet(doc, value || safeStr(item), y);
       });
     } else if (typeof b === "object" && b !== null) {
