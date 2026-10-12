@@ -207,7 +207,7 @@ const ChecklistSection = ({ categories, onToggle, onAdd, onRemove, isLoading }: 
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={() => onRemove(category, i)}
-                          className="p-2 rounded-lg text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10 transition-colors shrink-0"
+                          className="p-2 rounded-lg text-muted-foreground/70 hover:text-destructive hover:bg-destructive/10 transition-colors shrink-0"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </motion.button>

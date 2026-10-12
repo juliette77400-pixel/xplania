@@ -199,7 +199,7 @@ const GuideVisaPage = () => {
       console.error("visa-info error:", e);
       const msg = e instanceof Error ? e.message : t("guideVisa.errUnknown");
       setAiError(msg);
-      toast.error(t("guideVisa.errToast"), { description: msg });
+      toast.error(t("guideVisa.errToast"), { description: msg, action: { label: t("common.retry"), onClick: () => { void runGeneration(); } } });
     } finally {
       setIsGenerating(false);
     }
@@ -356,7 +356,7 @@ const GuideVisaPage = () => {
                       }`}
                     >
                       <Icon className={`w-5 h-5 shrink-0 ${isDone ? "text-green-400" : isActive ? "text-secondary" : "text-muted-foreground"}`} />
-                      <span className={`text-sm font-medium ${isActive ? "text-foreground" : isDone ? "text-muted-foreground" : "text-muted-foreground/50"}`}>
+                      <span className={`text-sm font-medium ${isActive ? "text-foreground" : isDone ? "text-muted-foreground" : "text-muted-foreground/70"}`}>
                         {step.label}
                       </span>
                       {isDone && <CheckCircle className="w-4 h-4 text-green-400 ml-auto" />}

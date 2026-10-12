@@ -41,7 +41,7 @@ const StarRating = ({
           aria-label={t("discoverComp.ratings.starAria", { count: n })}
         >
           <Star
-            className={cn(n <= display ? "fill-amber-400 text-amber-400" : "text-muted-foreground/40")}
+            className={cn(n <= display ? "fill-amber-400 text-amber-400" : "text-muted-foreground/70")}
             style={{ width: size, height: size }}
           />
         </button>

@@ -32,7 +32,7 @@ const StarRating = ({ value, onChange, size = 24 }: { value: number; onChange?: 
           aria-label={n > 1 ? t("discoverComp.reviews.starsAria", { count: n }) : t("discoverComp.reviews.starAria", { count: n })}
         >
           <Star
-            className={cn(n <= display ? "fill-amber-400 text-amber-400" : "text-muted-foreground/40")}
+            className={cn(n <= display ? "fill-amber-400 text-amber-400" : "text-muted-foreground/70")}
             style={{ width: size, height: size }}
           />
         </button>

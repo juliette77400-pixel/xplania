@@ -52,7 +52,7 @@ const BudgetGenerationAnim = ({ isGenerating, currentStep }: Props) => {
               }`}
             >
               <Icon className={`w-5 h-5 shrink-0 ${isDone ? "text-green-400" : isActive ? "text-primary" : "text-muted-foreground"}`} />
-              <span className={`text-sm font-medium ${isActive ? "text-foreground" : isDone ? "text-muted-foreground" : "text-muted-foreground/50"}`}>
+              <span className={`text-sm font-medium ${isActive ? "text-foreground" : isDone ? "text-muted-foreground" : "text-muted-foreground/70"}`}>
                 {t(`budget.genSteps.${key}`)}
               </span>
               {isDone && <CheckCircle className="w-4 h-4 text-green-400 ml-auto" />}

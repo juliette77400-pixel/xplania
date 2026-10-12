@@ -193,6 +193,9 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
           <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>
           <p className="text-sm text-muted-foreground">{t("culture.pillarPending")}</p>
+          <button onClick={() => q.refetch()} className="mt-2 rounded-full border border-border px-4 py-1.5 text-sm text-foreground hover:bg-muted/60">
+            {t("common.retry")}
+          </button>
         </div>
       )}
 
