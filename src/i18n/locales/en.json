@@ -4530,6 +4530,14 @@
         "confirmCta": "Delete permanently",
         "success": "Account deleted. See you."
       }
+    },
+    "revokeShares": {
+      "title": "Turn off all my share links",
+      "desc": "Makes your shared journals, shared live tracking and public place lists private at once. Old links will show nothing.",
+      "button": "Turn off all sharing",
+      "confirm": "Turn off all your share links? You can re-enable them one by one.",
+      "done": "All your share links are turned off.",
+      "error": "Something went wrong, please retry."
     }
   },
   "home": {

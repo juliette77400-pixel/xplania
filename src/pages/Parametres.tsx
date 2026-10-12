@@ -14,6 +14,7 @@ import CategoryPickerCard from "@/components/gamification/CategoryPickerCard";
 import VisibilitySettingCard from "@/components/gamification/VisibilitySettingCard";
 import SecuritySettings from "@/components/parametres/SecuritySettings";
 import NotificationsSettings from "@/components/parametres/NotificationsSettings";
+import RevokeSharesCard from "@/components/parametres/RevokeSharesCard";
 import DataSettings from "@/components/parametres/DataSettings";
 
 const TABS = [
@@ -85,6 +86,7 @@ const Parametres = () => {
 
           <TabsContent value="securite" className="space-y-5 mt-0">
             <SecuritySettings />
+            <RevokeSharesCard />
           </TabsContent>
 
           <TabsContent value="donnees" className="space-y-5 mt-0">
