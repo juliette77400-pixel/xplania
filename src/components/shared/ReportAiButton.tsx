@@ -1,4 +1,4 @@
-// Floating "report an incorrect AI answer" button shown on AI tool pages; sends the report by email.
+// Floating "report an incorrect AI answer" button shown on every page for signed-in users; sends the report by email.
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
