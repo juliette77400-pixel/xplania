@@ -10,8 +10,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 
-const AI_PATHS = ["/guide-", "/mood", "/discover", "/suivi", "/explore", "/carnet", "/app"];
-
 const ReportAiButton = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -20,7 +18,8 @@ const ReportAiButton = () => {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
 
-  if (!user || !AI_PATHS.some((p) => pathname.startsWith(p))) return null;
+  // Available on every page for signed-in users (keeps spam out of the inbox).
+  if (!user) return null;
 
   const send = async () => {
     if (!text.trim()) return;
