@@ -5,3 +5,4 @@
 - Map authentication errors through the shared auth-errors helper — why: sign-in and password recovery must display consistent localized messages.
 - Keep the quiz introduction dismissal local to each page visit and gate quiz keyboard shortcuts and completion redirects until dismissal — why: returning visitors must see the overview without accidentally answering or being redirected.
 - Reuse JourneyIntro before the root landing page with per-visit dismissal, while keeping /home directly accessible — why: direct and search-engine arrivals need the same overview without removing the existing home page.
+- Auth emails (signup, recovery) are bilingual FR/EN: the device language is saved at signup in `user_metadata.locale` (via `browserLang()`), the auth-email-hook reads it from the webhook payload and falls back to French — why: emails must match the user's computer language without storing new tables.
