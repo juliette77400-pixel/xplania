@@ -155,13 +155,24 @@ const TravelerProfileOnboarding = () => {
             ? supabase.from("user_swipes").select("card_id, direction").eq("user_id", user.id)
             : Promise.resolve({ data: null, error: null } as typeof swipeRes),
         ]);
-        allCards = pickDeck((cardsRes.data ?? null) as DbCard[] | null);
         e1 = cardsRes.error;
+        if (!e1 && cardsRes.data) {
+          try { localStorage.setItem(CARDS_CACHE_KEY, JSON.stringify(cardsRes.data)); } catch { /* ignore */ }
+        }
+        allCards = pickDeck((cardsRes.data ?? null) as DbCard[] | null);
         swipeRes = sw as typeof swipeRes;
       } catch (err) {
         e1 = err;
       }
       if (cancelled) return;
+
+      // Offline: fall back to the last saved questions.
+      if (e1 || !allCards) {
+        try {
+          const cached = JSON.parse(localStorage.getItem(CARDS_CACHE_KEY) || "null") as DbCard[] | null;
+          if (Array.isArray(cached) && cached.length) { allCards = pickDeck(cached); e1 = null; }
+        } catch { /* ignore */ }
+      }
 
       if (e1) {
         const msg = (e1 as { message?: string })?.message || t("travelerProfile.loadError");
@@ -231,6 +242,11 @@ const TravelerProfileOnboarding = () => {
       }
       // Always purge local state.
       setLocalOnboarding({ swipes: [], result: null, step: "tinder" });
+      clearSavedDeck();
+      try {
+        const cached = JSON.parse(localStorage.getItem(CARDS_CACHE_KEY) || "null") as DbCard[] | null;
+        if (Array.isArray(cached) && cached.length) setCards(pickDeck(cached) ?? []);
+      } catch { /* ignore */ }
       setSwipedIds(new Set());
       setScores(emptyScores());
       setIndex(0);
@@ -337,6 +353,7 @@ const TravelerProfileOnboarding = () => {
   const finalize = useCallback(
     async (finalScores: TravelerScores) => {
       setFinalizing(true);
+      clearSavedDeck();
       const badge = calculateBadge(finalScores);
       const reward = BADGE_REWARDS[badge.key];
       const result: StoredResult = {
