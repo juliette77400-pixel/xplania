@@ -23,6 +23,7 @@ const ANSWER_MAX = 200;
 interface PromptAnswer { key: string; answer: string }
 
 const TagInput = ({ values, onChange, placeholder, max }: { values: string[]; onChange: (v: string[]) => void; placeholder: string; max: number }) => {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState("");
   const add = () => {
     const v = draft.trim();
