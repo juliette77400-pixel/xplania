@@ -90,6 +90,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
         <button
           onClick={handleRefresh}
           disabled={loading}
+          aria-label={t("a11y.refresh")}
           className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
         >
           {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
