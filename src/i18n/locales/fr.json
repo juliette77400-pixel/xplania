@@ -87,6 +87,9 @@
     "fr": "Français",
     "en": "English"
   },
+  "homePromises": {
+    "subtitle": "Visa, budget serré, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité."
+  },
   "navbar": {
     "features": "Fonctionnalités",
     "howItWorks": "Comment ça marche",
