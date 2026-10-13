@@ -1,4 +1,6 @@
 # Roadmap
+## Promesses de l’accueil
+- [x] Retirer le logement de l’accroche, conserver l’ancienne formulation des formalités et vérifier les promesses face aux outils disponibles ; accueil français vérifié à l’écran, sans débordement horizontal
 ## Budget
 - [x] Scénarios IA pour ajustement budget
 - [x] Plus de catégories de dépenses
