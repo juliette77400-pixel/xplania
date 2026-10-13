@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,6 +37,7 @@ const Index = () => {
   const [quotaOpen, setQuotaOpen] = useState(false);
   const { user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [currentTripId, setCurrentTripId] = useState<string | null>(null);
@@ -61,7 +62,14 @@ const Index = () => {
   };
 
   if (location.pathname === "/" && !introSeen) {
-    return <JourneyIntro onStart={() => setIntroSeen(true)} />;
+    return (
+      <JourneyIntro
+        onStart={() => {
+          setIntroSeen(true);
+          navigate("/parcours", { state: { skipIntro: true } });
+        }}
+      />
+    );
   }
 
   return (

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
@@ -56,6 +56,28 @@ interface DbCard {
   order_index: number;
 }
 
+/** Keep the quiz short: 10 questions, spread across categories (round-robin). */
+const QUIZ_LENGTH = 10;
+function pickDeck(all: DbCard[] | null): DbCard[] | null {
+  if (!all || all.length <= QUIZ_LENGTH) return all;
+  const groups = new Map<string, DbCard[]>();
+  for (const c of all) {
+    const k = categoryForCard(c.score_tags);
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k)!.push(c);
+  }
+  const lists = [...groups.values()];
+  const out: DbCard[] = [];
+  for (let i = 0; out.length < QUIZ_LENGTH; i++) {
+    let added = false;
+    for (const l of lists) {
+      if (l[i] && out.length < QUIZ_LENGTH) { out.push(l[i]); added = true; }
+    }
+    if (!added) break;
+  }
+  return out.sort((a, b) => a.order_index - b.order_index);
+}
+
 const TravelerProfileOnboarding = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
@@ -72,7 +94,10 @@ const TravelerProfileOnboarding = () => {
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
-  const [introSeen, setIntroSeen] = useState(false);
+  const location = useLocation();
+  const [introSeen, setIntroSeen] = useState(
+    () => !!(location.state as { skipIntro?: boolean } | null)?.skipIntro,
+  );
   const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const retryTimerRef = useRef<number | null>(null);
   const animatingRef = useRef(false);
@@ -107,7 +132,7 @@ const TravelerProfileOnboarding = () => {
             ? supabase.from("user_swipes").select("card_id, direction").eq("user_id", user.id)
             : Promise.resolve({ data: null, error: null } as typeof swipeRes),
         ]);
-        allCards = (cardsRes.data ?? null) as DbCard[] | null;
+        allCards = pickDeck((cardsRes.data ?? null) as DbCard[] | null);
         e1 = cardsRes.error;
         swipeRes = sw as typeof swipeRes;
       } catch (err) {
@@ -157,7 +182,7 @@ const TravelerProfileOnboarding = () => {
             .select("id, name, image_url, phrase_fr, phrase_en, score_tags, order_index")
             .eq("active", true)
             .order("order_index", { ascending: true })
-            .then(({ data }) => data && setCards(data as DbCard[]));
+            .then(({ data }) => data && setCards(pickDeck(data as DbCard[]) ?? []));
         });
       }
     })();
