@@ -72,9 +72,7 @@ const TravelerProfileOnboarding = () => {
   const [resetting, setResetting] = useState(false);
   const [retryTick, setRetryTick] = useState(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
-  const [introSeen, setIntroSeen] = useState(() => {
-    try { return localStorage.getItem("xplania-journey-intro-seen") === "1"; } catch { return false; }
-  });
+  const [introSeen, setIntroSeen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const retryTimerRef = useRef<number | null>(null);
   const animatingRef = useRef(false);
@@ -264,11 +262,11 @@ const TravelerProfileOnboarding = () => {
   const quizAlreadyCompleted =
     !!savedProfile?.completed_at || savedProfile?.onboarding_step === "done";
   useEffect(() => {
-    if (!user || loading || finalizing || resetting) return;
+    if (!introSeen || !user || loading || finalizing || resetting) return;
     if (total > 0 && done >= total && quizAlreadyCompleted) {
       navigate("/app", { replace: true });
     }
-  }, [user, loading, finalizing, resetting, total, done, quizAlreadyCompleted, navigate]);
+  }, [introSeen, user, loading, finalizing, resetting, total, done, quizAlreadyCompleted, navigate]);
 
   const jumpToCategory = useCallback((k: CategoryKey, opts: { complete?: boolean } = {}) => {
     if (animatingRef.current) return;
@@ -398,7 +396,7 @@ const TravelerProfileOnboarding = () => {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (finalizing || !current) return;
+      if (!introSeen || finalizing || !current) return;
       if (e.key === "ArrowRight") handleSwipe("right");
       else if (e.key === "ArrowLeft") handleSwipe("left");
       else if (e.key === "ArrowUp") handleSwipe("love");
@@ -406,15 +404,13 @@ const TravelerProfileOnboarding = () => {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [handleSwipe, finalizing, current]);
+  }, [introSeen, handleSwipe, finalizing, current]);
 
-  // The journey intro must be the very first thing a new visitor sees —
-  // before any loading skeleton — so it renders even while cards load.
-  if (!introSeen && done === 0) {
+  // Show the journey overview on every visit, including resumed quizzes.
+  if (!introSeen) {
     return (
       <JourneyIntro
         onStart={() => {
-          try { localStorage.setItem("xplania-journey-intro-seen", "1"); } catch { /* ignore */ }
           setIntroSeen(true);
         }}
       />
