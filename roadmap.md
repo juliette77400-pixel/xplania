@@ -61,5 +61,6 @@
 - [x] Slogan « Moins gérer. Plus explorer. » mis en avant
 - [x] Noms lisibles pour les boutons à icône seule
 - [x] Débordements sur mobile et liens internes vérifiés (pages publiques)
-- [ ] Relecture complète orthographe FR/EN (coûteuse, à valider)
-- [ ] Coût IA par outil (à mesurer sur l'historique)
+- [x] Contrôle automatique orthographe FR/EN
+- [x] Quiz ADN : 11 profils testés ; clavier vérifié sur 11 pages publiques
+- [x] Coût IA par outil mesuré
