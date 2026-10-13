@@ -24,14 +24,18 @@ interface SignupEmailProps {
   lang?: Lang
 }
 
-const copy = (lang: Lang, siteName: string, recipient: string) =>
+const copy = (lang: Lang, siteName: string, recipient: string, siteUrl: string) =>
   lang === 'fr'
     ? {
         preview: `Confirme ton adresse email pour ${siteName}`,
         h1: 'Confirme ton adresse email',
         intro: (
           <>
-            Merci de t&apos;être inscrit·e à <strong>{siteName}</strong> !
+            Merci de t&apos;être inscrit·e à{' '}
+            <Link href={siteUrl} style={link}>
+              <strong>{siteName}</strong>
+            </Link>{' '}
+            !
           </>
         ),
         body: (
@@ -75,7 +79,7 @@ export const SignupEmail = ({
   confirmationUrl,
   lang = 'fr',
 }: SignupEmailProps) => {
-  const t = copy(lang, siteName, recipient)
+  const t = copy(lang, siteName, recipient, siteUrl)
   return (
     <Html lang={lang} dir="ltr">
       <Head>
