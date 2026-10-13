@@ -883,7 +883,7 @@
   "legal": {
     "backHome": "Retour à l'accueil",
     "lastUpdated": "Dernière mise à jour",
-    "updateDate": "26 septembre 2026",
+    "updateDate": "13 octobre 2026",
     "contactNote": "Pour toute question, écris-nous à",
     "seeAlso": "À lire aussi",
     "mentions": {
@@ -895,7 +895,7 @@
         },
         {
           "heading": "Hébergement",
-          "body": "Le site est hébergé par Lovable (lovable.dev). Pour toute demande liée à l'hébergement, les utilisateurs peuvent contacter Lovable directement."
+          "body": "Le site est hébergé par Lovable Labs Incorporated (lovable.dev).\nAdresse postale : Lovable Labs AB, Box 190, 101 23 Stockholm, Suède.\nContact : dpo@lovable.dev — https://lovable.dev"
         },
         {
           "heading": "Propriété intellectuelle",
@@ -907,7 +907,7 @@
         },
         {
           "heading": "Cookies",
-          "body": "Xplania utilise uniquement des cookies techniques nécessaires au fonctionnement du site et des cookies d'analyse anonymes. Aucun cookie publicitaire ni de suivi tiers n'est déposé sans consentement explicite."
+          "body": "Xplania utilise des cookies techniques nécessaires au fonctionnement du site, et une mesure d'audience interne activée uniquement avec ton consentement (bannière de cookies, modifiable via « Gérer les cookies »). Aucun cookie publicitaire. Voir la Politique de confidentialité."
         },
         {
           "heading": "Droit applicable",
@@ -924,7 +924,7 @@
         },
         {
           "heading": "Données collectées, finalités, bases légales et durées",
-          "body": "Nous limitons la collecte au strict nécessaire. Voici précisément ce qui est traité :\n\n• Adresse email et mot de passe (compte / liste d'attente premium) — finalité : création de compte, authentification, communication produit. Base légale : exécution du contrat (RGPD art. 6.1.b) pour les comptes, consentement (art. 6.1.a) pour la liste d'attente. Conservation : durée de vie du compte + 12 mois d'inactivité, puis suppression. Pour la liste d'attente : jusqu'au lancement + 6 mois ou désinscription.\n\n• Contenu de tes voyages (destinations, dates, activités, journal, photos uploadées, position GPS du suivi en direct) — finalité : faire fonctionner les modules Planificateur, Carnet de bord, Suivi live, Découverte. Base légale : exécution du contrat. Conservation : tant que le compte existe ; suppression à la demande ou à la clôture du compte.\n\n• Géolocalisation approximative ou précise (uniquement quand tu l'actives) — finalité : suggestions à proximité, suivi GPS du voyage. Base légale : consentement explicite via le navigateur. La position n'est stockée que si tu actives le suivi en direct.\n\n• Messages envoyés aux assistants IA Ping (visa) et Ping (budget) — finalité : générer une réponse personnalisée. Base légale : exécution du contrat. Conservation : 30 jours maximum à des fins de qualité, puis suppression.\n\n• Feedback envoyé via le formulaire (note, suggestions, problèmes, email) — finalité : amélioration du produit. Base légale : consentement (envoi volontaire). Conservation : 24 mois.\n\n• Analyses d'usage anonymes (pages, fonctionnalités utilisées) — aucun identifiant personnel associé. Base légale : intérêt légitime à améliorer le service. Conservation : 24 mois."
+          "body": "Nous limitons la collecte au strict nécessaire. Voici précisément ce qui est traité :\n\n• Adresse email et mot de passe (compte / liste d'attente premium) — finalité : création de compte, authentification, communication produit. Base légale : exécution du contrat (RGPD art. 6.1.b) pour les comptes, consentement (art. 6.1.a) pour la liste d'attente. Conservation : durée de vie du compte + 3 ans d'inactivité, puis suppression. Pour la liste d'attente : jusqu'au lancement + 6 mois ou désinscription.\n\n• Contenu de tes voyages (destinations, dates, activités, journal, photos uploadées, position GPS du suivi en direct) — finalité : faire fonctionner les modules Planificateur, Carnet de bord, Suivi live, Découverte. Base légale : exécution du contrat. Conservation : tant que le compte existe ; suppression à la demande ou à la clôture du compte.\n\n• Géolocalisation approximative ou précise (uniquement quand tu l'actives) — finalité : suggestions à proximité, suivi GPS du voyage. Base légale : consentement explicite via le navigateur. La position n'est stockée que si tu actives le suivi en direct.\n\n• Messages envoyés aux assistants IA Ping (visa) et Ping (budget) — finalité : générer une réponse personnalisée. Base légale : exécution du contrat. Conservation : 30 jours maximum à des fins de qualité, puis suppression.\n\n• Feedback envoyé via le formulaire (note, suggestions, problèmes, email) — finalité : amélioration du produit. Base légale : consentement (envoi volontaire). Conservation : 24 mois.\n\n• Analyses d'usage anonymes (pages, fonctionnalités utilisées) — aucun identifiant personnel associé. Base légale : intérêt légitime à améliorer le service. Conservation : 24 mois."
         },
         {
           "heading": "Sous-traitants et services tiers",
@@ -937,10 +937,6 @@
         {
           "heading": "Tes droits (RGPD) et comment les exercer",
           "body": "Conformément au Règlement général sur la protection des données, tu disposes des droits suivants sur tes données personnelles :\n\n• Droit d'accès — obtenir une copie de ce qu'on détient sur toi.\n• Droit de rectification — corriger une donnée inexacte.\n• Droit à l'effacement (« droit à l'oubli ») — demander la suppression de ton compte et de tes données.\n• Droit à la portabilité — recevoir tes données dans un format lisible.\n• Droit d'opposition — t'opposer à certains traitements (ex. analyses d'usage).\n• Droit à la limitation — demander de geler un traitement le temps d'une vérification.\n• Droit de retirer ton consentement à tout moment, sans que cela remette en cause la licéité du traitement effectué avant ce retrait.\n\nPour exercer l'un de ces droits, envoie un email à : juliettenoel.xplania@gmail.com en précisant ta demande. Une réponse te sera apportée sous 30 jours maximum.\n\nSi tu estimes que tes droits ne sont pas respectés, tu peux à tout moment déposer une réclamation auprès de la CNIL (Commission nationale de l'informatique et des libertés) : https://www.cnil.fr"
-        },
-        {
-          "heading": "Cookies",
-          "body": "Xplania utilise uniquement des cookies techniques nécessaires au fonctionnement du site (session, authentification, préférence de langue) et des cookies d'analyse anonymes. Aucun cookie publicitaire ni de traceur tiers à des fins marketing n'est déposé sans consentement explicite."
         },
         {
           "heading": "Sécurité",
