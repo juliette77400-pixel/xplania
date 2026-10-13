@@ -3,3 +3,4 @@
 - Cultural guide: pre-written country sheets live in src/data/culture-guide.ts; other pillars are AI-generated one at a time by the culture-guide function and cached in culture_guide_cache (server-write only) — why: keep AI cost to one generation per country/pillar/language.
 - Validate travel basics before advancing or generating, and await trip persistence before clearing the draft; retry failed persistence without regenerating AI — why: prevent invalid requests, silent data loss and unnecessary AI usage.
 - Map authentication errors through the shared auth-errors helper — why: sign-in and password recovery must display consistent localized messages.
+- Keep the quiz introduction dismissal local to each page visit and gate quiz keyboard shortcuts and completion redirects until dismissal — why: returning visitors must see the overview without accidentally answering or being redirected.

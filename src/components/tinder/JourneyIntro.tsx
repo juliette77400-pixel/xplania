@@ -29,8 +29,8 @@ export default function JourneyIntro({ onStart }: { onStart: () => void }) {
               <div>
                 <p className="font-semibold text-foreground">
                   {i + 1}. {t(`journeyIntro.${key}.title`)}
-                  {i === 1 && (
-                    <span className="ml-2 text-xs font-medium text-muted-foreground">{t("journeyIntro.s2.time")}</span>
+                  {i === 0 && (
+                    <span className="ml-2 text-xs font-medium text-muted-foreground">{t("journeyIntro.s1.time")}</span>
                   )}
                 </p>
                 <p className="text-sm text-muted-foreground">{t(`journeyIntro.${key}.text`)}</p>

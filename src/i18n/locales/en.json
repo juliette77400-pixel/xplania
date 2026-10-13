@@ -5636,17 +5636,18 @@
     "title": "Your journey in 4 steps",
     "subtitle": "In a few minutes, Xplania gets to know you so it can suggest trips that truly feel like you.",
     "s1": {
-      "title": "We explain",
-      "text": "You are here: a quick overview of what's ahead."
+      "title": "Take the Travel DNA quiz",
+      "time": "≈ 5 min",
+      "text": "React to travel photos based on what you enjoy. There are no wrong answers."
     },
     "s2": {
-      "title": "Your Travel DNA",
+      "title": "Discover your profile",
       "time": "≈ 5 min",
-      "text": "React to travel photos: \"I love it\", \"That's me\", \"Not for me\" or \"Skip\". There are no wrong answers."
+      "text": "Your answers reveal your Travel DNA and the tools that best match the way you travel."
     },
     "s3": {
-      "title": "Try a feature",
-      "text": "Based on your profile, we suggest the most useful tool for you: trip builder, budget, visa, packing…"
+      "title": "Try the packs",
+      "text": "After signing up, try the pack tools: budget, packing, travel formalities and trip planning."
     },
     "s4": {
       "title": "Explore all of Xplania",

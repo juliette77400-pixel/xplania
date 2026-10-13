@@ -5636,17 +5636,18 @@
     "title": "Ton parcours en 4 étapes",
     "subtitle": "En quelques minutes, Xplania apprend à te connaître pour te proposer des voyages qui te ressemblent vraiment.",
     "s1": {
-      "title": "On t'explique",
-      "text": "Tu es ici : un aperçu rapide de ce qui t'attend."
+      "title": "Tu réponds au quiz ADN Voyageur",
+      "time": "≈ 5 min",
+      "text": "Réagis à des photos de voyage selon tes envies. Il n'y a pas de mauvaise réponse."
     },
     "s2": {
-      "title": "Ton ADN Voyageur",
+      "title": "Tu découvres ton profil",
       "time": "≈ 5 min",
-      "text": "Réagis à des photos de voyage : « J'adore », « Ça me correspond », « Pas pour moi » ou « Passer ». Il n'y a pas de mauvaise réponse."
+      "text": "Tes réponses révèlent ton ADN Voyageur et les outils qui correspondent le mieux à ta façon de voyager."
     },
     "s3": {
-      "title": "Tu testes une fonctionnalité",
-      "text": "Selon ton profil, on te propose l'outil le plus utile pour toi : créer un voyage, budget, visa, valise…"
+      "title": "Tu testes les packs",
+      "text": "Après ton inscription, essaie les outils des packs : budget, valise, formalités et préparation de ton voyage."
     },
     "s4": {
       "title": "Tu explores tout Xplania",
