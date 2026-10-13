@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlaceCard from "./PlaceCard";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const PlaceCarousel = ({ title, emoji, places, onSelect, isSaved, onToggleSave }: Props) => {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 1 | -1) => ref.current?.scrollBy({ left: dir * 300, behavior: "smooth" });
 
