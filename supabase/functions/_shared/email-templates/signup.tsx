@@ -14,51 +14,92 @@ import {
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
+type Lang = 'fr' | 'en'
+
 interface SignupEmailProps {
   siteName: string
   siteUrl: string
   recipient: string
   confirmationUrl: string
+  lang?: Lang
 }
+
+const copy = (lang: Lang, siteName: string, recipient: string, siteUrl: string) =>
+  lang === 'fr'
+    ? {
+        preview: `Confirme ton adresse email pour ${siteName}`,
+        h1: 'Confirme ton adresse email',
+        intro: (
+          <>
+            Merci de t&apos;être inscrit·e à{' '}
+            <Link href={siteUrl} style={link}>
+              <strong>{siteName}</strong>
+            </Link>{' '}
+            !
+          </>
+        ),
+        body: (
+          <>
+            Confirme ton adresse email (
+            <Link href={`mailto:${recipient}`} style={link}>
+              {recipient}
+            </Link>
+            ) en cliquant sur le bouton ci-dessous :
+          </>
+        ),
+        button: 'Confirmer mon email',
+        footer: "Si tu n'as pas créé de compte, tu peux ignorer cet email sans risque.",
+      }
+    : {
+        preview: `Confirm your email for ${siteName}`,
+        h1: 'Confirm your email',
+        intro: (
+          <>
+            Thanks for signing up for{' '}
+            <strong>{siteName}</strong>!
+          </>
+        ),
+        body: (
+          <>
+            Please confirm your email address (
+            <Link href={`mailto:${recipient}`} style={link}>
+              {recipient}
+            </Link>
+            ) by clicking the button below:
+          </>
+        ),
+        button: 'Verify Email',
+        footer: "If you didn't create an account, you can safely ignore this email.",
+      }
 
 export const SignupEmail = ({
   siteName,
   siteUrl,
   recipient,
   confirmationUrl,
-}: SignupEmailProps) => (
-  <Html lang="en" dir="ltr">
-    <Head>
-      <style>{darkModeCss}</style>
-    </Head>
-    <Preview>Confirm your email for {siteName}</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
-        <Text style={text}>
-          Thanks for signing up for{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          !
-        </Text>
-        <Text style={text}>
-          Please confirm your email address (
-          <Link href={`mailto:${recipient}`} style={link}>
-            {recipient}
-          </Link>
-          ) by clicking the button below:
-        </Text>
-        <Button className="dm-btn" style={button} href={confirmationUrl}>
-          Verify Email
-        </Button>
-        <Text style={footer}>
-          If you didn't create an account, you can safely ignore this email.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-)
+  lang = 'fr',
+}: SignupEmailProps) => {
+  const t = copy(lang, siteName, recipient, siteUrl)
+  return (
+    <Html lang={lang} dir="ltr">
+      <Head>
+        <style>{darkModeCss}</style>
+      </Head>
+      <Preview>{t.preview}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Heading style={h1}>{t.h1}</Heading>
+          <Text style={text}>{t.intro}</Text>
+          <Text style={text}>{t.body}</Text>
+          <Button className="dm-btn" style={button} href={confirmationUrl}>
+            {t.button}
+          </Button>
+          <Text style={footer}>{t.footer}</Text>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
 
 export default SignupEmail
 

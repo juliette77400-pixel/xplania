@@ -21,6 +21,8 @@ const ROOT_DOMAIN = "xplania.app"
 const FROM_DOMAIN = "xplania.app"
 const SITE_URL = `https://${ROOT_DOMAIN}`
 
+type Lang = 'fr' | 'en'
+
 // Template mapping for preview mode
 const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
   signup: SignupEmail,
@@ -91,6 +93,9 @@ async function handlePreview(req: Request): Promise<Response> {
     })
   }
 
+  const url = new URL(req.url)
+  const lang: Lang = url.searchParams.get('lang') === 'en' ? 'en' : 'fr'
+
   let type: string
   try {
     const body = await req.json()
@@ -111,7 +116,7 @@ async function handlePreview(req: Request): Promise<Response> {
     })
   }
 
-  const sampleData = SAMPLE_DATA[type] || {}
+  const sampleData = { ...(SAMPLE_DATA[type] || {}), lang }
   const html = await renderAsync(React.createElement(EmailTemplate, sampleData))
 
   return new Response(html, {
@@ -120,67 +125,93 @@ async function handlePreview(req: Request): Promise<Response> {
   })
 }
 
+// The signup flow stores the device language in the user's metadata
+// (auth.signUp({ data: { locale } })). The auth webhook payload carries the
+// user object, so we read it back here to pick the email language.
+// Default is French (the app's default language).
+async function extractLang(req: Request): Promise<Lang> {
+  try {
+    const body = await req.clone().json()
+    const raw =
+      body?.user?.user_metadata?.locale ??
+      body?.user_metadata?.locale ??
+      body?.locale
+    if (typeof raw === 'string' && raw.trim().length >= 2) {
+      return raw.trim().toLowerCase().startsWith('fr') ? 'fr' : 'en'
+    }
+  } catch {
+    // Ignore parse errors and fall back to French.
+  }
+  return 'fr'
+}
+
 // The SDK handler owns verification, dispatch, and retry semantics; this file
 // owns only the email decisions: subjects, templates, and per-type props.
-const handler = createAuthEmailHandler({
-  apiKey: Deno.env.get('LOVABLE_API_KEY')!,
-  from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-  senderDomain: SENDER_DOMAIN,
-  sendUrl: Deno.env.get('LOVABLE_SEND_URL'),
-  emails: {
-    signup: {
-      subject: 'Confirm your email',
-      render: (data) =>
-        React.createElement(SignupEmail, {
-          siteName: SITE_NAME,
-          siteUrl: SITE_URL,
-          recipient: data.email,
-          confirmationUrl: data.url,
-        }),
+// Built per request so the language never leaks between concurrent sends.
+function buildHandler(lang: Lang) {
+  const fr = lang === 'fr'
+  return createAuthEmailHandler({
+    apiKey: Deno.env.get('LOVABLE_API_KEY')!,
+    from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+    senderDomain: SENDER_DOMAIN,
+    sendUrl: Deno.env.get('LOVABLE_SEND_URL'),
+    emails: {
+      signup: {
+        subject: fr ? 'Confirme ton adresse email' : 'Confirm your email',
+        render: (data) =>
+          React.createElement(SignupEmail, {
+            lang,
+            siteName: SITE_NAME,
+            siteUrl: SITE_URL,
+            recipient: data.email,
+            confirmationUrl: data.url,
+          }),
+      },
+      invite: {
+        subject: fr ? "Tu as été invité·e" : "You've been invited",
+        render: (data) =>
+          React.createElement(InviteEmail, {
+            siteName: SITE_NAME,
+            siteUrl: SITE_URL,
+            confirmationUrl: data.url,
+          }),
+      },
+      magiclink: {
+        subject: fr ? 'Ton lien de connexion' : 'Your login link',
+        render: (data) =>
+          React.createElement(MagicLinkEmail, {
+            siteName: SITE_NAME,
+            confirmationUrl: data.url,
+          }),
+      },
+      recovery: {
+        subject: fr ? 'Réinitialise ton mot de passe' : 'Reset your password',
+        render: (data) =>
+          React.createElement(RecoveryEmail, {
+            lang,
+            siteName: SITE_NAME,
+            confirmationUrl: data.url,
+          }),
+      },
+      email_change: {
+        subject: fr ? 'Confirme ta nouvelle adresse email' : 'Confirm your new email',
+        render: (data) =>
+          React.createElement(EmailChangeEmail, {
+            siteName: SITE_NAME,
+            oldEmail: data.old_email ?? '',
+            email: data.email,
+            newEmail: data.new_email ?? '',
+            confirmationUrl: data.url,
+          }),
+      },
+      reauthentication: {
+        subject: fr ? 'Ton code de vérification' : 'Your verification code',
+        render: (data) =>
+          React.createElement(ReauthenticationEmail, { token: data.token ?? '' }),
+      },
     },
-    invite: {
-      subject: "You've been invited",
-      render: (data) =>
-        React.createElement(InviteEmail, {
-          siteName: SITE_NAME,
-          siteUrl: SITE_URL,
-          confirmationUrl: data.url,
-        }),
-    },
-    magiclink: {
-      subject: 'Your login link',
-      render: (data) =>
-        React.createElement(MagicLinkEmail, {
-          siteName: SITE_NAME,
-          confirmationUrl: data.url,
-        }),
-    },
-    recovery: {
-      subject: 'Reset your password',
-      render: (data) =>
-        React.createElement(RecoveryEmail, {
-          siteName: SITE_NAME,
-          confirmationUrl: data.url,
-        }),
-    },
-    email_change: {
-      subject: 'Confirm your new email',
-      render: (data) =>
-        React.createElement(EmailChangeEmail, {
-          siteName: SITE_NAME,
-          oldEmail: data.old_email ?? '',
-          email: data.email,
-          newEmail: data.new_email ?? '',
-          confirmationUrl: data.url,
-        }),
-    },
-    reauthentication: {
-      subject: 'Your verification code',
-      render: (data) =>
-        React.createElement(ReauthenticationEmail, { token: data.token ?? '' }),
-    },
-  },
-})
+  })
+}
 
 Deno.serve(async (req) => {
   const url = new URL(req.url)
@@ -195,5 +226,6 @@ Deno.serve(async (req) => {
     return handlePreview(req)
   }
 
-  return handler(req)
+  const lang = await extractLang(req)
+  return buildHandler(lang)(req)
 })

@@ -6,6 +6,7 @@ import { Mail, Lock, ArrowRight, Sparkles, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
+import { browserLang } from "@/lib/browser-locale";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,7 +45,7 @@ const Auth = () => {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}${next}`,
-        data: { display_name: displayName },
+        data: { display_name: displayName, locale: browserLang() },
       },
     });
     setLoading(false);

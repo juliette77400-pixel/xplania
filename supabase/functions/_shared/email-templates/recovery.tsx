@@ -13,38 +13,56 @@ import {
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
+type Lang = 'fr' | 'en'
+
 interface RecoveryEmailProps {
   siteName: string
   confirmationUrl: string
+  lang?: Lang
 }
+
+const copy = (lang: Lang, siteName: string) =>
+  lang === 'fr'
+    ? {
+        preview: `Réinitialise ton mot de passe pour ${siteName}`,
+        h1: 'Nouveau mot de passe',
+        body: `Nous avons reçu une demande de réinitialisation de ton mot de passe pour ${siteName}. Clique sur le bouton ci-dessous pour en choisir un nouveau.`,
+        button: 'Choisir un nouveau mot de passe',
+        footer: "Si tu n'as pas fait cette demande, tu peux ignorer cet email : ton mot de passe ne sera pas modifié.",
+      }
+    : {
+        preview: `Reset your password for ${siteName}`,
+        h1: 'Reset your password',
+        body: `We received a request to reset your password for ${siteName}. Click the button below to choose a new password.`,
+        button: 'Reset Password',
+        footer: "If you didn't request a password reset, you can safely ignore this email. Your password will not be changed.",
+      }
 
 export const RecoveryEmail = ({
   siteName,
   confirmationUrl,
-}: RecoveryEmailProps) => (
-  <Html lang="en" dir="ltr">
-    <Head>
-      <style>{darkModeCss}</style>
-    </Head>
-    <Preview>Reset your password for {siteName}</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={h1}>Reset your password</Heading>
-        <Text style={text}>
-          We received a request to reset your password for {siteName}. Click
-          the button below to choose a new password.
-        </Text>
-        <Button className="dm-btn" style={button} href={confirmationUrl}>
-          Reset Password
-        </Button>
-        <Text style={footer}>
-          If you didn't request a password reset, you can safely ignore this
-          email. Your password will not be changed.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-)
+  lang = 'fr',
+}: RecoveryEmailProps) => {
+  const t = copy(lang, siteName)
+  return (
+    <Html lang={lang} dir="ltr">
+      <Head>
+        <style>{darkModeCss}</style>
+      </Head>
+      <Preview>{t.preview}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Heading style={h1}>{t.h1}</Heading>
+          <Text style={text}>{t.body}</Text>
+          <Button className="dm-btn" style={button} href={confirmationUrl}>
+            {t.button}
+          </Button>
+          <Text style={footer}>{t.footer}</Text>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
 
 export default RecoveryEmail
 
