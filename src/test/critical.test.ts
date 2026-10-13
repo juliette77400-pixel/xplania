@@ -26,3 +26,21 @@ describe("consentement cookies", () => {
     expect(getConsent()?.analytics).toBe(false);
   });
 });
+
+describe("cohérence des textes légaux", () => {
+  it("précise les essais IA de la bêta en FR et EN", () => {
+    expect(fr.legal.cgu.sections[2].body).toContain("10 essais IA par outil et par mois");
+    expect(en.legal.cgu.sections[2].body).toContain("10 AI tries per tool per month");
+  });
+
+  it("harmonise la mesure d'audience avec le consentement et les 13 mois", () => {
+    const frAnalytics = fr.legal.confidentialite.sections[1].body.split("• Mesure d'audience")[1];
+    const enAnalytics = en.legal.confidentialite.sections[1].body.split("• Audience measurement")[1];
+    expect(frAnalytics).toContain("Base légale : consentement");
+    expect(frAnalytics).toContain("13 mois maximum");
+    expect(frAnalytics).not.toContain("intérêt légitime");
+    expect(enAnalytics).toContain("Legal basis: consent");
+    expect(enAnalytics).toContain("up to 13 months");
+    expect(enAnalytics).not.toContain("legitimate interest");
+  });
+});
