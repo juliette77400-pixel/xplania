@@ -18,6 +18,7 @@ import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
 import QuickJump from "@/components/shared/QuickJump";
 import DialogSkeleton from "@/components/shared/DialogSkeleton";
+import JourneyIntro from "@/components/tinder/JourneyIntro";
 
 
 // Dialogs are only mounted when the user opens them — keep them out of the entry bundle.
@@ -30,6 +31,7 @@ import { hasReachedFreeQuota } from "@/stores/usePlanStore";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 
 const Index = () => {
+  const [introSeen, setIntroSeen] = useState(false);
   const [travelFormOpen, setTravelFormOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
@@ -57,6 +59,10 @@ const Index = () => {
     const el = document.getElementById("feedback");
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (location.pathname === "/" && !introSeen) {
+    return <JourneyIntro onStart={() => setIntroSeen(true)} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
