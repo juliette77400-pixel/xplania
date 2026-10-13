@@ -57,3 +57,9 @@
 - [x] Connexion : email vide/invalide, mot de passe trop court et lien de récupération expiré vérifiés ; erreurs traduites et exceptions réseau gérées
 - [ ] Vérifier réception et confirmation d’inscription par email et récupération réelle du mot de passe (non exécutées sur le compte de Juliette)
 - [ ] Parcours personnalisés et relecture exhaustive ; essais hors connexion sur vrai téléphone après publication
+## Lot d'octobre (liste de 181 points)
+- [x] Slogan « Moins gérer. Plus explorer. » mis en avant
+- [x] Noms lisibles pour les boutons à icône seule
+- [x] Débordements sur mobile et liens internes vérifiés (pages publiques)
+- [ ] Relecture complète orthographe FR/EN (coûteuse, à valider)
+- [ ] Coût IA par outil (à mesurer sur l'historique)
