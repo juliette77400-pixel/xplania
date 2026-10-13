@@ -180,10 +180,10 @@ const ReplayMode = ({ nodes }: Props) => {
       )}
 
       <div className="flex items-center gap-3 px-2">
-        <Button size="icon" variant="outline" onClick={() => { setStep(0); setPlaying(false); }}>
+        <Button size="icon" variant="outline" onClick={() => { setStep(0); setPlaying(false); }} aria-label={t("a11y.restart")}>
           <RotateCcw className="w-4 h-4" />
         </Button>
-        <Button size="icon" onClick={() => { if (step >= total) setStep(0); setPlaying((p) => !p); }}>
+        <Button size="icon" onClick={() => { if (step >= total) setStep(0); setPlaying((p) => !p); }} aria-label={t(playing ? "a11y.pause" : "a11y.play")}>
           {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
         </Button>
         <Slider

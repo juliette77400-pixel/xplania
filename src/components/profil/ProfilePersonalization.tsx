@@ -23,6 +23,7 @@ const ANSWER_MAX = 200;
 interface PromptAnswer { key: string; answer: string }
 
 const TagInput = ({ values, onChange, placeholder, max }: { values: string[]; onChange: (v: string[]) => void; placeholder: string; max: number }) => {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState("");
   const add = () => {
     const v = draft.trim();
@@ -35,7 +36,7 @@ const TagInput = ({ values, onChange, placeholder, max }: { values: string[]; on
       <div className="flex gap-2">
         <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={placeholder} maxLength={40}
           onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }} disabled={values.length >= max} />
-        <Button type="button" variant="outline" size="icon" onClick={add} disabled={values.length >= max}><Plus className="w-4 h-4" /></Button>
+        <Button type="button" variant="outline" size="icon" onClick={add} disabled={values.length >= max} aria-label={t("a11y.add")}><Plus className="w-4 h-4" /></Button>
       </div>
       {values.length > 0 && (
         <div className="flex flex-wrap gap-1.5">

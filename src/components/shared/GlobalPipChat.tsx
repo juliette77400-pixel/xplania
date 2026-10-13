@@ -120,7 +120,7 @@ const GlobalPipChat = () => {
                 disabled={loading}
                 autoFocus
               />
-              <Button type="submit" size="icon" disabled={loading || !input.trim()}>
+              <Button type="submit" size="icon" disabled={loading || !input.trim()} aria-label={t("a11y.send")}>
                 <Send className="w-4 h-4" />
               </Button>
             </form>

@@ -84,7 +84,7 @@ const MoodAmbience = ({ mood }: Props) => {
           <Button size="sm" variant="default" onClick={toggle} className="flex-1">
             {playing ? <><Pause className="w-4 h-4 mr-1" /> {t("moodComp.ambience.pause")}</> : <><Play className="w-4 h-4 mr-1" /> {t("moodComp.ambience.play")}</>}
           </Button>
-          <Button size="icon" variant="ghost" onClick={() => setMuted((m) => !m)}>
+          <Button size="icon" variant="ghost" onClick={() => setMuted((m) => !m)} aria-label={t(muted ? "a11y.unmute" : "a11y.mute")}>
             {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </Button>
         </div>

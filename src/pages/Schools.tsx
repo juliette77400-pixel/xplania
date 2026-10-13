@@ -189,7 +189,7 @@ const Schools = () => {
                 <img src={pipMascot.url} alt="Ping" loading="lazy" className="mx-auto mb-4 h-28 w-28 object-contain" />
                 <h2 className="mb-3 text-3xl font-bold text-foreground">{t("schools.contactTitle")}</h2>
                 <p className="mb-8 text-muted-foreground">{t("schools.contactBody")}</p>
-                <a href={mailto} className="gradient-button inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold text-primary-foreground transition hover:opacity-90">
+                <a href={mailto} className="gradient-button inline-flex max-w-full items-center gap-2 break-all rounded-full px-6 py-3 font-semibold text-primary-foreground transition hover:opacity-90">
                   <Mail className="h-4 w-4" />{email}
                 </a>
               </div>

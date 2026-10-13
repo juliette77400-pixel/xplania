@@ -1842,8 +1842,7 @@
     "goToFeatures": "Choisir mes fonctionnalités",
     "goToFeaturesHint": "Ton voyage est prêt ! Passe à l'étape suivante.",
     "realWeather": "Météo réelle",
-    "cheap": "Petit budget",
-    "errorAuth": "Connecte-toi pour générer un voyage."
+    "cheap": "Petit budget"
   },
   "common2": {
     "home": "Accueil",
@@ -5863,7 +5862,19 @@
     "footerLink": "Xplania vs ChatGPT"
   },
   "a11y": {
-    "skipToContent": "Aller au contenu"
+    "skipToContent": "Aller au contenu",
+    "mute": "Couper le son",
+    "unmute": "Remettre le son",
+    "restart": "Recommencer",
+    "play": "Lecture",
+    "pause": "Pause",
+    "delete": "Supprimer",
+    "send": "Envoyer",
+    "copyLink": "Copier le lien",
+    "refresh": "Actualiser",
+    "add": "Ajouter",
+    "previous": "Précédent",
+    "next": "Suivant"
   },
   "reminders": {
     "checklistTitle": "Avant le départ",

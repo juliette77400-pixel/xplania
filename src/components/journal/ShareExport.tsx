@@ -211,7 +211,7 @@ const ShareExport = ({ journal, days, destination, onUpdated }: Props) => {
           <>
             <div className="flex gap-2">
               <input value={publicUrl} readOnly className="flex-1 px-3 py-2 rounded-lg bg-muted/30 text-xs text-foreground border border-border" />
-              <Button variant="outline" size="icon" onClick={copyLink} title={t("j2.linkCopy")}>
+              <Button variant="outline" size="icon" onClick={copyLink} title={t("j2.linkCopy")} aria-label={t("j2.linkCopy")}>
                 {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
               </Button>
             </div>

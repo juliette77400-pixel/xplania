@@ -168,12 +168,12 @@ export default function TripDocumentsManager({ tripId, dayId, days, compact }: P
                   </SelectContent>
                 </Select>
               )}
-              <Button size="icon" variant="ghost" onClick={() => openDoc(doc)} title={t("tripDocs.open")}>
+              <Button size="icon" variant="ghost" onClick={() => openDoc(doc)} title={t("tripDocs.open")} aria-label={t("tripDocs.open")}>
                 <ExternalLink className="w-4 h-4" />
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive">
+                  <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" aria-label={t("a11y.delete")}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </AlertDialogTrigger>

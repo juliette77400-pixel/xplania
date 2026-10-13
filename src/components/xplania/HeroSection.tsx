@@ -12,7 +12,8 @@ const copy = {
     eyebrow: "Erasmus, stage, échange, voyage pro, découverte : ton copilote de mobilité",
     title: "Pars serein.",
     accent: "Reviens transformé.",
-    subtitle: "Visa, budget serré, logement, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité. Moins gérer. Plus explorer.",
+    subtitle: "Visa, budget serré, logement, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité.",
+    slogan: "Moins gérer. Plus explorer.",
     primary: "Préparer ma mobilité",
     proof: ["Pensé pour les étudiants, voyageurs et pros", "10 essais gratuits / mois", "FR · EN"],
     pains: ["Visa & formalités", "Budget étudiant", "Vie sur place", "Badges & défis"],
@@ -27,7 +28,8 @@ const copy = {
     eyebrow: "Erasmus, internship, exchange, business trip, discovery: your mobility copilot",
     title: "Leave with confidence.",
     accent: "Come back transformed.",
-    subtitle: "Visa, tight budget, housing, arriving alone… Xplania stays with you before, during and after your time abroad. Less managing. More exploring.",
+    subtitle: "Visa, tight budget, housing, arriving alone… Xplania stays with you before, during and after your time abroad.",
+    slogan: "Less managing. More exploring.",
     primary: "Prepare my mobility",
     proof: ["Built for students, travelers and professionals", "10 free tries / month", "FR · EN"],
     pains: ["Visa & paperwork", "Student budget", "Life abroad", "Badges & challenges"],
@@ -56,6 +58,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
             {c.title}<br /><span className="gradient-text">{c.accent}</span>
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">{c.subtitle}</p>
+          <p className="mt-3 text-xl font-bold text-primary sm:text-2xl">{c.slogan}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <button onClick={onCreateTrip} className="gradient-button group inline-flex items-center justify-center gap-2 rounded-xl px-7 py-4 font-bold text-primary-foreground shadow-[0_16px_50px_hsl(var(--primary)/.16)] transition hover:-translate-y-0.5">
               {c.primary}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
