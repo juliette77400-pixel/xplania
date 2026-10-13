@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { browserLang } from "@/lib/browser-locale";
 
 const FEATURES = ["itinerary", "budget", "visa", "valise", "discover", "suivi", "carnet", "badges"];
 const CONTEXTS = ["erasmus", "stage", "vacances", "autre"];
