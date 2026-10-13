@@ -26,8 +26,8 @@ const PlaceCarousel = ({ title, emoji, places, onSelect, isSaved, onToggleSave }
           <span className="text-xs font-normal text-muted-foreground">({places.length})</span>
         </h2>
         <div className="hidden gap-1 md:flex">
-          <Button size="icon" variant="ghost" onClick={() => scroll(-1)}><ChevronLeft className="h-4 w-4" /></Button>
-          <Button size="icon" variant="ghost" onClick={() => scroll(1)}><ChevronRight className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" onClick={() => scroll(-1)} aria-label={t("a11y.previous")}><ChevronLeft className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" onClick={() => scroll(1)} aria-label={t("a11y.next")}><ChevronRight className="h-4 w-4" /></Button>
         </div>
       </div>
       <div ref={ref} className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scroll-smooth snap-x">

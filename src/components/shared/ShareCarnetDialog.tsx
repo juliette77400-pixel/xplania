@@ -125,7 +125,7 @@ const ShareCarnetDialog = ({
                   className="flex-1 px-3 py-2 rounded-lg bg-muted/30 text-xs border border-border"
                   onFocus={(e) => e.currentTarget.select()}
                 />
-                <Button variant="outline" size="icon" onClick={copy}>
+                <Button variant="outline" size="icon" onClick={copy} aria-label={t("a11y.copyLink")}>
                   {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
                 </Button>
               </div>

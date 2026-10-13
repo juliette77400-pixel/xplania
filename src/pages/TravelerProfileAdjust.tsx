@@ -158,7 +158,7 @@ export default function TravelerProfileAdjust() {
               <CardTitle className="text-lg flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-primary" /> {t("ui2.TravelerProfileAdjust.previewTitle")}
               </CardTitle>
-              <Button variant="ghost" size="icon" onClick={() => refetchPreview()} disabled={previewFetching}>
+              <Button variant="ghost" size="icon" onClick={() => refetchPreview()} disabled={previewFetching} aria-label={t("a11y.refresh")}>
                 {previewFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
               </Button>
             </CardHeader>

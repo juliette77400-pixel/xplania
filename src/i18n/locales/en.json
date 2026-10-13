@@ -1842,8 +1842,7 @@
     "goToFeatures": "Choose my features",
     "goToFeaturesHint": "Your trip is ready! On to the next step.",
     "realWeather": "Real weather",
-    "cheap": "Budget-friendly",
-    "errorAuth": "Sign in to generate a trip."
+    "cheap": "Budget-friendly"
   },
   "common2": {
     "home": "Home",
@@ -5863,7 +5862,19 @@
     "footerLink": "Xplania vs ChatGPT"
   },
   "a11y": {
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "restart": "Restart",
+    "play": "Play",
+    "pause": "Pause",
+    "delete": "Delete",
+    "send": "Send",
+    "copyLink": "Copy link",
+    "refresh": "Refresh",
+    "add": "Add",
+    "previous": "Previous",
+    "next": "Next"
   },
   "reminders": {
     "checklistTitle": "Before you leave",
