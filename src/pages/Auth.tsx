@@ -44,7 +44,7 @@ const Auth = () => {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}${next}`,
-        data: { display_name: displayName },
+        data: { display_name: displayName, locale: browserLang() },
       },
     });
     setLoading(false);

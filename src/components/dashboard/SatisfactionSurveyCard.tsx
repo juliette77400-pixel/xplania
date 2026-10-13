@@ -55,12 +55,17 @@ const SatisfactionSurveyCard = () => {
     });
     setSending(false);
     if (error) return toast.error(t("survey.error"));
+    const lang = browserLang();
     emailjs.send("service_23bwf9g", "template_2o6dhup", {
-      rating: `Recommandation ${nps}/10 · Facilité ${ease}/5`,
-      suggestions: `[Questionnaire de satisfaction] Outil préféré : ${feature ?? "-"} · Contexte : ${context ?? "-"}\n\nCommentaire : ${comment.trim() || "-"}`,
+      rating: lang === "fr"
+        ? `Recommandation ${nps}/10 · Facilité ${ease}/5`
+        : `Recommendation ${nps}/10 · Ease ${ease}/5`,
+      suggestions: lang === "fr"
+        ? `[Questionnaire de satisfaction] Outil préféré : ${feature ?? "-"} · Contexte : ${context ?? "-"}\n\nCommentaire : ${comment.trim() || "-"}`
+        : `[Satisfaction survey] Favorite tool: ${feature ?? "-"} · Context: ${context ?? "-"}\n\nComment: ${comment.trim() || "-"}`,
       problems: "",
       user_email: user.email ?? "",
-      date: new Date().toLocaleString("fr-FR"),
+      date: new Date().toLocaleString(lang === "fr" ? "fr-FR" : "en-GB"),
       to_email: "juliettenoel.xplania@gmail.com",
     }, "g30bYpbP1x83gUEsQ").catch((e) => console.error("EmailJS survey error:", e));
     toast.success(t("survey.thanks"));
