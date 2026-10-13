@@ -31,11 +31,7 @@ const copy = (lang: Lang, siteName: string, recipient: string) =>
         h1: 'Confirme ton adresse email',
         intro: (
           <>
-            Merci de t&apos;être inscrit·e à{' '}
-            <Link href={siteName ? undefined : undefined} style={{ color: 'inherit' }}>
-              <strong>{siteName}</strong>
-            </Link>{' '}
-            !
+            Merci de t&apos;être inscrit·e à <strong>{siteName}</strong> !
           </>
         ),
         body: (
@@ -89,11 +85,6 @@ export const SignupEmail = ({
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>{t.h1}</Heading>
-          <Text style={text}>
-            <Link href={siteUrl} style={link}>
-              <strong>{siteName}</strong>
-            </Link>
-          </Text>
           <Text style={text}>{t.intro}</Text>
           <Text style={text}>{t.body}</Text>
           <Button className="dm-btn" style={button} href={confirmationUrl}>
