@@ -56,17 +56,35 @@ interface DbCard {
   order_index: number;
 }
 
-/** Keep the quiz short: 10 questions, spread across categories (round-robin). */
+/** Keep the quiz short: 10 random questions, spread across categories. */
 const QUIZ_LENGTH = 10;
+const DECK_KEY = "xplania:quiz-deck";
+const CARDS_CACHE_KEY = "xplania:quiz-cards";
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 function pickDeck(all: DbCard[] | null): DbCard[] | null {
   if (!all || all.length <= QUIZ_LENGTH) return all;
+  const byId = new Map(all.map((c) => [c.id, c]));
+  // Reuse the deck in progress so an interrupted quiz resumes on the same questions.
+  try {
+    const saved = JSON.parse(localStorage.getItem(DECK_KEY) || "null") as string[] | null;
+    if (Array.isArray(saved) && saved.length === QUIZ_LENGTH && saved.every((id) => byId.has(id))) {
+      return saved.map((id) => byId.get(id)!);
+    }
+  } catch { /* ignore */ }
   const groups = new Map<string, DbCard[]>();
-  for (const c of all) {
+  for (const c of shuffle(all)) {
     const k = categoryForCard(c.score_tags);
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k)!.push(c);
   }
-  const lists = [...groups.values()];
+  const lists = shuffle([...groups.values()]);
   const out: DbCard[] = [];
   for (let i = 0; out.length < QUIZ_LENGTH; i++) {
     let added = false;
@@ -75,7 +93,12 @@ function pickDeck(all: DbCard[] | null): DbCard[] | null {
     }
     if (!added) break;
   }
-  return out.sort((a, b) => a.order_index - b.order_index);
+  const deck = shuffle(out);
+  try { localStorage.setItem(DECK_KEY, JSON.stringify(deck.map((c) => c.id))); } catch { /* ignore */ }
+  return deck;
+}
+function clearSavedDeck() {
+  try { localStorage.removeItem(DECK_KEY); } catch { /* ignore */ }
 }
 
 const TravelerProfileOnboarding = () => {
@@ -132,13 +155,24 @@ const TravelerProfileOnboarding = () => {
             ? supabase.from("user_swipes").select("card_id, direction").eq("user_id", user.id)
             : Promise.resolve({ data: null, error: null } as typeof swipeRes),
         ]);
-        allCards = pickDeck((cardsRes.data ?? null) as DbCard[] | null);
         e1 = cardsRes.error;
+        if (!e1 && cardsRes.data) {
+          try { localStorage.setItem(CARDS_CACHE_KEY, JSON.stringify(cardsRes.data)); } catch { /* ignore */ }
+        }
+        allCards = pickDeck((cardsRes.data ?? null) as DbCard[] | null);
         swipeRes = sw as typeof swipeRes;
       } catch (err) {
         e1 = err;
       }
       if (cancelled) return;
+
+      // Offline: fall back to the last saved questions.
+      if (e1 || !allCards) {
+        try {
+          const cached = JSON.parse(localStorage.getItem(CARDS_CACHE_KEY) || "null") as DbCard[] | null;
+          if (Array.isArray(cached) && cached.length) { allCards = pickDeck(cached); e1 = null; }
+        } catch { /* ignore */ }
+      }
 
       if (e1) {
         const msg = (e1 as { message?: string })?.message || t("travelerProfile.loadError");
@@ -208,6 +242,11 @@ const TravelerProfileOnboarding = () => {
       }
       // Always purge local state.
       setLocalOnboarding({ swipes: [], result: null, step: "tinder" });
+      clearSavedDeck();
+      try {
+        const cached = JSON.parse(localStorage.getItem(CARDS_CACHE_KEY) || "null") as DbCard[] | null;
+        if (Array.isArray(cached) && cached.length) setCards(pickDeck(cached) ?? []);
+      } catch { /* ignore */ }
       setSwipedIds(new Set());
       setScores(emptyScores());
       setIndex(0);
@@ -314,6 +353,7 @@ const TravelerProfileOnboarding = () => {
   const finalize = useCallback(
     async (finalScores: TravelerScores) => {
       setFinalizing(true);
+      clearSavedDeck();
       const badge = calculateBadge(finalScores);
       const reward = BADGE_REWARDS[badge.key];
       const result: StoredResult = {
