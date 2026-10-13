@@ -895,7 +895,7 @@
         },
         {
           "heading": "Hosting",
-          "body": "The site is hosted by Lovable (lovable.dev). For any hosting-related request, users may contact Lovable directly."
+          "body": "The site is hosted by Lovable Labs Incorporated (lovable.dev).\nPostal address: Lovable Labs AB, Box 190, 101 23 Stockholm, Sweden.\nContact: dpo@lovable.dev — https://lovable.dev"
         },
         {
           "heading": "Intellectual Property",
@@ -907,7 +907,7 @@
         },
         {
           "heading": "Cookies",
-          "body": "Xplania uses only technical cookies necessary for the site to operate and anonymous analytics cookies. No advertising or third-party tracking cookies are set without explicit consent."
+          "body": "Xplania uses technical cookies required for the site to work, and internal analytics enabled only with your consent (cookie banner, changeable via “Manage cookies”). No advertising cookies. See the Privacy Policy."
         },
         {
           "heading": "Applicable Law",
@@ -924,7 +924,7 @@
         },
         {
           "heading": "Data collected, purposes, legal bases and retention",
-          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 12 months of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Ping (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
+          "body": "We keep collection to the strict minimum. Here is exactly what we process:\n\n• Email address and password (account / premium waitlist) — purpose: account creation, authentication, product communication. Legal basis: performance of the contract (GDPR art. 6.1.b) for accounts, consent (art. 6.1.a) for the waitlist. Retention: lifetime of the account + 3 years of inactivity, then deletion. For the waitlist: until launch + 6 months or unsubscription.\n\n• Trip content (destinations, dates, activities, logbook, uploaded photos, live-tracking GPS position) — purpose: power the Planner, Logbook, Live Tracking and Discover modules. Legal basis: performance of the contract. Retention: as long as the account exists; deletion on request or upon account closure.\n\n• Approximate or precise geolocation (only when you enable it) — purpose: nearby suggestions, live GPS tracking. Legal basis: explicit browser consent. Position is stored only if you enable live tracking.\n\n• Messages sent to the AI assistants Ping (visa) and Ping (budget) — purpose: generate a personalized answer. Legal basis: performance of the contract. Retention: up to 30 days for quality purposes, then deletion.\n\n• Feedback sent via the form (rating, suggestions, problems, email) — purpose: product improvement. Legal basis: consent (you submit it voluntarily). Retention: 24 months.\n\n• Anonymous usage analytics (pages, features used) — no personal identifier attached. Legal basis: legitimate interest in improving the service. Retention: 24 months."
         },
         {
           "heading": "Sub-processors and third-party services",
@@ -937,10 +937,6 @@
         {
           "heading": "Your GDPR rights and how to exercise them",
           "body": "Under the EU General Data Protection Regulation, you have the following rights over your personal data:\n\n• Right of access — get a copy of what we hold about you.\n• Right to rectification — correct inaccurate data.\n• Right to erasure (\"right to be forgotten\") — request deletion of your account and your data.\n• Right to portability — receive your data in a readable format.\n• Right to object — object to certain processing (e.g. usage analytics).\n• Right to restriction — ask to freeze a processing while a check is performed.\n• Right to withdraw your consent at any time, without affecting the lawfulness of processing carried out before withdrawal.\n\nTo exercise any of these rights, email: juliettenoel.xplania@gmail.com and describe your request. You will receive an answer within 30 days at most.\n\nIf you feel your rights are not being respected, you can lodge a complaint at any time with the French data protection authority CNIL (equivalent to the ICO or your national DPA): https://www.cnil.fr"
-        },
-        {
-          "heading": "Cookies",
-          "body": "Xplania only uses technical cookies required for the site to work (session, authentication, language preference) and anonymous analytics cookies. No advertising cookies or third-party marketing trackers are dropped without explicit consent."
         },
         {
           "heading": "Security",
