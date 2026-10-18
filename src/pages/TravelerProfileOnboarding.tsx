@@ -238,7 +238,7 @@ const TravelerProfileOnboarding = () => {
         const clear: Record<string, number | string | null> = { onboarding_step: "tinder", completed_at: null };
         for (const d of TRAVELER_DIMENSIONS) clear[`${d}_score`] = 0;
         await supabase.from("traveler_profiles").upsert({ user_id: user.id, ...clear } as never, { onConflict: "user_id" });
-        queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
+        await queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
       }
       // Always purge local state.
       setLocalOnboarding({ swipes: [], result: null, step: "tinder" });
@@ -327,7 +327,8 @@ const TravelerProfileOnboarding = () => {
     !!savedProfile?.completed_at || savedProfile?.onboarding_step === "done";
   useEffect(() => {
     if (!introSeen || !user || loading || finalizing || resetting) return;
-    if (total > 0 && done >= total && quizAlreadyCompleted) {
+    // Completed travelers go to the app even if a new random deck was drawn.
+    if (quizAlreadyCompleted) {
       navigate("/app", { replace: true });
     }
   }, [introSeen, user, loading, finalizing, resetting, total, done, quizAlreadyCompleted, navigate]);
