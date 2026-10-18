@@ -327,7 +327,8 @@ const TravelerProfileOnboarding = () => {
     !!savedProfile?.completed_at || savedProfile?.onboarding_step === "done";
   useEffect(() => {
     if (!introSeen || !user || loading || finalizing || resetting) return;
-    if (total > 0 && done >= total && quizAlreadyCompleted) {
+    // Completed travelers go to the app even if a new random deck was drawn.
+    if (quizAlreadyCompleted) {
       navigate("/app", { replace: true });
     }
   }, [introSeen, user, loading, finalizing, resetting, total, done, quizAlreadyCompleted, navigate]);
