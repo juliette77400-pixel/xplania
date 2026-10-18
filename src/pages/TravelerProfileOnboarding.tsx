@@ -238,7 +238,7 @@ const TravelerProfileOnboarding = () => {
         const clear: Record<string, number | string | null> = { onboarding_step: "tinder", completed_at: null };
         for (const d of TRAVELER_DIMENSIONS) clear[`${d}_score`] = 0;
         await supabase.from("traveler_profiles").upsert({ user_id: user.id, ...clear } as never, { onConflict: "user_id" });
-        queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
+        await queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
       }
       // Always purge local state.
       setLocalOnboarding({ swipes: [], result: null, step: "tinder" });
