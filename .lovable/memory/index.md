@@ -1,0 +1,1 @@
+- [Marketing research & plan](mem://marketing/research-plan) — Recherche et plan marketing dans Project Files (marketing/research.md, marketing/plan.md), sauvegardés le 18 oct. 2026
