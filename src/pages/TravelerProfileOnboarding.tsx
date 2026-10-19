@@ -233,11 +233,13 @@ const TravelerProfileOnboarding = () => {
     setResetting(true);
     try {
       if (user) {
-        await supabase.from("user_swipes").delete().eq("user_id", user.id);
+        const { error: swipeError } = await supabase.from("user_swipes").delete().eq("user_id", user.id);
+        if (swipeError) throw swipeError;
         // Reset scores on the profile (keeps the row so RLS + onboarding_step stay coherent).
         const clear: Record<string, number | string | null> = { onboarding_step: "tinder", completed_at: null };
         for (const d of TRAVELER_DIMENSIONS) clear[`${d}_score`] = 0;
-        await supabase.from("traveler_profiles").upsert({ user_id: user.id, ...clear } as never, { onConflict: "user_id" });
+        const { error: profileError } = await supabase.from("traveler_profiles").upsert({ user_id: user.id, ...clear } as never, { onConflict: "user_id" });
+        if (profileError) throw profileError;
         await queryClient.invalidateQueries({ queryKey: travelerProfileKey(user.id) });
       }
       // Always purge local state.
@@ -250,6 +252,7 @@ const TravelerProfileOnboarding = () => {
       setSwipedIds(new Set());
       setScores(emptyScores());
       setIndex(0);
+      setIntroSeen(true);
       trackOnboardingEvent("tinder_reset", { authed: !!user });
       toast.success(t("travelerProfile.resetDone", "Profil réinitialisé."));
       setRetryTick((n) => n + 1);
@@ -322,7 +325,7 @@ const TravelerProfileOnboarding = () => {
 
   // A signed-in traveler who already finished the quiz must never get stuck on
   // the "C'est fini !" screen (e.g. after an error "Retry" or landing on "/").
-  const { data: savedProfile } = useTravelerProfile();
+  const { data: savedProfile, isLoading: profileLoading } = useTravelerProfile();
   const quizAlreadyCompleted =
     !!savedProfile?.completed_at || savedProfile?.onboarding_step === "done";
   useEffect(() => {
@@ -403,7 +406,7 @@ const TravelerProfileOnboarding = () => {
 
   const handleSwipe = useCallback(
     async (direction: Direction) => {
-      if (!current) return;
+      if (!current || resetting || profileLoading || quizAlreadyCompleted) return;
       // Lock: ignore any subsequent swipe until the previous card animation ends.
       if (animatingRef.current || finalizing) return;
       animatingRef.current = true;
@@ -457,7 +460,7 @@ const TravelerProfileOnboarding = () => {
         void finalize(nextScores);
       }
     },
-    [current, user, scores, swipedIds, cards.length, finalize, finalizing],
+    [current, user, scores, swipedIds, cards.length, finalize, finalizing, resetting, profileLoading, quizAlreadyCompleted],
   );
 
   useEffect(() => {
@@ -476,6 +479,8 @@ const TravelerProfileOnboarding = () => {
   if (!introSeen) {
     return (
       <JourneyIntro
+        onRestart={quizAlreadyCompleted ? handleReset : undefined}
+        restarting={resetting}
         onStart={() => {
           setIntroSeen(true);
         }}
@@ -483,7 +488,7 @@ const TravelerProfileOnboarding = () => {
     );
   }
 
-  if (loading) {
+  if (loading || profileLoading || resetting) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <h1 className="sr-only">{t("travelerProfile.pageH1")}</h1>

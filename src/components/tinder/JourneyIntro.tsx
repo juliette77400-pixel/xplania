@@ -9,7 +9,11 @@ const STEPS = [
   { key: "s4", Icon: Rocket },
 ];
 
-export default function JourneyIntro({ onStart }: { onStart: () => void }) {
+export default function JourneyIntro({ onStart, onRestart, restarting = false }: {
+  onStart: () => void;
+  onRestart?: () => void;
+  restarting?: boolean;
+}) {
   const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
@@ -39,9 +43,14 @@ export default function JourneyIntro({ onStart }: { onStart: () => void }) {
           ))}
         </ol>
 
-        <Button onClick={onStart} className="w-full gradient-button" size="lg">
+        <Button onClick={onStart} disabled={restarting} className="w-full gradient-button" size="lg">
           {t("journeyIntro.cta")} <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
+        {onRestart && (
+          <Button onClick={onRestart} disabled={restarting} variant="outline" className="mt-3 w-full" size="lg">
+            {t(restarting ? "travelerProfile.resetting" : "travelerProfile.resetCta")}
+          </Button>
+        )}
         <p className="mt-3 text-center text-xs text-muted-foreground">{t("journeyIntro.note")}</p>
       </div>
     </div>
