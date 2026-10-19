@@ -8,14 +8,16 @@ const state = vi.hoisted(() => ({
   deleteSwipes: vi.fn(),
   upsertProfile: vi.fn(),
   invalidate: vi.fn(),
+  user: { id: "traveler" },
+  t: (key: string) => key,
 }));
-vi.mock("@/hooks/useAuth", () => ({ useAuth: () => ({ user: { id: "traveler" } }) }));
+vi.mock("@/hooks/useAuth", () => ({ useAuth: () => ({ user: state.user }) }));
 vi.mock("@/hooks/useTravelerProfile", () => ({
   useTravelerProfile: () => ({ data: state.profile, isLoading: false }),
   travelerProfileKey: (id: string) => ["traveler_profile", id],
 }));
 vi.mock("@tanstack/react-query", () => ({ useQueryClient: () => ({ invalidateQueries: state.invalidate }) }));
-vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: (key: string) => key, i18n: { language: "fr" } }) }));
+vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: state.t, i18n: { language: "fr" } }) }));
 vi.mock("@/lib/analytics", () => ({ track: vi.fn() }));
 vi.mock("sonner", () => ({ toast: Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }) }));
 vi.mock("@/components/tinder/TinderCard", () => ({ default: () => <div>question</div> }));
