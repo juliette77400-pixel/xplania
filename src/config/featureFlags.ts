@@ -22,8 +22,8 @@ export const FEATURE_FLAGS = {
   ENABLE_LIVE_TRACKING: false,
   /** Traveler DNA swipe quiz (preference profiling, not needed by the 4 tools). */
   ENABLE_TRAVELER_DNA: false,
-  /** Paid plans comparison on /offres. Off: free "Bêta ESTICE" access only. */
-  ENABLE_PAID_PLANS: false,
+  /** Packs on /offres (only packs whose tools are on are listed). Off: free "Bêta ESTICE" card only. */
+  ENABLE_PAID_PLANS: true,
 } as const;
 
 export type FeatureFlag = keyof typeof FEATURE_FLAGS;
