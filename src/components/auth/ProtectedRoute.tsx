@@ -13,7 +13,8 @@ interface Props {
 const ProtectedRoute = ({ children, skipOnboarding = true }: Props) => {
   const { user, loading } = useAuth();
   const location = useLocation();
-  const { data: profile, isLoading: profileLoading } = useTravelerProfile();
+  // The traveler-profile gate is only needed when onboarding is enforced.
+  const { data: profile, isLoading: profileLoading } = useTravelerProfile({ enabled: !skipOnboarding });
 
   if (loading) {
     return (

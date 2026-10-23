@@ -4,17 +4,32 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Sparkles, Compass, BookOpen, MapPinned, ArrowRight, ArrowLeft } from "lucide-react";
+import { Sparkles, Compass, BookOpen, MapPinned, ArrowRight, ArrowLeft, Wallet, FileCheck, Luggage, Globe2 } from "lucide-react";
+import { isPathEnabled } from "@/config/featureFlags";
 import { useAuth } from "@/hooks/useAuth";
 
-const ICONS = [Sparkles, Compass, MapPinned, BookOpen];
+const FULL_ICONS = [Sparkles, Compass, MapPinned, BookOpen];
 
-const STEP_KEYS = [
+const FULL_STEPS = [
   { titleKey: "onboardingTour.step1Title", descKey: "onboardingTour.step1Desc", cta: { to: "/app", labelKey: "onboardingTour.cta1" } },
   { titleKey: "onboardingTour.step2Title", descKey: "onboardingTour.step2Desc", cta: { to: "/discover", labelKey: "onboardingTour.cta2" } },
   { titleKey: "onboardingTour.step3Title", descKey: "onboardingTour.step3Desc", cta: { to: "/suivi", labelKey: "onboardingTour.cta3" } },
   { titleKey: "onboardingTour.step4Title", descKey: "onboardingTour.step4Desc", cta: { to: "/carnets", labelKey: "onboardingTour.cta4" } },
 ];
+
+// Beta tour: only the four preparation tools.
+const PREP_ICONS = [Sparkles, Wallet, FileCheck, Luggage, Globe2];
+const PREP_STEPS = [
+  { titleKey: "onboardingTour.prep.s1Title", descKey: "onboardingTour.prep.s1Desc", cta: { to: "/app", labelKey: "onboardingTour.prep.s1Cta" } },
+  { titleKey: "onboardingTour.prep.s2Title", descKey: "onboardingTour.prep.s2Desc", cta: { to: "/guide-budget", labelKey: "onboardingTour.prep.s2Cta" } },
+  { titleKey: "onboardingTour.prep.s3Title", descKey: "onboardingTour.prep.s3Desc", cta: { to: "/guide-visa", labelKey: "onboardingTour.prep.s3Cta" } },
+  { titleKey: "onboardingTour.prep.s4Title", descKey: "onboardingTour.prep.s4Desc", cta: { to: "/guide-valise", labelKey: "onboardingTour.prep.s4Cta" } },
+  { titleKey: "onboardingTour.prep.s5Title", descKey: "onboardingTour.prep.s5Desc", cta: { to: "/guide-culture", labelKey: "onboardingTour.prep.s5Cta" } },
+];
+
+const showFullTour = FULL_STEPS.every((s) => isPathEnabled(s.cta.to));
+const ICONS = showFullTour ? FULL_ICONS : PREP_ICONS;
+const STEP_KEYS = showFullTour ? FULL_STEPS : PREP_STEPS;
 
 const storageKey = (uid: string) => `xplania-tour-seen-${uid}`;
 

@@ -5,11 +5,11 @@ import { useAuth } from "@/hooks/useAuth";
 export const travelerProfileKey = (userId: string | undefined) =>
   ["traveler_profile", userId] as const;
 
-export function useTravelerProfile() {
+export function useTravelerProfile(options: { enabled?: boolean } = {}) {
   const { user } = useAuth();
   return useQuery({
     queryKey: travelerProfileKey(user?.id),
-    enabled: !!user?.id,
+    enabled: !!user?.id && (options.enabled ?? true),
     staleTime: 60 * 1000,
     queryFn: async () => {
       const { data, error } = await supabase

@@ -9,7 +9,6 @@ import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
 import DualAudienceSection from "@/components/xplania/DualAudienceSection";
 import JourneyTimelineSection from "@/components/xplania/JourneyTimelineSection";
-import DifferentiationSection from "@/components/xplania/DifferentiationSection";
 import FeaturesSection from "@/components/xplania/FeaturesSection";
 import BetaSection from "@/components/xplania/BetaSection";
 import Testimonials from "@/components/xplania/Testimonials";
@@ -29,6 +28,7 @@ const QuotaReachedDialog = lazy(() => import("@/components/xplania/QuotaReachedD
 import { useTravelContext } from "@/contexts/TravelContext";
 import { hasReachedFreeQuota } from "@/stores/usePlanStore";
 import { useActiveTrip } from "@/stores/useActiveTrip";
+import { FEATURE_FLAGS, PREPARATION_HOME } from "@/config/featureFlags";
 
 const Index = () => {
   const [introSeen, setIntroSeen] = useState(false);
@@ -45,6 +45,11 @@ const Index = () => {
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
 
   const handleCreateTrip = () => {
+    // Beta: no AI itinerary — trips are created on the preparation dashboard.
+    if (!FEATURE_FLAGS.ENABLE_AI_ITINERARY) {
+      navigate(PREPARATION_HOME, { state: { createTrip: true } });
+      return;
+    }
     if (hasReachedFreeQuota()) {
       setQuotaOpen(true);
       return;
@@ -66,7 +71,8 @@ const Index = () => {
       <JourneyIntro
         onStart={() => {
           setIntroSeen(true);
-          navigate("/parcours", { state: { skipIntro: true } });
+          if (FEATURE_FLAGS.ENABLE_TRAVELER_DNA) navigate("/parcours", { state: { skipIntro: true } });
+          else navigate(user ? PREPARATION_HOME : "/auth?mode=signup");
         }}
       />
     );
@@ -83,7 +89,6 @@ const Index = () => {
       <main id="main-content" tabIndex={-1}>
         <HeroSection onCreateTrip={handleCreateTrip} />
         <DualAudienceSection />
-        <DifferentiationSection />
         <JourneyTimelineSection />
         <FeaturesSection />
         <Testimonials />

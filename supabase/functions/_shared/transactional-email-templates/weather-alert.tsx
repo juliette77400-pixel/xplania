@@ -18,7 +18,7 @@ const WeatherAlertEmail = ({ destination = '', dayLabel = '', summary = '', sugg
           <Text style={text}>{dayLabel}{dayLabel && summary ? ' : ' : ''}{summary}</Text>
           {suggestions.length > 0 && (
             <>
-              <Text style={sub}>{en ? 'Activity ideas adapted to the weather:' : 'Idées d\'activités adaptées à la météo :'}</Text>
+              <Text style={sub}>{en ? 'What to plan in your suitcase:' : 'Ce qu\'il faut prévoir avant le départ :'}</Text>
               <Section style={box}>
                 {suggestions.map((s, i) => (
                   <Text key={i} style={item}><strong>{s.title}</strong>{s.why ? ` — ${s.why}` : ''}</Text>
@@ -26,8 +26,8 @@ const WeatherAlertEmail = ({ destination = '', dayLabel = '', summary = '', sugg
               </Section>
             </>
           )}
-          <Text style={text}>{en ? 'Think about adapting your suitcase too.' : 'Pense aussi à adapter ta valise.'}</Text>
-          <Button href={tripUrl} style={button}>{en ? 'Open my trip' : 'Ouvrir mon voyage'}</Button>
+          <Text style={text}>{en ? 'Your packing list on Xplania can be adjusted in one click.' : 'Ta liste de valise sur Xplania s\'ajuste en un clic.'}</Text>
+          <Button href={tripUrl} style={button}>{en ? 'Adjust my suitcase' : 'Ajuster ma valise'}</Button>
         </Container>
       </Body>
     </Html>
@@ -38,7 +38,7 @@ export const template = {
   component: WeatherAlertEmail,
   subject: (d: Record<string, any>) => d.lang === 'en' ? `⛈️ Weather alert: ${d.destination || 'your trip'}` : `⛈️ Alerte météo : ${d.destination || 'ton voyage'}`,
   displayName: 'Alerte météo avant le départ',
-  previewData: { destination: 'Tokyo', dayLabel: 'Samedi 3 octobre', summary: 'orages et 25 mm de pluie prévus', suggestions: [{ title: 'teamLab Planets', why: 'expérience immersive en intérieur' }, { title: 'Musée national de Tokyo', why: 'à Ueno, parfait sous la pluie' }], lang: 'fr' },
+  previewData: { destination: 'Tokyo', dayLabel: 'Samedi 3 octobre', summary: 'orages et 25 mm de pluie prévus', suggestions: [{ title: 'Parapluie compact', why: 'averses fréquentes annoncées' }, { title: 'Chaussures imperméables', why: '25 mm de pluie prévus' }], lang: 'fr' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: "'Plus Jakarta Sans', Arial, sans-serif" }

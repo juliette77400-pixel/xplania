@@ -5,7 +5,8 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const { t } = useTranslation();
 
-  const items = ["t1", "t2", "t3", "t4", "t5", "t6"].map((k) => ({
+  // Beta: only quotes about preparation (the others mention hidden features).
+  const items = ["t6", "t3", "t5", "t1"].map((k) => ({
     name: t(`testimonials.${k}.name`),
     role: t(`testimonials.${k}.role`),
     text: t(`testimonials.${k}.text`),
@@ -31,7 +32,7 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {items.map((item, i) => (
             <motion.div
               key={item.name}

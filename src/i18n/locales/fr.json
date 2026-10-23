@@ -38,8 +38,8 @@
     "dismiss": "Masquer"
   },
   "quickJump": {
-    "title": "Continuer ton voyage",
-    "directAccess": "— accès direct sans retour à l'accueil",
+    "title": "Continuer ta préparation",
+    "directAccess": "— accès direct à chaque outil",
     "activeTrip": "Voyage actif :",
     "openMyTrip": "→ ouvrir mon voyage",
     "descDiscover": "Lieux locaux IA",
@@ -48,7 +48,7 @@
     "descTracking": "Suivi GPS live",
     "descJournal": "Carnet de bord",
     "descValise": "Checklist intelligente",
-    "descBudget": "Dépenses & alertes",
+    "descBudget": "Estimer et prévoir",
     "descVisa": "Formalités pays",
     "labelTracking": "Suivi live",
     "labelJournal": "Carnet",
@@ -88,7 +88,7 @@
     "en": "English"
   },
   "homePromises": {
-    "subtitle": "Visa, budget serré, arrivée seul… Xplania t'accompagne avant, pendant et après ta mobilité."
+    "subtitle": "Budget, visa, valise, culture : les 4 préparatifs essentiels réunis au même endroit, avant le départ."
   },
   "navbar": {
     "features": "Fonctionnalités",
@@ -114,17 +114,17 @@
     "budget": "Budget",
     "visa": "Visa & Préparatifs",
     "badges": "Badges & Progression",
-    "premiumOffers": "Offres Premium",
+    "premiumOffers": "Accès bêta",
     "more": "Tous les outils",
     "openMenu": "Ouvrir le menu de navigation",
     "myAccount": "Mon espace",
     "profile": "Profil",
     "logout": "Se déconnecter",
     "login": "Connexion",
-    "quotaTooltip": "Crédits gratuits restants pour générer des plans (Valise, Budget, Visa). Passe Premium pour l'illimité.",
+    "quotaTooltip": "Générations IA gratuites restantes ce mois-ci (Valise, Budget, Visa).",
     "quotaTitle": "Crédits gratuits",
     "creditsShort": "crédits",
-    "viewPlans": "Voir les offres",
+    "viewPlans": "Voir l'accès bêta",
     "about": "À propos",
     "settings": "Paramètres",
     "groupPrepare": "Préparer mon voyage",
@@ -137,28 +137,28 @@
     "culture": "Guide culturel"
   },
   "about": {
-    "metaTitle": "À propos — Xplania, voyager autrement, enfin",
-    "metaDescription": "Xplania centralise toute l'expérience voyage : avant, pendant et après. Découvre l'histoire et la vision derrière la plateforme.",
+    "metaTitle": "À propos — Xplania, préparer son départ sans soucis",
+    "metaDescription": "Xplania réunit la préparation d'un séjour à l'étranger : budget, visa, valise et codes culturels. L'histoire et la vision derrière la plateforme.",
     "badge": "Notre histoire",
-    "heroTitle": "Voyager autrement, enfin. 🌍",
-    "heroSubtitle": "On passe plus de temps à gérer un voyage qu'à le vivre. J'en avais assez. Alors j'ai construit Xplania.",
+    "heroTitle": "Préparer son départ, enfin simplement. 🌍",
+    "heroSubtitle": "On passe des heures à préparer un séjour à l'étranger, entre dix sites différents. J'en avais assez. Alors j'ai construit Xplania.",
     "trigger": {
       "tag": "Le moment déclencheur",
-      "body1": "Avant un départ aux Îles Canaries, je me suis retrouvée avec 9 onglets ouverts : valise, budget, visa, lieux, météo, culture, transport, souvenirs, et un groupe WhatsApp qui partait dans tous les sens. J'ai passé plus de temps à préparer qu'à partir.",
-      "body2": "Ce jour-là, j'ai réalisé que le problème n'était pas moi, c'était l'absence d'un outil qui centralise vraiment tout.",
-      "body3": "Xplania, c'est la réponse à cette frustration.",
+      "body1": "Avant un départ aux Îles Canaries, je me suis retrouvée avec 9 onglets ouverts : visa, budget, valise, météo, codes culturels, documents, et un groupe WhatsApp qui partait dans tous les sens. J'ai passé plus de temps à préparer qu'à partir.",
+      "body2": "Ce jour-là, j'ai compris que le problème n'était pas moi : c'était une préparation éparpillée, sans outil qui réunisse l'essentiel.",
+      "body3": "Xplania, c'est la réponse à cette frustration : budget, visa, valise et culture, au même endroit.",
       "quote": "« Le voyage devrait commencer quand tu poses ta valise, pas quand tu la prépares. »",
       "quoteAuthor": "— Juliette, fondatrice"
     },
     "pip": {
       "tag": "Notre mascotte",
-      "title": "Ping, ton compagnon de route",
-      "body": "Ping n'est pas juste un logo. C'est l'incarnation de l'esprit d'Xplania : curieux, aventurier, toujours prêt pour la prochaine découverte. Comme toi, Ping ne voyage pas pour cocher des cases — il voyage pour ressentir.",
+      "title": "Ping, ton assistante de préparation",
+      "body": "Ping n'est pas juste un logo. C'est l'assistante qui t'accompagne pendant ta préparation : elle t'oriente vers le bon outil et répond à tes questions sur le budget, le visa, la valise ou les codes culturels.",
       "alt": "Ping, la mascotte pingouin d'Xplania, avec son sac à dos et sa boussole"
     },
     "vision": {
       "tag": "La vision",
-      "statement": "Un jour, préparer un voyage prendra 10 minutes. Et tu n'oublieras plus jamais pourquoi tu es parti."
+      "statement": "Un jour, préparer un départ à l'étranger prendra 10 minutes. Et tu partiras l'esprit léger."
     },
     "timeline": {
       "title": "Notre parcours",
@@ -171,66 +171,66 @@
         {
           "year": "2025",
           "title": "Lancement bêta",
-          "desc": "Première version bêta de Xplania ouverte aux Early Explorers."
+          "desc": "Première version bêta de Xplania ouverte aux premiers testeurs."
         },
         {
           "year": "2026+",
           "title": "La suite",
-          "desc": "Nouvelles destinations, nouvelles fonctionnalités, une communauté qui grandit. Xplania n'en est qu'au début."
+          "desc": "Une bêta étudiante centrée sur la préparation du départ : budget, visa, valise et culture."
         }
       ]
     },
     "value": {
       "tag": "Proposition de valeur",
-      "title": "Une seule plateforme, toute l'expérience ✈️",
-      "body": "Xplania est la seule plateforme qui centralise toute l'expérience voyage : avant, pendant et après, en un seul endroit."
+      "title": "Une seule plateforme pour préparer ton départ ✈️",
+      "body": "Xplania réunit les quatre préparatifs essentiels d'un séjour à l'étranger — budget, visa, valise et codes culturels — autour d'un même voyage."
     },
     "experience": {
       "title": "Comment ça marche",
-      "subtitle": "Une expérience pensée comme un voyage, pas comme un formulaire.",
+      "subtitle": "Une préparation pensée comme une checklist claire, pas comme un formulaire.",
       "steps": {
         "s1": {
-          "title": "Choisis ton émotion",
-          "desc": "L'app te propose des lieux qui correspondent à ton humeur du moment."
+          "title": "Renseigne ton voyage",
+          "desc": "Destination, dates, nationalité, budget et type de séjour : c'est tout."
         },
         "s2": {
-          "title": "Explore 🎮",
-          "desc": "Chaque endroit visité devient un point sur ta carte personnelle."
+          "title": "Prépare avec les 4 outils",
+          "desc": "Budget, visa, valise et guide culturel s'adaptent à ta destination."
         },
         "s3": {
-          "title": "Reviens 📖",
-          "desc": "Tes souvenirs deviennent un récit illustré, prêt à être partagé."
+          "title": "Pars serein ✅",
+          "desc": "Ta progression te montre ce qu'il reste à faire avant le départ."
         }
       }
     },
     "stats": {
       "title": "Chiffres clés",
       "stat1": {
-        "value": "8",
-        "label": "outils connectés dans une seule expérience"
+        "value": "4",
+        "label": "outils de préparation réunis dans une seule expérience"
       },
       "stat2": {
         "value": "Bêta",
-        "label": "communauté active d'Early Explorers"
+        "label": "des étudiants testent Xplania avant leur départ"
       },
       "stat3": {
         "value": "IA",
-        "label": "personnalisée sur tes préférences et données touristiques"
+        "label": "adaptée à ta destination, tes dates et ton type de séjour"
       }
     },
     "founder": {
       "tag": "La fondatrice",
       "title": "Derrière Xplania, il y a Juliette 👋",
-      "intro": "Je m'appelle Juliette, j'ai 22 ans et je suis basée à Lille. J'ai toujours voyagé avec les yeux grands ouverts et le carnet plein — mais avec la frustration de passer des heures à organiser ce qui devrait être simple. Xplania est né de cette contradiction : j'adore voyager, mais je détestais préparer mes voyages.",
+      "intro": "Je m'appelle Juliette, j'ai 22 ans et je suis basée à Lille. J'ai toujours voyagé avec les yeux grands ouverts et la valise jamais loin — mais avec la frustration de passer des heures à organiser ce qui devrait être simple. Xplania est né de cette contradiction : j'adore voyager, mais je détestais préparer mes départs.",
       "bullet1": "Étudiante en double master à l'Université Catholique de Lille",
       "bullet2": "Lauréate Pépite France (SNEE)",
       "bullet3": "Créatrice de contenu & Top 5 des blogueurs voyage français",
       "bullet4": "Passionnée par les expériences interculturelles",
-      "body": "Aujourd'hui, elle construit Xplania avec une ambition : transformer la manière dont on vit le voyage."
+      "body": "Aujourd'hui, elle construit Xplania avec une ambition : que plus personne ne parte à l'étranger stressé par sa préparation."
     },
     "cta": {
-      "title": "Prêt à découvrir la prochaine génération du travel ?",
-      "subtitle": "Tu es voyageur, professionnel du tourisme ou curieux ? Rejoins l'aventure.",
+      "title": "Prêt à préparer ton départ autrement ?",
+      "subtitle": "Étudiant, stagiaire ou voyageur ? Rejoins la bêta.",
       "primary": "Rejoindre la bêta",
       "secondary": "Contacter",
       "email": "juliettenoel.xplania@gmail.com"
@@ -268,7 +268,24 @@
     "cta5": "Voir la carte",
     "step6Title": "Personnalise ton profil",
     "step6Desc": "Ajoute ton nom et ton avatar pour une expérience sur-mesure et cohérente.",
-    "cta6": "Compléter mon profil"
+    "cta6": "Compléter mon profil",
+    "prep": {
+      "s1Title": "Crée ton voyage",
+      "s1Desc": "Destination, dates, nationalité, budget et type de séjour : les 4 outils s'adaptent automatiquement.",
+      "s1Cta": "Créer mon voyage",
+      "s2Title": "Prépare ton budget",
+      "s2Desc": "Une estimation réaliste selon ta destination et ta durée, puis le suivi de tes dépenses prévues.",
+      "s2Cta": "Ouvrir le Budget",
+      "s3Title": "Vérifie tes formalités",
+      "s3Desc": "Visa, passeport, vaccins et documents selon ta nationalité, avec une checklist à cocher.",
+      "s3Cta": "Ouvrir Visa & Préparatifs",
+      "s4Title": "Prépare ta valise",
+      "s4Desc": "Une liste adaptée au climat et à ton séjour, à cocher au fur et à mesure.",
+      "s4Cta": "Ouvrir la Valise",
+      "s5Title": "Comprends les codes du pays",
+      "s5Desc": "Tenue, gastronomie, gestes et salutations, avec mises en situation et mini-quiz.",
+      "s5Cta": "Ouvrir le Guide culturel"
+    }
   },
   "hero": {
     "badge": "Bêta Privée — Accès Exclusif",
@@ -391,15 +408,15 @@
   "beta": {
     "titlePart1": "Pourquoi participer à la",
     "titlePart2": "bêta Xplania",
-    "subtitle": "Rejoins une communauté exclusive de voyageurs passionnés qui façonnent le futur du voyage",
+    "subtitle": "Aide-nous à construire l'outil qui simplifie la préparation d'un départ à l'étranger.",
     "feedbackTitle": "Feedback direct",
-    "feedbackDesc": "Ton retour améliore directement le produit. Chaque suggestion compte pour créer l'outil de voyage idéal.",
-    "earlyTitle": "Accès anticipé",
-    "earlyDesc": "Découvre les nouvelles fonctionnalités avant tout le monde et teste les innovations en avant-première.",
-    "communityTitle": "Communauté exclusive",
-    "communityDesc": "Rejoins les Early Explorers et participe à la création du futur du voyage intelligent.",
+    "feedbackDesc": "Ton retour améliore directement les 4 outils de préparation. Chaque suggestion compte.",
+    "earlyTitle": "Accès gratuit",
+    "earlyDesc": "Pendant la bêta, Budget, Visa, Valise et Guide culturel sont gratuits, sans carte bancaire.",
+    "communityTitle": "Bêta ESTICE",
+    "communityDesc": "Tu fais partie des premiers étudiants à tester Xplania et à façonner la suite.",
     "shareTitle": "Partage ton expérience",
-    "shareSubtitle": "Ton feedback est essentiel pour améliorer Xplania et créer l'outil de voyage parfait",
+    "shareSubtitle": "Ton avis nous aide à rendre la préparation du départ plus simple.",
     "shareCta": "Donner mon feedback"
   },
   "dashboard": {
@@ -751,7 +768,7 @@
         }
       ],
       "soloTips": [
-        "Informe un proche de ton itinéraire et de tes hébergements",
+        "Informe un proche de ton programme et de tes hébergements",
         "Partage ta position en temps réel avec une personne de confiance",
         "Évite de circuler seul la nuit dans des zones inconnues",
         "Garde une copie numérique de tes documents (cloud + email)",
@@ -804,7 +821,7 @@
       "solo": {
         "title": "Voyager seul — ce qu'il faut savoir",
         "tips": [
-          "Informe toujours un proche de ton itinéraire et de tes hébergements",
+          "Informe toujours un proche de ton programme et de tes hébergements",
           "Partage ta position en temps réel avec une personne de confiance",
           "Vérifie les zones à éviter selon les conseils officiels",
           "Note les numéros d'urgence locaux et l'adresse du consulat français",
@@ -819,7 +836,7 @@
       "restart": "Recommencer",
       "welcome": "Salut ! 🌍 C'est Ping. Je t'aide à comprendre les visas, la sécurité et les formalités d'entrée — sans prise de tête. Je te guide étape par étape ?",
       "welcomeYes": "✨ Oui, guide-moi",
-      "welcomeNo": "Je préfère explorer seul",
+      "welcomeNo": "Je préfère avancer seul",
       "steps": {
         "destination": "Où tu pars ? (tape un pays)",
         "nationality": "Tu voyages avec quel passeport ?",
@@ -868,15 +885,15 @@
     "errAuth": "Connecte-toi pour générer tes formalités."
   },
   "footer": {
-    "tagline": "Ton copilote de voyage intelligent. Planifie, prépare et vis tes voyages grâce à l'intelligence artificielle. Xplania centralise budget, documents et bagages pour voyager l'esprit léger.",
-    "version": "Version 0.1 • Bêta Privée",
+    "tagline": "Organise ton voyage à l'étranger en amont, sans soucis : budget, visa, valise et culture réunis au même endroit.",
+    "version": "Version 0.1 • Bêta ESTICE",
     "featuresTitle": "Fonctionnalités",
     "contactTitle": "Infos & contacts",
     "feedbackLink": "Donner mon feedback",
-    "betaBadge": "Bêta privée en cours",
-    "betaNote": "Xplania est actuellement testé par les premiers voyageurs afin d'améliorer l'expérience.",
+    "betaBadge": "Bêta en cours",
+    "betaNote": "Xplania est actuellement testé par des étudiants pour simplifier la préparation au départ.",
     "prototype": "Xplania – Prototype bêta v0.1",
-    "copyright": "© 2026 Xplania – Programme bêta exclusif – Construit avec ❤️ pour les voyageurs",
+    "copyright": "© 2026 Xplania – Programme bêta – Construit avec ❤️ pour celles et ceux qui partent à l'étranger",
     "legalTitle": "Légal",
     "legalMentions": "Mentions légales",
     "legalCgu": "Conditions d'utilisation",
@@ -960,11 +977,11 @@
       "sections": [
         {
           "heading": "Acceptation",
-          "body": "En utilisant Xplania, tu acceptes les présentes conditions. Le service est actuellement en bêta dans le cadre du programme Early Explorers."
+          "body": "En utilisant Xplania, tu acceptes les présentes conditions. Le service est actuellement en bêta."
         },
         {
           "heading": "Description du service",
-          "body": "Xplania est une plateforme de planification de voyage propulsée par IA. Elle propose des itinéraires basés sur l'humeur, un assistant valise intelligent, des guides budget, des cartes de voyage gamifiées, un suivi en direct et des carnets de voyage. Les fonctionnalités peuvent évoluer librement pendant la bêta."
+          "body": "Xplania est une plateforme de préparation de voyage propulsée par IA. Pendant la bêta, elle propose quatre outils pour organiser un départ à l'étranger : un guide budget, un guide visa et formalités, une liste de valise intelligente et un guide culturel. Les fonctionnalités peuvent évoluer librement pendant la bêta."
         },
         {
           "heading": "Programme bêta",
@@ -1042,15 +1059,15 @@
     "thanksDesc": "Merci pour ton feedback, tu contribues à améliorer Xplania ✨"
   },
   "onboarding": {
-    "dialogTitle": "Découvrir Xplania",
+    "dialogTitle": "Bienvenue sur Xplania",
     "stepLabel": "Étape {{n}} / 3",
     "step1Title": "Commence par ton voyage",
-    "step1Desc": "Indique ta destination, tes dates et ta façon de voyager. Quelques réponses suffisent pour donner à Ping le bon contexte.",
-    "step2Title": "Ping relie chaque détail",
-    "step2Desc": "Budget, formalités, valise et recommandations sont personnalisés ensemble — pas générés comme des outils isolés.",
-    "step3Title": "Garde le même copilote",
-    "step3Desc": "Xplania t'accompagne de la préparation jusqu'au carnet de souvenirs, avec un voyage qui reste cohérent à chaque étape.",
-    "startCta": "Créer mon voyage",
+    "step1Desc": "Indique ta destination, tes dates, ta nationalité et ton type de séjour. C'est tout ce dont les outils ont besoin.",
+    "step2Title": "Quatre outils, un même voyage",
+    "step2Desc": "Budget, visa, valise et guide culturel utilisent les mêmes infos : tu ne les ressaisis jamais.",
+    "step3Title": "Avance à ton rythme",
+    "step3Desc": "Ton tableau de bord suit ta progression dans chaque outil, jusqu'au jour du départ.",
+    "startCta": "Préparer mon départ",
     "goToStep": "Aller à l'étape {{n}}",
     "stepOf": "Étape {{n}} / 3",
     "besoin": {
@@ -1091,11 +1108,11 @@
     "forgotPassword": "Mot de passe oublié ?",
     "confirmEmailNote": "Tu recevras un email de confirmation avant de pouvoir te connecter.",
     "or": "ou",
-"continueGoogle": "Continuer avec Google",
+    "continueGoogle": "Continuer avec Google",
     "continueApple": "Continuer avec Apple",
     "backHome": "Retour à l'accueil",
     "signupSuccess": "Vérifie ta boîte mail pour confirmer ton inscription ✉️",
-"googleError": "Connexion Google impossible",
+    "googleError": "Connexion Google impossible",
     "appleError": "Connexion Apple impossible",
     "resetEmailFirst": "Entre d'abord ton email",
     "resetSent": "Email de réinitialisation envoyé ✉️",
@@ -1275,13 +1292,13 @@
     "devMode": "Mode développeur",
     "devUnlimited": "accès illimité à {{tool}}",
     "exhausted": "Tu as utilisé tes <1>{{limit}} générations gratuites</1> pour {{tool}}.",
-    "upgrade": "Passer à Plus →",
+    "upgrade": "Voir l'accès bêta →",
     "remainingOne": "{{remaining}}/{{limit}} génération gratuite restante pour {{tool}}",
     "remainingOther": "{{remaining}}/{{limit}} générations gratuites restantes pour {{tool}}"
   },
   "upgrade": {
     "title": "Quota gratuit atteint 🎯",
-    "teaser": "Tu as adoré {{tool}} ? Débloque l'accès illimité dès l'ouverture du premium et reçois -30% en avant-première."
+    "teaser": "Tu as utilisé tes essais gratuits du mois pour {{tool}}. Ils reviennent le mois prochain. Laisse ton email pour être prévenu des futures offres."
   },
   "index": {
     "openJournal": "📔 Ouvrir mon Carnet",
@@ -2239,7 +2256,7 @@
     "toastDuplicated": "Liste copiée dans le presse-papiers 📋",
     "toastDuplicateError": "Impossible de copier la liste",
     "toastSynced": "Synchronisé ! 🔄",
-    "toastSyncedDesc": "Ta valise est liée à ton itinéraire.",
+    "toastSyncedDesc": "Ta valise est liée à ton voyage.",
     "progress": {
       "empty": "Ta valise est vide — on commence ! 🎒",
       "early": "C'est parti ! {{checked}}/{{total}} cochés 💪",
@@ -2285,10 +2302,10 @@
       "qaEmpty": "Pose-moi une question — packing, météo, tenues, culture, sécurité solo… j'ai tout ce qu'il faut 🎒",
       "welcome": "Salut {{name}} ! 🧳 C'est Ping. Je t'aide à préparer ta valise parfaite — météo en temps réel, conseils de packing, tenues adaptées et astuces culturelles. Je te guide étape par étape ?",
       "welcomeYes": "Oui, guide-moi",
-      "welcomeNo": "Je préfère explorer seul",
+      "welcomeNo": "Je préfère avancer seul",
       "computedDays_one": "{{count}} jour",
       "computedDays_other": "{{count}} jours",
-      "summary": "Top, voilà ce que j'ai retenu :\n\n📍 Destination : {{destination}}\n📅 Durée : {{duration}}\n🧳 Bagage : {{luggage}}\n🎯 Type de voyage : {{tripType}}\n🎨 Activités : {{activities}}\n\nDis-moi ce que tu veux explorer en premier — météo, liste de packing, tenues, conseils culturels ou astuces solo. Tu peux aussi me poser n'importe quelle question 👇",
+      "summary": "Top, voilà ce que j'ai retenu :\n\n📍 Destination : {{destination}}\n📅 Durée : {{duration}}\n🧳 Bagage : {{luggage}}\n🎯 Type de voyage : {{tripType}}\n🎨 Activités : {{activities}}\n\nDis-moi par quoi tu veux commencer — météo, liste de packing, tenues, conseils culturels ou astuces solo. Tu peux aussi me poser n'importe quelle question 👇",
       "steps": {
         "destination": "Tu pars où ? (Tape une ville ou un pays)",
         "dates": "C'est pour quand ? (Sélectionne tes dates de départ et de retour, ou passe)",
@@ -2410,7 +2427,7 @@
           "Plan de transport offline",
           "Écouteurs",
           "Powerbank 10 000 mAh",
-          "Carnet de voyage",
+          "Bloc-notes de voyage",
           "Tenue smart-casual pour les restos",
           "Parapluie compact"
         ]
@@ -2466,7 +2483,7 @@
           "Guide restos locaux téléchargé offline",
           "Vocabulaire alimentaire dans la langue locale (allergènes !)",
           "Petite bouteille de sauce piquante si tu adores",
-          "Carnet pour noter les adresses coups de cœur",
+          "Petit bloc-notes pour les adresses coups de cœur",
           "Tenue smart-casual (les bons restos refusent les shorts)",
           "Appli de traduction de menu"
         ]
@@ -2635,14 +2652,14 @@
     "voyageEcoSensitivity": "Sensibilité éco",
     "voyageDiet": "Alimentation",
     "voyageMobility": "Mobilité",
-    "voyageDefaultStyle": "Explorateur",
+    "voyageDefaultStyle": "Voyageur",
     "voyageNone": "Aucune",
     "voyageNoneRestriction": "Aucune restriction",
     "voyageModerate": "Modérée",
     "voyageStandard": "Standard",
     "shareDialogTitle": "Partager ce voyage",
-    "shareDialogDesc": "Envoie ton itinéraire complet (valise, budget, formalités) à tes compagnons de voyage.",
-    "shareMessage": "🌍 Découvre mon voyage à {{destination}} ({{days}} jours) sur Xplania ! Valise, budget et formalités tout-en-un. {{url}}",
+    "shareDialogDesc": "Envoie le résumé de ta préparation (valise, budget, formalités) à tes compagnons de voyage.",
+    "shareMessage": "🌍 Ma préparation pour {{destination}} ({{days}} jours) sur Xplania : valise, budget et formalités au même endroit. {{url}}",
     "shareCopy": "Copier",
     "shareCopied": "Copié !",
     "shareCopyToast": "Lien copié 📋",
@@ -2659,7 +2676,7 @@
         "tags": [
           "Ville",
           "18-22°C",
-          "Exploration"
+          "Balade"
         ],
         "badge": "Détendu",
         "items": [
@@ -2692,7 +2709,7 @@
         "culturalTip": "Certains restaurants exigent une tenue soignée. Renseigne-toi."
       },
       "natureExploration": {
-        "title": "Look Exploration Nature",
+        "title": "Look Nature & randonnée",
         "context": "Randonnée • Découverte",
         "tags": [
           "Nature",
@@ -2749,7 +2766,7 @@
         "culturalTip": "Dans certains pays, la carte de visite se remet à deux mains."
       }
     },
-    "discoverFeatures": "Découvrir d'autres fonctionnalités",
+    "discoverFeatures": "Voir mes 4 outils de préparation",
     "missing": {
       "title": "Ce qui manque peut-être",
       "subtitle": "L'IA compare ta valise à ton voyage à {{destination}}.",
@@ -2813,7 +2830,7 @@
     "summaryNotes": "📝 Notes de budget :",
     "summaryConstraintsLabel": "⚠️ Contraintes à prendre en compte :",
     "addExpenseTitle": "Ajouter une Dépense",
-    "addExpenseSubtitle": "Enregistre tes dépenses pour un suivi en temps réel",
+    "addExpenseSubtitle": "Enregistre tes dépenses pour suivre ton budget",
     "addAmount": "Montant",
     "addCategory": "Catégorie",
     "addCategoryPh": "Sélectionne une catégorie",
@@ -2847,7 +2864,7 @@
       "transfer": "Virement"
     },
     "trackerTitle": "Tableau de Suivi des Dépenses",
-    "trackerSubtitle": "Suivi en temps réel de tes dépenses par catégorie",
+    "trackerSubtitle": "Tes dépenses par catégorie, prévues et réelles",
     "trackerCategory": "Catégorie",
     "trackerPlanned": "Prévu",
     "trackerSpent": "Dépensé",
@@ -2885,13 +2902,13 @@
     "alertsActivities": "Activités gratuites",
     "alertsRestaurants": "Restaurants économiques",
     "alertsTransportAlt": "Alternatives transport",
-    "alertsMood": "Ce que je te suggère d'après ton mood",
+    "alertsMood": "Ce que je te suggère pour ton budget",
     "tipsTitle": "Astuces Économies",
     "tipsSubtitle": "Des conseils pratiques pour voyager malin et économiser",
     "tips": {
       "local": {
         "t": "Mange local",
-        "d": "Mange local pour réduire les coûts et découvrir la vraie cuisine de ta destination."
+        "d": "Mange local pour réduire les coûts et goûter la vraie cuisine de ta destination."
       },
       "transit": {
         "t": "Transports publics",
@@ -2915,7 +2932,7 @@
       },
       "walk": {
         "t": "Free walking tours",
-        "d": "Participe aux visites guidées gratuites (à pourboire) pour explorer sans te ruiner."
+        "d": "Participe aux visites guidées gratuites (à pourboire) pour visiter sans te ruiner."
       },
       "pass": {
         "t": "Pass touristique",
@@ -3033,7 +3050,7 @@
       "welcome": "Salut ! Ton budget {{destination, pour}} ({{days}} jours) est prêt. 🎉",
       "question": "Tu veux que je te guide à travers les fonctionnalités ?",
       "yes": "Oui, montre-moi",
-      "no": "Je préfère explorer seul",
+      "no": "Je préfère avancer seul",
       "suggestion": "Top ! Commence par vérifier ta prévision détaillée {{destination, pour}} — chaque ligne est modifiable, et l'IA propose des montants adaptés au coût de la vie local.",
       "focus": {
         "analysis": "Analyse",
@@ -3909,7 +3926,7 @@
   "exploreComp": {},
   "testimonials": {
     "tag": "Ils nous font confiance",
-    "title": "Ce que disent les premiers explorateurs",
+    "title": "Ce qu'en disent les premiers testeurs",
     "subtitle": "Vrais retours de testeurs de la beta — sélectionnés pour leur honnêteté.",
     "t1": {
       "name": "Kajinoma",
@@ -3923,7 +3940,7 @@
     },
     "t3": {
       "name": "Mélanie Garnier",
-      "role": "Communauté Early Explorers",
+      "role": "Communauté des premiers testeurs",
       "text": "J'ai bien aimé qu'elle parle du temps qu'on passe à chercher des infos pour un voyage. Je me retrouve totalement dans l'idée que tout est éparpillé et que ça finit par être plus fatigant que plaisant."
     },
     "t4": {
@@ -3933,12 +3950,12 @@
     },
     "t5": {
       "name": "Deeruven Sobaroyen",
-      "role": "Communauté Early Explorers",
+      "role": "Communauté des premiers testeurs",
       "text": "J'aime le concept de ton application, c'est du jamais vu ! Tu proposes une solution qui réduit le temps d'organisation et la charge mentale qui va avec — ça ne peut être que bénéfique."
     },
     "t6": {
       "name": "Shivdeep Singh",
-      "role": "Communauté Early Explorers",
+      "role": "Communauté des premiers testeurs",
       "text": "Le concept est intéressant, notamment le positionnement en tant que « co-pilote de voyage » et l'accent mis sur la phase de préparation : budget, visa, bagages. La plupart des plateformes se concentrent uniquement sur la réservation — s'attaquer à la préparation est un angle vraiment pertinent."
     }
   },
@@ -3948,11 +3965,11 @@
     "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
     "q1": {
       "q": "Xplania est gratuit ?",
-      "a": "Oui, pendant la bêta. Tu as 10 essais gratuits par mois et par outil, sans carte bancaire ni engagement. Pour savoir ce que coûteront les offres ensuite, regarde la page Offres."
+      "a": "Oui, pendant la bêta. Les 4 outils de préparation sont gratuits, sans carte bancaire ni engagement, avec jusqu'à 10 générations IA par outil et par mois. La page « Accès bêta » résume ce qui est inclus."
     },
     "q2": {
       "q": "À quoi sert l'IA exactement ?",
-      "a": "À te faire gagner des heures : elle analyse ta destination, ton profil et tes envies pour générer une valise adaptée, un budget réaliste, des activités locales, des conseils visa, un récit de voyage… Tout est personnalisé, jamais générique."
+      "a": "À préparer plus vite et mieux : elle estime ton budget, vérifie tes formalités selon ta nationalité, adapte ta valise au climat et rédige les fiches culturelles des pays qui ne sont pas encore prêts. Tout est lié à ta destination, jamais générique."
     },
     "q3": {
       "q": "Mes données sont-elles en sécurité ?",
@@ -3960,25 +3977,25 @@
     },
     "q4": {
       "q": "Est-ce que ça marche hors connexion ?",
-      "a": "Le mode hors connexion est en cours de développement : il permettra d'accéder à ton carnet, ta carte de suivi et tes étapes même sans réseau, avec synchronisation automatique au retour du wifi. Disponible prochainement."
+      "a": "Les pages déjà ouvertes restent consultables sans réseau. Les générations IA, la météo et la connexion à ton compte demandent Internet."
     },
     "q5": {
-      "q": "Puis-je partager mon voyage avec mes proches ?",
-      "a": "Oui, gratuitement. Carnet de bord public via lien, partage du suivi temps réel, export PDF — tu choisis ce que tu rends visible et à qui."
+      "q": "Puis-je partager ma préparation ?",
+      "a": "Oui : depuis la Valise, tu peux envoyer le résumé de ta préparation (valise, budget, formalités) par email ou WhatsApp, et ton budget s'exporte en PDF. Tu choisis à qui tu l'envoies."
     },
     "q6": {
       "q": "Quand sortent les versions premium ?",
-      "a": "Les offres premium sont prévues pour fin 2026 / début 2027. Inscris-toi à la liste premium pour être prévenu en avant-première et bénéficier d'une réduction d'ouverture exclusive aux explorateurs beta."
+      "a": "Les offres après la bêta ne sont pas encore fixées. Inscris-toi à la liste d'attente pour être prévenu en avant-première et bénéficier d'une réduction d'ouverture réservée aux testeurs de la bêta."
     },
     "q7": {
       "q": "Qu'est-ce qui est disponible pendant la bêta ?",
-      "a": "Tous les outils : Planifier, Budget, Valise, Visa, Guide culturel, Mood Explorer, Découvrir, Suivi live, Carnet de bord, Carte de voyage et badges. Chaque outil IA offre 10 essais gratuits par mois. Si l'IA échoue, l'essai t'est rendu."
+      "a": "Les 4 outils de préparation : Budget, Visa & formalités, Valise et Guide culturel, ainsi que ton tableau de bord de progression. Chaque outil IA offre jusqu'à 10 générations gratuites par mois (les fiches culturelles écrites par l'IA comptent avec la Valise). Si l'IA échoue, l'essai t'est rendu."
     },
     "q8": {
-      "q": "Qui peut voir ma position ?",
-      "a": "Personne, sauf si tu actives toi-même le partage dans le Suivi live. Tu peux l'arrêter à tout moment, et ta position n'est plus mise à jour dès que tu coupes le suivi."
+      "q": "Xplania a-t-il besoin de ma position ?",
+      "a": "Non. Pendant la bêta, les 4 outils fonctionnent à partir de la destination que tu indiques en créant ton voyage."
     },
-    "seeOffers": "Voir les offres et les prix"
+    "seeOffers": "Voir ce qui est inclus dans la bêta"
   },
   "exitIntent": {
     "title": "Avant de partir…",
@@ -4373,8 +4390,8 @@
     "micDenied": "Accès micro refusé"
   },
   "pip": {
-    "title": "Ping — ton compagnon",
-    "welcome": "Salut ! Dis-moi ce dont tu as besoin — je t'oriente vers la bonne fonctionnalité, ou on discute simplement.",
+    "title": "Ping — ta préparation",
+    "welcome": "Salut ! Je t'aide à préparer ton départ : budget, visa, valise ou codes culturels. Par quoi on commence ?",
     "placeholder": "Pose ta question…",
     "error": "Impossible de répondre, réessaie.",
     "openLabel": "Ouvrir le chat",
@@ -4532,7 +4549,7 @@
       },
       "delete": {
         "title": "Supprimer mon compte",
-        "hint": "Cette action est définitive. Ton compte, tes voyages, tes badges et tes carnets seront supprimés. Tu peux d'abord exporter tes données ci-dessus.",
+        "hint": "Cette action est définitive. Ton compte, tes voyages et toutes les données associées seront supprimés. Tu peux d'abord exporter tes données ci-dessus.",
         "cta": "Supprimer mon compte",
         "confirmTitle": "Supprimer définitivement ton compte ?",
         "confirmDesc": "Cette action est irréversible. Toutes tes données seront supprimées immédiatement.",
@@ -4586,9 +4603,9 @@
       "cta": "Rejoindre la bêta"
     },
     "ctaFinal": {
-      "title": "Prêt à voyager autrement ?",
-      "subtitle": "Démarre ton premier voyage Xplania en 2 minutes. Gratuit pendant la bêta.",
-      "cta": "Commence ton voyage"
+      "title": "Prêt à préparer ton départ ?",
+      "subtitle": "Crée ton voyage et organise budget, visa, valise et culture en quelques minutes. Gratuit pendant la bêta.",
+      "cta": "Préparer mon départ"
     }
   },
   "collapsible": {
@@ -4981,7 +4998,7 @@
       "deleteTitle": "Supprimer ce voyage ?",
       "confirmDeleteNamed": "Es-tu sûr de vouloir supprimer {{name}} ?",
       "confirmDeleteGeneric": "Es-tu sûr de vouloir supprimer ce voyage ?",
-      "irreversibleWarning": "Cette action est irréversible. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.",
+      "irreversibleWarning": "Cette action est irréversible. Toutes les données associées à ce voyage seront aussi supprimées.",
       "cancel": "Annuler",
       "deleting": "Suppression…",
       "deletePermanently": "Supprimer définitivement",
@@ -5095,7 +5112,7 @@
       "dialogTitle": "Supprimer ce voyage ?",
       "confirmWithLabelPrefix": "Es-tu sûr de vouloir supprimer",
       "confirmGeneric": "Es-tu sûr de vouloir supprimer ce voyage ? ",
-      "irreversibleWarning": "Cette action est irréversible. Toutes les données associées (carnet, suivi GPS, badges, favoris liés) seront aussi supprimées.",
+      "irreversibleWarning": "Cette action est irréversible. Toutes les données associées à ce voyage seront aussi supprimées.",
       "cancel": "Annuler",
       "deleting": "Suppression…",
       "deletePermanently": "Supprimer définitivement"
@@ -5634,28 +5651,28 @@
   },
   "journeyIntro": {
     "kicker": "Bienvenue sur Xplania",
-    "title": "Ton parcours en 4 étapes",
-    "subtitle": "En quelques minutes, Xplania apprend à te connaître pour te proposer des voyages qui te ressemblent vraiment.",
+    "title": "Ta préparation en 4 étapes",
+    "subtitle": "En quelques minutes, Xplania réunit tout ce qu'il faut préparer avant ton départ à l'étranger.",
     "s1": {
-      "title": "Tu réponds au quiz ADN Voyageur",
-      "time": "≈ 5 min",
-      "text": "Réagis à des photos de voyage selon tes envies. Il n'y a pas de mauvaise réponse."
+      "title": "Tu crées ton compte",
+      "time": "≈ 1 min",
+      "text": "Gratuit pendant la bêta, sans carte bancaire."
     },
     "s2": {
-      "title": "Tu découvres ton profil",
-      "time": "≈ 5 min",
-      "text": "Tes réponses révèlent ton ADN Voyageur et les outils qui correspondent le mieux à ta façon de voyager."
+      "title": "Tu renseignes ton voyage",
+      "time": "≈ 2 min",
+      "text": "Destination, dates, nationalité, budget approximatif et type de séjour : Erasmus, stage ou voyage."
     },
     "s3": {
-      "title": "Tu testes les packs",
-      "text": "Après ton inscription, essaie les outils des packs : budget, valise, formalités et préparation de ton voyage."
+      "title": "Tu prépares avec les 4 outils",
+      "text": "Budget, visa, valise et guide culturel s'adaptent automatiquement à ton voyage."
     },
     "s4": {
-      "title": "Tu explores tout Xplania",
-      "text": "Accède à ton espace : carnet de voyage, défis et badges, Mood Explorer, découvertes locales et bien plus."
+      "title": "Tu suis ta progression",
+      "text": "Ton tableau de bord montre où tu en es dans chaque outil avant le départ."
     },
     "cta": "C'est parti !",
-    "note": "Gratuit, sans inscription pour commencer. Tu peux quitter à tout moment."
+    "note": "Gratuit pendant la bêta. Tu peux quitter à tout moment."
   },
   "gmaps": {
     "info": {
@@ -5765,10 +5782,10 @@
   },
   "vsChatgpt": {
     "metaTitle": "Xplania vs ChatGPT — l'alternative pour organiser ton voyage",
-    "metaDescription": "ChatGPT génère des réponses. Xplania accompagne tout ton voyage : itinéraire, budget, valise, suivi live et carnet de bord. Comparatif honnête.",
+    "metaDescription": "ChatGPT génère des réponses. Xplania t'aide à organiser ton voyage en amont : budget, visa, valise et codes culturels. Comparatif honnête.",
     "badge": "Comparatif",
     "h1": "Xplania, l'alternative à ChatGPT pour organiser ton voyage",
-    "intro": "Xplania est un assistant de voyage IA pensé pour les voyageurs qui veulent préparer et vivre leur voyage sans jongler entre dix outils : itinéraire personnalisé, budget suivi en temps réel, valise adaptée, suivi live pendant le séjour et carnet de bord automatique. C'est gratuit pendant la beta. Xplania a été fondé par Juliette Noel, en France.",
+    "intro": "Xplania est un assistant IA pensé pour celles et ceux qui partent à l'étranger et veulent organiser leur départ sans jongler entre dix outils : budget réaliste, visa et formalités selon ta nationalité, valise adaptée au climat et guide des codes culturels du pays. C'est gratuit pendant la bêta. Xplania a été fondé par Juliette Noel, en France.",
     "tagline": "ChatGPT génère. Xplania accompagne.",
     "tableTitle": "Comparatif détaillé",
     "table": {
@@ -5787,9 +5804,9 @@
           "xplania": "Quiz ADN Voyageur pour adapter les recommandations"
         },
         "budget": {
-          "label": "Budget suivi en temps réel",
-          "chatgpt": "Peut estimer un budget sur demande, sans suivi",
-          "xplania": "Budget suivi en temps réel pendant le voyage"
+          "label": "Budget avant le départ",
+          "chatgpt": "Peut estimer un budget sur demande, sans le conserver",
+          "xplania": "Budget estimé selon la destination, avec suivi des dépenses prévues"
         },
         "visa": {
           "label": "Formalités / visa",
@@ -5797,9 +5814,9 @@
           "xplania": "Guide formalités et visa intégré au voyage"
         },
         "valise": {
-          "label": "Valise selon météo et activités",
+          "label": "Valise selon la météo et le séjour",
           "chatgpt": "Peut lister des idées générales sur demande",
-          "xplania": "Checklist valise adaptée à la météo et aux activités prévues"
+          "xplania": "Checklist valise adaptée à la météo et au type de séjour"
         },
         "gps": {
           "label": "Suivi live GPS pendant le voyage",
@@ -5817,14 +5834,24 @@
           "xplania": "Mood Explorer : des idées selon ton humeur du moment"
         },
         "memoire": {
-          "label": "Mémoire de tes goûts d'un voyage à l'autre",
-          "chatgpt": "Pas de mémoire persistante entre les voyages",
-          "xplania": "Xplania retient ton profil et tes préférences d'un voyage à l'autre"
+          "label": "Mémoire de ton voyage",
+          "chatgpt": "Pas de mémoire organisée par voyage",
+          "xplania": "Xplania garde ton voyage : les 4 outils réutilisent tes infos sans ressaisie"
         },
         "alertes": {
-          "label": "Alertes J-7 / météo par email",
+          "label": "Rappels par email avant le départ",
           "chatgpt": "Non disponible",
-          "xplania": "Alertes par email avant le départ et sur la météo"
+          "xplania": "Rappel 7 jours avant le départ et alerte météo pour adapter ta valise"
+        },
+        "culture": {
+          "label": "Codes culturels du pays",
+          "chatgpt": "Peut donner des conseils généraux sur demande",
+          "xplania": "Guide culturel par pays : tenue, gastronomie, gestes, mises en situation et mini-quiz"
+        },
+        "progression": {
+          "label": "Progression de ta préparation",
+          "chatgpt": "Non disponible",
+          "xplania": "Tableau de bord avec ta progression dans chaque outil"
         }
       }
     },
@@ -5833,18 +5860,18 @@
       "chatgptTitle": "ChatGPT",
       "chatgptText": "Utile pour poser une question ponctuelle, rédiger un texte ou brainstormer des idées de voyage en discutant.",
       "xplaniaTitle": "Xplania",
-      "xplaniaText": "Utile pour préparer et vivre concrètement ton voyage : itinéraire structuré, budget suivi, valise, formalités, suivi live et carnet de bord automatique, le tout gratuit pendant la beta."
+      "xplaniaText": "Utile pour organiser concrètement ton départ : budget, visa, valise et codes culturels, réunis autour de ton voyage, le tout gratuit pendant la bêta."
     },
     "faq": {
       "title": "Questions fréquentes",
       "items": {
         "q1": {
           "q": "Xplania remplace-t-il ChatGPT ?",
-          "a": "Non. ChatGPT est un assistant conversationnel généraliste. Xplania est un outil dédié à l'organisation et au suivi concret d'un voyage, avec des fonctionnalités que ChatGPT ne propose pas comme le suivi live GPS ou le carnet de bord automatique."
+          "a": "Non. ChatGPT est un assistant conversationnel généraliste. Xplania est un outil dédié à la préparation d'un départ à l'étranger, avec ce que ChatGPT ne propose pas : une checklist de formalités et une liste de valise que tu coches au fil de ta préparation."
         },
         "q2": {
           "q": "Xplania est-il gratuit ?",
-          "a": "Oui, Xplania est gratuit pendant la beta."
+          "a": "Oui, Xplania est gratuit pendant la bêta."
         },
         "q3": {
           "q": "Qui a créé Xplania ?",
@@ -5852,11 +5879,11 @@
         },
         "q4": {
           "q": "Puis-je utiliser ChatGPT et Xplania ensemble ?",
-          "a": "Oui, certains voyageurs utilisent ChatGPT pour des questions ponctuelles et Xplania pour organiser et suivre leur voyage de bout en bout."
+          "a": "Oui, certains voyageurs utilisent ChatGPT pour des questions ponctuelles et Xplania pour organiser leur départ de A à Z."
         },
         "q5": {
-          "q": "Xplania a-t-il un carnet de bord automatique ?",
-          "a": "Oui, Xplania génère automatiquement un carnet de bord pendant ton voyage, ce que ChatGPT ne propose pas."
+          "q": "Xplania aide-t-il à comprendre la culture du pays ?",
+          "a": "Oui : le guide culturel présente les codes du pays (tenue, gastronomie, gestes, salutations), avec des mises en situation et un mini-quiz."
         }
       }
     },
@@ -5944,51 +5971,47 @@
   },
   "schools": {
     "metaTitle": "Xplania pour les écoles et offices de tourisme",
-    "metaDescription": "Le copilote de voyage qui accompagne vos étudiants durant toute leur mobilité. Testons ensemble avec un pilote.",
+    "metaDescription": "L'outil qui aide vos étudiants à préparer leur mobilité : budget, visa, valise et culture. Testons ensemble avec un pilote.",
     "badge": "Écoles · Offices de tourisme",
-    "title": "Le copilote de voyage qui accompagne vos étudiants durant toute leur expérience",
-    "subtitle": "Moins de stress, plus d'autonomie et une meilleure expérience. Offrez un double accompagnement à vos étudiants : votre équipe, et Xplania 24h/24.",
+    "title": "L'outil qui aide vos étudiants à préparer leur départ à l'étranger",
+    "subtitle": "Moins de stress, plus d'autonomie avant le départ. Offrez un double accompagnement : votre équipe, et Xplania 24h/24 pour le budget, le visa, la valise et la culture.",
     "ctaPrimary": "Proposer un pilote",
     "ctaSecondary": "Voir l'application",
     "problemTitle": "Valider sa mobilité n'est que le début du voyage",
-    "problemSubtitle": "Une fois le départ validé, l'étudiant doit encore penser à tout.",
+    "problemSubtitle": "Une fois le départ validé, l'étudiant doit encore tout préparer.",
     "problems": [
-      "Visa",
-      "Logement",
+      "Visa et formalités",
       "Budget",
-      "Transport",
       "Valise",
-      "Intégration",
-      "Imprévus",
-      "Adaptation culturelle",
-      "Explorer"
+      "Codes culturels",
+      "Documents oubliés",
+      "Informations éparpillées"
     ],
     "problemQuote": "L'information existe, mais elle est dispersée, difficile à trouver, parfois incorrecte et non centralisée : école, internet, livres, groupes, forums, applications…",
     "phasesTitle": "Xplania simplifie chaque étape",
     "phases": [
       {
-        "title": "Avant : partir préparé",
+        "title": "Budget et formalités",
         "items": [
-          "Guide visa",
-          "Guide valise",
           "Guide budget",
-          "Tout centralisé, avec anticipation"
+          "Guide visa et formalités",
+          "Checklist des documents"
         ]
       },
       {
-        "title": "Pendant : découvrir et s'immerger",
+        "title": "Valise et culture",
         "items": [
-          "Suivi live et gestion des imprévus",
-          "Guide culturel",
-          "Recommandations et découvertes"
+          "Liste de valise selon le climat",
+          "Guide d'immersion culturelle",
+          "Mises en situation et mini-quiz"
         ]
       },
       {
-        "title": "Après : revivre le moment",
+        "title": "Suivi de la préparation",
         "items": [
-          "Carnet de voyage",
-          "Partager l'expérience de façon artistique",
-          "Transmettre et valoriser la mobilité"
+          "Un tableau de bord personnel",
+          "La progression dans chaque outil",
+          "Un rappel par email 7 jours avant le départ"
         ]
       }
     ],
@@ -5996,13 +6019,11 @@
     "benefits": [
       "Moins chercher",
       "Moins anticiper seul",
-      "Moins subir les imprévus",
-      "Moins le mal du pays",
-      "Plus explorer",
-      "Faire des rencontres",
-      "Comprendre l'environnement",
-      "Se souvenir",
-      "Valoriser sa mobilité"
+      "Ne rien oublier",
+      "Partir rassuré",
+      "Un budget réaliste",
+      "Des formalités claires",
+      "Comprendre les codes du pays"
     ],
     "teamQuote": "L'IA ne remplacera pas votre accompagnement, mais elle peut le compléter.",
     "teamTitle": "Xplania vous aide à accompagner vos étudiants",
@@ -6042,7 +6063,7 @@
           "Entreprise et intégration professionnelle",
           "Convention et plus d'administratif",
           "Recherche plus autonome",
-          "Découverte hors cadre étudiant"
+          "Vie hors cadre étudiant"
         ]
       }
     ],
@@ -6051,7 +6072,7 @@
     "pilotSubtitle": "Commençons par tester avant de décider quoi déployer.",
     "pilotSteps": [
       "Sélectionner un échantillon d'étudiants",
-      "Les laisser découvrir Xplania",
+      "Leur faire tester Xplania",
       "Tester avant la mobilité",
       "Mesurer les résultats avec un formulaire",
       "Améliorer et adapter avant le déploiement"
@@ -6065,7 +6086,7 @@
           "Prolonger l'accompagnement",
           "Mieux comprendre les besoins",
           "Valoriser les expériences",
-          "Enrichir l'expérience à l'étranger"
+          "Des départs mieux préparés"
         ]
       },
       {
@@ -6074,7 +6095,7 @@
           "Moins de charge mentale",
           "Plus d'autonomie",
           "Plus de sérénité",
-          "Plus d'immersion et de joie"
+          "Un départ plus serein"
         ]
       },
       {
@@ -6121,7 +6142,8 @@
       "discover": "Découvrir",
       "suivi": "Suivi",
       "carnet": "Carnet",
-      "badges": "Badges"
+      "badges": "Badges",
+      "culture": "Guide culturel"
     },
     "contexts": {
       "erasmus": "Erasmus / échange",
@@ -6224,7 +6246,7 @@
     "howTitle": "Comment ça marche ?",
     "howStep1Title": "Choisis ton pays",
     "howStep1Desc": "Tape le nom du pays ou choisis-en un parmi les plus demandés.",
-    "howStep2Title": "Explore les thèmes",
+    "howStep2Title": "Parcours les thèmes",
     "howStep2Desc": "Tenue, table, salutations… ouvre un thème pour voir ce qu'il faut faire et éviter.",
     "howStep3Title": "Marque « compris »",
     "howStep3Desc": "Valide chaque thème lu pour suivre ta progression.",
@@ -6234,7 +6256,7 @@
     "featured": "Fiches prêtes :",
     "notFoundTitle": "Xplania prépare ces infos 🧭",
     "notFoundDesc": "On n'a pas encore reconnu ce pays. Vérifie l'orthographe ou choisis un pays dans la liste : nos équipes complètent le guide chaque semaine.",
-    "pillarPending": "Ce thème est encore en préparation pour ce pays. Explore les autres thèmes en attendant, on l'ajoute très vite !",
+    "pillarPending": "Ce thème est encore en préparation pour ce pays. Consulte les autres thèmes en attendant, on l'ajoute très vite !",
     "welcomeFeatured": "Fiche vérifiée par Xplania : plusieurs thèmes sont déjà prêts, les autres se complètent en un clic.",
     "welcomeOther": "Chaque thème est préparé pour ce pays à ta première ouverture, puis gardé pour tout le monde.",
     "progress": "{{done}} / {{total}} thèmes compris",
@@ -6253,7 +6275,7 @@
     "homeVsHere": "Chez toi / Ici",
     "evolving": "Les usages évoluent : observe et adapte-toi. Chaque personne est différente.",
     "aiNote": "Contenu préparé par l'IA Xplania : à garder comme repère général.",
-    "otherTools": "Santé, sécurité et formalités :",
+    "otherTools": "Pour compléter ta préparation :",
     "pillars": {
       "greetings": "Salutations & politesse",
       "food": "Gastronomie & table",
@@ -6277,7 +6299,9 @@
     "quizDo": "Lequel de ces comportements est conseillé ?",
     "quizScore": "{{score}} / {{total}} bonnes réponses.",
     "quizPerfect": "Bravo, tu maîtrises ce thème !",
-    "quizKeep": "Relis les conseils et retente ta chance !"
+    "quizKeep": "Relis les conseils et retente ta chance !",
+    "heroKicker": "Préparer ton arrivée",
+    "contextKicker": "Ta destination"
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
@@ -6290,5 +6314,84 @@
     "send": "Envoyer le signalement",
     "thanks": "Merci, ton signalement est envoyé !",
     "error": "L'envoi a échoué, réessaie."
+  },
+  "prepDashboard": {
+    "kicker": "Mon espace de préparation",
+    "subtitle": "Budget, visa, valise et culture : tout ce qu'il faut préparer avant ton départ, au même endroit.",
+    "newTrip": "Nouveau voyage",
+    "firstStepKicker": "Étape 1",
+    "firstStepTitle": "Crée ton voyage",
+    "firstStepDesc": "Quelques infos suffisent : les 4 outils de préparation s'adaptent ensuite automatiquement.",
+    "myTrips": "Mes voyages",
+    "currentTrip": "Voyage en préparation",
+    "durationDays_one": "{{count}} jour",
+    "durationDays_other": "{{count}} jours",
+    "noDates": "Dates à préciser",
+    "overall": "Préparation globale",
+    "modulesTitle": "Tes 4 outils de préparation",
+    "start": "Commencer",
+    "continue": "Continuer",
+    "offersHint": "Accès gratuit pendant la bêta —",
+    "progress": {
+      "budget": "{{done}}/{{total}} étapes (budget estimé, dépenses notées)",
+      "visa": "{{done}}/{{total}} démarches cochées",
+      "valise": "{{done}}/{{total}} éléments cochés",
+      "culture": "{{done}}/{{total}} thèmes compris",
+      "notStarted": "Pas encore commencé"
+    },
+    "modules": {
+      "budget": {
+        "title": "Budget",
+        "desc": "Estimer et prévoir tes dépenses"
+      },
+      "visa": {
+        "title": "Visa & formalités",
+        "desc": "Visa, documents et santé selon ta nationalité"
+      },
+      "valise": {
+        "title": "Valise",
+        "desc": "Une liste adaptée au climat et au séjour"
+      },
+      "culture": {
+        "title": "Guide culturel",
+        "desc": "Tenue, gastronomie, gestes et usages"
+      }
+    }
+  },
+  "prepTrip": {
+    "destination": "Pays de destination",
+    "destinationPlaceholder": "Ex. : Portugal",
+    "city": "Ville (facultatif)",
+    "cityPlaceholder": "Ex. : Lisbonne",
+    "departure": "Date de départ",
+    "return": "Date de retour",
+    "duration": "Durée du séjour (en jours)",
+    "durationPlaceholder": "Ex. : 150",
+    "durationHint": "Pas encore de dates précises ? Indique la durée approximative.",
+    "nationality": "Ta nationalité (pour le visa)",
+    "budget": "Budget approximatif (€)",
+    "budgetPlaceholder": "Ex. : 4000",
+    "stayType": "Type de séjour",
+    "stay": {
+      "erasmus": "Erasmus / échange",
+      "internship": "Stage",
+      "trip": "Voyage"
+    },
+    "submit": "Créer mon voyage",
+    "created": "Ton voyage {{destination}} est prêt à être préparé !"
+  },
+  "betaOffer": {
+    "tag": "Bêta ESTICE",
+    "title": "Accès gratuit pendant la bêta",
+    "subtitle": "Pendant la bêta, les 4 outils de préparation sont offerts aux étudiants testeurs. Aucune carte bancaire, aucun engagement.",
+    "planName": "Bêta ESTICE",
+    "planTagline": "Tout ce qu'il faut pour préparer ton départ",
+    "price": "0 €",
+    "inc1": "Les 4 outils : Budget, Visa & formalités, Valise et Guide culturel",
+    "inc2": "Jusqu'à 10 générations IA par outil et par mois, essai rendu si l'IA échoue",
+    "inc3": "Un tableau de bord avec ta progression et un rappel par email 7 jours avant le départ",
+    "inc4": "Ping, ton assistante de préparation, en français et en anglais",
+    "cta": "Commencer ma préparation",
+    "after": "Les offres après la bêta seront annoncées plus tard."
   }
 }

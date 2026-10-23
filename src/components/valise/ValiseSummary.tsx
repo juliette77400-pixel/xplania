@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { isPathEnabled } from "@/config/featureFlags";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -83,7 +84,7 @@ const ValiseSummary = ({ totalItems, checkedItems, categoriesCount, remainingByC
 
       <div className="flex justify-center mt-6">
         <Link
-          to="/profil-voyageur/features"
+          to={isPathEnabled("/profil-voyageur/features") ? "/profil-voyageur/features" : "/app"}
           className="gradient-button inline-flex items-center gap-2 px-6 py-3 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
         >
           <Sparkles className="w-4 h-4" />
@@ -93,7 +94,7 @@ const ValiseSummary = ({ totalItems, checkedItems, categoriesCount, remainingByC
 
       <div className="text-center pb-8 mt-4">
         <Link
-          to="/home#create"
+          to="/app"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />

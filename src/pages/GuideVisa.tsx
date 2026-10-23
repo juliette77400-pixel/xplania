@@ -1,6 +1,6 @@
 import { friendlyInvokeError } from "@/lib/invoke-error";
 import i18n from "@/i18n";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,8 @@ import {
   Syringe, ListChecks, Heart, Phone, MapPin, Flag, AlertCircle
 } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
+import { saveModuleProgress } from "@/lib/prep-progress";
+import { findCountry } from "@/lib/country-match";
 import { toast } from "sonner";
 import { track } from "@/lib/analytics";
 import AppNavbar from "@/components/shared/AppNavbar";
@@ -96,6 +98,16 @@ const GuideVisaPage = () => {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [chatOpenSignal, setChatOpenSignal] = useState(0);
   const { reached, consume } = useQuota("visa");
+
+  // Pre-fill from the trip (destination + nationality) once it is loaded,
+  // without overriding a choice the traveler already made on this page.
+  useEffect(() => {
+    const code = findCountry(contextDestination);
+    if (code) setSelectedDestination((cur) => (cur === "none" || !cur || cur === contextDestination ? code : cur));
+  }, [contextDestination]);
+  useEffect(() => {
+    if (tripData?.nationality) setSelectedNationality(tripData.nationality);
+  }, [tripData?.nationality]);
   const askPip = () => setChatOpenSignal((n) => n + 1);
   const securityLevelNumber: 1 | 2 | 3 | 4 = (() => {
     const lvl = aiResult?.security?.level || "safe";
@@ -218,6 +230,13 @@ const GuideVisaPage = () => {
   const checklist = aiResult?.checklist ?? [];
   const totalChecklist = checklist.length;
   const doneChecklist = checklist.filter((c) => checkedItems[c.item]).length;
+
+  // Dashboard summary, saved for the trip's destination only.
+  const tripCountryCode = useMemo(() => findCountry(contextDestination), [contextDestination]);
+  useEffect(() => {
+    if (!hasGenerated || !tripCountryCode || selectedDestination !== tripCountryCode) return;
+    saveModuleProgress("visa", contextDestination, { done: doneChecklist, total: totalChecklist });
+  }, [hasGenerated, tripCountryCode, selectedDestination, contextDestination, doneChecklist, totalChecklist]);
 
   const secLevel = aiResult?.security?.level || "safe";
   const securityLevelConfig = getSecurityLevelConfig();

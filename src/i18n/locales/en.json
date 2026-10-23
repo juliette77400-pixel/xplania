@@ -38,8 +38,8 @@
     "dismiss": "Dismiss"
   },
   "quickJump": {
-    "title": "Continue your trip",
-    "directAccess": "— direct access without going back home",
+    "title": "Continue your preparation",
+    "directAccess": "— direct access to each tool",
     "activeTrip": "Active trip:",
     "openMyTrip": "→ open my trip",
     "descDiscover": "AI local spots",
@@ -48,7 +48,7 @@
     "descTracking": "Live GPS tracking",
     "descJournal": "Travel journal",
     "descValise": "Smart checklist",
-    "descBudget": "Spending & alerts",
+    "descBudget": "Estimate and plan",
     "descVisa": "Visa & paperwork",
     "labelTracking": "Live tracking",
     "labelJournal": "Journal",
@@ -88,7 +88,7 @@
     "en": "English"
   },
   "homePromises": {
-    "subtitle": "Visa, tight budget, arriving alone… Xplania stays with you before, during and after your time abroad."
+    "subtitle": "Budget, visa, packing, culture: the 4 essential preparations in one place, before you leave."
   },
   "navbar": {
     "features": "Features",
@@ -114,17 +114,17 @@
     "budget": "Budget",
     "visa": "Visa & Paperwork",
     "badges": "Badges & Progress",
-    "premiumOffers": "Premium Offers",
+    "premiumOffers": "Beta access",
     "more": "All tools",
     "openMenu": "Open navigation menu",
     "myAccount": "My space",
     "profile": "Profile",
     "logout": "Sign out",
     "login": "Sign in",
-    "quotaTooltip": "Free credits left to generate plans (Packing, Budget, Visa). Go Premium for unlimited.",
+    "quotaTooltip": "Free AI generations left this month (Packing, Budget, Visa).",
     "quotaTitle": "Free credits",
     "creditsShort": "credits",
-    "viewPlans": "See plans",
+    "viewPlans": "See beta access",
     "about": "About",
     "settings": "Settings",
     "groupPrepare": "Prepare my trip",
@@ -137,28 +137,28 @@
     "culture": "Culture guide"
   },
   "about": {
-    "metaTitle": "About — Xplania, travel differently at last",
-    "metaDescription": "Xplania centralizes the entire travel experience: before, during and after. Discover the story and vision behind the platform.",
+    "metaTitle": "About — Xplania, prepare your departure without the hassle",
+    "metaDescription": "Xplania brings together the preparation of a stay abroad: budget, visa, packing and cultural codes. The story and vision behind the platform.",
     "badge": "Our story",
-    "heroTitle": "Travel differently, at last. 🌍",
-    "heroSubtitle": "We spend more time managing a trip than actually living it. I'd had enough. So I built Xplania.",
+    "heroTitle": "Preparing to leave, finally made simple. 🌍",
+    "heroSubtitle": "We spend hours preparing a stay abroad across ten different websites. I'd had enough. So I built Xplania.",
     "trigger": {
       "tag": "The moment it started",
-      "body1": "Before a trip to the Canary Islands, I found myself with 9 tabs open: packing list, budget, visa, places, weather, culture, transport, souvenirs, and a WhatsApp group going in every direction. I spent more time planning than actually going.",
-      "body2": "That day I realized the problem wasn't me — it was the absence of a tool that truly brings everything together.",
-      "body3": "Xplania is the answer to that frustration.",
+      "body1": "Before leaving for the Canary Islands, I ended up with 9 open tabs: visa, budget, packing, weather, cultural codes, documents, and a WhatsApp group going in every direction. I spent more time preparing than actually leaving.",
+      "body2": "That day I realised the problem wasn't me: it was a scattered preparation, with no tool bringing the essentials together.",
+      "body3": "Xplania is the answer to that frustration: budget, visa, packing and culture, in one place.",
       "quote": "“Travel should begin when you put your suitcase down — not when you start packing it.”",
       "quoteAuthor": "— Juliette, founder"
     },
     "pip": {
       "tag": "Our mascot",
-      "title": "Ping, your travel companion",
-      "body": "Ping isn't just a logo. He's the embodiment of what Xplania stands for: curious, adventurous, always ready for the next discovery. Like you, Ping doesn't travel to tick boxes — he travels to feel something.",
+      "title": "Ping, your preparation assistant",
+      "body": "Ping isn't just a logo. She's the assistant who guides you through your preparation: she points you to the right tool and answers your questions about budget, visa, packing or cultural codes.",
       "alt": "Ping, Xplania's penguin mascot, with his backpack and compass"
     },
     "vision": {
       "tag": "The vision",
-      "statement": "One day, planning a trip will take 10 minutes. And you'll never forget why you left in the first place."
+      "statement": "One day, preparing to go abroad will take 10 minutes. And you'll leave with peace of mind."
     },
     "timeline": {
       "title": "Our journey",
@@ -171,66 +171,66 @@
         {
           "year": "2025",
           "title": "Beta launch",
-          "desc": "First beta version of Xplania opened to Early Explorers."
+          "desc": "First Xplania beta opened to early testers."
         },
         {
           "year": "2026+",
           "title": "What's next",
-          "desc": "New destinations, new features, a growing community. Xplania is just getting started."
+          "desc": "A student beta focused on preparing to leave: budget, visa, packing and culture."
         }
       ]
     },
     "value": {
       "tag": "Value proposition",
-      "title": "One platform, the whole experience ✈️",
-      "body": "Xplania is the only platform that centralizes the entire travel experience: before, during and after — all in one place."
+      "title": "One platform to prepare your departure ✈️",
+      "body": "Xplania brings together the four essential preparations for a stay abroad — budget, visa, packing and cultural codes — around a single trip."
     },
     "experience": {
       "title": "How it works",
-      "subtitle": "An experience designed like a journey, not a form.",
+      "subtitle": "Preparation designed as a clear checklist, not a form.",
       "steps": {
         "s1": {
-          "title": "Pick your mood",
-          "desc": "The app suggests places that match how you feel right now."
+          "title": "Enter your trip",
+          "desc": "Destination, dates, nationality, budget and type of stay: that's it."
         },
         "s2": {
-          "title": "Explore 🎮",
-          "desc": "Every spot you visit becomes a point on your personal map."
+          "title": "Prepare with the 4 tools",
+          "desc": "Budget, visa, packing and culture guide adapt to your destination."
         },
         "s3": {
-          "title": "Come back 📖",
-          "desc": "Your memories turn into an illustrated story, ready to share."
+          "title": "Leave with peace of mind ✅",
+          "desc": "Your progress shows what's left to do before departure."
         }
       }
     },
     "stats": {
       "title": "Key numbers",
       "stat1": {
-        "value": "8",
-        "label": "tools connected in one experience"
+        "value": "4",
+        "label": "preparation tools in a single experience"
       },
       "stat2": {
         "value": "Beta",
-        "label": "active community of Early Explorers"
+        "label": "students test Xplania before leaving"
       },
       "stat3": {
         "value": "AI",
-        "label": "personalized on your preferences and tourism data"
+        "label": "adapted to your destination, dates and type of stay"
       }
     },
     "founder": {
       "tag": "The founder",
       "title": "Behind Xplania, there's Juliette 👋",
-      "intro": "My name is Juliette, I'm 22 and based in Lille, France. I've always traveled with wide eyes and a full notebook — but with the constant frustration of spending hours organizing what should be simple. Xplania was born from that contradiction: I love traveling, but I hated planning it.",
+      "intro": "My name is Juliette, I'm 22 and based in Lille, France. I've always traveled with wide eyes and a suitcase never far away — but with the constant frustration of spending hours organizing what should be simple. Xplania was born from that contradiction: I love traveling, but I hated preparing to leave.",
       "bullet1": "Double master's student at the Catholic University of Lille",
       "bullet2": "Pépite France laureate (SNEE)",
       "bullet3": "Content creator & Top 5 French Travel Bloggers",
       "bullet4": "Passionate about cross-cultural experiences",
-      "body": "Today, she's building Xplania with one ambition: transform the way we live travel."
+      "body": "Today she's building Xplania with one ambition: that nobody leaves for abroad stressed by their preparation."
     },
     "cta": {
-      "title": "Ready to discover the next generation of travel?",
-      "subtitle": "Whether you're a traveler, tourism pro or simply curious — join the journey.",
+      "title": "Ready to prepare your departure differently?",
+      "subtitle": "Student, intern or traveler? Join the beta.",
       "primary": "Join the beta",
       "secondary": "Contact",
       "email": "juliettenoel.xplania@gmail.com"
@@ -268,7 +268,24 @@
     "cta5": "Open the map",
     "step6Title": "Personalize your profile",
     "step6Desc": "Add your name and avatar for a tailored, consistent experience.",
-    "cta6": "Complete my profile"
+    "cta6": "Complete my profile",
+    "prep": {
+      "s1Title": "Create your trip",
+      "s1Desc": "Destination, dates, nationality, budget and type of stay: the 4 tools adapt automatically.",
+      "s1Cta": "Create my trip",
+      "s2Title": "Plan your budget",
+      "s2Desc": "A realistic estimate based on your destination and length of stay, then tracking of your planned expenses.",
+      "s2Cta": "Open Budget",
+      "s3Title": "Check your paperwork",
+      "s3Desc": "Visa, passport, vaccines and documents for your nationality, with a checklist to tick.",
+      "s3Cta": "Open Visa & Prep",
+      "s4Title": "Pack your suitcase",
+      "s4Desc": "A list adapted to the climate and your stay, ticked off as you go.",
+      "s4Cta": "Open Packing",
+      "s5Title": "Learn the local codes",
+      "s5Desc": "Dress, food, gestures and greetings, with real-life situations and a mini-quiz.",
+      "s5Cta": "Open the Culture guide"
+    }
   },
   "hero": {
     "badge": "Private Beta — Exclusive Access",
@@ -391,15 +408,15 @@
   "beta": {
     "titlePart1": "Why join the",
     "titlePart2": "Xplania beta",
-    "subtitle": "Join an exclusive community of passionate travelers shaping the future of travel",
+    "subtitle": "Help us build the tool that makes preparing to go abroad simple.",
     "feedbackTitle": "Direct feedback",
-    "feedbackDesc": "Your input directly improves the product. Every suggestion counts to build the perfect travel tool.",
-    "earlyTitle": "Early access",
-    "earlyDesc": "Discover new features before anyone else and try innovations first-hand.",
-    "communityTitle": "Exclusive community",
-    "communityDesc": "Join the Early Explorers and help shape the future of intelligent travel.",
+    "feedbackDesc": "Your feedback directly improves the 4 preparation tools. Every suggestion counts.",
+    "earlyTitle": "Free access",
+    "earlyDesc": "During the beta, Budget, Visa, Packing and the Culture guide are free, no card needed.",
+    "communityTitle": "ESTICE beta",
+    "communityDesc": "You're among the first students testing Xplania and shaping what comes next.",
     "shareTitle": "Share your experience",
-    "shareSubtitle": "Your feedback is essential to improve Xplania and build the perfect travel tool",
+    "shareSubtitle": "Your feedback helps us make preparing to leave simpler.",
     "shareCta": "Give my feedback"
   },
   "dashboard": {
@@ -751,7 +768,7 @@
         }
       ],
       "soloTips": [
-        "Share your itinerary and accommodation with someone you trust",
+        "Share your plans and accommodation with someone you trust",
         "Share your live location with a trusted contact",
         "Avoid walking alone at night in unfamiliar areas",
         "Keep a digital copy of your documents (cloud + email)",
@@ -804,7 +821,7 @@
       "solo": {
         "title": "Travelling solo — what to know",
         "tips": [
-          "Always share your itinerary and accommodation details with someone you trust",
+          "Always share your plans and accommodation details with someone you trust",
           "Share your live location with a trusted contact",
           "Check areas to avoid based on official advisories",
           "Note local emergency numbers and the nearest French consulate address",
@@ -819,7 +836,7 @@
       "restart": "Restart",
       "welcome": "Hi! 🌍 Ping here. I'll help you navigate visas, safety tips, and entry requirements — no stress, no jargon. Want me to guide you step by step?",
       "welcomeYes": "✨ Yes, guide me",
-      "welcomeNo": "I'll explore on my own",
+      "welcomeNo": "I'd rather go on my own",
       "steps": {
         "destination": "Where are you planning to go? (type a country)",
         "nationality": "What's your nationality / which passport are you travelling with?",
@@ -868,15 +885,15 @@
     "errAuth": "Sign in to generate your travel formalities."
   },
   "footer": {
-    "tagline": "Your intelligent travel copilot. Plan, prepare and live your trips powered by artificial intelligence. Xplania centralizes budget, documents and packing so you can travel light-hearted.",
-    "version": "Version 0.1 • Private Beta",
+    "tagline": "Organise your trip abroad ahead of time, without the hassle: budget, visa, packing and culture in one place.",
+    "version": "Version 0.1 • ESTICE beta",
     "featuresTitle": "Features",
     "contactTitle": "Info & contacts",
     "feedbackLink": "Give my feedback",
-    "betaBadge": "Private beta in progress",
-    "betaNote": "Xplania is currently being tested by early travelers to refine the experience.",
+    "betaBadge": "Beta in progress",
+    "betaNote": "Xplania is currently being tested by students to make preparing to leave simpler.",
     "prototype": "Xplania – Beta prototype v0.1",
-    "copyright": "© 2026 Xplania – Exclusive beta program – Built with ❤️ for travelers",
+    "copyright": "© 2026 Xplania – Beta program – Built with ❤️ for everyone going abroad",
     "legalTitle": "Legal",
     "legalMentions": "Legal notice",
     "legalCgu": "Terms of use",
@@ -960,11 +977,11 @@
       "sections": [
         {
           "heading": "Acceptance",
-          "body": "By using Xplania, you accept these Terms. The service is currently in beta, as part of the Early Explorers program."
+          "body": "By using Xplania, you accept these Terms. The service is currently in beta."
         },
         {
           "heading": "Service description",
-          "body": "Xplania is an AI-powered travel planning platform. It offers mood-based itineraries, a smart packing assistant, budget guides, gamified travel maps, live tracking and travel journals. Features may evolve freely during the beta."
+          "body": "Xplania is an AI-powered trip preparation platform. During the beta, it offers four tools to organise a departure abroad: a budget guide, a visa and paperwork guide, a smart packing list and a culture guide. Features may evolve freely during the beta."
         },
         {
           "heading": "Beta program",
@@ -1042,15 +1059,15 @@
     "thanksDesc": "Thanks for your feedback — you're helping shape Xplania ✨"
   },
   "onboarding": {
-    "dialogTitle": "Discover Xplania",
+    "dialogTitle": "Welcome to Xplania",
     "stepLabel": "Step {{n}} / 3",
     "step1Title": "Start with your trip",
-    "step1Desc": "Share your destination, dates and travel style. A few answers give Ping the context it needs.",
-    "step2Title": "Ping connects every detail",
-    "step2Desc": "Budget, paperwork, packing and recommendations are personalized together — not generated as separate tools.",
-    "step3Title": "Keep the same copilot",
-    "step3Desc": "Xplania stays with you from planning to your travel journal, keeping the journey consistent at every stage.",
-    "startCta": "Create my trip",
+    "step1Desc": "Enter your destination, dates, nationality and type of stay. That's all the tools need.",
+    "step2Title": "Four tools, one trip",
+    "step2Desc": "Budget, visa, packing and culture guide share the same details: you never type them twice.",
+    "step3Title": "Go at your own pace",
+    "step3Desc": "Your dashboard tracks your progress in each tool, all the way to departure day.",
+    "startCta": "Prepare my departure",
     "goToStep": "Go to step {{n}}",
     "stepOf": "Step {{n}} / 3",
     "besoin": {
@@ -1091,11 +1108,11 @@
     "forgotPassword": "Forgot password?",
     "confirmEmailNote": "You'll receive a confirmation email before you can sign in.",
     "or": "or",
-"continueGoogle": "Continue with Google",
+    "continueGoogle": "Continue with Google",
     "continueApple": "Continue with Apple",
     "backHome": "Back to home",
     "signupSuccess": "Check your inbox to confirm your sign-up ✉️",
-"googleError": "Google sign-in failed",
+    "googleError": "Google sign-in failed",
     "appleError": "Apple sign-in failed",
     "resetEmailFirst": "Enter your email first",
     "resetSent": "Reset email sent ✉️",
@@ -1275,13 +1292,13 @@
     "devMode": "Developer mode",
     "devUnlimited": "unlimited access to {{tool}}",
     "exhausted": "You've used your <1>{{limit}} free generations</1> for {{tool}}.",
-    "upgrade": "Upgrade to Plus →",
+    "upgrade": "See beta access →",
     "remainingOne": "{{remaining}}/{{limit}} free generation left for {{tool}}",
     "remainingOther": "{{remaining}}/{{limit}} free generations left for {{tool}}"
   },
   "upgrade": {
     "title": "Free quota reached 🎯",
-    "teaser": "Loved {{tool}}? Unlock unlimited access at premium launch and get -30% as an early bird."
+    "teaser": "You've used this month's free tries for {{tool}}. They come back next month. Leave your email to hear about future offers."
   },
   "index": {
     "openJournal": "📔 Open my Journal",
@@ -2239,7 +2256,7 @@
     "toastDuplicated": "List copied to clipboard 📋",
     "toastDuplicateError": "Could not copy the list",
     "toastSynced": "Synced! 🔄",
-    "toastSyncedDesc": "Your suitcase is linked to your itinerary.",
+    "toastSyncedDesc": "Your packing list is linked to your trip.",
     "progress": {
       "empty": "Your bag is empty — let's get started! 🎒",
       "early": "Off to a good start! {{checked}}/{{total}} checked 💪",
@@ -2285,10 +2302,10 @@
       "qaEmpty": "Ask me anything — packing, weather, outfits, culture, solo safety… I've got you 🎒",
       "welcome": "Hey {{name}}! 🧳 Ping here. I'll help you pack the perfect bag — real-time weather, packing tips, outfit ideas and cultural advice. Want me to walk you through it?",
       "welcomeYes": "Yes, guide me",
-      "welcomeNo": "I'll explore on my own",
+      "welcomeNo": "I'd rather go on my own",
       "computedDays_one": "{{count}} day",
       "computedDays_other": "{{count}} days",
-      "summary": "Great, here's what I've got:\n\n📍 Destination: {{destination}}\n📅 Duration: {{duration}}\n🧳 Luggage: {{luggage}}\n🎯 Trip type: {{tripType}}\n🎨 Activities: {{activities}}\n\nTell me what you'd like to explore first — weather, packing list, outfits, cultural tips or solo advice. You can also ask me anything 👇",
+      "summary": "Great, here's what I've got:\n\n📍 Destination: {{destination}}\n📅 Duration: {{duration}}\n🧳 Luggage: {{luggage}}\n🎯 Trip type: {{tripType}}\n🎨 Activities: {{activities}}\n\nTell me where you'd like to start — weather, packing list, outfits, cultural tips or solo advice. You can also ask me anything 👇",
       "steps": {
         "destination": "Where are you heading? (Type a city or country)",
         "dates": "When are you going? (Pick your departure and return dates, or skip)",
@@ -2410,7 +2427,7 @@
           "Offline transport map",
           "Earphones",
           "10,000mAh powerbank",
-          "Travel journal",
+          "Travel notepad",
           "Smart-casual outfit for restaurants",
           "Compact umbrella"
         ]
@@ -2466,7 +2483,7 @@
           "Offline local restaurant guide",
           "Food vocabulary in local language (allergens!)",
           "Small hot sauce bottle if you're a fan",
-          "Notebook for favourite addresses",
+          "Small notepad for favourite addresses",
           "Smart-casual outfit (good restaurants refuse shorts)",
           "Menu translation app"
         ]
@@ -2635,14 +2652,14 @@
     "voyageEcoSensitivity": "Eco sensitivity",
     "voyageDiet": "Diet",
     "voyageMobility": "Mobility",
-    "voyageDefaultStyle": "Explorer",
+    "voyageDefaultStyle": "Traveler",
     "voyageNone": "None",
     "voyageNoneRestriction": "No restriction",
     "voyageModerate": "Moderate",
     "voyageStandard": "Standard",
     "shareDialogTitle": "Share this trip",
-    "shareDialogDesc": "Send your full itinerary (suitcase, budget, formalities) to your travel companions.",
-    "shareMessage": "🌍 Check out my trip to {{destination}} ({{days}} days) on Xplania! Suitcase, budget and formalities all-in-one. {{url}}",
+    "shareDialogDesc": "Send a summary of your preparation (packing, budget, paperwork) to your travel companions.",
+    "shareMessage": "🌍 My preparation for {{destination}} ({{days}} days) on Xplania: packing, budget and paperwork in one place. {{url}}",
     "shareCopy": "Copy",
     "shareCopied": "Copied!",
     "shareCopyToast": "Link copied 📋",
@@ -2659,7 +2676,7 @@
         "tags": [
           "City",
           "18-22°C",
-          "Exploring"
+          "Strolling"
         ],
         "badge": "Relaxed",
         "items": [
@@ -2692,7 +2709,7 @@
         "culturalTip": "Some restaurants require smart attire. Check before you go."
       },
       "natureExploration": {
-        "title": "Nature Exploration Look",
+        "title": "Nature & hiking look",
         "context": "Hiking • Discovery",
         "tags": [
           "Nature",
@@ -2749,7 +2766,7 @@
         "culturalTip": "In some countries, business cards are exchanged with both hands."
       }
     },
-    "discoverFeatures": "Discover other features",
+    "discoverFeatures": "See my 4 preparation tools",
     "missing": {
       "title": "What might be missing",
       "subtitle": "AI compares your bag with your trip to {{destination}}.",
@@ -2813,7 +2830,7 @@
     "summaryNotes": "📝 Budget notes:",
     "summaryConstraintsLabel": "⚠️ Constraints to consider:",
     "addExpenseTitle": "Add an expense",
-    "addExpenseSubtitle": "Log your spending for real-time tracking",
+    "addExpenseSubtitle": "Log your expenses to keep track of your budget",
     "addAmount": "Amount",
     "addCategory": "Category",
     "addCategoryPh": "Pick a category",
@@ -2847,7 +2864,7 @@
       "transfer": "Bank transfer"
     },
     "trackerTitle": "Expense Tracker",
-    "trackerSubtitle": "Real-time tracking of your spending by category",
+    "trackerSubtitle": "Your expenses by category, planned and actual",
     "trackerCategory": "Category",
     "trackerPlanned": "Planned",
     "trackerSpent": "Spent",
@@ -2885,13 +2902,13 @@
     "alertsActivities": "Free activities",
     "alertsRestaurants": "Affordable restaurants",
     "alertsTransportAlt": "Transport alternatives",
-    "alertsMood": "What I suggest based on your mood",
+    "alertsMood": "What I suggest for your budget",
     "tipsTitle": "Saving tips",
     "tipsSubtitle": "Practical tips to travel smart and save",
     "tips": {
       "local": {
         "t": "Eat local",
-        "d": "Eat local to cut costs and discover real cuisine at your destination."
+        "d": "Eat local to cut costs and taste your destination's real cuisine."
       },
       "transit": {
         "t": "Public transit",
@@ -2915,7 +2932,7 @@
       },
       "walk": {
         "t": "Free walking tours",
-        "d": "Join free walking tours (tip-based) to explore without breaking the bank."
+        "d": "Join free (tip-based) walking tours to sightsee without breaking the bank."
       },
       "pass": {
         "t": "City pass",
@@ -3033,7 +3050,7 @@
       "welcome": "Hi! Your budget for {{destination}} ({{days}} days) is ready. 🎉",
       "question": "Want me to walk you through the features?",
       "yes": "Yes, show me",
-      "no": "I'll explore on my own",
+      "no": "I'd rather go on my own",
       "suggestion": "Great! Start with your detailed forecast for {{destination}} — every line is editable and the AI suggests amounts matched to local cost of living.",
       "focus": {
         "analysis": "Analysis",
@@ -3909,7 +3926,7 @@
   "exploreComp": {},
   "testimonials": {
     "tag": "They trust us",
-    "title": "What early explorers are saying",
+    "title": "What the first testers say",
     "subtitle": "Real feedback from beta testers — picked for their honesty.",
     "t1": {
       "name": "Kajinoma",
@@ -3923,7 +3940,7 @@
     },
     "t3": {
       "name": "Mélanie Garnier",
-      "role": "Early Explorers community",
+      "role": "Early testers community",
       "text": "I really liked that she talked about how much time we spend looking for travel info. I totally relate to the idea that everything is scattered and ends up being more tiring than enjoyable."
     },
     "t4": {
@@ -3933,12 +3950,12 @@
     },
     "t5": {
       "name": "Deeruven Sobaroyen",
-      "role": "Early Explorers community",
+      "role": "Early testers community",
       "text": "I love the concept of your app, never seen anything like it! You're offering a solution that cuts down both the planning time and the mental load that comes with it — it can only be beneficial."
     },
     "t6": {
       "name": "Shivdeep Singh",
-      "role": "Early Explorers community",
+      "role": "Early testers community",
       "text": "Interesting concept — positioning Xplania as a 'travel co-pilot' and focusing on the preparation phase (budget, visa, luggage) is a smart angle. Most platforms only tackle booking, so addressing the prep stage is genuinely relevant."
     }
   },
@@ -3948,11 +3965,11 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes, during the beta. You get 10 free tries per month per tool, no card, no commitment. To see what the offers will cost afterwards, check the Offers page."
+      "a": "Yes, during the beta. The 4 preparation tools are free, no card and no commitment, with up to 10 AI generations per tool per month. The \"Beta access\" page sums up what's included."
     },
     "q2": {
       "q": "What does the AI actually do?",
-      "a": "Saves you hours: it analyzes your destination, profile and preferences to generate a tailored packing list, realistic budget, local activities, visa tips, a travel story… Everything is personalized, never generic."
+      "a": "To prepare faster and better: it estimates your budget, checks your paperwork for your nationality, adapts your packing to the climate and writes cultural sheets for countries not covered yet. Everything is tied to your destination, never generic."
     },
     "q3": {
       "q": "Is my data safe?",
@@ -3960,25 +3977,25 @@
     },
     "q4": {
       "q": "Does it work offline?",
-      "a": "Offline mode is currently in development: it will let you access your journal, tracking map and steps even without signal, with automatic sync when wifi returns. Coming soon."
+      "a": "Pages you've already opened stay available offline. AI generations, weather and signing in need an Internet connection."
     },
     "q5": {
-      "q": "Can I share my trip with friends and family?",
-      "a": "Yes, for free. Public journal via link, real-time tracking share, PDF export — you choose what to make visible and to whom."
+      "q": "Can I share my preparation?",
+      "a": "Yes: from Packing you can send a summary of your preparation (packing, budget, paperwork) by email or WhatsApp, and your budget exports to PDF. You choose who gets it."
     },
     "q6": {
       "q": "When does premium launch?",
-      "a": "Premium plans are scheduled for late 2026 / early 2027. Join the premium list to get early access and an exclusive launch discount reserved for beta explorers."
+      "a": "Post-beta offers aren't set yet. Join the waiting list to hear first and get an opening discount reserved for beta testers."
     },
     "q7": {
       "q": "What is available during the beta?",
-      "a": "Every tool: Plan, Budget, Suitcase, Visa, Culture guide, Mood Explorer, Discover, Live tracking, Travel journal, Travel map and badges. Each AI tool gives 10 free tries per month. If the AI fails, the try is given back."
+      "a": "The 4 preparation tools: Budget, Visa & paperwork, Packing and the Culture guide, plus your progress dashboard. Each AI tool gives up to 10 free generations per month (AI-written culture sheets count with Packing). If the AI fails, the try is given back."
     },
     "q8": {
-      "q": "Who can see my location?",
-      "a": "Nobody, unless you turn on sharing yourself in Live tracking. You can stop it anytime, and your location stops updating as soon as tracking is off."
+      "q": "Does Xplania need my location?",
+      "a": "No. During the beta, the 4 tools work from the destination you enter when you create your trip."
     },
-    "seeOffers": "See offers and prices"
+    "seeOffers": "See what the beta includes"
   },
   "exitIntent": {
     "title": "Before you go…",
@@ -4373,8 +4390,8 @@
     "micDenied": "Microphone access denied"
   },
   "pip": {
-    "title": "Ping — your companion",
-    "welcome": "Hi! Tell me what you need — I'll point you to the right tool, or we can just chat.",
+    "title": "Ping — your preparation",
+    "welcome": "Hi! I help you get ready to leave: budget, visa, packing or cultural codes. Where shall we start?",
     "placeholder": "Ask anything…",
     "error": "Couldn't reply, try again.",
     "openLabel": "Open chat",
@@ -4532,7 +4549,7 @@
       },
       "delete": {
         "title": "Delete my account",
-        "hint": "This action is permanent. Your account, trips, badges and journals will be deleted. You can export your data above first.",
+        "hint": "This is permanent. Your account, your trips and all related data will be deleted. You can export your data above first.",
         "cta": "Delete my account",
         "confirmTitle": "Permanently delete your account?",
         "confirmDesc": "This action is irreversible. All your data will be deleted immediately.",
@@ -4586,9 +4603,9 @@
       "cta": "Join the beta"
     },
     "ctaFinal": {
-      "title": "Ready to travel differently?",
-      "subtitle": "Start your first Xplania trip in 2 minutes. Free during the beta.",
-      "cta": "Start your trip"
+      "title": "Ready to prepare your departure?",
+      "subtitle": "Create your trip and sort out budget, visa, packing and culture in a few minutes. Free during the beta.",
+      "cta": "Prepare my departure"
     }
   },
   "collapsible": {
@@ -4981,7 +4998,7 @@
       "deleteTitle": "Delete this trip?",
       "confirmDeleteNamed": "Are you sure you want to delete {{name}}?",
       "confirmDeleteGeneric": "Are you sure you want to delete this trip?",
-      "irreversibleWarning": "This action is irreversible. All related data (journal, GPS tracking, badges, linked favorites) will also be deleted.",
+      "irreversibleWarning": "This action cannot be undone. All data linked to this trip will also be deleted.",
       "cancel": "Cancel",
       "deleting": "Deleting…",
       "deletePermanently": "Delete permanently",
@@ -5095,7 +5112,7 @@
       "dialogTitle": "Delete this trip?",
       "confirmWithLabelPrefix": "Are you sure you want to delete",
       "confirmGeneric": "Are you sure you want to delete this trip? ",
-      "irreversibleWarning": "This action is irreversible. All related data (journal, GPS tracking, badges, linked favorites) will also be deleted.",
+      "irreversibleWarning": "This action cannot be undone. All data linked to this trip will also be deleted.",
       "cancel": "Cancel",
       "deleting": "Deleting…",
       "deletePermanently": "Delete permanently"
@@ -5634,28 +5651,28 @@
   },
   "journeyIntro": {
     "kicker": "Welcome to Xplania",
-    "title": "Your journey in 4 steps",
-    "subtitle": "In a few minutes, Xplania gets to know you so it can suggest trips that truly feel like you.",
+    "title": "Your preparation in 4 steps",
+    "subtitle": "In a few minutes, Xplania gathers everything you need to prepare before leaving abroad.",
     "s1": {
-      "title": "Take the Travel DNA quiz",
-      "time": "≈ 5 min",
-      "text": "React to travel photos based on what you enjoy. There are no wrong answers."
+      "title": "Create your account",
+      "time": "≈ 1 min",
+      "text": "Free during the beta, no card needed."
     },
     "s2": {
-      "title": "Discover your profile",
-      "time": "≈ 5 min",
-      "text": "Your answers reveal your Travel DNA and the tools that best match the way you travel."
+      "title": "Enter your trip",
+      "time": "≈ 2 min",
+      "text": "Destination, dates, nationality, approximate budget and type of stay: Erasmus, internship or trip."
     },
     "s3": {
-      "title": "Try the packs",
-      "text": "After signing up, try the pack tools: budget, packing, travel formalities and trip planning."
+      "title": "Prepare with the 4 tools",
+      "text": "Budget, visa, packing and culture guide adapt automatically to your trip."
     },
     "s4": {
-      "title": "Explore all of Xplania",
-      "text": "Open your space: travel journal, challenges and badges, Mood Explorer, local discoveries and much more."
+      "title": "Track your progress",
+      "text": "Your dashboard shows where you stand in each tool before departure."
     },
     "cta": "Let's go!",
-    "note": "Free, no sign-up needed to start. You can leave at any time."
+    "note": "Free during the beta. You can leave at any time."
   },
   "gmaps": {
     "info": {
@@ -5765,10 +5782,10 @@
   },
   "vsChatgpt": {
     "metaTitle": "Xplania vs ChatGPT — the alternative to plan your trip",
-    "metaDescription": "ChatGPT generates answers. Xplania supports your whole trip: itinerary, budget, packing, live tracking and travel journal. An honest comparison.",
+    "metaDescription": "ChatGPT generates answers. Xplania helps you organise your trip ahead of time: budget, visa, packing and cultural codes. An honest comparison.",
     "badge": "Comparison",
     "h1": "Xplania, the ChatGPT alternative to plan your trip",
-    "intro": "Xplania is an AI travel assistant built for travelers who want to prepare and live their trip without juggling ten different tools: personalized itinerary, real-time budget tracking, weather-based packing, live tracking during the trip, and an automatic travel journal. It's free during the beta. Xplania was founded by Juliette Noel, in France.",
+    "intro": "Xplania is an AI assistant for people going abroad who want to organise their departure without juggling ten tools: a realistic budget, visa and paperwork for your nationality, a climate-ready packing list and a guide to the country's cultural codes. It's free during the beta. Xplania was founded by Juliette Noel, in France.",
     "tagline": "ChatGPT generates. Xplania accompanies.",
     "tableTitle": "Detailed comparison",
     "table": {
@@ -5787,9 +5804,9 @@
           "xplania": "Traveler DNA quiz to tailor recommendations"
         },
         "budget": {
-          "label": "Real-time budget tracking",
-          "chatgpt": "Can estimate a budget on request, no tracking",
-          "xplania": "Budget tracked in real time during the trip"
+          "label": "Budget before departure",
+          "chatgpt": "Can estimate a budget on request, without keeping it",
+          "xplania": "Budget estimated for the destination, with planned-expense tracking"
         },
         "visa": {
           "label": "Visa / travel requirements",
@@ -5797,9 +5814,9 @@
           "xplania": "Built-in visa and requirements guide for your trip"
         },
         "valise": {
-          "label": "Packing based on weather and activities",
+          "label": "Packing for the weather and the stay",
           "chatgpt": "Can list general ideas on request",
-          "xplania": "Packing checklist tailored to weather and planned activities"
+          "xplania": "Packing checklist adapted to the weather and type of stay"
         },
         "gps": {
           "label": "Live GPS tracking during the trip",
@@ -5817,14 +5834,24 @@
           "xplania": "Mood Explorer: ideas based on how you feel right now"
         },
         "memoire": {
-          "label": "Remembers your tastes across trips",
-          "chatgpt": "No persistent memory across trips",
-          "xplania": "Xplania remembers your profile and preferences from trip to trip"
+          "label": "Memory of your trip",
+          "chatgpt": "No memory organised per trip",
+          "xplania": "Xplania keeps your trip: the 4 tools reuse your details without retyping"
         },
         "alertes": {
-          "label": "T-7 / weather email alerts",
+          "label": "Email reminders before departure",
           "chatgpt": "Not available",
-          "xplania": "Email alerts before departure and about the weather"
+          "xplania": "Reminder 7 days before departure and weather alert to adapt your packing"
+        },
+        "culture": {
+          "label": "The country's cultural codes",
+          "chatgpt": "Can give general advice on request",
+          "xplania": "Culture guide per country: dress, food, gestures, real-life situations and mini-quiz"
+        },
+        "progression": {
+          "label": "Progress of your preparation",
+          "chatgpt": "Not available",
+          "xplania": "Dashboard with your progress in each tool"
         }
       }
     },
@@ -5833,14 +5860,14 @@
       "chatgptTitle": "ChatGPT",
       "chatgptText": "Useful for a quick question, writing a text, or brainstorming travel ideas through conversation.",
       "xplaniaTitle": "Xplania",
-      "xplaniaText": "Useful to actually prepare and live your trip: a structured itinerary, tracked budget, packing, requirements, live tracking and an automatic travel journal, all free during the beta."
+      "xplaniaText": "Useful to actually organise your departure: budget, visa, packing and cultural codes around your trip, all free during the beta."
     },
     "faq": {
       "title": "Frequently asked questions",
       "items": {
         "q1": {
           "q": "Does Xplania replace ChatGPT?",
-          "a": "No. ChatGPT is a general-purpose conversational assistant. Xplania is a dedicated tool for organizing and tracking a trip in practice, with features ChatGPT doesn't offer, like live GPS tracking or an automatic travel journal."
+          "a": "No. ChatGPT is a general chat assistant. Xplania is a tool dedicated to preparing to go abroad, with what ChatGPT doesn't offer: a paperwork checklist and a packing list you tick off as you prepare."
         },
         "q2": {
           "q": "Is Xplania free?",
@@ -5852,11 +5879,11 @@
         },
         "q4": {
           "q": "Can I use ChatGPT and Xplania together?",
-          "a": "Yes, some travelers use ChatGPT for quick questions and Xplania to organize and track their trip end to end."
+          "a": "Yes, some travelers use ChatGPT for one-off questions and Xplania to organise their departure from A to Z."
         },
         "q5": {
-          "q": "Does Xplania have an automatic travel journal?",
-          "a": "Yes, Xplania automatically generates a travel journal during your trip, which ChatGPT does not offer."
+          "q": "Does Xplania help me understand the local culture?",
+          "a": "Yes: the culture guide covers the country's codes (dress, food, gestures, greetings), with real-life situations and a mini-quiz."
         }
       }
     },
@@ -5944,51 +5971,47 @@
   },
   "schools": {
     "metaTitle": "Xplania for schools and tourism offices",
-    "metaDescription": "The travel copilot that supports your students throughout their mobility. Let's test it together with a pilot.",
+    "metaDescription": "The tool that helps your students prepare their mobility: budget, visa, packing and culture. Let's test it together with a pilot.",
     "badge": "Schools · Tourism offices",
-    "title": "The travel copilot that supports your students throughout their whole experience",
-    "subtitle": "Less stress, more autonomy and a better experience. Offer your students double support: your team, and Xplania 24/7.",
+    "title": "The tool that helps your students prepare to go abroad",
+    "subtitle": "Less stress, more autonomy before departure. Offer two kinds of support: your team, and Xplania 24/7 for budget, visa, packing and culture.",
     "ctaPrimary": "Propose a pilot",
     "ctaSecondary": "See the app",
     "problemTitle": "Getting mobility approved is only the start of the journey",
-    "problemSubtitle": "Once departure is approved, the student still has to think of everything.",
+    "problemSubtitle": "Once the mobility is approved, the student still has everything to prepare.",
     "problems": [
-      "Visa",
-      "Housing",
+      "Visa & paperwork",
       "Budget",
-      "Transport",
       "Packing",
-      "Integration",
-      "Unexpected events",
-      "Cultural adaptation",
-      "Exploring"
+      "Cultural codes",
+      "Forgotten documents",
+      "Scattered information"
     ],
     "problemQuote": "The information exists, but it's scattered, hard to find, sometimes wrong and never centralized: school, internet, books, groups, forums, apps…",
     "phasesTitle": "Xplania simplifies every step",
     "phases": [
       {
-        "title": "Before: leave prepared",
+        "title": "Budget & paperwork",
         "items": [
-          "Visa guide",
-          "Packing guide",
           "Budget guide",
-          "Everything centralized, ahead of time"
+          "Visa & paperwork guide",
+          "Document checklist"
         ]
       },
       {
-        "title": "During: discover and immerse",
+        "title": "Packing & culture",
         "items": [
-          "Live tracking and handling the unexpected",
-          "Cultural guide",
-          "Recommendations and discoveries"
+          "Packing list for the climate",
+          "Cultural immersion guide",
+          "Real-life situations and mini-quiz"
         ]
       },
       {
-        "title": "After: relive the moment",
+        "title": "Preparation tracking",
         "items": [
-          "Travel journal",
-          "Share the experience artistically",
-          "Pass on and showcase the mobility"
+          "A personal dashboard",
+          "Progress in each tool",
+          "An email reminder 7 days before departure"
         ]
       }
     ],
@@ -5996,13 +6019,11 @@
     "benefits": [
       "Less searching",
       "Less planning alone",
-      "Fewer bad surprises",
-      "Less homesickness",
-      "More exploring",
-      "Meeting people",
-      "Understanding the environment",
-      "Remembering",
-      "Showcasing their mobility"
+      "Forget nothing",
+      "Leave reassured",
+      "A realistic budget",
+      "Clear paperwork",
+      "Understand local codes"
     ],
     "teamQuote": "AI will not replace your support, but it can complement it.",
     "teamTitle": "Xplania helps you support your students",
@@ -6042,7 +6063,7 @@
           "Company and professional integration",
           "Agreement and more paperwork",
           "More independent research",
-          "Discovery outside student life"
+          "Life outside student routine"
         ]
       }
     ],
@@ -6051,7 +6072,7 @@
     "pilotSubtitle": "Let's test first before deciding what to roll out.",
     "pilotSteps": [
       "Select a sample of students",
-      "Let them discover Xplania",
+      "Have them test Xplania",
       "Test before the mobility",
       "Measure results with a form",
       "Improve and adapt before rollout"
@@ -6065,7 +6086,7 @@
           "Extend your support",
           "Better understand needs",
           "Showcase experiences",
-          "Enrich the time abroad"
+          "Better-prepared departures"
         ]
       },
       {
@@ -6074,7 +6095,7 @@
           "Less mental load",
           "More autonomy",
           "More peace of mind",
-          "More immersion and joy"
+          "A calmer departure"
         ]
       },
       {
@@ -6121,7 +6142,8 @@
       "discover": "Discover",
       "suivi": "Tracking",
       "carnet": "Journal",
-      "badges": "Badges"
+      "badges": "Badges",
+      "culture": "Culture guide"
     },
     "contexts": {
       "erasmus": "Erasmus / exchange",
@@ -6224,7 +6246,7 @@
     "howTitle": "How does it work?",
     "howStep1Title": "Pick your country",
     "howStep1Desc": "Type the country name or pick one of the most requested.",
-    "howStep2Title": "Explore the topics",
+    "howStep2Title": "Go through the topics",
     "howStep2Desc": "Dress, table, greetings… open a topic to see what to do and avoid.",
     "howStep3Title": "Mark “understood”",
     "howStep3Desc": "Check off each topic you read to track your progress.",
@@ -6234,7 +6256,7 @@
     "featured": "Ready-made sheets:",
     "notFoundTitle": "Xplania is preparing this info 🧭",
     "notFoundDesc": "We didn't recognise this country yet. Check the spelling or pick a country from the list: our team adds to the guide every week.",
-    "pillarPending": "This topic is still being prepared for this country. Explore the other topics meanwhile, we're adding it soon!",
+    "pillarPending": "This topic is still being prepared for this country. Check the other topics meanwhile, we'll add it very soon!",
     "welcomeFeatured": "Sheet checked by Xplania: several topics are ready, the others fill in with one click.",
     "welcomeOther": "Each topic is prepared for this country the first time it's opened, then kept for everyone.",
     "progress": "{{done}} / {{total}} topics understood",
@@ -6253,7 +6275,7 @@
     "homeVsHere": "Home / Here",
     "evolving": "Customs evolve: observe and adapt. Every person is different.",
     "aiNote": "Content prepared by Xplania AI: use it as a general guide.",
-    "otherTools": "Health, safety and paperwork:",
+    "otherTools": "To complete your preparation:",
     "pillars": {
       "greetings": "Greetings & politeness",
       "food": "Food & table",
@@ -6277,7 +6299,9 @@
     "quizDo": "Which of these is recommended?",
     "quizScore": "{{score}} / {{total}} correct.",
     "quizPerfect": "Well done, you've mastered this topic!",
-    "quizKeep": "Reread the tips and try again!"
+    "quizKeep": "Reread the tips and try again!",
+    "heroKicker": "Prepare your arrival",
+    "contextKicker": "Your destination"
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
@@ -6290,5 +6314,84 @@
     "send": "Send report",
     "thanks": "Thanks, your report was sent!",
     "error": "Sending failed, please retry."
+  },
+  "prepDashboard": {
+    "kicker": "My preparation space",
+    "subtitle": "Budget, visa, packing and culture: everything to prepare before you leave, in one place.",
+    "newTrip": "New trip",
+    "firstStepKicker": "Step 1",
+    "firstStepTitle": "Create your trip",
+    "firstStepDesc": "A few details are enough: the 4 preparation tools then adapt automatically.",
+    "myTrips": "My trips",
+    "currentTrip": "Trip in preparation",
+    "durationDays_one": "{{count}} day",
+    "durationDays_other": "{{count}} days",
+    "noDates": "Dates to be confirmed",
+    "overall": "Overall preparation",
+    "modulesTitle": "Your 4 preparation tools",
+    "start": "Start",
+    "continue": "Continue",
+    "offersHint": "Free access during the beta —",
+    "progress": {
+      "budget": "{{done}}/{{total}} steps (budget estimated, expenses noted)",
+      "visa": "{{done}}/{{total}} formalities ticked",
+      "valise": "{{done}}/{{total}} items ticked",
+      "culture": "{{done}}/{{total}} topics understood",
+      "notStarted": "Not started yet"
+    },
+    "modules": {
+      "budget": {
+        "title": "Budget",
+        "desc": "Estimate and plan your expenses"
+      },
+      "visa": {
+        "title": "Visa & paperwork",
+        "desc": "Visa, documents and health for your nationality"
+      },
+      "valise": {
+        "title": "Packing",
+        "desc": "A list adapted to the climate and your stay"
+      },
+      "culture": {
+        "title": "Culture guide",
+        "desc": "Dress, food, gestures and customs"
+      }
+    }
+  },
+  "prepTrip": {
+    "destination": "Destination country",
+    "destinationPlaceholder": "E.g. Portugal",
+    "city": "City (optional)",
+    "cityPlaceholder": "E.g. Lisbon",
+    "departure": "Departure date",
+    "return": "Return date",
+    "duration": "Length of stay (days)",
+    "durationPlaceholder": "E.g. 150",
+    "durationHint": "No exact dates yet? Enter the approximate length.",
+    "nationality": "Your nationality (for the visa)",
+    "budget": "Approximate budget (€)",
+    "budgetPlaceholder": "E.g. 4000",
+    "stayType": "Type of stay",
+    "stay": {
+      "erasmus": "Erasmus / exchange",
+      "internship": "Internship",
+      "trip": "Trip"
+    },
+    "submit": "Create my trip",
+    "created": "Your {{destination}} trip is ready to be prepared!"
+  },
+  "betaOffer": {
+    "tag": "ESTICE beta",
+    "title": "Free access during the beta",
+    "subtitle": "During the beta, the 4 preparation tools are free for student testers. No card, no commitment.",
+    "planName": "ESTICE beta",
+    "planTagline": "Everything you need to prepare your departure",
+    "price": "€0",
+    "inc1": "The 4 tools: Budget, Visa & paperwork, Packing and Culture guide",
+    "inc2": "Up to 10 AI generations per tool per month, try given back if the AI fails",
+    "inc3": "A dashboard with your progress and an email reminder 7 days before departure",
+    "inc4": "Ping, your preparation assistant, in French and English",
+    "cta": "Start my preparation",
+    "after": "Post-beta offers will be announced later."
   }
 }

@@ -16,8 +16,9 @@ import SecuritySettings from "@/components/parametres/SecuritySettings";
 import NotificationsSettings from "@/components/parametres/NotificationsSettings";
 import RevokeSharesCard from "@/components/parametres/RevokeSharesCard";
 import DataSettings from "@/components/parametres/DataSettings";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
-const TABS = [
+const TABS_ALL = [
   { value: "compte", icon: User, key: "settings.tabs.account" },
   { value: "preferences", icon: SettingsIcon, key: "settings.tabs.preferences" },
   { value: "notifications", icon: Bell, key: "settings.tabs.notifications" },
@@ -26,7 +27,9 @@ const TABS = [
   { value: "donnees", icon: Database, key: "settings.tabs.data" },
 ] as const;
 
-type TabValue = typeof TABS[number]["value"];
+type TabValue = typeof TABS_ALL[number]["value"];
+// The privacy tab only holds leaderboard visibility (gamification).
+const TABS = TABS_ALL.filter((tt) => tt.value !== "confidentialite" || FEATURE_FLAGS.ENABLE_GAMIFICATION);
 
 const Parametres = () => {
   const { t } = useTranslation();
@@ -49,7 +52,7 @@ const Parametres = () => {
         </div>
 
         <Tabs value={tab} onValueChange={onChange} className="space-y-5">
-          <TabsList className="grid grid-cols-3 sm:grid-cols-6 h-auto p-1 gap-1 bg-muted/40">
+          <TabsList className={`grid grid-cols-3 ${TABS.length === 6 ? "sm:grid-cols-6" : "sm:grid-cols-5"} h-auto p-1 gap-1 bg-muted/40`}>
             {TABS.map((tt) => {
               const Icon = tt.icon;
               return (
@@ -73,7 +76,7 @@ const Parametres = () => {
 
           <TabsContent value="preferences" className="space-y-5 mt-0">
             <ProfilePreferences />
-            <CategoryPickerCard />
+            {FEATURE_FLAGS.ENABLE_GAMIFICATION && <CategoryPickerCard />}
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-5 mt-0">
@@ -81,12 +84,12 @@ const Parametres = () => {
           </TabsContent>
 
           <TabsContent value="confidentialite" className="space-y-5 mt-0">
-            <VisibilitySettingCard />
+            {FEATURE_FLAGS.ENABLE_GAMIFICATION && <VisibilitySettingCard />}
           </TabsContent>
 
           <TabsContent value="securite" className="space-y-5 mt-0">
             <SecuritySettings />
-            <RevokeSharesCard />
+            {(FEATURE_FLAGS.ENABLE_TRAVEL_JOURNAL || FEATURE_FLAGS.ENABLE_LIVE_TRACKING || FEATURE_FLAGS.ENABLE_DISCOVER) && <RevokeSharesCard />}
           </TabsContent>
 
           <TabsContent value="donnees" className="space-y-5 mt-0">

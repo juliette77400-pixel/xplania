@@ -20,10 +20,17 @@ import AdminGate from "./components/admin/AdminGate";
 import HelpButton from "@/components/shared/HelpButton";
 const CookieBanner = lazy(() => import("./components/shared/CookieBanner"));
 import RouteTracker from "./components/shared/RouteTracker";
+import { FEATURE_FLAGS, PREPARATION_HOME, type FeatureFlag } from "@/config/featureFlags";
+
+/** Renders the page only when its module is on; otherwise sends the visitor
+ *  to the preparation dashboard. The lazy page is never rendered (so never
+ *  downloaded) while its flag is off. */
+const gate = (flag: FeatureFlag, element: JSX.Element) =>
+  FEATURE_FLAGS[flag] ? element : <Navigate to={PREPARATION_HOME} replace />;
 
 // The Tinder deck is now the anonymous landing screen at "/". Keep it eager
 // so first paint is fast. The classic marketing landing moves to "/home".
-import TravelerProfileOnboarding from "./pages/TravelerProfileOnboarding.tsx";
+const TravelerProfileOnboarding = lazy(() => import("./pages/TravelerProfileOnboarding.tsx"));
 const Index = lazy(() => import("./pages/Index.tsx"));
 
 // All other routes are code-split so their JS (and heavy libs such as
@@ -109,55 +116,55 @@ const App = () => (
             <RouteMeta />
             <ReportAiButton />
             <RouteTracker />
-            <OnboardingSyncGate />
+            {FEATURE_FLAGS.ENABLE_TRAVELER_DNA && <OnboardingSyncGate />}
             <AdminGate />
             <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* Anonymous Tinder deck is now the landing page. */}
               <Route path="/" element={<Index />} />
-              <Route path="/parcours" element={<TravelerProfileOnboarding />} />
+              <Route path="/parcours" element={gate("ENABLE_TRAVELER_DNA", <TravelerProfileOnboarding />)} />
               <Route path="/home" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             {/* Legacy onboarding routes (kept public for backward compat) */}
-            <Route path="/welcome" element={<OnbWelcome />} />
-            <Route path="/onboarding/besoin" element={<OnbBesoin />} />
-            <Route path="/onboarding/qualif" element={<OnbQualif />} />
-            <Route path="/onboarding/signup" element={<OnbSignup />} />
+            <Route path="/welcome" element={gate("ENABLE_TRAVELER_DNA", <OnbWelcome />)} />
+            <Route path="/onboarding/besoin" element={gate("ENABLE_TRAVELER_DNA", <OnbBesoin />)} />
+            <Route path="/onboarding/qualif" element={gate("ENABLE_TRAVELER_DNA", <OnbQualif />)} />
+            <Route path="/onboarding/signup" element={gate("ENABLE_TRAVELER_DNA", <OnbSignup />)} />
             {/* The Tinder deck lives at "/" now — keep this legacy path as a redirect. */}
-            <Route path="/profil-voyageur" element={<TravelerProfileOnboarding />} />
-            <Route path="/profil-voyageur/resultat" element={<TravelerProfileResult />} />
-            <Route path="/profil-voyageur/features" element={<ProtectedRoute skipOnboarding><OnbFeatures /></ProtectedRoute>} />
-            <Route path="/profil-voyageur/essai" element={<ProtectedRoute skipOnboarding><OnbEssai /></ProtectedRoute>} />
+            <Route path="/profil-voyageur" element={gate("ENABLE_TRAVELER_DNA", <TravelerProfileOnboarding />)} />
+            <Route path="/profil-voyageur/resultat" element={gate("ENABLE_TRAVELER_DNA", <TravelerProfileResult />)} />
+            <Route path="/profil-voyageur/features" element={gate("ENABLE_TRAVELER_DNA", <ProtectedRoute skipOnboarding><OnbFeatures /></ProtectedRoute>)} />
+            <Route path="/profil-voyageur/essai" element={gate("ENABLE_TRAVELER_DNA", <ProtectedRoute skipOnboarding><OnbEssai /></ProtectedRoute>)} />
 
-            <Route path="/profil-voyageur/ajuster" element={<ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>} />
-            <Route path="/destinations" element={<ProtectedRoute><Destinations /></ProtectedRoute>} />
-            <Route path="/hidden-gems" element={<ProtectedRoute><HiddenGems /></ProtectedRoute>} />
-            <Route path="/guide-budget" element={<GuideBudget />} />
-            <Route path="/guide-valise" element={<ProtectedRoute><GuideValise /></ProtectedRoute>} />
-            <Route path="/guide-visa" element={<GuideVisa />} />
-            <Route path="/guide-culture" element={<GuideCulture />} />
+            <Route path="/profil-voyageur/ajuster" element={gate("ENABLE_TRAVELER_DNA", <ProtectedRoute><TravelerProfileAdjust /></ProtectedRoute>)} />
+            <Route path="/destinations" element={gate("ENABLE_DISCOVER", <ProtectedRoute><Destinations /></ProtectedRoute>)} />
+            <Route path="/hidden-gems" element={gate("ENABLE_DISCOVER", <ProtectedRoute><HiddenGems /></ProtectedRoute>)} />
+            <Route path="/guide-budget" element={gate("ENABLE_BUDGET_GUIDE", <GuideBudget />)} />
+            <Route path="/guide-valise" element={gate("ENABLE_PACKING_LIST", <ProtectedRoute><GuideValise /></ProtectedRoute>)} />
+            <Route path="/guide-visa" element={gate("ENABLE_VISA_GUIDE", <GuideVisa />)} />
+            <Route path="/guide-culture" element={gate("ENABLE_CULTURAL_GUIDE", <GuideCulture />)} />
             <Route path="/offres" element={<Offres />} />
-            <Route path="/carnets" element={<ProtectedRoute><Carnets /></ProtectedRoute>} />
-            <Route path="/carnet/:tripId" element={<ProtectedRoute><Carnet /></ProtectedRoute>} />
-            <Route path="/carnet/public/:slug" element={<PublicCarnet />} />
-            <Route path="/liste/:slug" element={<PublicList />} />
-            <Route path="/suivi" element={<ProtectedRoute><Suivi /></ProtectedRoute>} />
-            <Route path="/suivi/:tripId" element={<ProtectedRoute><SuiviTrip /></ProtectedRoute>} />
-            <Route path="/suivi/public/:slug" element={<PublicSuivi />} />
-            <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
-            <Route path="/explore/:tripId" element={<ProtectedRoute><ExploreTrip /></ProtectedRoute>} />
-            <Route path="/mood" element={<ProtectedRoute><MoodExplorer /></ProtectedRoute>} />
-            <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
-            <Route path="/gamification" element={<ProtectedRoute><Gamification /></ProtectedRoute>} />
-            <Route path="/admin/badges" element={<ProtectedRoute><AdminBadges /></ProtectedRoute>} />
+            <Route path="/carnets" element={gate("ENABLE_TRAVEL_JOURNAL", <ProtectedRoute><Carnets /></ProtectedRoute>)} />
+            <Route path="/carnet/:tripId" element={gate("ENABLE_TRAVEL_JOURNAL", <ProtectedRoute><Carnet /></ProtectedRoute>)} />
+            <Route path="/carnet/public/:slug" element={gate("ENABLE_TRAVEL_JOURNAL", <PublicCarnet />)} />
+            <Route path="/liste/:slug" element={gate("ENABLE_DISCOVER", <PublicList />)} />
+            <Route path="/suivi" element={gate("ENABLE_LIVE_TRACKING", <ProtectedRoute><Suivi /></ProtectedRoute>)} />
+            <Route path="/suivi/:tripId" element={gate("ENABLE_LIVE_TRACKING", <ProtectedRoute><SuiviTrip /></ProtectedRoute>)} />
+            <Route path="/suivi/public/:slug" element={gate("ENABLE_LIVE_TRACKING", <PublicSuivi />)} />
+            <Route path="/explore" element={gate("ENABLE_AI_ITINERARY", <ProtectedRoute><Explore /></ProtectedRoute>)} />
+            <Route path="/explore/:tripId" element={gate("ENABLE_AI_ITINERARY", <ProtectedRoute><ExploreTrip /></ProtectedRoute>)} />
+            <Route path="/mood" element={gate("ENABLE_MOOD_EXPLORER", <ProtectedRoute><MoodExplorer /></ProtectedRoute>)} />
+            <Route path="/discover" element={gate("ENABLE_DISCOVER", <ProtectedRoute><Discover /></ProtectedRoute>)} />
+            <Route path="/gamification" element={gate("ENABLE_GAMIFICATION", <ProtectedRoute><Gamification /></ProtectedRoute>)} />
+            <Route path="/admin/badges" element={gate("ENABLE_GAMIFICATION", <ProtectedRoute><AdminBadges /></ProtectedRoute>)} />
             <Route path="/admin/seed-rag" element={<ProtectedRoute><AdminSeedRag /></ProtectedRoute>} />
             <Route path="/admin/stats" element={<ProtectedRoute><AdminStats /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
-            <Route path="/blog/how-to-plan-a-trip-with-ai" element={<GuidePlanTrip />} />
+            <Route path="/blog/how-to-plan-a-trip-with-ai" element={gate("ENABLE_AI_ITINERARY", <GuidePlanTrip />)} />
             <Route path="/xplania-vs-chatgpt" element={<XplaniaVsChatgpt />} />
             {/* Canonical FR routes. EN duplicate slugs redirect to the FR canonical URL. */}
             <Route path="/a-propos" element={<About />} />

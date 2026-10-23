@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { isPathEnabled } from "@/config/featureFlags";
 import { useTranslation } from "react-i18next";
 import { MessageCircleHeart } from "lucide-react";
 import { toast } from "sonner";
@@ -10,7 +11,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { browserLang } from "@/lib/browser-locale";
 
-const FEATURES = ["itinerary", "budget", "visa", "valise", "discover", "suivi", "carnet", "badges"];
+const FEATURE_ROUTES: Record<string, string> = {
+  itinerary: "/explore", budget: "/guide-budget", visa: "/guide-visa", valise: "/guide-valise",
+  culture: "/guide-culture", discover: "/discover", suivi: "/suivi", carnet: "/carnets", badges: "/gamification",
+};
+// Only tools that are switched on can be picked as "favorite".
+const FEATURES = Object.keys(FEATURE_ROUTES).filter((f) => isPathEnabled(FEATURE_ROUTES[f]));
 const CONTEXTS = ["erasmus", "stage", "vacances", "autre"];
 const DISMISS_KEY = "xplania-survey-dismissed-at";
 const SNOOZE_MS = 3 * 24 * 60 * 60 * 1000;

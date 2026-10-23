@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Wallet, FileText, Briefcase, ArrowLeft } from "lucide-react";
+import { Wallet, FileText, Briefcase, ArrowLeft, Globe2 } from "lucide-react";
+import { isPathEnabled } from "@/config/featureFlags";
 
 const ModuleNavbar = () => {
   const { pathname } = useLocation();
@@ -11,14 +12,15 @@ const ModuleNavbar = () => {
     { path: "/guide-budget", label: t("moduleNav.budget"), icon: Wallet, emoji: "💰" },
     { path: "/guide-visa", label: t("moduleNav.visa"), icon: FileText, emoji: "📋" },
     { path: "/guide-valise", label: t("moduleNav.valise"), icon: Briefcase, emoji: "🧳" },
-  ];
+    { path: "/guide-culture", label: t("appNav.culture"), icon: Globe2, emoji: "🌏" },
+  ].filter((m) => isPathEnabled(m.path));
 
   return (
     <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
           <Link
-            to="/home#create"
+            to="/app"
             className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors shrink-0"
           >
             <ArrowLeft className="w-4 h-4 text-foreground" />

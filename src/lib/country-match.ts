@@ -1,0 +1,24 @@
+import { countryList } from "@/lib/countries";
+
+export const normCountry = (s: string) =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+
+const ALIASES: Record<string, string> = {
+  angleterre: "GB", "royaume-uni": "GB", england: "GB", uk: "GB", "united kingdom": "GB", ecosse: "GB",
+  usa: "US", "etats-unis": "US", amerique: "US", "united states": "US", japan: "JP", china: "CN", brazil: "BR",
+  mexico: "MX", spain: "ES", poland: "PL", netherlands: "NL", hollande: "NL", holland: "NL", australia: "AU", germany: "DE",
+};
+
+/** Resolves free text (country name, alias or ISO code) to an ISO country code. */
+export function findCountry(q: string | null | undefined): string | null {
+  if (!q) return null;
+  const n = normCountry(q);
+  if (!n) return null;
+  if (ALIASES[n]) return ALIASES[n];
+  const byCode = countryList.find((c) => c.code.toLowerCase() === n);
+  if (byCode) return byCode.code;
+  const exact = countryList.find((c) => normCountry(c.name) === n);
+  if (exact) return exact.code;
+  const starts = countryList.filter((c) => normCountry(c.name).startsWith(n));
+  return starts.length === 1 ? starts[0].code : null;
+}

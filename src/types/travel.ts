@@ -63,6 +63,12 @@ export interface TravelFormData {
 
   // Section 10 - Inspirations
   inspirations: string;
+
+  // Beta preparation form (optional so older trips stay valid)
+  /** ISO code of the traveler's nationality, used by the Visa guide. */
+  nationality?: string;
+  /** "erasmus" | "internship" | "trip" */
+  stayType?: string;
 }
 
 export interface WeatherData {

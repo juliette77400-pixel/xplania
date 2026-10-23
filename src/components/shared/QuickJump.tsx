@@ -4,6 +4,7 @@ import { Globe2,
   Compass, Heart, Map, Activity, Briefcase, BookOpen, Wallet, FileText, Sparkles, Plane,
 } from "lucide-react";
 import { useActiveTrip } from "@/stores/useActiveTrip";
+import { isPathEnabled } from "@/config/featureFlags";
 
 interface JumpItem {
   to: string;
@@ -16,7 +17,7 @@ interface JumpItem {
   matchPrefix: string;
 }
 
-const ALL: JumpItem[] = [
+const ALL_ITEMS: JumpItem[] = [
   { to: "/discover",     matchPrefix: "/discover",     labelKey: "appNav.discover", emoji: "🧭", icon: Compass,   color: "from-cyan-500/20 to-blue-500/20",     descKey: "quickJump.descDiscover" },
   { to: "/mood",         matchPrefix: "/mood",         labelKey: "appNav.mood",     emoji: "💫", icon: Heart,     color: "from-pink-500/20 to-purple-500/20",   descKey: "quickJump.descMood" },
   { to: "/explore",      matchPrefix: "/explore",      contextual: (id) => `/explore/${id}`, labelKey: "appNav.explore", emoji: "🗺️", icon: Map, color: "from-violet-500/20 to-indigo-500/20", descKey: "quickJump.descExplore" },
@@ -27,6 +28,11 @@ const ALL: JumpItem[] = [
   { to: "/guide-visa",   matchPrefix: "/guide-visa",   labelKey: "appNav.visa",     emoji: "📋", icon: FileText,  color: "from-sky-500/20 to-cyan-500/20",      descKey: "quickJump.descVisa" },
   { to: "/guide-culture", matchPrefix: "/guide-culture", labelKey: "appNav.culture", emoji: "🌏", icon: Globe2, color: "from-teal-500/20 to-cyan-500/20", descKey: "quickJump.descCulture" },
 ];
+
+// Preparation tools first; hidden modules (feature flags) are dropped.
+const ALL = [...ALL_ITEMS]
+  .sort((a, b) => Number(b.to.startsWith("/guide-")) - Number(a.to.startsWith("/guide-")))
+  .filter((it) => isPathEnabled(it.to));
 
 interface Props {
   title?: string;
