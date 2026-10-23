@@ -19,7 +19,7 @@ import { usePlanStore } from "@/stores/usePlanStore";
 import { Progress } from "@/components/ui/progress";
 import WaitlistDialog from "@/components/xplania/WaitlistDialog";
 import BetaAccessOffer from "@/components/xplania/BetaAccessOffer";
-import { FEATURE_FLAGS } from "@/config/featureFlags";
+import { FEATURE_FLAGS, isPathEnabled } from "@/config/featureFlags";
 
 type BillingCycle = "monthly" | "yearly" | "season3" | "season6" | "perTrip";
 
@@ -86,6 +86,21 @@ const triplePacks: { ids: PackDef["id"][]; price: number }[] = [
   { ids: ["admin", "creatif", "intercultural"], price: 15.99 },
   { ids: ["ia", "admin", "creatif"], price: 20.49 },
 ];
+
+// Beta: only packs whose tools are switched on are offered (feature flags).
+const PACK_PATHS: Record<Exclude<PackDef["id"], "all">, string[]> = {
+  admin: ["/guide-budget", "/guide-visa", "/guide-valise"],
+  intercultural: ["/guide-culture"],
+  creatif: ["/carnets", "/mood", "/gamification"],
+  ia: ["/explore"],
+};
+const isPackAvailable = (id: PackDef["id"]): boolean =>
+  id === "all"
+    ? (Object.keys(PACK_PATHS) as Array<keyof typeof PACK_PATHS>).every((k) => isPackAvailable(k))
+    : PACK_PATHS[id].every((p) => isPathEnabled(p));
+const visiblePacks = packs.filter((p) => isPackAvailable(p.id));
+const visibleDoublePacks = doublePacks.filter((c) => c.ids.every(isPackAvailable));
+const visibleTriplePacks = triplePacks.filter((c) => c.ids.every(isPackAvailable));
 
 const PaidPlans = () => {
   const { t, i18n } = useTranslation();
@@ -221,8 +236,8 @@ const PaidPlans = () => {
             <div className="mb-6" />
           )}
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {packs.map((pack, i) => (
+          <div className={`grid gap-4 sm:grid-cols-2 ${visiblePacks.length > 2 ? "lg:grid-cols-3" : "mx-auto max-w-4xl"}`}>
+            {visiblePacks.map((pack, i) => (
               <motion.div
                 key={pack.id}
                 initial={{ opacity: 0, y: 15 }}
@@ -306,8 +321,8 @@ const PaidPlans = () => {
           </div>
         </section>
 
-        {/* COMBO DISCOUNTS */}
-        <section className="mt-14">
+        {/* COMBO DISCOUNTS — only when every pack of a combo is available */}
+        {(visibleDoublePacks.length > 0 || visibleTriplePacks.length > 0) && <section className="mt-14">
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold mb-3">
               <Layers className="w-3.5 h-3.5" />
@@ -330,7 +345,7 @@ const PaidPlans = () => {
                 </span>
               </div>
               <ul className="space-y-2.5">
-                {doublePacks.map((p, idx) => {
+                {visibleDoublePacks.map((p, idx) => {
                   const name = p.ids.map(packName).join(" + ");
                   return (
                     <li
@@ -355,7 +370,7 @@ const PaidPlans = () => {
                 </span>
               </div>
               <ul className="space-y-2.5">
-                {triplePacks.map((p, idx) => {
+                {visibleTriplePacks.map((p, idx) => {
                   const name = p.ids.map(packName).join(" + ");
                   return (
                     <li
@@ -372,7 +387,7 @@ const PaidPlans = () => {
               </ul>
             </div>
           </div>
-        </section>
+        </section>}
 
         <p className="text-center text-xs text-muted-foreground mt-10">
           {t("offres.betaNote")}
