@@ -1392,7 +1392,8 @@
         "f3": "Économie d'environ 8€/mois par rapport à l'achat séparé"
       }
     },
-    "freeRemainingHint": "Essais gratuits restants ce mois-ci, par outil (les fiches du guide interculturel écrites par l'IA comptent avec la Valise)."
+    "freeRemainingHint": "Essais gratuits restants ce mois-ci, par outil (les fiches du guide interculturel écrites par l'IA comptent avec la Valise).",
+    "perMonthTries": "10 / mois"
   },
   "quotaReached": {
     "title": "Limite gratuite atteinte",

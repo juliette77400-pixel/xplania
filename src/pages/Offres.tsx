@@ -20,7 +20,9 @@ import { Progress } from "@/components/ui/progress";
 import WaitlistDialog from "@/components/xplania/WaitlistDialog";
 import BetaAccessOffer from "@/components/xplania/BetaAccessOffer";
 import { FEATURE_FLAGS, isPathEnabled } from "@/config/featureFlags";
-import { getLimit, getRemaining, type QuotaTool } from "@/lib/usage-quota";
+import type { QuotaTool } from "@/lib/usage-quota";
+import { useQuota } from "@/hooks/useQuota";
+import { useAuth } from "@/hooks/useAuth";
 
 type BillingCycle = "monthly" | "yearly" | "season3" | "season6" | "perTrip";
 
@@ -110,6 +112,20 @@ const FREE_TOOLS: Array<{ labelKey: string; tool: QuotaTool }> = [
   { labelKey: "appNav.culture", tool: "valise" },
 ];
 
+/** Remaining free tries for one tool, read from the server quota (signed in) — visitors see the monthly allowance. */
+const FreeToolCell = ({ labelKey, tool }: { labelKey: string; tool: QuotaTool }) => {
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const { remaining, limit } = useQuota(tool);
+  const shown = !user ? t("offres.perMonthTries") : Number.isFinite(limit) ? `${remaining}/${limit}` : "∞";
+  return (
+    <div className="text-center">
+      <p className="text-xs text-muted-foreground">{t(labelKey)}</p>
+      <p className="text-sm font-semibold text-foreground">{shown}</p>
+    </div>
+  );
+};
+
 const PaidPlans = () => {
   const { t, i18n } = useTranslation();
   const { tier, generationsUsed, freeQuota } = usePlanStore();
@@ -198,17 +214,7 @@ const PaidPlans = () => {
 
           {/* Free tries apply to every preparation tool (culture sheets count with Valise). */}
           <div className="rounded-xl bg-muted/50 border border-border/50 p-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {FREE_TOOLS.map(({ labelKey, tool }) => {
-              const limit = getLimit(tool);
-              const left = getRemaining(tool);
-              const shown = Number.isFinite(limit) ? `${left}/${limit}` : "∞";
-              return (
-                <div key={labelKey} className="text-center">
-                  <p className="text-xs text-muted-foreground">{t(labelKey)}</p>
-                  <p className="text-sm font-semibold text-foreground">{shown}</p>
-                </div>
-              );
-            })}
+            {FREE_TOOLS.map(({ labelKey, tool }) => <FreeToolCell key={labelKey} labelKey={labelKey} tool={tool} />)}
             <p className="col-span-2 sm:col-span-4 text-center text-xs text-muted-foreground">{t("offres.freeRemainingHint")}</p>
           </div>
         </motion.div>

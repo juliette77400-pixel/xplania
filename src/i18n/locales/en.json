@@ -1392,7 +1392,8 @@
         "f3": "Save about €8/month vs buying separately"
       }
     },
-    "freeRemainingHint": "Free tries left this month, per tool (AI-written intercultural sheets count with Packing)."
+    "freeRemainingHint": "Free tries left this month, per tool (AI-written intercultural sheets count with Packing).",
+    "perMonthTries": "10 / month"
   },
   "quotaReached": {
     "title": "Free limit reached",
