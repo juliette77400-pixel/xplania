@@ -75,7 +75,8 @@
 - [x] Parcours court : inscription → création du voyage → 4 outils (quiz ADN coupé)
 - [x] Ping, gamification, notifications : uniquement préparation
 - [x] Budget/Valise/Visa/Culture fonctionnent sans l'itinéraire IA (pré-remplis depuis le voyage)
-- [x] Textes FR/EN : accueil, Offres (accès gratuit Bêta ESTICE), À propos, FAQ, Écoles, comparatif ChatGPT, CGU (description), emails de rappel
+- [x] Offres : carte Gratuit (essais valables sur les 4 outils) + packs Administratif et Interculturel seulement
+- [x] Textes FR/EN : accueil, Offres, À propos, FAQ, Écoles, comparatif ChatGPT, CGU (description), emails de rappel
 - [x] Titres, descriptions Google, plan du site, résumés pour assistants IA
 - [x] Recherche des mots interdits sur toutes les pages + tests mobile/ordinateur + liste ancien → nouveau
 - [ ] Relecture par Juliette des textes réécrits et des passages légaux signalés (politique de confidentialité, page Sécurité)
