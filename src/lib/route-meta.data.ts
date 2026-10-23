@@ -31,8 +31,8 @@ export const META: Record<string, Meta> = {
     en: ["Smart packing guide — Xplania", "A packing checklist tailored to your destination, weather and type of stay, checked by AI."],
   },
   "/offres": {
-    fr: ["Accès bêta gratuit — Xplania", "Pendant la bêta, les 4 outils de préparation (budget, visa, valise, culture) sont gratuits, sans carte bancaire."],
-    en: ["Free beta access — Xplania", "During the beta, the 4 preparation tools (budget, visa, packing, culture) are free, no card needed."],
+    fr: ["Offres et packs — Xplania", "Teste gratuitement Budget, Visa, Valise et Guide interculturel, puis choisis le pack Administratif ou Interculturel."],
+    en: ["Offers & packs — Xplania", "Test Budget, Visa, Packing and the Intercultural guide for free, then pick the Admin or Intercultural pack."],
   },
   "/mood": {
     fr: ["Mood Explorer — Xplania", "Choisis ton humeur du moment et reçois des lieux à découvrir qui te correspondent vraiment."],

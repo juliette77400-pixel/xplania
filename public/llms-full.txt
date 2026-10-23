@@ -20,7 +20,7 @@ Ping, Xplania's assistant, answers questions about these four topics only.
 ## Access
 
 - Beta: free, no card required, up to 10 AI generations per tool per month (a failed generation is given back).
-- Post-beta offers: not set yet.
+- Packs (payments not active yet): Admin pack (budget, visa, packing) and Intercultural pack (culture guide), shown on /offres.
 
 ## Privacy
 

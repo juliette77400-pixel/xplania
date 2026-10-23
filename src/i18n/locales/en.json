@@ -114,17 +114,17 @@
     "budget": "Budget",
     "visa": "Visa & Paperwork",
     "badges": "Badges & Progress",
-    "premiumOffers": "Beta access",
+    "premiumOffers": "Offers",
     "more": "All tools",
     "openMenu": "Open navigation menu",
     "myAccount": "My space",
     "profile": "Profile",
     "logout": "Sign out",
     "login": "Sign in",
-    "quotaTooltip": "Free AI generations left this month (Packing, Budget, Visa).",
+    "quotaTooltip": "Free AI generations left this month (Packing, Budget, Visa). See the offers to go further.",
     "quotaTitle": "Free credits",
     "creditsShort": "credits",
-    "viewPlans": "See beta access",
+    "viewPlans": "See offers",
     "about": "About",
     "settings": "Settings",
     "groupPrepare": "Prepare my trip",
@@ -1292,7 +1292,7 @@
     "devMode": "Developer mode",
     "devUnlimited": "unlimited access to {{tool}}",
     "exhausted": "You've used your <1>{{limit}} free generations</1> for {{tool}}.",
-    "upgrade": "See beta access →",
+    "upgrade": "See offers →",
     "remainingOne": "{{remaining}}/{{limit}} free generation left for {{tool}}",
     "remainingOther": "{{remaining}}/{{limit}} free generations left for {{tool}}"
   },
@@ -1308,18 +1308,18 @@
     "back": "Back to home",
     "tag": "Xplania Plans",
     "title": "Choose the plan that fits you",
-    "subtitle": "Start free, then build your subscription pack by pack.",
+    "subtitle": "Test the 4 preparation tools for free, then choose your pack.",
     "free": "Free",
-    "freeTagline": "To discover Xplania",
+    "freeTagline": "To test every preparation tool",
     "current": "Current",
     "forever": "/ forever",
-    "freeFeat1": "10 free generations per tool each month to try the Xplania AI",
-    "freeFeat2": "Essential guides (suitcase, budget, visa)",
-    "freeFeat3": "Preview of advanced features",
+    "freeFeat1": "10 free generations per month per tool to test Xplania's AI",
+    "freeFeat2": "Valid on all 4 tools: Budget, Visa, Packing and Intercultural guide",
+    "freeFeat3": "Dashboard with your progress in each tool",
     "generationsUsed": "{{used}} / {{total}} generations used",
     "remainingCount": "{{n}} left",
     "packsTitle": "Our à-la-carte packs",
-    "packsSubtitle": "Pick your packs and the duration that suits you.",
+    "packsSubtitle": "The packs available during the beta, for the length that suits you.",
     "perTripNote": "Ideal for occasional travelers who go 1–2 times a year. Pay only when you need it, no commitment.",
     "billing": {
       "monthly": "Monthly",
@@ -1347,7 +1347,7 @@
     "triplePacks": "Triple packs",
     "tripleDiscount": "−18 to −20%",
     "perMonth": "/month",
-    "betaNote": "Beta in progress — payments aren't active yet. All free features remain accessible during this testing phase.",
+    "betaNote": "Beta in progress — payments are not active yet. The 10 free tries per tool stay available during this test phase.",
     "waitlistTitlePack": "{{pack}} is coming soon 🚀",
     "waitlistTitleGeneric": "Premium is coming soon 🚀",
     "waitlistTeaserPack": "Be the first to unlock the {{pack}} at launch, with -30% as an early bird.",
@@ -1376,7 +1376,7 @@
         "name": "Intercultural Pack",
         "tagline": "Travel respecting and understanding local culture",
         "f1": "Intercultural guide (codes, traditions, behaviors)",
-        "f2": "Local recommendations (local agencies and freelancers)"
+        "f2": "Real-life situations, tip of the day and mini-quiz for each country"
       },
       "futur": {
         "name": "Future Pack",
@@ -3965,7 +3965,7 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes, during the beta. The 4 preparation tools are free, no card and no commitment, with up to 10 AI generations per tool per month. The \"Beta access\" page sums up what's included."
+      "a": "Yes, during the beta. You get 10 free tries per month on each of the 4 tools (Budget, Visa, Packing, Intercultural guide), no card, no commitment. The Offers page shows the packs planned afterwards."
     },
     "q2": {
       "q": "What does the AI actually do?",
@@ -3995,7 +3995,7 @@
       "q": "Does Xplania need my location?",
       "a": "No. During the beta, the 4 tools work from the destination you enter when you create your trip."
     },
-    "seeOffers": "See what the beta includes"
+    "seeOffers": "See offers and pricing"
   },
   "exitIntent": {
     "title": "Before you go…",
@@ -6331,7 +6331,7 @@
     "modulesTitle": "Your 4 preparation tools",
     "start": "Start",
     "continue": "Continue",
-    "offersHint": "Free access during the beta —",
+    "offersHint": "10 free tries per tool every month —",
     "progress": {
       "budget": "{{done}}/{{total}} steps (budget estimated, expenses noted)",
       "visa": "{{done}}/{{total}} formalities ticked",
