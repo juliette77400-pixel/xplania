@@ -67,14 +67,15 @@
 - [x] Quiz ADN : 11 profils testés ; clavier vérifié sur 11 pages publiques
 - [x] Coût IA par outil mesuré
 ## Bêta ESTICE — un seul besoin : préparer son voyage en amont (budget, visa, valise, culture)
-- [ ] Interrupteurs centraux par module (4 actifs, autres coupés, rien supprimé)
-- [ ] Adresses des modules coupés → tableau de bord ; ces modules ne se chargent plus
-- [ ] Menus (ordinateur/mobile), recherche, raccourcis, pied de page : seulement les 4 outils
-- [ ] Guide culturel déplacé dans la préparation, même barre de navigation que Budget/Visa/Valise
-- [ ] Tableau de bord : création de voyage simple + 4 cartes avec progression
-- [ ] Parcours court : inscription → création du voyage → 4 outils (quiz ADN coupé)
-- [ ] Ping, gamification, notifications : uniquement préparation
-- [ ] Vérifier que Budget/Valise/Visa n'ont pas besoin de l'itinéraire IA
-- [ ] Textes FR/EN : accueil, Offres (accès gratuit Bêta ESTICE), À propos, FAQ, CGU/confidentialité (signaler), emails
-- [ ] Titres, descriptions Google, plan du site
-- [ ] Recherche finale des mots interdits + tests mobile/ordinateur + liste ancien → nouveau
+- [x] Interrupteurs centraux par module (4 actifs, autres coupés, rien supprimé)
+- [x] Adresses des modules coupés → tableau de bord ; ces modules ne se chargent plus
+- [x] Menus (ordinateur/mobile), recherche, raccourcis, pied de page : seulement les 4 outils
+- [x] Guide culturel déplacé dans la préparation, même mise en page que Visa
+- [x] Tableau de bord : création de voyage simple + 4 cartes avec progression + checklist avant départ
+- [x] Parcours court : inscription → création du voyage → 4 outils (quiz ADN coupé)
+- [x] Ping, gamification, notifications : uniquement préparation
+- [x] Budget/Valise/Visa/Culture fonctionnent sans l'itinéraire IA (pré-remplis depuis le voyage)
+- [x] Textes FR/EN : accueil, Offres (accès gratuit Bêta ESTICE), À propos, FAQ, Écoles, comparatif ChatGPT, CGU (description), emails de rappel
+- [x] Titres, descriptions Google, plan du site, résumés pour assistants IA
+- [x] Recherche des mots interdits sur toutes les pages + tests mobile/ordinateur + liste ancien → nouveau
+- [ ] Relecture par Juliette des textes réécrits et des passages légaux signalés (politique de confidentialité, page Sécurité)
