@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { getLegalPath } from "@/lib/legal-routes";
 import { openConsentSettings } from "@/lib/consent";
+import { isPathEnabled } from "@/config/featureFlags";
 
 const stars = Array.from({ length: 40 }, (_, i) => ({
   id: i,
@@ -33,17 +34,18 @@ const Footer = (_: Props) => {
 
   // All Xplania feature pages — direct links to the actual product surfaces
   const featureLinks = [
-    { icon: Luggage, label: t("features.items.valise.title"), to: "/guide-valise" },
     { icon: Wallet, label: t("features.items.budget.title"), to: "/guide-budget" },
     { icon: FileText, label: t("features.items.visa.title"), to: "/guide-visa" },
+    { icon: Luggage, label: t("features.items.valise.title"), to: "/guide-valise" },
+    { icon: Globe, label: t("appNav.culture"), to: "/guide-culture" },
     { icon: BookOpen, label: t("features.items.journal.title"), to: "/carnets" },
     { icon: Activity, label: t("features.items.tracking.title"), to: "/suivi" },
     { icon: Compass, label: t("features.items.explore.title"), to: "/explore" },
     { icon: Heart, label: t("features.items.mood.title"), to: "/mood" },
     { icon: MapPinned, label: t("features.items.discover.title"), to: "/discover" },
-    { icon: Globe, label: t("appNav.culture"), to: "/guide-culture" },
     { icon: Trophy, label: t("appNav.badges"), to: "/gamification" },
-  ];
+  ].filter((item) => isPathEnabled(item.to));
+
 
   return (
     <footer className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(230 50% 4%) 50%, hsl(240 40% 2%) 100%)" }}>
@@ -177,7 +179,7 @@ const Footer = (_: Props) => {
                   {t("vsChatgpt.footerLink")}
                 </Link>
               </li>
-              <li>
+              {isPathEnabled("/blog/how-to-plan-a-trip-with-ai") && <li>
                 <Link
                   to="/blog/how-to-plan-a-trip-with-ai"
                   className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
@@ -185,7 +187,7 @@ const Footer = (_: Props) => {
                   <BookOpen className="w-4 h-4 group-hover:text-primary transition-colors" />
                   {t("planGuide.footerLink")}
                 </Link>
-              </li>
+              </li>}
             </ul>
           </motion.div>
         </div>

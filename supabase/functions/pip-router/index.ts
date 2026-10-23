@@ -1,3 +1,4 @@
+import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
@@ -29,37 +30,27 @@ Deno.serve(async (req) => {
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
 
     const isEN = locale === "en";
-    const sys = isEN
-      ? `You are Ping, Xplania's travel companion. Your job: detect the user's INTENT and route them to the right tool, OR have a short helpful chat. Available intents:
-- "carnet" → /carnets (travel journal/notebook)
-- "valise" → /guide-valise (packing guide)
-- "visa" → /guide-visa (visa/formalities)
-- "budget" → /guide-budget
-- "mood" → /mood (emotion-based discovery)
-- "discover" → /discover (local recos)
-- "suivi" → /suivi (live trip tracker)
-- "planner" → / (trip planner form)
-- "free_explore" → null (user wants to be left alone / explore solo / no suggestions)
-- "smalltalk" → null (just chatting)
+    // Beta: Ping only helps with trip preparation (budget, visa, packing, culture).
+    const sys = (isEN
+      ? `You are Ping, Xplania's preparation assistant. Xplania helps travelers organise their trip abroad ahead of time, without hassle. You ONLY help with these four topics and route to the matching tool:
+- "budget" → budget planning before departure
+- "visa" → visa, paperwork, vaccines and documents before departure
+- "valise" → packing list adapted to the destination, climate and stay
+- "culture" → cultural codes of the destination (dress, food etiquette, gestures, greetings)
+- "dashboard" → creating or editing the trip (destination, dates, nationality, budget, type of stay)
+- "smalltalk" → short exchange, no tool
 
-CRITICAL: If the user says things like "I want to walk alone", "leave me alone", "I just want to explore by myself", "no suggestions", "let me wander" → intent = "free_explore", route = null, reply with a SHORT warm acknowledgement (1 sentence), DO NOT ask any follow-up question, DO NOT push CTAs.
+If the user asks for something else (itineraries, places to visit, live tracking, journals, badges…), say kindly in one sentence that during the beta Xplania focuses on preparing the trip before departure, then suggest the closest of the four tools. Reply with 1-2 short sentences. Reply in ENGLISH.`
+      : `Tu es Ping, l'assistante de préparation de Xplania. Xplania aide à organiser son voyage à l'étranger en amont, sans soucis. Tu aides UNIQUEMENT sur ces quatre sujets et tu orientes vers l'outil correspondant :
+- "budget" → préparer son budget avant le départ
+- "visa" → visa, formalités, vaccins et documents avant le départ
+- "valise" → liste de valise adaptée à la destination, au climat et au séjour
+- "culture" → codes culturels du pays (tenue, gastronomie et usages à table, gestes, salutations)
+- "dashboard" → créer ou modifier son voyage (destination, dates, nationalité, budget, type de séjour)
+- "smalltalk" → simple échange, pas d'outil
 
-For other intents, reply with 1-2 short sentences and propose the relevant tool. Reply in ENGLISH.`
-      : `Tu es Ping, le compagnon de voyage de Xplania. Ton rôle : détecter l'INTENTION de l'utilisateur et l'orienter vers le bon outil, OU avoir une courte conversation utile. Intentions disponibles :
-- "carnet" → /carnets (carnet de voyage)
-- "valise" → /guide-valise (guide bagage)
-- "visa" → /guide-visa (formalités)
-- "budget" → /guide-budget
-- "mood" → /mood (découverte par émotion)
-- "discover" → /discover (recommandations locales)
-- "suivi" → /suivi (suivi de voyage live)
-- "planner" → / (planificateur)
-- "free_explore" → null (l'utilisateur veut être tranquille / explorer seul / pas de suggestions)
-- "smalltalk" → null (simple échange)
-
-CRITIQUE : Si l'utilisateur dit des choses comme « je veux me promener seule », « laisse-moi tranquille », « je veux juste explorer par moi-même », « pas de suggestions », « laisse-moi flâner » → intent = "free_explore", route = null, réponds par UNE phrase courte et chaleureuse d'acceptation, NE POSE AUCUNE question de relance, NE POUSSE AUCUN CTA.
-
-Pour les autres intentions, réponds en 1-2 phrases courtes et propose l'outil pertinent. Réponds en FRANÇAIS.`;
+Si la demande porte sur autre chose (itinéraire, lieux à visiter, suivi sur place, journal, badges…), explique gentiment en une phrase que pendant la bêta Xplania se concentre sur la préparation avant le départ, puis propose l'outil le plus proche parmi les quatre. Réponds en 1-2 phrases courtes, en tutoyant. Réponds en FRANÇAIS.`)
+      + "\n\n" + (isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR);
 
     const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
     const sysWithCtx = sys + (travelerCtx ? "\n\n" + travelerCtx : "");
@@ -78,10 +69,10 @@ Pour les autres intentions, réponds en 1-2 phrases courtes et propose l'outil p
         parameters: {
           type: "object",
           properties: {
-            intent: { type: "string", enum: ["carnet", "valise", "visa", "budget", "mood", "discover", "suivi", "planner", "free_explore", "smalltalk"] },
+            intent: { type: "string", enum: ["budget", "visa", "valise", "culture", "dashboard", "smalltalk"] },
             route: { type: ["string", "null"], description: "URL path to navigate to, or null." },
             reply: { type: "string", description: "Short chat message to display." },
-            cta_label: { type: ["string", "null"], description: "Label for the CTA button, or null if free_explore/smalltalk." },
+            cta_label: { type: ["string", "null"], description: "Label for the CTA button, or null when no tool applies." },
           },
           required: ["intent", "reply"],
           additionalProperties: false,
@@ -97,6 +88,7 @@ Pour les autres intentions, réponds en 1-2 phrases courtes et propose l'outil p
         messages,
         tools,
         tool_choice: { type: "function", function: { name: "respond" } },
+        reasoning: { effort: "low" },
       }),
     });
     if (!r.ok) {
@@ -110,11 +102,16 @@ Pour les autres intentions, réponds en 1-2 phrases courtes et propose l'outil p
     const call = data.choices?.[0]?.message?.tool_calls?.[0];
     let parsed: any = { intent: "smalltalk", reply: isEN ? "Got it." : "D'accord." };
     try { parsed = JSON.parse(call?.function?.arguments || "{}"); } catch {}
-    // Enforce: free_explore must NOT have CTA/route
-    if (parsed.intent === "free_explore") {
-      parsed.route = null;
-      parsed.cta_label = null;
-    }
+    // Routes are decided here, never by the model: only the preparation tools.
+    const ROUTES: Record<string, string> = {
+      budget: "/guide-budget",
+      visa: "/guide-visa",
+      valise: "/guide-valise",
+      culture: "/guide-culture",
+      dashboard: "/app",
+    };
+    parsed.route = ROUTES[parsed.intent] ?? null;
+    if (!parsed.route) parsed.cta_label = null;
     return new Response(JSON.stringify(parsed), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     console.error("pip-router error", e);

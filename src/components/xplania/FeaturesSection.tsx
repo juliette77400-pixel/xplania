@@ -1,21 +1,76 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, BookHeart, Compass, MapPinned, PlaneTakeoff, Sparkles } from "lucide-react";
+import { ArrowRight, FileCheck, Globe2, Luggage, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
+import { isPathEnabled } from "@/config/featureFlags";
 
+// The four preparation tools of the beta. Each card links to its tool.
 const copy = {
-  fr:{tag:"Les capacités de ton copilote",title:"Tout ce dont tu as besoin, au moment où tu en as besoin.",subtitle:"Plus besoin de naviguer entre des outils isolés. Chaque fonctionnalité partage le même contexte et poursuit le même voyage.", groups:[
-    ["Préparer", "Anticipe sans t'éparpiller.", "Ton copilote estime ton budget, prépare une valise adaptée et vérifie tes formalités.", "/guide-budget", "Préparer mon voyage", ["Guide Budget","Guide Valise","Guide Visa"]],
-    ["Explorer", "Trouve ce qui te ressemble.", "Il comprend ton humeur et transforme tes envies en lieux pertinents, à retrouver sur ta carte de voyage.", "/mood", "Trouver mon prochain lieu", ["Mood Explorer","Discover","Carte de voyage"]],
-    ["Voyager", "Reste orienté, même en mouvement.", "Il suit ton séjour en direct et te propose des lieux utiles selon l'endroit et le moment.", "/suivi", "Accompagner mon voyage", ["Suivi live","Carte de voyage","Discover","Guide culturel"]],
-    ["Revivre", "Garde plus que des photos.", "Il rassemble tes étapes dans un carnet vivant et récompense tes aventures avec des badges.", "/carnets", "Ouvrir mes carnets", ["Carnet de bord","Badges & progression"]]
-  ]},
-  en:{tag:"Your copilot's capabilities",title:"Everything you need, exactly when you need it.",subtitle:"No more jumping between isolated tools. Every feature shares the same context and continues the same journey.", groups:[
-    ["Prepare", "Anticipate without the overwhelm.", "Your copilot estimates your budget, builds a tailored packing list and checks your paperwork.", "/guide-budget", "Prepare my trip", ["Budget Guide","Suitcase Guide","Visa Guide"]],
-    ["Explore", "Find places that feel like you.", "It understands your mood and turns your wishes into relevant places, saved on your travel map.", "/mood", "Find my next place", ["Mood Explorer","Discover","Travel map"]],
-    ["Travel", "Stay oriented while moving.", "It follows your trip live and suggests useful places based on where you are and when.", "/suivi", "Guide my trip", ["Live tracking","Travel map","Discover","Culture guide"]],
-    ["Relive", "Keep more than photos.", "It gathers your steps in a living journal and rewards your adventures with badges.", "/carnets", "Open my journals", ["Travel journal","Badges & progress"]]
-  ]}
+  fr: {
+    tag: "4 outils, un seul objectif",
+    title: "Tout ce qu'il faut préparer avant le départ, au même endroit.",
+    subtitle: "Tu renseignes ton voyage une fois. Chaque outil s'adapte à ta destination, à tes dates et à ton type de séjour.",
+    tools: [
+      ["/guide-budget", "Budget", "Sache combien prévoir.", "Une estimation réaliste selon ta destination et la durée du séjour, puis le suivi de tes dépenses prévues.", "Préparer mon budget", ["Estimation par poste", "Scénarios éco, réaliste, confort", "Conseils pour économiser"]],
+      ["/guide-visa", "Visa & formalités", "Ne rate aucun document.", "Visa, passeport, vaccins et démarches selon ta nationalité et ton pays d'arrivée, avec une checklist à cocher.", "Vérifier mes formalités", ["Visa selon ta nationalité", "Santé et sécurité", "Checklist des documents"]],
+      ["/guide-valise", "Valise", "N'oublie rien d'important.", "Une liste adaptée au climat, à la durée et au type de séjour, que tu coches au fur et à mesure.", "Préparer ma valise", ["Liste selon la météo", "Tenues adaptées", "Éléments oubliés repérés"]],
+      ["/guide-culture", "Guide culturel", "Arrive à l'aise.", "Les codes culturels du pays : tenue, gastronomie et usages à table, gestes, salutations, avec mises en situation et mini-quiz.", "Lire le guide culturel", ["Codes et usages du pays", "Mises en situation", "Mini-quiz"]],
+    ],
+  },
+  en: {
+    tag: "4 tools, one goal",
+    title: "Everything to prepare before you leave, in one place.",
+    subtitle: "Enter your trip once. Each tool adapts to your destination, dates and type of stay.",
+    tools: [
+      ["/guide-budget", "Budget", "Know how much to plan.", "A realistic estimate based on your destination and length of stay, then tracking of your planned expenses.", "Plan my budget", ["Estimate per category", "Economy, realistic, comfort scenarios", "Money-saving tips"]],
+      ["/guide-visa", "Visa & paperwork", "Miss no document.", "Visa, passport, vaccines and formalities based on your nationality and destination, with a checklist to tick.", "Check my paperwork", ["Visa for your nationality", "Health and safety", "Document checklist"]],
+      ["/guide-valise", "Packing", "Forget nothing important.", "A list adapted to the climate, length and type of stay, ticked off as you go.", "Pack my suitcase", ["List based on the weather", "Suitable outfits", "Forgotten items spotted"]],
+      ["/guide-culture", "Culture guide", "Arrive at ease.", "The country's cultural codes: dress, food and table manners, gestures, greetings, with real-life situations and a mini-quiz.", "Read the culture guide", ["Local codes and customs", "Real-life situations", "Mini-quiz"]],
+    ],
+  },
 };
-const FeaturesSection=()=>{const {i18n}=useTranslation();const c=i18n.language.startsWith("fr")?copy.fr:copy.en;const icons=[PlaneTakeoff,Compass,MapPinned,BookHeart];return <section id="features" className="border-y border-border/60 bg-card/20 px-4 py-24 sm:py-32"><div className="mx-auto max-w-6xl"><div className="max-w-3xl"><p className="text-sm font-bold uppercase tracking-[.18em] text-primary">{c.tag}</p><h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">{c.title}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{c.subtitle}</p></div><div className="mt-14 grid gap-5 md:grid-cols-2">{c.groups.map((g,i)=>{const [phase,title,body,to,cta,items]=g as [string,string,string,string,string,string[]];const Icon=icons[i];return <motion.article key={phase} initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.08}} className="group rounded-3xl border border-border/70 bg-background/65 p-7 interactive-card sm:p-8"><div className="flex items-start justify-between"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10"><Icon className="h-6 w-6 text-primary" /></div><span className="rounded-full border border-border px-3 py-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">{phase}</span></div><h3 className="mt-7 text-2xl font-bold">{title}</h3><p className="mt-3 leading-7 text-muted-foreground">{body}</p><div className="mt-6 flex flex-wrap gap-2">{items.map(item=><span key={item} className="inline-flex items-center gap-1.5 rounded-lg bg-muted/60 px-3 py-1.5 text-xs font-medium"><Sparkles className="h-3 w-3 text-primary" />{item}</span>)}</div><Link to={to} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-primary">{cta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link></motion.article>})}</div></div></section>};
+
+const ICONS = [Wallet, FileCheck, Luggage, Globe2];
+
+const FeaturesSection = () => {
+  const { i18n } = useTranslation();
+  const c = i18n.language.startsWith("fr") ? copy.fr : copy.en;
+  const tools = c.tools
+    .map((tool, i) => ({ tool, Icon: ICONS[i] }))
+    .filter(({ tool }) => isPathEnabled(tool[0] as string));
+  return (
+    <section id="features" className="border-y border-border/60 bg-card/20 px-4 py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl">
+        <div className="max-w-3xl">
+          <p className="text-sm font-bold uppercase tracking-[.18em] text-primary">{c.tag}</p>
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">{c.title}</h2>
+          <p className="mt-5 text-lg leading-8 text-muted-foreground">{c.subtitle}</p>
+        </div>
+        <div className="mt-14 grid gap-5 md:grid-cols-2">
+          {tools.map(({ tool, Icon }, i) => {
+            const [to, name, title, body, cta, items] = tool as [string, string, string, string, string, string[]];
+            return (
+              <motion.article key={to} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                className="flex flex-col rounded-[1.75rem] border border-border/70 bg-background/60 p-7 interactive-card">
+                <div className="flex items-center gap-3">
+                  <div className="gradient-button flex h-11 w-11 items-center justify-center rounded-xl"><Icon className="h-5 w-5 text-primary-foreground" /></div>
+                  <p className="text-sm font-bold uppercase tracking-[.14em] text-primary">{name}</p>
+                </div>
+                <h3 className="mt-5 text-2xl font-bold">{title}</h3>
+                <p className="mt-3 leading-7 text-muted-foreground">{body}</p>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {items.map((it) => <li key={it} className="rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-xs font-medium">{it}</li>)}
+                </ul>
+                <Link to={to} className="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-primary hover:underline">
+                  {cta}<ArrowRight className="h-4 w-4" />
+                </Link>
+              </motion.article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default FeaturesSection;

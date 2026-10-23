@@ -7,16 +7,14 @@ import AppNavbar from "@/components/shared/AppNavbar";
 import Footer from "@/components/xplania/Footer";
 import { upsertJsonLd } from "@/lib/seo";
 
+// Beta: only rows about the four preparation tools (other rows stay in the translations).
 const ROW_KEYS = [
-  "itineraire",
-  "adn",
   "budget",
   "visa",
   "valise",
-  "gps",
-  "carnet",
-  "humeur",
+  "culture",
   "memoire",
+  "progression",
   "alertes",
 ] as const;
 

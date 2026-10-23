@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Copy, Mail, Share2, MessageCircle } from "lucide-react";
@@ -17,7 +18,7 @@ const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: Shar
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const baseUrl = window.location.origin;
-  const shareUrl = tripId ? `${baseUrl}/carnet/public/${tripId}` : `${baseUrl}/`;
+  const shareUrl = tripId && FEATURE_FLAGS.ENABLE_TRAVEL_JOURNAL ? `${baseUrl}/carnet/public/${tripId}` : `${baseUrl}/`;
 
   const message = t("valise.shareMessage", { destination, days, url: shareUrl });
 

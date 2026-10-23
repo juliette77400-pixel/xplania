@@ -18,6 +18,8 @@ import {
 import { usePlanStore } from "@/stores/usePlanStore";
 import { Progress } from "@/components/ui/progress";
 import WaitlistDialog from "@/components/xplania/WaitlistDialog";
+import BetaAccessOffer from "@/components/xplania/BetaAccessOffer";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 type BillingCycle = "monthly" | "yearly" | "season3" | "season6" | "perTrip";
 
@@ -85,7 +87,7 @@ const triplePacks: { ids: PackDef["id"][]; price: number }[] = [
   { ids: ["ia", "admin", "creatif"], price: 20.49 },
 ];
 
-const Offres = () => {
+const PaidPlans = () => {
   const { t, i18n } = useTranslation();
   const { tier, generationsUsed, freeQuota } = usePlanStore();
   const [billing, setBilling] = useState<BillingCycle>("monthly");
@@ -388,5 +390,8 @@ const Offres = () => {
     </div>
   );
 };
+
+// During the beta the page only shows the free "Bêta ESTICE" access.
+const Offres = () => (FEATURE_FLAGS.ENABLE_PAID_PLANS ? <PaidPlans /> : <BetaAccessOffer />);
 
 export default Offres;

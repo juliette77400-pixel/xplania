@@ -7,32 +7,32 @@ export type Meta = { fr: [string, string]; en: [string, string] };
 // Unique title (<60 chars) + description (50–160 chars) per public route.
 export const META: Record<string, Meta> = {
   "/": {
-    fr: ["Xplania — Découvre ton ADN Voyageur", "Réponds au quiz ADN Voyageur et reçois des voyages, budgets et guides pensés pour ta façon de voyager."],
-    en: ["Xplania — Discover your Travel DNA", "Take the Travel DNA quiz and get trips, budgets and guides built around the way you like to travel."],
+    fr: ["Xplania — Prépare ton voyage à l'étranger sans soucis", "Organise ton voyage à l'étranger en amont : budget, visa, valise et codes culturels réunis au même endroit. Gratuit pendant la bêta."],
+    en: ["Xplania — Prepare your trip abroad without the hassle", "Organise your trip abroad ahead of time: budget, visa, packing and cultural codes in one place. Free during the beta."],
   },
   "/home": {
-    fr: ["Xplania — Ton assistant de voyage IA", "Planifie ton voyage avec l'IA : itinéraire, budget, visa, valise et idées locales, au même endroit."],
-    en: ["Xplania — Your AI travel assistant", "Plan your trip with AI: itinerary, budget, visa, packing and local ideas, all in one place."],
+    fr: ["Xplania — Prépare ton départ à l'étranger", "Budget, visa, valise et culture : les 4 préparatifs essentiels avant ton départ, réunis au même endroit."],
+    en: ["Xplania — Prepare to go abroad", "Budget, visa, packing and culture: the 4 essential preparations before you leave, in one place."],
   },
   "/dashboard": {
-    fr: ["Créer mon voyage avec l'IA — Xplania", "Indique tes dates, ton budget et tes envies : Xplania génère un itinéraire complet et localisé."],
-    en: ["Create my trip with AI — Xplania", "Enter your dates, budget and wishes: Xplania builds a complete, local itinerary for you."],
+    fr: ["Créer mon voyage — Xplania", "Renseigne ta destination, tes dates et ton type de séjour pour préparer ton départ : budget, visa, valise et culture."],
+    en: ["Create my trip — Xplania", "Enter your destination, dates and type of stay to prepare your departure: budget, visa, packing and culture."],
   },
   "/guide-budget": {
-    fr: ["Guide budget voyage — Xplania", "Estime ton budget voyage en 3 scénarios, suis tes dépenses et découvre des bons plans locaux."],
-    en: ["Travel budget guide — Xplania", "Estimate your travel budget in 3 scenarios, track expenses and find local money-saving deals."],
+    fr: ["Guide budget avant le départ — Xplania", "Estime ton budget de séjour à l'étranger en 3 scénarios et prévois tes dépenses avant de partir."],
+    en: ["Pre-departure budget guide — Xplania", "Estimate your budget for a stay abroad in 3 scenarios and plan your expenses before you leave."],
   },
   "/guide-visa": {
     fr: ["Visa et formalités de voyage — Xplania", "Visa, passeport, vaccins et sécurité : les formalités essentielles pour partir en toute sérénité."],
     en: ["Visa & travel requirements — Xplania", "Visa, passport, vaccines and safety: the key requirements to travel with peace of mind."],
   },
   "/guide-valise": {
-    fr: ["Guide valise intelligent — Xplania", "Une checklist de valise adaptée à ta destination, à la météo et à tes activités, vérifiée par l'IA."],
-    en: ["Smart packing guide — Xplania", "A packing checklist tailored to your destination, weather and activities, checked by AI."],
+    fr: ["Guide valise intelligent — Xplania", "Une checklist de valise adaptée à ta destination, à la météo et à ton type de séjour, vérifiée par l'IA."],
+    en: ["Smart packing guide — Xplania", "A packing checklist tailored to your destination, weather and type of stay, checked by AI."],
   },
   "/offres": {
-    fr: ["Offres et tarifs Premium — Xplania", "Découvre les packs Premium Xplania et débloque toutes les fonctionnalités de voyage IA."],
-    en: ["Premium plans & pricing — Xplania", "Explore Xplania Premium packs and unlock every AI travel feature."],
+    fr: ["Accès bêta gratuit — Xplania", "Pendant la bêta, les 4 outils de préparation (budget, visa, valise, culture) sont gratuits, sans carte bancaire."],
+    en: ["Free beta access — Xplania", "During the beta, the 4 preparation tools (budget, visa, packing, culture) are free, no card needed."],
   },
   "/mood": {
     fr: ["Mood Explorer — Xplania", "Choisis ton humeur du moment et reçois des lieux à découvrir qui te correspondent vraiment."],
@@ -47,20 +47,24 @@ export const META: Record<string, Meta> = {
     en: ["Destinations made for you — Xplania", "Destinations picked from your Traveler DNA: culture, nature, budget and off-the-beaten-path gems."],
   },
   "/a-propos": {
-    fr: ["À propos de Xplania", "Découvre l'histoire de Xplania, l'assistant de voyage IA qui rend chaque voyage plus personnel."],
-    en: ["About Xplania", "Learn the story behind Xplania, the AI travel assistant that makes every trip more personal."],
+    fr: ["À propos de Xplania", "L'histoire de Xplania : réunir budget, visa, valise et culture pour préparer un départ à l'étranger sans stress."],
+    en: ["About Xplania", "The story of Xplania: bringing budget, visa, packing and culture together to prepare a stay abroad stress-free."],
   },
   "/ecoles": {
-    fr: ["Xplania pour les écoles et offices de tourisme", "Un pilote gratuit pour accompagner vos étudiants en mobilité : visa, budget, vie sur place, carnet de voyage."],
-    en: ["Xplania for schools and tourism offices", "A free pilot to support your students abroad: visa, budget, life on site, travel journal."],
+    fr: ["Xplania pour les écoles", "Un pilote pour aider vos étudiants à préparer leur mobilité : budget, visa, valise et codes culturels."],
+    en: ["Xplania for schools", "A pilot to help your students prepare their mobility: budget, visa, packing and cultural codes."],
   },
   "/securite": {
     fr: ["Sécurité et confiance — Xplania", "Comment Xplania protège tes données, ta vie privée et la fiabilité des informations de voyage."],
     en: ["Trust & security — Xplania", "How Xplania protects your data, your privacy and the reliability of travel information."],
   },
+  "/guide-culture": {
+    fr: ["Guide d'immersion culturelle — Xplania", "Les codes culturels de ton pays d'accueil : tenue, gastronomie, gestes, salutations, avec mises en situation et mini-quiz."],
+    en: ["Cultural immersion guide — Xplania", "The cultural codes of your host country: dress, food, gestures, greetings, with real-life situations and a mini-quiz."],
+  },
   "/xplania-vs-chatgpt": {
-    fr: ["Xplania vs ChatGPT — l'alternative IA pour organiser ton voyage", "Xplania vs ChatGPT : itinéraires, budget, valise et suivi de voyage générés et organisés pour toi, sans copier-coller de prompts."],
-    en: ["Xplania vs ChatGPT — the AI alternative to plan your trip", "Xplania vs ChatGPT: itineraries, budget, packing and trip tracking generated and organized for you, no prompt copy-pasting."],
+    fr: ["Xplania vs ChatGPT — préparer son voyage à l'étranger", "Xplania vs ChatGPT : budget, visa, valise et codes culturels organisés autour de ton voyage, sans copier-coller de prompts."],
+    en: ["Xplania vs ChatGPT — preparing a trip abroad", "Xplania vs ChatGPT: budget, visa, packing and cultural codes organised around your trip, no prompt copy-pasting."],
   },
 };
 META["/blog/how-to-plan-a-trip-with-ai"] = {

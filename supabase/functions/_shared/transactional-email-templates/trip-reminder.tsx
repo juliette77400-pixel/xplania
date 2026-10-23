@@ -53,7 +53,7 @@ export const template = {
   component: TripReminderEmail,
   subject: (d: Record<string, any>) => d.lang === 'en' ? `7 days to go: ${d.destination || 'your trip'} ✈️` : `J-7 : ${d.destination || 'ton voyage'} approche ✈️`,
   displayName: 'Rappel J-7 + formalités',
-  previewData: { destination: 'Tokyo', departureDate: '2 octobre 2026', tripUrl: 'https://xplania.app/carnets', lang: 'fr' },
+  previewData: { destination: 'Tokyo', departureDate: '2 octobre 2026', tripUrl: 'https://xplania.app/app', lang: 'fr' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: "'Plus Jakarta Sans', Arial, sans-serif" }

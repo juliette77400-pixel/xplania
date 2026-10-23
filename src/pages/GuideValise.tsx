@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useTravelStore } from "@/stores/useTravelStore";
+import { saveModuleProgress } from "@/lib/prep-progress";
 import ValiseHero from "@/components/valise/ValiseHero";
 import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimation";
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
@@ -267,6 +268,12 @@ const GuideValisePage = () => {
 
   const totalItems = Object.values(categories).flat().length;
   const checkedItems = Object.values(categories).flat().filter((i) => i.checked).length;
+
+  // Dashboard summary: "Valise : 12/30 éléments cochés".
+  useEffect(() => {
+    if (!hasGenerated) return;
+    saveModuleProgress("valise", tripData?.destination, { done: checkedItems, total: totalItems });
+  }, [hasGenerated, checkedItems, totalItems, tripData?.destination]);
   const remainingByCategory = useMemo(() => {
     const out: Record<string, number> = {};
     for (const [cat, items] of Object.entries(categories)) {

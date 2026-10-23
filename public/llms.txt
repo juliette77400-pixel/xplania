@@ -1,18 +1,19 @@
 # Xplania
 
-> AI travel companion that plans, budgets, packs, tracks and journals your trips. Personalized recommendations, live trip tracking, public sharing and beautiful travel journals — built for travelers, not generic trip databases.
+> Web app that helps people going abroad (Erasmus, internship, exchange, trip) organise their departure ahead of time, without hassle: budget, visa, packing and cultural codes in one place. French and English. Free during the beta.
 
-Xplania combines several travel tools in one app: an AI trip planner, a smart packing guide, a budget guide with currency conversion, a visa & vaccines guide that pulls from official sources, a live trip tracker, a mood-based explorer and a travel journal you can publish as a public page.
+Xplania brings together four preparation tools around a single trip: a budget guide, a visa & paperwork guide, a smart packing list and a cultural immersion guide. A dashboard shows progress in each tool before departure.
 
 ## Pages
 
-- [Traveler quiz](/): Swipe-based traveler profile quiz (entry point of the app).
-- [Home](/home): Product overview, features, FAQ and signup.
-- [Budget guide](/guide-budget): Build a realistic per-day budget with AI tips and a live currency converter.
-- [Visa & vaccines guide](/guide-visa): Visa formalities, vaccines and safety advisories synthesized from official sources (France Diplomatie, Institut Pasteur, WHO).
-- [Plans & pricing](/offres): Free quota, premium packs and launch waitlist.
-- [About](/a-propos): What Xplania is, who it's for and the team behind it.
-- [Trust & security](/securite): How Xplania protects user data, opt-in sharing model and security contact.
+- [Intro](/): Overview of the 4 preparation steps (entry point).
+- [Home](/home): Product overview, the 4 tools, FAQ and signup.
+- [Budget guide](/guide-budget): Realistic budget for the stay in 3 scenarios, planned-expense tracking and saving tips.
+- [Visa & paperwork guide](/guide-visa): Visa formalities, vaccines and safety advice synthesized from official sources (France Diplomatie, Institut Pasteur, WHO), with a document checklist.
+- [Culture guide](/guide-culture): Cultural codes of the destination country (dress, food etiquette, gestures, greetings), real-life situations and mini-quiz.
+- [Beta access](/offres): Free access during the beta.
+- [About](/a-propos): Why Xplania exists and who builds it.
+- [Trust & security](/securite): How Xplania protects user data and security contact.
 
 ## Legal
 
@@ -22,4 +23,4 @@ Xplania combines several travel tools in one app: an AI trip planner, a smart pa
 
 ## Full description
 
-- [llms-full.txt](/llms-full.txt): Detailed description of every feature, pricing and FAQ.
+- [llms-full.txt](/llms-full.txt): Detailed description of every tool, access and FAQ.

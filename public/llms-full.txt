@@ -1,28 +1,30 @@
 # Xplania — full description
 
-> Xplania (https://xplania.app) is a web AI travel companion, available in French and English. It helps travelers plan, budget, pack, handle formalities, track and remember their trips. All AI advice is specific to the destination (real places, prices, local words), never generic.
+> Xplania (https://xplania.app) is a web app, in French and English, that helps people going abroad organise their trip ahead of time, without hassle. During the beta it focuses on one need: preparing the departure. All AI advice is specific to the destination, never generic.
 
-## Features
+## How it works
 
-- Traveler profile quiz (/): swipe cards about travel preferences; you get a traveler badge, reward points and two recommended tools.
-- Trip planner (/dashboard): multi-step form (destination, dates, budget, travel style, companions) that produces personalized recommendations.
-- Budget guide (/guide-budget): realistic per-day budget, manual expense tracking with charts, live currency converter, AI alerts and saving tips, PDF export.
-- Visa & vaccines guide (/guide-visa): visa formalities, recommended vaccines and safety advice, summarized from official sources (France Diplomatie, Institut Pasteur, WHO). Always check official sites before travelling.
-- Mood Explorer (/mood): place recommendations based on your current mood, with map and badges.
-- Discover (/discover): local places from OpenStreetMap enriched by AI, natural-language search, saved lists.
-- Hidden gems (/hidden-gems) and destinations (/destinations): lesser-known destinations matching your profile.
-- Live trip tracking (/suivi): map, timeline, check-ins, weather and suggestions; optional public share link.
-- Travel journal / Carnet (/carnet): day-by-day notes, photos, moods and places, AI-written trip story, PDF export and optional public page.
-- Gamification: XP, levels, weekly missions, streaks and badges.
+1. Create an account (free during the beta).
+2. Enter the trip: destination, dates or length of stay, nationality, approximate budget and type of stay (Erasmus/exchange, internship, trip).
+3. Prepare with the four tools below; a dashboard shows progress in each one and an email reminder is sent 7 days before departure.
 
-## Pricing
+## The four preparation tools
 
-- Free: 3 free AI generations per tool, no card required.
-- Premium packs: planned for public launch (late 2026 / early 2027). Waitlist on /offres.
+- Budget guide (/guide-budget): realistic budget for the destination and length of stay in 3 scenarios (economy, realistic, comfort), planned-expense tracking with charts, saving tips, PDF export.
+- Visa & paperwork guide (/guide-visa): visa formalities for the traveler's nationality, recommended vaccines and safety advice summarized from official sources (France Diplomatie, Institut Pasteur, WHO), with a document checklist. Always check official sites before travelling.
+- Packing list (/guide-valise): checklist adapted to the destination's weather, the length and the type of stay, outfit ideas and missing-item check.
+- Culture guide (/guide-culture): cultural codes of the destination country — dress, food and table manners, gestures, greetings — with real-life situations, a tip of the day and a mini-quiz. Ready-made sheets for 10 countries; other countries are written by AI on demand.
+
+Ping, Xplania's assistant, answers questions about these four topics only.
+
+## Access
+
+- Beta: free, no card required, up to 10 AI generations per tool per month (a failed generation is given back).
+- Post-beta offers: not set yet.
 
 ## Privacy
 
-EU hosting, no resale of data, sharing is opt-in, account and data can be deleted anytime. Details on /securite and /politique-de-confidentialite.
+No resale of data, account and data can be deleted anytime. Details on /securite and /politique-de-confidentialite.
 
 ## Contact
 

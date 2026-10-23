@@ -6,6 +6,7 @@ import fs from "fs";
 import { componentTagger } from "lovable-tagger";
 import { VitePWA } from "vite-plugin-pwa";
 import { META, NOINDEX_ROUTES } from "./src/lib/route-meta.data";
+import { isPathEnabled } from "./src/config/featureFlags";
 
 const SITE = "https://xplania.app";
 
@@ -47,7 +48,8 @@ function staticRouteMetaPlugin(): Plugin {
 
       const routes: [string, string, string][] = [
         ...Object.entries(META)
-          .filter(([route]) => route !== "/")
+          // Hidden beta modules get no static page (their URL redirects).
+          .filter(([route]) => route !== "/" && isPathEnabled(route))
           .map(([route, meta]) => [route, meta.fr[0], meta.fr[1]] as [string, string, string]),
         ...NOINDEX_ROUTES.map((route) => [route, NOINDEX_META[route]?.title ?? "Xplania", NOINDEX_META[route]?.description ?? ""] as [string, string, string]),
       ];

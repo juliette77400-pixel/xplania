@@ -1,3 +1,4 @@
+import { SAFETY_RULE_FR, SAFETY_RULE_EN } from '../_shared/prompts.ts'
 // Daily job: emails a J-7 reminder (with formalities checklist) to owners of trips leaving in 7 days.
 // Idempotent per trip, so repeated calls never send duplicates.
 import { createClient } from 'npm:@supabase/supabase-js@2'
@@ -32,8 +33,8 @@ Deno.serve(async (req) => {
         templateData: {
           destination: t.destination || '',
           departureDate: dateLabel,
-          tripUrl: `https://xplania.app/carnet/${t.id}`,
-          checklistUrl: `https://xplania.app/carnet/${t.id}`,
+          tripUrl: 'https://xplania.app/app',
+          checklistUrl: 'https://xplania.app/app',
           remainingItems,
           lang,
         },
@@ -68,7 +69,12 @@ async function suggest(destination: string, summary: string, en: boolean) {
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'google/gemini-3-flash-preview',
-        messages: [{ role: 'user', content: `${en ? 'In English' : 'En français'}. Destination: ${destination}. Weather: ${summary}. Give 3 real, named activities located in ${destination} (not generic) suited to this weather. Reply ONLY JSON: [{"title":"...","why":"short reason"}]` }],
+        // Beta: preparation only — packing advice for the forecast, no activity ideas.
+        messages: [
+          { role: 'system', content: en ? SAFETY_RULE_EN : SAFETY_RULE_FR },
+          { role: 'user', content: `${en ? 'In English' : 'En français'}. Destination: ${destination}. Weather: ${summary}. Give 3 concrete things to pack or prepare before leaving for ${destination} because of this weather (items, documents, precautions). Reply ONLY JSON: [{"title":"...","why":"short reason"}]` },
+        ],
+        reasoning: { effort: 'low' },
       }),
     })
     if (!r.ok) return []
@@ -113,7 +119,7 @@ async function weatherAlerts(admin: any) {
       const dayLabel = new Date(bad.date + 'T12:00:00Z').toLocaleDateString(en ? 'en-GB' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
       const suggestions = await suggest(place, summary, en)
       const r = await sendTemplateEmail('weather-alert', email, {
-        templateData: { destination: place, dayLabel, summary, suggestions, tripUrl: `https://xplania.app/carnet/${t.id}`, lang: en ? 'en' : 'fr' },
+        templateData: { destination: place, dayLabel, summary, suggestions, tripUrl: 'https://xplania.app/guide-valise', lang: en ? 'en' : 'fr' },
         idempotencyKey: `weather-alert-${t.id}-${bad.date}`,
       })
       if (r.sent) sent++

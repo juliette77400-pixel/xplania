@@ -1,8 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Check, Loader2, Compass, ArrowLeft } from "lucide-react";
+import { Search, Check, Loader2, Compass, ArrowLeft, Globe2 } from "lucide-react";
+import QuickJump from "@/components/shared/QuickJump";
+import { findCountry, normCountry } from "@/lib/country-match";
+import { useTravelStore } from "@/stores/useTravelStore";
+import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HowItWorks from "@/components/shared/HowItWorks";
 import { Input } from "@/components/ui/input";
@@ -12,26 +16,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
 import { CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 
-const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-const ALIASES: Record<string, string> = {
-  angleterre: "GB", "royaume-uni": "GB", england: "GB", uk: "GB", "united kingdom": "GB", ecosse: "GB",
-  usa: "US", "etats-unis": "US", amerique: "US", "united states": "US", japan: "JP", china: "CN", brazil: "BR",
-  mexico: "MX", spain: "ES", poland: "PL", netherlands: "NL", hollande: "NL", holland: "NL", australia: "AU", germany: "DE",
-};
-function findCountry(q: string): string | null {
-  const n = norm(q);
-  if (!n) return null;
-  if (ALIASES[n]) return ALIASES[n];
-  const exact = countryList.find((c) => norm(c.name) === n);
-  if (exact) return exact.code;
-  const starts = countryList.filter((c) => norm(c.name).startsWith(n));
-  return starts.length === 1 ? starts[0].code : null;
-}
+const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";
 const loadProgress = (): Record<string, boolean> => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}"); } catch { return {}; } };
 const SEV: Record<string, string> = { low: "🟢", medium: "🟠", high: "🔴" };
 
 export default function GuideCulture() {
+  useHydrateActiveTrip();
+  const tripDestination = useTravelStore((s) => s.tripData?.destination);
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
   const [query, setQuery] = useState("");
@@ -39,6 +31,14 @@ export default function GuideCulture() {
   const [notFound, setNotFound] = useState(false);
   const [pillar, setPillar] = useState<PillarId | null>(null);
   const [done, setDone] = useState<Record<string, boolean>>(loadProgress);
+  const [touched, setTouched] = useState(false);
+
+  // Open the guide on the trip's destination country until the traveler picks another one.
+  useEffect(() => {
+    if (touched) return;
+    const c = findCountry(tripDestination);
+    if (c) setCode(c);
+  }, [tripDestination, touched]);
 
   const suggestions = useMemo(() => {
     const n = norm(query);
@@ -46,11 +46,11 @@ export default function GuideCulture() {
     return countryList.filter((c) => norm(c.name).includes(n)).slice(0, 6);
   }, [query]);
 
-  const choose = (c: string) => { setCode(c); setPillar(null); setNotFound(false); setQuery(""); };
+  const choose = (c: string) => { setTouched(true); setCode(c); setPillar(null); setNotFound(false); setQuery(""); };
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const c = findCountry(query);
-    if (c) choose(c); else { setNotFound(true); setCode(null); }
+    if (c) choose(c); else { setTouched(true); setNotFound(true); setCode(null); }
   };
   const toggle = (k: string) => setDone((d) => { const n = { ...d, [k]: !d[k] }; localStorage.setItem(PROGRESS_KEY, JSON.stringify(n)); return n; });
 
@@ -59,18 +59,19 @@ export default function GuideCulture() {
   const doneCount = code ? CULTURE_PILLARS.filter((p) => done[`${code}:${p.id}`]).length : 0;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <AppNavbar />
-      <main className="container mx-auto max-w-4xl px-4 pt-24 pb-16 space-y-6">
-        <header className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">{t("culture.title")}</h1>
-          <p className="text-muted-foreground">{t("culture.subtitle")}</p>
+      <main id="main-content" tabIndex={-1} className="container mx-auto max-w-4xl px-4 sm:px-6 py-6 pb-16 space-y-6">
+        {/* Same layout as « Visa & Préparatifs »: hero, then the destination card. */}
+        <header className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-10">
+          <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><Globe2 className="h-4 w-4" aria-hidden />{t("culture.heroKicker")}</p>
+          <h1 className="max-w-2xl text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">{t("culture.title")}</h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">{t("culture.subtitle")}</p>
         </header>
 
-        <HowItWorks prefix="culture" />
-
-        <form onSubmit={submit} className="glass-card rounded-2xl p-4 space-y-3">
-          <label htmlFor="culture-country" className="text-sm font-semibold text-foreground">{t("culture.searchLabel")}</label>
+        <form onSubmit={submit} className="rounded-2xl border border-border/70 bg-card/45 p-6 space-y-3">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("culture.contextKicker")}</p>
+          <label htmlFor="culture-country" className="block text-xl font-bold text-foreground">{t("culture.searchLabel")}</label>
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
@@ -98,6 +99,8 @@ export default function GuideCulture() {
             </div>
           </div>
         </form>
+
+        {!code && <HowItWorks prefix="culture" />}
 
         {notFound && (
           <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
@@ -139,9 +142,10 @@ export default function GuideCulture() {
         )}
 
         <p className="text-xs text-center text-muted-foreground">
-          {t("culture.otherTools")} <Link to="/guide-visa" className="text-primary underline">{t("appNav.visa")}</Link> · <Link to="/suivi" className="text-primary underline">{t("appNav.tracking")}</Link>
+          {t("culture.otherTools")} <Link to="/guide-visa" className="text-primary underline">{t("appNav.visa")}</Link> · <Link to="/guide-valise" className="text-primary underline">{t("appNav.suitcase")}</Link>
         </p>
       </main>
+      <QuickJump />
     </div>
   );
 }

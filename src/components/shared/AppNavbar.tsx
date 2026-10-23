@@ -31,23 +31,29 @@ interface NavItem {
   premium?: boolean;
 }
 
-// The primary navigation follows the natural rhythm of a trip.
-const PRIMARY: NavItem[] = [
+// The primary navigation lists the preparation tools first; modules switched
+// off in src/config/featureFlags.ts are filtered out everywhere below.
+const PRIMARY_ALL: NavItem[] = [
   { to: "/app", labelKey: "appNav.home", icon: Home },
-  { to: "/guide-budget", labelKey: "appNav.prepare", icon: Luggage },
+  { to: "/guide-budget", labelKey: "appNav.budget", icon: Wallet },
+  { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
+  { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
+  { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
   { to: "/discover", labelKey: "appNav.explorePhase", icon: Compass },
   { to: "/suivi", labelKey: "appNav.travelPhase", icon: Activity },
   { to: "/carnets", labelKey: "appNav.relive", icon: BookOpen },
 ];
+const PRIMARY = PRIMARY_ALL.filter((it) => isPathEnabled(it.to));
 
 // Every tool, grouped by trip phase — one distinct icon per tool.
 interface NavGroup { labelKey: string; items: NavItem[] }
-const GROUPS: NavGroup[] = [
+const GROUPS_ALL: NavGroup[] = [
   { labelKey: "appNav.groupPrepare", items: [
     { to: "/profil-voyageur", labelKey: "appNav.dna", icon: Dna },
     { to: "/guide-budget", labelKey: "appNav.budget", icon: Wallet },
     { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
     { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
+    { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
   ] },
   { labelKey: "appNav.groupExplore", items: [
     { to: "/mood", labelKey: "appNav.mood", icon: Smile },
@@ -56,7 +62,6 @@ const GROUPS: NavGroup[] = [
   ] },
   { labelKey: "appNav.groupTravel", items: [
     { to: "/suivi", labelKey: "appNav.tracking", icon: Activity },
-    { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
   ] },
   { labelKey: "appNav.groupRelive", items: [
     { to: "/carnets", labelKey: "appNav.journal", icon: BookOpen },
@@ -67,8 +72,18 @@ const GROUPS: NavGroup[] = [
     { to: "/about", labelKey: "appNav.about", icon: Info },
   ] },
 ];
+const GROUPS: NavGroup[] = GROUPS_ALL
+  .map((g) => ({ ...g, items: g.items.filter((it) => isPathEnabled(it.to)) }))
+  .filter((g) => g.items.length > 0);
 
 import { useWeeklyMissionsRemaining } from "@/hooks/useWeeklyMissionsRemaining";
+import { FEATURE_FLAGS, isPathEnabled } from "@/config/featureFlags";
+
+// Mission counters only exist when gamification is on — the flag is a
+// build-time constant, so the hook choice never changes between renders.
+const useMissionsBadge = FEATURE_FLAGS.ENABLE_GAMIFICATION
+  ? useWeeklyMissionsRemaining
+  : () => ({ remaining: 0 });
 
 const AppNavbar = () => {
   const { user, signOut } = useAuth();
@@ -76,7 +91,7 @@ const AppNavbar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const { remaining: missionsRemaining } = useWeeklyMissionsRemaining();
+  const { remaining: missionsRemaining } = useMissionsBadge();
 
   const isActive = (to: string) => to === "/" ? pathname === "/" : pathname.startsWith(to);
 
@@ -160,7 +175,7 @@ const AppNavbar = () => {
             <LanguageSwitcher variant="minimal" />
             <ThemeToggle />
           </div>
-          {user && <NotificationsBell />}
+          {user && (FEATURE_FLAGS.ENABLE_DISCOVER || FEATURE_FLAGS.ENABLE_GAMIFICATION || FEATURE_FLAGS.ENABLE_LIVE_TRACKING) && <NotificationsBell />}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center rounded-full hover:ring-2 hover:ring-primary/40 transition-all">
@@ -306,7 +321,7 @@ const AppNavbar = () => {
         </div>
       </div>
       {/* Added: weekly missions awareness banner */}
-      <MissionsBanner />
+      {FEATURE_FLAGS.ENABLE_GAMIFICATION && <MissionsBanner />}
       {/* Added: post-signup guided tour (auto-opens once per user) */}
       <OnboardingTour />
     </nav>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { PREPARATION_HOME } from "@/config/featureFlags";
 import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -23,7 +24,8 @@ const Auth = () => {
   // Tinder deck at "/". If the user was bounced here from a protected page,
   // send them back there instead.
   const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
-  const next = params.get("next") || (from && from !== "/" && from !== "/auth" ? from : "/home");
+  // Beta: signing in leads straight to the preparation dashboard.
+  const next = params.get("next") || (from && from !== "/" && from !== "/auth" ? from : PREPARATION_HOME);
   const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
@@ -83,7 +85,7 @@ const Auth = () => {
     setLoading(true);
     try {
     const result = await lovable.auth.signInWithOAuth("apple", {
-      redirect_uri: `${window.location.origin}${next}`,
+      redirect_uri: `${window.location.origin}/auth?next=${encodeURIComponent(next)}`,
     });
     if (result.error) {
       setLoading(false);
@@ -102,7 +104,7 @@ const Auth = () => {
     setLoading(true);
     try {
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}${next}`,
+      redirect_uri: `${window.location.origin}/auth?next=${encodeURIComponent(next)}`,
     });
     if (result.error) {
       setLoading(false);
@@ -154,7 +156,7 @@ const Auth = () => {
         </p>
 
         <div className="glass-card rounded-2xl p-8">
-          <Tabs defaultValue="signin">
+          <Tabs defaultValue={params.get("mode") === "signup" ? "signup" : "signin"}>
             <TabsList className="grid grid-cols-2 w-full mb-6">
               <TabsTrigger value="signin">{t("auth.signin")}</TabsTrigger>
               <TabsTrigger value="signup">{t("auth.signup")}</TabsTrigger>

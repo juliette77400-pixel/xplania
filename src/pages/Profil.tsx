@@ -15,6 +15,7 @@ import ProfileStats from "@/components/profil/ProfileStats";
 import BadgeShowcase from "@/components/profil/BadgeShowcase";
 import ProfilePersonalization from "@/components/profil/ProfilePersonalization";
 import AvatarEditor from "@/components/profil/AvatarEditor";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
@@ -122,10 +123,10 @@ const Profil = () => {
         )}
 
         {!loading && <ProfilePersonalization />}
-        {!loading && <ProfileStats />}
-        {!loading && <BadgeShowcase />}
+        {!loading && FEATURE_FLAGS.ENABLE_GAMIFICATION && <ProfileStats />}
+        {!loading && FEATURE_FLAGS.ENABLE_GAMIFICATION && <BadgeShowcase />}
 
-        <Card className="p-6 space-y-3">
+        {FEATURE_FLAGS.ENABLE_TRAVEL_JOURNAL && <Card className="p-6 space-y-3">
           <h2 className="font-semibold flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-primary" /> {t("profil.publicCard.title")}
           </h2>
@@ -135,7 +136,7 @@ const Profil = () => {
               <BookOpen className="w-4 h-4 mr-2" /> {t("profil.publicCard.cta")} <ArrowRight className="w-3 h-3 ml-1" />
             </Link>
           </Button>
-        </Card>
+        </Card>}
 
         <Card className="p-6 space-y-3">
           <h2 className="font-semibold flex items-center gap-2">

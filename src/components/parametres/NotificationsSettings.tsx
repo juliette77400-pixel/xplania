@@ -1,5 +1,6 @@
 // Notifications tab — per-user notification preferences.
 // Stored in localStorage (no DB migration). Also lets the user enable browser push.
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Bell, BellRing, Mail, Sparkles, AlertTriangle, Send } from "lucide-react";
@@ -87,18 +88,18 @@ const NotificationsSettings = () => {
 
   return (
     <div className="space-y-5">
-      <Card className="p-6 space-y-4">
+      {(FEATURE_FLAGS.ENABLE_GAMIFICATION || FEATURE_FLAGS.ENABLE_LIVE_TRACKING) && <Card className="p-6 space-y-4">
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4 text-primary" />
           <h2 className="font-semibold">{t("settings.notif.inApp.title")}</h2>
         </div>
         <p className="text-xs text-muted-foreground">{t("settings.notif.inApp.hint")}</p>
         <div className="space-y-2">
-          {row(<Sparkles className="w-4 h-4" />, t("settings.notif.badgesValidated.title"), t("settings.notif.badgesValidated.hint"), "badgesValidated")}
-          {row(<AlertTriangle className="w-4 h-4" />, t("settings.notif.badgesRejected.title"), t("settings.notif.badgesRejected.hint"), "badgesRejected")}
-          {row(<BellRing className="w-4 h-4" />, t("settings.notif.tripAlerts.title"), t("settings.notif.tripAlerts.hint"), "tripAlerts")}
+          {FEATURE_FLAGS.ENABLE_GAMIFICATION && row(<Sparkles className="w-4 h-4" />, t("settings.notif.badgesValidated.title"), t("settings.notif.badgesValidated.hint"), "badgesValidated")}
+          {FEATURE_FLAGS.ENABLE_GAMIFICATION && row(<AlertTriangle className="w-4 h-4" />, t("settings.notif.badgesRejected.title"), t("settings.notif.badgesRejected.hint"), "badgesRejected")}
+          {FEATURE_FLAGS.ENABLE_LIVE_TRACKING && row(<BellRing className="w-4 h-4" />, t("settings.notif.tripAlerts.title"), t("settings.notif.tripAlerts.hint"), "tripAlerts")}
         </div>
-      </Card>
+      </Card>}
 
       <Card className="p-6 space-y-4">
         <div className="flex items-center gap-2">
@@ -107,7 +108,7 @@ const NotificationsSettings = () => {
         </div>
         <p className="text-xs text-muted-foreground">{t("settings.notif.email.hint")}</p>
         <div className="space-y-2">
-          {row(<Send className="w-4 h-4" />, t("settings.notif.weeklyDigest.title"), t("settings.notif.weeklyDigest.hint"), "weeklyDigest")}
+          {FEATURE_FLAGS.ENABLE_GAMIFICATION && row(<Send className="w-4 h-4" />, t("settings.notif.weeklyDigest.title"), t("settings.notif.weeklyDigest.hint"), "weeklyDigest")}
           {row(<Mail className="w-4 h-4" />, t("settings.notif.marketing.title"), t("settings.notif.marketing.hint"), "emailMarketing")}
         </div>
       </Card>
