@@ -53,7 +53,8 @@
     "labelTracking": "Suivi live",
     "labelJournal": "Carnet",
     "labelValise": "Valise",
-    "descCulture": "Codes & usages"
+    "descCulture": "Codes & usages",
+    "descHousing": "Chercher, comparer et préparer ton logement"
   },
   "streakCard": {
     "daysInARow": "jours d'affilée",
@@ -134,7 +135,8 @@
     "groupXplania": "Informations",
     "groupAccount": "Mon compte",
     "dna": "ADN Voyageur",
-    "culture": "Guide culturel"
+    "culture": "Guide culturel",
+    "housing": "Logement"
   },
   "about": {
     "metaTitle": "À propos — Xplania, préparer son départ sans soucis",
@@ -1393,7 +1395,8 @@
       }
     },
     "freeRemainingHint": "Essais gratuits restants ce mois-ci, par outil (les fiches du guide interculturel écrites par l'IA comptent avec la Valise).",
-    "perMonthTries": "10 / mois"
+    "perMonthTries": "10 / mois",
+    "freeFeat4": "Assistant Logement inclus en accès libre (sans IA, aucun essai consommé)"
   },
   "quotaReached": {
     "title": "Limite gratuite atteinte",
@@ -6336,18 +6339,18 @@
   },
   "prepDashboard": {
     "kicker": "Mon espace de préparation",
-    "subtitle": "Budget, visa, valise et culture : tout ce qu'il faut préparer avant ton départ, au même endroit.",
+    "subtitle": "Budget, visa, valise, culture et logement : tout ce qu'il faut préparer avant ton départ, au même endroit.",
     "newTrip": "Nouveau séjour",
     "firstStepKicker": "Étape 1",
     "firstStepTitle": "Crée ton voyage",
-    "firstStepDesc": "Quelques infos suffisent : les 4 outils de préparation s'adaptent ensuite automatiquement.",
+    "firstStepDesc": "Quelques infos suffisent : les 5 outils de préparation s'adaptent ensuite automatiquement.",
     "myTrips": "Mes voyages",
     "currentTrip": "Voyage en préparation",
     "durationDays_one": "{{count}} jour",
     "durationDays_other": "{{count}} jours",
     "noDates": "Dates à préciser",
     "overall": "Préparation globale",
-    "modulesTitle": "Tes 4 outils de préparation",
+    "modulesTitle": "Tes 5 outils de préparation",
     "start": "Commencer",
     "continue": "Continuer",
     "offersHint": "10 essais gratuits par outil chaque mois —",
@@ -6356,7 +6359,8 @@
       "visa": "{{done}}/{{total}} démarches cochées",
       "valise": "{{done}}/{{total}} éléments cochés",
       "culture": "{{done}}/{{total}} thèmes compris",
-      "notStarted": "Pas encore commencé"
+      "notStarted": "Pas encore commencé",
+      "housing": "{{done}}/{{total}} étapes cochées"
     },
     "modules": {
       "budget": {
@@ -6374,6 +6378,10 @@
       "culture": {
         "title": "Guide culturel",
         "desc": "Tenue, gastronomie, gestes et usages"
+      },
+      "housing": {
+        "title": "Logement",
+        "desc": "Organise ta recherche et prépare ton installation"
       }
     },
     "status": {
@@ -6390,7 +6398,9 @@
       "valiseStart": "Valise : coche les premiers éléments de ta liste",
       "valiseContinue": "Valise : termine ta liste",
       "cultureStart": "Culture : lis un premier thème et marque-le comme compris",
-      "cultureContinue": "Culture : continue avec les thèmes suivants"
+      "cultureContinue": "Culture : continue avec les thèmes suivants",
+      "housingStart": "Logement : indique où tu en es et coche ta première vérification",
+      "housingContinue": "Logement : continue ta checklist"
     },
     "missing": {
       "title": "Il manque une information",
@@ -6612,7 +6622,8 @@
       "dates": "La date de retour doit être après la date de départ.",
       "datesMissing": "Indique une date de départ ou choisis une durée (même « Je ne sais pas encore »).",
       "budget": "Indique un montant ou choisis « Je ne sais pas encore ».",
-      "housing": "Choisis ton type de logement."
+      "housing": "Choisis ton type de logement.",
+      "housingStatus": "Choisis où tu en es dans ta recherche de logement."
     },
     "summary": {
       "title": "Ton espace de préparation est prêt !",
@@ -6623,6 +6634,14 @@
       "budget": "Budget prévu",
       "noDates": "Pas encore connues",
       "cta": "Accéder à ma préparation"
+    },
+    "housingStatus": {
+      "title": "Où en es-tu dans ta recherche de logement ?",
+      "subtitle": "Pour t'accompagner selon l'avancement de tes préparatifs.",
+      "starting": "Je commence mes recherches",
+      "shortlist": "J'ai trouvé quelques logements",
+      "confirmed": "Mon logement est confirmé",
+      "lost": "Je ne sais pas par où commencer"
     }
   },
   "prepEdit": {
@@ -6631,5 +6650,237 @@
     "save": "Enregistrer",
     "saved": "Séjour mis à jour.",
     "error": "Impossible d'enregistrer les modifications. Réessaie."
+  },
+  "housing": {
+    "kicker": "Assistant Logement",
+    "title": "Ton logement à l'étranger",
+    "subtitle": "De la recherche à ton installation, retrouve les informations et les étapes essentielles pour préparer ton logement.",
+    "status": {
+      "label": "Ta situation :",
+      "change": "Modifier ma situation",
+      "saved": "Situation enregistrée",
+      "error": "Impossible d'enregistrer ta situation. Réessaie."
+    },
+    "progress": "{{done}}/{{total}} étapes cochées",
+    "progressLabel": "Progression de la préparation du logement",
+    "step": "Étape {{n}}",
+    "focus": {
+      "starting": "Tu commences tes recherches : repère d'abord les bonnes ressources, puis note les logements qui t'intéressent pour les comparer.",
+      "lost": "Pas de panique : commence par le service logement de ton établissement d'accueil et les ressources ci-dessous, puis avance étape par étape.",
+      "shortlist": "Tu as repéré des logements : compare-les, puis fais les vérifications avant de réserver ou de signer.",
+      "confirmed": "Ton logement est confirmé : prépare ton arrivée, tes documents et tes frais d'installation."
+    },
+    "sections": {
+      "resources": {
+        "title": "Où chercher ton logement ?",
+        "desc": "Des ressources réelles, sélectionnées à la main pour ta destination."
+      },
+      "compare": {
+        "title": "Compare tes options",
+        "desc": "Note les logements repérés ailleurs et compare-les côte à côte."
+      },
+      "safety": {
+        "title": "Évite les mauvaises surprises",
+        "desc": "À vérifier avant de réserver ou de signer."
+      },
+      "install": {
+        "title": "Tout est prêt pour ton arrivée ?",
+        "desc": "Les étapes de ton installation, adaptées à ta situation."
+      }
+    },
+    "resources": {
+      "schoolTitle": "Le premier réflexe : ton établissement d'accueil",
+      "schoolDesc": "Le service international ou le service logement de ton université ou de ton entreprise d'accueil connaît les résidences partenaires et les solutions locales. Écris-leur dès que possible.",
+      "none": "Xplania n'a pas encore de ressources vérifiées pour {{country}}. Contacte le service international ou logement de ton établissement d'accueil : c'est la source la plus fiable.",
+      "yourCountry": "ta destination",
+      "scopeEurope": "Plusieurs pays d'Europe",
+      "open": "Ouvrir le site",
+      "newTab": "(nouvel onglet)",
+      "verified": "Lien vérifié le {{date}}",
+      "disclaimer": "Aucun partenariat : Xplania ne reçoit rien de ces sites et ne garantit pas les annonces qu'ils publient. Vérifie que ta ville est couverte.",
+      "cat": {
+        "residence": "Résidences universitaires",
+        "platform": "Plateformes de logement",
+        "flatshare": "Colocations",
+        "institutional": "Ressources officielles et d'accompagnement"
+      },
+      "items": {
+        "housinganywhere": "Location de chambres et de logements en moyenne et longue durée, très utilisée par les étudiants internationaux.",
+        "uniplaces": "Plateforme de location de chambres et d'appartements pour étudiants dans plusieurs villes européennes.",
+        "spotahome": "Location de logements meublés en moyenne et longue durée, avec annonces détaillées.",
+        "erasmusu": "Communauté Erasmus avec des annonces de chambres et de colocations, et des retours d'étudiants.",
+        "crous": "Demande de logement en résidence universitaire Crous en France.",
+        "cartedescolocs": "Annonces de colocations et de colocataires partout en France.",
+        "visale": "Garantie locative gratuite d'Action Logement, accessible à de nombreux étudiants (conditions sur le site).",
+        "caf": "Aides au logement en France, selon ta situation (à vérifier sur le site).",
+        "fotocasa": "Grand site d'annonces de location en Espagne.",
+        "badi": "Plateforme de chambres en colocation, surtout en Espagne.",
+        "studierendenwerke": "Réseau des Studierendenwerke, qui gèrent notamment les résidences étudiantes en Allemagne.",
+        "wggesucht": "Le site de référence pour les colocations (WG) en Allemagne.",
+        "kamernet": "Grande plateforme de chambres et de studios aux Pays-Bas.",
+        "duwo": "Logement étudiant à Delft, Leyde, Amsterdam et dans d'autres villes néerlandaises.",
+        "ssh": "Logement étudiant à Utrecht et dans d'autres villes néerlandaises.",
+        "spareroom": "Site de colocation très utilisé au Royaume-Uni.",
+        "unite": "Résidences étudiantes dans de nombreuses villes du Royaume-Uni.",
+        "howtorent": "Guide officiel du gouvernement britannique sur les droits et les étapes de la location.",
+        "reportfraud": "Service officiel pour signaler une arnaque au Royaume-Uni.",
+        "otodom": "Grand site d'annonces immobilières en Pologne, location comprise.",
+        "studyaustralia": "Site officiel du gouvernement australien pour les étudiants internationaux, avec des conseils sur le logement."
+      }
+    },
+    "types": {
+      "residence": "Résidence étudiante",
+      "flatshare": "Colocation",
+      "studio": "Studio / appartement",
+      "family": "Famille d'accueil",
+      "other": "Autre"
+    },
+    "compare": {
+      "help": "Ajoute les logements repérés sur d'autres sites. Seuls le nom et le loyer sont obligatoires.",
+      "add": "Ajouter un logement",
+      "emptyTitle": "Aucun logement enregistré",
+      "emptyDesc": "Dès que tu repères une annonce intéressante, ajoute-la ici pour la comparer avec les autres.",
+      "errorLoad": "Impossible de charger tes logements.",
+      "errorSave": "L'enregistrement a échoué. Réessaie.",
+      "saved": "Logement enregistré",
+      "deleted": "Logement supprimé",
+      "monthly": "Coût mensuel connu",
+      "chargesUnknown": "Charges non précisées",
+      "upfront": "Coût de départ estimé",
+      "upfrontHelp": "Coût de départ estimé = premier mois + caution + frais supplémentaires, d'après les montants que tu as saisis. Aucune note de fiabilité n'est calculée.",
+      "location": "Localisation",
+      "dates": "Disponibilité",
+      "unknown": "Non précisé",
+      "criteria": "Critère",
+      "actions": "Actions",
+      "tableCaption": "Comparaison de tes logements",
+      "favorite": "Favori",
+      "markFavorite": "Choisir",
+      "edit": "Modifier {{name}}",
+      "delete": "Supprimer {{name}}",
+      "openListing": "Ouvrir l'annonce de {{name}}",
+      "deleteTitle": "Supprimer ce logement ?",
+      "deleteDesc": "« {{name}} » sera retiré de ta comparaison. Ton budget n'est pas modifié.",
+      "favoriteHint": "Choisis ton logement favori pour pouvoir ajouter ses dépenses au budget.",
+      "budgetHint": "Ajoute les dépenses de « {{name}} » à ton budget.",
+      "budgetSynced": "Les dépenses de « {{name}} » sont dans ton budget.",
+      "budgetOutdated": "Ton budget ne correspond plus à « {{name}} ». Le mettre à jour ?",
+      "budgetAdd": "Ajouter les dépenses au budget",
+      "budgetUpdate": "Mettre à jour le budget"
+    },
+    "form": {
+      "addTitle": "Ajouter un logement",
+      "editTitle": "Modifier le logement",
+      "desc": "Recopie les infos de l'annonce. Tu pourras compléter plus tard.",
+      "name": "Nom du logement",
+      "namePlaceholder": "Ex. : Chambre près de l'université",
+      "rent": "Loyer mensuel (€)",
+      "deposit": "Caution (€)",
+      "chargesIncluded": "Charges incluses ?",
+      "charges": "Charges mensuelles (€)",
+      "yes": "Oui",
+      "no": "Non",
+      "more": "Plus de détails (facultatif)",
+      "city": "Ville",
+      "neighborhood": "Quartier",
+      "type": "Type de logement",
+      "furnished": "Meublé ?",
+      "fees": "Frais supplémentaires (€)",
+      "commute": "Trajet jusqu'au campus ou au stage",
+      "commutePlaceholder": "Ex. : 20 min en bus",
+      "from": "Disponible à partir du",
+      "to": "Jusqu'au",
+      "url": "Lien de l'annonce",
+      "pros": "Avantages",
+      "cons": "Inconvénients",
+      "notes": "Notes personnelles",
+      "privacy": "N'enregistre ici ni pièce d'identité, ni contrat, ni coordonnées bancaires.",
+      "errors": {
+        "name": "Indique un nom pour ce logement.",
+        "rent": "Indique le loyer mensuel (0 ou plus).",
+        "amount": "Les montants doivent être des nombres positifs.",
+        "url": "Le lien doit commencer par http:// ou https://",
+        "dates": "La date de fin doit être après la date de début.",
+        "save": "L'enregistrement a échoué. Réessaie."
+      }
+    },
+    "budget": {
+      "title": "Ajouter les dépenses au budget",
+      "desc": "Voici ce qui sera envoyé au guide Budget pour « {{name}} ». Rien n'est modifié sans ta confirmation.",
+      "noBudget": "Ton budget n'est pas encore créé. Génère d'abord ton estimation dans le guide Budget, puis reviens ici.",
+      "createBudget": "Créer mon budget",
+      "months": "Nombre de mois de loyer",
+      "monthsError": "Indique un nombre de mois entre 1 et 36.",
+      "monthly": "Mensuel (loyer + charges)",
+      "oneOff": "Ponctuel (frais d'agence, installation)",
+      "deposit": "Caution (potentiellement récupérable)",
+      "changesTitle": "Ce qui va changer dans ton budget",
+      "accommodationLine": "Logement : {{before}} → {{after}} (remplacé)",
+      "feesLine": "Frais (dont caution) : {{before}} → {{after}}",
+      "replacesOther": "Ces montants remplacent ceux d'un autre logement envoyé auparavant.",
+      "depositNote": "La caution est rangée à part dans « Frais » car elle peut t'être rendue à la fin du séjour, selon ton contrat.",
+      "confirm": "Ajouter au budget",
+      "confirmReplace": "Remplacer dans le budget",
+      "done": "Budget mis à jour",
+      "error": "Impossible de mettre à jour le budget."
+    },
+    "safety": {
+      "items": {
+        "owner": "J'ai vérifié l'identité du propriétaire ou de l'agence",
+        "contract": "J'ai vérifié les conditions du contrat",
+        "rent": "J'ai confirmé le montant du loyer et des charges",
+        "deposit": "J'ai vérifié les conditions de remboursement de la caution",
+        "cancel": "J'ai vérifié les conditions d'annulation",
+        "reviews": "J'ai recherché des avis ou des informations indépendantes",
+        "address": "J'ai vérifié l'adresse du logement",
+        "payment": "J'ai identifié les modalités de paiement",
+        "keys": "J'ai vérifié les conditions de remise des clés"
+      },
+      "alertsTitle": "Les signaux d'alerte",
+      "alerts": {
+        "rush": "On te demande de payer vite, « avant les autres »",
+        "noContract": "Le propriétaire refuse de fournir un contrat",
+        "contradictions": "Les informations changent ou se contredisent",
+        "transfer": "On te pousse à faire un virement avant toute visite ou tout contrat",
+        "lowPrice": "Le prix est anormalement bas pour le quartier",
+        "noProof": "Impossible d'obtenir des preuves crédibles que le logement existe (visite, vidéo en direct, adresse précise)"
+      },
+      "disclaimer": "Cette liste réduit certains risques mais ne garantit pas la fiabilité d'une annonce. En cas de doute, ne paie rien et demande conseil à ton établissement d'accueil."
+    },
+    "install": {
+      "phases": {
+        "beforeSigning": "Avant la signature",
+        "beforeDeparture": "Avant le départ",
+        "arrival": "À l'arrivée"
+      },
+      "items": {
+        "beforeSigning": {
+          "compare": "Comparer les logements",
+          "conditions": "Vérifier les conditions de location",
+          "documents": "Préparer les documents demandés",
+          "fees": "Vérifier les frais et les garanties"
+        },
+        "beforeDeparture": {
+          "arrival": "Confirmer les modalités d'arrivée",
+          "upfront": "Prévoir le paiement des frais initiaux",
+          "equipment": "Vérifier les équipements disponibles",
+          "keysPickup": "Organiser la récupération des clés",
+          "route": "Repérer le trajet jusqu'au logement"
+        },
+        "arrival": {
+          "inventory": "Faire l'état des lieux, si c'est prévu",
+          "checkEquipment": "Vérifier les équipements",
+          "keepDocs": "Conserver les documents utiles (contrat, reçus, état des lieux)",
+          "localSteps": "Vérifier les démarches locales nécessaires (enregistrement, assurance…)"
+        }
+      },
+      "legal": "Les règles de location changent d'un pays à l'autre : vérifie toujours sur une source officielle ou auprès de ton établissement d'accueil.",
+      "officialLink": "Page officielle"
+    },
+    "checklistError": "Impossible d'enregistrer cette case. Réessaie.",
+    "checklistLoadError": "Tes cases cochées n'ont pas pu être chargées. Recharge la page.",
+    "saving": "Enregistrement…",
+    "footer": "Les montants de ton logement peuvent compléter ton",
+    "footerBudget": "guide Budget"
   }
 }
