@@ -1689,6 +1689,9 @@ export type Database = {
           fetched_at: string
           id: string
           locale: string
+          review_note: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           source_dates: Json
         }
         Insert: {
@@ -1698,6 +1701,9 @@ export type Database = {
           fetched_at?: string
           id?: string
           locale: string
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           source_dates?: Json
         }
         Update: {
@@ -1707,6 +1713,9 @@ export type Database = {
           fetched_at?: string
           id?: string
           locale?: string
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           source_dates?: Json
         }
         Relationships: []
