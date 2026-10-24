@@ -5,6 +5,7 @@ import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
+import { SAFETY_RULE_EN, SAFETY_RULE_FR } from "../_shared/prompts.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -74,6 +75,9 @@ serve(withQuotaRefund(async (req) => {
 4. TIPS: 4 money-saving tips specific to the trip type, each naming a real place, pass, market or local practice, with its zone and city. 1-2 sentences.
 Novelty: never repeat any idea listed in "Already shown". Variation seed: ${seed}.
 Only include places you genuinely know exist. Prefer fewer but solid items.
+Every amount is an ESTIMATE: never present a price as guaranteed or official; when unsure, give a rounded range in the note.
+
+${isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR}
 
 ${travelerCtx}`;
 
