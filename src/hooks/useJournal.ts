@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { withFreshJournalMedia } from "@/lib/journal-media";
 import { useAuth } from "@/hooks/useAuth";
 import { buildDateRange } from "@/lib/journal-utils";
 
@@ -125,6 +126,7 @@ export const useJournal = (tripId: string | undefined): UseJournalResult => {
             .in("day_id", dayIds)
             .order("position", { ascending: true })
         : { data: [] };
+      const freshBlocks = await withFreshJournalMedia(blocks || []);
 
       const merged: JournalDay[] = allDays.map((d) => ({
         id: d.id,
@@ -133,7 +135,7 @@ export const useJournal = (tripId: string | undefined): UseJournalResult => {
         summary: d.summary,
         weather: d.weather,
         position: d.position,
-        blocks: (blocks || []).filter((b) => b.day_id === d.id) as JournalBlock[],
+        blocks: freshBlocks.filter((b) => b.day_id === d.id) as JournalBlock[],
       }));
 
       return { journal: j as Journal, days: merged };
