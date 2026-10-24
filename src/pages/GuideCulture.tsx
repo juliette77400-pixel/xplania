@@ -25,6 +25,7 @@ const SEV: Record<string, string> = { low: "🟢", medium: "🟠", high: "🔴" 
 export default function GuideCulture() {
   useHydrateActiveTrip();
   const tripDestination = useTravelStore((s) => s.tripData?.destination);
+  const stayType = useTravelStore((s) => s.tripData?.stayType);
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
   const [query, setQuery] = useState("");
@@ -127,6 +128,12 @@ export default function GuideCulture() {
               <p className="text-xs text-muted-foreground mt-1">{t("culture.progress", { done: doneCount, total: CULTURE_PILLARS.length })}</p>
             </div>
             <TipOfDay code={code} lang={lang} onOpen={setPillar} />
+            {(stayType === "erasmus" || stayType === "internship" || stayType === "other") && (
+              <button type="button" onClick={() => setPillar("work")} className="flex w-full items-center gap-3 rounded-2xl border border-primary/30 bg-primary/10 p-4 text-left text-sm transition hover:border-primary/60">
+                <span className="text-2xl" aria-hidden>🎓</span>
+                <span><span className="block font-semibold text-foreground">{t(`culture.stayHint.${stayType}`)}</span><span className="text-muted-foreground">{t("culture.stayHintCta", { pillar: t("culture.pillars.work") })}</span></span>
+              </button>
+            )}
             <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
               {CULTURE_PILLARS.map((p) => (
                 <button key={p.id} onClick={() => setPillar(p.id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">

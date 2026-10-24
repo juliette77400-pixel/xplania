@@ -6303,7 +6303,13 @@
     "quizPerfect": "Well done, you've mastered this topic!",
     "quizKeep": "Reread the tips and try again!",
     "heroKicker": "Prepare your arrival",
-    "contextKicker": "Your destination"
+    "contextKicker": "Your destination",
+    "stayHint": {
+      "erasmus": "You're going on Erasmus or a university exchange",
+      "internship": "You're doing an internship abroad",
+      "other": "You're going on a student mobility"
+    },
+    "stayHintCta": "Start with the “{{pillar}}” topic: university and work life in this country."
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."

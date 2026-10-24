@@ -6303,7 +6303,13 @@
     "quizPerfect": "Bravo, tu maîtrises ce thème !",
     "quizKeep": "Relis les conseils et retente ta chance !",
     "heroKicker": "Préparer ton arrivée",
-    "contextKicker": "Ta destination"
+    "contextKicker": "Ta destination",
+    "stayHint": {
+      "erasmus": "Tu pars en Erasmus ou en échange universitaire",
+      "internship": "Tu pars en stage à l'étranger",
+      "other": "Tu pars pour une mobilité étudiante"
+    },
+    "stayHintCta": "Commence par le thème « {{pillar}} » : la vie à l'université et au travail dans ce pays."
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
