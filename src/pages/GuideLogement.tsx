@@ -125,7 +125,7 @@ const GuideLogement = () => {
       case "compare":
         return <HousingComparator tripId={trip.id} destination={destination} city={city || destination} departureDate={departureDate} durationDays={durationDays} />;
       case "safety":
-        return <SafetyChecklist checked={checked} onToggle={onToggle} disabled={checklistLoading} />;
+        return <SafetyChecklist checked={checked} onToggle={onToggle} disabled={checklistLoading} remindersOnly={status === "confirmed"} />;
       case "install":
         return <InstallChecklist status={status} checked={checked} onToggle={onToggle} disabled={checklistLoading} officialUrl={OFFICIAL_RENT_PAGE[countryCode]} />;
     }

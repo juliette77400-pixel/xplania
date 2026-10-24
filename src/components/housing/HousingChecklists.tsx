@@ -37,12 +37,17 @@ interface Props {
   disabled?: boolean;
 }
 
-export const SafetyChecklist = ({ checked, onToggle, disabled }: Props) => {
+/** With a confirmed home the checks are shown as reminders only (not counted). */
+export const SafetyChecklist = ({ checked, onToggle, disabled, remindersOnly }: Props & { remindersOnly?: boolean }) => {
   const { t } = useTranslation();
   const alerts = ["rush", "noContract", "contradictions", "transfer", "lowPrice", "noProof"];
   return (
     <div className="space-y-5">
-      <CheckList ids={SAFETY_ITEMS.map((i) => `safety:${i}`)} labelPrefix="housing.safety.items" checked={checked} onToggle={onToggle} disabled={disabled} />
+      {remindersOnly ? (
+        <p className="text-sm text-muted-foreground">{t("housing.safety.confirmedNote")}</p>
+      ) : (
+        <CheckList ids={SAFETY_ITEMS.map((i) => `safety:${i}`)} labelPrefix="housing.safety.items" checked={checked} onToggle={onToggle} disabled={disabled} />
+      )}
       <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-4">
         <h3 className="flex items-center gap-2 text-sm font-bold"><AlertTriangle className="h-4 w-4 text-destructive" aria-hidden />{t("housing.safety.alertsTitle")}</h3>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">

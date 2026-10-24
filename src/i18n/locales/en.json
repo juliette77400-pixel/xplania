@@ -6848,7 +6848,8 @@
         "lowPrice": "The price is unusually low for the area",
         "noProof": "No credible proof that the place exists (visit, live video, exact address)"
       },
-      "disclaimer": "This list reduces some risks but does not guarantee that a listing is reliable. If in doubt, pay nothing and ask your host institution for advice."
+      "disclaimer": "This list reduces some risks but does not guarantee that a listing is reliable. If in doubt, pay nothing and ask your host institution for advice.",
+      "confirmedNote": "Your home is confirmed: keep these warning signs in mind if you're asked for another payment or a change of terms before you arrive."
     },
     "install": {
       "phases": {

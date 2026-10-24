@@ -6848,7 +6848,8 @@
         "lowPrice": "Le prix est anormalement bas pour le quartier",
         "noProof": "Impossible d'obtenir des preuves crédibles que le logement existe (visite, vidéo en direct, adresse précise)"
       },
-      "disclaimer": "Cette liste réduit certains risques mais ne garantit pas la fiabilité d'une annonce. En cas de doute, ne paie rien et demande conseil à ton établissement d'accueil."
+      "disclaimer": "Cette liste réduit certains risques mais ne garantit pas la fiabilité d'une annonce. En cas de doute, ne paie rien et demande conseil à ton établissement d'accueil.",
+      "confirmedNote": "Ton logement est confirmé : garde ces signaux d'alerte en tête si on te demande encore un paiement ou un changement de conditions avant ton arrivée."
     },
     "install": {
       "phases": {
