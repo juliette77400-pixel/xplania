@@ -1,6 +1,6 @@
 // Rules of the preparation questionnaire (7 card steps). Pure functions so the
 // rules can be tested without rendering: which answers are required, how the
-// answers become the trip read by the four guides.
+// answers become the trip read by the preparation tools.
 import { countryList } from "@/lib/countries";
 import type { TravelFormData } from "@/types/travel";
 import { HOUSING_STATUSES, isHousingStatus, type HousingStatus } from "@/lib/housing";
@@ -99,7 +99,7 @@ export function stayDurationDays(a: Pick<PrepAnswers, "departureDate" | "returnD
   return "";
 }
 
-/** Builds the trip data shared by the four guides. Labels come from the UI language. */
+/** Builds the trip data shared by the preparation tools. Labels come from the UI language. */
 export function buildTripFromAnswers(
   a: PrepAnswers,
   labels: { tripType: string; accommodation: string },

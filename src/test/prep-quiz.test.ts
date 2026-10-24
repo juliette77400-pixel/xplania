@@ -66,7 +66,7 @@ describe("questionnaire de préparation", () => {
     expect(buildTripFromAnswers(complete({ budgetUnknown: false, budget: "3000" }), labels).totalBudget).toBe(3000);
   });
 
-  it("enregistre les réponses utilisées par les quatre guides", () => {
+  it("enregistre les réponses utilisées par les outils de préparation", () => {
     const trip = buildTripFromAnswers(complete(), labels);
     expect(trip.destination).toBeTruthy();
     expect(trip.arrivalCity).toBe("Madrid");

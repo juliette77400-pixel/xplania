@@ -18,7 +18,7 @@ type AnalyticsEvent =
   | "carnet_created"
   | "waitlist_joined"
   | "cta_click"
-  // Beta funnel: preparation questionnaire, dashboard and the four guides.
+  // Beta funnel: preparation questionnaire, dashboard and the preparation tools.
   | "quiz_step"
   | "dashboard_viewed"
   | "guide_started"

@@ -107,7 +107,7 @@ export default function AdminStats() {
       dropoff: i === 0 ? 0 : Math.max(0, (funnel[i - 1]?.sessions || 0) - f.sessions),
     }));
 
-    // Beta funnel: preparation questionnaire → dashboard → the four guides.
+    // Beta funnel: preparation questionnaire → dashboard → the preparation tools.
     const sessionsOf = (pred: (r: EventRow) => boolean) => new Set(list.filter(pred).map((r) => r.session_id)).size;
     const isPrep = (r: EventRow) => r.props?.flow === "prep" || r.props?.flow === "prep_quiz";
     const beta = {
