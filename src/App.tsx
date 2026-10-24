@@ -75,6 +75,8 @@ const HiddenGems = lazy(() => import("./pages/HiddenGems.tsx"));
 const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
 const AdminStats = lazy(() => import("./pages/AdminStats.tsx"));
 const AdminSources = lazy(() => import("./pages/AdminSources.tsx"));
+const DestinationPrep = lazy(() => import("./pages/DestinationPrep.tsx"));
+const DestinationsHub = lazy(() => import("./pages/DestinationPrep.tsx").then((m) => ({ default: m.DestinationsHub })));
 const OnbWelcome = lazy(() => import("./pages/onboarding/Welcome.tsx"));
 const OnbBesoin = lazy(() => import("./pages/onboarding/Besoin.tsx"));
 const OnbQualif = lazy(() => import("./pages/onboarding/Qualif.tsx"));
@@ -149,6 +151,8 @@ const App = () => (
             <Route path="/guide-culture" element={gate("ENABLE_CULTURAL_GUIDE", <GuideCulture />)} />
             <Route path="/guide-logement" element={gate("ENABLE_HOUSING_ASSISTANT", <ProtectedRoute><GuideLogement /></ProtectedRoute>)} />
             <Route path="/offres" element={<Offres />} />
+            <Route path="/preparer" element={<DestinationsHub />} />
+            <Route path="/preparer/:slug" element={<DestinationPrep />} />
             <Route path="/carnets" element={gate("ENABLE_TRAVEL_JOURNAL", <ProtectedRoute><Carnets /></ProtectedRoute>)} />
             <Route path="/carnet/:tripId" element={gate("ENABLE_TRAVEL_JOURNAL", <ProtectedRoute><Carnet /></ProtectedRoute>)} />
             <Route path="/carnet/public/:slug" element={gate("ENABLE_TRAVEL_JOURNAL", <PublicCarnet />)} />
