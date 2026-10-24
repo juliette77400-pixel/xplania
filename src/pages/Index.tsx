@@ -23,7 +23,6 @@ import DialogSkeleton from "@/components/shared/DialogSkeleton";
 // Dialogs are only mounted when the user opens them — keep them out of the entry bundle.
 const TravelFormDialog = lazy(() => import("@/components/xplania/TravelFormDialog"));
 const FeedbackDialog = lazy(() => import("@/components/xplania/FeedbackDialog"));
-const OnboardingDialog = lazy(() => import("@/components/xplania/OnboardingDialog"));
 const QuotaReachedDialog = lazy(() => import("@/components/xplania/QuotaReachedDialog"));
 import { useTravelContext } from "@/contexts/TravelContext";
 import { hasReachedFreeQuota } from "@/stores/usePlanStore";
@@ -148,9 +147,6 @@ const Index = () => {
           <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
         </Suspense>
       )}
-      <Suspense fallback={null}>
-        <OnboardingDialog onCreateTrip={handleCreateTrip} />
-      </Suspense>
       {quotaOpen && (
         <Suspense fallback={<DialogSkeleton size="sm" compact />}>
           <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />

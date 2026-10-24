@@ -177,7 +177,7 @@ const Dashboard = () => {
                   <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("prepDashboard.currentTrip")}</p>
                   <h2 className="mt-1 flex items-center gap-2 text-2xl font-bold"><MapPin className="h-5 w-5 shrink-0 text-primary" /><span className="truncate">{selected.arrival_city && selected.arrival_city !== selected.destination ? `${selected.arrival_city}, ${selected.destination}` : selected.destination}</span></h2>
                   <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarDays className="h-4 w-4" />
-                    {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
+                    {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : (selected.form_data as { durationBucket?: string } | null)?.durationBucket ? t(`prepQuiz.dates.bucket.${(selected.form_data as { durationBucket: string }).durationBucket}`) : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
                   </p>
                   {stayLabel && (
                     <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><StayIcon className="h-4 w-4" />{stayLabel}</p>
