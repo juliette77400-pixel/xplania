@@ -5,11 +5,12 @@ import { readTripProgress, saveModuleProgress, overallPercent } from "@/lib/prep
 import { validateTravelBasics } from "@/lib/travel-form-validation";
 
 describe("bêta : un seul besoin, préparer son voyage en amont", () => {
-  it("les 4 outils de préparation sont actifs", () => {
+  it("les 5 outils de préparation sont actifs", () => {
     expect(FEATURE_FLAGS.ENABLE_BUDGET_GUIDE).toBe(true);
     expect(FEATURE_FLAGS.ENABLE_VISA_GUIDE).toBe(true);
     expect(FEATURE_FLAGS.ENABLE_PACKING_LIST).toBe(true);
     expect(FEATURE_FLAGS.ENABLE_CULTURAL_GUIDE).toBe(true);
+    expect(FEATURE_FLAGS.ENABLE_HOUSING_ASSISTANT).toBe(true);
   });
 
   it("les autres modules sont coupés", () => {
