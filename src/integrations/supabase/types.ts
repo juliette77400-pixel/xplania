@@ -1666,6 +1666,36 @@ export type Database = {
         }
         Relationships: []
       }
+      official_info_cache: {
+        Row: {
+          content: Json
+          country_code: string
+          created_at: string
+          fetched_at: string
+          id: string
+          locale: string
+          source_dates: Json
+        }
+        Insert: {
+          content: Json
+          country_code: string
+          created_at?: string
+          fetched_at?: string
+          id?: string
+          locale: string
+          source_dates?: Json
+        }
+        Update: {
+          content?: Json
+          country_code?: string
+          created_at?: string
+          fetched_at?: string
+          id?: string
+          locale?: string
+          source_dates?: Json
+        }
+        Relationships: []
+      }
       onboarding_events: {
         Row: {
           created_at: string

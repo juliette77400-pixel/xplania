@@ -148,6 +148,13 @@
       "when": 1792857698300,
       "tag": "0020_housing_assistant",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1792863077816,
+      "tag": "0021_official_info_cache",
+      "breakpoints": true
     }
   ]
 }

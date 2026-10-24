@@ -158,6 +158,31 @@ export const suggestCategoryAmount = (
 
   // Baseline from real cost anchors
   let baseline = 0;
+  const days = Math.max(1, opts.days);
+  // Student stays of a month or more: monthly rent, groceries and passes instead of
+  // hotel nights and restaurant meals. Rough anchors derived from the city profile.
+  if (days >= 28) {
+    const months = days / 30.44;
+    const rent = profile.hotelNight * 6;
+    const food = profile.mealCost * 20;
+    switch (category) {
+      case "accommodation": baseline = rent * months; break;
+      case "food": baseline = food * months * travelers; break;
+      case "localTransport": baseline = profile.transitDay * 8 * months * travelers; break;
+      case "activities": baseline = profile.mealCost * 5 * months * travelers; break;
+      case "shopping": baseline = profile.mealCost * 2.5 * months * travelers; break;
+      case "extras": baseline = profile.mealCost * 2 * months * travelers; break;
+      case "unexpected": baseline = (rent + food) * months * 0.05; break;
+      case "flights": baseline = (profile.hotelNight < 60 ? 650 : profile.hotelNight > 150 ? 550 : 220) * travelers; break;
+      case "insurance": baseline = days * 1.3 * travelers; break;
+      case "connectivity": baseline = 15 * months; break;
+      case "fees": baseline = profile.mealCost * 0.5 * months * travelers; break;
+    }
+    const mult = category === "flights" || category === "insurance" || category === "unexpected" ? 1 : profile.mult[category] ?? 1;
+    const est = baseline * mult * season;
+    const blendedLong = currentPlanned > 0 ? est * 0.55 + currentPlanned * 0.45 : est;
+    return Math.max(10, Math.round(blendedLong / 10) * 10);
+  }
   switch (category) {
     case "accommodation":
       baseline = profile.hotelNight * Math.max(1, opts.days) * 0.9;

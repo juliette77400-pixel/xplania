@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell, Legend, PieChart as RePieChart, Pie } from "recharts";
 import { TrendingUp, Calendar, PieChart } from "lucide-react";
 import type { BudgetCategory } from "./BudgetForecast";
 import type { Expense } from "./AddExpenseForm";
@@ -31,9 +31,12 @@ const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) =
         name: new Date(day).toLocaleDateString(locale, { day: "2-digit", month: "short" }),
         amount: Math.round(amount),
       }))
-    : Array.from({ length: Math.min(days, 7) }, (_, i) => ({ name: t("budget.chartsDay", { n: i + 1 }), amount: 0 }));
+    : [];
+  const PIE_COLORS = ["hsl(var(--primary))", "hsl(var(--secondary))", "hsl(var(--success))", "hsl(var(--warning))", "hsl(var(--destructive))", "hsl(var(--muted-foreground))"];
+  const pieData = categories.filter((c) => c.planned > 0).sort((a, b) => b.planned - a.planned)
+    .map((c) => ({ name: t(`budget.categories.${c.key}`, { defaultValue: c.key }), value: c.planned }));
 
-  const maxDay = dailyData.reduce((max, d) => (d.amount > max.amount ? d : max), dailyData[0]);
+  const maxDay = dailyData.length ? dailyData.reduce((max, d) => (d.amount > max.amount ? d : max), dailyData[0]) : null;
 
   // Planned vs spent per category
   const cmpData = categories.map((c) => {
@@ -72,7 +75,7 @@ const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) =
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: t("budget.chartsUsed"), value: `${usedPct}%`, icon: PieChart, highlight: usedPct > 80 },
-          { label: t("budget.chartsMaxDay"), value: maxDay?.amount > 0 ? maxDay.name : "—", icon: Calendar, highlight: false },
+          { label: t("budget.chartsMaxDay"), value: maxDay && maxDay.amount > 0 ? maxDay.name : "—", icon: Calendar, highlight: false },
           { label: t("budget.chartsForecast", { n: daysLeft }), value: `${forecast}€`, icon: TrendingUp, highlight: forecast > remaining && remaining >= 0 },
         ].map((kpi, i) => (
           <motion.div
@@ -92,7 +95,24 @@ const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) =
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
+          <h3 className="text-sm font-bold text-foreground mb-3">{t("budget2.charts.split")}</h3>
+          <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <RePieChart>
+                <Pie data={pieData} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" paddingAngle={2}>
+                  {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "8px", color: "hsl(var(--popover-foreground))" }} formatter={(v: number, n: string) => [`${v}€`, n]} />
+              </RePieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div>
           <h3 className="text-sm font-bold text-foreground mb-3">{t("budget.chartsByDay")}</h3>
+          {dailyData.length === 0 ? (
+            <p className="flex h-56 items-center justify-center rounded-xl bg-muted/30 px-6 text-center text-sm text-muted-foreground">{t("budget2.charts.noPayments")}</p>
+          ) : (
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dailyData}>
@@ -109,15 +129,16 @@ const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) =
                 />
                 <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
                   {dailyData.map((d, idx) => (
-                    <Cell key={idx} fill={d === maxDay && d.amount > 0 ? "hsl(270, 70%, 55%)" : "hsl(185, 85%, 55%)"} />
+                    <Cell key={idx} fill={d === maxDay && d.amount > 0 ? "hsl(var(--secondary))" : "hsl(var(--primary))"} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
+          )}
         </div>
 
-        <div>
+        <div className="md:col-span-2">
           <h3 className="text-sm font-bold text-foreground mb-3">{t("budget.chartsPlannedVsSpent")}</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">

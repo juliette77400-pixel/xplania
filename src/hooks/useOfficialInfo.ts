@@ -1,92 +1,97 @@
-import { useCallback } from "react";
+// Official information for one country, read by the official-sources function
+// from France Diplomatie and Institut Pasteur pages. Each section says whether
+// its page was really read, with the page's own update date.
+import { useCallback, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect } from "react";
 
-export interface OfficialSafety {
-  level: 1 | 2 | 3 | 4;
-  level_label: string;
-  summary: string;
-  zones_to_avoid?: string[];
-  source: string;
-  source_url: string;
+export type SafetyCategory = "normal" | "reinforced" | "avoid_unless_essential" | "formally_advised_against" | "not_stated";
+export type OfficialSourceKey = "security" | "entry" | "contacts" | "health";
+
+export interface OfficialSource {
+  key: OfficialSourceKey;
+  label: string;
+  url: string;
+  ok: boolean;
+  updatedAt: string | null;
 }
 
-export interface OfficialVaccines {
-  mandatory: string[];
-  recommended: string[];
-  routine_reminder?: string;
-  malaria_risk?: "none" | "low" | "moderate" | "high";
-  notes?: string;
-  source: string;
-  source_url: string;
+export interface OfficialContent {
+  safety: {
+    category: SafetyCategory;
+    published_label: string;
+    summary: string;
+    zones: Array<{ name: string; category: SafetyCategory }>;
+    key_points: string[];
+  };
+  entry: { short_stay: string; long_stay: string; documents: string[]; other: string[] };
+  health: {
+    entry_requirements: Array<{ item: string; detail: string }>;
+    routine: Array<{ item: string; detail: string }>;
+    stay: Array<{ item: string; detail: string }>;
+    conditional: Array<{ item: string; condition: string }>;
+    malaria: string;
+  };
+  emergency: Array<{ label: string; number: string }>;
+  consulate: { name: string; address: string; phone: string };
 }
 
-export interface OfficialInfo {
-  destination: string;
-  safety?: OfficialSafety;
-  vaccines?: OfficialVaccines;
-  confidence?: number;
-  lastChecked: string;
-  locale: "fr" | "en";
+export interface OfficialResult {
+  status: "verified" | "partial" | "unavailable";
+  reason?: string;
+  fromCache?: boolean;
+  changed?: boolean;
+  fetchedAt: string;
+  lastVerifiedAt?: string | null;
+  sources: OfficialSource[];
+  content: OfficialContent | null;
 }
 
-const TTL = 30 * 60 * 1000;
+const unavailable = (reason: string): OfficialResult => ({
+  status: "unavailable", reason, fetchedAt: new Date().toISOString(), sources: [], content: null,
+});
 
-const REFRESH_EVENT = "xplania-official-refresh";
+async function fetchOfficial(countryCode: string, locale: "fr" | "en", force: boolean): Promise<OfficialResult> {
+  const { data, error } = await supabase.functions.invoke("official-sources", { body: { countryCode, locale, force } });
+  if (error) {
+    const status = (error as { context?: { status?: number } })?.context?.status;
+    return unavailable(status === 402 ? "quota" : status === 401 ? "auth" : "error");
+  }
+  if (!data || typeof data !== "object") return unavailable("error");
+  return data as OfficialResult;
+}
 
-const fetchOfficialInfo = async (destination: string, locale: "fr" | "en"): Promise<OfficialInfo> => {
-  const { data: resp, error: err } = await supabase.functions.invoke(
-    "visa-official-info",
-    { body: { destination, locale } },
-  );
-  if (err) throw new Error(err.message);
-  if (!resp || resp.error) throw new Error(resp?.error || "no_data");
-  return resp as OfficialInfo;
-};
+export function sourceOf(result: OfficialResult | null | undefined, key: OfficialSourceKey): OfficialSource | null {
+  const s = result?.sources?.find((x) => x.key === key);
+  return s && s.ok && result?.content ? s : null;
+}
 
-export function useOfficialInfo(destination: string | undefined, locale: "fr" | "en") {
-  const queryClient = useQueryClient();
-  const enabled = !!destination && destination.length >= 2;
-  const queryKey = ["official-info", destination?.toLowerCase(), locale];
+export function useOfficialInfo(countryCode: string | undefined, locale: "fr" | "en") {
+  const qc = useQueryClient();
+  const key = ["official-sources", countryCode, locale];
+  const [refreshing, setRefreshing] = useState(false);
 
-  const { data, isFetching, error } = useQuery({
-    queryKey,
-    queryFn: () => fetchOfficialInfo(destination as string, locale),
-    enabled,
-    staleTime: TTL,
+  const query = useQuery({
+    queryKey: key,
+    queryFn: () => fetchOfficial(countryCode!, locale, false),
+    enabled: !!countryCode,
+    staleTime: 30 * 60 * 1000,
+    retry: false,
   });
 
-  // Sync across instances: when another section refreshes the same destination,
-  // pick up the updated cache without re-triggering a network request.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const onRefresh = (e: Event) => {
-      const detail = (e as CustomEvent<{ destination: string; locale: "fr" | "en" }>).detail;
-      if (!detail || !destination) return;
-      if (detail.destination.toLowerCase() === destination.toLowerCase() && detail.locale === locale) {
-        queryClient.invalidateQueries({ queryKey });
-      }
-    };
-    window.addEventListener(REFRESH_EVENT, onRefresh);
-    return () => window.removeEventListener(REFRESH_EVENT, onRefresh);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [destination, locale]);
-
+  /** Opens the official pages again now and keeps the result. */
   const refresh = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey, refetchType: "active" });
-    if (typeof window !== "undefined" && destination) {
-      window.dispatchEvent(
-        new CustomEvent(REFRESH_EVENT, { detail: { destination, locale } }),
-      );
+    if (!countryCode) return null;
+    setRefreshing(true);
+    try {
+      const fresh = await fetchOfficial(countryCode, locale, true);
+      qc.setQueryData(key, fresh);
+      return fresh;
+    } finally {
+      setRefreshing(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [destination, locale]);
+  }, [countryCode, locale, qc]);
 
-  return {
-    data: data ?? null,
-    loading: enabled && isFetching,
-    error: error ? (error instanceof Error ? error.message : "error") : null,
-    refresh,
-  };
+  return { data: query.data ?? null, loading: query.isLoading, refreshing, refresh };
 }
