@@ -6763,8 +6763,8 @@
       },
       "steps": {
         "visaFree": "Pas de visa à prévoir avec ta nationalité européenne : vérifie juste que ta carte d'identité ou ton passeport reste valide pendant tout le séjour.",
-        "visaCheck": "Vérifie si un visa est nécessaire pour {{country}} avec ta nationalité, et combien de temps prend la démarche.",
-        "visaCheckSoon": "Ton départ approche : vérifie dès maintenant si un visa est nécessaire pour {{country}}, certains délais dépassent plusieurs semaines.",
+        "visaCheck": "Vérifie si un visa est nécessaire avec ta nationalité (destination : {{country}}), et combien de temps prend la démarche.",
+        "visaCheckSoon": "Ton départ approche : vérifie dès maintenant si un visa est nécessaire (destination : {{country}}). Certains délais dépassent plusieurs semaines.",
         "housingLost": "Commence par le logement : on t'aide à savoir où chercher et quels pièges éviter.",
         "housingStart": "Lance ta recherche de logement et compare plusieurs options avant de payer quoi que ce soit.",
         "housingCompare": "Compare les logements repérés : loyer, caution, trajet et conditions du bail.",

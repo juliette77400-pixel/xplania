@@ -6763,8 +6763,8 @@
       },
       "steps": {
         "visaFree": "No visa needed with your European nationality: just check your ID card or passport stays valid for the whole stay.",
-        "visaCheck": "Check whether you need a visa for {{country}} with your nationality, and how long it takes.",
-        "visaCheckSoon": "Your departure is close: check now whether you need a visa for {{country}}, some take several weeks.",
+        "visaCheck": "Check whether you need a visa with your nationality (destination: {{country}}), and how long it takes.",
+        "visaCheckSoon": "Your departure is close: check now whether you need a visa (destination: {{country}}). Some take several weeks.",
         "housingLost": "Start with housing: we help you know where to look and which traps to avoid.",
         "housingStart": "Start your housing search and compare several options before paying anything.",
         "housingCompare": "Compare the places you found: rent, deposit, commute and lease terms.",
