@@ -104,14 +104,15 @@ const PrepQuiz = () => {
     if (!user) {
       restored.current = true;
       const g = readGuestDraft();
-      if (g && !(pickedCountry && !g.complete && g.answers?.destinationCode !== pickedCountry)) {
-        setAnswers({ ...emptyPrepAnswers(), ...g.answers });
+      const base = { ...emptyPrepAnswers(), ...(g?.answers || {}) };
+      if (pickedCountry && base.destinationCode !== pickedCountry) {
+        // A country picked on the home page wins: keep the other answers, start at the first card.
+        setAnswers({ ...base, destinationCode: pickedCountry });
+        setStepIndex(0);
+      } else if (g) {
+        setAnswers(base);
         setStepIndex(Math.min(Math.max(0, g.step || 0), PREP_STEPS.length - 1));
         if (g.complete) setPreview(true);
-      } else if (pickedCountry) {
-        // A new country picked on the home page starts a fresh questionnaire.
-        setAnswers({ ...emptyPrepAnswers(), destinationCode: pickedCountry });
-        setStepIndex(0);
       }
       return;
     }
