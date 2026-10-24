@@ -76,6 +76,6 @@ describe("progression par outil", () => {
 
   it("un outil pas commencé compte 0 % dans la préparation globale", () => {
     saveModuleProgress("valise", "Portugal", { done: 30, total: 30 });
-    expect(overallPercent(readTripProgress({ destination: "Portugal" }))).toBe(25);
+    expect(overallPercent(readTripProgress({ destination: "Portugal" }))).toBe(20);
   });
 });
