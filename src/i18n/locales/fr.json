@@ -418,7 +418,7 @@
     "feedbackDesc": "Signale les difficultés rencontrées et propose les améliorations qui te seraient utiles.",
     "earlyTitle": "Accès gratuit",
     "earlyDesc": "Utilise les cinq outils de préparation gratuitement pendant la bêta, sans carte bancaire.",
-    "communityTitle": "Bêta ESTICE",
+    "communityTitle": "Bêta gratuite",
     "communityDesc": "Participe aux premiers tests d'une plateforme conçue autour des besoins de la mobilité étudiante.",
     "shareTitle": "Partage ton expérience",
     "shareSubtitle": "Ton avis nous aide à rendre la préparation du départ plus simple.",
@@ -891,7 +891,7 @@
   },
   "footer": {
     "tagline": "Organise ton voyage à l'étranger en amont, sans soucis : budget, visa, valise, culture et logement réunis au même endroit.",
-    "version": "Version 0.1 • Bêta ESTICE",
+    "version": "Version 0.1 • Bêta",
     "featuresTitle": "Fonctionnalités",
     "contactTitle": "Infos & contacts",
     "feedbackLink": "Donner mon feedback",
@@ -6435,10 +6435,10 @@
     "created": "Ton voyage {{destination}} est prêt à être préparé !"
   },
   "betaOffer": {
-    "tag": "Bêta ESTICE",
+    "tag": "Bêta gratuite",
     "title": "Accès gratuit pendant la bêta",
     "subtitle": "Pendant la bêta, les 5 outils de préparation sont offerts aux étudiants testeurs. Aucune carte bancaire, aucun engagement.",
-    "planName": "Bêta ESTICE",
+    "planName": "Bêta gratuite",
     "planTagline": "Tout ce qu'il faut pour préparer ton départ",
     "price": "0 €",
     "inc1": "Les 5 outils : Budget, Visa & formalités, Valise, Guide culturel et Logement",

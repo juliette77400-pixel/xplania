@@ -418,7 +418,7 @@
     "feedbackDesc": "Report the difficulties you meet and suggest improvements that would help you.",
     "earlyTitle": "Free access",
     "earlyDesc": "Use the five preparation tools for free during the beta, no credit card needed.",
-    "communityTitle": "ESTICE beta",
+    "communityTitle": "Free beta",
     "communityDesc": "Take part in the first tests of a platform built around the needs of student mobility.",
     "shareTitle": "Share your experience",
     "shareSubtitle": "Your feedback helps us make preparing to leave simpler.",
@@ -891,7 +891,7 @@
   },
   "footer": {
     "tagline": "Organise your trip abroad ahead of time, without the hassle: budget, visa, packing, culture and housing in one place.",
-    "version": "Version 0.1 • ESTICE beta",
+    "version": "Version 0.1 • Beta",
     "featuresTitle": "Features",
     "contactTitle": "Info & contacts",
     "feedbackLink": "Give my feedback",
@@ -6435,10 +6435,10 @@
     "created": "Your {{destination}} trip is ready to be prepared!"
   },
   "betaOffer": {
-    "tag": "ESTICE beta",
+    "tag": "Free beta",
     "title": "Free access during the beta",
     "subtitle": "During the beta, the 5 preparation tools are free for student testers. No card, no commitment.",
-    "planName": "ESTICE beta",
+    "planName": "Free beta",
     "planTagline": "Everything you need to prepare your departure",
     "price": "€0",
     "inc1": "The 5 tools: Budget, Visa & paperwork, Packing, Culture guide and Housing",
