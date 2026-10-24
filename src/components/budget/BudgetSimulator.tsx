@@ -58,9 +58,9 @@ const BudgetSimulator = ({ lines, days, budget, onApply }: Props) => {
           <p>{t("budget2.sim.newTotal")} <strong className="tabular-nums">{sim.total} €</strong> <span className={cn("tabular-nums", delta > 0 ? "text-destructive" : delta < 0 ? "text-success" : "text-muted-foreground")}>({delta > 0 ? "+" : ""}{delta} €)</span></p>
           {margin !== null && <p className={cn("text-xs", margin < 0 ? "text-destructive" : "text-muted-foreground")}>{margin < 0 ? t("budget2.sim.over", { amount: -margin }) : t("budget2.sim.left", { amount: margin })}</p>}
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setInput(defaults)} disabled={changes.length === 0}>{t("budget2.sim.reset")}</Button>
-          <Button size="sm" onClick={() => setConfirm(true)} disabled={changes.length === 0}>{t("budget2.sim.apply")}</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" className="h-auto min-h-9 whitespace-normal" onClick={() => setInput(defaults)} disabled={changes.length === 0}>{t("budget2.sim.reset")}</Button>
+          <Button size="sm" className="h-auto min-h-9 whitespace-normal" onClick={() => setConfirm(true)} disabled={changes.length === 0}>{t("budget2.sim.apply")}</Button>
         </div>
       </div>
       <BudgetConfirmDialog
