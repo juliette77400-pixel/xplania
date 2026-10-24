@@ -539,32 +539,58 @@ const GuideBudgetPage = () => {
               )}
               <BudgetKpis summary={summary} />
               <BudgetRecommendations items={recommendationsList} />
-              <BudgetIncomesForm incomes={incomes} months={summary.months} onChange={saveIncomes} />
-              <BudgetConfig tripData={tripData} />
-              <BudgetForecast
-                totalBudget={totalBudget}
-                categories={categories}
-                onUpdateCategory={handleUpdateCategory}
-                onAiAdjust={handleAiAdjust}
-                isLoading={isGenerating}
-              />
-              <AddExpenseForm onAdd={handleAddExpense} />
-              <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
-              <BudgetSimulator lines={lines} days={days} budget={userBudget} onApply={applySimulation} />
-              <div ref={chartRef}>
-                <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
-                  <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
-                </Suspense>
-              </div>
-              <BudgetAiResult
-                totalBudget={totalBudget}
-                days={days}
-                destination={destination}
-                onTotalBudgetChange={handleUpdateTotalBudget}
-                insights={insights.data}
-                insightsLoading={insights.isFetching}
-                onApplyScenario={applyScenario}
-              />
+              {/* Decision first; details folded below so the page stays short. */}
+              {summary.months >= 1 && !incomesGiven ? (
+                <BudgetIncomesForm incomes={incomes} months={summary.months} onChange={saveIncomes} />
+              ) : (
+                <CollapsibleSection title={t("collapsible.budget.incomes")} subtitle={t("collapsible.budget.incomesSub")} sectionId="incomes">
+                  <BudgetIncomesForm incomes={incomes} months={summary.months} onChange={saveIncomes} />
+                </CollapsibleSection>
+              )}
+
+              <CollapsibleSection title={t("collapsible.budget.categories")} subtitle={t("collapsible.budget.categoriesSub")} sectionId="forecast">
+                <div className="space-y-4">
+                  <BudgetConfig tripData={tripData} />
+                  <BudgetForecast
+                    totalBudget={totalBudget}
+                    categories={categories}
+                    onUpdateCategory={handleUpdateCategory}
+                    onAiAdjust={handleAiAdjust}
+                    isLoading={isGenerating}
+                  />
+                </div>
+              </CollapsibleSection>
+
+              <CollapsibleSection title={t("collapsible.budget.payments")} subtitle={t("collapsible.budget.paymentsSub", { count: expenses.length })} sectionId="tracker">
+                <div className="space-y-4">
+                  <AddExpenseForm onAdd={handleAddExpense} />
+                  <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
+                </div>
+              </CollapsibleSection>
+
+              <CollapsibleSection title={t("collapsible.budget.simulator")} subtitle={t("collapsible.budget.simulatorSub")} sectionId="simulator">
+                <BudgetSimulator lines={lines} days={days} budget={userBudget} onApply={applySimulation} />
+              </CollapsibleSection>
+
+              <CollapsibleSection title={t("collapsible.budget.charts")} subtitle={t("collapsible.budget.chartsSub")} sectionId="charts">
+                <div ref={chartRef}>
+                  <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
+                    <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                  </Suspense>
+                </div>
+              </CollapsibleSection>
+
+              <CollapsibleSection title={t("collapsible.budget.analysis")} subtitle={t("collapsible.budget.analysisSub")} sectionId="analysis">
+                <BudgetAiResult
+                  totalBudget={totalBudget}
+                  days={days}
+                  destination={destination}
+                  onTotalBudgetChange={handleUpdateTotalBudget}
+                  insights={insights.data}
+                  insightsLoading={insights.isFetching}
+                  onApplyScenario={applyScenario}
+                />
+              </CollapsibleSection>
 
               <CollapsibleSection
                 title={t("collapsible.budget.alerts")}

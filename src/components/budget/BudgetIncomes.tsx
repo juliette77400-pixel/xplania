@@ -17,7 +17,7 @@ interface Props {
 const FIELDS: Array<keyof Incomes> = ["grantMonthly", "payMonthly", "familyMonthly", "otherTotal"];
 
 const BudgetIncomes = ({ incomes, months, onChange }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [draft, setDraft] = useState<Record<keyof Incomes, string>>(() => toDraft(incomes));
   useEffect(() => { setDraft(toDraft(incomes)); }, [incomes]);
   const dirty = FIELDS.some((f) => (Math.max(0, Math.round(Number(draft[f]) || 0))) !== incomes[f]);
@@ -49,7 +49,7 @@ const BudgetIncomes = ({ incomes, months, onChange }: Props) => {
         ))}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-xs text-muted-foreground">{months >= 1 ? t("budget2.incomes.note", { months: months.toLocaleString() }) : t("budget2.incomes.noteShort")}</p>
+        <p className="text-xs text-muted-foreground">{months >= 1 ? t("budget2.incomes.note", { months: months.toLocaleString(i18n.language.startsWith("fr") ? "fr-FR" : "en-GB") }) : t("budget2.incomes.noteShort")}</p>
         <Button size="sm" onClick={save} disabled={!dirty}>{t("budget2.incomes.save")}</Button>
       </div>
     </section>
