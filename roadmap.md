@@ -1,9 +1,10 @@
-# Roadmap — refonte stratégique (oct. 2026)
+# Roadmap — Assistant Logement (oct. 2026)
 
-- [x] Accueil : Hero, Problème, Solution, Comment ça marche, Bénéfices, CTA final (+ témoignages, bêta, FAQ, lien ChatGPT) ; plus d'écran avant l'accueil
-- [x] Questionnaire de préparation en cartes (6 étapes + écran final), route /preparation
-- [x] Images du questionnaire
-- [x] Réponses reprises par Visa / Budget / Valise / Culture
-- [x] Tableau de bord : type de mobilité, statuts, prochaines actions, modification complète du séjour
-- [x] Mesures bêta (événements + entonnoir admin)
-- [x] Tests + vérifications navigateur
+- [ ] Données : logements repérés + cases cochées (accès réservé à chaque compte)
+- [ ] Questionnaire : 7e carte « Où en es-tu dans ta recherche de logement ? » + 4 illustrations
+- [ ] Page /guide-logement : en-tête, ressources vérifiées, comparateur, vigilance, installation
+- [ ] Lien Budget (ajout confirmé, sans doublon)
+- [ ] Tableau de bord : 5e carte + progression globale sur 5 outils
+- [ ] Menus, recherche, footer, Offres (carte Gratuit)
+- [ ] Traductions FR/EN
+- [ ] Tests + vérifications navigateur (ordinateur, téléphone, accès entre comptes)
