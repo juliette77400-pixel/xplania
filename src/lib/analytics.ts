@@ -17,7 +17,12 @@ type AnalyticsEvent =
   | "guide_generated"
   | "carnet_created"
   | "waitlist_joined"
-  | "cta_click";
+  | "cta_click"
+  // Beta funnel: preparation questionnaire, dashboard and the four guides.
+  | "quiz_step"
+  | "dashboard_viewed"
+  | "guide_started"
+  | "guide_action";
 
 const getSessionId = (): string => {
   try {

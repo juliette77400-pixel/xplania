@@ -64,11 +64,21 @@ export interface TravelFormData {
   // Section 10 - Inspirations
   inspirations: string;
 
-  // Beta preparation form (optional so older trips stay valid)
+  // Beta preparation questionnaire (optional so older trips stay valid)
   /** ISO code of the traveler's nationality, used by the Visa guide. */
   nationality?: string;
-  /** "erasmus" | "internship" | "trip" */
+  /** ISO code of the current country of residence. */
+  residence?: string;
+  /** ISO code of an optional second nationality. */
+  secondNationality?: string;
+  /** "erasmus" | "internship" | "other" (older trips may hold "trip"). */
   stayType?: string;
+  /** Estimated length when dates are unknown: "lt3" | "3to6" | "gt6" | "unknown". */
+  durationBucket?: string;
+  /** True when the student does not know their budget yet. */
+  budgetUnknown?: boolean;
+  /** "residence" | "flatshare" | "family" | "unknown" */
+  housing?: string;
 }
 
 export interface WeatherData {
