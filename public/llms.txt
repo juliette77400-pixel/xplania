@@ -1,6 +1,6 @@
 # Xplania
 
-> Web app that helps people going abroad (Erasmus, internship, exchange, trip) organise their departure ahead of time, without hassle: budget, visa, packing and cultural codes in one place. French and English. Free during the beta.
+> Web app that helps people going abroad (Erasmus, internship, exchange, trip) organise their departure ahead of time, without hassle: budget, visa, packing, cultural codes and housing in one place. French and English. Free during the beta.
 
 Xplania brings together four preparation tools around a single trip: a budget guide, a visa & paperwork guide, a smart packing list and a cultural immersion guide. A dashboard shows progress in each tool before departure.
 
