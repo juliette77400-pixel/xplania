@@ -4425,7 +4425,8 @@
     "placeholder": "Ask anything…",
     "error": "Couldn't reply, try again.",
     "openLabel": "Open chat",
-    "freeMode": "Free mode"
+    "freeMode": "Free mode",
+    "close": "Close the assistant"
   },
   "suiviAlerts": {
     "title": "Trip alerts",
@@ -6010,7 +6011,11 @@
   "help": {
     "label": "Need help?",
     "subject": "Xplania beta – an issue",
-    "body": "Hello,\n\nI have an issue on this page: {{page}}\n\nWhat happens:\n\n"
+    "body": "Hello,\n\nI have an issue on this page: {{page}}\n\nWhat happens:\n\n",
+    "menuButton": "Help",
+    "menuLabel": "Open the help menu",
+    "askAssistant": "Ask the assistant",
+    "writeTeam": "Email the Xplania team"
   },
   "report": {
     "cta": "Report this journal",

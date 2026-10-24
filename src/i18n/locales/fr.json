@@ -4425,7 +4425,8 @@
     "placeholder": "Pose ta question…",
     "error": "Impossible de répondre, réessaie.",
     "openLabel": "Ouvrir le chat",
-    "freeMode": "Mode libre"
+    "freeMode": "Mode libre",
+    "close": "Fermer l'assistante"
   },
   "suiviAlerts": {
     "title": "Alertes voyage",
@@ -6010,7 +6011,11 @@
   "help": {
     "label": "Un souci ?",
     "subject": "Xplania bêta – un souci",
-    "body": "Bonjour,\n\nJ'ai un souci sur cette page : {{page}}\n\nCe qui se passe :\n\n"
+    "body": "Bonjour,\n\nJ'ai un souci sur cette page : {{page}}\n\nCe qui se passe :\n\n",
+    "menuButton": "Aide",
+    "menuLabel": "Ouvrir le menu d'aide",
+    "askAssistant": "Poser une question à l'assistante",
+    "writeTeam": "Écrire à l'équipe Xplania"
   },
   "report": {
     "cta": "Signaler ce carnet",
