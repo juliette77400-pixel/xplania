@@ -15,13 +15,21 @@ const complete = (over: Partial<PrepAnswers> = {}): PrepAnswers => ({
   durationBucket: "3to6",
   budgetUnknown: true,
   housing: "flatshare",
+  housingStatus: "starting",
   ...over,
 });
 const labels = { tripType: "Erasmus / échange universitaire", accommodation: "Colocation / appartement" };
 
 describe("questionnaire de préparation", () => {
-  it("pose exactement 6 questions dans l'ordre du brief", () => {
-    expect(PREP_STEPS).toEqual(["destination", "origin", "stay", "dates", "budget", "housing"]);
+  it("pose exactement 7 questions, la recherche de logement en dernier", () => {
+    expect(PREP_STEPS).toEqual(["destination", "origin", "stay", "dates", "budget", "housing", "housingStatus"]);
+  });
+
+  it("exige une réponse sur la recherche de logement et l'enregistre dans le séjour", () => {
+    expect(validatePrepStep("housingStatus", complete({ housingStatus: "" }))).toBe("prepQuiz.errors.housingStatus");
+    const trip = buildTripFromAnswers(complete({ housingStatus: "confirmed" }), labels);
+    expect(trip.housingStatus).toBe("confirmed");
+    expect(answersFromTrip(trip, trip.destination).housingStatus).toBe("confirmed");
   });
 
   it("exige un pays de destination reconnu", () => {

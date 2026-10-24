@@ -1,10 +1,10 @@
-// Per-trip preparation progress shown on the dashboard's four module cards.
+// Per-trip preparation progress shown on the dashboard's five module cards.
 // Every module keeps its own detailed state; this file only reads/writes a
 // tiny summary so the dashboard never depends on itinerary or AI data.
 import { findCountry } from "@/lib/country-match";
 import { track } from "@/lib/analytics";
 
-export type PrepModule = "budget" | "visa" | "valise" | "culture";
+export type PrepModule = "budget" | "visa" | "valise" | "culture" | "housing";
 
 export interface ModuleProgress {
   done: number;
@@ -35,7 +35,7 @@ const readJson = <T,>(key: string): T | null => {
   }
 };
 
-/** Saves a module's progress for one destination (called by Visa and Valise). */
+/** Saves a module's progress for one destination (called by Visa, Valise and Housing). */
 export function saveModuleProgress(module: PrepModule, destination: string | null | undefined, progress: ModuleProgress) {
   if (!norm(destination)) return;
   try {
@@ -72,6 +72,7 @@ export function readTripProgress(trip: TripRef): Record<PrepModule, ModuleProgre
     visa: saved("visa"),
     valise: saved("valise"),
     culture: cultureProgress(trip),
+    housing: saved("housing"),
   };
 }
 

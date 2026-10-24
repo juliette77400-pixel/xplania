@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   Plane, Star, Luggage, Wallet, FileText, MessageSquare, Sparkles, Mail,
   BookOpen, Activity, Compass, Heart, MapPinned, Trophy,
-  Globe,
+  Globe, BedDouble,
 } from "lucide-react";
 import { getLegalPath } from "@/lib/legal-routes";
 import { openConsentSettings } from "@/lib/consent";
@@ -38,6 +38,7 @@ const Footer = (_: Props) => {
     { icon: FileText, label: t("features.items.visa.title"), to: "/guide-visa" },
     { icon: Luggage, label: t("features.items.valise.title"), to: "/guide-valise" },
     { icon: Globe, label: t("appNav.culture"), to: "/guide-culture" },
+    { icon: BedDouble, label: t("appNav.housing"), to: "/guide-logement" },
     { icon: BookOpen, label: t("features.items.journal.title"), to: "/carnets" },
     { icon: Activity, label: t("features.items.tracking.title"), to: "/suivi" },
     { icon: Compass, label: t("features.items.explore.title"), to: "/explore" },

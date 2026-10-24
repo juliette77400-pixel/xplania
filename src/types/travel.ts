@@ -79,6 +79,8 @@ export interface TravelFormData {
   budgetUnknown?: boolean;
   /** "residence" | "flatshare" | "family" | "unknown" */
   housing?: string;
+  /** Housing search status: "starting" | "shortlist" | "confirmed" | "lost". */
+  housingStatus?: string;
 }
 
 export interface WeatherData {

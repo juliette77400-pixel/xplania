@@ -17,7 +17,7 @@ import { track } from "@/lib/analytics";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 import { useTravelStore } from "@/stores/useTravelStore";
 import {
-  PREP_STEPS, STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS,
+  PREP_STEPS, STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
   emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip,
   type PrepAnswers, type PrepStep,
 } from "@/lib/prep-quiz";
@@ -33,6 +33,10 @@ import imgResidence from "@/assets/prep-quiz/housing-residence.jpg";
 import imgFlatshare from "@/assets/prep-quiz/housing-flatshare.jpg";
 import imgFamily from "@/assets/prep-quiz/housing-family.jpg";
 import imgHousingUnknown from "@/assets/prep-quiz/housing-unknown.jpg";
+import imgStatusStarting from "@/assets/prep-quiz/housing-status-starting.jpg";
+import imgStatusShortlist from "@/assets/prep-quiz/housing-status-shortlist.jpg";
+import imgStatusConfirmed from "@/assets/prep-quiz/housing-status-confirmed.jpg";
+import imgStatusLost from "@/assets/prep-quiz/housing-status-lost.jpg";
 
 const STEP_IMAGES: Record<PrepStep, string> = {
   destination: imgDestination,
@@ -41,9 +45,11 @@ const STEP_IMAGES: Record<PrepStep, string> = {
   dates: imgDates,
   budget: imgBudget,
   housing: imgResidence,
+  housingStatus: imgStatusStarting,
 };
 const STAY_IMAGES = { erasmus: imgErasmus, internship: imgInternship, other: imgOther } as const;
 const HOUSING_IMAGES = { residence: imgResidence, flatshare: imgFlatshare, family: imgFamily, unknown: imgHousingUnknown } as const;
+const STATUS_IMAGES = { starting: imgStatusStarting, shortlist: imgStatusShortlist, confirmed: imgStatusConfirmed, lost: imgStatusLost } as const;
 
 const SWIPE = 110;
 const draftKey = (userId: string) => `xplania:prep-quiz:${userId}`;
@@ -180,7 +186,7 @@ const PrepQuiz = () => {
     setStepIndex((i) => i - 1);
   };
 
-  const choose = <K extends "stayType" | "housing">(key: K, value: PrepAnswers[K]) => {
+  const choose = <K extends "stayType" | "housing" | "housingStatus">(key: K, value: PrepAnswers[K]) => {
     const a = { ...answers, [key]: value };
     setAnswers(a);
     setError(null);
@@ -389,9 +395,20 @@ const PrepQuiz = () => {
               {step === "housing" && (
                 <div role="radiogroup" aria-label={t("prepQuiz.housing.title")} className="grid grid-cols-2 gap-3">
                   {HOUSING_OPTIONS.map((h) => (
-                    <button key={h} type="button" role="radio" aria-checked={answers.housing === h} disabled={saving} onClick={() => choose("housing", h)}
+                    <button key={h} type="button" role="radio" aria-checked={answers.housing === h} onClick={() => choose("housing", h)}
                       className={`group relative flex h-36 flex-col overflow-hidden rounded-2xl border-2 sm:h-44 ${answers.housing === h ? "border-primary" : "border-border/50"}`}>
                       {choiceCard(answers.housing === h, HOUSING_IMAGES[h], t(`prepQuiz.housing.${h}`))}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {step === "housingStatus" && (
+                <div role="radiogroup" aria-label={t("prepQuiz.housingStatus.title")} className="grid grid-cols-2 gap-3">
+                  {HOUSING_STATUSES.map((h) => (
+                    <button key={h} type="button" role="radio" aria-checked={answers.housingStatus === h} disabled={saving} onClick={() => choose("housingStatus", h)}
+                      className={`group relative flex h-36 flex-col overflow-hidden rounded-2xl border-2 sm:h-44 ${answers.housingStatus === h ? "border-primary" : "border-border/50"}`}>
+                      {choiceCard(answers.housingStatus === h, STATUS_IMAGES[h], t(`prepQuiz.housingStatus.${h}`))}
                     </button>
                   ))}
                 </div>

@@ -2,7 +2,7 @@
  * Central feature switches.
  *
  * The beta focuses on one need: "I'm going abroad and want to organise my trip
- * ahead of time, without hassle". Only the four preparation tools stay visible.
+ * ahead of time, without hassle". Only the five preparation tools stay visible.
  * Every other module keeps its code, data and translations — flip its flag back
  * to `true` to bring it back (routes, menus, shortcuts and cards follow).
  */
@@ -12,6 +12,8 @@ export const FEATURE_FLAGS = {
   ENABLE_VISA_GUIDE: true,
   ENABLE_PACKING_LIST: true,
   ENABLE_CULTURAL_GUIDE: true,
+  /** Housing assistant: resources, comparator, checklists (no AI, no listings). */
+  ENABLE_HOUSING_ASSISTANT: true,
 
   // Hidden during the beta
   ENABLE_MOOD_EXPLORER: false,
@@ -42,6 +44,7 @@ const ROUTE_FLAGS: Array<[string, FeatureFlag]> = [
   ["/guide-visa", "ENABLE_VISA_GUIDE"],
   ["/guide-valise", "ENABLE_PACKING_LIST"],
   ["/guide-culture", "ENABLE_CULTURAL_GUIDE"],
+  ["/guide-logement", "ENABLE_HOUSING_ASSISTANT"],
   ["/mood", "ENABLE_MOOD_EXPLORER"],
   ["/discover", "ENABLE_DISCOVER"],
   ["/hidden-gems", "ENABLE_DISCOVER"],

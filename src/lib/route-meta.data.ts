@@ -62,6 +62,10 @@ export const META: Record<string, Meta> = {
     fr: ["Guide d'immersion culturelle — Xplania", "Les codes culturels de ton pays d'accueil : tenue, gastronomie, gestes, salutations, avec mises en situation et mini-quiz."],
     en: ["Cultural immersion guide — Xplania", "The cultural codes of your host country: dress, food, gestures, greetings, with real-life situations and a mini-quiz."],
   },
+  "/guide-logement": {
+    fr: ["Assistant Logement — Xplania", "Prépare ton logement à l'étranger : où chercher, comparer tes options, éviter les arnaques et préparer ton installation."],
+    en: ["Housing assistant — Xplania", "Get your housing abroad ready: where to look, compare your options, avoid scams and prepare your move-in."],
+  },
   "/xplania-vs-chatgpt": {
     fr: ["Xplania vs ChatGPT — préparer son voyage à l'étranger", "Xplania vs ChatGPT : budget, visa, valise et codes culturels organisés autour de ton voyage, sans copier-coller de prompts."],
     en: ["Xplania vs ChatGPT — preparing a trip abroad", "Xplania vs ChatGPT: budget, visa, packing and cultural codes organised around your trip, no prompt copy-pasting."],

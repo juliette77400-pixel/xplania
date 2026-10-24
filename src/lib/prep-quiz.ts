@@ -1,10 +1,11 @@
-// Rules of the preparation questionnaire (6 card steps). Pure functions so the
+// Rules of the preparation questionnaire (7 card steps). Pure functions so the
 // rules can be tested without rendering: which answers are required, how the
 // answers become the trip read by the four guides.
 import { countryList } from "@/lib/countries";
 import type { TravelFormData } from "@/types/travel";
+import { HOUSING_STATUSES, isHousingStatus, type HousingStatus } from "@/lib/housing";
 
-export const PREP_STEPS = ["destination", "origin", "stay", "dates", "budget", "housing"] as const;
+export const PREP_STEPS = ["destination", "origin", "stay", "dates", "budget", "housing", "housingStatus"] as const;
 export type PrepStep = (typeof PREP_STEPS)[number];
 
 export type PrepStayType = "erasmus" | "internship" | "other";
@@ -14,6 +15,7 @@ export type Housing = "residence" | "flatshare" | "family" | "unknown";
 export const STAY_TYPES: PrepStayType[] = ["erasmus", "internship", "other"];
 export const DURATION_BUCKETS: DurationBucket[] = ["lt3", "3to6", "gt6", "unknown"];
 export const HOUSING_OPTIONS: Housing[] = ["residence", "flatshare", "family", "unknown"];
+export { HOUSING_STATUSES };
 
 /** Approximate length (days) used by the guides when only a bucket is known. */
 export const BUCKET_DAYS: Record<Exclude<DurationBucket, "unknown">, number> = {
@@ -35,6 +37,7 @@ export interface PrepAnswers {
   budget: string;
   budgetUnknown: boolean;
   housing: Housing | "";
+  housingStatus: HousingStatus | "";
 }
 
 export const emptyPrepAnswers = (): PrepAnswers => ({
@@ -50,6 +53,7 @@ export const emptyPrepAnswers = (): PrepAnswers => ({
   budget: "",
   budgetUnknown: false,
   housing: "",
+  housingStatus: "",
 });
 
 export const countryName = (code: string | null | undefined): string =>
@@ -78,6 +82,8 @@ export function validatePrepStep(step: PrepStep, a: PrepAnswers): string | null 
       return Number(a.budget) > 0 ? null : "prepQuiz.errors.budget";
     case "housing":
       return a.housing ? null : "prepQuiz.errors.housing";
+    case "housingStatus":
+      return a.housingStatus ? null : "prepQuiz.errors.housingStatus";
   }
 }
 
@@ -152,6 +158,7 @@ export function buildTripFromAnswers(
     durationBucket: a.departureDate && a.returnDate ? "" : a.durationBucket,
     budgetUnknown: a.budgetUnknown,
     housing: a.housing,
+    housingStatus: a.housingStatus,
   };
 }
 
@@ -174,5 +181,6 @@ export function answersFromTrip(form: Partial<TravelFormData> | null | undefined
     budget: f.totalBudget ? String(f.totalBudget) : "",
     budgetUnknown: !!f.budgetUnknown,
     housing: (f.housing as Housing) || "",
+    housingStatus: isHousingStatus(f.housingStatus) ? f.housingStatus : "",
   };
 }

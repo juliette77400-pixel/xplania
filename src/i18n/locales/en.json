@@ -53,7 +53,8 @@
     "labelTracking": "Live tracking",
     "labelJournal": "Journal",
     "labelValise": "Packing",
-    "descCulture": "Customs & etiquette"
+    "descCulture": "Customs & etiquette",
+    "descHousing": "Search, compare and prepare your housing"
   },
   "streakCard": {
     "daysInARow": "days in a row",
@@ -134,7 +135,8 @@
     "groupXplania": "Information",
     "groupAccount": "My account",
     "dna": "Traveler DNA",
-    "culture": "Culture guide"
+    "culture": "Culture guide",
+    "housing": "Housing"
   },
   "about": {
     "metaTitle": "About — Xplania, prepare your departure without the hassle",
@@ -284,7 +286,10 @@
       "s4Cta": "Open Packing",
       "s5Title": "Learn the local codes",
       "s5Desc": "Dress, food, gestures and greetings, with real-life situations and a mini-quiz.",
-      "s5Cta": "Open the Culture guide"
+      "s5Cta": "Open the Culture guide",
+      "s6Title": "Get your housing ready",
+      "s6Desc": "Where to look, compare your options, avoid scams and prepare your move-in.",
+      "s6Cta": "Open Housing"
     }
   },
   "hero": {
@@ -1393,7 +1398,8 @@
       }
     },
     "freeRemainingHint": "Free tries left this month, per tool (AI-written intercultural sheets count with Packing).",
-    "perMonthTries": "10 / month"
+    "perMonthTries": "10 / month",
+    "freeFeat4": "Housing assistant included for free (no AI, no tries used)"
   },
   "quotaReached": {
     "title": "Free limit reached",
@@ -6336,18 +6342,18 @@
   },
   "prepDashboard": {
     "kicker": "My preparation space",
-    "subtitle": "Budget, visa, packing and culture: everything to prepare before you leave, in one place.",
+    "subtitle": "Budget, visa, packing, culture and housing: everything to prepare before you leave, in one place.",
     "newTrip": "New stay",
     "firstStepKicker": "Step 1",
     "firstStepTitle": "Create your trip",
-    "firstStepDesc": "A few details are enough: the 4 preparation tools then adapt automatically.",
+    "firstStepDesc": "A few details are enough: the 5 preparation tools then adapt automatically.",
     "myTrips": "My trips",
     "currentTrip": "Trip in preparation",
     "durationDays_one": "{{count}} day",
     "durationDays_other": "{{count}} days",
     "noDates": "Dates to be confirmed",
     "overall": "Overall preparation",
-    "modulesTitle": "Your 4 preparation tools",
+    "modulesTitle": "Your 5 preparation tools",
     "start": "Start",
     "continue": "Continue",
     "offersHint": "10 free tries per tool every month —",
@@ -6356,7 +6362,8 @@
       "visa": "{{done}}/{{total}} formalities ticked",
       "valise": "{{done}}/{{total}} items ticked",
       "culture": "{{done}}/{{total}} topics understood",
-      "notStarted": "Not started yet"
+      "notStarted": "Not started yet",
+      "housing": "{{done}}/{{total}} steps checked"
     },
     "modules": {
       "budget": {
@@ -6374,6 +6381,10 @@
       "culture": {
         "title": "Culture guide",
         "desc": "Dress, food, gestures and customs"
+      },
+      "housing": {
+        "title": "Housing",
+        "desc": "Organise your search and prepare your move-in"
       }
     },
     "status": {
@@ -6390,7 +6401,9 @@
       "valiseStart": "Packing: tick the first items on your list",
       "valiseContinue": "Packing: finish your list",
       "cultureStart": "Culture: read a first topic and mark it as understood",
-      "cultureContinue": "Culture: continue with the next topics"
+      "cultureContinue": "Culture: continue with the next topics",
+      "housingStart": "Housing: say where you stand and tick your first check",
+      "housingContinue": "Housing: continue your checklist"
     },
     "missing": {
       "title": "Some information is missing",
@@ -6541,7 +6554,7 @@
     "finish": "Finish",
     "retry": "Try again",
     "saveError": "Your answers could not be saved. They are kept: please try again.",
-    "privacy": "Your answers are only used to adapt your four guides. You can change them at any time.",
+    "privacy": "Your answers are only used to adapt your five guides. You can change them at any time.",
     "destination": {
       "title": "Where are you heading?",
       "subtitle": "Enter the country where you will study or do your internship.",
@@ -6612,7 +6625,8 @@
       "dates": "The return date must be after the departure date.",
       "datesMissing": "Enter a departure date or choose a length (even “I don't know yet”).",
       "budget": "Enter an amount or choose “I don't know yet”.",
-      "housing": "Choose your type of housing."
+      "housing": "Choose your type of housing.",
+      "housingStatus": "Choose where you are in your housing search."
     },
     "summary": {
       "title": "Your preparation space is ready!",
@@ -6623,6 +6637,14 @@
       "budget": "Planned budget",
       "noDates": "Not known yet",
       "cta": "Go to my preparation"
+    },
+    "housingStatus": {
+      "title": "Where are you in your housing search?",
+      "subtitle": "So we can help you based on how far along you are.",
+      "starting": "I'm starting my search",
+      "shortlist": "I've found a few places",
+      "confirmed": "My housing is confirmed",
+      "lost": "I don't know where to start"
     }
   },
   "prepEdit": {
@@ -6631,5 +6653,238 @@
     "save": "Save",
     "saved": "Stay updated.",
     "error": "Could not save your changes. Please try again."
+  },
+  "housing": {
+    "kicker": "Housing assistant",
+    "title": "Your home abroad",
+    "subtitle": "From searching to moving in, find the key information and steps to get your housing ready.",
+    "status": {
+      "label": "Your situation:",
+      "change": "Change my situation",
+      "saved": "Situation saved",
+      "error": "Your situation could not be saved. Please try again."
+    },
+    "progress": "{{done}}/{{total}} steps checked",
+    "progressLabel": "Housing preparation progress",
+    "step": "Step {{n}}",
+    "focus": {
+      "starting": "You're starting your search: first find the right resources, then note the places you like so you can compare them.",
+      "lost": "Don't panic: start with your host institution's housing office and the resources below, then go step by step.",
+      "shortlist": "You've spotted a few places: compare them, then run the checks before booking or signing.",
+      "confirmed": "Your home is confirmed: get your arrival, documents and move-in costs ready."
+    },
+    "sections": {
+      "resources": {
+        "title": "Where to look for housing?",
+        "desc": "Real resources, hand-picked for your destination."
+      },
+      "compare": {
+        "title": "Compare your options",
+        "desc": "Note the places you found elsewhere and compare them side by side."
+      },
+      "safety": {
+        "title": "Avoid bad surprises",
+        "desc": "To check before booking or signing."
+      },
+      "install": {
+        "title": "Ready for your arrival?",
+        "desc": "Your move-in steps, adapted to your situation."
+      }
+    },
+    "resources": {
+      "schoolTitle": "First reflex: your host institution",
+      "schoolDesc": "The international office or housing office of your host university or company knows partner residences and local options. Contact them as early as possible.",
+      "none": "Xplania doesn't have verified resources for {{country}} yet. Contact the international or housing office of your host institution: it's the most reliable source.",
+      "yourCountry": "your destination",
+      "scopeEurope": "Several European countries",
+      "open": "Open website",
+      "newTab": "(new tab)",
+      "verified": "Link checked on {{date}}",
+      "disclaimer": "No partnership: Xplania receives nothing from these websites and does not vouch for the listings they publish. Check that your city is covered.",
+      "cat": {
+        "residence": "University residences",
+        "platform": "Housing platforms",
+        "flatshare": "Flatshares",
+        "institutional": "Official and support resources"
+      },
+      "items": {
+        "housinganywhere": "Mid- and long-term rooms and homes, widely used by international students.",
+        "uniplaces": "Rooms and flats for students in several European cities.",
+        "spotahome": "Furnished mid- and long-term rentals with detailed listings.",
+        "erasmusu": "Erasmus community with room and flatshare listings and student feedback.",
+        "crous": "Apply for a Crous university residence in France.",
+        "cartedescolocs": "Flatshare and flatmate listings across France.",
+        "visale": "Free rent guarantee from Action Logement, open to many students (conditions on the website).",
+        "caf": "Housing benefits in France, depending on your situation (check on the website).",
+        "fotocasa": "Large rental listings website in Spain.",
+        "badi": "Flatshare room platform, mostly in Spain.",
+        "studierendenwerke": "Network of the Studierendenwerke, which run student residences in Germany.",
+        "wggesucht": "The go-to website for flatshares (WG) in Germany.",
+        "kamernet": "Large room and studio platform in the Netherlands.",
+        "duwo": "Student housing in Delft, Leiden, Amsterdam and other Dutch cities.",
+        "ssh": "Student housing in Utrecht and other Dutch cities.",
+        "spareroom": "Widely used flatshare website in the UK.",
+        "unite": "Student residences in many UK cities.",
+        "howtorent": "Official UK government guide to renting rights and steps.",
+        "reportfraud": "Official service to report a scam in the UK.",
+        "otodom": "Large property listings website in Poland, including rentals.",
+        "studyaustralia": "Official Australian Government website for international students, with housing advice."
+      }
+    },
+    "types": {
+      "residence": "Student residence",
+      "flatshare": "Flatshare",
+      "studio": "Studio / flat",
+      "family": "Host family",
+      "other": "Other"
+    },
+    "compare": {
+      "help": "Add the places you found on other websites. Only the name and rent are required.",
+      "add": "Add a place",
+      "emptyTitle": "No place saved yet",
+      "emptyDesc": "As soon as you find an interesting listing, add it here to compare it with the others.",
+      "errorLoad": "Your places could not be loaded.",
+      "errorSave": "Saving failed. Please try again.",
+      "saved": "Place saved",
+      "deleted": "Place deleted",
+      "monthly": "Known monthly cost",
+      "chargesUnknown": "Bills not specified",
+      "upfront": "Estimated move-in cost",
+      "upfrontHelp": "Estimated move-in cost = first month + deposit + extra fees, based on the amounts you entered. No reliability score is calculated.",
+      "location": "Location",
+      "dates": "Availability",
+      "unknown": "Not specified",
+      "criteria": "Criteria",
+      "actions": "Actions",
+      "tableCaption": "Comparison of your places",
+      "favorite": "Favourite",
+      "markFavorite": "Choose",
+      "edit": "Edit {{name}}",
+      "delete": "Delete {{name}}",
+      "openListing": "Open the listing for {{name}}",
+      "deleteTitle": "Delete this place?",
+      "deleteDesc": "“{{name}}” will be removed from your comparison. Your budget is not changed.",
+      "favoriteHint": "Choose your favourite place to add its costs to your budget.",
+      "budgetHint": "Add the costs of “{{name}}” to your budget.",
+      "budgetSynced": "The costs of “{{name}}” are in your budget.",
+      "budgetOutdated": "Your budget no longer matches “{{name}}”. Update it?",
+      "budgetAdd": "Add costs to budget",
+      "budgetUpdate": "Update budget"
+    },
+    "form": {
+      "addTitle": "Add a place",
+      "editTitle": "Edit place",
+      "desc": "Copy the listing details. You can complete them later.",
+      "name": "Place name",
+      "namePlaceholder": "E.g. Room near the university",
+      "rent": "Monthly rent (€)",
+      "deposit": "Deposit (€)",
+      "chargesIncluded": "Bills included?",
+      "charges": "Monthly bills (€)",
+      "yes": "Yes",
+      "no": "No",
+      "more": "More details (optional)",
+      "city": "City",
+      "neighborhood": "Neighbourhood",
+      "type": "Type of housing",
+      "furnished": "Furnished?",
+      "fees": "Extra fees (€)",
+      "commute": "Commute to campus or internship",
+      "commutePlaceholder": "E.g. 20 min by bus",
+      "from": "Available from",
+      "to": "Until",
+      "url": "Listing link",
+      "pros": "Pros",
+      "cons": "Cons",
+      "notes": "Personal notes",
+      "privacy": "Don't save ID documents, contracts or bank details here.",
+      "errors": {
+        "name": "Enter a name for this place.",
+        "rent": "Enter the monthly rent (0 or more).",
+        "amount": "Amounts must be positive numbers.",
+        "url": "The link must start with http:// or https://",
+        "dates": "The end date must be after the start date.",
+        "save": "Saving failed. Please try again."
+      }
+    },
+    "budget": {
+      "title": "Add costs to budget",
+      "desc": "Here's what will be sent to the Budget guide for “{{name}}”. Nothing changes without your confirmation.",
+      "noBudget": "Your budget hasn't been created yet. Generate your estimate in the Budget guide first, then come back here.",
+      "createBudget": "Create my budget",
+      "months": "Number of months of rent",
+      "monthsError": "Enter a number of months between 1 and 36.",
+      "monthly": "Monthly (rent + bills)",
+      "oneOff": "One-off (agency fees, move-in)",
+      "deposit": "Deposit (possibly refundable)",
+      "changesTitle": "What will change in your budget",
+      "accommodationLine": "Housing: {{before}} → {{after}} (replaced)",
+      "feesLine": "Fees (incl. deposit): {{before}} → {{after}}",
+      "replacesOther": "These amounts replace those of another place sent earlier.",
+      "depositNote": "The deposit is kept separately under “Fees” because it may be returned at the end of your stay, depending on your contract.",
+      "confirm": "Add to budget",
+      "confirmReplace": "Replace in budget",
+      "done": "Budget updated",
+      "error": "The budget could not be updated."
+    },
+    "safety": {
+      "items": {
+        "owner": "I checked the identity of the landlord or agency",
+        "contract": "I checked the contract terms",
+        "rent": "I confirmed the rent and bills",
+        "deposit": "I checked how the deposit is refunded",
+        "cancel": "I checked the cancellation terms",
+        "reviews": "I looked for independent reviews or information",
+        "address": "I checked the address of the place",
+        "payment": "I know how payments are made",
+        "keys": "I checked how the keys are handed over"
+      },
+      "alertsTitle": "Warning signs",
+      "alerts": {
+        "rush": "You're asked to pay quickly, “before the others”",
+        "noContract": "The landlord refuses to provide a contract",
+        "contradictions": "The information changes or contradicts itself",
+        "transfer": "You're pushed to send a bank transfer before any visit or contract",
+        "lowPrice": "The price is unusually low for the area",
+        "noProof": "No credible proof that the place exists (visit, live video, exact address)"
+      },
+      "disclaimer": "This list reduces some risks but does not guarantee that a listing is reliable. If in doubt, pay nothing and ask your host institution for advice.",
+      "confirmedNote": "Your home is confirmed: keep these warning signs in mind if you're asked for another payment or a change of terms before you arrive."
+    },
+    "install": {
+      "phases": {
+        "beforeSigning": "Before signing",
+        "beforeDeparture": "Before leaving",
+        "arrival": "On arrival"
+      },
+      "items": {
+        "beforeSigning": {
+          "compare": "Compare the places",
+          "conditions": "Check the rental conditions",
+          "documents": "Prepare the requested documents",
+          "fees": "Check fees and guarantees"
+        },
+        "beforeDeparture": {
+          "arrival": "Confirm arrival arrangements",
+          "upfront": "Plan the payment of move-in costs",
+          "equipment": "Check the available equipment",
+          "keysPickup": "Arrange key collection",
+          "route": "Plan the route to your home"
+        },
+        "arrival": {
+          "inventory": "Do the check-in inventory, if planned",
+          "checkEquipment": "Check the equipment",
+          "keepDocs": "Keep useful documents (contract, receipts, inventory)",
+          "localSteps": "Check the required local formalities (registration, insurance…)"
+        }
+      },
+      "legal": "Renting rules differ from country to country: always check an official source or ask your host institution.",
+      "officialLink": "Official page"
+    },
+    "checklistError": "This box could not be saved. Please try again.",
+    "checklistLoadError": "Your checked boxes could not be loaded. Reload the page.",
+    "saving": "Saving…",
+    "footer": "Your housing amounts can feed your",
+    "footerBudget": "Budget guide"
   }
 }

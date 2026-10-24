@@ -1050,6 +1050,124 @@ export type Database = {
           },
         ]
       }
+      housing_checklist: {
+        Row: {
+          done_at: string
+          id: string
+          item: string
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          done_at?: string
+          id?: string
+          item: string
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          done_at?: string
+          id?: string
+          item?: string
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "housing_checklist_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      housing_options: {
+        Row: {
+          available_from: string | null
+          available_to: string | null
+          charges_included: boolean | null
+          city: string | null
+          commute: string | null
+          cons: string | null
+          created_at: string
+          deposit: number | null
+          extra_fees: number | null
+          furnished: boolean | null
+          housing_type: string | null
+          id: string
+          is_favorite: boolean
+          listing_url: string | null
+          monthly_charges: number | null
+          monthly_rent: number
+          name: string
+          neighborhood: string | null
+          notes: string | null
+          pros: string | null
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          available_from?: string | null
+          available_to?: string | null
+          charges_included?: boolean | null
+          city?: string | null
+          commute?: string | null
+          cons?: string | null
+          created_at?: string
+          deposit?: number | null
+          extra_fees?: number | null
+          furnished?: boolean | null
+          housing_type?: string | null
+          id?: string
+          is_favorite?: boolean
+          listing_url?: string | null
+          monthly_charges?: number | null
+          monthly_rent: number
+          name: string
+          neighborhood?: string | null
+          notes?: string | null
+          pros?: string | null
+          trip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          available_from?: string | null
+          available_to?: string | null
+          charges_included?: boolean | null
+          city?: string | null
+          commute?: string | null
+          cons?: string | null
+          created_at?: string
+          deposit?: number | null
+          extra_fees?: number | null
+          furnished?: boolean | null
+          housing_type?: string | null
+          id?: string
+          is_favorite?: boolean
+          listing_url?: string | null
+          monthly_charges?: number | null
+          monthly_rent?: number
+          name?: string
+          neighborhood?: string | null
+          notes?: string | null
+          pros?: string | null
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "housing_options_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_badges: {
         Row: {
           code: string

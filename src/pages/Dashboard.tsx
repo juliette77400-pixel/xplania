@@ -1,10 +1,10 @@
-// Beta dashboard — built around the four preparation tools only
-// (Budget, Visa, Valise, Culture), with per-module progress for the selected trip.
+// Beta dashboard — built around the five preparation tools only
+// (Budget, Visa, Valise, Culture, Housing), with per-module progress for the selected trip.
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, Briefcase, CalendarDays, CircleDashed, CircleCheck, FileCheck, Globe2, GraduationCap, ListTodo, Loader, Luggage, MapPin, Plus, Sparkles, Wallet } from "lucide-react";
+import { ArrowRight, BedDouble, Briefcase, CalendarDays, CircleDashed, CircleCheck, FileCheck, Globe2, GraduationCap, ListTodo, Loader, Luggage, MapPin, Plus, Sparkles, Wallet } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,6 +19,7 @@ import SatisfactionSurveyCard from "@/components/dashboard/SatisfactionSurveyCar
 import { track } from "@/lib/analytics";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
 import { isPathEnabled } from "@/config/featureFlags";
+import { isHousingStatus } from "@/lib/housing";
 import { overallPercent, readTripProgress, moduleStatus, nextActionKey, PREP_PROGRESS_EVENT, type ModuleProgress, type ModuleStatus, type PrepModule } from "@/lib/prep-progress";
 
 const MODULES: Array<{ key: PrepModule; to: string; icon: typeof Wallet }> = [
@@ -26,6 +27,7 @@ const MODULES: Array<{ key: PrepModule; to: string; icon: typeof Wallet }> = [
   { key: "visa", to: "/guide-visa", icon: FileCheck },
   { key: "valise", to: "/guide-valise", icon: Luggage },
   { key: "culture", to: "/guide-culture", icon: Globe2 },
+  { key: "housing", to: "/guide-logement", icon: BedDouble },
 ];
 
 const Bar = ({ value, label }: { value: number; label: string }) => (
@@ -130,6 +132,8 @@ const Dashboard = () => {
     ? t(`prepQuiz.stay.${stayType}.title`)
     : stayType === "trip" ? t("prepTrip.stay.trip") : "";
   const StayIcon = stayType === "internship" ? Briefcase : GraduationCap;
+  const rawHousingStatus = (selected?.form_data as { housingStatus?: string } | null)?.housingStatus;
+  const housingStatus = isHousingStatus(rawHousingStatus) ? rawHousingStatus : null;
 
   const nextActions = progress
     ? modules
@@ -233,6 +237,9 @@ const Dashboard = () => {
                         <div className="min-w-0 flex-1">
                           <h3 className="font-bold">{t(`prepDashboard.modules.${key}.title`)}</h3>
                           <p className="text-xs text-muted-foreground">{t(`prepDashboard.modules.${key}.desc`)}</p>
+                          {key === "housing" && housingStatus && (
+                            <p className="mt-0.5 text-xs font-medium text-primary">{t(`prepQuiz.housingStatus.${housingStatus}`)}</p>
+                          )}
                         </div>
                         <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${statusClass}`}>
                           <StatusIcon className="h-3 w-3" aria-hidden />{t(`prepDashboard.status.${status}`)}

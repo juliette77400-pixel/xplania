@@ -141,6 +141,13 @@
       "when": 1792855490924,
       "tag": "0019_beta_funnel_events",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792857698300,
+      "tag": "0020_housing_assistant",
+      "breakpoints": true
     }
   ]
 }

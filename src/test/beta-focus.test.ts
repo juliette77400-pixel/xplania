@@ -21,11 +21,11 @@ describe("bêta : un seul besoin, préparer son voyage en amont", () => {
     expect(FEATURE_FLAGS.ENABLE_LIVE_TRACKING).toBe(false);
   });
 
-  it("les adresses des modules coupés sont fermées, celles des 4 outils ouvertes", () => {
+  it("les adresses des modules coupés sont fermées, celles des 5 outils ouvertes", () => {
     for (const p of ["/mood", "/discover", "/explore/abc", "/carnets", "/carnet/abc", "/suivi", "/gamification", "/profil-voyageur"]) {
       expect(isPathEnabled(p)).toBe(false);
     }
-    for (const p of ["/guide-budget", "/guide-visa", "/guide-valise", "/guide-culture", "/app", "/offres"]) {
+    for (const p of ["/guide-budget", "/guide-visa", "/guide-valise", "/guide-culture", "/guide-logement", "/app", "/offres"]) {
       expect(isPathEnabled(p)).toBe(true);
     }
   });
@@ -76,6 +76,6 @@ describe("progression par outil", () => {
 
   it("un outil pas commencé compte 0 % dans la préparation globale", () => {
     saveModuleProgress("valise", "Portugal", { done: 30, total: 30 });
-    expect(overallPercent(readTripProgress({ destination: "Portugal" }))).toBe(25);
+    expect(overallPercent(readTripProgress({ destination: "Portugal" }))).toBe(20);
   });
 });

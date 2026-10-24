@@ -12,7 +12,7 @@ import CountryCombobox from "@/components/prep/CountryCombobox";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
-  STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS,
+  STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
   answersFromTrip, buildTripFromAnswers, firstInvalidStep, validatePrepStep, type PrepAnswers,
 } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";
@@ -34,7 +34,7 @@ interface Props {
 const PREP_FIELDS = [
   "destination", "arrivalCity", "departureLocation", "departureDate", "returnDate", "duration", "tripTypes",
   "totalBudget", "accommodationType", "nationality", "residence", "secondNationality", "stayType",
-  "durationBucket", "budgetUnknown", "housing",
+  "durationBucket", "budgetUnknown", "housing", "housingStatus",
 ] as const;
 
 const PrepTripEditDialog = ({ trip, open, setOpen, onUpdated }: Props) => {
@@ -151,6 +151,15 @@ const PrepTripEditDialog = ({ trip, open, setOpen, onUpdated }: Props) => {
             <div className="flex flex-wrap gap-2">
               {HOUSING_OPTIONS.map((h) => (
                 <button key={h} type="button" aria-pressed={a.housing === h} onClick={() => set("housing", h)} className={chip(a.housing === h)}>{t(`prepQuiz.housing.${h}`)}</button>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="space-y-2">
+            <legend className="text-sm font-medium">{t("prepQuiz.housingStatus.title")}</legend>
+            <div className="flex flex-wrap gap-2">
+              {HOUSING_STATUSES.map((h) => (
+                <button key={h} type="button" aria-pressed={a.housingStatus === h} onClick={() => set("housingStatus", h)} className={chip(a.housingStatus === h)}>{t(`prepQuiz.housingStatus.${h}`)}</button>
               ))}
             </div>
           </fieldset>
