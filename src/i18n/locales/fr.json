@@ -7396,5 +7396,107 @@
       "save": "Enregistrer mes rentrées",
       "saved": "Rentrées enregistrées"
     }
+  },
+  "valise2": {
+    "profiles": {
+      "title": "Ton type de valise",
+      "subtitle": "Choisis ce qui correspond à ton séjour : la liste s'adapte.",
+      "suggested": "Suggéré",
+      "erasmus": {
+        "label": "Erasmus longue durée",
+        "desc": "Plusieurs mois : documents, deux saisons, premiers jours"
+      },
+      "stage": {
+        "label": "Stage professionnel",
+        "desc": "Tenues de travail, ordinateur, papiers du stage"
+      },
+      "cabine": {
+        "label": "Bagage cabine uniquement",
+        "desc": "Dimensions, poids, liquides, garde-robe réduite"
+      },
+      "soute": {
+        "label": "Bagage en soute",
+        "desc": "Franchise, étiquette, ce qui reste en cabine"
+      },
+      "sport": {
+        "label": "Avec équipement sportif",
+        "desc": "Housse, bagage spécial, assurance"
+      }
+    },
+    "aiTips": {
+      "erasmus": {
+        "title": "🎓 Tes papiers d'abord",
+        "tip": "Garde dans ton bagage cabine passeport, attestation d'inscription, assurance santé et une copie PDF de chaque document."
+      },
+      "stage": {
+        "title": "💼 Le code vestimentaire",
+        "tip": "Demande à ton tuteur le code vestimentaire avant de partir : 2 à 3 tenues suffisent pour la première semaine."
+      },
+      "cabine": {
+        "title": "🎒 Pèse ton sac",
+        "tip": "Vérifie les dimensions et le poids autorisés sur ton billet : beaucoup de compagnies limitent la cabine à 7-10 kg."
+      },
+      "soute": {
+        "title": "🧳 L'essentiel en cabine",
+        "tip": "Médicaments, chargeurs, documents et une tenue de rechange restent avec toi, au cas où ta valise arrive en retard."
+      },
+      "sport": {
+        "title": "⚽ Bagage spécial",
+        "tip": "Les équipements de sport sont souvent facturés à part : réserve-les avec ton billet, c'est moins cher qu'à l'aéroport."
+      }
+    },
+    "climate": {
+      "title": "Le temps habituel à {{city}} pendant ton séjour",
+      "subtitle": "Températures minimales / maximales moyennes et jours de pluie, mois par mois.",
+      "noDates": "Sans dates de séjour : les 3 prochains mois. Ajoute tes dates pour un résultat précis.",
+      "loading": "Recherche des températures…",
+      "unavailable": "Températures indisponibles pour le moment. Réessaie plus tard.",
+      "notFound": "Ville « {{city}} » introuvable : vérifie son nom dans ton séjour.",
+      "rainyDays_one": "{{count}} jour de pluie",
+      "rainyDays_other": "{{count}} jours de pluie",
+      "whatToPack": "Ce que ça implique pour ta valise",
+      "addAll": "Ajouter à ma liste",
+      "category": "Selon la météo du séjour",
+      "source": "D'après le temps observé du {{from}} au {{to}} (mêmes dates, l'an dernier) —",
+      "hints": {
+        "cold": {
+          "text": "Il peut geler : manteau chaud, bonnet, gants.",
+          "items": [
+            "Manteau chaud",
+            "Bonnet et gants",
+            "Sous-vêtements thermiques"
+          ]
+        },
+        "cool": {
+          "text": "Matins frais : pull et veste chaude.",
+          "items": [
+            "Pull chaud",
+            "Veste mi-saison"
+          ]
+        },
+        "hot": {
+          "text": "Fortes chaleurs : vêtements légers et protection solaire.",
+          "items": [
+            "Vêtements légers et respirants",
+            "Crème solaire",
+            "Casquette ou chapeau"
+          ]
+        },
+        "rain": {
+          "text": "Mois pluvieux : imperméable et chaussures qui résistent à l'eau.",
+          "items": [
+            "Veste imperméable",
+            "Chaussures imperméables",
+            "Parapluie compact"
+          ]
+        },
+        "twoSeasons": {
+          "text": "Gros écart de températures : prévois deux saisons, ou achète sur place.",
+          "items": [
+            "Vêtements superposables (deux saisons)"
+          ]
+        }
+      }
+    }
   }
 }
