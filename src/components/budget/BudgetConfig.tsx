@@ -9,15 +9,15 @@ interface BudgetConfigProps {
 
 const BudgetConfig = ({ tripData }: BudgetConfigProps) => {
   const { t } = useTranslation();
-  const destination = tripData?.destination || "Paris";
-  const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
-  const style = tripData?.activityLevel || t("budget.configDefaultStyle");
-  const comfort = tripData?.accommodationStanding || t("budget.configDefaultComfort");
-  const activitiesCount = tripData?.objectives?.length || 8;
-  const transport = tripData?.localTransport?.[0] || t("budget.configDefaultTransport");
-  // Determine season from departure date
+  // Only answers the student really gave are shown — no invented defaults.
+  const destination = tripData?.destination || "";
+  const days = tripData?.duration ? parseInt(tripData.duration) || 0 : 0;
+  const style = tripData?.activityLevel || "";
+  const comfort = tripData?.accommodationStanding || "";
+  const activitiesCount = tripData?.objectives?.length || 0;
+  const transport = tripData?.localTransport?.[0] || "";
   const season = (() => {
-    if (!tripData?.departureDate) return t("budget.configLow");
+    if (!tripData?.departureDate) return "";
     const month = new Date(tripData.departureDate).getMonth();
     if (month >= 5 && month <= 8) return t("budget.configHigh");
     if ((month >= 3 && month <= 4) || (month >= 9 && month <= 10)) return t("budget.configMedium");
@@ -25,14 +25,15 @@ const BudgetConfig = ({ tripData }: BudgetConfigProps) => {
   })();
 
   const items = [
-    { label: t("budget.configDuration"), value: t("budget.configDays", { count: days }), icon: Calendar, color: "text-primary" },
-    { label: t("budget.configDestination"), value: destination, icon: MapPin, color: "text-pink-400" },
-    { label: t("budget.configStyle"), value: style, icon: User, color: "text-green-400" },
-    { label: t("budget.configComfort"), value: comfort, icon: Star, color: "text-yellow-400" },
-    { label: t("budget.configActivities"), value: String(activitiesCount), icon: Ticket, color: "text-purple-400" },
-    { label: t("budget.configTransport"), value: transport, icon: Bus, color: "text-blue-400" },
-    { label: t("budget.configSeason"), value: season, icon: Cloud, color: "text-orange-400" },
-  ];
+    { label: t("budget.configDuration"), value: days ? t("budget.configDays", { count: days }) : "", icon: Calendar, color: "text-primary" },
+    { label: t("budget.configDestination"), value: destination, icon: MapPin, color: "text-secondary" },
+    { label: t("budget.configStyle"), value: style, icon: User, color: "text-success" },
+    { label: t("budget.configComfort"), value: comfort, icon: Star, color: "text-warning" },
+    { label: t("budget.configActivities"), value: activitiesCount ? String(activitiesCount) : "", icon: Ticket, color: "text-secondary" },
+    { label: t("budget.configTransport"), value: transport, icon: Bus, color: "text-primary" },
+    { label: t("budget.configSeason"), value: season, icon: Cloud, color: "text-warning" },
+  ].filter((item) => item.value);
+  if (items.length === 0) return null;
 
   return (
     <motion.div
