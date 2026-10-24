@@ -7224,7 +7224,11 @@
       "entryRequirement": "Exigence possible à l'entrée",
       "noEntryRequirement": "Aucun vaccin exigé à l'entrée indiqué",
       "healthSummary_one": "1 vaccin ou précaution recommandé pour ton séjour, selon l'Institut Pasteur.",
-      "healthSummary_other": "{{count}} vaccins ou précautions recommandés pour ton séjour, selon l'Institut Pasteur."
+      "healthSummary_other": "{{count}} vaccins ou précautions recommandés pour ton séjour, selon l'Institut Pasteur.",
+      "confirmOfficial": "À confirmer sur le site officiel",
+      "aiLead": "Piste de l'IA : « {{answer}} ».",
+      "checkOn": "Vérifie ta situation sur : {{site}}",
+      "reviewedOn": "relu par l'équipe Xplania le {{date}}"
     },
     "health": {
       "entry": "Exigé à l'entrée",

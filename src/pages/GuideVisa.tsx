@@ -217,6 +217,7 @@ const GuideVisaPage = () => {
             onRefresh={refreshOfficial}
             days={days}
             isFrenchNational={isFrench}
+            destinationCode={profile.destinationCode}
           />
         )}
 

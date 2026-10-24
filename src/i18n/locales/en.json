@@ -7224,7 +7224,11 @@
       "entryRequirement": "Possible entry requirement",
       "noEntryRequirement": "No vaccine required at entry listed",
       "healthSummary_one": "1 vaccine or precaution recommended for your stay, according to Institut Pasteur.",
-      "healthSummary_other": "{{count}} vaccines or precautions recommended for your stay, according to Institut Pasteur."
+      "healthSummary_other": "{{count}} vaccines or precautions recommended for your stay, according to Institut Pasteur.",
+      "confirmOfficial": "To confirm on the official site",
+      "aiLead": "AI lead: “{{answer}}”.",
+      "checkOn": "Check your situation on: {{site}}",
+      "reviewedOn": "reviewed by the Xplania team on {{date}}"
     },
     "health": {
       "entry": "Required at entry",

@@ -10,6 +10,8 @@ import { sourceOf, type OfficialResult, type OfficialSource, type SafetyCategory
 import { healthRelevance, type VisaAnalysis } from "@/lib/visa-rules";
 import { formatDay, formatDayTime } from "@/lib/format-date";
 import { cn } from "@/lib/utils";
+import { entrySourceFor } from "@/data/entry-sources";
+import { formatDay as fmtDayOnly } from "@/lib/format-date";
 
 type Tone = "good" | "warn" | "bad" | "neutral";
 const TONE: Record<Tone, string> = {
@@ -112,9 +114,10 @@ interface Props {
   onRefresh: () => void;
   days: number;
   isFrenchNational: boolean;
+  destinationCode: string;
 }
 
-const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onRefresh, days, isFrenchNational }: Props) => {
+const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onRefresh, days, isFrenchNational, destinationCode }: Props) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("fr") ? "fr" : "en";
   const content = official?.content ?? null;
@@ -125,9 +128,14 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
   const officialEntry = isFrenchNational && entrySrc && content ? content.entry : null;
 
   // ── Visa ──
+  // The AI never sets the rule on its own: outside the EU rule, a non-French
+  // student always gets "to confirm" with the destination's official site.
   const v = analysis?.visa;
-  const visaRel: Reliability | null = !v ? null : analysis?.rule ? "verified" : v.status === "depends" || v.status === "to_verify" ? "to_verify" : "indicative";
-  const visaTone: Tone = !v ? "neutral" : v.status === "not_required" ? "good" : "warn";
+  const entrySite = entrySourceFor(destinationCode);
+  const aiOnly = !!v && !analysis?.rule && !isFrenchNational;
+  const visaRel: Reliability | null = !v ? null : analysis?.rule ? "verified" : aiOnly || v.status === "depends" || v.status === "to_verify" ? "to_verify" : "indicative";
+  const visaTone: Tone = !v ? "neutral" : aiOnly ? "warn" : v.status === "not_required" ? "good" : "warn";
+  const reviewed = official?.reviewedAt ? t("visa2.cards.reviewedOn", { date: fmtDayOnly(official.reviewedAt, i18n.language) }) : "";
 
   // ── Health ──
   const health = healthSrc && content ? content.health : null;
@@ -149,7 +157,7 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
             {officialLoading
               ? t("visa2.cards.readingSources")
               : official && official.status !== "unavailable"
-                ? t("visa2.cards.sourcesCheckedAt", { date: formatDayTime(fetchedAt, i18n.language) })
+                ? t("visa2.cards.sourcesCheckedAt", { date: formatDayTime(fetchedAt, i18n.language) }) + (reviewed ? ` · ${reviewed}` : "")
                 : t("visa2.cards.sourcesUnavailable")}
           </p>
         </div>
@@ -169,13 +177,18 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
           id="card-visa"
           icon={<Globe className="h-4 w-4" />}
           title={t("visa2.cards.visa")}
-          status={v ? v.title || t(`visa2.visaStatus.${v.status}`) : t("visa2.cards.toAnalyze")}
+          status={v ? (aiOnly ? t("visa2.cards.confirmOfficial") : v.title || t(`visa2.visaStatus.${v.status}`)) : t("visa2.cards.toAnalyze")}
           tone={visaTone}
-          summary={v ? v.summary : t("visa2.cards.visaPending")}
+          summary={v ? (aiOnly ? t("visa2.cards.aiLead", { answer: v.title || t(`visa2.visaStatus.${v.status}`) }) + " " + v.summary : v.summary) : t("visa2.cards.visaPending")}
           reliability={visaRel}
           source={v && (analysis?.rule
             ? <a href={EU_URL[lang]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.euSource")}<ExternalLink className="h-3 w-3" aria-hidden /></a>
-            : <p>{t("visa2.cards.aiGenerated", { date: formatDayTime(analysis!.generatedAt, i18n.language) })}{v.official_url && <>{" · "}<a href={v.official_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /></a></>}</p>)}
+            : <div className="space-y-1">
+                {entrySite && (
+                  <p><a href={entrySite.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">{t("visa2.cards.checkOn", { site: entrySite.label })}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span></a></p>
+                )}
+                <p>{t("visa2.cards.aiGenerated", { date: formatDayTime(analysis!.generatedAt, i18n.language) })}{!entrySite && v.official_url && <>{" · "}<a href={v.official_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /></a></>}</p>
+              </div>)}
         >
           {(v || officialEntry) && (
             <>
