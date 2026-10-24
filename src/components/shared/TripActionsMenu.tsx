@@ -144,3 +144,5 @@ const EditDialogControlled = ({
 }: { trip: Trip; open: boolean; setOpen: (v: boolean) => void; onUpdated?: () => void }) => (
   <PrepTripEditDialog trip={trip} open={open} setOpen={setOpen} onUpdated={onUpdated} />
 );
+
+export default TripActionsMenu;
