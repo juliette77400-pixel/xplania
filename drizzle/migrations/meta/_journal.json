@@ -169,6 +169,13 @@
       "when": 1792867523381,
       "tag": "0023_official_info_review",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1792873510812,
+      "tag": "0024_harden_explore_scores_and_journal_media",
+      "breakpoints": true
     }
   ]
 }

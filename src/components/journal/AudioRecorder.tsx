@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Mic, Square, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { signJournalMedia } from "@/lib/journal-media";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
@@ -52,9 +53,9 @@ const AudioRecorder = ({ journalId, blockId, initialUrl, onSaved }: Props) => {
     const path = `${user.id}/${journalId}/${crypto.randomUUID()}.webm`;
     const { error } = await supabase.storage.from("journal-media").upload(path, blob, { contentType: "audio/webm" });
     if (error) { toast.error(t("audio.uploadFail")); setUploading(false); return; }
-    const { data: signed } = await supabase.storage.from("journal-media").createSignedUrl(path, 60 * 60 * 24 * 365);
-    await supabase.from("journal_blocks").update({ content: { path, url: signed?.signedUrl } }).eq("id", blockId);
-    setUrl(signed?.signedUrl || null);
+    const signedUrl = await signJournalMedia(path);
+    await supabase.from("journal_blocks").update({ content: { path, url: signedUrl } }).eq("id", blockId);
+    setUrl(signedUrl || null);
     setUploading(false);
     onSaved();
     toast.success(t("audio.saved"));

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Camera, MapPin, Star, Pencil, Trash2, Loader2, Smile, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { signJournalMedia } from "@/lib/journal-media";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -57,8 +58,8 @@ const BlockCard = ({ block, journalId, destination, onChanged }: Props) => {
     const path = `${user.id}/${journalId}/${crypto.randomUUID()}-${file.name}`;
     const { error } = await supabase.storage.from("journal-media").upload(path, file);
     if (error) { toast.error(t("j2.uploadFail")); setUploading(false); return; }
-    const { data: signed } = await supabase.storage.from("journal-media").createSignedUrl(path, 60 * 60 * 24 * 365);
-    await persist({ ...content, path, url: signed?.signedUrl, caption: content.caption || "" });
+    const signedUrl = await signJournalMedia(path);
+    await persist({ ...content, path, url: signedUrl, caption: content.caption || "" });
     setUploading(false);
     onChanged();
   };

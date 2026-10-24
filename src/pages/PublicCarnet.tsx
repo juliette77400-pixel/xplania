@@ -10,6 +10,7 @@ import { setShareMeta, clearShareMeta } from "@/lib/seo";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
 import SouvenirAlbum from "@/components/journal/SouvenirAlbum";
+import { withFreshJournalMedia } from "@/lib/journal-media";
 
 const PublicCarnet = () => {
   const { t } = useTranslation();
@@ -38,7 +39,8 @@ const PublicCarnet = () => {
       setJournal(j);
 
       const { data: d } = await supabase.from("journal_days").select("*").eq("journal_id", j.id).order("date");
-      const { data: blocks } = await supabase.from("journal_blocks").select("*").eq("journal_id", j.id).order("position");
+      const { data: rawBlocks } = await supabase.from("journal_blocks").select("*").eq("journal_id", j.id).order("position");
+      const blocks = await withFreshJournalMedia(rawBlocks || []);
       const merged = (d || []).map((day: any) => ({ ...day, blocks: (blocks || []).filter((b: any) => b.day_id === day.id) }));
       setDays(merged);
 
