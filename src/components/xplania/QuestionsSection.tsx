@@ -7,7 +7,7 @@ import { isOpenTool } from "@/config/open-tools";
 import { track } from "@/lib/analytics";
 import imgBudget from "@/assets/prep-quiz/budget.jpg";
 import imgVisa from "@/assets/prep-quiz/origin.jpg";
-import imgHousing from "@/assets/prep-quiz/housing-status-shortlist.jpg";
+import imgHousing from "@/assets/prep-quiz/housing-status-starting.jpg";
 import imgValise from "@/assets/prep-quiz/housing-unknown.jpg";
 import imgCulture from "@/assets/prep-quiz/housing-family.jpg";
 
