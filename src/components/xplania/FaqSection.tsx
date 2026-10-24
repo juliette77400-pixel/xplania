@@ -8,10 +8,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const FaqSection = () => {
+const DEFAULT_KEYS = ["q1", "q2", "q3", "q7", "q8", "q4", "q5", "q6"];
+
+const FaqSection = ({ keys = DEFAULT_KEYS }: { keys?: string[] }) => {
   const { t } = useTranslation();
 
-  const faqs = ["q1", "q2", "q3", "q7", "q8", "q4", "q5", "q6"].map((k) => ({
+  const faqs = keys.map((k) => ({
     k,
     q: t(`faq.${k}.q`),
     a: t(`faq.${k}.a`),

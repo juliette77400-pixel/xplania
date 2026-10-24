@@ -1,5 +1,5 @@
 // Country field with suggestions (keyboard friendly). Stores the ISO code.
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { countryList } from "@/lib/countries";
@@ -21,6 +21,12 @@ const CountryCombobox = ({ label, value, onChange, placeholder, autoFocus }: Pro
   const [query, setQuery] = useState(selectedName);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
+
+  // Show a country chosen from outside (restored draft, country picked on the home page).
+  useEffect(() => {
+    if (value && selectedName && normalize(query) !== normalize(selectedName)) setQuery(selectedName);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, selectedName]);
 
   const matches = useMemo(() => {
     const q = normalize(query);
