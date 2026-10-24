@@ -34,7 +34,8 @@ import BudgetKpis from "@/components/budget/BudgetKpis";
 import BudgetRecommendations from "@/components/budget/BudgetRecommendations";
 import BudgetSimulator from "@/components/budget/BudgetSimulator";
 import BudgetConfirmDialog from "@/components/budget/BudgetConfirmDialog";
-import { budgetRecommendations, changedLines, summarizeBudget, type BudgetLine } from "@/lib/budget-math";
+import BudgetIncomesForm from "@/components/budget/BudgetIncomes";
+import { budgetRecommendations, changedLines, emptyIncomes, sanitizeIncomes, summarizeBudget, type BudgetIncomes, type BudgetLine } from "@/lib/budget-math";
 
 /* =============================================================================
  * DEV NOTE — Item 6: Bank-transaction integration feasibility (research only)
@@ -97,6 +98,8 @@ const GuideBudgetPage = () => {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [categories, setCategories] = useState<BudgetCategory[]>(defaultCategories);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [incomes, setIncomes] = useState<BudgetIncomes>(emptyIncomes);
+  const [incomesGiven, setIncomesGiven] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [regenCount, setRegenCount] = useState(0);
   const [activeBudgetSection, setActiveBudgetSection] = useState<"analysis" | "forecast" | "tracker" | "charts" | "tips">("analysis");
@@ -204,6 +207,8 @@ const GuideBudgetPage = () => {
           }
           setCategories(rehydrated);
           setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
+          setIncomes(sanitizeIncomes(parsed.incomes));
+          setIncomesGiven(!!parsed.incomes);
           setHasGenerated(true);
           setGeneratedContextKey(parsed.generatedContextKey || "");
           setRegenCount(parsed.regenCount || 0);
@@ -227,6 +232,7 @@ const GuideBudgetPage = () => {
           hasGenerated,
           categories,
           expenses,
+          ...(incomesGiven ? { incomes } : {}),
           regenCount,
           generatedContextKey,
           savedAt,
@@ -236,7 +242,7 @@ const GuideBudgetPage = () => {
     } catch {
       /* ignore */
     }
-  }, [categories, expenses, hasGenerated, hydratedFromStorage, regenCount, generatedContextKey, storageKey]);
+  }, [categories, expenses, incomes, incomesGiven, hasGenerated, hydratedFromStorage, regenCount, generatedContextKey, storageKey]);
 
   // Email alert once when real spending reaches 80% of the planned budget.
   useEffect(() => {
@@ -385,9 +391,14 @@ const GuideBudgetPage = () => {
   };
 
   const lines: BudgetLine[] = categories.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent }));
-  const summary = summarizeBudget(lines, expenses, userBudget, days);
+  const summary = summarizeBudget(lines, expenses, userBudget, days, incomes);
   const daysUntilDeparture = tripData?.departureDate ? Math.ceil((new Date(tripData.departureDate).getTime() - Date.now()) / 86_400_000) : null;
-  const recommendationsList = budgetRecommendations(lines, summary, daysUntilDeparture);
+  const recommendationsList = budgetRecommendations(lines, summary, daysUntilDeparture, incomesGiven);
+  const saveIncomes = (next: BudgetIncomes) => {
+    setIncomes(next);
+    setIncomesGiven(true);
+    toast.success(t("budget2.incomes.saved"));
+  };
   const applySimulation = (next: BudgetLine[]) => {
     setCategories((prev) => prev.map((c) => ({ ...c, planned: next.find((n) => n.key === c.key)?.planned ?? c.planned })));
     toast.success(t("budget2.sim.applied"));
@@ -528,6 +539,7 @@ const GuideBudgetPage = () => {
               )}
               <BudgetKpis summary={summary} />
               <BudgetRecommendations items={recommendationsList} />
+              <BudgetIncomesForm incomes={incomes} months={summary.months} onChange={saveIncomes} />
               <BudgetConfig tripData={tripData} />
               <BudgetForecast
                 totalBudget={totalBudget}
