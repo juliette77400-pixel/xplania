@@ -7666,5 +7666,73 @@
     "start": "Start with the questionnaire",
     "signin": "I already have an account",
     "tryFree": "Without an account, you can already try:"
+  },
+  "landing2": {
+    "hero": {
+      "badge": "Erasmus · exchange · internship abroad",
+      "titleStart": "Your Erasmus or internship abroad",
+      "titleAccent": "starts here.",
+      "subtitle": "Visa, first-month budget, housing, packing, cultural codes: answer 7 questions and leave with your departure to-do list. You start without creating an account.",
+      "where": "Where are you going?",
+      "other": "Another country",
+      "secondary": "See an example",
+      "photoAlt": "A student arrives with her suitcase on a sunny street in a European city",
+      "cardLabel": "Example",
+      "cardTitle": "My departure to-do",
+      "card1": "ID valid for the whole stay",
+      "card2": "First-month budget worked out",
+      "card3": "3 places to compare"
+    },
+    "questions": {
+      "kicker": "Before you leave",
+      "title": "The questions you're asking yourself. The answers in one place.",
+      "subtitle": "Each question has its tool. You enter your stay once, and every tool uses it.",
+      "open": "No account",
+      "account": "Free account",
+      "link": "Open the tool",
+      "budget": {
+        "q": "How much do I need for the first month?",
+        "a": "Rent, deposit, transport, groceries: the Budget tool works out your first month and what's left each month."
+      },
+      "visa": {
+        "q": "Do I need a visa?",
+        "a": "Based on your nationality and destination, with links to the official sites and the date they were updated."
+      },
+      "housing": {
+        "q": "How do I find housing without getting scammed?",
+        "a": "Where to look, what to compare, and the warning signs to spot before paying anything."
+      },
+      "valise": {
+        "q": "What do I pack?",
+        "a": "A list matched to the usual weather of your months there, the length of your stay and your luggage."
+      },
+      "culture": {
+        "q": "What's it like over there?",
+        "a": "Greetings, how to behave in class or at work, everyday codes: so you don't arrive blind."
+      },
+      "imgAlt": {
+        "budget": "Banknotes, piggy bank and calculator on a desk",
+        "visa": "Passports and an ID card on a table",
+        "housing": "A student compares housing listings on her laptop",
+        "valise": "A suitcase in an empty room",
+        "culture": "Students sharing a meal with a family"
+      }
+    },
+    "result": {
+      "kicker": "In 2 minutes",
+      "title": "You leave with your 3 priorities.",
+      "text": "At the end of the questionnaire, Xplania tells you where to start, based on your nationality, your destination and where you are with housing. Then your 5 tools are already filled in with your stay.",
+      "step1": "Answer 7 questions: destination, dates, housing…",
+      "step2": "See your 3 priorities right away, no account",
+      "step3": "Create your free account to keep everything",
+      "exampleLabel": "Example",
+      "exampleStay": "Erasmus in Spain · 5 months · French nationality",
+      "country": "Spain"
+    },
+    "final": {
+      "title": "Prepare your departure now, not the night before.",
+      "text": "Answer 7 questions, see your priorities, then move forward tool by tool, at your own pace.",
+      "feedback": "Give my feedback"
+    }
   }
 }

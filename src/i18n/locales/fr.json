@@ -7666,5 +7666,73 @@
     "start": "Commencer par le questionnaire",
     "signin": "J'ai déjà un compte",
     "tryFree": "Sans compte, tu peux déjà essayer :"
+  },
+  "landing2": {
+    "hero": {
+      "badge": "Erasmus · échange · stage à l'étranger",
+      "titleStart": "Ton Erasmus ou ton stage à l'étranger",
+      "titleAccent": "commence ici.",
+      "subtitle": "Visa, budget du premier mois, logement, valise, codes culturels : réponds à 7 questions et repars avec ta to-do de départ. Tu commences sans créer de compte.",
+      "where": "Où pars-tu ?",
+      "other": "Autre pays",
+      "secondary": "Voir un exemple",
+      "photoAlt": "Une étudiante arrive avec sa valise dans une rue ensoleillée d'une ville européenne",
+      "cardLabel": "Exemple",
+      "cardTitle": "Ma to-do de départ",
+      "card1": "Pièce d'identité valide tout le séjour",
+      "card2": "Budget du premier mois calculé",
+      "card3": "3 logements à comparer"
+    },
+    "questions": {
+      "kicker": "Avant de partir",
+      "title": "Les questions que tu te poses. Les réponses au même endroit.",
+      "subtitle": "Chaque question a son outil. Ton séjour est rempli une seule fois, et tous les outils s'en servent.",
+      "open": "Sans compte",
+      "account": "Compte gratuit",
+      "link": "Voir l'outil",
+      "budget": {
+        "q": "Combien il me faut pour le premier mois ?",
+        "a": "Loyer, caution, transport, courses : le Budget calcule ton premier mois et ce qu'il te reste chaque mois."
+      },
+      "visa": {
+        "q": "Est-ce que j'ai besoin d'un visa ?",
+        "a": "Selon ta nationalité et ton pays d'arrivée, avec les liens vers les sites officiels et leur date de mise à jour."
+      },
+      "housing": {
+        "q": "Comment trouver un logement sans me faire arnaquer ?",
+        "a": "Où chercher, quoi comparer, et les signaux qui doivent t'alerter avant de payer quoi que ce soit."
+      },
+      "valise": {
+        "q": "Qu'est-ce que je mets dans ma valise ?",
+        "a": "Une liste adaptée à la météo habituelle de tes mois sur place, à la durée du séjour et à ton bagage."
+      },
+      "culture": {
+        "q": "Comment ça se passe, là-bas ?",
+        "a": "Saluer, se comporter en cours ou en stage, les petits codes du quotidien : pour ne pas arriver à l'aveugle."
+      },
+      "imgAlt": {
+        "budget": "Billets, tirelire et calculatrice sur un bureau",
+        "visa": "Passeports et carte d'identité sur une table",
+        "housing": "Une étudiante compare des annonces de logement sur son ordinateur",
+        "valise": "Une valise posée dans une chambre vide",
+        "culture": "Des étudiants partagent un repas avec une famille"
+      }
+    },
+    "result": {
+      "kicker": "En 2 minutes",
+      "title": "Tu repars avec tes 3 priorités.",
+      "text": "À la fin du questionnaire, Xplania te dit par quoi commencer, selon ta nationalité, ta destination et où tu en es pour le logement. Ensuite, tes 5 outils sont déjà remplis avec ton séjour.",
+      "step1": "Réponds à 7 questions : destination, dates, logement…",
+      "step2": "Vois tes 3 priorités tout de suite, sans compte",
+      "step3": "Crée ton compte gratuit pour tout garder",
+      "exampleLabel": "Exemple",
+      "exampleStay": "Erasmus en Espagne · 5 mois · nationalité française",
+      "country": "l'Espagne"
+    },
+    "final": {
+      "title": "Ton départ se prépare maintenant, pas la veille.",
+      "text": "Réponds à 7 questions, vois tes priorités, puis avance outil par outil, à ton rythme.",
+      "feedback": "Donner mon feedback"
+    }
   }
 }
