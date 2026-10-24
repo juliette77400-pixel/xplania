@@ -107,7 +107,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <OfflineBanner />
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary showHomeLink>
             <a
