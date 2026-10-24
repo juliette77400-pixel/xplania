@@ -136,15 +136,6 @@ const TripActionsMenu = ({ trip, onChanged, onDeleted, onDuplicated, className }
   );
 };
 
-// Petit wrapper qui réutilise la logique d'EditTripDialog mais avec open contrôlé.
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Save } from "lucide-react";
-import { useEffect } from "react";
-import { useUpdateTrip } from "@/hooks/useUpdateTrip";
-
 // Editing a trip now covers every answer of the preparation questionnaire.
 import PrepTripEditDialog from "@/components/shared/PrepTripEditDialog";
 
