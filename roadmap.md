@@ -32,3 +32,15 @@
 - [x] Valise : 5 profils pratiques, températures habituelles des mois du séjour, conseil IA concret
 - [x] Guide culturel : 3 parcours, thèmes prioritaires, « Pour aller plus loin » en rubrique à ouvrir
 - [ ] Vérifier la licence Open-Meteo (gratuite pour usage non commercial) avant la commercialisation
+
+# Roadmap — UX/UI + SEO (24 oct. 2026)
+
+- [ ] Première visite : visite guidée et bandeau cookies ne s'empilent plus, visite seulement sur le tableau de bord, bouton « Passer » réparé
+- [ ] Un seul bouton flottant « Aide » (Un souci ? + discussion + signaler une réponse)
+- [ ] Menu ordinateur sur une ligne
+- [ ] Accueil plus court sur téléphone
+- [ ] Tableau de bord : séjours distingués (ville/dates), doublon « Avant le départ » retiré
+- [ ] Thème sombre par défaut (identité Xplania)
+- [ ] SEO : plan du site réparé (+ Logement, + Valise), Valise visible sur Google
+- [ ] SEO : pages publiques par destination à partir des fiches pays existantes
+- [ ] Réponse : analyse du parcours utilisateur et de la proposition de valeur
