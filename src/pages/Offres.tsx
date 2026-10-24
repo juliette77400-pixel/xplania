@@ -507,8 +507,8 @@ const PaidPlans = () => {
         onOpenChange={setWaitlistOpen}
         source={waitlistSource ?? (waitlistPack ? `offres:pack:${waitlistPack}` : "offres:page")}
         pack={waitlistPack}
-        title={waitlistPack ? t("offres.waitlistTitlePack", { pack: waitlistPack }) : t("offres.waitlistTitleGeneric")}
-        teaser={waitlistPack ? t("offres.waitlistTeaserPack", { pack: waitlistPack }) : undefined}
+        title={waitlistSource === "offres:school" ? t("offres.school.waitlistTitle") : waitlistPack ? t("offres.waitlistTitlePack", { pack: waitlistPack }) : t("offres.waitlistTitleGeneric")}
+        teaser={waitlistSource === "offres:school" ? t("offres.school.waitlistTeaser", { pack: waitlistPack }) : waitlistPack ? t("offres.waitlistTeaserPack", { pack: waitlistPack }) : undefined}
       />
     </div>
   );

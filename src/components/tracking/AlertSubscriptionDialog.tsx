@@ -28,8 +28,8 @@ const CATEGORIES = ["weather", "security", "events", "activities", "transport"] 
 
 const Schema = z.object({
   email: z.string().trim().email({ message: "invalid_email" }).max(254).optional().or(z.literal("")),
-  channels: z.array(z.string()).min(1),
-  categories: z.array(z.string()).min(1),
+  channels: z.array(z.string()).min(1).max(10),
+  categories: z.array(z.string()).min(1).max(20),
   min_severity: z.enum(["info", "warning", "critical"]),
 });
 
