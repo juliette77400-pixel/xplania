@@ -1089,6 +1089,7 @@ export type Database = {
           charges_included: boolean | null
           city: string | null
           commute: string | null
+          commute_minutes: number | null
           cons: string | null
           created_at: string
           deposit: number | null
@@ -1097,16 +1098,20 @@ export type Database = {
           housing_type: string | null
           id: string
           is_favorite: boolean
+          lease_notes: string | null
           listing_url: string | null
           monthly_charges: number | null
           monthly_rent: number
           name: string
           neighborhood: string | null
           notes: string | null
+          payment_before_visit: boolean | null
           pros: string | null
           trip_id: string
           updated_at: string
           user_id: string
+          visited: boolean | null
+          written_contract: boolean | null
         }
         Insert: {
           available_from?: string | null
@@ -1114,6 +1119,7 @@ export type Database = {
           charges_included?: boolean | null
           city?: string | null
           commute?: string | null
+          commute_minutes?: number | null
           cons?: string | null
           created_at?: string
           deposit?: number | null
@@ -1122,16 +1128,20 @@ export type Database = {
           housing_type?: string | null
           id?: string
           is_favorite?: boolean
+          lease_notes?: string | null
           listing_url?: string | null
           monthly_charges?: number | null
           monthly_rent: number
           name: string
           neighborhood?: string | null
           notes?: string | null
+          payment_before_visit?: boolean | null
           pros?: string | null
           trip_id: string
           updated_at?: string
           user_id: string
+          visited?: boolean | null
+          written_contract?: boolean | null
         }
         Update: {
           available_from?: string | null
@@ -1139,6 +1149,7 @@ export type Database = {
           charges_included?: boolean | null
           city?: string | null
           commute?: string | null
+          commute_minutes?: number | null
           cons?: string | null
           created_at?: string
           deposit?: number | null
@@ -1147,16 +1158,20 @@ export type Database = {
           housing_type?: string | null
           id?: string
           is_favorite?: boolean
+          lease_notes?: string | null
           listing_url?: string | null
           monthly_charges?: number | null
           monthly_rent?: number
           name?: string
           neighborhood?: string | null
           notes?: string | null
+          payment_before_visit?: boolean | null
           pros?: string | null
           trip_id?: string
           updated_at?: string
           user_id?: string
+          visited?: boolean | null
+          written_contract?: boolean | null
         }
         Relationships: [
           {

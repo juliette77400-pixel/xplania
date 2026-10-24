@@ -155,6 +155,13 @@
       "when": 1792863077816,
       "tag": "0021_official_info_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1792866246685,
+      "tag": "0022_housing_option_checks",
+      "breakpoints": true
     }
   ]
 }
