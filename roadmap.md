@@ -27,3 +27,4 @@
 - [x] Budget : rentrées d'argent (bourse, gratification, famille, autre) dans la marge
 - [x] Budget : carte « Ton premier mois »
 - [x] Tableau de bord : « Ce qu'il te reste à préparer » (liste unique, la plus urgente d'abord)
+- [x] Budget raccourci : décision en haut, détails en rubriques repliées
