@@ -43,10 +43,10 @@ const Index = () => {
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
 
-  const handleCreateTrip = (location = "other") => {
+  const handleCreateTrip = (source = "other") => {
     // Beta: no AI itinerary — trips are created on the preparation dashboard.
     if (!FEATURE_FLAGS.ENABLE_AI_ITINERARY) {
-      track("cta_click", { cta: "prepare_departure", location });
+      track("cta_click", { cta: "prepare_departure", location: source });
       // Signed in: the dashboard sends people without a trip to the questionnaire.
       navigate(user ? PREPARATION_HOME : "/auth?mode=signup&next=/preparation");
       return;
@@ -72,7 +72,7 @@ const Index = () => {
       <AppNavbar />
       {/* legacy hidden CTA — keep handlers wired via floating button below if needed */}
       <div className="hidden">
-        <button onClick={handleCreateTrip}>create</button>
+        <button onClick={() => handleCreateTrip()}>create</button>
         <button onClick={scrollToFeedback}>fb</button>
       </div>
       <main id="main-content" tabIndex={-1}>
