@@ -16,7 +16,7 @@ const BetaSection = ({ onFeedback }: Props) => {
   ];
 
   return (
-    <section id="feedback" aria-labelledby="beta-title" className="scroll-mt-20 px-4 py-20 sm:py-24">
+    <section id="feedback" aria-labelledby="beta-title" className="scroll-mt-20 px-4 py-14 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mx-auto mb-12 max-w-3xl text-center">
           <h2 id="beta-title" className="text-balance text-3xl font-extrabold tracking-tight sm:text-4xl">
@@ -25,7 +25,7 @@ const BetaSection = ({ onFeedback }: Props) => {
           <p className="mt-4 text-pretty text-muted-foreground">{t("beta.subtitle")}</p>
         </motion.div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto -mx-4 px-4 pb-3 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:grid md:grid-cols-3 md:gap-5">
           {cards.map((c, i) => (
             <motion.div
               key={c.title}
@@ -33,7 +33,7 @@ const BetaSection = ({ onFeedback }: Props) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card h-full rounded-2xl p-6 text-center"
+              className="glass-card h-full rounded-2xl p-6 text-center w-[82%] shrink-0 snap-start md:w-auto"
             >
               <div className="gradient-button mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl">
                 <c.icon className="h-5 w-5 text-primary-foreground" aria-hidden />
