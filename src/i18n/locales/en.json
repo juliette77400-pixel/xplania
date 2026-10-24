@@ -286,7 +286,10 @@
       "s4Cta": "Open Packing",
       "s5Title": "Learn the local codes",
       "s5Desc": "Dress, food, gestures and greetings, with real-life situations and a mini-quiz.",
-      "s5Cta": "Open the Culture guide"
+      "s5Cta": "Open the Culture guide",
+      "s6Title": "Get your housing ready",
+      "s6Desc": "Where to look, compare your options, avoid scams and prepare your move-in.",
+      "s6Cta": "Open Housing"
     }
   },
   "hero": {

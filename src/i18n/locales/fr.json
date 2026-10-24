@@ -286,7 +286,10 @@
       "s4Cta": "Ouvrir la Valise",
       "s5Title": "Comprends les codes du pays",
       "s5Desc": "Tenue, gastronomie, gestes et salutations, avec mises en situation et mini-quiz.",
-      "s5Cta": "Ouvrir le Guide culturel"
+      "s5Cta": "Ouvrir le Guide culturel",
+      "s6Title": "Prépare ton logement",
+      "s6Desc": "Où chercher, comparer tes options, éviter les arnaques et préparer ton installation.",
+      "s6Cta": "Ouvrir le Logement"
     }
   },
   "hero": {
