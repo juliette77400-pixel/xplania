@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { BedDouble, Check, FileCheck, Globe2, Luggage, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { isPathEnabled } from "@/config/featureFlags";
+import { isOpenTool } from "@/config/open-tools";
 
 // "La solution": the preparation tools shown as one path, not separate products.
 const TOOLS = [
@@ -33,7 +34,9 @@ const FeaturesSection = () => {
                 className="w-[82%] shrink-0 snap-start sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.84rem)] xl:w-[calc(20%-1rem)]">
                 <Link to={to} className="group relative flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/60 p-5 interactive-card">
                   <div className="gradient-button relative flex h-11 w-11 items-center justify-center rounded-xl"><Icon className="h-5 w-5 text-primary-foreground" /></div>
-                  <p className="mt-4 text-xs font-bold uppercase tracking-[.14em] text-primary">{t("prepLanding.solution.stepLabel", { n: i + 1 })}</p>
+                  <p className="mt-4 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-primary">{t("prepLanding.solution.stepLabel", { n: i + 1 })}
+                    {isOpenTool(to) && <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] tracking-normal text-success normal-case">{t("prepLanding.solution.noAccount")}</span>}
+                  </p>
                   <h3 className="mt-1 text-xl font-bold">{t(`prepLanding.solution.cards.${key}.name`)}</h3>
                   <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">{t(`prepLanding.solution.cards.${key}.desc`)}</p>
                   <p className="mt-4 flex items-start gap-2 rounded-xl bg-primary/10 px-3 py-2 text-sm font-medium text-foreground">

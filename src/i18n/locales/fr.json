@@ -6577,7 +6577,8 @@
           "desc": "Organise ta recherche, compare tes options et prépare ton installation à l'étranger.",
           "benefit": "Tu avances dans ta recherche de logement."
         }
-      }
+      },
+      "noAccount": "Essai sans compte"
     },
     "how": {
       "title": "Ton départ, préparé en trois étapes.",
@@ -7652,5 +7653,18 @@
     "finalText": "Un questionnaire de 2 minutes, puis 5 outils connectés : budget, visa, valise, culture et logement.",
     "checkedOn": "Liens vérifiés le {{date}}. Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir.",
     "others": "Autres destinations"
+  },
+  "accountNeeded": {
+    "valise": {
+      "title": "La Valise a besoin d'un compte",
+      "why": "Ta liste de valise s'adapte à ton séjour (destination, dates, météo habituelle) et garde tes cases cochées : elle est donc rattachée à ton compte. C'est gratuit et ça prend 2 minutes."
+    },
+    "housing": {
+      "title": "L'Assistant Logement a besoin d'un compte",
+      "why": "Tu y enregistres les logements que tu as repérés et ta progression : ces informations restent privées, rattachées à ton compte. C'est gratuit et ça prend 2 minutes."
+    },
+    "start": "Commencer par le questionnaire",
+    "signin": "J'ai déjà un compte",
+    "tryFree": "Sans compte, tu peux déjà essayer :"
   }
 }

@@ -6577,7 +6577,8 @@
           "desc": "Organise your search, compare your options and prepare your move-in abroad.",
           "benefit": "You move forward in your housing search."
         }
-      }
+      },
+      "noAccount": "Try without an account"
     },
     "how": {
       "title": "Your departure, prepared in three steps.",
@@ -7652,5 +7653,18 @@
     "finalText": "A 2-minute questionnaire, then 5 connected tools: budget, visa, packing, culture and housing.",
     "checkedOn": "Links checked on {{date}}. Rules can change: always check the official sites before leaving.",
     "others": "Other destinations"
+  },
+  "accountNeeded": {
+    "valise": {
+      "title": "The Packing guide needs an account",
+      "why": "Your packing list adapts to your stay (destination, dates, usual weather) and keeps your ticked items, so it is linked to your account. It's free and takes 2 minutes."
+    },
+    "housing": {
+      "title": "The Housing assistant needs an account",
+      "why": "You save the places you found and your progress there: this stays private, linked to your account. It's free and takes 2 minutes."
+    },
+    "start": "Start with the questionnaire",
+    "signin": "I already have an account",
+    "tryFree": "Without an account, you can already try:"
   }
 }
