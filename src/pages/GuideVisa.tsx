@@ -1,714 +1,277 @@
-import { friendlyInvokeError } from "@/lib/invoke-error";
-import i18n from "@/i18n";
-import { useState, useCallback, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+// Visa guide: profile → four summary cards → personalised checklist →
+// emergency contacts. Official pages (security, entry, health, contacts) are
+// read for real; visa/passport answers for the exact profile come from the AI
+// and are saved with the trip so nothing is regenerated on each visit.
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  FileText, Shield, AlertTriangle, Lightbulb, CheckCircle, Globe,
-  Stethoscope, RotateCcw, Sparkles, Brain, Search, ShieldCheck,
-  Syringe, ListChecks, Heart, Phone, MapPin, Flag, AlertCircle
-} from "lucide-react";
-import { useTravelStore } from "@/stores/useTravelStore";
-import { saveModuleProgress } from "@/lib/prep-progress";
-import { findCountry } from "@/lib/country-match";
+import { motion } from "framer-motion";
+import { AlertCircle, Loader2, MessageCircle, RotateCcw, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { track } from "@/lib/analytics";
+import { useQueryClient } from "@tanstack/react-query";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
-import { useQuota } from "@/hooks/useQuota";
-import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
-import { countryList } from "@/lib/countries";
-import { Skeleton } from "@/components/ui/skeleton";
-import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
-import VisaProcessStepper from "@/components/visa/VisaProcessStepper";
 import RotatingStatusMessage from "@/components/shared/RotatingStatusMessage";
-
+import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
 import VisaPipChat from "@/components/visa/VisaPipChat";
-import VaccinesGuide from "@/components/visa/VaccinesGuide";
-import SafetyGuide from "@/components/visa/SafetyGuide";
+import VisaProfileCard from "@/components/visa/VisaProfileCard";
+import VisaSummaryCards from "@/components/visa/VisaSummaryCards";
+import VisaChecklist from "@/components/visa/VisaChecklist";
+import VisaEmergency from "@/components/visa/VisaEmergency";
+import { useTravelStore } from "@/stores/useTravelStore";
+import { useActiveTrip } from "@/stores/useActiveTrip";
+import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
+import { useQuota } from "@/hooks/useQuota";
+import { useAuth } from "@/hooks/useAuth";
+import { useOfficialInfo } from "@/hooks/useOfficialInfo";
+import { supabase } from "@/integrations/supabase/client";
+import { friendlyInvokeError } from "@/lib/invoke-error";
+import { saveModuleProgress } from "@/lib/prep-progress";
+import { track } from "@/lib/analytics";
+import { stayDurationDays } from "@/lib/prep-quiz";
 import {
-  getGenerationSteps,
-  getGeneralDocuments,
-  getStaticAlerts,
-  getStaticTips,
-  getSecurityLevelConfig,
-  priorityConfig,
-  type VisaAIResult,
-} from "@/lib/visa-static";
-
-
-// Split a long dynamic paragraph into readable chunks of a few sentences each,
-// so dense AI-generated text doesn't render as one solid wall. Robust to URLs
-// (only breaks before an uppercase letter or digit).
-const toParagraphs = (text: string, perPara = 2): string[] => {
-  const sentences = (text || "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .split(/(?<=\.)\s+(?=[A-ZÀ-Ý0-9])/)
-    .filter(Boolean);
-  if (sentences.length === 0) return [];
-  const paras: string[] = [];
-  for (let i = 0; i < sentences.length; i += perPara) {
-    paras.push(sentences.slice(i, i + perPara).join(" "));
-  }
-  return paras;
-};
-
-
-// ── Skeleton Components ──
-
-const SectionSkeleton = () => (
-  <div className="glass-card rounded-2xl p-6 space-y-4">
-    <div className="flex items-center gap-3">
-      <Skeleton className="w-10 h-10 rounded-xl" />
-      <div className="space-y-2 flex-1">
-        <Skeleton className="h-5 w-48" />
-        <Skeleton className="h-3 w-32" />
-      </div>
-    </div>
-    <Skeleton className="h-20 w-full rounded-xl" />
-    <Skeleton className="h-16 w-full rounded-xl" />
-  </div>
-);
-
-// ── Component ──
+  carryChecked, countryLabel, hasFreeMovement, loadVisaState, missingVisaFields, normalizeAnalysis, saveVisaState,
+  visaProfileFromTrip, visaProfileKey, visaStateKey, visaStayDays, type SavedVisaState, type VisaProfile,
+} from "@/lib/visa-rules";
+import type { TravelFormData } from "@/types/travel";
 
 const GuideVisaPage = () => {
   useHydrateActiveTrip();
-  const { tripData } = useTravelStore();
   const { t, i18n } = useTranslation();
-  const isFr = i18n.language.startsWith("fr");
-  const contextDestination = tripData?.destination || "";
-
-  const [selectedDestination, setSelectedDestination] = useState(contextDestination || "none");
-  const [selectedNationality, setSelectedNationality] = useState("FR");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [genStep, setGenStep] = useState(0);
-  const [hasGenerated, setHasGenerated] = useState(false);
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-  const [aiResult, setAiResult] = useState<VisaAIResult | null>(null);
-  const [aiError, setAiError] = useState<string | null>(null);
-  const [countrySearch, setCountrySearch] = useState("");
-  const [nationalitySearch, setNationalitySearch] = useState("");
-  const [showUpgrade, setShowUpgrade] = useState(false);
-  const [chatOpenSignal, setChatOpenSignal] = useState(0);
+  const lang: "fr" | "en" = i18n.language.startsWith("fr") ? "fr" : "en";
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const tripData = useTravelStore((s) => s.tripData);
+  const setTripData = useTravelStore((s) => s.setTripData);
+  const tripId = useActiveTrip((s) => s.tripId);
   const { reached, consume } = useQuota("visa");
 
-  // Pre-fill from the trip (destination + nationality) once it is loaded,
-  // without overriding a choice the traveler already made on this page.
+  const profile = useMemo(() => visaProfileFromTrip(tripData), [tripData]);
+  const missing = missingVisaFields(profile);
+  const days = visaStayDays(profile);
+  const pKey = visaProfileKey(profile);
+  const stateKey = visaStateKey(tripId, profile.destinationCode);
+  const destinationName = countryLabel(profile.destinationCode);
+  const nationalityName = countryLabel(profile.nationality);
+  const isFrench = profile.nationality === "FR" || profile.secondNationality === "FR";
+
+  const [saved, setSaved] = useState<SavedVisaState | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [chatOpenSignal, setChatOpenSignal] = useState(0);
+
+  useEffect(() => { setSaved(profile.destinationCode ? loadVisaState(stateKey) : null); }, [stateKey, profile.destinationCode]);
+
+  const official = useOfficialInfo(profile.destinationCode || undefined, lang);
+  const analysis = saved?.analysis ?? null;
+  const outdated = !!saved && saved.profileKey !== pKey;
+  const checked = saved?.checked ?? {};
+
+  // Dashboard progress for this destination.
   useEffect(() => {
-    const code = findCountry(contextDestination);
-    if (code) setSelectedDestination((cur) => (cur === "none" || !cur || cur === contextDestination ? code : cur));
-  }, [contextDestination]);
-  useEffect(() => {
-    if (tripData?.nationality) setSelectedNationality(tripData.nationality);
-  }, [tripData?.nationality]);
-  const askPip = () => setChatOpenSignal((n) => n + 1);
-  const securityLevelNumber: 1 | 2 | 3 | 4 = (() => {
-    const lvl = aiResult?.security?.level || "safe";
-    if (lvl === "danger") return 4;
-    if (lvl === "caution") return 3;
-    if (lvl === "moderate") return 2;
-    return 1;
-  })();
-  const isSolo = (tripData?.travelerType || "").toLowerCase().includes("solo") ||
-    (tripData?.travelerType || "").toLowerCase().includes("seul");
+    if (!analysis || !tripData?.destination) return;
+    const done = analysis.checklist.filter((i) => checked[i.id]).length;
+    saveModuleProgress("visa", tripData.destination, { done, total: analysis.checklist.length });
+  }, [analysis, checked, tripData?.destination]);
 
-  const destinationName = useMemo(() => {
-    if (!selectedDestination || selectedDestination === "none") return isFr ? "votre destination" : "your destination";
-    const found = countryList.find((c) => c.code === selectedDestination);
-    return found?.name || selectedDestination;
-  }, [selectedDestination, isFr]);
-
-  const nationalityName = useMemo(() => {
-    const found = countryList.find((c) => c.code === selectedNationality);
-    return found?.name || "France";
-  }, [selectedNationality]);
-
-  const filteredCountries = useMemo(() => {
-    if (!countrySearch) return countryList;
-    const q = countrySearch.toLowerCase();
-    return countryList.filter((c) => c.name.toLowerCase().includes(q));
-  }, [countrySearch]);
-
-  const filteredNationalities = useMemo(() => {
-    if (!nationalitySearch) return countryList;
-    const q = nationalitySearch.toLowerCase();
-    return countryList.filter((c) => c.name.toLowerCase().includes(q));
-  }, [nationalitySearch]);
-
-  const hasValidDestination = selectedDestination && selectedDestination !== "none";
-
-  const runGeneration = useCallback(async () => {
-    if (!hasValidDestination) {
-      toast.error(t("guideVisa.errSelectDest"));
-      return;
-    }
-    // The visa service requires a signed-in user; check the session first so
-    // we never send a doomed request (401) and can guide the user instead.
-    const { data: sess } = await supabase.auth.getSession();
-    if (!sess.session) {
-      toast.error(t("guideVisa.errAuth", { defaultValue: i18n.language.startsWith("fr") ? "Connecte-toi pour générer tes formalités." : "Sign in to generate your travel formalities." }));
-      window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`);
-      return;
-    }
-    if (reached) { setShowUpgrade(true); return; }
-    consume();
-    setIsGenerating(true);
-    setGenStep(0);
-    setAiError(null);
-
-    const stepPromise = (async () => {
-      const GENERATION_STEPS = getGenerationSteps();
-      for (let i = 0; i < GENERATION_STEPS.length - 1; i++) {
-        await new Promise((r) => setTimeout(r, 700));
-        setGenStep(i + 1);
-      }
-    })();
-
+  const saveProfile = useCallback(async (next: VisaProfile): Promise<boolean> => {
+    if (!user || !tripId) { toast.error(t("visa2.profile.noTrip")); return false; }
+    setSavingProfile(true);
     try {
-      const { data, error } = await supabase.functions.invoke("visa-info", {
+      const { data: row, error: readErr } = await supabase.from("trips").select("form_data").eq("id", tripId).eq("user_id", user.id).maybeSingle();
+      if (readErr) throw readErr;
+      const old = ((row?.form_data as Record<string, unknown>) || {}) as Partial<TravelFormData>;
+      const destination = countryLabel(next.destinationCode) || old.destination || "";
+      const duration = stayDurationDays({ departureDate: next.departureDate, returnDate: next.returnDate, durationBucket: (next.durationBucket || "") as never });
+      const form: Partial<TravelFormData> = {
+        ...old,
+        destination,
+        arrivalCity: next.city.trim() || destination,
+        nationality: next.nationality,
+        secondNationality: next.secondNationality,
+        residence: next.residence,
+        departureLocation: countryLabel(next.residence) || old.departureLocation || "",
+        stayType: next.stayType,
+        departureDate: next.departureDate,
+        returnDate: next.returnDate,
+        durationBucket: next.departureDate && next.returnDate ? "" : next.durationBucket,
+        duration,
+        passportType: next.passportType,
+        hasTransit: next.hasTransit,
+        transitCountries: next.hasTransit === "yes" ? next.transitCountries : [],
+        visitedRegions: next.regions.trim().slice(0, 200),
+      };
+      const { error: upErr } = await supabase.from("trips").update({
+        destination,
+        arrival_city: form.arrivalCity,
+        departure_location: form.departureLocation || null,
+        departure_date: next.departureDate || null,
+        return_date: next.returnDate || null,
+        duration: duration ? parseInt(duration, 10) : null,
+        form_data: form as never,
+      }).eq("id", tripId).eq("user_id", user.id);
+      if (upErr) throw upErr;
+      setTripData({ ...(tripData as TravelFormData), ...(form as TravelFormData) });
+      useActiveTrip.getState().setActiveTrip({ tripId, destination, arrivalCity: form.arrivalCity, departureDate: next.departureDate || null, returnDate: next.returnDate || null });
+      void qc.invalidateQueries({ queryKey: ["trips", user.id] });
+      toast.success(t("visa2.profile.saved"));
+      return true;
+    } catch (e) {
+      console.error("[visa] profile save failed", e);
+      toast.error(t("visa2.profile.saveError"));
+      return false;
+    } finally {
+      setSavingProfile(false);
+    }
+  }, [user, tripId, t, setTripData, tripData, qc]);
+
+  const runAnalysis = useCallback(async () => {
+    if (missing.length) { toast.error(t("visa2.analysis.completeFirst")); return; }
+    if (reached) { setShowUpgrade(true); return; }
+    setGenerating(true);
+    setError(null);
+    try {
+      const { data, error: invErr } = await supabase.functions.invoke("visa-info", {
         body: {
           destination: destinationName,
+          destinationCode: profile.destinationCode,
           nationality: nationalityName,
-          duration: tripData?.duration || "7",
-          travelerType: tripData?.travelerType || (tripData?.stayType === "internship" ? (isFr ? "stagiaire" : "intern") : tripData?.stayType ? (isFr ? "étudiant" : "student") : (isFr ? "touriste" : "tourist")),
-          residence: countryList.find((c) => c.code === tripData?.residence)?.name || "",
-          secondNationality: countryList.find((c) => c.code === tripData?.secondNationality)?.name || "",
-          stayPurpose: tripData?.tripTypes?.[0] || "",
-          locale: i18n.language.startsWith("fr") ? "fr" : "en",
+          nationalityCode: profile.nationality,
+          secondNationality: countryLabel(profile.secondNationality),
+          secondNationalityCode: profile.secondNationality,
+          residence: countryLabel(profile.residence),
+          stayPurpose: t(`prepQuiz.stay.${profile.stayType}.title`, { defaultValue: profile.stayType }),
+          durationDays: days,
+          departureDate: profile.departureDate,
+          passportType: profile.passportType === "other" ? "other (diplomatic/service/travel document)" : "ordinary",
+          transitCountries: profile.hasTransit === "yes" ? profile.transitCountries.map(countryLabel) : [],
+          regions: [profile.city, profile.regions].filter(Boolean).join(", "),
+          locale: lang,
         },
       });
-
-      await stepPromise;
-
-      if (error) {
-        const status = (error as { context?: { status?: number } })?.context?.status;
-        if (status === 401) {
-          toast.error(t("guideVisa.errAuth", { defaultValue: i18n.language.startsWith("fr") ? "Session expirée, reconnecte-toi." : "Session expired, please sign in again." }));
-          window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`);
-          return;
-        }
+      if (invErr) {
+        const status = (invErr as { context?: { status?: number } })?.context?.status;
         if (status === 402) { setShowUpgrade(true); return; }
-        throw new Error(await friendlyInvokeError(error));
+        if (status === 401) { window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`); return; }
+        throw new Error(await friendlyInvokeError(invErr));
       }
-      if (data?.error) throw new Error(data.error);
-
-      if (!data?.visa || !data?.security || !data?.health || !Array.isArray(data?.checklist)) {
-        throw new Error(t("guideVisa.errIncomplete"));
-      }
-
-      setAiResult(data);
-      setGenStep(getGenerationSteps().length);
-      await new Promise((r) => setTimeout(r, 400));
-      setHasGenerated(true);
-      setCheckedItems({});
+      const result = normalizeAnalysis(data);
+      if (!result) throw new Error(t("visa2.analysis.incomplete"));
+      consume();
+      const next: SavedVisaState = { profileKey: pKey, analysis: result, checked: carryChecked(saved?.checked ?? {}, result.checklist) };
+      saveVisaState(stateKey, next);
+      setSaved(next);
       track("guide_generated", { guide: "visa" });
-      toast.success(t("guideVisa.successToast"));
+      toast.success(t("visa2.analysis.done"));
     } catch (e) {
-      console.error("visa-info error:", e);
-      const msg = e instanceof Error ? e.message : t("guideVisa.errUnknown");
-      setAiError(msg);
-      toast.error(t("guideVisa.errToast"), { description: msg, action: { label: t("common.retry"), onClick: () => { void runGeneration(); } } });
+      const msg = e instanceof Error ? e.message : t("visa2.analysis.error");
+      setError(msg);
     } finally {
-      setIsGenerating(false);
+      setGenerating(false);
     }
-  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType, tripData?.stayType, tripData?.residence, tripData?.secondNationality, tripData?.tripTypes, isFr, t, i18n.language, reached, consume]);
+  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, stateKey]);
 
-  const handleRegenerate = useCallback(async () => {
-    toast.loading(t("guideVisa.regenLoading"), { id: "regen-visa" });
-    await runGeneration();
-    toast.dismiss("regen-visa");
-  }, [runGeneration, t]);
-
-  const toggleCheck = (item: string) => {
-    setCheckedItems((prev) => ({ ...prev, [item]: !prev[item] }));
+  const toggle = (id: string) => {
+    if (!saved) return;
+    const next = { ...saved, checked: { ...saved.checked, [id]: !saved.checked[id] } };
+    saveVisaState(stateKey, next);
+    setSaved(next);
   };
 
-  const checklist = aiResult?.checklist ?? [];
-  const totalChecklist = checklist.length;
-  const doneChecklist = checklist.filter((c) => checkedItems[c.item]).length;
+  const refreshOfficial = async () => {
+    const r = await official.refresh();
+    if (!r) return;
+    if (r.status === "unavailable") toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
+    else toast.success(r.changed ? t("visa2.cards.refreshChanged") : t("visa2.cards.refreshSame"));
+  };
 
-  // Dashboard summary, saved for the trip's destination only.
-  const tripCountryCode = useMemo(() => findCountry(contextDestination), [contextDestination]);
-  useEffect(() => {
-    if (!hasGenerated || !tripCountryCode || selectedDestination !== tripCountryCode) return;
-    saveModuleProgress("visa", contextDestination, { done: doneChecklist, total: totalChecklist });
-  }, [hasGenerated, tripCountryCode, selectedDestination, contextDestination, doneChecklist, totalChecklist]);
-
-  const secLevel = aiResult?.security?.level || "safe";
-  const securityLevelConfig = getSecurityLevelConfig();
-  const secConfig = securityLevelConfig[secLevel] || securityLevelConfig.safe;
+  const freeMovement = profile.destinationCode ? hasFreeMovement(profile.destinationCode, [profile.nationality, profile.secondNationality]) : false;
 
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
-      <QuotaBanner tool="visa" toolLabel="Visa & Préparatifs" />
-      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Visa & Préparatifs" />
+      <QuotaBanner tool="visa" toolLabel={t("visa2.toolName")} />
+      <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName={t("visa2.toolName")} />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-4xl space-y-6">
+      <main className="container mx-auto max-w-4xl space-y-6 px-4 py-6 pb-16 sm:px-6">
         <VisaDisclaimer />
 
-        {/* Hero */}
-        <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-10">
-          <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><ShieldCheck className="h-4 w-4" />{t("guideVisa.heroKicker")}</p>
-          <h1 className="max-w-2xl text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">{t("guideVisa.title")}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">{t("guideVisa.subtitle")}</p>
+        <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-8">
+          <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><ShieldCheck className="h-4 w-4" />{t("guideVisa.heroKicker")}</p>
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{destinationName ? t("visa2.titleFor", { destination: destinationName }) : t("guideVisa.title")}</h1>
+          <p className="mt-3 max-w-2xl text-base text-muted-foreground">{t("visa2.subtitle")}</p>
         </motion.header>
 
-        {/* Destination selector */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="rounded-2xl border border-border/70 bg-card/45 p-6"
-        >
-          <div className="mb-5"><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("guideVisa.contextKicker")}</p><h2 className="mt-1 text-xl font-bold text-foreground">{t("guideVisa.selectDestination")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("guideVisa.contextHelp")}</p></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-secondary flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5" />
-                {t("guideVisa.destinationLabel")}
-              </label>
-              <Select value={selectedDestination} onValueChange={setSelectedDestination}>
-                <SelectTrigger className="bg-muted border-border text-foreground">
-                  <SelectValue placeholder={t("guideVisa.destinationPlaceholder")} />
-                </SelectTrigger>
-                <SelectContent className="max-h-[300px]">
-                  <div className="px-2 py-1.5 sticky top-0 bg-popover z-10">
-                    <input
-                      type="text"
-                      placeholder={t("guideVisa.searchPlaceholder")}
-                      value={countrySearch}
-                      onChange={(e) => setCountrySearch(e.target.value)}
-                      className="w-full px-3 py-1.5 text-sm bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </div>
-                  <SelectItem value="none">{t("guideVisa.noneSelection")}</SelectItem>
-                  {filteredCountries.map((c) => (
-                    <SelectItem key={c.code} value={c.code}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                  {filteredCountries.length === 0 && (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">{t("guideVisa.noCountry")}</div>
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-secondary flex items-center gap-1.5">
-                <Flag className="w-3.5 h-3.5" />
-                {t("guideVisa.nationalityLabel")}
-              </label>
-              <Select value={selectedNationality} onValueChange={setSelectedNationality}>
-                <SelectTrigger className="bg-muted border-border text-foreground">
-                  <SelectValue placeholder={t("guideVisa.nationalityPlaceholder")} />
-                </SelectTrigger>
-                <SelectContent className="max-h-[300px]">
-                  <div className="px-2 py-1.5 sticky top-0 bg-popover z-10">
-                    <input
-                      type="text"
-                      placeholder={t("guideVisa.searchShort")}
-                      value={nationalitySearch}
-                      onChange={(e) => setNationalitySearch(e.target.value)}
-                      className="w-full px-3 py-1.5 text-sm bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </div>
-                  {filteredNationalities.map((c) => (
-                    <SelectItem key={c.code} value={c.code}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                  {filteredNationalities.length === 0 && (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">{t("guideVisa.noCountry")}</div>
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={runGeneration}
-            disabled={isGenerating || !hasValidDestination}
-            className="w-full mt-5 gradient-button text-primary-foreground font-bold py-3 rounded-xl transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isGenerating ? t("guideVisa.analyzing") : t("guideVisa.analyze")}
-          </motion.button>
-        </motion.div>
+        <VisaProfileCard profile={profile} saving={savingProfile} onSave={saveProfile} />
 
-        {/* Generation animation */}
-        <AnimatePresence>
-          {isGenerating && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-card rounded-2xl p-8 text-center space-y-6"
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-secondary to-primary flex items-center justify-center"
-              >
-                <Sparkles className="w-8 h-8 text-primary-foreground" />
-              </motion.div>
-
-              <div className="space-y-3 max-w-md mx-auto">
-                {getGenerationSteps().map((step, i) => {
-                  const isActive = i === genStep;
-                  const isDone = i < genStep;
-                  const Icon = step.icon;
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: isDone || isActive ? 1 : 0.3, x: 0 }}
-                      transition={{ delay: i * 0.08 }}
-                      className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
-                        isActive ? "bg-secondary/10 border border-secondary/30" : isDone ? "bg-muted/30" : ""
-                      }`}
-                    >
-                      <Icon className={`w-5 h-5 shrink-0 ${isDone ? "text-green-400" : isActive ? "text-secondary" : "text-muted-foreground"}`} />
-                      <span className={`text-sm font-medium ${isActive ? "text-foreground" : isDone ? "text-muted-foreground" : "text-muted-foreground/70"}`}>
-                        {step.label}
-                      </span>
-                      {isDone && <CheckCircle className="w-4 h-4 text-green-400 ml-auto" />}
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              <div className="h-2 rounded-full bg-muted/50 overflow-hidden max-w-xs mx-auto">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-secondary to-primary"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${((genStep + 1) / getGenerationSteps().length) * 100}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-
-              <RotatingStatusMessage
-                messages={(t("guideVisa.rotatingSteps", { returnObjects: true }) as string[])}
-                className="text-xs font-medium text-secondary"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Error state */}
-        {aiError && !isGenerating && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass-card rounded-2xl p-6 border border-destructive/20"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <AlertCircle className="w-5 h-5 text-destructive" />
-              <h3 className="text-base font-bold text-foreground">{i18n.t("ui2.auto.k8")}</h3>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">{aiError}</p>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={runGeneration}
-              className="px-4 py-2 rounded-xl gradient-button text-primary-foreground text-sm font-semibold"
-            >
-              {i18n.t("ui2.auto2.m9")}
-            </motion.button>
-          </motion.div>
+        {profile.destinationCode && (
+          <VisaSummaryCards
+            analysis={analysis}
+            official={official.data}
+            officialLoading={official.loading}
+            refreshing={official.refreshing}
+            onRefresh={refreshOfficial}
+            days={days}
+            isFrenchNational={isFrench}
+          />
         )}
 
-        {/* Skeleton loading state (after generation starts but before results) */}
-        {isGenerating && !aiResult && (
-          <div className="space-y-6">
-            <SectionSkeleton />
-            <SectionSkeleton />
-            <SectionSkeleton />
-          </div>
-        )}
-
-        {/* Content after generation */}
-        <AnimatePresence>
-          {hasGenerated && !isGenerating && aiResult && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 pb-12">
-
-              {/* Visa */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass-card rounded-2xl p-6 shadow-md"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-secondary to-primary flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground">Formalités Visa — {destinationName}</h3>
-                    <p className="text-xs text-muted-foreground">Nationalité : {nationalityName}</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-bold text-foreground">
-                          {aiResult.visa?.type || "Information non disponible"}
-                        </span>
-                      </div>
-                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${aiResult.visa?.required ? "bg-destructive/20 text-destructive" : "bg-green-500/20 text-green-400"}`}>
-                        {aiResult.visa?.required ? "Visa requis" : "Sans visa"}
-                      </span>
-                    </div>
-                    <div className="mt-3 space-y-2.5">
-                      {toParagraphs(aiResult.visa?.details || "—").map((para, i) => (
-                        <p key={i} className="text-sm text-muted-foreground leading-relaxed">{para}</p>
-                      ))}
-                    </div>
-                    <div className="flex gap-4 mt-3 text-xs text-muted-foreground">
-                      <span>⏱ Durée max : {aiResult.visa?.duration || "—"}</span>
-                      {aiResult.visa?.cost && <span>💰 Coût : {aiResult.visa.cost}</span>}
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground italic border-t border-border/40 pt-2 mt-2">
-                    {t("guideVisa.inlineDisclaimer")}
+        {/* Analysis call to action */}
+        {profile.destinationCode && (
+          <section aria-live="polite" className="rounded-2xl border border-primary/25 bg-primary/5 p-5">
+            {generating ? (
+              <div className="flex flex-col items-center gap-3 py-2 text-center">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" aria-hidden />
+                <RotatingStatusMessage messages={t("guideVisa.rotatingSteps", { returnObjects: true }) as string[]} className="text-sm font-medium text-primary" />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-semibold">
+                    {!analysis ? t("visa2.analysis.ctaTitle") : outdated ? t("visa2.analysis.outdated") : t("visa2.analysis.upToDate")}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {missing.length ? t("visa2.analysis.completeFirst") : freeMovement ? t("visa2.analysis.freeMovementHint") : t("visa2.analysis.costHint")}
                   </p>
                 </div>
-              </motion.div>
-
-
-              {/* Dynamic Checklist */}
-              {totalChecklist > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="glass-card rounded-2xl p-6 shadow-md"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl gradient-button flex items-center justify-center">
-                        <ListChecks className="w-5 h-5 text-primary-foreground" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-foreground">Checklist Dynamique</h3>
-                        <p className="text-xs text-muted-foreground">{doneChecklist}/{totalChecklist} éléments validés</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-20 h-2 rounded-full bg-muted/50 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
-                          style={{ width: `${totalChecklist > 0 ? (doneChecklist / totalChecklist) * 100 : 0}%` }}
-                        />
-                      </div>
-                      <span className="text-xs font-bold text-primary">
-                        {totalChecklist > 0 ? Math.round((doneChecklist / totalChecklist) * 100) : 0}%
-                      </span>
-                    </div>
-                  </div>
-
-                  {["document", "santé", "pratique", "finance"].map((cat) => {
-                    const items = checklist.filter((c) => c.category === cat);
-                    if (items.length === 0) return null;
-                    const catLabels: Record<string, string> = {
-                      document: "📄 Documents",
-                      santé: "🏥 Santé",
-                      pratique: "🎒 Pratique",
-                      finance: "💳 Finance",
-                    };
-                    return (
-                      <div key={cat} className="mb-4">
-                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                          {catLabels[cat] || cat}
-                        </p>
-                        <div className="space-y-1.5">
-                          {items.map((item, i) => {
-                            const checked = !!checkedItems[item.item];
-                            const pConfig = priorityConfig[item.priority] || priorityConfig.optionnel;
-                            return (
-                              <motion.button
-                                key={`${cat}-${i}`}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.03 }}
-                                onClick={() => toggleCheck(item.item)}
-                                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left ${
-                                  checked
-                                    ? "bg-primary/10 border border-primary/20"
-                                    : "bg-muted/30 hover:bg-muted/50 border border-transparent"
-                                }`}
-                              >
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
-                                  checked ? "bg-primary border-primary" : "border-muted-foreground/40"
-                                }`}>
-                                  {checked && <CheckCircle className="w-3 h-3 text-primary-foreground" />}
-                                </div>
-                                <span className={`text-sm flex-1 ${checked ? "text-foreground line-through opacity-70" : "text-foreground"}`}>
-                                  {item.item}
-                                </span>
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${pConfig.bg} ${pConfig.color}`}>
-                                  {item.priority}
-                                </span>
-                              </motion.button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </motion.div>
-              )}
-
-              {/* Emergency contacts */}
-              {aiResult.emergency_contacts && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="glass-card rounded-2xl p-6 shadow-md"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <Phone className="w-5 h-5 text-primary" />
-                    <h3 className="text-base font-bold text-foreground">{t("guideVisa.emergencyContacts")}</h3>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-xl bg-muted/30">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">🏛 Ambassade / Consulat</p>
-                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{aiResult.emergency_contacts.embassy}</p>
-                    </div>
-                    <div className="p-4 rounded-xl bg-muted/30">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">🚨 Urgences locales</p>
-                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{aiResult.emergency_contacts.local_emergency}</p>
-                    </div>
-                    {aiResult.emergency_contacts.tourist_police && (
-                      <div className="p-3 rounded-xl bg-muted/30">
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">👮 Police touristique</p>
-                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{aiResult.emergency_contacts.tourist_police}</p>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* General documents */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                className="glass-card rounded-2xl p-6 shadow-md"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <FileText className="w-5 h-5 text-secondary" />
-                  <h3 className="text-base font-bold text-foreground">{t("ui2.GuideVisa.generalDocs", "Documents généraux à préparer")}</h3>
-                </div>
-                <ul className="space-y-2">
-                  {getGeneralDocuments().map((doc, i) => (
-                    <li key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30">
-                      <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <p className="text-sm text-foreground">{doc}</p>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-
-              {/* Alerts */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="glass-card rounded-2xl p-6 shadow-md"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <AlertTriangle className="w-5 h-5 text-destructive" />
-                  <h3 className="text-base font-bold text-foreground">{t("guideVisa.alertsTitle")}</h3>
-                </div>
-                <div className="space-y-3">
-                  {getStaticAlerts().map((alert, i) => (
-                    <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-destructive/5 border border-destructive/10">
-                      <alert.icon className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
-                      <p className="text-sm text-foreground">{alert.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Tips */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="glass-card rounded-2xl p-6 shadow-md"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Lightbulb className="w-5 h-5 text-primary" />
-                  <h3 className="text-base font-bold text-foreground">{t("guideVisa.tipsTitle")}</h3>
-                </div>
-                <div className="space-y-3">
-                  {getStaticTips().map((tip) => (
-                    <div key={tip.num} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
-                      <span className="flex items-center justify-center w-7 h-7 rounded-full gradient-button text-xs font-bold text-primary-foreground shrink-0">
-                        {tip.num}
-                      </span>
-                      <p className="text-sm leading-relaxed text-foreground">{tip.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {hasGenerated && !isGenerating && aiResult && (
-          <section className="space-y-6 border-t border-border/60 pt-8" aria-labelledby="visa-resources-title">
-            <div><p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("guideVisa.resourcesKicker")}</p><h2 id="visa-resources-title" className="mt-1 text-2xl font-bold">{t("guideVisa.resourcesTitle")}</h2><p className="mt-1 text-sm text-muted-foreground">{t("guideVisa.resourcesHelp")}</p></div>
-            <VisaProcessStepper destination={destinationName} nationality={nationalityName} onAskPip={askPip} />
-            <VaccinesGuide destination={destinationName} />
-            <SafetyGuide destination={destinationName} />
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex flex-col sm:flex-row gap-3 justify-center w-full">
-                <button
-                  type="button"
-                  onClick={handleRegenerate}
-                  disabled={isGenerating}
-                  className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-semibold transition-colors disabled:opacity-50"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  {t("guideVisa.actions.regenerate")}
-                </button>
-                <Link
-                  to="/guide-budget"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-primary/40 text-foreground font-semibold hover:bg-primary/10 transition-colors"
-                >
-                  {t("guideVisa.actions.continuePrep")} →
-                </Link>
+                {(!analysis || outdated) ? (
+                  <button type="button" onClick={runAnalysis} disabled={missing.length > 0} className="gradient-button inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50">
+                    <Sparkles className="h-4 w-4" aria-hidden />{analysis ? t("visa2.analysis.rerun") : t("visa2.analysis.run")}
+                  </button>
+                ) : (
+                  <button type="button" onClick={runAnalysis} className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+                    <RotateCcw className="h-4 w-4" aria-hidden />{t("visa2.analysis.rerun")}
+                  </button>
+                )}
               </div>
-              <Link
-                to="/guide-valise"
-                className="gradient-button inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
-              >
-                {t("guideVisa.actions.toValise")} →
-              </Link>
-            </div>
+            )}
+            {error && !generating && (
+              <div role="alert" className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm">
+                <AlertCircle className="h-4 w-4 text-destructive" aria-hidden />
+                <span className="flex-1">{t("visa2.analysis.error")} {error}</span>
+                <button type="button" onClick={runAnalysis} className="font-semibold text-primary underline">{t("common.retry")}</button>
+              </div>
+            )}
           </section>
         )}
-      </div>
+
+        {analysis && analysis.checklist.length > 0 && <VisaChecklist items={analysis.checklist} checked={checked} onToggle={toggle} />}
+
+        {profile.destinationCode && <VisaEmergency official={official.data} analysis={analysis} />}
+
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <button type="button" onClick={() => setChatOpenSignal((n) => n + 1)} className="inline-flex items-center gap-2 rounded-xl bg-primary/10 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/20">
+            <MessageCircle className="h-4 w-4" aria-hidden />{t("guideVisa.stepper.reassurance")}
+          </button>
+          <Link to="/guide-budget" className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-5 py-3 text-sm font-semibold hover:bg-primary/10">{t("guideVisa.actions.continuePrep")} →</Link>
+        </div>
+      </main>
       <QuickJump />
-      <VisaPipChat
-        destination={destinationName}
-        nationality={nationalityName}
-        openSignal={chatOpenSignal}
-      />
+      <VisaPipChat destination={destinationName || t("visa2.yourDestination")} nationality={nationalityName} openSignal={chatOpenSignal} />
     </div>
   );
 };
