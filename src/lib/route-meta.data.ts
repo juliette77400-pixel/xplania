@@ -7,12 +7,12 @@ export type Meta = { fr: [string, string]; en: [string, string] };
 // Unique title (<60 chars) + description (50–160 chars) per public route.
 export const META: Record<string, Meta> = {
   "/": {
-    fr: ["Xplania — Prépare ton voyage à l'étranger sans soucis", "Organise ton voyage à l'étranger en amont : budget, visa, valise, codes culturels et logement réunis au même endroit. Gratuit pendant la bêta."],
-    en: ["Xplania — Prepare your trip abroad without the hassle", "Organise your trip abroad ahead of time: budget, visa, packing, cultural codes and housing in one place. Free during the beta."],
+    fr: ["Xplania | Prépare ton Erasmus ou ton stage à l'étranger", "Prépare ton Erasmus ou ton stage à l'étranger avec Xplania : budget, visa, logement, valise et culture locale réunis au même endroit."],
+    en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad with Xplania: budget, visa, housing, packing and local culture in one place."],
   },
   "/home": {
-    fr: ["Xplania — Prépare ton départ à l'étranger", "Budget, visa, valise, culture et logement : les 5 préparatifs essentiels avant ton départ, réunis au même endroit."],
-    en: ["Xplania — Prepare to go abroad", "Budget, visa, packing, culture and housing: the 5 essential preparations before you leave, in one place."],
+    fr: ["Xplania | Prépare ton Erasmus ou ton stage à l'étranger", "Prépare ton Erasmus ou ton stage à l'étranger avec Xplania : budget, visa, logement, valise et culture locale réunis au même endroit."],
+    en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad with Xplania: budget, visa, housing, packing and local culture in one place."],
   },
   "/dashboard": {
     fr: ["Créer mon voyage — Xplania", "Renseigne ta destination, tes dates et ton type de séjour pour préparer ton départ : budget, visa, valise, culture et logement."],
