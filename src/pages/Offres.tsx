@@ -202,7 +202,7 @@ const PaidPlans = () => {
             <span className="text-sm text-muted-foreground"> {t("offres.forever")}</span>
           </div>
           <ul className="space-y-3 mb-5">
-            {[t("offres.freeFeat1"), t("offres.freeFeat2"), t("offres.freeFeat3")].map((f) => (
+            {[t("offres.freeFeat1"), t("offres.freeFeat2"), t("offres.freeFeat4"), t("offres.freeFeat3")].map((f) => (
               <li key={f} className="flex items-start gap-3 text-sm text-foreground">
                 <span className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />

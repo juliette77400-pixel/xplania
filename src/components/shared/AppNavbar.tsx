@@ -5,7 +5,7 @@ import { Globe2,
   Plane, Home, Compass, Activity, BookOpen, Luggage,
   Wallet, FileCheck, Smile, Map, Trophy, Crown, Info,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
-  Dna,
+  Dna, BedDouble,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -39,6 +39,7 @@ const PRIMARY_ALL: NavItem[] = [
   { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
   { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
   { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
+  { to: "/guide-logement", labelKey: "appNav.housing", icon: BedDouble },
   { to: "/discover", labelKey: "appNav.explorePhase", icon: Compass },
   { to: "/suivi", labelKey: "appNav.travelPhase", icon: Activity },
   { to: "/carnets", labelKey: "appNav.relive", icon: BookOpen },
@@ -54,6 +55,7 @@ const GROUPS_ALL: NavGroup[] = [
     { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
     { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
     { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
+    { to: "/guide-logement", labelKey: "appNav.housing", icon: BedDouble },
   ] },
   { labelKey: "appNav.groupExplore", items: [
     { to: "/mood", labelKey: "appNav.mood", icon: Smile },

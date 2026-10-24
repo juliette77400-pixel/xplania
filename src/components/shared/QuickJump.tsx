@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Globe2,
+import { Globe2, BedDouble,
   Compass, Heart, Map, Activity, Briefcase, BookOpen, Wallet, FileText, Sparkles, Plane,
 } from "lucide-react";
 import { useActiveTrip } from "@/stores/useActiveTrip";
@@ -27,6 +27,7 @@ const ALL_ITEMS: JumpItem[] = [
   { to: "/guide-budget", matchPrefix: "/guide-budget", labelKey: "appNav.budget",   emoji: "💰", icon: Wallet,    color: "from-yellow-500/20 to-amber-500/20",  descKey: "quickJump.descBudget" },
   { to: "/guide-visa",   matchPrefix: "/guide-visa",   labelKey: "appNav.visa",     emoji: "📋", icon: FileText,  color: "from-sky-500/20 to-cyan-500/20",      descKey: "quickJump.descVisa" },
   { to: "/guide-culture", matchPrefix: "/guide-culture", labelKey: "appNav.culture", emoji: "🌏", icon: Globe2, color: "from-teal-500/20 to-cyan-500/20", descKey: "quickJump.descCulture" },
+  { to: "/guide-logement", matchPrefix: "/guide-logement", labelKey: "appNav.housing", emoji: "🏠", icon: BedDouble, color: "from-violet-500/20 to-cyan-500/20", descKey: "quickJump.descHousing" },
 ];
 
 // Preparation tools first; hidden modules (feature flags) are dropped.

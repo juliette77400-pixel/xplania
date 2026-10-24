@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Wallet, FileText, Briefcase, ArrowLeft, Globe2 } from "lucide-react";
+import { Wallet, FileText, Briefcase, ArrowLeft, Globe2, BedDouble } from "lucide-react";
 import { isPathEnabled } from "@/config/featureFlags";
 
 const ModuleNavbar = () => {
@@ -13,6 +13,7 @@ const ModuleNavbar = () => {
     { path: "/guide-visa", label: t("moduleNav.visa"), icon: FileText, emoji: "📋" },
     { path: "/guide-valise", label: t("moduleNav.valise"), icon: Briefcase, emoji: "🧳" },
     { path: "/guide-culture", label: t("appNav.culture"), icon: Globe2, emoji: "🌏" },
+    { path: "/guide-logement", label: t("appNav.housing"), icon: BedDouble, emoji: "🏠" },
   ].filter((m) => isPathEnabled(m.path));
 
   return (

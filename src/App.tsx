@@ -39,6 +39,7 @@ const GuideBudget = lazy(() => import("./pages/GuideBudget.tsx"));
 const GuideValise = lazy(() => import("./pages/GuideValise.tsx"));
 const GuideVisa = lazy(() => import("./pages/GuideVisa.tsx"));
 const GuideCulture = lazy(() => import("./pages/GuideCulture.tsx"));
+const GuideLogement = lazy(() => import("./pages/GuideLogement.tsx"));
 const PrepQuiz = lazy(() => import("./pages/PrepQuiz.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Offres = lazy(() => import("./pages/Offres.tsx"));
@@ -145,6 +146,7 @@ const App = () => (
             <Route path="/guide-valise" element={gate("ENABLE_PACKING_LIST", <ProtectedRoute><GuideValise /></ProtectedRoute>)} />
             <Route path="/guide-visa" element={gate("ENABLE_VISA_GUIDE", <GuideVisa />)} />
             <Route path="/guide-culture" element={gate("ENABLE_CULTURAL_GUIDE", <GuideCulture />)} />
+            <Route path="/guide-logement" element={gate("ENABLE_HOUSING_ASSISTANT", <ProtectedRoute><GuideLogement /></ProtectedRoute>)} />
             <Route path="/offres" element={<Offres />} />
             <Route path="/carnets" element={gate("ENABLE_TRAVEL_JOURNAL", <ProtectedRoute><Carnets /></ProtectedRoute>)} />
             <Route path="/carnet/:tripId" element={gate("ENABLE_TRAVEL_JOURNAL", <ProtectedRoute><Carnet /></ProtectedRoute>)} />
