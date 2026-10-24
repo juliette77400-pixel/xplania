@@ -7136,5 +7136,89 @@
       "local": "Urgences locales",
       "checkOfficial": "Vérifie ces numéros sur le site de l'ambassade avant ton départ."
     }
+  },
+  "budget2": {
+    "kpi": {
+      "title": "Indicateurs du budget",
+      "budget": "Ton budget",
+      "budgetHint": "Indiqué dans ton questionnaire",
+      "notGiven": "Non renseigné",
+      "estimated": "Total estimé",
+      "estimatedHint": "Somme de tes catégories",
+      "paid": "Déjà payé",
+      "paidHint": "Paiements que tu as notés",
+      "toPay": "Reste à payer",
+      "toPayHint": "Estimé moins déjà payé",
+      "margin": "Marge",
+      "marginOk": "Ce qu'il te reste si l'estimation est juste",
+      "marginOver": "Ton estimation dépasse ton budget",
+      "marginNoBudget": "Indique ton budget pour la calculer"
+    },
+    "split": {
+      "oneOff": "Avant le départ (une fois)",
+      "oneOffHint": "Billets, assurance, frais",
+      "monthly": "Chaque mois sur place",
+      "monthlyHint": "Logement, nourriture, transports… sur {{months}} mois",
+      "shortStay": "Séjour de moins d'un mois",
+      "total": "Total du séjour",
+      "totalHint": "Estimation, à ajuster"
+    },
+    "reco": {
+      "title": "3 actions pour ton budget",
+      "overBudget": {
+        "title": "Il manque {{amount}} € à ton budget",
+        "body": "Ton plus gros poste est « {{category}} » : réduire de {{cut}} € t'aiderait déjà. Sinon, augmente ton budget."
+      },
+      "biggestShare": {
+        "title": "« {{category}} » pèse {{share}} % de ton budget",
+        "body": "C'est ton poste principal : compare plusieurs offres avant de t'engager."
+      },
+      "reserve": {
+        "title": "Prévois au moins {{target}} € d'imprévus",
+        "body": "Tu as {{current}} € pour l'instant. Une réserve d'environ 5 % couvre une caution, un trajet ou un souci de santé."
+      },
+      "trackPayments": {
+        "title": "Note tes premiers paiements",
+        "body": "Départ dans {{days}} jours : ajoute billets, caution ou assurance déjà réglés pour suivre ce qu'il reste."
+      },
+      "onTrack": {
+        "title": "Ton budget tient",
+        "body": "Il te reste {{amount}} € de marge selon ton estimation."
+      }
+    },
+    "sim": {
+      "title": "Simulateur",
+      "help": "Teste d'autres montants. Rien n'est modifié tant que tu ne confirmes pas.",
+      "accommodationMonthly": "Logement par mois",
+      "foodMonthly": "Nourriture par mois",
+      "reservePct": "Réserve d'imprévus",
+      "perMonth": "€/mois",
+      "newTotal": "Nouveau total :",
+      "over": "Dépasse ton budget de {{amount}} €",
+      "left": "Il resterait {{amount}} € de marge",
+      "reset": "Revenir à mes montants",
+      "apply": "Appliquer à mon budget",
+      "confirmTitle": "Appliquer la simulation ?",
+      "confirmDesc": "Ces montants vont remplacer les tiens. Tes paiements notés ne changent pas.",
+      "applied": "Simulation appliquée à ton budget"
+    },
+    "confirm": {
+      "noChange": "Aucun montant ne change.",
+      "recalcTitle": "Recalculer l'estimation ?",
+      "recalcDesc": "Xplania propose une nouvelle estimation à partir de ton séjour. Voici ce qui changerait ; tes paiements notés sont gardés.",
+      "recalcCta": "Remplacer mes montants",
+      "scenarioTitle": "Appliquer ce scénario ?",
+      "scenarioDesc": "Les montants du scénario (estimation IA indicative) vont remplacer les tiens."
+    },
+    "context": {
+      "title": "Ton séjour a changé",
+      "body": "Durée, dates ou budget ont été modifiés. Tes montants actuels sont gardés tant que tu ne choisis pas.",
+      "keep": "Garder mes montants",
+      "recalc": "Voir une nouvelle estimation"
+    },
+    "charts": {
+      "split": "Répartition de l'estimation",
+      "noPayments": "Aucun paiement noté pour l'instant. Ajoute-en un pour voir tes dépenses jour par jour."
+    }
   }
 }

@@ -7136,5 +7136,89 @@
       "local": "Local emergencies",
       "checkOfficial": "Check these numbers on the embassy website before you leave."
     }
+  },
+  "budget2": {
+    "kpi": {
+      "title": "Budget indicators",
+      "budget": "Your budget",
+      "budgetHint": "From your questionnaire",
+      "notGiven": "Not given",
+      "estimated": "Estimated total",
+      "estimatedHint": "Sum of your categories",
+      "paid": "Already paid",
+      "paidHint": "Payments you recorded",
+      "toPay": "Left to pay",
+      "toPayHint": "Estimate minus paid",
+      "margin": "Margin",
+      "marginOk": "What's left if the estimate is right",
+      "marginOver": "Your estimate is over your budget",
+      "marginNoBudget": "Add your budget to compute it"
+    },
+    "split": {
+      "oneOff": "Before leaving (one-off)",
+      "oneOffHint": "Tickets, insurance, fees",
+      "monthly": "Each month there",
+      "monthlyHint": "Housing, food, transport… over {{months}} months",
+      "shortStay": "Stay shorter than a month",
+      "total": "Whole stay",
+      "totalHint": "Estimate, to adjust"
+    },
+    "reco": {
+      "title": "3 actions for your budget",
+      "overBudget": {
+        "title": "Your budget is short by {{amount}} €",
+        "body": "Your biggest cost is \"{{category}}\": cutting {{cut}} € would already help. Otherwise, raise your budget."
+      },
+      "biggestShare": {
+        "title": "\"{{category}}\" is {{share}}% of your budget",
+        "body": "It's your main cost: compare several offers before committing."
+      },
+      "reserve": {
+        "title": "Keep at least {{target}} € for surprises",
+        "body": "You have {{current}} € for now. A reserve of about 5% covers a deposit, a trip or a health issue."
+      },
+      "trackPayments": {
+        "title": "Record your first payments",
+        "body": "Leaving in {{days}} days: add tickets, deposit or insurance already paid to follow what's left."
+      },
+      "onTrack": {
+        "title": "Your budget holds",
+        "body": "You have {{amount}} € of margin according to your estimate."
+      }
+    },
+    "sim": {
+      "title": "Simulator",
+      "help": "Try other amounts. Nothing changes until you confirm.",
+      "accommodationMonthly": "Housing per month",
+      "foodMonthly": "Food per month",
+      "reservePct": "Safety reserve",
+      "perMonth": "€/month",
+      "newTotal": "New total:",
+      "over": "Over your budget by {{amount}} €",
+      "left": "{{amount}} € of margin would be left",
+      "reset": "Back to my amounts",
+      "apply": "Apply to my budget",
+      "confirmTitle": "Apply the simulation?",
+      "confirmDesc": "These amounts will replace yours. Your recorded payments stay the same.",
+      "applied": "Simulation applied to your budget"
+    },
+    "confirm": {
+      "noChange": "No amount changes.",
+      "recalcTitle": "Recalculate the estimate?",
+      "recalcDesc": "Xplania suggests a new estimate from your stay. Here is what would change; your recorded payments are kept.",
+      "recalcCta": "Replace my amounts",
+      "scenarioTitle": "Apply this scenario?",
+      "scenarioDesc": "The scenario amounts (indicative AI estimate) will replace yours."
+    },
+    "context": {
+      "title": "Your stay changed",
+      "body": "Length, dates or budget changed. Your current amounts stay until you choose.",
+      "keep": "Keep my amounts",
+      "recalc": "See a new estimate"
+    },
+    "charts": {
+      "split": "Estimate breakdown",
+      "noPayments": "No payment recorded yet. Add one to see your spending day by day."
+    }
   }
 }
