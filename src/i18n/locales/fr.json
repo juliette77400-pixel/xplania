@@ -89,7 +89,7 @@
     "en": "English"
   },
   "homePromises": {
-    "subtitle": "Budget, visa, valise, culture : les 4 préparatifs essentiels réunis au même endroit, avant le départ."
+    "subtitle": "Budget, visa, valise, culture, logement : les 5 préparatifs essentiels réunis au même endroit, avant le départ."
   },
   "navbar": {
     "features": "Fonctionnalités",
@@ -140,7 +140,7 @@
   },
   "about": {
     "metaTitle": "À propos — Xplania, préparer son départ sans soucis",
-    "metaDescription": "Xplania réunit la préparation d'un séjour à l'étranger : budget, visa, valise et codes culturels. L'histoire et la vision derrière la plateforme.",
+    "metaDescription": "Xplania réunit la préparation d'un séjour à l'étranger : budget, visa, valise, codes culturels et logement. L'histoire et la vision derrière la plateforme.",
     "badge": "Notre histoire",
     "heroTitle": "Préparer son départ, enfin simplement. 🌍",
     "heroSubtitle": "On passe des heures à préparer un séjour à l'étranger, entre dix sites différents. J'en avais assez. Alors j'ai construit Xplania.",
@@ -148,7 +148,7 @@
       "tag": "Le moment déclencheur",
       "body1": "Avant un départ aux Îles Canaries, je me suis retrouvée avec 9 onglets ouverts : visa, budget, valise, météo, codes culturels, documents, et un groupe WhatsApp qui partait dans tous les sens. J'ai passé plus de temps à préparer qu'à partir.",
       "body2": "Ce jour-là, j'ai compris que le problème n'était pas moi : c'était une préparation éparpillée, sans outil qui réunisse l'essentiel.",
-      "body3": "Xplania, c'est la réponse à cette frustration : budget, visa, valise et culture, au même endroit.",
+      "body3": "Xplania, c'est la réponse à cette frustration : budget, visa, valise, culture et logement, au même endroit.",
       "quote": "« Le voyage devrait commencer quand tu poses ta valise, pas quand tu la prépares. »",
       "quoteAuthor": "— Juliette, fondatrice"
     },
@@ -178,14 +178,14 @@
         {
           "year": "2026+",
           "title": "La suite",
-          "desc": "Une bêta étudiante centrée sur la préparation du départ : budget, visa, valise et culture."
+          "desc": "Une bêta étudiante centrée sur la préparation du départ : budget, visa, valise, culture et logement."
         }
       ]
     },
     "value": {
       "tag": "Proposition de valeur",
       "title": "Une seule plateforme pour préparer ton départ ✈️",
-      "body": "Xplania réunit les quatre préparatifs essentiels d'un séjour à l'étranger — budget, visa, valise et codes culturels — autour d'un même voyage."
+      "body": "Xplania réunit les cinq préparatifs essentiels d'un séjour à l'étranger — budget, visa, valise, codes culturels et logement — autour d'un même voyage."
     },
     "experience": {
       "title": "Comment ça marche",
@@ -196,8 +196,8 @@
           "desc": "Destination, dates, nationalité, budget et type de séjour : c'est tout."
         },
         "s2": {
-          "title": "Prépare avec les 4 outils",
-          "desc": "Budget, visa, valise et guide culturel s'adaptent à ta destination."
+          "title": "Prépare avec les 5 outils",
+          "desc": "Budget, visa, valise, guide culturel et logement s'adaptent à ta destination."
         },
         "s3": {
           "title": "Pars serein ✅",
@@ -415,9 +415,9 @@
     "titlePart2": "bêta Xplania",
     "subtitle": "Aide-nous à construire l'outil qui simplifie la préparation d'un départ à l'étranger.",
     "feedbackTitle": "Feedback direct",
-    "feedbackDesc": "Ton retour améliore directement les 4 outils de préparation. Chaque suggestion compte.",
+    "feedbackDesc": "Ton retour améliore directement les 5 outils de préparation. Chaque suggestion compte.",
     "earlyTitle": "Accès gratuit",
-    "earlyDesc": "Pendant la bêta, Budget, Visa, Valise et Guide culturel sont gratuits, sans carte bancaire.",
+    "earlyDesc": "Pendant la bêta, Budget, Visa, Valise, Guide culturel et Logement sont gratuits, sans carte bancaire.",
     "communityTitle": "Bêta ESTICE",
     "communityDesc": "Tu fais partie des premiers étudiants à tester Xplania et à façonner la suite.",
     "shareTitle": "Partage ton expérience",
@@ -890,7 +890,7 @@
     "errAuth": "Connecte-toi pour générer tes formalités."
   },
   "footer": {
-    "tagline": "Organise ton voyage à l'étranger en amont, sans soucis : budget, visa, valise et culture réunis au même endroit.",
+    "tagline": "Organise ton voyage à l'étranger en amont, sans soucis : budget, visa, valise, culture et logement réunis au même endroit.",
     "version": "Version 0.1 • Bêta ESTICE",
     "featuresTitle": "Fonctionnalités",
     "contactTitle": "Infos & contacts",
@@ -986,7 +986,7 @@
         },
         {
           "heading": "Description du service",
-          "body": "Xplania est une plateforme de préparation de voyage propulsée par IA. Pendant la bêta, elle propose quatre outils pour organiser un départ à l'étranger : un guide budget, un guide visa et formalités, une liste de valise intelligente et un guide culturel. Les fonctionnalités peuvent évoluer librement pendant la bêta."
+          "body": "Xplania est une plateforme de préparation de voyage propulsée par IA. Pendant la bêta, elle propose cinq outils pour organiser un départ à l'étranger : un guide budget, un guide visa et formalités, une liste de valise intelligente, un guide culturel et un assistant logement (qui n'utilise pas l'IA). Les fonctionnalités peuvent évoluer librement pendant la bêta."
         },
         {
           "heading": "Programme bêta",
@@ -1068,8 +1068,8 @@
     "stepLabel": "Étape {{n}} / 3",
     "step1Title": "Commence par ton voyage",
     "step1Desc": "Indique ta destination, tes dates, ta nationalité et ton type de séjour. C'est tout ce dont les outils ont besoin.",
-    "step2Title": "Quatre outils, un même voyage",
-    "step2Desc": "Budget, visa, valise et guide culturel utilisent les mêmes infos : tu ne les ressaisis jamais.",
+    "step2Title": "Cinq outils, un même voyage",
+    "step2Desc": "Budget, visa, valise, guide culturel et logement utilisent les mêmes infos : tu ne les ressaisis jamais.",
     "step3Title": "Avance à ton rythme",
     "step3Desc": "Ton tableau de bord suit ta progression dans chaque outil, jusqu'au jour du départ.",
     "startCta": "Préparer mon départ",
@@ -1313,13 +1313,13 @@
     "back": "Retour à l'accueil",
     "tag": "Offres Xplania",
     "title": "Choisis la formule qui te correspond",
-    "subtitle": "Teste gratuitement les 4 outils de préparation, puis choisis ton pack.",
+    "subtitle": "Teste gratuitement les 5 outils de préparation, puis choisis ton pack.",
     "free": "Gratuit",
     "freeTagline": "Pour tester tous les outils de préparation",
     "current": "Actuel",
     "forever": "/ pour toujours",
     "freeFeat1": "10 générations gratuites par mois et par outil pour tester l'IA Xplania",
-    "freeFeat2": "Valable sur les 4 outils : Budget, Visa, Valise et Guide interculturel",
+    "freeFeat2": "Valable sur les outils avec IA : Budget, Visa, Valise et Guide interculturel",
     "freeFeat3": "Tableau de bord avec ta progression dans chaque outil",
     "generationsUsed": "{{used}} / {{total}} générations utilisées",
     "remainingCount": "{{n}} restante(s)",
@@ -2774,7 +2774,7 @@
         "culturalTip": "Dans certains pays, la carte de visite se remet à deux mains."
       }
     },
-    "discoverFeatures": "Voir mes 4 outils de préparation",
+    "discoverFeatures": "Voir mes 5 outils de préparation",
     "missing": {
       "title": "Ce qui manque peut-être",
       "subtitle": "L'IA compare ta valise à ton voyage à {{destination}}.",
@@ -3973,7 +3973,7 @@
     "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
     "q1": {
       "q": "Xplania est gratuit ?",
-      "a": "Oui, pendant la bêta. Tu as 10 essais gratuits par mois sur chacun des 4 outils (Budget, Visa, Valise, Guide interculturel), sans carte bancaire ni engagement. La page Offres présente les packs prévus ensuite."
+      "a": "Oui, pendant la bêta. Les 5 outils sont gratuits, sans carte bancaire ni engagement. Les outils avec IA (Budget, Visa, Valise, Guide interculturel) offrent 10 essais gratuits par mois chacun ; l'Assistant Logement est en accès libre. La page Offres présente les packs prévus ensuite."
     },
     "q2": {
       "q": "À quoi sert l'IA exactement ?",
@@ -3997,11 +3997,11 @@
     },
     "q7": {
       "q": "Qu'est-ce qui est disponible pendant la bêta ?",
-      "a": "Les 4 outils de préparation : Budget, Visa & formalités, Valise et Guide culturel, ainsi que ton tableau de bord de progression. Chaque outil IA offre jusqu'à 10 générations gratuites par mois (les fiches culturelles écrites par l'IA comptent avec la Valise). Si l'IA échoue, l'essai t'est rendu."
+      "a": "Les 5 outils de préparation : Budget, Visa & formalités, Valise, Guide culturel et Assistant Logement, ainsi que ton tableau de bord de progression. Chaque outil IA offre jusqu'à 10 générations gratuites par mois (les fiches culturelles écrites par l'IA comptent avec la Valise). Si l'IA échoue, l'essai t'est rendu. L'Assistant Logement n'utilise pas l'IA et ne consomme aucun essai."
     },
     "q8": {
       "q": "Xplania a-t-il besoin de ma position ?",
-      "a": "Non. Pendant la bêta, les 4 outils fonctionnent à partir de la destination que tu indiques en créant ton voyage."
+      "a": "Non. Pendant la bêta, les 5 outils fonctionnent à partir de la destination que tu indiques en créant ton voyage."
     },
     "seeOffers": "Voir les offres et les prix"
   },
@@ -4612,7 +4612,7 @@
     },
     "ctaFinal": {
       "title": "Prêt à préparer ton départ ?",
-      "subtitle": "Crée ton voyage et organise budget, visa, valise et culture en quelques minutes. Gratuit pendant la bêta.",
+      "subtitle": "Crée ton voyage et organise budget, visa, valise, culture et logement en quelques minutes. Gratuit pendant la bêta.",
       "cta": "Préparer mon départ"
     }
   },
@@ -5672,8 +5672,8 @@
       "text": "Destination, dates, nationalité, budget approximatif et type de séjour : Erasmus, stage ou voyage."
     },
     "s3": {
-      "title": "Tu prépares avec les 4 outils",
-      "text": "Budget, visa, valise et guide culturel s'adaptent automatiquement à ton voyage."
+      "title": "Tu prépares avec les 5 outils",
+      "text": "Budget, visa, valise, guide culturel et logement s'adaptent automatiquement à ton voyage."
     },
     "s4": {
       "title": "Tu suis ta progression",
@@ -5790,10 +5790,10 @@
   },
   "vsChatgpt": {
     "metaTitle": "Xplania vs ChatGPT — l'alternative pour organiser ton voyage",
-    "metaDescription": "ChatGPT génère des réponses. Xplania t'aide à organiser ton voyage en amont : budget, visa, valise et codes culturels. Comparatif honnête.",
+    "metaDescription": "ChatGPT génère des réponses. Xplania t'aide à organiser ton voyage en amont : budget, visa, valise, codes culturels et logement. Comparatif honnête.",
     "badge": "Comparatif",
     "h1": "Xplania, l'alternative à ChatGPT pour organiser ton voyage",
-    "intro": "Xplania est un assistant IA pensé pour celles et ceux qui partent à l'étranger et veulent organiser leur départ sans jongler entre dix outils : budget réaliste, visa et formalités selon ta nationalité, valise adaptée au climat et guide des codes culturels du pays. C'est gratuit pendant la bêta. Xplania a été fondé par Juliette Noel, en France.",
+    "intro": "Xplania est un assistant IA pensé pour celles et ceux qui partent à l'étranger et veulent organiser leur départ sans jongler entre dix outils : budget réaliste, visa et formalités selon ta nationalité, valise adaptée au climat, guide des codes culturels du pays et assistant pour préparer ton logement. C'est gratuit pendant la bêta. Xplania a été fondé par Juliette Noel, en France.",
     "tagline": "ChatGPT génère. Xplania accompagne.",
     "tableTitle": "Comparatif détaillé",
     "table": {
@@ -5844,7 +5844,7 @@
         "memoire": {
           "label": "Mémoire de ton voyage",
           "chatgpt": "Pas de mémoire organisée par voyage",
-          "xplania": "Xplania garde ton voyage : les 4 outils réutilisent tes infos sans ressaisie"
+          "xplania": "Xplania garde ton voyage : les 5 outils réutilisent tes infos sans ressaisie"
         },
         "alertes": {
           "label": "Rappels par email avant le départ",
@@ -5868,7 +5868,7 @@
       "chatgptTitle": "ChatGPT",
       "chatgptText": "Utile pour poser une question ponctuelle, rédiger un texte ou brainstormer des idées de voyage en discutant.",
       "xplaniaTitle": "Xplania",
-      "xplaniaText": "Utile pour organiser concrètement ton départ : budget, visa, valise et codes culturels, réunis autour de ton voyage, le tout gratuit pendant la bêta."
+      "xplaniaText": "Utile pour organiser concrètement ton départ : budget, visa, valise, codes culturels et logement, réunis autour de ton voyage, le tout gratuit pendant la bêta."
     },
     "faq": {
       "title": "Questions fréquentes",
@@ -5990,10 +5990,10 @@
   },
   "schools": {
     "metaTitle": "Xplania pour les écoles et offices de tourisme",
-    "metaDescription": "L'outil qui aide vos étudiants à préparer leur mobilité : budget, visa, valise et culture. Testons ensemble avec un pilote.",
+    "metaDescription": "L'outil qui aide vos étudiants à préparer leur mobilité : budget, visa, valise, culture et logement. Testons ensemble avec un pilote.",
     "badge": "Écoles · Offices de tourisme",
     "title": "L'outil qui aide vos étudiants à préparer leur départ à l'étranger",
-    "subtitle": "Moins de stress, plus d'autonomie avant le départ. Offrez un double accompagnement : votre équipe, et Xplania 24h/24 pour le budget, le visa, la valise et la culture.",
+    "subtitle": "Moins de stress, plus d'autonomie avant le départ. Offrez un double accompagnement : votre équipe, et Xplania 24h/24 pour le budget, le visa, la valise, la culture et le logement.",
     "ctaPrimary": "Proposer un pilote",
     "ctaSecondary": "Voir l'application",
     "problemTitle": "Valider sa mobilité n'est que le début du voyage",
@@ -6437,11 +6437,11 @@
   "betaOffer": {
     "tag": "Bêta ESTICE",
     "title": "Accès gratuit pendant la bêta",
-    "subtitle": "Pendant la bêta, les 4 outils de préparation sont offerts aux étudiants testeurs. Aucune carte bancaire, aucun engagement.",
+    "subtitle": "Pendant la bêta, les 5 outils de préparation sont offerts aux étudiants testeurs. Aucune carte bancaire, aucun engagement.",
     "planName": "Bêta ESTICE",
     "planTagline": "Tout ce qu'il faut pour préparer ton départ",
     "price": "0 €",
-    "inc1": "Les 4 outils : Budget, Visa & formalités, Valise et Guide culturel",
+    "inc1": "Les 5 outils : Budget, Visa & formalités, Valise, Guide culturel et Logement",
     "inc2": "Jusqu'à 10 générations IA par outil et par mois, essai rendu si l'IA échoue",
     "inc3": "Un tableau de bord avec ta progression et un rappel par email 7 jours avant le départ",
     "inc4": "Ping, ton assistante de préparation, en français et en anglais",
@@ -6453,7 +6453,7 @@
       "badge": "Ton départ à l'étranger, simplifié.",
       "titleStart": "Ton Erasmus ou ton stage à l'étranger",
       "titleAccent": "commence ici.",
-      "subtitle": "Budget, visa, valise, culture locale… Prépare ton départ sans te perdre entre des dizaines de sites et de démarches. Xplania rassemble l'essentiel au même endroit et t'accompagne étape par étape.",
+      "subtitle": "Budget, visa, valise, culture locale, logement… Prépare ton départ sans te perdre entre des dizaines de sites et de démarches. Xplania rassemble l'essentiel au même endroit et t'accompagne étape par étape.",
       "primary": "Je prépare mon départ",
       "secondary": "Découvrir comment ça marche",
       "note": "Gratuit pendant la bêta · Sans carte bancaire",
@@ -6482,8 +6482,8 @@
     },
     "solution": {
       "title": "Un seul espace pour préparer ton départ.",
-      "subtitle": "Xplania rassemble quatre guides complémentaires, adaptés aux informations de ton séjour.",
-      "stepLabel": "Guide {{n}}",
+      "subtitle": "Xplania rassemble cinq outils complémentaires, adaptés aux informations de ton séjour.",
+      "stepLabel": "Outil {{n}}",
       "cards": {
         "budget": {
           "name": "Budget",
@@ -6504,6 +6504,11 @@
           "name": "Guide interculturel",
           "desc": "Découvre les habitudes, codes culturels et conseils pratiques pour mieux préparer ton arrivée.",
           "benefit": "Tu arrives plus à l'aise dans ton nouveau pays."
+        },
+        "housing": {
+          "name": "Logement",
+          "desc": "Trouve où chercher, compare les logements repérés et prépare ton installation.",
+          "benefit": "Tu évites les mauvaises surprises avant de signer."
         }
       }
     },
@@ -6515,7 +6520,7 @@
       },
       "s2": {
         "title": "Retrouve tes guides",
-        "desc": "Accède à tes quatre outils de préparation, adaptés à ton profil et à ton séjour."
+        "desc": "Accède à tes cinq outils de préparation, adaptés à ton profil et à ton séjour."
       },
       "s3": {
         "title": "Avance à ton rythme",
@@ -6527,7 +6532,7 @@
       "title": "Moins de recherches. Plus de sérénité avant ton départ.",
       "oneplace": {
         "title": "Tout retrouver au même endroit",
-        "desc": "Budget, formalités, valise et culture réunis, sans ressaisir tes informations."
+        "desc": "Budget, formalités, valise, culture et logement réunis, sans ressaisir tes informations."
       },
       "remaining": {
         "title": "Savoir ce qu'il reste à préparer",
@@ -6630,7 +6635,7 @@
     },
     "summary": {
       "title": "Ton espace de préparation est prêt !",
-      "subtitle": "Retrouve maintenant tes quatre guides pour préparer ton départ à l'étranger, étape par étape.",
+      "subtitle": "Retrouve maintenant tes cinq outils pour préparer ton départ à l'étranger, étape par étape.",
       "destination": "Destination",
       "stay": "Type de séjour",
       "when": "Dates ou durée",

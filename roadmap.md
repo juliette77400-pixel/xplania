@@ -8,4 +8,4 @@
 - [x] Menus, recherche, footer, visite guidée, Offres (carte Gratuit)
 - [x] Traductions FR/EN
 - [x] Tests + vérifications navigateur (ordinateur, téléphone, accès entre comptes)
-- [ ] Accueil : ajouter ou non une 5e carte « Logement » — attend la décision de Juliette
+- [x] Accueil : 5e carte « Logement » + textes reformulés en « 5 outils » (FR/EN)

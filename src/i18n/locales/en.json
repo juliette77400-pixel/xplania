@@ -89,7 +89,7 @@
     "en": "English"
   },
   "homePromises": {
-    "subtitle": "Budget, visa, packing, culture: the 4 essential preparations in one place, before you leave."
+    "subtitle": "Budget, visa, packing, culture, housing: the 5 essential preparations in one place, before you leave."
   },
   "navbar": {
     "features": "Features",
@@ -140,7 +140,7 @@
   },
   "about": {
     "metaTitle": "About — Xplania, prepare your departure without the hassle",
-    "metaDescription": "Xplania brings together the preparation of a stay abroad: budget, visa, packing and cultural codes. The story and vision behind the platform.",
+    "metaDescription": "Xplania brings together the preparation of a stay abroad: budget, visa, packing, cultural codes and housing. The story and vision behind the platform.",
     "badge": "Our story",
     "heroTitle": "Preparing to leave, finally made simple. 🌍",
     "heroSubtitle": "We spend hours preparing a stay abroad across ten different websites. I'd had enough. So I built Xplania.",
@@ -148,7 +148,7 @@
       "tag": "The moment it started",
       "body1": "Before leaving for the Canary Islands, I ended up with 9 open tabs: visa, budget, packing, weather, cultural codes, documents, and a WhatsApp group going in every direction. I spent more time preparing than actually leaving.",
       "body2": "That day I realised the problem wasn't me: it was a scattered preparation, with no tool bringing the essentials together.",
-      "body3": "Xplania is the answer to that frustration: budget, visa, packing and culture, in one place.",
+      "body3": "Xplania is the answer to that frustration: budget, visa, packing, culture and housing, in one place.",
       "quote": "“Travel should begin when you put your suitcase down — not when you start packing it.”",
       "quoteAuthor": "— Juliette, founder"
     },
@@ -178,14 +178,14 @@
         {
           "year": "2026+",
           "title": "What's next",
-          "desc": "A student beta focused on preparing to leave: budget, visa, packing and culture."
+          "desc": "A student beta focused on preparing to leave: budget, visa, packing, culture and housing."
         }
       ]
     },
     "value": {
       "tag": "Value proposition",
       "title": "One platform to prepare your departure ✈️",
-      "body": "Xplania brings together the four essential preparations for a stay abroad — budget, visa, packing and cultural codes — around a single trip."
+      "body": "Xplania brings together the five essential preparations for a stay abroad — budget, visa, packing, cultural codes and housing — around a single trip."
     },
     "experience": {
       "title": "How it works",
@@ -196,8 +196,8 @@
           "desc": "Destination, dates, nationality, budget and type of stay: that's it."
         },
         "s2": {
-          "title": "Prepare with the 4 tools",
-          "desc": "Budget, visa, packing and culture guide adapt to your destination."
+          "title": "Prepare with the 5 tools",
+          "desc": "Budget, visa, packing, culture guide and housing adapt to your destination."
         },
         "s3": {
           "title": "Leave with peace of mind ✅",
@@ -415,9 +415,9 @@
     "titlePart2": "Xplania beta",
     "subtitle": "Help us build the tool that makes preparing to go abroad simple.",
     "feedbackTitle": "Direct feedback",
-    "feedbackDesc": "Your feedback directly improves the 4 preparation tools. Every suggestion counts.",
+    "feedbackDesc": "Your feedback directly improves the 5 preparation tools. Every suggestion counts.",
     "earlyTitle": "Free access",
-    "earlyDesc": "During the beta, Budget, Visa, Packing and the Culture guide are free, no card needed.",
+    "earlyDesc": "During the beta, Budget, Visa, Packing, the Culture guide and Housing are free, no card needed.",
     "communityTitle": "ESTICE beta",
     "communityDesc": "You're among the first students testing Xplania and shaping what comes next.",
     "shareTitle": "Share your experience",
@@ -890,7 +890,7 @@
     "errAuth": "Sign in to generate your travel formalities."
   },
   "footer": {
-    "tagline": "Organise your trip abroad ahead of time, without the hassle: budget, visa, packing and culture in one place.",
+    "tagline": "Organise your trip abroad ahead of time, without the hassle: budget, visa, packing, culture and housing in one place.",
     "version": "Version 0.1 • ESTICE beta",
     "featuresTitle": "Features",
     "contactTitle": "Info & contacts",
@@ -986,7 +986,7 @@
         },
         {
           "heading": "Service description",
-          "body": "Xplania is an AI-powered trip preparation platform. During the beta, it offers four tools to organise a departure abroad: a budget guide, a visa and paperwork guide, a smart packing list and a culture guide. Features may evolve freely during the beta."
+          "body": "Xplania is an AI-powered trip preparation platform. During the beta, it offers five tools to organise a departure abroad: a budget guide, a visa and paperwork guide, a smart packing list, a culture guide and a housing assistant (which does not use AI). Features may evolve freely during the beta."
         },
         {
           "heading": "Beta program",
@@ -1068,8 +1068,8 @@
     "stepLabel": "Step {{n}} / 3",
     "step1Title": "Start with your trip",
     "step1Desc": "Enter your destination, dates, nationality and type of stay. That's all the tools need.",
-    "step2Title": "Four tools, one trip",
-    "step2Desc": "Budget, visa, packing and culture guide share the same details: you never type them twice.",
+    "step2Title": "Five tools, one trip",
+    "step2Desc": "Budget, visa, packing, culture guide and housing share the same details: you never type them twice.",
     "step3Title": "Go at your own pace",
     "step3Desc": "Your dashboard tracks your progress in each tool, all the way to departure day.",
     "startCta": "Prepare my departure",
@@ -1313,13 +1313,13 @@
     "back": "Back to home",
     "tag": "Xplania Plans",
     "title": "Choose the plan that fits you",
-    "subtitle": "Test the 4 preparation tools for free, then choose your pack.",
+    "subtitle": "Test the 5 preparation tools for free, then choose your pack.",
     "free": "Free",
     "freeTagline": "To test every preparation tool",
     "current": "Current",
     "forever": "/ forever",
     "freeFeat1": "10 free generations per month per tool to test Xplania's AI",
-    "freeFeat2": "Valid on all 4 tools: Budget, Visa, Packing and Intercultural guide",
+    "freeFeat2": "Valid on the AI tools: Budget, Visa, Packing and Intercultural guide",
     "freeFeat3": "Dashboard with your progress in each tool",
     "generationsUsed": "{{used}} / {{total}} generations used",
     "remainingCount": "{{n}} left",
@@ -2774,7 +2774,7 @@
         "culturalTip": "In some countries, business cards are exchanged with both hands."
       }
     },
-    "discoverFeatures": "See my 4 preparation tools",
+    "discoverFeatures": "See my 5 preparation tools",
     "missing": {
       "title": "What might be missing",
       "subtitle": "AI compares your bag with your trip to {{destination}}.",
@@ -3973,7 +3973,7 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes, during the beta. You get 10 free tries per month on each of the 4 tools (Budget, Visa, Packing, Intercultural guide), no card, no commitment. The Offers page shows the packs planned afterwards."
+      "a": "Yes, during the beta. All 5 tools are free, no card, no commitment. The AI tools (Budget, Visa, Packing, Intercultural guide) each give 10 free tries per month; the Housing assistant is open access. The Offers page shows the packs planned afterwards."
     },
     "q2": {
       "q": "What does the AI actually do?",
@@ -3997,11 +3997,11 @@
     },
     "q7": {
       "q": "What is available during the beta?",
-      "a": "The 4 preparation tools: Budget, Visa & paperwork, Packing and the Culture guide, plus your progress dashboard. Each AI tool gives up to 10 free generations per month (AI-written culture sheets count with Packing). If the AI fails, the try is given back."
+      "a": "The 5 preparation tools: Budget, Visa & paperwork, Packing, the Culture guide and the Housing assistant, plus your progress dashboard. Each AI tool gives up to 10 free generations per month (AI-written culture sheets count with Packing). If the AI fails, the try is given back. The Housing assistant does not use AI and uses no tries."
     },
     "q8": {
       "q": "Does Xplania need my location?",
-      "a": "No. During the beta, the 4 tools work from the destination you enter when you create your trip."
+      "a": "No. During the beta, the 5 tools work from the destination you enter when you create your trip."
     },
     "seeOffers": "See offers and pricing"
   },
@@ -4612,7 +4612,7 @@
     },
     "ctaFinal": {
       "title": "Ready to prepare your departure?",
-      "subtitle": "Create your trip and sort out budget, visa, packing and culture in a few minutes. Free during the beta.",
+      "subtitle": "Create your trip and sort out budget, visa, packing, culture and housing in a few minutes. Free during the beta.",
       "cta": "Prepare my departure"
     }
   },
@@ -5672,8 +5672,8 @@
       "text": "Destination, dates, nationality, approximate budget and type of stay: Erasmus, internship or trip."
     },
     "s3": {
-      "title": "Prepare with the 4 tools",
-      "text": "Budget, visa, packing and culture guide adapt automatically to your trip."
+      "title": "Prepare with the 5 tools",
+      "text": "Budget, visa, packing, culture guide and housing adapt automatically to your trip."
     },
     "s4": {
       "title": "Track your progress",
@@ -5790,10 +5790,10 @@
   },
   "vsChatgpt": {
     "metaTitle": "Xplania vs ChatGPT — the alternative to plan your trip",
-    "metaDescription": "ChatGPT generates answers. Xplania helps you organise your trip ahead of time: budget, visa, packing and cultural codes. An honest comparison.",
+    "metaDescription": "ChatGPT generates answers. Xplania helps you organise your trip ahead of time: budget, visa, packing, cultural codes and housing. An honest comparison.",
     "badge": "Comparison",
     "h1": "Xplania, the ChatGPT alternative to plan your trip",
-    "intro": "Xplania is an AI assistant for people going abroad who want to organise their departure without juggling ten tools: a realistic budget, visa and paperwork for your nationality, a climate-ready packing list and a guide to the country's cultural codes. It's free during the beta. Xplania was founded by Juliette Noel, in France.",
+    "intro": "Xplania is an AI assistant for people going abroad who want to organise their departure without juggling ten tools: a realistic budget, visa and paperwork for your nationality, a climate-ready packing list, a guide to the country's cultural codes and an assistant to prepare your housing. It's free during the beta. Xplania was founded by Juliette Noel, in France.",
     "tagline": "ChatGPT generates. Xplania accompanies.",
     "tableTitle": "Detailed comparison",
     "table": {
@@ -5844,7 +5844,7 @@
         "memoire": {
           "label": "Memory of your trip",
           "chatgpt": "No memory organised per trip",
-          "xplania": "Xplania keeps your trip: the 4 tools reuse your details without retyping"
+          "xplania": "Xplania keeps your trip: the 5 tools reuse your details without retyping"
         },
         "alertes": {
           "label": "Email reminders before departure",
@@ -5868,7 +5868,7 @@
       "chatgptTitle": "ChatGPT",
       "chatgptText": "Useful for a quick question, writing a text, or brainstorming travel ideas through conversation.",
       "xplaniaTitle": "Xplania",
-      "xplaniaText": "Useful to actually organise your departure: budget, visa, packing and cultural codes around your trip, all free during the beta."
+      "xplaniaText": "Useful to actually organise your departure: budget, visa, packing, cultural codes and housing around your trip, all free during the beta."
     },
     "faq": {
       "title": "Frequently asked questions",
@@ -5990,10 +5990,10 @@
   },
   "schools": {
     "metaTitle": "Xplania for schools and tourism offices",
-    "metaDescription": "The tool that helps your students prepare their mobility: budget, visa, packing and culture. Let's test it together with a pilot.",
+    "metaDescription": "The tool that helps your students prepare their mobility: budget, visa, packing, culture and housing. Let's test it together with a pilot.",
     "badge": "Schools · Tourism offices",
     "title": "The tool that helps your students prepare to go abroad",
-    "subtitle": "Less stress, more autonomy before departure. Offer two kinds of support: your team, and Xplania 24/7 for budget, visa, packing and culture.",
+    "subtitle": "Less stress, more autonomy before departure. Offer two kinds of support: your team, and Xplania 24/7 for budget, visa, packing, culture and housing.",
     "ctaPrimary": "Propose a pilot",
     "ctaSecondary": "See the app",
     "problemTitle": "Getting mobility approved is only the start of the journey",
@@ -6437,11 +6437,11 @@
   "betaOffer": {
     "tag": "ESTICE beta",
     "title": "Free access during the beta",
-    "subtitle": "During the beta, the 4 preparation tools are free for student testers. No card, no commitment.",
+    "subtitle": "During the beta, the 5 preparation tools are free for student testers. No card, no commitment.",
     "planName": "ESTICE beta",
     "planTagline": "Everything you need to prepare your departure",
     "price": "€0",
-    "inc1": "The 4 tools: Budget, Visa & paperwork, Packing and Culture guide",
+    "inc1": "The 5 tools: Budget, Visa & paperwork, Packing, Culture guide and Housing",
     "inc2": "Up to 10 AI generations per tool per month, try given back if the AI fails",
     "inc3": "A dashboard with your progress and an email reminder 7 days before departure",
     "inc4": "Ping, your preparation assistant, in French and English",
@@ -6453,7 +6453,7 @@
       "badge": "Your move abroad, made simple.",
       "titleStart": "Your Erasmus or internship abroad",
       "titleAccent": "starts here.",
-      "subtitle": "Budget, visa, packing, local culture… Prepare your departure without getting lost across dozens of websites and procedures. Xplania brings the essentials together and guides you step by step.",
+      "subtitle": "Budget, visa, packing, local culture, housing… Prepare your departure without getting lost across dozens of websites and procedures. Xplania brings the essentials together and guides you step by step.",
       "primary": "Prepare my departure",
       "secondary": "See how it works",
       "note": "Free during the beta · No credit card",
@@ -6482,8 +6482,8 @@
     },
     "solution": {
       "title": "One space to prepare your departure.",
-      "subtitle": "Xplania brings together four complementary guides, adapted to the details of your stay.",
-      "stepLabel": "Guide {{n}}",
+      "subtitle": "Xplania brings together five complementary tools, adapted to the details of your stay.",
+      "stepLabel": "Tool {{n}}",
       "cards": {
         "budget": {
           "name": "Budget",
@@ -6504,6 +6504,11 @@
           "name": "Intercultural guide",
           "desc": "Learn the habits, cultural codes and practical tips to prepare your arrival.",
           "benefit": "You arrive more at ease in your new country."
+        },
+        "housing": {
+          "name": "Housing",
+          "desc": "Find where to look, compare the places you spotted and prepare your move-in.",
+          "benefit": "You avoid bad surprises before signing."
         }
       }
     },
@@ -6515,7 +6520,7 @@
       },
       "s2": {
         "title": "Find your guides",
-        "desc": "Access your four preparation tools, adapted to your profile and stay."
+        "desc": "Access your five preparation tools, adapted to your profile and stay."
       },
       "s3": {
         "title": "Move forward at your pace",
@@ -6527,7 +6532,7 @@
       "title": "Less searching. More peace of mind before you leave.",
       "oneplace": {
         "title": "Everything in one place",
-        "desc": "Budget, paperwork, packing and culture together, without retyping your details."
+        "desc": "Budget, paperwork, packing, culture and housing together, without retyping your details."
       },
       "remaining": {
         "title": "Know what's left to prepare",
@@ -6630,7 +6635,7 @@
     },
     "summary": {
       "title": "Your preparation space is ready!",
-      "subtitle": "Find your four guides now to prepare your move abroad, step by step.",
+      "subtitle": "Find your five tools now to prepare your move abroad, step by step.",
       "destination": "Destination",
       "stay": "Type of stay",
       "when": "Dates or length",

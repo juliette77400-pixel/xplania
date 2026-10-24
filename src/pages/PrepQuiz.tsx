@@ -1,5 +1,5 @@
 // Preparation questionnaire — keeps the swipe-card ("Tinder") look of the former
-// quiz, but only asks what the four guides need. Answers are saved in the trip.
+// quiz, but only asks what the preparation tools need. Answers are saved in the trip.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";

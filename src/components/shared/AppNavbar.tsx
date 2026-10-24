@@ -109,7 +109,7 @@ const AppNavbar = () => {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center max-w-3xl">
+        <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-center max-w-3xl">
           {PRIMARY.map((it) => {
             const Icon = it.icon;
             const active = isActive(it.to);
@@ -252,7 +252,7 @@ const AppNavbar = () => {
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger aria-label={t("appNav.openMenu")} className="lg:hidden p-2 rounded-lg hover:bg-muted">
+            <SheetTrigger aria-label={t("appNav.openMenu")} className="xl:hidden p-2 rounded-lg hover:bg-muted">
               <Menu className="w-5 h-5" />
             </SheetTrigger>
             <SheetContent side="right" className="w-[min(88vw,320px)] max-w-full p-0 overflow-y-auto overscroll-contain">

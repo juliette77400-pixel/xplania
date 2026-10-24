@@ -22,7 +22,7 @@ export const FEATURE_FLAGS = {
   ENABLE_TRAVEL_JOURNAL: false,
   ENABLE_GAMIFICATION: false,
   ENABLE_LIVE_TRACKING: false,
-  /** Traveler DNA swipe quiz (preference profiling, not needed by the 4 tools). */
+  /** Traveler DNA swipe quiz (preference profiling, not needed by the preparation tools). */
   ENABLE_TRAVELER_DNA: false,
   /** Packs on /offres (only packs whose tools are on are listed). Off: free "Bêta ESTICE" card only. */
   ENABLE_PAID_PLANS: true,
