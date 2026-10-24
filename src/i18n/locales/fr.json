@@ -1399,7 +1399,24 @@
     },
     "freeRemainingHint": "Essais gratuits restants ce mois-ci, par outil (les fiches du guide interculturel écrites par l'IA comptent avec la Valise).",
     "perMonthTries": "10 / mois",
-    "freeFeat4": "Assistant Logement inclus en accès libre (sans IA, aucun essai consommé)"
+    "freeFeat4": "Assistant Logement inclus en accès libre (sans IA, aucun essai consommé)",
+    "school": {
+      "tag": "Pour les écoles",
+      "title": "Offrir Xplania à tes étudiants",
+      "subtitle": "Même prix que pour un étudiant, multiplié par le nombre d'étudiants. Chaque étudiant y a accès sans rien payer.",
+      "packLabel": "Pack choisi",
+      "studentsLabel": "Nombre d'étudiants",
+      "cycleHint": "Formule : {{cycle}} (à changer plus haut, dans les packs).",
+      "unit": "Prix par étudiant : {{price}}{{suffix}}",
+      "times_one": "× {{count}} étudiant",
+      "times_other": "× {{count}} étudiants",
+      "total": "Total pour l'école",
+      "f1": "Accès offert à chaque étudiant de la promo",
+      "f2": "Mêmes outils et mêmes prix que l'offre étudiant",
+      "f3": "Paiement par l'école, rien à payer pour l'étudiant",
+      "cta": "Je représente une école — être contacté·e",
+      "waitlistPack": "École — {{pack}} × {{count}} étudiants ({{cycle}})"
+    }
   },
   "quotaReached": {
     "title": "Limite gratuite atteinte",

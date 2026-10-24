@@ -14,7 +14,11 @@ import {
   Layers,
   Star,
   Bell,
+  School,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SCHOOL_MAX_STUDENTS, SCHOOL_MIN_STUDENTS, clampStudents, schoolTotal } from "@/lib/school-pricing";
 import { usePlanStore } from "@/stores/usePlanStore";
 import { Progress } from "@/components/ui/progress";
 import WaitlistDialog from "@/components/xplania/WaitlistDialog";
@@ -132,6 +136,9 @@ const PaidPlans = () => {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [waitlistPack, setWaitlistPack] = useState<string | undefined>(undefined);
+  const [waitlistSource, setWaitlistSource] = useState<string | undefined>(undefined);
+  const [schoolPack, setSchoolPack] = useState<PackDef["id"]>(visiblePacks[0]?.id ?? "admin");
+  const [studentsInput, setStudentsInput] = useState("30");
 
   const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-US";
   const currency = i18n.language.startsWith("fr") ? "EUR" : "EUR";
@@ -140,8 +147,9 @@ const PaidPlans = () => {
 
   const packName = (id: PackDef["id"]) => t(`offres.packs.${id}.name`);
 
-  const openWaitlist = (name?: string) => {
+  const openWaitlist = (name?: string, source?: string) => {
     setWaitlistPack(name);
+    setWaitlistSource(source);
     setWaitlistOpen(true);
   };
 
@@ -407,6 +415,88 @@ const PaidPlans = () => {
           </div>
         </section>}
 
+        {/* SCHOOLS — same price as one student, multiplied by the number of students */}
+        {visiblePacks.length > 0 && (() => {
+          const pack = visiblePacks.find((p) => p.id === schoolPack) ?? visiblePacks[0];
+          const students = clampStudents(Number(studentsInput));
+          const unit = pack.prices[billing];
+          const total = schoolTotal(unit, students);
+          const cycle = t(`offres.billing.${billing}`);
+          return (
+            <section id="ecoles" aria-labelledby="schools-title" className="mt-14 scroll-mt-24">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold mb-3">
+                  <School className="w-3.5 h-3.5" aria-hidden />
+                  {t("offres.school.tag")}
+                </div>
+                <h2 id="schools-title" className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{t("offres.school.title")}</h2>
+                <p className="text-sm text-muted-foreground max-w-xl mx-auto">{t("offres.school.subtitle")}</p>
+              </div>
+              <div className="glass-card rounded-2xl p-6 sm:p-8 max-w-3xl mx-auto grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground mb-2">{t("offres.school.packLabel")}</p>
+                    <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={t("offres.school.packLabel")}>
+                      {visiblePacks.map((p) => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={pack.id === p.id}
+                          onClick={() => setSchoolPack(p.id)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${pack.id === p.id ? "gradient-button text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
+                        >
+                          {packName(p.id)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="school-students" className="text-sm font-semibold">{t("offres.school.studentsLabel")}</Label>
+                    <Input
+                      id="school-students"
+                      type="number"
+                      inputMode="numeric"
+                      min={SCHOOL_MIN_STUDENTS}
+                      max={SCHOOL_MAX_STUDENTS}
+                      step={1}
+                      value={studentsInput}
+                      onChange={(e) => setStudentsInput(e.target.value)}
+                      onBlur={() => setStudentsInput(String(students))}
+                      className="mt-2 max-w-[10rem]"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">{t("offres.school.cycleHint", { cycle })}</p>
+                </div>
+                <div className="rounded-xl bg-muted/50 border border-border/50 p-5 flex flex-col">
+                  <p className="text-sm text-muted-foreground">{t("offres.school.unit", { price: formatPrice(unit), suffix: t(`offres.suffix.${billing}`) })}</p>
+                  <p className="text-sm text-muted-foreground">{t("offres.school.times", { count: students })}</p>
+                  <p className="mt-3 text-xs uppercase tracking-wider text-muted-foreground">{t("offres.school.total")}</p>
+                  <p className="text-3xl font-bold text-foreground" aria-live="polite">
+                    {formatPrice(total)}<span className="text-sm font-normal text-muted-foreground">{t(`offres.suffix.${billing}`)}</span>
+                  </p>
+                  <ul className="mt-4 space-y-2 flex-1">
+                    {["f1", "f2", "f3"].map((fk) => (
+                      <li key={fk} className="flex items-start gap-2 text-xs text-foreground">
+                        <Check className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" aria-hidden />
+                        <span>{t(`offres.school.${fk}`)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    type="button"
+                    onClick={() => openWaitlist(t("offres.school.waitlistPack", { pack: packName(pack.id), count: students, cycle }), "offres:school")}
+                    className="mt-5 w-full py-2.5 rounded-lg text-xs font-semibold gradient-button text-primary-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5"
+                  >
+                    <School className="w-3.5 h-3.5" aria-hidden />
+                    {t("offres.school.cta")}
+                  </button>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
+
         <p className="text-center text-xs text-muted-foreground mt-10">
           {t("offres.betaNote")}
         </p>
@@ -415,7 +505,7 @@ const PaidPlans = () => {
       <WaitlistDialog
         open={waitlistOpen}
         onOpenChange={setWaitlistOpen}
-        source={waitlistPack ? `offres:pack:${waitlistPack}` : "offres:page"}
+        source={waitlistSource ?? (waitlistPack ? `offres:pack:${waitlistPack}` : "offres:page")}
         pack={waitlistPack}
         title={waitlistPack ? t("offres.waitlistTitlePack", { pack: waitlistPack }) : t("offres.waitlistTitleGeneric")}
         teaser={waitlistPack ? t("offres.waitlistTeaserPack", { pack: waitlistPack }) : undefined}

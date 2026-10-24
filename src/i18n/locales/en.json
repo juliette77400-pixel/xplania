@@ -1399,7 +1399,24 @@
     },
     "freeRemainingHint": "Free tries left this month, per tool (AI-written intercultural sheets count with Packing).",
     "perMonthTries": "10 / month",
-    "freeFeat4": "Housing assistant included for free (no AI, no tries used)"
+    "freeFeat4": "Housing assistant included for free (no AI, no tries used)",
+    "school": {
+      "tag": "For schools",
+      "title": "Give Xplania to your students",
+      "subtitle": "Same price as for one student, multiplied by the number of students. Each student gets access without paying anything.",
+      "packLabel": "Chosen pack",
+      "studentsLabel": "Number of students",
+      "cycleHint": "Billing: {{cycle}} (change it above, in the packs).",
+      "unit": "Price per student: {{price}}{{suffix}}",
+      "times_one": "× {{count}} student",
+      "times_other": "× {{count}} students",
+      "total": "Total for the school",
+      "f1": "Access given to every student in the class",
+      "f2": "Same tools and same prices as the student offer",
+      "f3": "Paid by the school, nothing for the student to pay",
+      "cta": "I represent a school — get in touch",
+      "waitlistPack": "School — {{pack}} × {{count}} students ({{cycle}})"
+    }
   },
   "quotaReached": {
     "title": "Free limit reached",
