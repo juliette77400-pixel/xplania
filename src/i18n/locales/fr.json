@@ -6320,7 +6320,7 @@
   "prepDashboard": {
     "kicker": "Mon espace de préparation",
     "subtitle": "Budget, visa, valise et culture : tout ce qu'il faut préparer avant ton départ, au même endroit.",
-    "newTrip": "Nouveau voyage",
+    "newTrip": "Nouveau séjour",
     "firstStepKicker": "Étape 1",
     "firstStepTitle": "Crée ton voyage",
     "firstStepDesc": "Quelques infos suffisent : les 4 outils de préparation s'adaptent ensuite automatiquement.",
@@ -6358,6 +6358,28 @@
         "title": "Guide culturel",
         "desc": "Tenue, gastronomie, gestes et usages"
       }
+    },
+    "status": {
+      "notStarted": "Non commencé",
+      "inProgress": "En cours",
+      "done": "Terminé"
+    },
+    "next": {
+      "title": "Tes prochaines actions",
+      "budgetStart": "Budget : génère ton estimation de dépenses",
+      "budgetExpense": "Budget : note ta première dépense prévue",
+      "visaStart": "Visa : affiche tes formalités et coche ta première démarche",
+      "visaContinue": "Visa : continue à cocher tes démarches",
+      "valiseStart": "Valise : coche les premiers éléments de ta liste",
+      "valiseContinue": "Valise : termine ta liste",
+      "cultureStart": "Culture : lis un premier thème et marque-le comme compris",
+      "cultureContinue": "Culture : continue avec les thèmes suivants"
+    },
+    "missing": {
+      "title": "Il manque une information",
+      "budget": "Tu n'as pas encore indiqué de budget : les montants affichés sont des exemples de départ.",
+      "dates": "Tes dates ou ta durée ne sont pas encore connues : certains conseils restent généraux.",
+      "cta": "Compléter mon séjour"
     }
   },
   "prepTrip": {
@@ -6395,5 +6417,202 @@
     "inc4": "Ping, ton assistante de préparation, en français et en anglais",
     "cta": "Commencer ma préparation",
     "after": "Les offres après la bêta seront annoncées plus tard."
+  },
+  "prepLanding": {
+    "hero": {
+      "badge": "Ton départ à l'étranger, simplifié.",
+      "titleStart": "Ton Erasmus ou ton stage à l'étranger",
+      "titleAccent": "commence ici.",
+      "subtitle": "Budget, visa, valise, culture locale… Prépare ton départ sans te perdre entre des dizaines de sites et de démarches. Xplania rassemble l'essentiel au même endroit et t'accompagne étape par étape.",
+      "primary": "Je prépare mon départ",
+      "secondary": "Découvrir comment ça marche",
+      "note": "Gratuit pendant la bêta · Sans carte bancaire",
+      "previewLabel": "Aperçu de ton espace de préparation",
+      "previewExample": "Exemple : Erasmus à Madrid · 5 mois",
+      "previewNote": "Illustration : la progression dépend de ce que tu as réellement fait dans chaque guide."
+    },
+    "problem": {
+      "title": "Partir à l'étranger, c'est excitant. Tout préparer, un peu moins.",
+      "text": "Entre les formalités administratives, le budget à anticiper, les affaires à emporter et les différences culturelles, préparer une mobilité internationale peut rapidement devenir compliqué.",
+      "items": {
+        "scattered": {
+          "title": "Trop d'informations dispersées",
+          "desc": "Tu passes d'un site à l'autre pour trouver les bonnes informations."
+        },
+        "forget": {
+          "title": "La peur d'oublier l'essentiel",
+          "desc": "Documents, démarches, budget, affaires… Difficile de savoir si tout est prêt."
+        },
+        "bearings": {
+          "title": "Un manque de repères",
+          "desc": "Tu ne sais pas toujours par quoi commencer ni quelles étapes prioriser."
+        }
+      },
+      "conclusion": "Et si tu pouvais tout préparer depuis un seul endroit ?"
+    },
+    "solution": {
+      "title": "Un seul espace pour préparer ton départ.",
+      "subtitle": "Xplania rassemble quatre guides complémentaires, adaptés aux informations de ton séjour.",
+      "stepLabel": "Guide {{n}}",
+      "cards": {
+        "budget": {
+          "name": "Budget",
+          "desc": "Anticipe tes dépenses et organise ton budget pour ton séjour à l'étranger.",
+          "benefit": "Tu sais combien prévoir avant de partir."
+        },
+        "visa": {
+          "name": "Visa et formalités",
+          "desc": "Identifie les démarches administratives à vérifier selon ta destination et ta situation.",
+          "benefit": "Tu sais quels documents préparer et où les vérifier."
+        },
+        "valise": {
+          "name": "Valise intelligente",
+          "desc": "Prépare une checklist adaptée à ton séjour pour ne pas oublier l'essentiel.",
+          "benefit": "Tu pars sans oublier l'essentiel."
+        },
+        "culture": {
+          "name": "Guide interculturel",
+          "desc": "Découvre les habitudes, codes culturels et conseils pratiques pour mieux préparer ton arrivée.",
+          "benefit": "Tu arrives plus à l'aise dans ton nouveau pays."
+        }
+      }
+    },
+    "how": {
+      "title": "Ton départ, préparé en quelques étapes.",
+      "s1": {
+        "title": "Renseigne ton séjour",
+        "desc": "Indique ta destination, tes dates et quelques informations utiles."
+      },
+      "s2": {
+        "title": "Retrouve tes guides",
+        "desc": "Accède à tes quatre outils de préparation, adaptés à ton profil et à ton séjour."
+      },
+      "s3": {
+        "title": "Avance à ton rythme",
+        "desc": "Complète tes préparatifs et retrouve ta progression depuis ton tableau de bord."
+      },
+      "cta": "Commencer ma préparation"
+    },
+    "benefits": {
+      "title": "Moins de recherches. Plus de sérénité avant ton départ.",
+      "oneplace": {
+        "title": "Tout retrouver au même endroit",
+        "desc": "Budget, formalités, valise et culture réunis, sans ressaisir tes informations."
+      },
+      "remaining": {
+        "title": "Savoir ce qu'il reste à préparer",
+        "desc": "Ton tableau de bord montre ce qui est fait et la prochaine action de chaque guide."
+      },
+      "adapted": {
+        "title": "Des informations adaptées à ton séjour",
+        "desc": "Destination, nationalité, durée et type de mobilité sont pris en compte."
+      }
+    },
+    "final": {
+      "title": "Prêt à préparer ton départ à l'étranger ?",
+      "text": "Erasmus, échange universitaire ou stage : commence ta préparation avec Xplania.",
+      "cta": "Je prépare mon départ",
+      "note": "Gratuit pendant la bêta."
+    }
+  },
+  "prepQuiz": {
+    "stepOf": "Étape {{current}} sur {{total}}",
+    "progress": "Progression du questionnaire",
+    "swipeHint": "Glisse la photo ou utilise les boutons",
+    "back": "Retour",
+    "next": "Continuer",
+    "finish": "Terminer",
+    "retry": "Réessayer",
+    "saveError": "Tes réponses n'ont pas pu être enregistrées. Elles sont gardées : réessaie.",
+    "privacy": "Tes réponses servent uniquement à adapter tes quatre guides. Tu pourras les modifier à tout moment.",
+    "destination": {
+      "title": "Où pars-tu à l'aventure ?",
+      "subtitle": "Indique le pays dans lequel tu vas étudier ou effectuer ton stage.",
+      "country": "Pays de destination",
+      "countryPlaceholder": "Ex. : Espagne",
+      "city": "Ville (facultatif)",
+      "cityPlaceholder": "Ex. : Madrid"
+    },
+    "origin": {
+      "title": "D'où pars-tu ?",
+      "subtitle": "Ces informations nous aident à identifier les formalités adaptées à ta situation.",
+      "nationality": "Ta nationalité",
+      "residence": "Ton pays de résidence actuel",
+      "second": "Seconde nationalité (facultatif)",
+      "countryPlaceholder": "Commence à écrire un pays",
+      "secondPlaceholder": "Seulement si tu en as une"
+    },
+    "stay": {
+      "title": "Quel est ton projet à l'étranger ?",
+      "subtitle": "Choisis le type de séjour qui correspond à ton départ.",
+      "erasmus": {
+        "title": "Erasmus / échange universitaire",
+        "desc": "Un semestre ou une année dans une université partenaire."
+      },
+      "internship": {
+        "title": "Stage à l'étranger",
+        "desc": "Une expérience professionnelle dans une entreprise."
+      },
+      "other": {
+        "title": "Autre mobilité étudiante",
+        "desc": "Année de césure, volontariat, séjour linguistique…"
+      }
+    },
+    "dates": {
+      "title": "Quand commence ton aventure ?",
+      "subtitle": "Indique tes dates pour adapter ta préparation.",
+      "departure": "Date de départ",
+      "return": "Date de retour (facultatif)",
+      "bucketLegend": "Pas encore de dates précises ? Indique une durée estimée :",
+      "bucket": {
+        "lt3": "Moins de 3 mois",
+        "3to6": "Entre 3 et 6 mois",
+        "gt6": "Plus de 6 mois",
+        "unknown": "Je ne sais pas encore"
+      },
+      "hint": "Tu pourras modifier tes dates depuis ton tableau de bord."
+    },
+    "budget": {
+      "title": "Quel budget as-tu prévu ?",
+      "subtitle": "Même une estimation suffit pour commencer.",
+      "label": "Budget total pour ton séjour",
+      "placeholder": "Ex. : 4000",
+      "unknown": "Je ne sais pas encore"
+    },
+    "housing": {
+      "title": "Où vas-tu poser tes valises ?",
+      "subtitle": "Cela nous aide à mieux anticiper tes dépenses et tes besoins.",
+      "residence": "Résidence étudiante",
+      "flatshare": "Colocation / appartement",
+      "family": "Famille d'accueil",
+      "unknown": "Je ne sais pas encore"
+    },
+    "errors": {
+      "destination": "Choisis ton pays de destination dans la liste.",
+      "nationality": "Indique ta nationalité.",
+      "residence": "Indique ton pays de résidence actuel.",
+      "stay": "Choisis le type de séjour.",
+      "dates": "La date de retour doit être après la date de départ.",
+      "datesMissing": "Indique une date de départ ou choisis une durée (même « Je ne sais pas encore »).",
+      "budget": "Indique un montant ou choisis « Je ne sais pas encore ».",
+      "housing": "Choisis ton type de logement."
+    },
+    "summary": {
+      "title": "Ton espace de préparation est prêt !",
+      "subtitle": "Retrouve maintenant tes quatre guides pour préparer ton départ à l'étranger, étape par étape.",
+      "destination": "Destination",
+      "stay": "Type de séjour",
+      "when": "Dates ou durée",
+      "budget": "Budget prévu",
+      "noDates": "Pas encore connues",
+      "cta": "Accéder à ma préparation"
+    }
+  },
+  "prepEdit": {
+    "title": "Modifier mon séjour",
+    "desc": "Tes guides utiliseront automatiquement ces nouvelles informations.",
+    "save": "Enregistrer",
+    "saved": "Séjour mis à jour.",
+    "error": "Impossible d'enregistrer les modifications. Réessaie."
   }
 }
