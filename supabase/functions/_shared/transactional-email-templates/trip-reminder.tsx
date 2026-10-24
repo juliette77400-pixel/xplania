@@ -11,7 +11,7 @@ const COPY = {
     intro: (date: string) => `Ton départ est prévu le ${date}. Voici ta liste de vérification avant de partir :`,
     itemLabels: { passport: '🛂 Passeport ou carte d\'identité valide', visa: '📄 Visa ou autorisation d\'entrée si nécessaire', vaccines: '💉 Vaccins recommandés pour la destination', insurance: '🛡️ Assurance voyage souscrite', packing: '🧳 Valise préparée avec le Guide Valise' } as Record<string, string>,
     cta: 'Ouvrir mon voyage',
-    done: "C'est fait ✔ — voir ma checklist",
+    done: "Voir ce qu'il me reste à préparer",
     footer: 'Bon voyage avec Xplania 🌍',
   },
   en: {
@@ -20,7 +20,7 @@ const COPY = {
     intro: (date: string) => `You leave on ${date}. Here is your pre-departure checklist:`,
     itemLabels: { passport: '🛂 Valid passport or ID card', visa: '📄 Visa or entry authorisation if required', vaccines: '💉 Recommended vaccines for the destination', insurance: '🛡️ Travel insurance purchased', packing: '🧳 Suitcase packed with the Packing Guide' } as Record<string, string>,
     cta: 'Open my trip',
-    done: "It's done ✔ — see my checklist",
+    done: "See what's left to prepare",
     footer: 'Have a great trip with Xplania 🌍',
   },
 }
