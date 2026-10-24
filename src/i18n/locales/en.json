@@ -1415,7 +1415,9 @@
       "f2": "Same tools and same prices as the student offer",
       "f3": "Paid by the school, nothing for the student to pay",
       "cta": "I represent a school — get in touch",
-      "waitlistPack": "School — {{pack}} × {{count}} students ({{cycle}})"
+      "waitlistPack": "School — {{pack}} × {{count}} students ({{cycle}})",
+      "waitlistTitle": "Let's talk about your class",
+      "waitlistTeaser": "Leave your email: we'll get back to you to set up your students' access ({{pack}})."
     }
   },
   "quotaReached": {

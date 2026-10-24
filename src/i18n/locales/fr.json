@@ -1415,7 +1415,9 @@
       "f2": "Mêmes outils et mêmes prix que l'offre étudiant",
       "f3": "Paiement par l'école, rien à payer pour l'étudiant",
       "cta": "Je représente une école — être contacté·e",
-      "waitlistPack": "École — {{pack}} × {{count}} étudiants ({{cycle}})"
+      "waitlistPack": "École — {{pack}} × {{count}} étudiants ({{cycle}})",
+      "waitlistTitle": "Parlons de ta promo",
+      "waitlistTeaser": "Laisse ton email : on te recontacte pour mettre en place l'accès de tes étudiants ({{pack}})."
     }
   },
   "quotaReached": {
