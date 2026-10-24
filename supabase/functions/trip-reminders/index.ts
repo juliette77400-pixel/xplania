@@ -144,8 +144,8 @@ async function weatherAlerts(admin: any) {
 
       const { data: u } = await admin.auth.admin.getUserById(t.user_id)
       const email = u?.user?.email
-      if (!email) continue
-      const en = u.user.user_metadata?.lang === 'en'
+      if (!email || !remindersOn(u.user)) continue
+      const en = langOf(u.user) === 'en'
       const summary = describe(bad, en)
       const dayLabel = new Date(bad.date + 'T12:00:00Z').toLocaleDateString(en ? 'en-GB' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
       const suggestions = await suggest(place, summary, en)
