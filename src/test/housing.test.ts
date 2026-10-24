@@ -84,6 +84,9 @@ describe("assistant logement — ressources", () => {
     expect(resourcesForCountry("IE").local.some((r) => r.category === "fraud")).toBe(true);
     expect(resourcesForCountry("CA").local.some((r) => r.category === "fraud")).toBe(true);
   });
+  it("propose le réseau ESN pour une destination Erasmus en Europe", () => {
+    expect(resourcesForCountry("PT").european.map((r) => r.id)).toContain("esn");
+  });
   it("ne propose aucune ressource pour un pays non couvert", () => {
     const r = resourcesForCountry("JP");
     expect(r.local.length + r.european.length).toBe(0);
