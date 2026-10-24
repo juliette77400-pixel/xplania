@@ -55,7 +55,7 @@ export async function withFreshJournalMedia<T extends BlockLike>(blocks: T[]): P
   const out = [...blocks];
   for (const { idx, path } of targets) {
     const b = out[idx];
-    const content = { ...(b.content as Record<string, unknown>), path };
+    const content: Record<string, unknown> = { ...(b.content as Record<string, unknown>), path };
     const url = signed.get(path);
     if (url) content.url = url;
     else delete content.url; // never fall back to an old long-lived link
