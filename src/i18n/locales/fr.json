@@ -6402,7 +6402,7 @@
       "valiseContinue": "Valise : termine ta liste",
       "cultureStart": "Culture : lis un premier thème et marque-le comme compris",
       "cultureContinue": "Culture : continue avec les thèmes suivants",
-      "housingStart": "Logement : indique où tu en es et coche ta première vérification",
+      "housingStart": "Logement : coche ta première étape",
       "housingContinue": "Logement : continue ta checklist"
     },
     "missing": {
@@ -6673,7 +6673,7 @@
     "progressLabel": "Progression de la préparation du logement",
     "step": "Étape {{n}}",
     "focus": {
-      "starting": "Tu commences tes recherches : repère d'abord les bonnes ressources, puis note les logements qui t'intéressent pour les comparer.",
+      "starting": "Tu commences tes recherches : repère les bonnes ressources, pose tes critères (loyer maximum, type de logement) et note les logements qui t'intéressent.",
       "lost": "Pas de panique : commence par le service logement de ton établissement d'accueil et les ressources ci-dessous, puis avance étape par étape.",
       "shortlist": "Tu as repéré des logements : compare-les, puis fais les vérifications avant de réserver ou de signer.",
       "confirmed": "Ton logement est confirmé : prépare ton arrivée, tes documents et tes frais d'installation."
@@ -6692,8 +6692,26 @@
         "desc": "À vérifier avant de réserver ou de signer."
       },
       "install": {
-        "title": "Tout est prêt pour ton arrivée ?",
-        "desc": "Les étapes de ton installation, adaptées à ta situation."
+        "starting": {
+          "title": "Tes premiers pas",
+          "desc": "Pour lancer ta recherche sur de bonnes bases."
+        },
+        "shortlist": {
+          "title": "Avant de signer",
+          "desc": "Les points à régler avant de t'engager."
+        },
+        "confirmed": {
+          "title": "Tout est prêt pour ton arrivée ?",
+          "desc": "Les étapes avant le départ et à l'arrivée."
+        }
+      },
+      "compareConfirmed": {
+        "title": "Ton logement",
+        "desc": "Note ses montants pour les ajouter à ton budget."
+      },
+      "safetyAlerts": {
+        "title": "Les signaux d'alerte",
+        "desc": "À repérer dans les annonces et les échanges avec les propriétaires."
       }
     },
     "resources": {
@@ -6774,7 +6792,11 @@
       "budgetSynced": "Les dépenses de « {{name}} » sont dans ton budget.",
       "budgetOutdated": "Ton budget ne correspond plus à « {{name}} ». Le mettre à jour ?",
       "budgetAdd": "Ajouter les dépenses au budget",
-      "budgetUpdate": "Mettre à jour le budget"
+      "budgetUpdate": "Mettre à jour le budget",
+      "helpConfirmed": "Ajoute ton logement confirmé pour garder ses infos au même endroit et envoyer ses frais au budget.",
+      "addConfirmed": "Ajouter mon logement",
+      "emptyTitleConfirmed": "Ton logement n'est pas encore noté",
+      "emptyDescConfirmed": "Ajoute-le avec son loyer, sa caution et ses frais pour préparer ton budget."
     },
     "form": {
       "addTitle": "Ajouter un logement",
@@ -6854,20 +6876,22 @@
         "noProof": "Impossible d'obtenir des preuves crédibles que le logement existe (visite, vidéo en direct, adresse précise)"
       },
       "disclaimer": "Cette liste réduit certains risques mais ne garantit pas la fiabilité d'une annonce. En cas de doute, ne paie rien et demande conseil à ton établissement d'accueil.",
-      "confirmedNote": "Ton logement est confirmé : garde ces signaux d'alerte en tête si on te demande encore un paiement ou un changement de conditions avant ton arrivée."
+      "confirmedNote": "Ton logement est confirmé : garde ces signaux d'alerte en tête si on te demande encore un paiement ou un changement de conditions avant ton arrivée.",
+      "earlyNote": "Tu n'as pas encore de logement en vue : garde ces signaux en tête en lisant les annonces. La checklist de vérification s'affichera quand tu auras repéré des logements."
     },
     "install": {
       "phases": {
         "beforeSigning": "Avant la signature",
         "beforeDeparture": "Avant le départ",
-        "arrival": "À l'arrivée"
+        "arrival": "À l'arrivée",
+        "gettingStarted": "Pour bien démarrer"
       },
       "items": {
         "beforeSigning": {
-          "compare": "Comparer les logements",
           "conditions": "Vérifier les conditions de location",
           "documents": "Préparer les documents demandés",
-          "fees": "Vérifier les frais et les garanties"
+          "fees": "Vérifier les frais et les garanties",
+          "visit": "Visiter le logement ou demander une visite vidéo en direct"
         },
         "beforeDeparture": {
           "arrival": "Confirmer les modalités d'arrivée",
@@ -6881,10 +6905,20 @@
           "checkEquipment": "Vérifier les équipements",
           "keepDocs": "Conserver les documents utiles (contrat, reçus, état des lieux)",
           "localSteps": "Vérifier les démarches locales nécessaires (enregistrement, assurance…)"
+        },
+        "gettingStarted": {
+          "contactSchool": "Écrire au service international ou logement de mon établissement d'accueil",
+          "maxRent": "Fixer le loyer maximum que je peux payer",
+          "housingType": "Choisir le type de logement qui me convient (résidence, colocation, studio…)",
+          "shortlist": "Repérer au moins 3 logements et les ajouter à ma comparaison"
         }
       },
       "legal": "Les règles de location changent d'un pays à l'autre : vérifie toujours sur une source officielle ou auprès de ton établissement d'accueil.",
-      "officialLink": "Page officielle"
+      "officialLink": "Page officielle",
+      "next": {
+        "shortlist": "Tu as repéré des logements ? Change ta situation pour les vérifier avant de signer.",
+        "confirmed": "Ton logement est signé ? Change ta situation pour préparer ton départ et ton arrivée."
+      }
     },
     "checklistError": "Impossible d'enregistrer cette case. Réessaie.",
     "checklistLoadError": "Tes cases cochées n'ont pas pu être chargées. Recharge la page.",

@@ -109,8 +109,8 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
       ) : options.length === 0 ? (
         <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border p-8 text-center">
           <Home className="h-8 w-8 text-muted-foreground" aria-hidden />
-          <p className="font-semibold">{t("housing.compare.emptyTitle")}</p>
-          <p className="max-w-sm text-sm text-muted-foreground">{t("housing.compare.emptyDesc")}</p>
+          <p className="font-semibold">{t(confirmed ? "housing.compare.emptyTitleConfirmed" : "housing.compare.emptyTitle")}</p>
+          <p className="max-w-sm text-sm text-muted-foreground">{t(confirmed ? "housing.compare.emptyDescConfirmed" : "housing.compare.emptyDesc")}</p>
         </div>
       ) : (
         <>
