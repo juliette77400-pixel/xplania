@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight } from "lucide-react";
 import { isPathEnabled } from "@/config/featureFlags";
-import { isOpenToolPath } from "@/config/open-tools";
+import { isOpenTool } from "@/config/open-tools";
 import { track } from "@/lib/analytics";
 import imgBudget from "@/assets/prep-quiz/budget.jpg";
 import imgVisa from "@/assets/prep-quiz/origin.jpg";
@@ -58,7 +58,7 @@ const QuestionsSection = () => {
                     className={`w-full object-cover transition duration-500 group-hover:scale-105 ${i < 2 ? "aspect-[16/8]" : "aspect-[16/10]"}`}
                   />
                   <span className="absolute left-3 top-3 rounded-full bg-background/85 px-2.5 py-1 text-[11px] font-bold text-foreground backdrop-blur">
-                    {isOpenToolPath(it.to) ? t("landing2.questions.open") : t("landing2.questions.account")}
+                    {isOpenTool(it.to) ? t("landing2.questions.open") : t("landing2.questions.account")}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
