@@ -120,6 +120,8 @@ export interface HousingBudgetSync {
   optionId: string;
   accommodation: number;
   deposit: number;
+  /** Where the deposit was written. Older syncs (no value) put it inside "fees". */
+  depositIn?: "fees" | "deposit";
 }
 
 export interface HousingBudgetPlan {
@@ -140,20 +142,20 @@ export function housingBudgetPlan(o: HousingCosts, months: number): HousingBudge
 
 /**
  * Applies a housing plan to the budget categories. The accommodation line is
- * replaced; the deposit is kept in "fees" and the previous housing deposit is
- * removed first, so repeating the action never counts the same home twice.
+ * replaced and the deposit goes to its own "deposit" line (replaced too). A
+ * deposit written by an older version inside "fees" is taken out of "fees"
+ * first, so repeating the action never counts the same home twice.
  */
 export function applyHousingToBudget<T extends BudgetCategoryLike>(
   categories: T[],
   plan: HousingBudgetPlan,
   previous: HousingBudgetSync | null,
 ): T[] {
+  const legacyDeposit = previous && previous.depositIn !== "deposit" ? previous.deposit : 0;
   return categories.map((c) => {
     if (c.key === "accommodation") return { ...c, planned: plan.accommodation };
-    if (c.key === "fees") {
-      const base = Math.max(0, (Number(c.planned) || 0) - (previous?.deposit ?? 0));
-      return { ...c, planned: Math.round(base + plan.deposit) };
-    }
+    if (c.key === "deposit") return { ...c, planned: Math.round(plan.deposit) };
+    if (c.key === "fees" && legacyDeposit) return { ...c, planned: Math.max(0, Math.round((Number(c.planned) || 0) - legacyDeposit)) };
     return c;
   });
 }

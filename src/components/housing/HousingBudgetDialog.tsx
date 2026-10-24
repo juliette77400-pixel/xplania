@@ -62,14 +62,14 @@ const HousingBudgetDialog = ({ open, onOpenChange, option, tripId, destination, 
   const validMonths = Number.isFinite(m) && m >= 1 && m <= 36;
   const plan = useMemo(() => housingBudgetPlan(option, validMonths ? m : 1), [option, validMonths, m]);
   const cat = (k: string) => Number(budget?.categories?.find((c) => c.key === k)?.planned) || 0;
-  const newFees = Math.round(Math.max(0, cat("fees") - (previous?.deposit ?? 0)) + plan.deposit);
+
 
   const confirm = () => {
     if (!budget?.categories || !validMonths) return;
     const categories = applyHousingToBudget(budget.categories, plan, previous);
     try {
       localStorage.setItem(key, JSON.stringify({ ...budget, categories, savedAt: Date.now() }));
-      localStorage.setItem(housingSyncKey(tripId), JSON.stringify({ optionId: option.id, accommodation: plan.accommodation, deposit: plan.deposit } satisfies HousingBudgetSync));
+      localStorage.setItem(housingSyncKey(tripId), JSON.stringify({ optionId: option.id, accommodation: plan.accommodation, deposit: plan.deposit, depositIn: "deposit" } satisfies HousingBudgetSync));
       window.dispatchEvent(new Event(PREP_PROGRESS_EVENT));
       toast.success(t("housing.budget.done"));
       onSynced();
@@ -107,7 +107,7 @@ const HousingBudgetDialog = ({ open, onOpenChange, option, tripId, destination, 
             <div className="rounded-xl border border-primary/30 bg-primary/10 p-3">
               <p className="font-semibold">{t("housing.budget.changesTitle")}</p>
               <p className="mt-1 text-muted-foreground">{t("housing.budget.accommodationLine", { before: fmt(cat("accommodation")), after: fmt(plan.accommodation) })}</p>
-              <p className="text-muted-foreground">{t("housing.budget.feesLine", { before: fmt(cat("fees")), after: fmt(newFees) })}</p>
+              <p className="text-muted-foreground">{t("housing.budget.depositLine", { before: fmt(cat("deposit")), after: fmt(plan.deposit) })}</p>
               {previous && previous.optionId !== option.id && <p className="mt-2 font-medium">{t("housing.budget.replacesOther")}</p>}
             </div>
             <p className="text-xs text-muted-foreground">{t("housing.budget.depositNote")}</p>

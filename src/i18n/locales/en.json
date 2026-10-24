@@ -2863,7 +2863,10 @@
       "flights": "Round-trip transport",
       "insurance": "Insurance & health",
       "connectivity": "Internet & eSIM",
-      "fees": "Bank fees & tips"
+      "fees": "Bank fees & tips",
+      "deposit": "Housing deposit",
+      "setup": "Moving in",
+      "returnFees": "Return costs"
     },
     "payments": {
       "card": "Credit card",
@@ -6905,13 +6908,13 @@
       "deposit": "Deposit (possibly refundable)",
       "changesTitle": "What will change in your budget",
       "accommodationLine": "Housing: {{before}} → {{after}} (replaced)",
-      "feesLine": "Fees (incl. deposit): {{before}} → {{after}}",
       "replacesOther": "These amounts replace those of another place sent earlier.",
-      "depositNote": "The deposit is kept separately under “Fees” because it may be returned at the end of your stay, depending on your contract.",
+      "depositNote": "The deposit has its own budget line because it may be returned at the end of your stay, depending on your contract.",
       "confirm": "Add to budget",
       "confirmReplace": "Replace in budget",
       "done": "Budget updated",
-      "error": "The budget could not be updated."
+      "error": "The budget could not be updated.",
+      "depositLine": "Deposit: {{before}} → {{after}} (separate line)"
     },
     "safety": {
       "items": {

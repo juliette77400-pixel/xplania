@@ -2863,7 +2863,10 @@
       "flights": "Transport aller-retour",
       "insurance": "Assurance & santé",
       "connectivity": "Internet & eSIM",
-      "fees": "Frais bancaires & pourboires"
+      "fees": "Frais bancaires & pourboires",
+      "deposit": "Caution du logement",
+      "setup": "Installation",
+      "returnFees": "Frais de retour"
     },
     "payments": {
       "card": "Carte bancaire",
@@ -6905,13 +6908,13 @@
       "deposit": "Caution (potentiellement récupérable)",
       "changesTitle": "Ce qui va changer dans ton budget",
       "accommodationLine": "Logement : {{before}} → {{after}} (remplacé)",
-      "feesLine": "Frais (dont caution) : {{before}} → {{after}}",
       "replacesOther": "Ces montants remplacent ceux d'un autre logement envoyé auparavant.",
-      "depositNote": "La caution est rangée à part dans « Frais » car elle peut t'être rendue à la fin du séjour, selon ton contrat.",
+      "depositNote": "La caution a sa propre ligne dans le budget car elle peut t'être rendue à la fin du séjour, selon ton contrat.",
       "confirm": "Ajouter au budget",
       "confirmReplace": "Remplacer dans le budget",
       "done": "Budget mis à jour",
-      "error": "Impossible de mettre à jour le budget."
+      "error": "Impossible de mettre à jour le budget.",
+      "depositLine": "Caution : {{before}} → {{after}} (ligne à part)"
     },
     "safety": {
       "items": {
