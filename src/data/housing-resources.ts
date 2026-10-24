@@ -26,6 +26,8 @@ export const HOUSING_RESOURCES: HousingResource[] = [
   { id: "erasmusplus", name: "Erasmus+ (Commission européenne)", url: "https://erasmus-plus.ec.europa.eu/fr/opportunities/opportunities-for-individuals/students", category: "money", countries: ["EU"] },
   { id: "eccnet", name: "Centres européens des consommateurs (ECC-Net)", url: "https://www.eccnet.eu", category: "fraud", countries: ["EU"] },
   { id: "youreurope", name: "L'Europe est à vous (Your Europe)", url: "https://europa.eu/youreurope/citizens/consumers/unfair-treatment/index_fr.htm", category: "fraud", countries: ["EU"] },
+  // Student association (not a public body) — local sections welcome incoming Erasmus students.
+  { id: "esn", name: "Erasmus Student Network (ESN)", url: "https://esn.org/sections", category: "institutional", countries: ["EU"] },
   { id: "youthportal", name: "Portail européen de la jeunesse", url: "https://youth.europa.eu/home_fr", category: "institutional", countries: ["EU"] },
 
   // France
