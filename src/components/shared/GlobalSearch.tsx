@@ -17,7 +17,7 @@ import {
   Compass, Heart, Map, Activity, Briefcase, BookOpen, Wallet, FileText,
   LayoutDashboard, User as UserIcon, Award, Sparkles,
   Dna,
-  Globe,
+  Globe, BedDouble,
 } from "lucide-react";
 
 interface CmdEntry {
@@ -36,6 +36,7 @@ const ALL_ENTRIES: CmdEntry[] = [
   { to: "/explore", labelKey: "appNav.explore", groupKey: "globalSearch.groupExplore", icon: Map, keywords: "carte map travel" },
   { to: "/suivi", labelKey: "appNav.tracking", groupKey: "globalSearch.groupTrip", icon: Activity, keywords: "gps live tracking suivi" },
   { to: "/guide-culture", labelKey: "appNav.culture", groupKey: "globalSearch.groupTools", icon: Globe, keywords: "culture culturel codes usages etiquette customs" },
+  { to: "/guide-logement", labelKey: "appNav.housing", groupKey: "globalSearch.groupTools", icon: BedDouble, keywords: "logement housing appartement colocation résidence chambre loyer rent flat room" },
   { to: "/carnets", labelKey: "appNav.journal", groupKey: "globalSearch.groupTrip", icon: BookOpen, keywords: "journal carnet bord" },
   { to: "/profil-voyageur", labelKey: "appNav.dna", groupKey: "globalSearch.groupPrepare", icon: Dna, keywords: "adn voyageur dna tinder quiz profil swipe" },
   { to: "/guide-valise", labelKey: "appNav.suitcase", groupKey: "globalSearch.groupTools", icon: Briefcase, keywords: "valise bagage checklist" },
