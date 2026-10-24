@@ -91,14 +91,14 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
             </p>
           )}
           <div className="grid gap-4 sm:grid-cols-2">
-            <CountryCombobox label={t("visa2.profile.destination")} value={draft.destinationCode} onChange={(c) => set("destinationCode", c)} />
+            <CountryCombobox key={`d-${draft.destinationCode}`} label={t("visa2.profile.destination")} value={draft.destinationCode} onChange={(c) => set("destinationCode", c)} />
             <div className="space-y-1.5">
               <Label htmlFor="vp-city">{t("visa2.profile.city")}</Label>
               <Input id="vp-city" className="h-12 text-base" value={draft.city} onChange={(e) => set("city", e.target.value)} />
             </div>
-            <CountryCombobox label={t("visa2.profile.nationality")} value={draft.nationality} onChange={(c) => set("nationality", c)} />
-            <CountryCombobox label={t("visa2.profile.secondNationality")} value={draft.secondNationality} onChange={(c) => set("secondNationality", c)} placeholder={t("prepQuiz.origin.secondPlaceholder")} />
-            <CountryCombobox label={t("visa2.profile.residence")} value={draft.residence} onChange={(c) => set("residence", c)} />
+            <CountryCombobox key={`n-${draft.nationality}`} label={t("visa2.profile.nationality")} value={draft.nationality} onChange={(c) => set("nationality", c)} />
+            <CountryCombobox key={`s-${draft.secondNationality}`} label={t("visa2.profile.secondNationality")} value={draft.secondNationality} onChange={(c) => set("secondNationality", c)} placeholder={t("prepQuiz.origin.secondPlaceholder")} />
+            <CountryCombobox key={`r-${draft.residence}`} label={t("visa2.profile.residence")} value={draft.residence} onChange={(c) => set("residence", c)} />
           </div>
 
           <fieldset className="space-y-2">
