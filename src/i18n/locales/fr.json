@@ -5955,7 +5955,18 @@
     },
     "emptyState": "Aucune donnée pour l'instant — les visiteurs qui acceptent les cookies apparaîtront ici.",
     "restrictedTitle": "Accès réservé",
-    "restrictedDesc": "Cette page est réservée à l'administratrice."
+    "restrictedDesc": "Cette page est réservée à l'administratrice.",
+    "beta": {
+      "title": "Entonnoir bêta (questionnaire → tableau de bord → guides)",
+      "desc": "Nombre de sessions, uniquement pour les personnes ayant accepté les statistiques.",
+      "quizStarted": "Questionnaire commencé",
+      "stepReached": "Étape {{n}} validée",
+      "quizCompleted": "Questionnaire terminé",
+      "dashboard": "Tableau de bord ouvert",
+      "guide": "Guide",
+      "started": "Commencé",
+      "acted": "Action réalisée"
+    }
   },
   "help": {
     "label": "Un souci ?",

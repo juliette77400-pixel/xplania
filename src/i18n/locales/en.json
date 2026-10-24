@@ -5955,7 +5955,18 @@
     },
     "emptyState": "No data yet — visitors who accept cookies will show up here.",
     "restrictedTitle": "Restricted access",
-    "restrictedDesc": "This page is for the administrator only."
+    "restrictedDesc": "This page is for the administrator only.",
+    "beta": {
+      "title": "Beta funnel (questionnaire → dashboard → guides)",
+      "desc": "Number of sessions, only for people who accepted analytics.",
+      "quizStarted": "Questionnaire started",
+      "stepReached": "Step {{n}} validated",
+      "quizCompleted": "Questionnaire completed",
+      "dashboard": "Dashboard opened",
+      "guide": "Guide",
+      "started": "Started",
+      "acted": "Action done"
+    }
   },
   "help": {
     "label": "Need help?",

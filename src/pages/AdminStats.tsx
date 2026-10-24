@@ -107,7 +107,23 @@ export default function AdminStats() {
       dropoff: i === 0 ? 0 : Math.max(0, (funnel[i - 1]?.sessions || 0) - f.sessions),
     }));
 
+    // Beta funnel: preparation questionnaire → dashboard → the four guides.
+    const sessionsOf = (pred: (r: EventRow) => boolean) => new Set(list.filter(pred).map((r) => r.session_id)).size;
+    const isPrep = (r: EventRow) => r.props?.flow === "prep" || r.props?.flow === "prep_quiz";
+    const beta = {
+      quizStarted: sessionsOf((r) => r.event === "quiz_started" && isPrep(r)),
+      steps: [1, 2, 3, 4, 5, 6].map((n) => sessionsOf((r) => r.event === "quiz_step" && Number(r.props?.index) >= n)),
+      quizCompleted: sessionsOf((r) => r.event === "quiz_completed" && isPrep(r)),
+      dashboard: sessionsOf((r) => r.event === "dashboard_viewed"),
+      modules: (["budget", "visa", "valise", "culture"] as const).map((m) => ({
+        module: m,
+        started: sessionsOf((r) => r.event === "guide_started" && r.props?.module === m),
+        acted: sessionsOf((r) => r.event === "guide_action" && r.props?.module === m),
+      })),
+    };
+
     return {
+      beta,
       uniqueVisitors: uniqueSessions.size,
       pageViewsCount: pageViews.length,
       signupsCount: signups.size,
@@ -225,6 +241,27 @@ export default function AdminStats() {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className="rounded-2xl border border-border bg-card p-4">
+              <h2 className="text-sm font-semibold mb-1">{t("adminStats.beta.title")}</h2>
+              <p className="text-xs text-muted-foreground mb-3">{t("adminStats.beta.desc")}</p>
+              <ul className="space-y-1.5 text-sm">
+                <li className="flex justify-between"><span>{t("adminStats.beta.quizStarted")}</span><span className="font-semibold">{stats.beta.quizStarted}</span></li>
+                {stats.beta.steps.map((n, i) => (
+                  <li key={i} className="flex justify-between pl-4 text-muted-foreground"><span>{t("adminStats.beta.stepReached", { n: i + 1 })}</span><span>{n}</span></li>
+                ))}
+                <li className="flex justify-between"><span>{t("adminStats.beta.quizCompleted")}</span><span className="font-semibold">{stats.beta.quizCompleted}{stats.beta.quizStarted ? ` · ${Math.round((stats.beta.quizCompleted / stats.beta.quizStarted) * 100)}%` : ""}</span></li>
+                <li className="flex justify-between"><span>{t("adminStats.beta.dashboard")}</span><span className="font-semibold">{stats.beta.dashboard}</span></li>
+              </ul>
+              <table className="mt-4 w-full text-sm">
+                <thead><tr className="text-left text-xs text-muted-foreground"><th className="py-1 font-medium">{t("adminStats.beta.guide")}</th><th className="py-1 font-medium">{t("adminStats.beta.started")}</th><th className="py-1 font-medium">{t("adminStats.beta.acted")}</th></tr></thead>
+                <tbody>
+                  {stats.beta.modules.map((m) => (
+                    <tr key={m.module} className="border-t border-border/50"><td className="py-1.5">{t(`prepDashboard.modules.${m.module}.title`)}</td><td>{m.started}</td><td>{m.acted}</td></tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </>
         )}
