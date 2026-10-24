@@ -218,7 +218,7 @@ const GuideVisaPage = () => {
     } finally {
       setIsGenerating(false);
     }
-  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType, t, i18n.language, reached, consume]);
+  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType, tripData?.stayType, tripData?.residence, tripData?.secondNationality, tripData?.tripTypes, isFr, t, i18n.language, reached, consume]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideVisa.regenLoading"), { id: "regen-visa" });
