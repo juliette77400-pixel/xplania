@@ -11,9 +11,9 @@ const BENEFITS = [
 const BenefitsSection = () => {
   const { t } = useTranslation();
   return (
-    <section aria-labelledby="benefits-title" className="px-4 py-20 sm:py-24">
+    <section aria-labelledby="benefits-title" className="border-y border-border/60 bg-card/25 px-4 py-20 sm:py-24">
       <div className="mx-auto max-w-5xl">
-        <h2 id="benefits-title" className="mx-auto max-w-3xl text-center text-3xl font-extrabold tracking-tight sm:text-5xl">{t("prepLanding.benefits.title")}</h2>
+        <h2 id="benefits-title" className="mx-auto max-w-3xl text-balance text-center text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">{t("prepLanding.benefits.title")}</h2>
         <ul className="mt-12 grid gap-5 md:grid-cols-3">
           {BENEFITS.map(({ key, icon: Icon }, i) => (
             <motion.li key={key} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .1 }}
