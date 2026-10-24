@@ -3112,6 +3112,7 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_admin: { Args: never; Returns: boolean }
+      is_public_journal_media: { Args: { _name: string }; Returns: boolean }
       is_public_place_list: { Args: { _list_id: string }; Returns: boolean }
       list_place_ratings_public: {
         Args: { _place_id: string }
