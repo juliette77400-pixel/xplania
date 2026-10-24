@@ -24,6 +24,7 @@ interface Trip {
   destination: string | null;
   departure_date: string | null;
   return_date: string | null;
+  form_data?: unknown;
 }
 
 interface Props {
@@ -144,77 +145,11 @@ import { Save } from "lucide-react";
 import { useEffect } from "react";
 import { useUpdateTrip } from "@/hooks/useUpdateTrip";
 
+// Editing a trip now covers every answer of the preparation questionnaire.
+import PrepTripEditDialog from "@/components/shared/PrepTripEditDialog";
+
 const EditDialogControlled = ({
   trip, open, setOpen, onUpdated,
-}: { trip: Trip; open: boolean; setOpen: (v: boolean) => void; onUpdated?: () => void }) => {
-  const { t } = useTranslation();
-  const { updateTrip, updating } = useUpdateTrip();
-  const [title, setTitle] = useState(trip.title || "");
-  const [destination, setDestination] = useState(trip.destination || "");
-  const [dep, setDep] = useState(trip.departure_date || "");
-  const [ret, setRet] = useState(trip.return_date || "");
-
-  useEffect(() => {
-    if (open) {
-      setTitle(trip.title || "");
-      setDestination(trip.destination || "");
-      setDep(trip.departure_date || "");
-      setRet(trip.return_date || "");
-    }
-  }, [open, trip]);
-
-  const handleSave = async () => {
-    const ok = await updateTrip(trip.id, {
-      title: title.trim() || null,
-      destination: destination.trim() || null,
-      departure_date: dep || null,
-      return_date: ret || null,
-    });
-    if (ok) {
-      setOpen(false);
-      onUpdated?.();
-    }
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent onClick={(e) => e.stopPropagation()}>
-        <DialogHeader>
-          <DialogTitle>{t("ui2.TripActionsMenu.editTripTitle")}</DialogTitle>
-          <DialogDescription>
-            {t("ui2.TripActionsMenu.editTripDesc")}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-3 py-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="tam-title">{t("ui2.TripActionsMenu.labelTitle")}</Label>
-            <Input id="tam-title" value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="tam-dest">{t("ui2.TripActionsMenu.labelDestination")}</Label>
-            <Input id="tam-dest" value={destination} onChange={(e) => setDestination(e.target.value)} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="tam-dep">{t("ui2.TripActionsMenu.labelDeparture")}</Label>
-              <Input id="tam-dep" type="date" value={dep} onChange={(e) => setDep(e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="tam-ret">{t("ui2.TripActionsMenu.labelReturn")}</Label>
-              <Input id="tam-ret" type="date" value={ret} onChange={(e) => setRet(e.target.value)} min={dep || undefined} />
-            </div>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={updating}>{t("ui2.TripActionsMenu.cancel")}</Button>
-          <Button onClick={handleSave} disabled={updating} className="gradient-button">
-            {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-            {t("ui2.TripActionsMenu.save")}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-export default TripActionsMenu;
+}: { trip: Trip; open: boolean; setOpen: (v: boolean) => void; onUpdated?: () => void }) => (
+  <PrepTripEditDialog trip={trip} open={open} setOpen={setOpen} onUpdated={onUpdated} />
+);
