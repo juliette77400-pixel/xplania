@@ -18,7 +18,7 @@ export interface Expense {
   date: string;
 }
 
-const categoryKeys = ["accommodation", "localTransport", "activities", "food", "shopping", "extras", "unexpected", "flights", "insurance", "connectivity", "fees"] as const;
+const categoryKeys = ["accommodation", "localTransport", "activities", "food", "shopping", "extras", "unexpected", "flights", "insurance", "connectivity", "fees", "deposit", "setup", "returnFees"] as const;
 const paymentKeys = [
   { value: "card", icon: CreditCard },
   { value: "cash", icon: Banknote },

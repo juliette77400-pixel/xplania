@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { budgetRecommendations, changedLines, simulateBudget, summarizeBudget } from "@/lib/budget-math";
+import { emptyIncomes, budgetRecommendations, changedLines, simulateBudget, summarizeBudget } from "@/lib/budget-math";
 
 const lines = [
   { key: "flights", planned: 600, spent: 0 },
@@ -11,9 +11,9 @@ const lines = [
 ];
 
 describe("budget math", () => {
-  it("splits one-off costs (flights, insurance, fees) from monthly costs", () => {
+  it("splits costs paid before leaving (flights, insurance) from monthly costs", () => {
     const s = summarizeBudget(lines, [], 5000, 152);
-    expect(s.oneOff).toBe(800);
+    expect(s.before).toBe(800);
     expect(s.recurring).toBe(3750);
     expect(s.months).toBe(5);
     expect(s.monthly).toBe(750);
@@ -61,5 +61,38 @@ describe("budget math", () => {
   it("lists only the lines the simulator changes", () => {
     const { lines: next } = simulateBudget(lines, 152, { accommodationMonthly: 400, foodMonthly: 200, reservePct: 1 });
     expect(changedLines(lines, next).map((c) => c.key)).toEqual(["accommodation", "unexpected"]);
+  });
+
+  it("deposit and moving-in are paid before; return costs at the end", () => {
+    const long = [...lines, { key: "deposit", planned: 500, spent: 0 }, { key: "setup", planned: 150, spent: 0 }, { key: "returnFees", planned: 80, spent: 0 }];
+    const s = summarizeBudget(long, [], 5000, 152);
+    expect(s.before).toBe(1450);
+    expect(s.end).toBe(80);
+    expect(s.deposit).toBe(500);
+    expect(s.recurring).toBe(3750);
+  });
+
+  it("first month = everything paid before + one month of living costs", () => {
+    const long = [...lines, { key: "deposit", planned: 500, spent: 0 }];
+    expect(summarizeBudget(long, [], 5000, 152).firstMonth).toBe(1300 + 750);
+  });
+
+  it("Erasmus grant and internship pay add to resources over the whole stay", () => {
+    const s = summarizeBudget(lines, [], 2000, 152, { ...emptyIncomes(), grantMonthly: 400, payMonthly: 600, otherTotal: 300 });
+    expect(s.incomeMonthly).toBe(1000);
+    expect(s.incomeTotal).toBe(5300);
+    expect(s.resources).toBe(7300);
+    expect(s.margin).toBe(7300 - 4550);
+  });
+
+  it("warns when the first month costs more than the starting budget", () => {
+    const s = summarizeBudget(lines, [], 1000, 152);
+    expect(budgetRecommendations(lines, s, null).some((r) => r.id === "firstMonthTight")).toBe(true);
+  });
+
+  it("asks for incomes on long stays when none were given", () => {
+    const s = summarizeBudget(lines, [], 9000, 152);
+    expect(budgetRecommendations(lines, s, null, false).map((r) => r.id)).toContain("incomeMissing");
+    expect(budgetRecommendations(lines, s, null, true).map((r) => r.id)).not.toContain("incomeMissing");
   });
 });

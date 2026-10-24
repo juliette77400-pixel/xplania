@@ -1,5 +1,6 @@
-// Budget guide numbers: the five indicators, one-off vs monthly costs, the
-// three computed recommendations and the simulator. Pure functions only.
+// Budget guide numbers: indicators, costs before / during / after the stay,
+// money coming in during the stay, the first month, computed recommendations
+// and the simulator. Pure functions only.
 
 export interface BudgetLine {
   key: string;
@@ -11,65 +12,125 @@ export interface BudgetExpenseLike {
   amount: number;
 }
 
-/** Paid once before or at the start of the stay. Every other category repeats each month. */
-export const ONE_OFF_KEYS = ["flights", "insurance", "fees"] as const;
-const isOneOff = (key: string) => (ONE_OFF_KEYS as readonly string[]).includes(key);
+/** Paid before leaving or when arriving (tickets, insurance, fees, deposit, moving in). */
+export const BEFORE_KEYS = ["flights", "insurance", "fees", "deposit", "setup"] as const;
+/** Paid at the end of the stay. */
+export const END_KEYS = ["returnFees"] as const;
+const isBefore = (key: string) => (BEFORE_KEYS as readonly string[]).includes(key);
+const isEnd = (key: string) => (END_KEYS as readonly string[]).includes(key);
+const isOneOff = (key: string) => isBefore(key) || isEnd(key);
 
 export const DAYS_PER_MONTH = 30.44;
 
+/** Money coming in during the stay, on top of the starting budget. */
+export interface BudgetIncomes {
+  /** Erasmus or other grant, per month. */
+  grantMonthly: number;
+  /** Internship pay or student job, per month. */
+  payMonthly: number;
+  /** Family help, per month. */
+  familyMonthly: number;
+  /** Other one-off money (housing aid lump sum, gift…), total. */
+  otherTotal: number;
+}
+
+export const emptyIncomes = (): BudgetIncomes => ({ grantMonthly: 0, payMonthly: 0, familyMonthly: 0, otherTotal: 0 });
+
+export function sanitizeIncomes(raw: unknown): BudgetIncomes {
+  const r = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
+  const v = (k: keyof BudgetIncomes) => Math.max(0, Math.round(Number(r[k]) || 0));
+  return { grantMonthly: v("grantMonthly"), payMonthly: v("payMonthly"), familyMonthly: v("familyMonthly"), otherTotal: v("otherTotal") };
+}
+
 export interface BudgetSummary {
-  /** Budget the student gave in the questionnaire (0 = not given). */
+  /** Starting budget from the questionnaire (0 = not given). */
   budget: number;
+  /** Money coming in during the stay. */
+  incomeMonthly: number;
+  incomeTotal: number;
+  /** Starting budget + money coming in. */
+  resources: number;
   /** Sum of the estimated amounts of every category. */
   estimated: number;
   /** Sum of the payments the student recorded. */
   paid: number;
   /** Estimated minus paid (never below 0). */
   toPay: number;
-  /** Budget minus estimate (null when no budget was given). */
+  /** Resources minus estimate (null when neither a budget nor incomes were given). */
   margin: number | null;
-  oneOff: number;
+  before: number;
+  end: number;
   recurring: number;
+  /** Refundable part of "before" (housing deposit). */
+  deposit: number;
   /** Stay length in months (1 decimal), 0 when unknown. */
   months: number;
   /** Recurring costs per month, null for stays shorter than a month. */
   monthly: number | null;
+  /** Money needed for departure + arrival + the first month there. */
+  firstMonth: number;
 }
 
 const round = (n: number) => Math.round(n);
+const sumOf = (lines: BudgetLine[], pred: (k: string) => boolean) =>
+  round(lines.filter((l) => pred(l.key)).reduce((s, l) => s + (Number(l.planned) || 0), 0));
 
 export function monthsOf(days: number): number {
   return days > 0 ? Math.round((days / DAYS_PER_MONTH) * 10) / 10 : 0;
 }
 
-export function summarizeBudget(lines: BudgetLine[], expenses: BudgetExpenseLike[], budget: number, days: number): BudgetSummary {
-  const estimated = round(lines.reduce((s, l) => s + (Number(l.planned) || 0), 0));
+export function summarizeBudget(
+  lines: BudgetLine[],
+  expenses: BudgetExpenseLike[],
+  budget: number,
+  days: number,
+  incomes: BudgetIncomes = emptyIncomes(),
+): BudgetSummary {
+  const estimated = sumOf(lines, () => true);
   const paid = round(expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0));
-  const oneOff = round(lines.filter((l) => isOneOff(l.key)).reduce((s, l) => s + (Number(l.planned) || 0), 0));
-  const recurring = estimated - oneOff;
+  const before = sumOf(lines, isBefore);
+  const end = sumOf(lines, isEnd);
+  const recurring = estimated - before - end;
   const months = monthsOf(days);
+  const monthly = months >= 1 ? round(recurring / months) : null;
+  const incomeMonthly = incomes.grantMonthly + incomes.payMonthly + incomes.familyMonthly;
+  const incomeTotal = round(incomeMonthly * Math.max(months, incomeMonthly > 0 ? 1 : 0) + incomes.otherTotal);
+  const base = budget > 0 ? round(budget) : 0;
+  const resources = base + incomeTotal;
   return {
-    budget: budget > 0 ? round(budget) : 0,
+    budget: base,
+    incomeMonthly,
+    incomeTotal,
+    resources,
     estimated,
     paid,
     toPay: Math.max(0, estimated - paid),
-    margin: budget > 0 ? round(budget - estimated) : null,
-    oneOff,
+    margin: resources > 0 ? resources - estimated : null,
+    before,
+    end,
     recurring,
+    deposit: sumOf(lines, (k) => k === "deposit"),
     months,
-    monthly: months >= 1 ? round(recurring / months) : null,
+    monthly,
+    firstMonth: before + (monthly ?? recurring),
   };
 }
 
-export type RecommendationId = "overBudget" | "biggestShare" | "reserve" | "trackPayments" | "onTrack";
+export type RecommendationId =
+  | "overBudget" | "firstMonthTight" | "reserve" | "incomeMissing" | "biggestShare" | "trackPayments" | "onTrack";
 export interface Recommendation {
   id: RecommendationId;
   tone: "warn" | "info" | "good";
   values: Record<string, string | number>;
 }
 
-/** Up to three recommendations computed from the student's own numbers. */
-export function budgetRecommendations(lines: BudgetLine[], s: BudgetSummary, daysUntilDeparture: number | null): Recommendation[] {
+/** Up to three recommendations computed from the student's own numbers (most urgent first). */
+export function budgetRecommendations(
+  lines: BudgetLine[],
+  s: BudgetSummary,
+  daysUntilDeparture: number | null,
+  incomesGiven = false,
+): Recommendation[] {
   const out: Recommendation[] = [];
   const recurringLines = lines.filter((l) => !isOneOff(l.key) && l.key !== "unexpected");
   const biggest = [...recurringLines].sort((a, b) => b.planned - a.planned)[0];
@@ -78,13 +139,17 @@ export function budgetRecommendations(lines: BudgetLine[], s: BudgetSummary, day
     const cut = biggest ? round(Math.min(-s.margin, biggest.planned * 0.2)) : -s.margin;
     out.push({ id: "overBudget", tone: "warn", values: { amount: -s.margin, key: biggest?.key || "", cut } });
   }
-  if (biggest && s.estimated > 0) {
-    const share = round((biggest.planned / s.estimated) * 100);
-    if (share >= 35) out.push({ id: "biggestShare", tone: "info", values: { key: biggest.key, share } });
+  if (s.budget > 0 && s.months >= 1 && s.firstMonth > s.budget) {
+    out.push({ id: "firstMonthTight", tone: "warn", values: { amount: s.firstMonth, missing: s.firstMonth - s.budget } });
   }
   const reserve = lines.find((l) => l.key === "unexpected")?.planned ?? 0;
   const target = round(s.estimated * 0.05);
   if (s.estimated > 0 && reserve < target) out.push({ id: "reserve", tone: "warn", values: { current: round(reserve), target } });
+  if (s.months >= 1 && !incomesGiven) out.push({ id: "incomeMissing", tone: "info", values: {} });
+  if (biggest && s.estimated > 0) {
+    const share = round((biggest.planned / s.estimated) * 100);
+    if (share >= 35) out.push({ id: "biggestShare", tone: "info", values: { key: biggest.key, share } });
+  }
   if (s.paid === 0 && daysUntilDeparture !== null && daysUntilDeparture <= 90) out.push({ id: "trackPayments", tone: "info", values: { days: Math.max(0, daysUntilDeparture) } });
   if (out.length === 0 && s.margin !== null) out.push({ id: "onTrack", tone: "good", values: { amount: s.margin } });
   return out.slice(0, 3);

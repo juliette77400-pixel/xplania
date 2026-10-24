@@ -53,20 +53,28 @@ describe("assistant logement — coûts", () => {
 });
 
 describe("assistant logement — lien avec le budget", () => {
-  const cats = [{ key: "accommodation", planned: 3000 }, { key: "fees", planned: 300 }, { key: "food", planned: 900 }];
-  it("remplace la ligne logement et range la caution dans les frais", () => {
+  const cats = [{ key: "accommodation", planned: 3000 }, { key: "fees", planned: 300 }, { key: "deposit", planned: 0 }, { key: "food", planned: 900 }];
+  it("remplace la ligne logement et range la caution sur sa propre ligne", () => {
     const plan = housingBudgetPlan(home, 5);
     expect(plan.accommodation).toBe(550 * 5 + 200);
     const out = applyHousingToBudget(cats, plan, null);
     expect(out.find((c) => c.key === "accommodation")!.planned).toBe(2950);
-    expect(out.find((c) => c.key === "fees")!.planned).toBe(1300);
+    expect(out.find((c) => c.key === "deposit")!.planned).toBe(1000);
+    expect(out.find((c) => c.key === "fees")!.planned).toBe(300);
     expect(out.find((c) => c.key === "food")!.planned).toBe(900);
   });
   it("ne compte jamais deux fois la caution quand on refait l'opération", () => {
     const plan = housingBudgetPlan(home, 5);
     const once = applyHousingToBudget(cats, plan, null);
-    const twice = applyHousingToBudget(once, plan, { optionId: "a", accommodation: plan.accommodation, deposit: plan.deposit });
+    const twice = applyHousingToBudget(once, plan, { optionId: "a", accommodation: plan.accommodation, deposit: plan.deposit, depositIn: "deposit" });
     expect(twice).toEqual(once);
+  });
+  it("retire des frais une caution envoyée par l'ancienne version", () => {
+    const plan = housingBudgetPlan(home, 5);
+    const legacy = [{ key: "accommodation", planned: 2950 }, { key: "fees", planned: 1300 }, { key: "deposit", planned: 0 }];
+    const out = applyHousingToBudget(legacy, plan, { optionId: "a", accommodation: 2950, deposit: 1000 });
+    expect(out.find((c) => c.key === "fees")!.planned).toBe(300);
+    expect(out.find((c) => c.key === "deposit")!.planned).toBe(1000);
   });
 });
 

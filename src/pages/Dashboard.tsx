@@ -20,7 +20,8 @@ import { track } from "@/lib/analytics";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
 import { isPathEnabled } from "@/config/featureFlags";
 import { isHousingStatus } from "@/lib/housing";
-import { overallPercent, readTripProgress, moduleStatus, nextActionKey, PREP_PROGRESS_EVENT, type ModuleProgress, type ModuleStatus, type PrepModule } from "@/lib/prep-progress";
+import { buildNextSteps, readBudgetSnapshot, readVisaSnapshot } from "@/lib/next-steps";
+import { overallPercent, readTripProgress, moduleStatus, PREP_PROGRESS_EVENT, type ModuleProgress, type ModuleStatus, type PrepModule } from "@/lib/prep-progress";
 
 const MODULES: Array<{ key: PrepModule; to: string; icon: typeof Wallet }> = [
   { key: "budget", to: "/guide-budget", icon: Wallet },
@@ -135,11 +136,20 @@ const Dashboard = () => {
   const rawHousingStatus = (selected?.form_data as { housingStatus?: string } | null)?.housingStatus;
   const housingStatus = isHousingStatus(rawHousingStatus) ? rawHousingStatus : null;
 
-  const nextActions = progress
-    ? modules
-        .map((m) => ({ ...m, key: m.key, action: nextActionKey(m.key, progress[m.key]) }))
-        .filter((m): m is typeof m & { action: string } => !!m.action)
-    : [];
+  const nextSteps = useMemo(() => {
+    if (!progress || !selected) return [];
+    const form = (selected.form_data as { totalBudget?: number; duration?: string } | null) ?? null;
+    return buildNextSteps({
+      enabled: modules.map((m) => m.key),
+      progress,
+      visa: readVisaSnapshot(selected.id, selected.destination),
+      budget: readBudgetSnapshot(selected.destination, selected.departure_date, form, selected.duration),
+      housingStatus,
+    });
+    // progressTick (through progress) refreshes the list when a tool saves.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress, selected, housingStatus]);
+  const moduleOf = (k: PrepModule) => MODULES.find((m) => m.key === k)!;
 
   if (!loading && !selected) return <Navigate to="/preparation" replace />;
 
@@ -204,19 +214,25 @@ const Dashboard = () => {
               )}
             </Card>
 
-            {nextActions.length > 0 && (
+            {nextSteps.length > 0 && (
               <section aria-labelledby="next-title" className="rounded-2xl border border-border/70 bg-card/60 p-5">
                 <h2 id="next-title" className="flex items-center gap-2 text-lg font-bold"><ListTodo className="h-5 w-5 text-primary" />{t("prepDashboard.next.title")}</h2>
                 <ul className="mt-3 space-y-2">
-                  {nextActions.map(({ key, to, icon: Icon, action }) => (
-                    <li key={key}>
-                      <button type="button" onClick={() => void openModule(key, to)} className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-background/50 px-4 py-3 text-left text-sm transition-colors hover:border-primary/50">
+                  {nextSteps.map((step) => {
+                    const { to, icon: Icon } = moduleOf(step.module);
+                    return (
+                    <li key={step.id}>
+                      <button type="button" onClick={() => void openModule(step.module, to)} className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-background/50 px-4 py-3 text-left text-sm transition-colors hover:border-primary/50">
                         <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                        <span className="flex-1">{t(action)}</span>
+                        <span className="flex-1">
+                          <span className="block">{step.key ? t(step.key, step.vars) : step.text}</span>
+                          <span className="block text-[11px] text-muted-foreground">{t(`prepDashboard.modules.${step.module}.title`)}{step.urgency === 1 ? ` · ${t("prepDashboard.steps.urgent")}` : ""}</span>
+                        </span>
                         <ArrowRight className="h-4 w-4 text-muted-foreground" aria-hidden />
                       </button>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </section>
             )}

@@ -2863,7 +2863,10 @@
       "flights": "Transport aller-retour",
       "insurance": "Assurance & santé",
       "connectivity": "Internet & eSIM",
-      "fees": "Frais bancaires & pourboires"
+      "fees": "Frais bancaires & pourboires",
+      "deposit": "Caution du logement",
+      "setup": "Installation",
+      "returnFees": "Frais de retour"
     },
     "payments": {
       "card": "Carte bancaire",
@@ -6393,7 +6396,7 @@
       "done": "Terminé"
     },
     "next": {
-      "title": "Tes prochaines actions",
+      "title": "Ce qu'il te reste à préparer",
       "budgetStart": "Budget : génère ton estimation de dépenses",
       "budgetExpense": "Budget : note ta première dépense prévue",
       "visaStart": "Visa : affiche tes formalités et coche ta première démarche",
@@ -6410,6 +6413,16 @@
       "budget": "Tu n'as pas encore indiqué de budget : les montants affichés sont des exemples de départ.",
       "dates": "Tes dates ou ta durée ne sont pas encore connues : certains conseils restent généraux.",
       "cta": "Compléter mon séjour"
+    },
+    "steps": {
+      "urgent": "prioritaire",
+      "visaAnalyse": "Vérifie si tu as besoin d'un visa pour ton profil",
+      "visaMore": "Encore {{count}} démarches obligatoires dans ta checklist Visa",
+      "budgetStart": "Estime combien prévoir pour ton séjour",
+      "budgetOver": "Il manque {{amount}} € à tes ressources : ajuste ton budget",
+      "budgetFirstMonth": "Mets de côté {{amount}} € de plus pour ton premier mois",
+      "budgetIncome": "Ajoute ta bourse ou ta gratification au budget",
+      "housingFind": "Trouve et sécurise ton logement"
     }
   },
   "prepTrip": {
@@ -6905,13 +6918,13 @@
       "deposit": "Caution (potentiellement récupérable)",
       "changesTitle": "Ce qui va changer dans ton budget",
       "accommodationLine": "Logement : {{before}} → {{after}} (remplacé)",
-      "feesLine": "Frais (dont caution) : {{before}} → {{after}}",
       "replacesOther": "Ces montants remplacent ceux d'un autre logement envoyé auparavant.",
-      "depositNote": "La caution est rangée à part dans « Frais » car elle peut t'être rendue à la fin du séjour, selon ton contrat.",
+      "depositNote": "La caution a sa propre ligne dans le budget car elle peut t'être rendue à la fin du séjour, selon ton contrat.",
       "confirm": "Ajouter au budget",
       "confirmReplace": "Remplacer dans le budget",
       "done": "Budget mis à jour",
-      "error": "Impossible de mettre à jour le budget."
+      "error": "Impossible de mettre à jour le budget.",
+      "depositLine": "Caution : {{before}} → {{after}} (ligne à part)"
     },
     "safety": {
       "items": {
@@ -7152,21 +7165,25 @@
       "margin": "Marge",
       "marginOk": "Ce qu'il te reste si l'estimation est juste",
       "marginOver": "Ton estimation dépasse ton budget",
-      "marginNoBudget": "Indique ton budget pour la calculer"
+      "marginNoBudget": "Indique ton budget ou tes rentrées pour la calculer",
+      "resources": "Tes ressources",
+      "resourcesHint": "Budget {{budget}} + rentrées {{income}}"
     },
     "split": {
-      "oneOff": "Avant le départ (une fois)",
-      "oneOffHint": "Billets, assurance, frais",
+      "oneOff": "Avant le départ et à l'arrivée",
+      "oneOffHint": "Billets, assurance, frais, caution, installation",
       "monthly": "Chaque mois sur place",
       "monthlyHint": "Logement, nourriture, transports… sur {{months}} mois",
       "shortStay": "Séjour de moins d'un mois",
       "total": "Total du séjour",
-      "totalHint": "Estimation, à ajuster"
+      "totalHint": "Estimation, à ajuster",
+      "end": "Au retour",
+      "endHint": "Fin de bail, bagages… · total du séjour {{total}}"
     },
     "reco": {
       "title": "3 actions pour ton budget",
       "overBudget": {
-        "title": "Il manque {{amount}} € à ton budget",
+        "title": "Il manque {{amount}} € à tes ressources",
         "body": "Ton plus gros poste est « {{category}} » : réduire de {{cut}} € t'aiderait déjà. Sinon, augmente ton budget."
       },
       "biggestShare": {
@@ -7184,6 +7201,14 @@
       "onTrack": {
         "title": "Ton budget tient",
         "body": "Il te reste {{amount}} € de marge selon ton estimation."
+      },
+      "firstMonthTight": {
+        "title": "Ton premier mois coûte {{amount}} €",
+        "body": "C'est {{missing}} € de plus que ton budget de départ. Mets cette somme de côté ou demande une avance sur ta bourse."
+      },
+      "incomeMissing": {
+        "title": "Ajoute ta bourse ou ta gratification",
+        "body": "Sans tes rentrées d'argent, la marge ne reflète pas ta vraie situation. Renseigne-les plus bas."
       }
     },
     "sim": {
@@ -7219,6 +7244,25 @@
     "charts": {
       "split": "Répartition de l'estimation",
       "noPayments": "Aucun paiement noté pour l'instant. Ajoute-en un pour voir tes dépenses jour par jour."
+    },
+    "first": {
+      "title": "Ton premier mois",
+      "detail": "{{before}} avant le départ et à l'arrivée + {{month}} de dépenses du premier mois.",
+      "deposit": "Dont {{amount}} de caution, en principe rendue à la fin du bail.",
+      "tight": "C'est {{missing}} de plus que ton budget de départ : prévois cette somme avant de partir.",
+      "incomeNote": "Tes rentrées ({{amount}}/mois) n'arrivent souvent qu'après quelques semaines : compte sur ton budget de départ pour ce premier mois."
+    },
+    "incomes": {
+      "title": "Tes rentrées d'argent pendant le séjour",
+      "help": "En plus de ton budget de départ. Laisse à 0 ce qui ne te concerne pas.",
+      "grantMonthly": "Bourse Erasmus ou autre bourse",
+      "payMonthly": "Gratification de stage ou job",
+      "familyMonthly": "Aide de la famille",
+      "otherTotal": "Autre (aide au logement, prime…), au total",
+      "note": "Les montants mensuels sont comptés sur {{months}} mois.",
+      "noteShort": "Séjour de moins d'un mois : chaque montant mensuel compte une fois.",
+      "save": "Enregistrer mes rentrées",
+      "saved": "Rentrées enregistrées"
     }
   }
 }

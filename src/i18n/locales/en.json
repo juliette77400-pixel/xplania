@@ -2863,7 +2863,10 @@
       "flights": "Round-trip transport",
       "insurance": "Insurance & health",
       "connectivity": "Internet & eSIM",
-      "fees": "Bank fees & tips"
+      "fees": "Bank fees & tips",
+      "deposit": "Housing deposit",
+      "setup": "Moving in",
+      "returnFees": "Return costs"
     },
     "payments": {
       "card": "Credit card",
@@ -6393,7 +6396,7 @@
       "done": "Done"
     },
     "next": {
-      "title": "Your next actions",
+      "title": "What's left to prepare",
       "budgetStart": "Budget: generate your expense estimate",
       "budgetExpense": "Budget: record your first planned expense",
       "visaStart": "Visa: view your paperwork and tick your first step",
@@ -6410,6 +6413,16 @@
       "budget": "You haven't entered a budget yet: the amounts shown are starting examples.",
       "dates": "Your dates or length are not known yet: some tips stay general.",
       "cta": "Complete my stay"
+    },
+    "steps": {
+      "urgent": "priority",
+      "visaAnalyse": "Check whether you need a visa for your profile",
+      "visaMore": "{{count}} more required steps in your Visa checklist",
+      "budgetStart": "Estimate how much to plan for your stay",
+      "budgetOver": "Your resources are short by {{amount}} €: adjust your budget",
+      "budgetFirstMonth": "Set aside {{amount}} € more for your first month",
+      "budgetIncome": "Add your grant or internship pay to the budget",
+      "housingFind": "Find and secure your housing"
     }
   },
   "prepTrip": {
@@ -6905,13 +6918,13 @@
       "deposit": "Deposit (possibly refundable)",
       "changesTitle": "What will change in your budget",
       "accommodationLine": "Housing: {{before}} → {{after}} (replaced)",
-      "feesLine": "Fees (incl. deposit): {{before}} → {{after}}",
       "replacesOther": "These amounts replace those of another place sent earlier.",
-      "depositNote": "The deposit is kept separately under “Fees” because it may be returned at the end of your stay, depending on your contract.",
+      "depositNote": "The deposit has its own budget line because it may be returned at the end of your stay, depending on your contract.",
       "confirm": "Add to budget",
       "confirmReplace": "Replace in budget",
       "done": "Budget updated",
-      "error": "The budget could not be updated."
+      "error": "The budget could not be updated.",
+      "depositLine": "Deposit: {{before}} → {{after}} (separate line)"
     },
     "safety": {
       "items": {
@@ -7152,21 +7165,25 @@
       "margin": "Margin",
       "marginOk": "What's left if the estimate is right",
       "marginOver": "Your estimate is over your budget",
-      "marginNoBudget": "Add your budget to compute it"
+      "marginNoBudget": "Add your budget or income to compute it",
+      "resources": "Your resources",
+      "resourcesHint": "Budget {{budget}} + income {{income}}"
     },
     "split": {
-      "oneOff": "Before leaving (one-off)",
-      "oneOffHint": "Tickets, insurance, fees",
+      "oneOff": "Before leaving and on arrival",
+      "oneOffHint": "Tickets, insurance, fees, deposit, moving in",
       "monthly": "Each month there",
       "monthlyHint": "Housing, food, transport… over {{months}} months",
       "shortStay": "Stay shorter than a month",
       "total": "Whole stay",
-      "totalHint": "Estimate, to adjust"
+      "totalHint": "Estimate, to adjust",
+      "end": "At the end",
+      "endHint": "End of lease, luggage… · whole stay {{total}}"
     },
     "reco": {
       "title": "3 actions for your budget",
       "overBudget": {
-        "title": "Your budget is short by {{amount}} €",
+        "title": "Your resources are short by {{amount}} €",
         "body": "Your biggest cost is \"{{category}}\": cutting {{cut}} € would already help. Otherwise, raise your budget."
       },
       "biggestShare": {
@@ -7184,6 +7201,14 @@
       "onTrack": {
         "title": "Your budget holds",
         "body": "You have {{amount}} € of margin according to your estimate."
+      },
+      "firstMonthTight": {
+        "title": "Your first month costs {{amount}} €",
+        "body": "That's {{missing}} € more than your starting budget. Set it aside or ask for an advance on your grant."
+      },
+      "incomeMissing": {
+        "title": "Add your grant or internship pay",
+        "body": "Without your income, the margin doesn't reflect your real situation. Fill it in below."
       }
     },
     "sim": {
@@ -7219,6 +7244,25 @@
     "charts": {
       "split": "Estimate breakdown",
       "noPayments": "No payment recorded yet. Add one to see your spending day by day."
+    },
+    "first": {
+      "title": "Your first month",
+      "detail": "{{before}} before leaving and on arrival + {{month}} of first-month spending.",
+      "deposit": "Including {{amount}} deposit, normally returned at the end of the lease.",
+      "tight": "That's {{missing}} more than your starting budget: plan this amount before leaving.",
+      "incomeNote": "Your income ({{amount}}/month) often arrives after a few weeks: rely on your starting budget for this first month."
+    },
+    "incomes": {
+      "title": "Money coming in during your stay",
+      "help": "On top of your starting budget. Leave 0 for what doesn't apply.",
+      "grantMonthly": "Erasmus or other grant",
+      "payMonthly": "Internship pay or job",
+      "familyMonthly": "Family help",
+      "otherTotal": "Other (housing aid, bonus…), total",
+      "note": "Monthly amounts are counted over {{months}} months.",
+      "noteShort": "Stay under a month: each monthly amount counts once.",
+      "save": "Save my income",
+      "saved": "Income saved"
     }
   }
 }
