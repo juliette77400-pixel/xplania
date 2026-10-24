@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useQuery } from "@tanstack/react-query";
@@ -165,6 +165,7 @@ export default function AdminStats() {
           <div>
             <h1 className="text-2xl font-bold">{t("adminStats.pageTitle")}</h1>
             <p className="text-sm text-muted-foreground">{t("adminStats.pageDesc")}</p>
+            <Link to="/admin/sources" className="mt-1 inline-block text-sm font-semibold text-primary underline">{t("adminSources.link")}</Link>
           </div>
           <div className="flex gap-2">
             {([7, 30] as const).map((p) => (

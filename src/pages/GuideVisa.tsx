@@ -156,7 +156,7 @@ const GuideVisaPage = () => {
       if (invErr) {
         const status = (invErr as { context?: { status?: number } })?.context?.status;
         if (status === 402) { setShowUpgrade(true); return; }
-        if (status === 401) { window.location.assign(`/auth?redirect=${encodeURIComponent("/guide-visa")}`); return; }
+        if (status === 401) { window.location.assign(`/auth?next=${encodeURIComponent("/guide-visa")}`); return; }
         throw new Error(await friendlyInvokeError(invErr));
       }
       const result = normalizeAnalysis(data);
@@ -217,6 +217,7 @@ const GuideVisaPage = () => {
             onRefresh={refreshOfficial}
             days={days}
             isFrenchNational={isFrench}
+            destinationCode={profile.destinationCode}
           />
         )}
 

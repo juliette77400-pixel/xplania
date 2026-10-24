@@ -43,6 +43,8 @@ export interface OfficialResult {
   changed?: boolean;
   fetchedAt: string;
   lastVerifiedAt?: string | null;
+  /** Set when someone from Xplania re-read this summary against the official pages. */
+  reviewedAt?: string | null;
   sources: OfficialSource[];
   content: OfficialContent | null;
 }

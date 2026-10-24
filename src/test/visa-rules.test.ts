@@ -60,3 +60,18 @@ describe("visa rules", () => {
     expect(a?.visa.status).toBe("to_verify");
   });
 });
+
+import { entrySourceFor } from "@/data/entry-sources";
+describe("sources officielles d'entrée", () => {
+  it("chaque site d'entrée est sur un domaine officiel en https", () => {
+    for (const c of ["GB", "US", "CA", "AU", "JP", "KR", "CN", "SG", "MX", "BR", "MA", "CH"]) {
+      expect(entrySourceFor(c)?.url).toMatch(/^https:\/\//);
+    }
+  });
+  it("les pays de l'espace Schengen/UE renvoient vers la Commission européenne", () => {
+    expect(entrySourceFor("ES")?.url).toContain("home-affairs.ec.europa.eu");
+  });
+  it("aucun site inventé pour un pays non vérifié", () => {
+    expect(entrySourceFor("ZZ")).toBeNull();
+  });
+});
