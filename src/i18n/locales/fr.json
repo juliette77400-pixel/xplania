@@ -4571,6 +4571,11 @@
       "marketing": {
         "title": "Actualités Xplania",
         "hint": "Nouveautés produit et conseils voyage. Tu peux te désinscrire à tout moment."
+      },
+      "reminders": {
+        "title": "Rappels avant le départ",
+        "hint": "Un email 2 mois avant (visa, logement, budget) et 7 jours avant ton départ (formalités).",
+        "error": "Impossible d'enregistrer ton choix. Réessaie."
       }
     },
     "data": {

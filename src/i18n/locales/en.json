@@ -4571,6 +4571,11 @@
       "marketing": {
         "title": "Xplania updates",
         "hint": "Product news and travel tips. You can unsubscribe anytime."
+      },
+      "reminders": {
+        "title": "Departure reminders",
+        "hint": "An email 2 months before (visa, housing, budget) and 7 days before you leave (paperwork).",
+        "error": "Could not save your choice. Try again."
       }
     },
     "data": {
