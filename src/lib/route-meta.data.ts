@@ -32,7 +32,7 @@ export const META: Record<string, Meta> = {
   },
   "/offres": {
     fr: ["Offres et packs — Xplania", "Teste gratuitement Budget, Visa, Valise, Guide interculturel et Logement, puis choisis le pack Administratif ou Interculturel."],
-    en: ["Offers & packs — Xplania", "Test Budget, Visa, Packing and the Intercultural guide for free, then pick the Admin or Intercultural pack."],
+    en: ["Offers & packs — Xplania", "Test Budget, Visa, Packing, the Intercultural guide and Housing for free, then pick the Admin or Intercultural pack."],
   },
   "/mood": {
     fr: ["Mood Explorer — Xplania", "Choisis ton humeur du moment et reçois des lieux à découvrir qui te correspondent vraiment."],

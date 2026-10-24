@@ -5,21 +5,22 @@
 ## How it works
 
 1. Create an account (free during the beta).
-2. Enter the trip: destination, dates or length of stay, nationality, approximate budget and type of stay (Erasmus/exchange, internship, trip).
-3. Prepare with the four tools below; a dashboard shows progress in each one and an email reminder is sent 7 days before departure.
+2. Enter the trip: destination, dates or length of stay, nationality, approximate budget, type of stay (Erasmus/exchange, internship, trip) and housing search status.
+3. Prepare with the five tools below; a dashboard shows progress in each one and an email reminder is sent 7 days before departure.
 
-## The four preparation tools
+## The five preparation tools
 
 - Budget guide (/guide-budget): realistic budget for the destination and length of stay in 3 scenarios (economy, realistic, comfort), planned-expense tracking with charts, saving tips, PDF export.
 - Visa & paperwork guide (/guide-visa): visa formalities for the traveler's nationality, recommended vaccines and safety advice summarized from official sources (France Diplomatie, Institut Pasteur, WHO), with a document checklist. Always check official sites before travelling.
 - Packing list (/guide-valise): checklist adapted to the destination's weather, the length and the type of stay, outfit ideas and missing-item check.
 - Culture guide (/guide-culture): cultural codes of the destination country — dress, food and table manners, gestures, greetings — with real-life situations, a tip of the day and a mini-quiz. Ready-made sheets for 10 countries; other countries are written by AI on demand.
+- Housing assistant (/guide-logement): where to look (hand-checked real websites, no partnership), a comparator for places spotted elsewhere, anti-scam checklist and move-in steps adapted to the search status. No listings, no booking, no AI.
 
-Ping, Xplania's assistant, answers questions about these four topics only.
+Ping, Xplania's assistant, answers questions about budget, visa, packing and culture only.
 
 ## Access
 
-- Beta: free, no card required, up to 10 AI generations per tool per month (a failed generation is given back).
+- Beta: free, no card required, up to 10 AI generations per AI tool per month (the Housing assistant uses no AI) (a failed generation is given back).
 - Packs (payments not active yet): Admin pack (budget, visa, packing) and Intercultural pack (culture guide), shown on /offres.
 
 ## Privacy
