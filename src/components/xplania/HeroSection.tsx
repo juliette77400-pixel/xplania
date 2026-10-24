@@ -51,12 +51,12 @@ const HeroSection = ({ onCreateTrip }: Props) => {
           <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-br from-secondary/20 to-primary/20 blur-3xl" />
           <figure aria-label={t("prepLanding.hero.previewAria")} className="rounded-[2rem] border border-border/60 bg-card/80 p-3 shadow-2xl backdrop-blur-xl">
             <div className="rounded-[1.45rem] border border-border/70 bg-background/80 p-5 sm:p-6">
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                 <div className="min-w-0">
                   <p className="flex items-center gap-1.5 text-lg font-bold"><MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden />{t("prepLanding.hero.previewPlace")}</p>
                   <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground"><GraduationCap className="h-4 w-4 shrink-0" aria-hidden />{t("prepLanding.hero.previewStay")}</p>
                 </div>
-                <span className="shrink-0 rounded-full border border-border/70 bg-muted/50 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">{t("prepLanding.hero.previewLabel")}</span>
+                <span className="shrink-0 self-start rounded-full border border-border/70 bg-muted/50 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">{t("prepLanding.hero.previewLabel")}</span>
               </div>
               <ul className="mt-5 grid gap-2">
                 {PREVIEW.map(({ key, icon: Icon, state }, i) => {
