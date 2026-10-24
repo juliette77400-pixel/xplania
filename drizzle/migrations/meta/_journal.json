@@ -176,6 +176,13 @@
       "when": 1792873510812,
       "tag": "0024_harden_explore_scores_and_journal_media",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1792873708990,
+      "tag": "0025_server_set_activity_timestamps",
+      "breakpoints": true
     }
   ]
 }
