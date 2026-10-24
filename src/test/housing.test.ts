@@ -3,6 +3,8 @@ import {
   applyHousingToBudget, checklistIds, housingBudgetPlan, housingProgress, monthlyCost, nextStatus, phasesForStatus, safetyChecksApply, sectionOrder, stayMonths, upfrontCost,
 } from "@/lib/housing";
 import { resourcesForCountry, HOUSING_RESOURCES } from "@/data/housing-resources";
+import fr from "@/i18n/locales/fr.json";
+import en from "@/i18n/locales/en.json";
 import { overallPercent, readTripProgress } from "@/lib/prep-progress";
 
 const home = { monthly_rent: 500, charges_included: false, monthly_charges: 50, deposit: 1000, extra_fees: 200 };
@@ -71,6 +73,16 @@ describe("assistant logement — lien avec le budget", () => {
 describe("assistant logement — ressources", () => {
   it("n'affiche que des liens https écrits à la main", () => {
     expect(HOUSING_RESOURCES.every((r) => r.url.startsWith("https://"))).toBe(true);
+  });
+  it("chaque ressource a une description en français et en anglais", () => {
+    for (const r of HOUSING_RESOURCES) {
+      expect((fr.housing.resources.items as Record<string, string>)[r.id]).toBeTruthy();
+      expect((en.housing.resources.items as Record<string, string>)[r.id]).toBeTruthy();
+    }
+  });
+  it("propose une aide contre les arnaques pour l'Irlande et le Canada", () => {
+    expect(resourcesForCountry("IE").local.some((r) => r.category === "fraud")).toBe(true);
+    expect(resourcesForCountry("CA").local.some((r) => r.category === "fraud")).toBe(true);
   });
   it("ne propose aucune ressource pour un pays non couvert", () => {
     const r = resourcesForCountry("JP");
