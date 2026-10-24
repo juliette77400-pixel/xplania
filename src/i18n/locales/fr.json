@@ -6396,7 +6396,7 @@
       "done": "Terminé"
     },
     "next": {
-      "title": "Tes prochaines actions",
+      "title": "Ce qu'il te reste à préparer",
       "budgetStart": "Budget : génère ton estimation de dépenses",
       "budgetExpense": "Budget : note ta première dépense prévue",
       "visaStart": "Visa : affiche tes formalités et coche ta première démarche",
@@ -6413,6 +6413,16 @@
       "budget": "Tu n'as pas encore indiqué de budget : les montants affichés sont des exemples de départ.",
       "dates": "Tes dates ou ta durée ne sont pas encore connues : certains conseils restent généraux.",
       "cta": "Compléter mon séjour"
+    },
+    "steps": {
+      "urgent": "prioritaire",
+      "visaAnalyse": "Vérifie si tu as besoin d'un visa pour ton profil",
+      "visaMore": "Encore {{count}} démarches obligatoires dans ta checklist Visa",
+      "budgetStart": "Estime combien prévoir pour ton séjour",
+      "budgetOver": "Il manque {{amount}} € à tes ressources : ajuste ton budget",
+      "budgetFirstMonth": "Mets de côté {{amount}} € de plus pour ton premier mois",
+      "budgetIncome": "Ajoute ta bourse ou ta gratification au budget",
+      "housingFind": "Trouve et sécurise ton logement"
     }
   },
   "prepTrip": {

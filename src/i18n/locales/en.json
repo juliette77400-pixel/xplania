@@ -6396,7 +6396,7 @@
       "done": "Done"
     },
     "next": {
-      "title": "Your next actions",
+      "title": "What's left to prepare",
       "budgetStart": "Budget: generate your expense estimate",
       "budgetExpense": "Budget: record your first planned expense",
       "visaStart": "Visa: view your paperwork and tick your first step",
@@ -6413,6 +6413,16 @@
       "budget": "You haven't entered a budget yet: the amounts shown are starting examples.",
       "dates": "Your dates or length are not known yet: some tips stay general.",
       "cta": "Complete my stay"
+    },
+    "steps": {
+      "urgent": "priority",
+      "visaAnalyse": "Check whether you need a visa for your profile",
+      "visaMore": "{{count}} more required steps in your Visa checklist",
+      "budgetStart": "Estimate how much to plan for your stay",
+      "budgetOver": "Your resources are short by {{amount}} €: adjust your budget",
+      "budgetFirstMonth": "Set aside {{amount}} € more for your first month",
+      "budgetIncome": "Add your grant or internship pay to the budget",
+      "housingFind": "Find and secure your housing"
     }
   },
   "prepTrip": {
