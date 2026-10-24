@@ -136,7 +136,9 @@
     "groupAccount": "My account",
     "dna": "Traveler DNA",
     "culture": "Culture guide",
-    "housing": "Housing"
+    "housing": "Housing",
+    "visaShort": "Visa",
+    "cultureShort": "Culture"
   },
   "about": {
     "metaTitle": "About — Xplania, prepare your departure without the hassle",
