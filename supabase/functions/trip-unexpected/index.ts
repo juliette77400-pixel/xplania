@@ -1,6 +1,6 @@
 // "Un imprévu ?" — contextual AI helper during a trip: problem type + details → concrete steps.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { z } from "npm:zod@3";
+import { z } from "npm:zod@4.6.7";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";

@@ -1,7 +1,7 @@
 // Sends a one-time "80% of budget used" email to the signed-in user.
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
-import { z } from 'npm:zod@3.23.8'
+import { z } from 'npm:zod@4.6.7'
 import { requireAuth } from '../_shared/require-auth.ts'
 import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
 
