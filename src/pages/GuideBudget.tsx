@@ -28,6 +28,7 @@ import BudgetSavingTips from "@/components/budget/BudgetSavingTips";
 import AddExpenseForm, { type Expense } from "@/components/budget/AddExpenseForm";
 import BudgetOnboardingChat from "@/components/budget/BudgetOnboardingChat";
 import CurrencyConverter from "@/components/shared/CurrencyConverter";
+import MissingTripInfo from "@/components/shared/MissingTripInfo";
 import { suggestCategoryAmount, buildAdjustmentExplanation, buildScenarios, type CategoryKey } from "@/lib/cost-of-living";
 
 /* =============================================================================
@@ -385,6 +386,7 @@ const GuideBudgetPage = () => {
   };
 
   const handleAddExpense = (expense: Expense) => {
+    if (expenses.length === 0) track("guide_action", { module: "budget", action: "first_expense" });
     setExpenses((prev) => [...prev, expense]);
     setCategories((prev) =>
       prev.map((c) =>
@@ -444,6 +446,7 @@ const GuideBudgetPage = () => {
 
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
+        <MissingTripInfo needs={["budget", "dates"]} />
         <p className="mx-auto mt-3 max-w-3xl rounded-xl border border-border bg-muted/40 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground">
           {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications." })}
         </p>

@@ -177,7 +177,10 @@ const GuideVisaPage = () => {
           destination: destinationName,
           nationality: nationalityName,
           duration: tripData?.duration || "7",
-          travelerType: tripData?.travelerType || "touriste",
+          travelerType: tripData?.travelerType || (tripData?.stayType === "internship" ? (isFr ? "stagiaire" : "intern") : tripData?.stayType ? (isFr ? "étudiant" : "student") : (isFr ? "touriste" : "tourist")),
+          residence: countryList.find((c) => c.code === tripData?.residence)?.name || "",
+          secondNationality: countryList.find((c) => c.code === tripData?.secondNationality)?.name || "",
+          stayPurpose: tripData?.tripTypes?.[0] || "",
           locale: i18n.language.startsWith("fr") ? "fr" : "en",
         },
       });

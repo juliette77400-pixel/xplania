@@ -22,6 +22,7 @@ import ValisePipChat from "@/components/valise/ValisePipChat";
 import { toast } from "sonner";
 import { track } from "@/lib/analytics";
 import AppNavbar from "@/components/shared/AppNavbar";
+import MissingTripInfo from "@/components/shared/MissingTripInfo";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
@@ -289,6 +290,7 @@ const GuideValisePage = () => {
       <QuotaBanner tool="valise" toolLabel={t("ui2.GuideValise.toolLabel")} />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName={t("ui2.GuideValise.toolLabel")} />
       <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
+        <MissingTripInfo needs={["dates"]} />
         <ValiseHero destination={destination} days={days} onGenerate={runGeneration} isGenerating={isGenerating} checkedItems={checkedItems} totalItems={totalItems} showProgress={hasGenerated} showCta={false} />
 
         <GenerationAnimation isGenerating={isGenerating} currentStep={generationStep} />

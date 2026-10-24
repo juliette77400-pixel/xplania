@@ -8,6 +8,7 @@ import { findCountry, normCountry } from "@/lib/country-match";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import AppNavbar from "@/components/shared/AppNavbar";
+import { track } from "@/lib/analytics";
 import HowItWorks from "@/components/shared/HowItWorks";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,12 @@ export default function GuideCulture() {
     const c = findCountry(query);
     if (c) choose(c); else { setTouched(true); setNotFound(true); setCode(null); }
   };
-  const toggle = (k: string) => setDone((d) => { const n = { ...d, [k]: !d[k] }; localStorage.setItem(PROGRESS_KEY, JSON.stringify(n)); return n; });
+  const toggle = (k: string) => setDone((d) => {
+    const n = { ...d, [k]: !d[k] };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(n));
+    if (n[k]) track("guide_action", { module: "culture", pillar: k.split(":")[1] || k });
+    return n;
+  });
 
   const countryName = code ? getCountryName(code) : "";
   const featured = code ? FEATURED_COUNTRIES.includes(code) : false;
