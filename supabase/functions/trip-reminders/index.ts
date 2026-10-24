@@ -1,5 +1,6 @@
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from '../_shared/prompts.ts'
-// Daily job: emails a J-7 reminder (with formalities checklist) to owners of trips leaving in 7 days.
+// Daily job: emails a J-60 reminder (visa, housing, first-month budget) and a J-7 reminder
+// (formalities checklist) to trip owners, unless they turned departure reminders off.
 // Idempotent per trip, so repeated calls never send duplicates.
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
@@ -25,8 +26,8 @@ Deno.serve(async (req) => {
 
       const { data: u } = await admin.auth.admin.getUserById(t.user_id)
       const email = u?.user?.email
-      if (!email) continue
-      const lang = (u.user.user_metadata?.lang === 'en') ? 'en' : 'fr'
+      if (!email || !remindersOn(u.user)) continue
+      const lang = langOf(u.user)
       const dateLabel = new Date(t.departure_date + 'T12:00:00Z').toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
       const remainingItems = REMINDER_ITEMS.filter((i) => !doneItems.has(i))
       const r = await sendTemplateEmail('trip-reminder', email, {
@@ -43,9 +44,39 @@ Deno.serve(async (req) => {
       if (r.sent) sent++
     } catch (e) { console.error('trip-reminder failed', t.id, e) }
   }
+  const twoMonthsSent = await twoMonthReminders(admin)
   const weatherSent = await weatherAlerts(admin)
-  return new Response(JSON.stringify({ checked: trips?.length || 0, sent, weatherSent }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+  return new Response(JSON.stringify({ checked: trips?.length || 0, sent, twoMonthsSent, weatherSent }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
 })
+
+// Students can turn departure reminders off in Settings (stored in their own metadata).
+// deno-lint-ignore no-explicit-any
+const remindersOn = (user: any) => user?.user_metadata?.departure_reminders !== false
+// deno-lint-ignore no-explicit-any
+const langOf = (user: any): 'fr' | 'en' => ((user?.user_metadata?.locale ?? user?.user_metadata?.lang) === 'en' ? 'en' : 'fr')
+
+// ---- J-60: visa and housing take weeks, remind while there is still time ----
+// deno-lint-ignore no-explicit-any
+async function twoMonthReminders(admin: any) {
+  const target = new Date(Date.now() + 60 * 86400000).toISOString().slice(0, 10)
+  const { data: trips } = await admin.from('trips').select('id,user_id,destination,departure_date,form_data').eq('departure_date', target).limit(500)
+  let sent = 0
+  for (const t of trips || []) {
+    try {
+      const { data: u } = await admin.auth.admin.getUserById(t.user_id)
+      const email = u?.user?.email
+      if (!email || !remindersOn(u.user)) continue
+      const lang = langOf(u.user)
+      const dateLabel = new Date(t.departure_date + 'T12:00:00Z').toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+      const r = await sendTemplateEmail('departure-reminder', email, {
+        templateData: { destination: t.destination || '', departureDate: dateLabel, housingConfirmed: t.form_data?.housingStatus === 'confirmed', lang },
+        idempotencyKey: `departure-reminder-j60-${t.id}-${t.departure_date}`,
+      })
+      if (r.sent) sent++
+    } catch (e) { console.error('departure-reminder failed', t.id, e) }
+  }
+  return sent
+}
 
 // ---- Weather alerts: trips leaving in 1-5 days with severe forecast at destination ----
 const SEVERE = (d: { code: number; rain: number; tmax: number; tmin: number }) =>
@@ -113,8 +144,8 @@ async function weatherAlerts(admin: any) {
 
       const { data: u } = await admin.auth.admin.getUserById(t.user_id)
       const email = u?.user?.email
-      if (!email) continue
-      const en = u.user.user_metadata?.lang === 'en'
+      if (!email || !remindersOn(u.user)) continue
+      const en = langOf(u.user) === 'en'
       const summary = describe(bad, en)
       const dayLabel = new Date(bad.date + 'T12:00:00Z').toLocaleDateString(en ? 'en-GB' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
       const suggestions = await suggest(place, summary, en)

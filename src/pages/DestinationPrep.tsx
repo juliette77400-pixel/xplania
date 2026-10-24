@@ -18,7 +18,8 @@ import {
   franceDiplomatieEntryUrl, pasteurUrl, type DestinationPage,
 } from "@/data/destination-pages";
 
-const SIGNUP = "/auth?mode=signup&next=/preparation";
+// Visitors start with the questionnaire; the account is asked at the end.
+const SIGNUP = "/preparation";
 
 const ExtLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const { t } = useTranslation();

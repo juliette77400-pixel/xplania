@@ -3,7 +3,9 @@
 import { FEATURE_FLAGS } from "@/config/featureFlags";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Bell, BellRing, Mail, Sparkles, AlertTriangle, Send } from "lucide-react";
+import { Bell, BellRing, Mail, Sparkles, AlertTriangle, Send, CalendarClock } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -42,6 +44,19 @@ const NotificationsSettings = () => {
   const { t } = useTranslation();
   const [prefs, setPrefs] = useState<Prefs>(DEFAULTS);
   const [pushStatus, setPushStatus] = useState<NotificationPermission>("default");
+  const { user } = useAuth();
+  // Departure reminders (J-60, J-7) are sent by the server, so the choice lives in the account.
+  const [reminders, setReminders] = useState(true);
+  const [remindersSaving, setRemindersSaving] = useState(false);
+  useEffect(() => { setReminders(user?.user_metadata?.departure_reminders !== false); }, [user]);
+  const updateReminders = async (v: boolean) => {
+    setReminders(v);
+    setRemindersSaving(true);
+    const { error } = await supabase.auth.updateUser({ data: { departure_reminders: v } });
+    setRemindersSaving(false);
+    if (error) { setReminders(!v); toast.error(t("settings.notif.reminders.error")); return; }
+    toast.success(t("settings.notif.saved"));
+  };
 
   useEffect(() => {
     setPrefs(load());
@@ -109,6 +124,18 @@ const NotificationsSettings = () => {
         <p className="text-xs text-muted-foreground">{t("settings.notif.email.hint")}</p>
         <div className="space-y-2">
           {FEATURE_FLAGS.ENABLE_GAMIFICATION && row(<Send className="w-4 h-4" />, t("settings.notif.weeklyDigest.title"), t("settings.notif.weeklyDigest.hint"), "weeklyDigest")}
+          {user && (
+            <div className="flex items-start justify-between gap-3 rounded-lg border border-border/60 p-3">
+              <div className="flex gap-3">
+                <div className="mt-0.5 text-primary"><CalendarClock className="w-4 h-4" /></div>
+                <div>
+                  <Label htmlFor="notif-reminders" className="text-sm font-medium">{t("settings.notif.reminders.title")}</Label>
+                  <p className="text-xs text-muted-foreground">{t("settings.notif.reminders.hint")}</p>
+                </div>
+              </div>
+              <Switch id="notif-reminders" checked={reminders} disabled={remindersSaving} onCheckedChange={(v) => void updateReminders(v)} />
+            </div>
+          )}
           {row(<Mail className="w-4 h-4" />, t("settings.notif.marketing.title"), t("settings.notif.marketing.hint"), "emailMarketing")}
         </div>
       </Card>

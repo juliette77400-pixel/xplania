@@ -3,14 +3,17 @@ import { useAuth } from "@/hooks/useAuth";
 import { useTravelerProfile } from "@/hooks/useTravelerProfile";
 import { Loader2 } from "lucide-react";
 import { stepToRoute, type OnboardingStep } from "@/lib/onboarding-state";
+import AccountNeeded, { type AccountTool } from "@/components/auth/AccountNeeded";
 
 interface Props {
   children: React.ReactNode;
   /** Skip the traveler-profile onboarding gate (used by the onboarding routes themselves). */
   skipOnboarding?: boolean;
+  /** Visitors see why this tool needs an account instead of being sent to sign-in. */
+  explain?: AccountTool;
 }
 
-const ProtectedRoute = ({ children, skipOnboarding = true }: Props) => {
+const ProtectedRoute = ({ children, skipOnboarding = true, explain }: Props) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   // The traveler-profile gate is only needed when onboarding is enforced.
@@ -25,6 +28,7 @@ const ProtectedRoute = ({ children, skipOnboarding = true }: Props) => {
   }
 
   if (!user) {
+    if (explain) return <AccountNeeded tool={explain} />;
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 

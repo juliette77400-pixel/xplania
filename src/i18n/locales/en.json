@@ -4571,6 +4571,11 @@
       "marketing": {
         "title": "Xplania updates",
         "hint": "Product news and travel tips. You can unsubscribe anytime."
+      },
+      "reminders": {
+        "title": "Departure reminders",
+        "hint": "An email 2 months before (visa, housing, budget) and 7 days before you leave (paperwork).",
+        "error": "Could not save your choice. Try again."
       }
     },
     "data": {
@@ -6503,7 +6508,7 @@
       "badge": "Your move abroad, made simple.",
       "titleStart": "Your Erasmus or internship abroad,",
       "titleAccent": "without the preparation headache.",
-      "subtitle": "Budget, visa, housing, packing and local culture: find all your preparations in one place, with guides adapted to your stay and a clear view of what's left to do.",
+      "subtitle": "Paperwork taken from official sites, your first-month budget, anti-scam tips for your housing: it all starts with a 2-minute questionnaire.",
       "secondary": "See how it works",
       "note": "Free during the beta · No credit card",
       "previewLabel": "Example dashboard",
@@ -6572,7 +6577,8 @@
           "desc": "Organise your search, compare your options and prepare your move-in abroad.",
           "benefit": "You move forward in your housing search."
         }
-      }
+      },
+      "noAccount": "Try without an account"
     },
     "how": {
       "title": "Your departure, prepared in three steps.",
@@ -6743,6 +6749,34 @@
       "shortlist": "I've found a few places",
       "confirmed": "My housing is confirmed",
       "lost": "I don't know where to start"
+    },
+    "preview": {
+      "kicker": "Your personalised preview",
+      "title": "Your 3 priorities before leaving: {{country}}",
+      "countdown_one": "Leaving in {{count}} day",
+      "countdown_other": "Leaving in {{count}} days",
+      "priority": "Priority {{n}}",
+      "module": {
+        "visa": "Visa & paperwork",
+        "housing": "Housing",
+        "budget": "Budget"
+      },
+      "steps": {
+        "visaFree": "No visa needed with your European nationality: just check your ID card or passport stays valid for the whole stay.",
+        "visaCheck": "Check whether you need a visa with your nationality (destination: {{country}}), and how long it takes.",
+        "visaCheckSoon": "Your departure is close: check now whether you need a visa (destination: {{country}}). Some take several weeks.",
+        "housingLost": "Start with housing: we help you know where to look and which traps to avoid.",
+        "housingStart": "Start your housing search and compare several options before paying anything.",
+        "housingCompare": "Compare the places you found: rent, deposit, commute and lease terms.",
+        "housingSettle": "Housing confirmed: plan the deposit, home insurance and move-in inventory.",
+        "budgetFirstMonth": "Check that your €{{amount}} covers your first month: deposit, first rent and move-in.",
+        "budgetEstimate": "Estimate your budget, including the first month: it's often the most expensive."
+      },
+      "note": "Preview computed from your answers. They stay in this browser until you create an account.",
+      "cta": "Create my free account to save",
+      "edit": "Edit my answers",
+      "signin": "I already have an account",
+      "free": "Free during the beta · No credit card"
     }
   },
   "prepEdit": {
@@ -7619,5 +7653,18 @@
     "finalText": "A 2-minute questionnaire, then 5 connected tools: budget, visa, packing, culture and housing.",
     "checkedOn": "Links checked on {{date}}. Rules can change: always check the official sites before leaving.",
     "others": "Other destinations"
+  },
+  "accountNeeded": {
+    "valise": {
+      "title": "The Packing guide needs an account",
+      "why": "Your packing list adapts to your stay (destination, dates, usual weather) and keeps your ticked items, so it is linked to your account. It's free and takes 2 minutes."
+    },
+    "housing": {
+      "title": "The Housing assistant needs an account",
+      "why": "You save the places you found and your progress there: this stays private, linked to your account. It's free and takes 2 minutes."
+    },
+    "start": "Start with the questionnaire",
+    "signin": "I already have an account",
+    "tryFree": "Without an account, you can already try:"
   }
 }

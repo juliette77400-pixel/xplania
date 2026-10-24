@@ -146,10 +146,10 @@ const App = () => (
             <Route path="/destinations" element={gate("ENABLE_DISCOVER", <ProtectedRoute><Destinations /></ProtectedRoute>)} />
             <Route path="/hidden-gems" element={gate("ENABLE_DISCOVER", <ProtectedRoute><HiddenGems /></ProtectedRoute>)} />
             <Route path="/guide-budget" element={gate("ENABLE_BUDGET_GUIDE", <GuideBudget />)} />
-            <Route path="/guide-valise" element={gate("ENABLE_PACKING_LIST", <ProtectedRoute><GuideValise /></ProtectedRoute>)} />
+            <Route path="/guide-valise" element={gate("ENABLE_PACKING_LIST", <ProtectedRoute explain="valise"><GuideValise /></ProtectedRoute>)} />
             <Route path="/guide-visa" element={gate("ENABLE_VISA_GUIDE", <GuideVisa />)} />
             <Route path="/guide-culture" element={gate("ENABLE_CULTURAL_GUIDE", <GuideCulture />)} />
-            <Route path="/guide-logement" element={gate("ENABLE_HOUSING_ASSISTANT", <ProtectedRoute><GuideLogement /></ProtectedRoute>)} />
+            <Route path="/guide-logement" element={gate("ENABLE_HOUSING_ASSISTANT", <ProtectedRoute explain="housing"><GuideLogement /></ProtectedRoute>)} />
             <Route path="/offres" element={<Offres />} />
             <Route path="/preparer" element={<DestinationsHub />} />
             <Route path="/preparer/:slug" element={<DestinationPrep />} />
@@ -170,7 +170,8 @@ const App = () => (
             <Route path="/admin/stats" element={<ProtectedRoute><AdminStats /></ProtectedRoute>} />
             <Route path="/admin/sources" element={<ProtectedRoute><AdminSources /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/preparation" element={<ProtectedRoute><PrepQuiz /></ProtectedRoute>} />
+            {/* Open to visitors: answers stay in the browser until they sign up (then saved as the trip). */}
+            <Route path="/preparation" element={<PrepQuiz />} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />

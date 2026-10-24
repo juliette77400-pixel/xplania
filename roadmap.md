@@ -44,3 +44,10 @@
 - [x] SEO : plan du site réparé (+ guides pays, + Écoles) ; Valise et Logement restent cachés à Google car réservés aux comptes
 - [x] SEO : pages publiques par destination à partir des fiches pays existantes
 - [x] Réponse : analyse du parcours utilisateur et de la proposition de valeur
+
+# Roadmap — Parcours + proposition de valeur (24 oct. 2026)
+
+- [x] Questionnaire accessible sans compte + aperçu personnalisé (3 démarches prioritaires), inscription pour enregistrer, séjour créé automatiquement après connexion
+- [x] Accès cohérent : Valise et Logement affichent une page d'explication (au lieu d'un renvoi brutal à la connexion) + « Essaie le Budget sans compte »
+- [x] Rappel par email avant le départ (2 mois : visa, logement), désactivable
+- [x] Accueil : phrase de valeur sous le titre

@@ -4571,6 +4571,11 @@
       "marketing": {
         "title": "Actualités Xplania",
         "hint": "Nouveautés produit et conseils voyage. Tu peux te désinscrire à tout moment."
+      },
+      "reminders": {
+        "title": "Rappels avant le départ",
+        "hint": "Un email 2 mois avant (visa, logement, budget) et 7 jours avant ton départ (formalités).",
+        "error": "Impossible d'enregistrer ton choix. Réessaie."
       }
     },
     "data": {
@@ -6503,7 +6508,7 @@
       "badge": "Ton départ à l'étranger, simplifié.",
       "titleStart": "Ton Erasmus ou ton stage à l'étranger,",
       "titleAccent": "sans le casse-tête des préparatifs.",
-      "subtitle": "Budget, visa, logement, valise et culture locale : retrouve tes préparatifs au même endroit, avec des guides adaptés à ton séjour et un suivi de ce qu'il te reste à faire.",
+      "subtitle": "Formalités tirées des sites officiels, budget de ton premier mois, conseils anti-arnaque pour ton logement : tout part d'un questionnaire de 2 minutes.",
       "secondary": "Découvrir comment ça marche",
       "note": "Gratuit pendant la bêta · Sans carte bancaire",
       "previewLabel": "Exemple de tableau de bord",
@@ -6572,7 +6577,8 @@
           "desc": "Organise ta recherche, compare tes options et prépare ton installation à l'étranger.",
           "benefit": "Tu avances dans ta recherche de logement."
         }
-      }
+      },
+      "noAccount": "Essai sans compte"
     },
     "how": {
       "title": "Ton départ, préparé en trois étapes.",
@@ -6743,6 +6749,34 @@
       "shortlist": "J'ai trouvé quelques logements",
       "confirmed": "Mon logement est confirmé",
       "lost": "Je ne sais pas par où commencer"
+    },
+    "preview": {
+      "kicker": "Ton aperçu personnalisé",
+      "title": "Tes 3 priorités pour ton départ : {{country}}",
+      "countdown_one": "Départ dans {{count}} jour",
+      "countdown_other": "Départ dans {{count}} jours",
+      "priority": "Priorité {{n}}",
+      "module": {
+        "visa": "Visa & formalités",
+        "housing": "Logement",
+        "budget": "Budget"
+      },
+      "steps": {
+        "visaFree": "Pas de visa à prévoir avec ta nationalité européenne : vérifie juste que ta carte d'identité ou ton passeport reste valide pendant tout le séjour.",
+        "visaCheck": "Vérifie si un visa est nécessaire avec ta nationalité (destination : {{country}}), et combien de temps prend la démarche.",
+        "visaCheckSoon": "Ton départ approche : vérifie dès maintenant si un visa est nécessaire (destination : {{country}}). Certains délais dépassent plusieurs semaines.",
+        "housingLost": "Commence par le logement : on t'aide à savoir où chercher et quels pièges éviter.",
+        "housingStart": "Lance ta recherche de logement et compare plusieurs options avant de payer quoi que ce soit.",
+        "housingCompare": "Compare les logements repérés : loyer, caution, trajet et conditions du bail.",
+        "housingSettle": "Logement confirmé : prépare la caution, l'assurance habitation et l'état des lieux.",
+        "budgetFirstMonth": "Vérifie que tes {{amount}} € couvrent ton premier mois : caution, premier loyer et installation.",
+        "budgetEstimate": "Estime ton budget, premier mois compris : c'est souvent le plus cher."
+      },
+      "note": "Aperçu calculé à partir de tes réponses. Tes réponses restent dans ce navigateur tant que tu n'as pas créé de compte.",
+      "cta": "Créer mon compte gratuit pour enregistrer",
+      "edit": "Modifier mes réponses",
+      "signin": "J'ai déjà un compte",
+      "free": "Gratuit pendant la bêta · Sans carte bancaire"
     }
   },
   "prepEdit": {
@@ -7619,5 +7653,18 @@
     "finalText": "Un questionnaire de 2 minutes, puis 5 outils connectés : budget, visa, valise, culture et logement.",
     "checkedOn": "Liens vérifiés le {{date}}. Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir.",
     "others": "Autres destinations"
+  },
+  "accountNeeded": {
+    "valise": {
+      "title": "La Valise a besoin d'un compte",
+      "why": "Ta liste de valise s'adapte à ton séjour (destination, dates, météo habituelle) et garde tes cases cochées : elle est donc rattachée à ton compte. C'est gratuit et ça prend 2 minutes."
+    },
+    "housing": {
+      "title": "L'Assistant Logement a besoin d'un compte",
+      "why": "Tu y enregistres les logements que tu as repérés et ta progression : ces informations restent privées, rattachées à ton compte. C'est gratuit et ça prend 2 minutes."
+    },
+    "start": "Commencer par le questionnaire",
+    "signin": "J'ai déjà un compte",
+    "tryFree": "Sans compte, tu peux déjà essayer :"
   }
 }

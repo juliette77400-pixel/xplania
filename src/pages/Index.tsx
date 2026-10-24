@@ -48,7 +48,7 @@ const Index = () => {
     if (!FEATURE_FLAGS.ENABLE_AI_ITINERARY) {
       track("cta_click", { cta: "prepare_departure", location: source });
       // Signed in: the dashboard sends people without a trip to the questionnaire.
-      navigate(user ? PREPARATION_HOME : "/auth?mode=signup&next=/preparation");
+      navigate(user ? PREPARATION_HOME : "/preparation");
       return;
     }
     if (hasReachedFreeQuota()) {
