@@ -153,7 +153,8 @@ const GuideBudgetPage = () => {
     });
   }, [categories, t]);
 
-  const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
+  // The estimate does not depend on the student's budget, so only stay facts are compared.
+  const budgetContextKey = `${destination}|${days}|${travelers}|${tripData?.departureDate || ""}`;
 
   const handleExportPdf = useCallback(async () => {
     setIsExporting(true);
