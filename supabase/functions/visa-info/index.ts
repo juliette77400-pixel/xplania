@@ -1,189 +1,182 @@
+// Personalised formalities for one student profile: visa, passport, transit and
+// a checklist. Security, health and emergency numbers come from the
+// official-sources function (real official pages), not from this AI answer.
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { countryContext } from "../_shared/country-facts.ts";
-import { generateJson, generateJsonSplit, aiErrorResponse } from "../_shared/ai-json.ts";
+import { generateJsonSplit, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { SAFETY_RULE_EN, SAFETY_RULE_FR } from "../_shared/prompts.ts";
+import { hasFreeMovement, EU_SOURCE_URL, EU_SOURCE_URL_EN } from "../_shared/visa-rules.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+const json = (b: unknown, status = 200) =>
+  new Response(JSON.stringify(b), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+const clip = (v: unknown, n = 80) => (typeof v === "string" ? v.trim().slice(0, n) : "");
+const code = (v: unknown) => (typeof v === "string" && /^[A-Za-z]{2}$/.test(v) ? v.toUpperCase() : "");
+
+const SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    visa: {
+      type: "object", additionalProperties: false,
+      required: ["status", "title", "summary", "max_stay", "cost", "processing_time", "details", "why", "official_url"],
+      properties: {
+        status: { type: "string", enum: ["required", "not_required", "depends", "to_verify"] },
+        title: { type: "string", description: "Max 6 words, e.g. 'Student visa required'" },
+        summary: { type: "string", description: "Max 2 short sentences" },
+        max_stay: { type: "string" }, cost: { type: "string" }, processing_time: { type: "string" },
+        details: { type: "array", items: { type: "string" }, description: "Max 5 short steps or conditions" },
+        why: { type: "string", description: "One sentence naming the profile facts used (nationality, purpose, length)" },
+        official_url: { type: "string", description: "Official government or embassy URL only if certain, else empty" },
+      },
+    },
+    passport: {
+      type: "object", additionalProperties: false, required: ["summary", "rules", "id_card_accepted"],
+      properties: {
+        summary: { type: "string", description: "Max 2 short sentences" },
+        rules: { type: "array", items: { type: "string" }, description: "Max 4" },
+        id_card_accepted: { type: "string", enum: ["yes", "no", "unknown"] },
+      },
+    },
+    transit: {
+      type: "object", additionalProperties: false, required: ["needed", "summary"],
+      properties: { needed: { type: "string", enum: ["yes", "no", "to_verify", "none"] }, summary: { type: "string" } },
+    },
+    checklist: {
+      type: "array",
+      items: {
+        type: "object", additionalProperties: false,
+        required: ["id", "item", "detail", "category", "priority", "condition"],
+        properties: {
+          id: { type: "string", description: "Short stable slug in English, e.g. 'passport-validity'" },
+          item: { type: "string", description: "Max 10 words" },
+          detail: { type: "string", description: "One short sentence" },
+          category: { type: "string", enum: ["documents", "health", "money", "practical"] },
+          priority: { type: "string", enum: ["required", "recommended", "if_applicable"] },
+          condition: { type: "string", description: "When it applies (empty if always)" },
+        },
+      },
+      description: "8 to 12 items personalised to this profile",
+    },
+    emergency_contacts: {
+      type: "object", additionalProperties: false, required: ["embassy", "local_emergency"],
+      properties: { embassy: { type: "string" }, local_emergency: { type: "string" } },
+    },
+  },
+  required: ["visa", "passport", "transit", "checklist", "emergency_contacts"],
+};
+
+async function officialEntry(destinationCode: string): Promise<string> {
+  if (!destinationCode) return "";
+  try {
+    const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+    const { data } = await admin.from("official_info_cache").select("content, fetched_at").eq("country_code", destinationCode).eq("locale", "fr").maybeSingle();
+    const e = (data?.content as { entry?: { short_stay?: string; long_stay?: string; documents?: string[]; other?: string[] } } | null)?.entry;
+    if (!e) return "";
+    return [e.short_stay, e.long_stay, ...(e.documents || []), ...(e.other || [])].filter(Boolean).join("\n").slice(0, 3000);
+  } catch {
+    return "";
+  }
+}
 
 serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-  const __auth = await requireAuth(req, corsHeaders);
-  if (__auth instanceof Response) return __auth;
+  const auth = await requireAuth(req, corsHeaders);
+  if (auth instanceof Response) return auth;
+  const rl = rateLimitResponse(checkRateLimit({ key: "visa-info", subject: auth.userId, limit: 20, windowMs: 60_000 }), corsHeaders);
+  if (rl) return rl;
 
-  const __rl = checkRateLimit({ key: "visa-info", subject: __auth.userId, limit: 20, windowMs: 60_000 });
-  const __rlResp = rateLimitResponse(__rl, corsHeaders);
-  if (__rlResp) return __rlResp;
+  let b: Record<string, unknown>;
+  try { b = await req.json(); } catch { return json({ error: "invalid_request" }, 400); }
+  const destination = clip(b.destination);
+  const nationality = clip(b.nationality);
+  if (!destination || !nationality) return json({ error: "destination and nationality are required" }, 400);
 
-  const __quota = await enforceQuota("visa", req, corsHeaders);
-  if (__quota) return __quota;
-
+  const quota = await enforceQuota("visa", req, corsHeaders);
+  if (quota) return quota;
 
   try {
-    const { destination, nationality, duration, travelerType, residence, secondNationality, stayPurpose, locale = "fr" } = await req.json();
-    // Optional details from the preparation questionnaire (short strings only).
-    const clip = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 80) : "");
-    const residenceTxt = clip(residence);
-    const secondNatTxt = clip(secondNationality);
-    const purposeTxt = clip(stayPurpose);
-    const isEN = locale === "en";
+    const isEN = b.locale === "en";
+    const destCode = code(b.destinationCode);
+    const natCode = code(b.nationalityCode);
+    const secondCode = code(b.secondNationalityCode);
+    const residence = clip(b.residence);
+    const secondNat = clip(b.secondNationality);
+    const purpose = clip(b.stayPurpose);
+    const days = Number.isFinite(Number(b.durationDays)) ? Math.max(0, Math.min(3650, Math.round(Number(b.durationDays)))) : 0;
+    const departure = clip(b.departureDate, 10);
+    const passportType = clip(b.passportType, 30) || "ordinary";
+    const transit = Array.isArray(b.transitCountries) ? b.transitCountries.map((x) => clip(x, 60)).filter(Boolean).slice(0, 5) : [];
+    const regions = clip(b.regions, 200);
+    const freeMovement = destCode ? hasFreeMovement(destCode, [natCode, secondCode]) : false;
+    const isFrench = natCode === "FR" || secondCode === "FR";
+    const official = isFrench ? await officialEntry(destCode) : "";
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
-
-    if (!destination) {
-      return new Response(JSON.stringify({ error: "destination is required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const systemPrompt = isEN
-      ? `You are an expert in travel formalities and international diplomacy. You provide accurate, up-to-date and practical information on visas, security, health and required travel documents.
-
- Reply with the JSON object only. ALL string fields must be in ENGLISH.
-
-ACCURACY (it is 2026): only give information valid in 2026. For the embassy/consulate, check it is actually open: if the traveler's country representation is closed or suspended (e.g. the French embassy in Kabul, closed since 2021), say so clearly and give the nearest competent representation or the foreign ministry crisis centre. When unsure, point to the official website rather than inventing an address.
-Tailor EVERYTHING (visa, checklist, steps, contacts) to the traveler's nationality, country of residence and purpose of stay (studies or internship).
-Always remind the traveler to confirm with official sources (embassy, consulate, official government websites).
-
+    const system = isEN
+      ? `You are an expert in student mobility formalities (studies, internships, exchanges). It is 2026. Reply with the JSON only; ALL strings in ENGLISH, short and plain.
+Tailor everything to THIS profile (nationality, second nationality, residence, purpose, length, passport type, transit). Never give generic advice.
+Honesty: if you are not sure for this nationality/purpose/length, use status "to_verify" or "depends" and say what to check. Never invent costs, delays or URLs; leave them empty when unsure.
+Checklist: "required" only for a legal obligation that clearly applies to this profile; otherwise "recommended" or "if_applicable" with its condition. No visa item when no visa is needed.
+${official ? `OFFICIAL EXTRACT (France Diplomatie, for French nationals) — treat as authoritative and do not contradict it:\n${official}\n` : ""}
 ${SAFETY_RULE_EN}`
-      : `Tu es un expert en formalités de voyage et diplomatie internationale. Tu fournis des informations précises, actualisées et pratiques sur les visas, la sécurité, la santé et les documents nécessaires pour voyager.
-
- Réponds uniquement avec l'objet JSON.
-
-EXACTITUDE (nous sommes en 2026) : donne uniquement des informations valables en 2026. Pour l'ambassade ou le consulat, vérifie qu'il est réellement ouvert : si la représentation du pays du voyageur est fermée ou suspendue (ex. ambassade de France à Kaboul fermée depuis 2021), dis-le clairement et indique la représentation compétente la plus proche (ex. ambassade de France à Islamabad) ou le Centre de crise et de soutien du ministère. En cas de doute, renvoie vers le site officiel plutôt que d'inventer une adresse.
-Adapte TOUT (visa, checklist, démarches, contacts) à la nationalité du voyageur, à son pays de résidence et au motif du séjour (études ou stage).
-Rappelle toujours de vérifier auprès des sources officielles (ambassade, consulat, sites gouvernementaux).
-
+      : `Tu es expert des formalités de mobilité étudiante (études, stages, échanges). Nous sommes en 2026. Réponds uniquement avec le JSON ; tous les textes en FRANÇAIS simple, courts, en tutoyant.
+Adapte tout à CE profil (nationalité, seconde nationalité, résidence, motif, durée, type de passeport, transit). Jamais de conseil générique.
+Honnêteté : si tu n'es pas sûr pour cette nationalité, ce motif ou cette durée, utilise le statut "to_verify" ou "depends" et dis quoi vérifier. N'invente jamais de coût, délai ou lien ; laisse vide en cas de doute.
+Checklist : "required" uniquement pour une obligation légale qui s'applique clairement à ce profil ; sinon "recommended" ou "if_applicable" avec sa condition. Aucun élément visa si aucun visa n'est nécessaire.
+${official ? `EXTRAIT OFFICIEL (France Diplomatie, pour les ressortissants français) — fais-lui confiance et ne le contredis pas :\n${official}\n` : ""}
 ${SAFETY_RULE_FR}`;
 
-    const userPrompt = isEN
-      ? `Destination: ${destination}
-Traveler nationality: ${nationality || "France"}
-Stay duration: ${duration || "7"} days
-Traveler type: ${travelerType || "tourist"}
-${residenceTxt ? `Country of residence: ${residenceTxt}\n` : ""}${secondNatTxt ? `Second nationality: ${secondNatTxt}\n` : ""}${purposeTxt ? `Purpose of stay: ${purposeTxt}\n` : ""}
-Generate complete formalities information for this trip. All text in ENGLISH.`
-      : `Destination : ${destination}
-Nationalité du voyageur : ${nationality || "France"}
-Durée du séjour : ${duration || "7"} jours
-Type de voyageur : ${travelerType || "touriste"}
-${residenceTxt ? `Pays de résidence : ${residenceTxt}\n` : ""}${secondNatTxt ? `Seconde nationalité : ${secondNatTxt}\n` : ""}${purposeTxt ? `Motif du séjour : ${purposeTxt}\n` : ""}
-Génère les informations complètes de formalités pour ce voyage.`;
+    const lines = isEN
+      ? [`Destination: ${destination}`, `Nationality: ${nationality}`, secondNat && `Second nationality: ${secondNat}`, residence && `Country of residence: ${residence}`,
+        purpose && `Purpose: ${purpose}`, days ? `Length: ${days} days` : "Length: unknown", departure && `Departure date: ${departure}`,
+        `Passport type: ${passportType}`, transit.length ? `Transit countries: ${transit.join(", ")}` : "Transit: none (set transit.needed to \"none\")", regions && `Regions/cities visited: ${regions}`]
+      : [`Destination : ${destination}`, `Nationalité : ${nationality}`, secondNat && `Seconde nationalité : ${secondNat}`, residence && `Pays de résidence : ${residence}`,
+        purpose && `Motif : ${purpose}`, days ? `Durée : ${days} jours` : "Durée : inconnue", departure && `Date de départ : ${departure}`,
+        `Type de passeport : ${passportType}`, transit.length ? `Pays de transit : ${transit.join(", ")}` : "Transit : aucun (mets transit.needed à \"none\")", regions && `Régions/villes : ${regions}`];
 
-    const SCHEMA = {
-                type: "object",
-                properties: {
-                  visa: {
-                    type: "object",
-                    properties: {
-                      required: { type: "boolean", description: "Visa requis ou non" },
-                      type: { type: "string", description: "Type de visa (ex: touristique, ESTA, exemption Schengen)" },
-                      duration: { type: "string", description: "Durée max autorisée sans visa ou avec visa" },
-                      details: { type: "string", description: "Détails et conditions du visa" },
-                      cost: { type: "string", description: "Coût estimé du visa" },
-                    },
-                    required: ["required", "type", "duration", "details"],
-                    additionalProperties: false,
-                  },
-                  security: {
-                    type: "object",
-                    properties: {
-                      level: { type: "string", enum: ["safe", "moderate", "caution", "danger"], description: "Niveau de sécurité global" },
-                      summary: { type: "string", description: "Résumé de la situation sécuritaire" },
-                      zones_to_avoid: {
-                        type: "array",
-                        items: { type: "string" },
-                        description: "Zones déconseillées",
-                      },
-                      tips: {
-                        type: "array",
-                        items: { type: "string" },
-                        description: "Conseils de sécurité spécifiques",
-                      },
-                    },
-                    required: ["level", "summary", "tips"],
-                    additionalProperties: false,
-                  },
-                  health: {
-                    type: "object",
-                    properties: {
-                      mandatory_vaccines: {
-                        type: "array",
-                        items: { type: "string" },
-                        description: "Vaccins obligatoires",
-                      },
-                      recommended_vaccines: {
-                        type: "array",
-                        items: { type: "string" },
-                        description: "Vaccins recommandés",
-                      },
-                      health_risks: {
-                        type: "array",
-                        items: { type: "string" },
-                        description: "Risques sanitaires spécifiques",
-                      },
-                      insurance_required: { type: "boolean", description: "Assurance santé obligatoire ou non" },
-                      tips: {
-                        type: "array",
-                        items: { type: "string" },
-                        description: "Conseils santé spécifiques",
-                      },
-                    },
-                    required: ["recommended_vaccines", "health_risks", "insurance_required", "tips"],
-                    additionalProperties: false,
-                  },
-                  checklist: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        item: { type: "string", description: "Élément de la checklist" },
-                        category: { type: "string", enum: ["document", "santé", "pratique", "finance"], description: "Catégorie" },
-                        priority: { type: "string", enum: ["obligatoire", "recommandé", "optionnel"], description: "Priorité" },
-                      },
-                      required: ["item", "category", "priority"],
-                      additionalProperties: false,
-                    },
-                    description: "Checklist complète de préparation",
-                  },
-                  emergency_contacts: {
-                    type: "object",
-                    properties: {
-                      embassy: { type: "string", description: "Ambassade/Consulat de la nationalité du voyageur" },
-                      local_emergency: { type: "string", description: "Numéros d'urgence locaux" },
-                      tourist_police: { type: "string", description: "Police touristique si applicable" },
-                    },
-                    required: ["embassy", "local_emergency"],
-                    additionalProperties: false,
-                  },
-                },
-                required: ["visa", "security", "health", "checklist", "emergency_contacts"],
-                additionalProperties: false,
-              };
-    let visaInfo: unknown;
+    let result: any;
     try {
-      visaInfo = await generateJsonSplit({ instructions: systemPrompt + countryContext(destination, locale), input: userPrompt, schema: SCHEMA, name: "visa_info", parts: [["visa", "emergency_contacts"], ["security"], ["health"], ["checklist"]] });
+      result = await generateJsonSplit({
+        instructions: system + countryContext(destination, isEN ? "en" : "fr"),
+        input: lines.filter(Boolean).join("\n"),
+        schema: SCHEMA, name: "visa_info", effort: "low",
+        parts: [["visa", "passport", "transit"], ["checklist", "emergency_contacts"]],
+      });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;
       throw e;
     }
 
-    return new Response(JSON.stringify(visaInfo), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    // Fixed rule: EU/EEA/Swiss citizens moving inside that area never need a visa.
+    if (freeMovement) {
+      result.visa = {
+        status: "not_required",
+        title: isEN ? "No visa needed" : "Pas de visa nécessaire",
+        summary: isEN
+          ? "Your nationality gives you free movement here: a valid ID card or passport is enough. For more than 3 months, local registration may be required."
+          : "Ta nationalité te donne la libre circulation ici : une carte d'identité ou un passeport valide suffit. Au-delà de 3 mois, un enregistrement local peut être demandé.",
+        max_stay: isEN ? "No limit (registration after 3 months may apply)" : "Sans limite (enregistrement possible après 3 mois)",
+        cost: "", processing_time: "",
+        details: [],
+        why: isEN ? "Rule applied: EU/EEA/Swiss free movement." : "Règle appliquée : libre circulation UE/EEE/Suisse.",
+        official_url: isEN ? EU_SOURCE_URL_EN : EU_SOURCE_URL,
+      };
+      if (result.passport) result.passport.id_card_accepted = "yes";
+      if (Array.isArray(result.checklist)) result.checklist = result.checklist.filter((c: any) => !/\bvisa\b/i.test(`${c?.item} ${c?.id}`));
+    }
+
+    return json({ ...result, rule: freeMovement ? "free_movement" : null, officialGrounded: !!official, generatedAt: new Date().toISOString() });
   } catch (e) {
     console.error("visa-info error:", e);
-    return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return json({ error: e instanceof Error ? e.message : "Unknown error" }, 500);
   }
 }));
