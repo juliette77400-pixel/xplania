@@ -19,9 +19,9 @@ interface Props {
 }
 
 type Draft = Record<
-  "name" | "city" | "neighborhood" | "housing_type" | "monthly_rent" | "monthly_charges" | "deposit" | "extra_fees" | "commute" | "available_from" | "available_to" | "listing_url" | "pros" | "cons" | "notes",
+  "name" | "city" | "neighborhood" | "housing_type" | "monthly_rent" | "monthly_charges" | "deposit" | "extra_fees" | "commute" | "commute_minutes" | "available_from" | "available_to" | "listing_url" | "pros" | "cons" | "notes" | "lease_notes",
   string
-> & { charges_included: boolean | null; furnished: boolean | null };
+> & { charges_included: boolean | null; furnished: boolean | null; written_contract: boolean | null; visited: boolean | null; payment_before_visit: boolean | null };
 
 const toDraft = (o: HousingOption | null, city: string): Draft => ({
   name: o?.name ?? "",
@@ -33,6 +33,11 @@ const toDraft = (o: HousingOption | null, city: string): Draft => ({
   deposit: o?.deposit != null ? String(o.deposit) : "",
   extra_fees: o?.extra_fees != null ? String(o.extra_fees) : "",
   commute: o?.commute ?? "",
+  commute_minutes: o?.commute_minutes != null ? String(o.commute_minutes) : "",
+  lease_notes: o?.lease_notes ?? "",
+  written_contract: o?.written_contract ?? null,
+  visited: o?.visited ?? null,
+  payment_before_visit: o?.payment_before_visit ?? null,
   available_from: o?.available_from ?? "",
   available_to: o?.available_to ?? "",
   listing_url: o?.listing_url ?? "",
@@ -70,6 +75,8 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
     if (rent === null || Number.isNaN(rent)) return setError(t("housing.form.errors.rent"));
     const charges = num(d.monthly_charges), deposit = num(d.deposit), fees = num(d.extra_fees);
     if ([charges, deposit, fees].some((v) => Number.isNaN(v))) return setError(t("housing.form.errors.amount"));
+    const minutes = num(d.commute_minutes);
+    if (Number.isNaN(minutes) || (minutes !== null && minutes > 600)) return setError(t("housing.form.errors.minutes"));
     if (d.listing_url.trim() && !/^https?:\/\//i.test(d.listing_url.trim())) return setError(t("housing.form.errors.url"));
     if (d.available_from && d.available_to && d.available_to < d.available_from) return setError(t("housing.form.errors.dates"));
     setSaving(true);
@@ -85,6 +92,11 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
         deposit,
         extra_fees: fees,
         commute: txt(d.commute),
+        commute_minutes: minutes === null ? null : Math.round(minutes),
+        lease_notes: txt(d.lease_notes)?.slice(0, 500) ?? null,
+        written_contract: d.written_contract,
+        visited: d.visited,
+        payment_before_visit: d.payment_before_visit,
         furnished: d.furnished,
         available_from: d.available_from || null,
         available_to: d.available_to || null,
@@ -104,7 +116,7 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
 
   const chip = (active: boolean) =>
     `rounded-xl border px-3 py-2 text-sm transition-colors ${active ? "border-primary bg-primary/15 text-foreground" : "border-border text-muted-foreground hover:text-foreground"}`;
-  const triState = (key: "charges_included" | "furnished", labels: [string, string]) => (
+  const triState = (key: "charges_included" | "furnished" | "written_contract" | "visited" | "payment_before_visit", labels: [string, string]) => (
     <div className="flex flex-wrap gap-2">
       {([true, false] as const).map((v, i) => (
         <button key={String(v)} type="button" aria-pressed={d[key] === v} onClick={() => set(key, d[key] === v ? null : v)} className={chip(d[key] === v)}>{labels[i]}</button>
@@ -145,6 +157,14 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
             </div>
           )}
 
+          <fieldset className="space-y-3 rounded-xl border border-warning/30 bg-warning/5 p-3">
+            <legend className="px-1 text-sm font-semibold">{t("housing.form.beforePaying")}</legend>
+            <div className="space-y-1.5"><p className="text-sm">{t("housing.form.writtenContract")}</p>{triState("written_contract", [t("housing.form.yes"), t("housing.form.no")])}</div>
+            <div className="space-y-1.5"><p className="text-sm">{t("housing.form.visited")}</p>{triState("visited", [t("housing.form.yes"), t("housing.form.no")])}</div>
+            <div className="space-y-1.5"><p className="text-sm">{t("housing.form.paymentBeforeVisit")}</p>{triState("payment_before_visit", [t("housing.form.yes"), t("housing.form.no")])}</div>
+            <p className="text-xs text-muted-foreground">{t("housing.form.unknownHint")}</p>
+          </fieldset>
+
           <button type="button" aria-expanded={more} onClick={() => setMore((m) => !m)} className="flex items-center gap-1 text-sm font-semibold text-primary">
             <ChevronDown className={`h-4 w-4 transition-transform ${more ? "rotate-180" : ""}`} aria-hidden />{t("housing.form.more")}
           </button>
@@ -183,6 +203,10 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
                   <Input id="hf-commute" maxLength={120} value={d.commute} onChange={(e) => set("commute", e.target.value)} placeholder={t("housing.form.commutePlaceholder")} />
                 </div>
                 <div className="space-y-1.5">
+                  <Label htmlFor="hf-minutes">{t("housing.form.commuteMinutes")}</Label>
+                  <Input id="hf-minutes" type="number" min={0} max={600} inputMode="numeric" value={d.commute_minutes} onChange={(e) => set("commute_minutes", e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
                   <Label htmlFor="hf-from">{t("housing.form.from")}</Label>
                   <Input id="hf-from" type="date" value={d.available_from} onChange={(e) => set("available_from", e.target.value)} />
                 </div>
@@ -204,6 +228,10 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
                   <Label htmlFor="hf-cons">{t("housing.form.cons")}</Label>
                   <Textarea id="hf-cons" maxLength={600} rows={2} value={d.cons} onChange={(e) => set("cons", e.target.value)} />
                 </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="hf-lease">{t("housing.form.leaseNotes")}</Label>
+                <Textarea id="hf-lease" maxLength={500} rows={2} value={d.lease_notes} onChange={(e) => set("lease_notes", e.target.value)} placeholder={t("housing.form.leaseNotesPlaceholder")} />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="hf-notes">{t("housing.form.notes")}</Label>
