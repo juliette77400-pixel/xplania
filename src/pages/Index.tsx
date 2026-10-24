@@ -11,6 +11,7 @@ import ProblemSection from "@/components/xplania/ProblemSection";
 import HowItWorksSection from "@/components/xplania/HowItWorksSection";
 import BenefitsSection from "@/components/xplania/BenefitsSection";
 import FeaturesSection from "@/components/xplania/FeaturesSection";
+import DemoSection from "@/components/xplania/DemoSection";
 import BetaSection from "@/components/xplania/BetaSection";
 import Testimonials from "@/components/xplania/Testimonials";
 import FaqSection from "@/components/xplania/FaqSection";
@@ -42,10 +43,10 @@ const Index = () => {
   const { tripData, setTripData, recommendations, setRecommendations, dashboardLoading, setDashboardLoading } = useTravelContext();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
 
-  const handleCreateTrip = () => {
+  const handleCreateTrip = (source = "other") => {
     // Beta: no AI itinerary — trips are created on the preparation dashboard.
     if (!FEATURE_FLAGS.ENABLE_AI_ITINERARY) {
-      track("cta_click", { cta: "prepare_departure" });
+      track("cta_click", { cta: "prepare_departure", location: source });
       // Signed in: the dashboard sends people without a trip to the questionnaire.
       navigate(user ? PREPARATION_HOME : "/auth?mode=signup&next=/preparation");
       return;
@@ -71,20 +72,22 @@ const Index = () => {
       <AppNavbar />
       {/* legacy hidden CTA — keep handlers wired via floating button below if needed */}
       <div className="hidden">
-        <button onClick={handleCreateTrip}>create</button>
+        <button onClick={() => handleCreateTrip()}>create</button>
         <button onClick={scrollToFeedback}>fb</button>
       </div>
       <main id="main-content" tabIndex={-1}>
-        <HeroSection onCreateTrip={handleCreateTrip} />
+        {/* Path: hero → problem → solution → demo → how → benefits → proof → beta → FAQ → final CTA */}
+        <HeroSection onCreateTrip={() => handleCreateTrip("hero")} />
         <ProblemSection />
         <FeaturesSection />
-        <HowItWorksSection onStart={handleCreateTrip} />
+        <DemoSection />
+        <HowItWorksSection onStart={() => handleCreateTrip("how_it_works")} />
         <BenefitsSection />
         <Testimonials />
         <BetaSection onFeedback={() => setFeedbackOpen(true)} />
         <FaqSection />
-        <FinalCtaSection onCreateTrip={handleCreateTrip} />
-        <Footer onCreateTrip={handleCreateTrip} />
+        <FinalCtaSection onCreateTrip={() => handleCreateTrip("final")} />
+        <Footer onCreateTrip={() => handleCreateTrip("footer")} />
       </main>
       {travelFormOpen && (
         <Suspense fallback={<DialogSkeleton size="lg" />}>

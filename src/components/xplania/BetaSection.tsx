@@ -1,74 +1,58 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { MessageSquare, Zap, Users } from "lucide-react";
+import { GraduationCap, MessageSquare, Zap } from "lucide-react";
 
 interface Props {
   onFeedback: () => void;
 }
 
+// Trust and participation: free access, feedback, ESTICE student beta. No invented figures.
 const BetaSection = ({ onFeedback }: Props) => {
   const { t } = useTranslation();
   const cards = [
-    { icon: MessageSquare, title: t("beta.feedbackTitle"), desc: t("beta.feedbackDesc") },
     { icon: Zap, title: t("beta.earlyTitle"), desc: t("beta.earlyDesc") },
-    { icon: Users, title: t("beta.communityTitle"), desc: t("beta.communityDesc") },
+    { icon: MessageSquare, title: t("beta.feedbackTitle"), desc: t("beta.feedbackDesc") },
+    { icon: GraduationCap, title: t("beta.communityTitle"), desc: t("beta.communityDesc") },
   ];
 
   return (
-    <section id="feedback" className="py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            {t("beta.titlePart1")}{" "}
-            <span className="gradient-text">{t("beta.titlePart2")}</span>
+    <section id="feedback" aria-labelledby="beta-title" className="scroll-mt-20 px-4 py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mx-auto mb-12 max-w-3xl text-center">
+          <h2 id="beta-title" className="text-balance text-3xl font-extrabold tracking-tight sm:text-4xl">
+            {t("beta.titlePart1")} <span className="gradient-text">{t("beta.titlePart2")}</span>
           </h2>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            {t("beta.subtitle")}
-          </p>
+          <p className="mt-4 text-pretty text-muted-foreground">{t("beta.subtitle")}</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        <div className="grid gap-5 md:grid-cols-3">
           {cards.map((c, i) => (
             <motion.div
               key={c.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="glass-card rounded-2xl p-8 text-center interactive-card"
+              transition={{ delay: i * 0.1 }}
+              className="glass-card h-full rounded-2xl p-6 text-center"
             >
-              <div className="w-14 h-14 mx-auto rounded-2xl gradient-button flex items-center justify-center mb-5">
-                <c.icon className="w-6 h-6 text-primary-foreground" />
+              <div className="gradient-button mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl">
+                <c.icon className="h-5 w-5 text-primary-foreground" aria-hidden />
               </div>
               <h3 className="text-lg font-bold text-foreground">{c.title}</h3>
-              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{c.desc}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
             </motion.div>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <h3 className="text-xl font-bold text-foreground mb-2">{t("beta.shareTitle")}</h3>
-          <p className="text-muted-foreground text-sm mb-6">
-            {t("beta.shareSubtitle")}
-          </p>
+        <div className="mt-10 text-center">
           <button
             onClick={onFeedback}
-            className="gradient-button inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background/40 px-7 py-3.5 font-semibold text-foreground transition hover:border-primary/50"
           >
-            <MessageSquare className="w-5 h-5" />
+            <MessageSquare className="h-5 w-5 text-primary" aria-hidden />
             {t("beta.shareCta")}
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

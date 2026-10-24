@@ -15,9 +15,9 @@ const STEPS = [
 const HowItWorksSection = ({ onStart }: Props) => {
   const { t } = useTranslation();
   return (
-    <section id="comment-ca-marche" aria-labelledby="how-title" className="scroll-mt-20 border-y border-border/60 bg-card/25 px-4 py-20 sm:py-24">
+    <section id="comment-ca-marche" aria-labelledby="how-title" className="scroll-mt-20 px-4 py-20 sm:py-24">
       <div className="mx-auto max-w-5xl">
-        <h2 id="how-title" className="text-center text-3xl font-extrabold tracking-tight sm:text-5xl">{t("prepLanding.how.title")}</h2>
+        <h2 id="how-title" className="text-balance text-center text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">{t("prepLanding.how.title")}</h2>
         <ol className="mt-12 grid gap-5 md:grid-cols-3">
           {STEPS.map(({ key, icon: Icon }, i) => (
             <motion.li key={key} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .1 }}
@@ -33,7 +33,7 @@ const HowItWorksSection = ({ onStart }: Props) => {
         </ol>
         <div className="mt-10 text-center">
           <button onClick={onStart} className="gradient-button inline-flex items-center gap-2 rounded-xl px-7 py-4 font-bold text-primary-foreground transition hover:-translate-y-0.5">
-            {t("prepLanding.how.cta")}<ArrowRight className="h-4 w-4" />
+            {t("prepLanding.cta")}<ArrowRight className="h-4 w-4" aria-hidden />
           </button>
         </div>
       </div>

@@ -20,15 +20,17 @@ const FeaturesSection = () => {
     <section id="features" aria-labelledby="solution-title" className="px-4 py-20 sm:py-28">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 id="solution-title" className="text-3xl font-extrabold tracking-tight sm:text-5xl">{t("prepLanding.solution.title")}</h2>
-          <p className="mt-5 text-lg leading-8 text-muted-foreground">{t("prepLanding.solution.subtitle")}</p>
+          <h2 id="solution-title" className="text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">{t("prepLanding.solution.title")}</h2>
+          <p className="mt-5 text-pretty text-lg leading-8 text-muted-foreground">{t("prepLanding.solution.subtitle")}</p>
         </div>
         <div className="relative mt-14">
           {/* One shared path linking the tools (single row on wide screens) */}
           <div aria-hidden className="absolute left-[10%] right-[10%] top-[2.1rem] hidden h-px bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 xl:block" />
-          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {/* Flex-wrap keeps an incomplete last row centred instead of leaving one card alone on the left. */}
+          <ol className="flex flex-wrap justify-center gap-5">
             {tools.map(({ key, to, icon: Icon }, i) => (
-              <motion.li key={key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08 }}>
+              <motion.li key={key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08 }}
+                className="w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.84rem)] xl:w-[calc(20%-1rem)]">
                 <Link to={to} className="group relative flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/60 p-5 interactive-card">
                   <div className="gradient-button relative flex h-11 w-11 items-center justify-center rounded-xl"><Icon className="h-5 w-5 text-primary-foreground" /></div>
                   <p className="mt-4 text-xs font-bold uppercase tracking-[.14em] text-primary">{t("prepLanding.solution.stepLabel", { n: i + 1 })}</p>

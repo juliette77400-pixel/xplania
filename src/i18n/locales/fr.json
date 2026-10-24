@@ -411,15 +411,15 @@
     "controlDesc": "Gère ton budget en temps réel avec des estimations basées sur le coût de la vie local."
   },
   "beta": {
-    "titlePart1": "Pourquoi participer à la",
-    "titlePart2": "bêta Xplania",
-    "subtitle": "Aide-nous à construire l'outil qui simplifie la préparation d'un départ à l'étranger.",
-    "feedbackTitle": "Feedback direct",
-    "feedbackDesc": "Ton retour améliore directement les 5 outils de préparation. Chaque suggestion compte.",
+    "titlePart1": "Teste Xplania et",
+    "titlePart2": "aide-nous à l'améliorer.",
+    "subtitle": "Xplania est actuellement en bêta. Découvre gratuitement les outils de préparation et partage ton expérience pour nous aider à construire une plateforme vraiment utile aux étudiants.",
+    "feedbackTitle": "Ton avis compte",
+    "feedbackDesc": "Signale les difficultés rencontrées et propose les améliorations qui te seraient utiles.",
     "earlyTitle": "Accès gratuit",
-    "earlyDesc": "Pendant la bêta, Budget, Visa, Valise, Guide culturel et Logement sont gratuits, sans carte bancaire.",
+    "earlyDesc": "Utilise les cinq outils de préparation gratuitement pendant la bêta, sans carte bancaire.",
     "communityTitle": "Bêta ESTICE",
-    "communityDesc": "Tu fais partie des premiers étudiants à tester Xplania et à façonner la suite.",
+    "communityDesc": "Participe aux premiers tests d'une plateforme conçue autour des besoins de la mobilité étudiante.",
     "shareTitle": "Partage ton expérience",
     "shareSubtitle": "Ton avis nous aide à rendre la préparation du départ plus simple.",
     "shareCta": "Donner mon feedback"
@@ -5667,17 +5667,17 @@
       "text": "Gratuit pendant la bêta, sans carte bancaire."
     },
     "s2": {
-      "title": "Tu renseignes ton voyage",
+      "title": "Tu renseignes ton séjour",
       "time": "≈ 2 min",
-      "text": "Destination, dates, nationalité, budget approximatif et type de séjour : Erasmus, stage ou voyage."
+      "text": "Destination, dates, nationalité, budget approximatif et type de mobilité : Erasmus, échange universitaire ou stage."
     },
     "s3": {
-      "title": "Tu prépares avec les 5 outils",
-      "text": "Budget, visa, valise, guide culturel et logement s'adaptent automatiquement à ton voyage."
+      "title": "Tu prépares ton départ avec 5 outils",
+      "text": "Budget, visa, valise, guide interculturel et logement s'adaptent aux informations de ton séjour."
     },
     "s4": {
       "title": "Tu suis ta progression",
-      "text": "Ton tableau de bord montre où tu en es dans chaque outil avant le départ."
+      "text": "Ton tableau de bord t'aide à retrouver tes préparatifs et les prochaines étapes avant ton départ."
     },
     "cta": "C'est parti !",
     "note": "Gratuit pendant la bêta. Tu peux quitter à tout moment."
@@ -6451,103 +6451,146 @@
   "prepLanding": {
     "hero": {
       "badge": "Ton départ à l'étranger, simplifié.",
-      "titleStart": "Ton Erasmus ou ton stage à l'étranger",
-      "titleAccent": "commence ici.",
-      "subtitle": "Budget, visa, valise, culture locale, logement… Prépare ton départ sans te perdre entre des dizaines de sites et de démarches. Xplania rassemble l'essentiel au même endroit et t'accompagne étape par étape.",
-      "primary": "Je prépare mon départ",
+      "titleStart": "Ton Erasmus ou ton stage à l'étranger,",
+      "titleAccent": "sans le casse-tête des préparatifs.",
+      "subtitle": "Budget, visa, logement, valise et culture locale : retrouve tes préparatifs au même endroit, avec des guides adaptés à ton séjour et un suivi de ce qu'il te reste à faire.",
       "secondary": "Découvrir comment ça marche",
       "note": "Gratuit pendant la bêta · Sans carte bancaire",
-      "previewLabel": "Aperçu de ton espace de préparation",
+      "previewLabel": "Exemple de tableau de bord",
       "previewExample": "Exemple : Erasmus à Madrid · 5 mois",
-      "previewNote": "Illustration : la progression dépend de ce que tu as réellement fait dans chaque guide."
+      "previewNote": "Illustration : dans ton espace, la progression dépend de ce que tu fais réellement dans chaque outil.",
+      "previewAria": "Exemple illustratif de tableau de bord Xplania",
+      "previewPlace": "Madrid, Espagne",
+      "previewStay": "Erasmus · 5 mois",
+      "preview": {
+        "budget": "En cours",
+        "visa": "3 points à vérifier",
+        "valise": "À commencer",
+        "culture": "À lire",
+        "housing": "Recherche en cours"
+      },
+      "nextTitle": "Prochaines actions",
+      "next1": "Vérifier les documents demandés pour ton visa",
+      "next2": "Comparer les logements repérés"
     },
     "problem": {
       "title": "Partir à l'étranger, c'est excitant. Tout préparer, un peu moins.",
-      "text": "Entre les formalités administratives, le budget à anticiper, les affaires à emporter et les différences culturelles, préparer une mobilité internationale peut rapidement devenir compliqué.",
+      "text": "Entre les démarches administratives, le budget, la recherche de logement, la valise et les différences culturelles, préparer un Erasmus ou un stage à l'étranger peut vite devenir un casse-tête.",
       "items": {
         "scattered": {
           "title": "Trop d'informations dispersées",
-          "desc": "Tu passes d'un site à l'autre pour trouver les bonnes informations."
+          "desc": "Tu passes d'un site à l'autre pour trouver les bonnes informations et organiser ton départ."
         },
         "forget": {
           "title": "La peur d'oublier l'essentiel",
-          "desc": "Documents, démarches, budget, affaires… Difficile de savoir si tout est prêt."
+          "desc": "Documents, logement, dépenses, affaires à emporter… Difficile de savoir si tout est prêt."
         },
         "bearings": {
-          "title": "Un manque de repères",
-          "desc": "Tu ne sais pas toujours par quoi commencer ni quelles étapes prioriser."
+          "title": "Difficile de savoir par où commencer",
+          "desc": "Tu as beaucoup de choses à préparer, mais tu ne sais pas toujours quelles étapes prioriser."
         }
       },
       "conclusion": "Et si tu pouvais tout préparer depuis un seul endroit ?"
     },
     "solution": {
       "title": "Un seul espace pour préparer ton départ.",
-      "subtitle": "Xplania rassemble cinq outils complémentaires, adaptés aux informations de ton séjour.",
+      "subtitle": "Cinq outils complémentaires, adaptés à ton séjour, pour organiser tes préparatifs sans multiplier les recherches.",
       "stepLabel": "Outil {{n}}",
       "cards": {
         "budget": {
           "name": "Budget",
-          "desc": "Anticipe tes dépenses et organise ton budget pour ton séjour à l'étranger.",
-          "benefit": "Tu sais combien prévoir avant de partir."
+          "desc": "Anticipe les dépenses de ton séjour et organise ton budget avant de partir.",
+          "benefit": "Tu sais quelles dépenses prévoir."
         },
         "visa": {
           "name": "Visa et formalités",
-          "desc": "Identifie les démarches administratives à vérifier selon ta destination et ta situation.",
-          "benefit": "Tu sais quels documents préparer et où les vérifier."
+          "desc": "Identifie les démarches et les documents à vérifier selon ta destination et ta situation.",
+          "benefit": "Tu sais quelles formalités préparer."
         },
         "valise": {
           "name": "Valise intelligente",
-          "desc": "Prépare une checklist adaptée à ton séjour pour ne pas oublier l'essentiel.",
-          "benefit": "Tu pars sans oublier l'essentiel."
+          "desc": "Prépare une checklist adaptée à ta destination, à la durée et aux besoins de ton séjour.",
+          "benefit": "Tu limites les oublis avant le départ."
         },
         "culture": {
           "name": "Guide interculturel",
-          "desc": "Découvre les habitudes, codes culturels et conseils pratiques pour mieux préparer ton arrivée.",
-          "benefit": "Tu arrives plus à l'aise dans ton nouveau pays."
+          "desc": "Découvre les habitudes et les conseils pratiques pour mieux préparer ton arrivée dans un nouvel environnement.",
+          "benefit": "Tu arrives avec de meilleurs repères."
         },
         "housing": {
           "name": "Logement",
-          "desc": "Trouve où chercher, compare les logements repérés et prépare ton installation.",
-          "benefit": "Tu évites les mauvaises surprises avant de signer."
+          "desc": "Organise ta recherche, compare tes options et prépare ton installation à l'étranger.",
+          "benefit": "Tu avances dans ta recherche de logement."
         }
       }
     },
     "how": {
-      "title": "Ton départ, préparé en quelques étapes.",
+      "title": "Ton départ, préparé en trois étapes.",
       "s1": {
         "title": "Renseigne ton séjour",
-        "desc": "Indique ta destination, tes dates et quelques informations utiles."
+        "desc": "Indique ta destination, tes dates et quelques informations utiles grâce à un questionnaire rapide."
       },
       "s2": {
-        "title": "Retrouve tes guides",
-        "desc": "Accède à tes cinq outils de préparation, adaptés à ton profil et à ton séjour."
+        "title": "Retrouve tes cinq guides",
+        "desc": "Accède aux outils de préparation adaptés aux informations de ton séjour."
       },
       "s3": {
         "title": "Avance à ton rythme",
-        "desc": "Complète tes préparatifs et retrouve ta progression depuis ton tableau de bord."
-      },
-      "cta": "Commencer ma préparation"
+        "desc": "Organise tes préparatifs et retrouve ta progression depuis ton tableau de bord."
+      }
     },
     "benefits": {
       "title": "Moins de recherches. Plus de sérénité avant ton départ.",
       "oneplace": {
-        "title": "Tout retrouver au même endroit",
-        "desc": "Budget, formalités, valise, culture et logement réunis, sans ressaisir tes informations."
+        "title": "Tout au même endroit",
+        "desc": "Tes préparatifs réunis dans un seul espace."
       },
       "remaining": {
-        "title": "Savoir ce qu'il reste à préparer",
-        "desc": "Ton tableau de bord montre ce qui est fait et la prochaine action de chaque guide."
+        "title": "Une préparation plus claire",
+        "desc": "Visualise ce qui est fait et ce qu'il te reste à préparer."
       },
       "adapted": {
-        "title": "Des informations adaptées à ton séjour",
-        "desc": "Destination, nationalité, durée et type de mobilité sont pris en compte."
+        "title": "Des guides adaptés à ton séjour",
+        "desc": "Retrouve des informations tenant compte de ta destination et de ton profil."
       }
     },
     "final": {
       "title": "Prêt à préparer ton départ à l'étranger ?",
-      "text": "Erasmus, échange universitaire ou stage : commence ta préparation avec Xplania.",
-      "cta": "Je prépare mon départ",
-      "note": "Gratuit pendant la bêta."
+      "text": "Erasmus, échange universitaire ou stage : commence à organiser tes préparatifs avec Xplania."
+    },
+    "cta": "Je prépare mon départ",
+    "reassurance": "Gratuit pendant la bêta · Sans carte bancaire",
+    "demo": {
+      "title": "Un séjour. Tes informations. Cinq outils connectés.",
+      "subtitle": "Renseigne ton séjour une seule fois et retrouve les informations utiles dans tes différents guides.",
+      "profileTitle": "Exemple de séjour",
+      "profile": {
+        "destination": {
+          "label": "Destination",
+          "value": "Madrid, Espagne"
+        },
+        "stay": {
+          "label": "Mobilité",
+          "value": "Erasmus"
+        },
+        "duration": {
+          "label": "Durée",
+          "value": "5 mois"
+        },
+        "housing": {
+          "label": "Logement",
+          "value": "Recherche en cours"
+        }
+      },
+      "exampleNote": "Exemple illustratif.",
+      "uses": {
+        "budget": "Les dépenses à organiser pour cinq mois à Madrid.",
+        "visa": "Les formalités à vérifier selon ta nationalité et l'Espagne.",
+        "valise": "Une checklist adaptée à la saison et à la durée du séjour.",
+        "culture": "Les codes culturels et conseils pratiques pour l'Espagne.",
+        "housing": "Les étapes de ta recherche en cours et la comparaison de tes options."
+      },
+      "conclusion": "Tu renseignes ton séjour une fois. Xplania t'aide à organiser la suite."
     }
   },
   "prepQuiz": {

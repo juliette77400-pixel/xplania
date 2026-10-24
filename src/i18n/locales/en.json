@@ -411,15 +411,15 @@
     "controlDesc": "Manage your budget in real time with estimates based on the local cost of living."
   },
   "beta": {
-    "titlePart1": "Why join the",
-    "titlePart2": "Xplania beta",
-    "subtitle": "Help us build the tool that makes preparing to go abroad simple.",
-    "feedbackTitle": "Direct feedback",
-    "feedbackDesc": "Your feedback directly improves the 5 preparation tools. Every suggestion counts.",
+    "titlePart1": "Try Xplania and",
+    "titlePart2": "help us improve it.",
+    "subtitle": "Xplania is currently in beta. Try the preparation tools for free and share your experience to help us build a platform that's truly useful to students.",
+    "feedbackTitle": "Your opinion matters",
+    "feedbackDesc": "Report the difficulties you meet and suggest improvements that would help you.",
     "earlyTitle": "Free access",
-    "earlyDesc": "During the beta, Budget, Visa, Packing, the Culture guide and Housing are free, no card needed.",
+    "earlyDesc": "Use the five preparation tools for free during the beta, no credit card needed.",
     "communityTitle": "ESTICE beta",
-    "communityDesc": "You're among the first students testing Xplania and shaping what comes next.",
+    "communityDesc": "Take part in the first tests of a platform built around the needs of student mobility.",
     "shareTitle": "Share your experience",
     "shareSubtitle": "Your feedback helps us make preparing to leave simpler.",
     "shareCta": "Give my feedback"
@@ -5667,17 +5667,17 @@
       "text": "Free during the beta, no card needed."
     },
     "s2": {
-      "title": "Enter your trip",
+      "title": "You enter your stay",
       "time": "≈ 2 min",
-      "text": "Destination, dates, nationality, approximate budget and type of stay: Erasmus, internship or trip."
+      "text": "Destination, dates, nationality, approximate budget and type of mobility: Erasmus, university exchange or internship."
     },
     "s3": {
-      "title": "Prepare with the 5 tools",
-      "text": "Budget, visa, packing, culture guide and housing adapt automatically to your trip."
+      "title": "You prepare your departure with 5 tools",
+      "text": "Budget, visa, packing, intercultural guide and housing adapt to the details of your stay."
     },
     "s4": {
       "title": "Track your progress",
-      "text": "Your dashboard shows where you stand in each tool before departure."
+      "text": "Your dashboard helps you find your preparations and the next steps before you leave."
     },
     "cta": "Let's go!",
     "note": "Free during the beta. You can leave at any time."
@@ -6451,103 +6451,146 @@
   "prepLanding": {
     "hero": {
       "badge": "Your move abroad, made simple.",
-      "titleStart": "Your Erasmus or internship abroad",
-      "titleAccent": "starts here.",
-      "subtitle": "Budget, visa, packing, local culture, housing… Prepare your departure without getting lost across dozens of websites and procedures. Xplania brings the essentials together and guides you step by step.",
-      "primary": "Prepare my departure",
+      "titleStart": "Your Erasmus or internship abroad,",
+      "titleAccent": "without the preparation headache.",
+      "subtitle": "Budget, visa, housing, packing and local culture: find all your preparations in one place, with guides adapted to your stay and a clear view of what's left to do.",
       "secondary": "See how it works",
       "note": "Free during the beta · No credit card",
-      "previewLabel": "Preview of your preparation space",
+      "previewLabel": "Example dashboard",
       "previewExample": "Example: Erasmus in Madrid · 5 months",
-      "previewNote": "Illustration: progress depends on what you have actually done in each guide."
+      "previewNote": "Illustration: in your space, progress depends on what you actually do in each tool.",
+      "previewAria": "Illustrative example of an Xplania dashboard",
+      "previewPlace": "Madrid, Spain",
+      "previewStay": "Erasmus · 5 months",
+      "preview": {
+        "budget": "In progress",
+        "visa": "3 points to check",
+        "valise": "To start",
+        "culture": "To read",
+        "housing": "Search in progress"
+      },
+      "nextTitle": "Next actions",
+      "next1": "Check the documents required for your visa",
+      "next2": "Compare the places you spotted"
     },
     "problem": {
       "title": "Going abroad is exciting. Preparing everything, less so.",
-      "text": "Between paperwork, the budget to plan, what to pack and cultural differences, preparing an international mobility can quickly get complicated.",
+      "text": "Between paperwork, budget, finding housing, packing and cultural differences, preparing an Erasmus or an internship abroad can quickly become a headache.",
       "items": {
         "scattered": {
           "title": "Too much scattered information",
-          "desc": "You jump from one website to another to find the right information."
+          "desc": "You jump from one website to another to find the right information and organise your departure."
         },
         "forget": {
           "title": "The fear of forgetting something essential",
-          "desc": "Documents, procedures, budget, belongings… Hard to know if everything is ready."
+          "desc": "Documents, housing, expenses, things to pack… Hard to know if everything is ready."
         },
         "bearings": {
-          "title": "No clear starting point",
-          "desc": "You don't always know where to start or which steps come first."
+          "title": "Hard to know where to start",
+          "desc": "You have a lot to prepare, but you don't always know which steps come first."
         }
       },
       "conclusion": "What if you could prepare everything from one place?"
     },
     "solution": {
       "title": "One space to prepare your departure.",
-      "subtitle": "Xplania brings together five complementary tools, adapted to the details of your stay.",
+      "subtitle": "Five complementary tools, adapted to your stay, to organise your preparations without endless searching.",
       "stepLabel": "Tool {{n}}",
       "cards": {
         "budget": {
           "name": "Budget",
-          "desc": "Anticipate your expenses and organise your budget for your stay abroad.",
-          "benefit": "You know how much to plan before leaving."
+          "desc": "Anticipate the costs of your stay and organise your budget before you leave.",
+          "benefit": "You know which expenses to plan."
         },
         "visa": {
           "name": "Visa & paperwork",
-          "desc": "Identify the administrative steps to check for your destination and situation.",
-          "benefit": "You know which documents to prepare and where to check them."
+          "desc": "Identify the steps and documents to check for your destination and situation.",
+          "benefit": "You know which formalities to prepare."
         },
         "valise": {
           "name": "Smart packing",
-          "desc": "Build a checklist adapted to your stay so you don't forget the essentials.",
-          "benefit": "You leave without forgetting the essentials."
+          "desc": "Build a checklist adapted to your destination, the length and the needs of your stay.",
+          "benefit": "You limit what you forget before leaving."
         },
         "culture": {
           "name": "Intercultural guide",
-          "desc": "Learn the habits, cultural codes and practical tips to prepare your arrival.",
-          "benefit": "You arrive more at ease in your new country."
+          "desc": "Learn the habits and practical tips to better prepare your arrival in a new environment.",
+          "benefit": "You arrive with better bearings."
         },
         "housing": {
           "name": "Housing",
-          "desc": "Find where to look, compare the places you spotted and prepare your move-in.",
-          "benefit": "You avoid bad surprises before signing."
+          "desc": "Organise your search, compare your options and prepare your move-in abroad.",
+          "benefit": "You move forward in your housing search."
         }
       }
     },
     "how": {
-      "title": "Your departure, prepared in a few steps.",
+      "title": "Your departure, prepared in three steps.",
       "s1": {
         "title": "Tell us about your stay",
-        "desc": "Enter your destination, your dates and a few useful details."
+        "desc": "Enter your destination, dates and a few useful details in a quick questionnaire."
       },
       "s2": {
-        "title": "Find your guides",
-        "desc": "Access your five preparation tools, adapted to your profile and stay."
+        "title": "Find your five guides",
+        "desc": "Access the preparation tools adapted to the details of your stay."
       },
       "s3": {
         "title": "Move forward at your pace",
-        "desc": "Complete your preparations and follow your progress from your dashboard."
-      },
-      "cta": "Start my preparation"
+        "desc": "Organise your preparations and follow your progress from your dashboard."
+      }
     },
     "benefits": {
       "title": "Less searching. More peace of mind before you leave.",
       "oneplace": {
         "title": "Everything in one place",
-        "desc": "Budget, paperwork, packing, culture and housing together, without retyping your details."
+        "desc": "Your preparations together in a single space."
       },
       "remaining": {
-        "title": "Know what's left to prepare",
-        "desc": "Your dashboard shows what's done and the next action in each guide."
+        "title": "A clearer preparation",
+        "desc": "See what's done and what's left to prepare."
       },
       "adapted": {
-        "title": "Information adapted to your stay",
-        "desc": "Destination, nationality, length and type of mobility are taken into account."
+        "title": "Guides adapted to your stay",
+        "desc": "Find information that takes your destination and profile into account."
       }
     },
     "final": {
       "title": "Ready to prepare your move abroad?",
-      "text": "Erasmus, university exchange or internship: start your preparation with Xplania.",
-      "cta": "Prepare my departure",
-      "note": "Free during the beta."
+      "text": "Erasmus, university exchange or internship: start organising your preparations with Xplania."
+    },
+    "cta": "Prepare my departure",
+    "reassurance": "Free during the beta · No credit card",
+    "demo": {
+      "title": "One stay. Your details. Five connected tools.",
+      "subtitle": "Enter your stay once and find the useful information across your different guides.",
+      "profileTitle": "Example stay",
+      "profile": {
+        "destination": {
+          "label": "Destination",
+          "value": "Madrid, Spain"
+        },
+        "stay": {
+          "label": "Mobility",
+          "value": "Erasmus"
+        },
+        "duration": {
+          "label": "Length",
+          "value": "5 months"
+        },
+        "housing": {
+          "label": "Housing",
+          "value": "Search in progress"
+        }
+      },
+      "exampleNote": "Illustrative example.",
+      "uses": {
+        "budget": "The expenses to organise for five months in Madrid.",
+        "visa": "The formalities to check for your nationality and Spain.",
+        "valise": "A checklist adapted to the season and length of your stay.",
+        "culture": "Cultural codes and practical tips for Spain.",
+        "housing": "The steps of your ongoing search and a comparison of your options."
+      },
+      "conclusion": "You enter your stay once. Xplania helps you organise the rest."
     }
   },
   "prepQuiz": {
