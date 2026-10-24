@@ -1,109 +1,62 @@
+# Refonte stratégique Xplania — préparer son départ à l'étranger
 
-## 1. État des lieux — Tinder actuel
+Objectif : un étudiant comprend en 5 secondes à qui s'adresse Xplania, quel problème il règle et ce qu'il obtient. Identité visuelle, connexion, comptes et données existantes conservés. Rien n'est supprimé définitivement.
 
-**Fichiers concernés**
-- `src/pages/TravelerProfileOnboarding.tsx` — écran principal du swipe (20 cartes)
-- `src/components/tinder/TinderCard.tsx` — composant carte (drag + animations framer-motion)
-- `src/pages/TravelerProfileResult.tsx` — écran de révélation du badge après le swipe
-- Table `tinder_cards` (contenu des cartes) + `user_swipes` (historique par user) + `traveler_profiles` (badge + scores 12D + recommended_features + reward_points)
-- Edge function `tinder-seed-images` (génère les visuels manquants)
+## Ce qui existe déjà (réutilisé)
+- Tableau de bord avec les 4 outils et leur progression réelle.
+- Formulaire de séjour (destination, dates, nationalité, budget, type de séjour) : il sera remplacé par le questionnaire en cartes.
+- Le guide Visa reprend déjà la nationalité ; Budget, Valise et Culture reprennent déjà la destination et les dates.
+- Modules hors bêta déjà masqués (menus, pied de page, recherche).
 
-**Où il apparaît dans le parcours aujourd'hui**
-- Route : `/profil-voyageur` (protégée par `ProtectedRoute skipOnboarding`)
-- `ProtectedRoute` **force** tout utilisateur connecté qui n'a pas encore de `traveler_profiles.completed_at` à être redirigé vers `/profil-voyageur` → le Tinder est donc **obligatoire, après l'inscription/connexion**, avant l'accès au reste de l'app.
-- Reprise automatique déjà en place : les swipes déjà faits sont rechargés depuis `user_swipes`, les scores sont recalculés et un toast "resumed" s'affiche.
-- Pas de lien avec la création d'un voyage.
+## 1. Page d'accueil
+- Plus d'écran de présentation avant l'accueil : arrivée directe.
+- Nouvel ordre : Hero → Le problème → La solution (4 cartes) → Comment ça marche (3 étapes) → Bénéfices → Témoignages → Bloc bêta/avis → FAQ → CTA final → pied de page (avec le lien comparaison ChatGPT).
+- Textes repris mot pour mot de ton document, en français et en anglais.
+- « Je prépare mon départ » : inscription puis questionnaire ; si déjà connecté avec un séjour, direct au tableau de bord.
+- « Découvrir comment ça marche » : fait défiler jusqu'aux 3 étapes.
+- Les anciens blocs (« Pensé pour étudiants, voyageurs et pros », frise en 4 étapes, exemple Lisbonne) sont retirés de l'accueil.
 
-**Connexion à `traveler_profiles`**
-- Oui, pleinement connecté. À la fin des 20 cartes, `finalize()` fait un `upsert` dans `traveler_profiles` avec : les 12 scores dimensionnels, le `badge`, `recommended_features`, `reward_points`, `reward_unlocks`, `completed_at`. Puis redirection vers `/profil-voyageur/resultat`.
-- Ce n'est **plus une maquette isolée** — la data flow est complète.
+## 2. Questionnaire de préparation (format Tinder conservé)
+Grandes cartes illustrées, animations, glisser à gauche pour revenir / à droite pour continuer, barre de progression, et boutons accessibles au clavier en alternative.
+1. Où pars-tu à l'aventure ? — pays avec suggestions + ville facultative.
+2. D'où pars-tu ? — nationalité, pays de résidence, 2e nationalité facultative (rien n'est déduit automatiquement).
+3. Quel est ton projet à l'étranger ? — 3 cartes photo : Erasmus/échange, Stage, Autre mobilité étudiante.
+4. Quand commence ton aventure ? — date de départ, retour facultatif, ou durée : moins de 3 mois, 3–6 mois, plus de 6 mois, je ne sais pas encore.
+5. Quel budget as-tu prévu ? — montant en euros ou « Je ne sais pas encore ».
+6. Où vas-tu poser tes valises ? — 4 cartes photo : résidence étudiante, colocation, famille d'accueil, je ne sais pas encore.
 
-**Ce qui manque pour la nouvelle cible**
-- Pas d'étape "Promesse", "Besoin", "Mini qualification" avant le Tinder.
-- L'auth (`ProtectedRoute`) intercepte AVANT même la promesse → un visiteur non connecté ne voit rien de l'entonnoir.
-- Pas de tracking `onboarding_step` pour reprendre à l'étape exacte.
-- Pas d'écran "Essai limité" entre les 2 fonctionnalités recommandées et le dashboard.
+Écran final « Ton espace de préparation est prêt ! » avec le résumé (destination, type de séjour, dates ou durée, budget si renseigné) et le bouton « Accéder à ma préparation → ». Aucun score de personnalité, aucun pourcentage inventé.
 
----
+Images : environ 11 illustrations créées une fois pour toutes (campus, stage, valise, résidence, colocation, famille d'accueil, etc.), sans coût par utilisateur.
 
-## 2. Nouveau parcours cible
+Le questionnaire s'ouvre aussi depuis « Nouveau séjour » sur le tableau de bord. Une personne qui a déjà un séjour complet n'est jamais renvoyée dedans.
 
-```text
-[public]                                      [auth requise]
-Promesse → Besoin → MiniQualif → Tinder → [SIGN-UP] → Profil → 2 Features → Essai → Dashboard
-  /welcome  /besoin   /qualif    /profil-voyageur
-                                 /profil-voyageur/resultat
-                                 /profil-voyageur/features
-                                 /profil-voyageur/essai
-                                 /app
-```
+## 3. Lien avec les 4 guides
+- Les réponses sont enregistrées dans le séjour et reprises automatiquement : jamais redemandées.
+- Visa : nationalité, résidence, 2e nationalité, type de mobilité et durée transmis à l'IA, en gardant les règles de sécurité et le rappel « vérifie auprès des sources officielles ».
+- Budget : budget prévu, hébergement et type de mobilité pré-remplis ; les montants restent présentés comme des estimations.
+- Valise : destination, dates/durée et hébergement.
+- Culture : pays et type de mobilité (conseils vie étudiante ou vie en entreprise).
+- Donnée manquante (budget, dates) : message clair avec un bouton pour la compléter.
 
-**Moment de création du compte** : entre le Tinder et la révélation du profil.
-Raison : l'utilisateur a déjà investi ~2 min de swipe → il est engagé, la friction du signup est acceptable, et on a besoin d'un `user_id` pour persister les scores calculés côté serveur dans `traveler_profiles`. Avant le signup, les réponses (besoin, qualif, swipes) sont stockées en `localStorage` sous la clé `xplania:onboarding` puis rejouées après création du compte.
+## 4. Tableau de bord
+- En-tête : destination, type de mobilité, dates ou durée.
+- Chaque outil affiche « Non commencé », « En cours » ou « Terminé », selon des actions réellement enregistrées (une simple visite ne compte pas).
+- Progression globale et par outil (déjà mesurées sur des actions réelles).
+- Nouveau bloc « Tes prochaines actions » : la prochaine étape concrète de chaque outil non terminé.
+- « Modifier mon séjour » : toutes les réponses du questionnaire deviennent modifiables (aujourd'hui seuls titre, destination et dates le sont).
 
----
+## 5. Mesures de la bêta
+Nouveaux événements enregistrés (uniquement avec accord cookies, comme aujourd'hui) : questionnaire commencé, chaque étape, terminé, abandonné à l'étape X ; tableau de bord ouvert ; outil commencé ; action réalisée dans un outil. Petit tableau « Entonnoir bêta » ajouté dans les statistiques admin.
 
-## 3. Détail des étapes
+## 6. Vérifications après modification
+Boutons de l'accueil, inscription, questionnaire complet sur ordinateur et mobile, enregistrement des réponses, reprise par les 4 guides, tableau de bord, modification du séjour, liens cassés, absence de modules masqués dans les menus, tests automatiques.
 
-| # | Route | Contenu | Auth ? |
-|---|---|---|---|
-| 1 | `/welcome` | Une phrase promesse + CTA "Commencer". Redirection automatique vers l'étape courante si onboarding en cours. | non |
-| 2 | `/onboarding/besoin` | Liste de 5-6 besoins (cartes cliquables) : "Je ne sais pas où partir", "Je prépare un voyage", "Peur du budget", "Envie d'insolite", "Voyager autrement", "Juste curieux". Multi-sélection possible. | non |
-| 3 | `/onboarding/qualif` | 3 questions rapides : budget approximatif (slider 3 crans), durée type (weekend / 1 sem / 2+ sem), avec qui (seul / couple / famille / amis). Sert à moduler le ton et l'ordre des cartes Tinder. | non |
-| 4 | `/onboarding/tinder` | **Le Tinder existant, déplacé ici**. Fonctionne en mode anonyme (état local) tant que non connecté ; les swipes sont mis en tampon dans localStorage. À la 20e carte → redirection vers `/onboarding/signup`. | non |
-| 5 | `/onboarding/signup` | Auth (email + Google). Après succès : rejoue les données locales → écrit `user_swipes` + `traveler_profiles` via `finalize()`, puis va au profil. | transition |
-| 6 | `/profil-voyageur/resultat` | Écran de révélation (existant, à conserver tel quel). CTA "Voir mes fonctionnalités". | oui |
-| 7 | `/profil-voyageur/features` | Affiche **uniquement les 2 premières** de `recommended_features` (au lieu des 8), avec description et CTA "Essayer celle-ci". | oui |
-| 8 | `/profil-voyageur/essai` | Aperçu **limité** de la feature choisie (ex : 3 suggestions destinations au lieu de 20, ou 1 hidden gem au lieu de la liste). Bandeau "Débloquer tout" → CTA dashboard. | oui |
-| 9 | `/app` | Dashboard complet (existant). | oui |
-
----
-
-## 4. Persistance / reprise
-
-**Nouvelle colonne** `traveler_profiles.onboarding_step TEXT` (nullable) — valeurs : `welcome | besoin | qualif | tinder | signup | resultat | features | essai | done`. Écrite à chaque transition.
-
-**Nouvelles colonnes** `traveler_profiles.need_tags TEXT[]`, `qualif JSONB` — stockent besoin/qualif après signup.
-
-**Avant signup** : les mêmes données vivent dans `localStorage['xplania:onboarding']` (JSON : `{step, needs, qualif, swipes:[{cardId, direction}]}`). Écriture à chaque action.
-
-**Reprise** :
-- Visiteur non connecté → `/welcome` lit `localStorage.step` et redirige vers l'étape en cours (bouton "Continuer" au lieu de "Commencer").
-- Utilisateur connecté → `ProtectedRoute` lit `traveler_profiles.onboarding_step` et redirige vers l'étape correspondante tant que ≠ `done`. Les routes app (`/app`, `/mood`, etc.) restent verrouillées jusqu'au `done`.
-
-**Navigation** : chaque étape a un bouton "← Retour" vers la précédente ; le "Suivant" est désactivé tant que l'étape courante n'est pas remplie ; impossible de sauter en avant via URL (garde côté route).
-
----
-
-## 5. Détails techniques (dev)
-
-**Migration Supabase** (nouvelle) :
-- `ALTER TABLE traveler_profiles ADD COLUMN onboarding_step text`, `need_tags text[]`, `qualif jsonb`.
-- Backfill : `UPDATE ... SET onboarding_step='done' WHERE completed_at IS NOT NULL`.
-
-**Nouveaux fichiers front** :
-- `src/lib/onboarding-state.ts` — helpers `getLocalOnboarding()`, `setLocalOnboarding()`, `clearLocalOnboarding()`, `nextStep()`, `stepToRoute()`.
-- `src/hooks/useOnboardingFlow.ts` — hook central : fusionne état local + `traveler_profiles`, expose `currentStep`, `goNext()`, `goBack()`, `syncAfterSignup()`.
-- `src/pages/onboarding/Welcome.tsx` (route `/welcome`)
-- `src/pages/onboarding/Besoin.tsx` (route `/onboarding/besoin`)
-- `src/pages/onboarding/Qualif.tsx` (route `/onboarding/qualif`)
-- `src/pages/onboarding/Signup.tsx` (route `/onboarding/signup`) — réutilise le composant auth existant, avec logique post-login qui appelle `syncAfterSignup()`.
-- `src/pages/onboarding/Features.tsx` (route `/profil-voyageur/features`)
-- `src/pages/onboarding/Essai.tsx` (route `/profil-voyageur/essai`)
-
-**Fichiers modifiés** :
-- `src/pages/TravelerProfileOnboarding.tsx` — accepter le mode "anonyme" : si `!user`, lire/écrire dans localStorage au lieu de Supabase ; à la fin, rediriger vers `/onboarding/signup` (au lieu de `finalize()`).
-- `src/App.tsx` — ajouter les 6 nouvelles routes ; `/welcome` en index public ; `/onboarding/*` en public.
-- `src/components/auth/ProtectedRoute.tsx` — remplacer le redirect statique `/profil-voyageur` par un redirect basé sur `traveler_profiles.onboarding_step` (via helper `stepToRoute`).
-- `src/pages/TravelerProfileResult.tsx` — CTA final envoie vers `/profil-voyageur/features` (au lieu de `/app`).
-- `src/i18n/locales/{fr,en}.json` — clés pour les 6 nouveaux écrans.
-
-**Non touché** : logique de scoring, `traveler-badge.ts`, `TinderCard.tsx`, tables `tinder_cards` / `user_swipes`, RAG, guides.
-
----
-
-## 6. Livraison
-
-Estimation : 1 migration + ~8 nouveaux fichiers + 4 fichiers modifiés. Aucune donnée utilisateur perdue (le backfill met les profils existants directement en `done` → ils atterrissent sur `/app`).
-
-Confirme le plan et j'implémente dans la foulée.
+## Détails techniques
+- Pas de changement de base : les nouvelles réponses vont dans `trips.form_data` (residence, secondNationality, stayType `erasmus|internship|other`, durationBucket, budgetUnknown, accommodationType). L'ancien type « voyage » reste lisible.
+- Nouveau composant `PrepQuiz` (réutilise le style/animations de `TinderCard`, `framer-motion` drag, `prefers-reduced-motion`) ; nouvelle route protégée `/preparation` ; `CreateTripForm` remplacé (logique `buildPrepTripData` + `validateTravelBasics` réutilisée).
+- `Index.tsx` : suppression du gate `JourneyIntro` ; nouvelles sections `ProblemSection`, `SolutionSection` ; `HeroSection`, `HowItWorksSection`, `BenefitsSection`, `FinalCtaSection` réécrites ; règle AGENTS.md correspondante remplacée.
+- `EditTripDialog` étendu aux champs du questionnaire ; `prep-progress.ts` expose `moduleStatus()` et `nextActions()`.
+- Fonction `visa-info` (+ contexte Budget/Valise/Culture) : ajout des champs dans le contexte, SAFETY_RULE conservée, raisonnement low.
+- `analytics.ts` : nouveaux types d'événements ; bloc entonnoir dans `AdminStats`.
+- Tests : règles du questionnaire (étapes, durée facultative, budget facultatif) et statuts des outils.
