@@ -74,6 +74,7 @@ const Destinations = lazy(() => import("./pages/Destinations.tsx"));
 const HiddenGems = lazy(() => import("./pages/HiddenGems.tsx"));
 const AdminSeedRag = lazy(() => import("./pages/AdminSeedRag.tsx"));
 const AdminStats = lazy(() => import("./pages/AdminStats.tsx"));
+const AdminSources = lazy(() => import("./pages/AdminSources.tsx"));
 const OnbWelcome = lazy(() => import("./pages/onboarding/Welcome.tsx"));
 const OnbBesoin = lazy(() => import("./pages/onboarding/Besoin.tsx"));
 const OnbQualif = lazy(() => import("./pages/onboarding/Qualif.tsx"));
