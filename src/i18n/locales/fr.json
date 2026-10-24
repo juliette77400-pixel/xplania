@@ -7512,14 +7512,14 @@
         "desc": "Codes professionnels, communication avec un manager, réunions, ponctualité et attentes au travail."
       },
       "daily": {
-        "title": "Je découvre la vie quotidienne",
+        "title": "Je m'installe au quotidien",
         "desc": "Transports, courses, démarches locales, vie sociale, expressions utiles et habitudes quotidiennes."
       }
     },
     "pathProgress": "{{done}} thème(s) compris sur les {{total}} de ton parcours",
     "priorityTitle": "À lire en priorité",
     "moreTitle": "Pour aller plus loin ({{count}} thèmes)",
-    "moreSub": "Culture populaire, fêtes, traditions, gastronomie… à découvrir quand tu veux",
+    "moreSub": "Culture populaire, fêtes, traditions, gastronomie… à lire quand tu veux",
     "nuance": "Ce sont des tendances, pas des règles absolues : chaque personne et chaque région sont différentes. Dans le doute, observe et demande."
   }
 }
