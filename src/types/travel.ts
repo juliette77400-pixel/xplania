@@ -91,6 +91,8 @@ export interface TravelFormData {
   transitCountries?: string[];
   /** Free text: cities or regions the student will visit. */
   visitedRegions?: string;
+  /** Maximum monthly rent set in the housing assistant (overrides the Budget value). */
+  maxRent?: number | null;
 }
 
 export interface WeatherData {

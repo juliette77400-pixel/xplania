@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { ExternalLink, Home, Loader2, Pencil, Plus, RefreshCw, Star, Trash2, Wallet } from "lucide-react";
+import { ClipboardCheck, ExternalLink, Home, Loader2, Pencil, Plus, RefreshCw, Star, Trash2, Wallet } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { housingBudgetPlan, monthlyCost, stayMonths, upfrontCost } from "@/lib/housing";
+import { budgetStorageKey, housingBudgetPlan, housingFit, maxRentFromBudget, monthlyCost, stayMonths, stayTotalCost, upfrontCost } from "@/lib/housing";
+import HousingFitDialog from "./HousingFitDialog";
 import { useHousingOptions, type HousingOption } from "@/hooks/useHousing";
 import HousingFormDialog from "./HousingFormDialog";
 import HousingBudgetDialog, { readHousingSync } from "./HousingBudgetDialog";
@@ -22,9 +25,22 @@ interface Props {
   durationDays: string | number | null;
   /** Home already confirmed: the block is used to note its costs for the budget. */
   confirmed?: boolean;
+  returnDate?: string | null;
+  /** Maximum rent the student set (null = follow the Budget). */
+  maxRentOverride?: number | null;
+  onSaveMaxRent?: (v: number | null) => Promise<void>;
 }
 
-const HousingComparator = ({ tripId, destination, city, departureDate, durationDays, confirmed }: Props) => {
+/** Accommodation line of the Budget guide for this trip (0 when no budget yet). */
+function budgetAccommodation(destination: string, departureDate: string | null): number {
+  try {
+    const raw = localStorage.getItem(budgetStorageKey(destination, departureDate));
+    const st = raw ? JSON.parse(raw) : null;
+    return Number(st?.categories?.find((c: { key: string }) => c.key === "accommodation")?.planned) || 0;
+  } catch { return 0; }
+}
+
+const HousingComparator = ({ tripId, destination, city, departureDate, durationDays, confirmed, returnDate, maxRentOverride, onSaveMaxRent }: Props) => {
   const { t, i18n } = useTranslation();
   const { options, loading, error, refetch, save, remove, setFavorite } = useHousingOptions(tripId);
   const [formOpen, setFormOpen] = useState(false);
@@ -32,6 +48,9 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
   const [toDelete, setToDelete] = useState<HousingOption | null>(null);
   const [budgetFor, setBudgetFor] = useState<HousingOption | null>(null);
   const [syncTick, setSyncTick] = useState(0);
+  const [fitFor, setFitFor] = useState<HousingOption | null>(null);
+  const [maxDraft, setMaxDraft] = useState<string | null>(null);
+  const [savingMax, setSavingMax] = useState(false);
 
   const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-GB";
   const fmt = (v: number) => new Intl.NumberFormat(locale, { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v);
@@ -44,6 +63,19 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
   void syncTick;
   const sync = readHousingSync(tripId);
   const months = stayMonths(durationDays) ?? 1;
+  const budgetMax = maxRentFromBudget(budgetAccommodation(destination, departureDate), stayMonths(durationDays));
+  const maxRent = maxRentOverride && maxRentOverride > 0 ? maxRentOverride : budgetMax;
+  const fitCtx = { maxRent, stayStart: departureDate, stayEnd: returnDate ?? null };
+  const saveMax = async () => {
+    if (!onSaveMaxRent || maxDraft === null) return;
+    const v = maxDraft.trim() ? Math.round(Number(maxDraft)) : null;
+    if (v !== null && (!Number.isFinite(v) || v <= 0)) { toast.error(t("housing.maxRent.error")); return; }
+    setSavingMax(true);
+    try { await onSaveMaxRent(v); setMaxDraft(null); toast.success(t("housing.maxRent.saved")); }
+    catch { toast.error(t("housing.maxRent.error")); }
+    finally { setSavingMax(false); }
+  };
+  const BUDGET_BADGE = { fits: "bg-success/15 text-success", tight: "bg-warning/15 text-warning", over: "bg-destructive/15 text-destructive", unknown: "bg-muted text-muted-foreground" } as const;
   const budgetOutdated = !!(favorite && sync && (() => {
     const plan = housingBudgetPlan(favorite, months);
     return sync.optionId !== favorite.id || sync.deposit !== plan.deposit || sync.accommodation !== plan.accommodation;
@@ -66,12 +98,16 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
 
   const rows: Array<{ label: string; value: (o: HousingOption) => React.ReactNode }> = [
     { label: t("housing.compare.monthly"), value: (o) => <span className="font-bold">{fmt(monthlyCost(o))}{o.charges_included === null ? <span className="block text-[11px] font-normal text-muted-foreground">{t("housing.compare.chargesUnknown")}</span> : null}</span> },
+    { label: t("housing.compare.budgetFit"), value: (o) => { const b = housingFit(o, fitCtx).budget; return <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${BUDGET_BADGE[b]}`}>{t(`housing.fit.badge.${b}`)}</span>; } },
+    { label: t("housing.compare.stayTotal", { months }), value: (o) => fmt(stayTotalCost(o, months)) },
     { label: t("housing.compare.upfront"), value: (o) => fmt(upfrontCost(o)) },
     { label: t("housing.form.deposit"), value: (o) => (o.deposit != null ? fmt(o.deposit) : unknown) },
     { label: t("housing.compare.location"), value: (o) => [o.neighborhood, o.city].filter(Boolean).join(", ") || unknown },
     { label: t("housing.form.type"), value: (o) => (o.housing_type ? t(`housing.types.${o.housing_type}`) : unknown) },
     { label: t("housing.form.furnished"), value: (o) => yesNo(o.furnished) },
-    { label: t("housing.form.commute"), value: (o) => o.commute || unknown },
+    { label: t("housing.form.commute"), value: (o) => [o.commute_minutes != null ? t("housing.compare.minutes", { n: o.commute_minutes }) : "", o.commute || ""].filter(Boolean).join(" · ") || unknown },
+    { label: t("housing.compare.lease"), value: (o) => <>{t("housing.compare.contract")} : {yesNo(o.written_contract)}{o.lease_notes ? <span className="block text-[11px] text-muted-foreground">{o.lease_notes}</span> : null}</> },
+    { label: t("housing.compare.risks"), value: (o) => { const n = housingFit(o, fitCtx).points.filter((p) => p.tone === "danger" || p.tone === "warn").length; return n ? <span className="font-semibold text-warning">{t("housing.compare.risksCount", { count: n })}</span> : <span className="text-muted-foreground">{t("housing.compare.risksNone")}</span>; } },
     { label: t("housing.compare.dates"), value: (o) => (o.available_from ? `${fmtDate(o.available_from)}${o.available_to ? ` → ${fmtDate(o.available_to)}` : ""}` : unknown) },
     { label: t("housing.form.pros"), value: (o) => o.pros || "—" },
     { label: t("housing.form.cons"), value: (o) => o.cons || "—" },
@@ -82,6 +118,7 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
       <Button size="sm" variant={o.is_favorite ? "default" : "outline"} className={o.is_favorite ? "gradient-button" : ""} aria-pressed={o.is_favorite} onClick={() => toggleFavorite(o)}>
         <Star className={`mr-1 h-3.5 w-3.5 ${o.is_favorite ? "fill-current" : ""}`} />{o.is_favorite ? t("housing.compare.favorite") : t("housing.compare.markFavorite")}
       </Button>
+      <Button size="sm" variant="outline" onClick={() => setFitFor(o)}><ClipboardCheck className="mr-1 h-3.5 w-3.5" />{t("housing.fit.cta")}</Button>
       <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={t("housing.compare.edit", { name: o.name })} onClick={() => openEdit(o)}><Pencil className="h-3.5 w-3.5" /></Button>
       <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive" aria-label={t("housing.compare.delete", { name: o.name })} onClick={() => setToDelete(o)}><Trash2 className="h-3.5 w-3.5" /></Button>
       {o.listing_url && (
@@ -97,6 +134,25 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">{t(confirmed ? "housing.compare.helpConfirmed" : "housing.compare.help")}</p>
         <Button onClick={openAdd} className="gradient-button"><Plus className="mr-1.5 h-4 w-4" />{t(confirmed && options.length === 0 ? "housing.compare.addConfirmed" : "housing.compare.add")}</Button>
+      </div>
+
+      <div className="flex flex-col gap-3 rounded-xl border border-primary/25 bg-primary/5 p-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="text-sm">
+          <p className="font-semibold">{maxRent ? t("housing.maxRent.value", { amount: fmt(maxRent) }) : t("housing.maxRent.none")}</p>
+          <p className="text-xs text-muted-foreground">{maxRentOverride ? t("housing.maxRent.fromYou") : budgetMax ? t("housing.maxRent.fromBudget", { months }) : t("housing.maxRent.noBudget")}</p>
+        </div>
+        {onSaveMaxRent && (maxDraft === null ? (
+          <Button size="sm" variant="outline" onClick={() => setMaxDraft(maxRent ? String(maxRent) : "")}>{t("housing.maxRent.edit")}</Button>
+        ) : (
+          <div className="flex items-end gap-2">
+            <div className="space-y-1">
+              <Label htmlFor="max-rent" className="text-xs">{t("housing.maxRent.label")}</Label>
+              <Input id="max-rent" type="number" min={0} inputMode="numeric" className="h-9 w-32" value={maxDraft} onChange={(e) => setMaxDraft(e.target.value)} placeholder={budgetMax ? String(budgetMax) : ""} />
+            </div>
+            <Button size="sm" onClick={() => void saveMax()} disabled={savingMax}>{savingMax ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("common.save")}</Button>
+            <Button size="sm" variant="ghost" onClick={() => setMaxDraft(null)}>{t("common.cancel")}</Button>
+          </div>
+        ))}
       </div>
 
       {loading ? (
@@ -198,6 +254,8 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <HousingFitDialog option={fitFor} ctx={fitCtx} months={months} onOpenChange={(v) => !v && setFitFor(null)} />
 
       {budgetFor && (
         <HousingBudgetDialog
