@@ -35,6 +35,7 @@ const HousingFitDialog = ({ option, ctx, months, onOpenChange }: Props) => {
     const out: Record<string, string | number> = { ...v };
     for (const k of ["monthly", "max", "diff"]) if (typeof v[k] === "number") out[k] = fmt(v[k] as number);
     if (typeof v.date === "string") out.date = fmtDate(v.date);
+    if (typeof v.months === "number") out.months = v.months.toLocaleString(locale);
     return out;
   };
 

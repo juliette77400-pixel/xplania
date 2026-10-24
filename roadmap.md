@@ -28,3 +28,7 @@
 - [x] Budget : carte « Ton premier mois »
 - [x] Tableau de bord : « Ce qu'il te reste à préparer » (liste unique, la plus urgente d'abord)
 - [x] Budget raccourci : décision en haut, détails en rubriques repliées
+- [x] Logement : loyer maximal lié au Budget, coût total, bail, risques, « Est-il adapté ? »
+- [x] Valise : 5 profils pratiques, températures habituelles des mois du séjour, conseil IA concret
+- [x] Guide culturel : 3 parcours, thèmes prioritaires, « Pour aller plus loin » en rubrique à ouvrir
+- [ ] Vérifier la licence Open-Meteo (gratuite pour usage non commercial) avant la commercialisation
