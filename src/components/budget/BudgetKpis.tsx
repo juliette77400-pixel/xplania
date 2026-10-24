@@ -40,7 +40,7 @@ const BudgetKpis = ({ summary }: { summary: BudgetSummary }) => {
         <div className="rounded-xl bg-muted/30 px-4 py-3">
           <p className="text-xs text-muted-foreground">{t("budget2.split.monthly")}</p>
           <p className="text-lg font-bold tabular-nums">{summary.monthly === null ? "—" : eur(summary.monthly, l)}</p>
-          <p className="text-[11px] text-muted-foreground">{summary.monthly === null ? t("budget2.split.shortStay") : t("budget2.split.monthlyHint", { months: summary.months })}</p>
+          <p className="text-[11px] text-muted-foreground">{summary.monthly === null ? t("budget2.split.shortStay") : t("budget2.split.monthlyHint", { months: summary.months.toLocaleString(l.startsWith("fr") ? "fr-FR" : "en-GB") })}</p>
         </div>
         <div className="rounded-xl bg-muted/30 px-4 py-3">
           <p className="text-xs text-muted-foreground">{t("budget2.split.total")}</p>

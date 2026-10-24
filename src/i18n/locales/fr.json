@@ -7170,7 +7170,7 @@
         "body": "Ton plus gros poste est « {{category}} » : réduire de {{cut}} € t'aiderait déjà. Sinon, augmente ton budget."
       },
       "biggestShare": {
-        "title": "« {{category}} » pèse {{share}} % de ton budget",
+        "title": "« {{category}} » pèse {{share}} % de ton estimation",
         "body": "C'est ton poste principal : compare plusieurs offres avant de t'engager."
       },
       "reserve": {

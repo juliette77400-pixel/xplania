@@ -7170,7 +7170,7 @@
         "body": "Your biggest cost is \"{{category}}\": cutting {{cut}} € would already help. Otherwise, raise your budget."
       },
       "biggestShare": {
-        "title": "\"{{category}}\" is {{share}}% of your budget",
+        "title": "\"{{category}}\" is {{share}}% of your estimate",
         "body": "It's your main cost: compare several offers before committing."
       },
       "reserve": {
