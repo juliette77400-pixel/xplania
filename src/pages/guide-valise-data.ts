@@ -14,7 +14,6 @@ const baseCategoriesFr: Record<string, ChecklistItem[]> = {
     { name: "Pull léger", description: "Pour les soirées fraîches", checked: true },
     { name: "Pantalon confortable", description: "Idéal pour marcher", checked: true },
     { name: "Short", description: "Pour les journées chaudes", checked: false },
-    { name: "Tenue de soirée", description: "Élégante mais décontractée", checked: false },
     { name: "Veste légère", description: "Adaptée au climat", checked: true },
     { name: "Sous-vêtements (×5)", description: "Prévoir lavage", checked: true },
     { name: "Pyjama", description: "Confortable", checked: false },
@@ -22,13 +21,12 @@ const baseCategoriesFr: Record<string, ChecklistItem[]> = {
   "Accessoires & Protection": [
     { name: "Lunettes de soleil", description: "Protection UV", checked: true },
     { name: "Casquette / chapeau", description: "Pour les visites en plein jour", checked: true },
-    { name: "Écharpe légère", description: "Style et confort", checked: false },
     { name: "Parapluie compact", description: "En cas de pluie", checked: false },
   ],
   "Technologie": [
     { name: "Chargeurs & câbles", description: "Téléphone + appareils", checked: true },
     { name: "Batterie externe", description: "10000mAh minimum", checked: true },
-    { name: "Adaptateur universel", description: "Pour la destination", checked: true },
+    { name: "Adaptateur électrique", description: "Vérifie le type de prise du pays", checked: true },
     { name: "Écouteurs / AirPods", description: "Pour les trajets", checked: true },
   ],
   "Documents importants": [
@@ -60,7 +58,6 @@ const baseCategoriesEn: Record<string, ChecklistItem[]> = {
     { name: "Light sweater", description: "For cool evenings", checked: true },
     { name: "Comfortable trousers", description: "Ideal for walking", checked: true },
     { name: "Shorts", description: "For warm days", checked: false },
-    { name: "Evening outfit", description: "Elegant but casual", checked: false },
     { name: "Light jacket", description: "Adapted to the climate", checked: true },
     { name: "Underwear (×5)", description: "Allow for laundry", checked: true },
     { name: "Pyjamas", description: "Comfortable", checked: false },
@@ -68,13 +65,12 @@ const baseCategoriesEn: Record<string, ChecklistItem[]> = {
   "Accessories & Protection": [
     { name: "Sunglasses", description: "UV protection", checked: true },
     { name: "Cap / hat", description: "For daytime sightseeing", checked: true },
-    { name: "Light scarf", description: "Style and comfort", checked: false },
     { name: "Compact umbrella", description: "In case of rain", checked: false },
   ],
   "Technology": [
     { name: "Chargers & cables", description: "Phone + devices", checked: true },
     { name: "Power bank", description: "10,000mAh minimum", checked: true },
-    { name: "Universal adapter", description: "For the destination", checked: true },
+    { name: "Plug adapter", description: "Check the country's plug type", checked: true },
     { name: "Earphones / AirPods", description: "For the journeys", checked: true },
   ],
   "Important documents": [

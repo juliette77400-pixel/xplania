@@ -6,7 +6,9 @@ import { saveModuleProgress } from "@/lib/prep-progress";
 import ValiseHero from "@/components/valise/ValiseHero";
 import GenerationAnimation, { STEPS } from "@/components/valise/GenerationAnimation";
 import VoyageAnalysis from "@/components/valise/VoyageAnalysis";
-import WeatherSection from "@/components/valise/WeatherSection";
+import ClimateSection from "@/components/valise/ClimateSection";
+import { suggestProfile } from "@/lib/valise-profiles";
+import { findCountry } from "@/lib/country-match";
 import LuggageModes, { type LuggageMode } from "@/components/valise/LuggageModes";
 import TransportSelector, { type TransportMode } from "@/components/valise/TransportSelector";
 import ShareTripDialog from "@/components/valise/ShareTripDialog";
@@ -30,7 +32,7 @@ import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
-import { buildCategories, detectSuggestedMode } from "./guide-valise-data";
+import { buildCategories } from "./guide-valise-data";
 
 
 const GuideValisePage = () => {
@@ -40,18 +42,13 @@ const GuideValisePage = () => {
   const destination = tripData?.destination || t("ui2.GuideValise.destinationFallback");
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;
 
-  const suggestedMode = useMemo(
-    () => detectSuggestedMode(tripData?.tripTypes, tripData?.objectives),
-    [tripData?.tripTypes, tripData?.objectives]
-  );
+  const suggestedMode = useMemo(() => suggestProfile(tripData?.stayType, days), [tripData?.stayType, days]);
 
-  const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode || "confort");
+  const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode);
+  useEffect(() => { setLuggageMode(suggestedMode); }, [suggestedMode]);
   const [transport, setTransport] = useState<TransportMode>("avion");
   const [categories, setCategories] = useState(() => {
-    const base = buildCategories(suggestedMode || "confort", "avion");
-    return Object.fromEntries(
-      Object.entries(base).map(([k, items]) => [k, (items as any[]).map((i) => ({ ...i, checked: false }))]),
-    ) as typeof base;
+    return buildCategories(suggestProfile(tripData?.stayType, days), "avion");
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
@@ -113,7 +110,7 @@ const GuideValisePage = () => {
     await new Promise((r) => setTimeout(r, 1000));
     setCategories(buildCategories(mode, transport));
     setIsSwitchingMode(false);
-    toast.success(t("guideValise.toastModeOn", { mode }), { description: t("guideValise.toastModeOnDesc") });
+    toast.success(t("guideValise.toastModeOn", { mode: t(`valise2.profiles.${mode}.label`) }), { description: t("guideValise.toastModeOnDesc") });
   }, [luggageMode, transport, t]);
 
   const handleTransportChange = useCallback(async (tr: TransportMode) => {
@@ -297,7 +294,15 @@ const GuideValisePage = () => {
 
         <VoyageAnalysis tripData={tripData} destination={destination} days={days} />
 
-        <div id="weather-section"><WeatherSection destination={destination} /></div>
+        <div id="weather-section">
+          <ClimateSection
+            city={tripData?.arrivalCity || tripData?.destination || ""}
+            countryCode={findCountry(tripData?.destination)}
+            start={tripData?.departureDate || null}
+            end={tripData?.returnDate || null}
+            onAdd={(items) => addItemsToCategory(t("valise2.climate.category"), items)}
+          />
+        </div>
 
         {/* Transport + Mode selection + AI tip */}
         <div className="space-y-4">
@@ -308,7 +313,7 @@ const GuideValisePage = () => {
             suggestedMode={suggestedMode}
             isLoading={isSwitchingMode}
           />
-          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} destination={destination} />
+          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} destination={destination} months={tripData?.departureDate ? `${tripData.departureDate} → ${tripData.returnDate || ""}` : ""} />
         </div>
 
         {/* Generate CTA — placed after the transport + luggage-type choices so the
