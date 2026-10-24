@@ -16,9 +16,10 @@ export const SAFETY_ITEMS = [
   "owner", "contract", "rent", "deposit", "cancel", "reviews", "address", "payment", "keys",
 ] as const;
 
-/** Installation steps (module 4), grouped by phase. */
+/** Steps (module 4), grouped by phase. Each status only sees the phases that matter now. */
 export const INSTALL_PHASES = {
-  beforeSigning: ["compare", "conditions", "documents", "fees"],
+  gettingStarted: ["contactSchool", "maxRent", "housingType", "shortlist"],
+  beforeSigning: ["conditions", "documents", "fees", "visit"],
   beforeDeparture: ["arrival", "upfront", "equipment", "keysPickup", "route"],
   arrival: ["inventory", "checkEquipment", "keepDocs", "localSteps"],
 } as const;
@@ -26,28 +27,50 @@ export type InstallPhase = keyof typeof INSTALL_PHASES;
 
 export type HousingSection = "resources" | "compare" | "safety" | "install";
 
-/** Order of the page blocks — what matters most comes first for each status. */
+/**
+ * Blocks shown for each status, most useful first. Steps that do not apply yet
+ * (or any more) are left out: no move-in checklist before a home is in sight,
+ * no "where to look" once the home is confirmed.
+ */
 export function sectionOrder(status: HousingStatus | null): HousingSection[] {
   switch (status) {
     case "confirmed":
-      return ["install", "compare", "safety", "resources"];
+      return ["install", "compare", "safety"];
     case "shortlist":
-      return ["compare", "safety", "resources", "install"];
+      return ["compare", "safety", "install", "resources"];
+    case "lost":
+      return ["resources", "install", "compare", "safety"];
     default:
-      return ["resources", "compare", "safety", "install"];
+      return ["resources", "compare", "install", "safety"];
   }
 }
 
-/** Installation phases shown for a status (a confirmed home skips "before signing"). */
+/** Step phases shown for a status. */
 export function phasesForStatus(status: HousingStatus | null): InstallPhase[] {
-  return status === "confirmed" ? ["beforeDeparture", "arrival"] : ["beforeSigning", "beforeDeparture", "arrival"];
+  switch (status) {
+    case "confirmed":
+      return ["beforeDeparture", "arrival"];
+    case "shortlist":
+      return ["beforeSigning"];
+    default:
+      return ["gettingStarted"];
+  }
+}
+
+/** The 9 checks before booking only make sense once homes are spotted; otherwise warning signs are shown as reminders. */
+export const safetyChecksApply = (status: HousingStatus | null): boolean => status === "shortlist";
+
+/** Status suggested once the current steps are done (null when nothing comes next). */
+export function nextStatus(status: HousingStatus | null): HousingStatus | null {
+  if (status === "confirmed") return null;
+  if (status === "shortlist") return "confirmed";
+  return "shortlist";
 }
 
 /** Every checklist id that counts toward progress for this status. */
 export function checklistIds(status: HousingStatus | null): string[] {
   const install = phasesForStatus(status).flatMap((p) => INSTALL_PHASES[p].map((i) => `install:${p}:${i}`));
-  if (status === "confirmed") return install;
-  return [...SAFETY_ITEMS.map((i) => `safety:${i}`), ...install];
+  return safetyChecksApply(status) ? [...SAFETY_ITEMS.map((i) => `safety:${i}`), ...install] : install;
 }
 
 /** Progress counted only on the items that apply to the current status. */
