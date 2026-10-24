@@ -81,6 +81,16 @@ export interface TravelFormData {
   housing?: string;
   /** Housing search status: "starting" | "shortlist" | "confirmed" | "lost". */
   housingStatus?: string;
+
+  // Visa guide details (asked on the Visa page only when needed)
+  /** "ordinary" | "other" (diplomatic, service, refugee travel document…). */
+  passportType?: string;
+  /** "yes" | "no" — whether the trip stops in another country. */
+  hasTransit?: string;
+  /** ISO codes of transit countries. */
+  transitCountries?: string[];
+  /** Free text: cities or regions the student will visit. */
+  visitedRegions?: string;
 }
 
 export interface WeatherData {
