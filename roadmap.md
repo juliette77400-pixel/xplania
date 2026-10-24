@@ -35,12 +35,12 @@
 
 # Roadmap — UX/UI + SEO (24 oct. 2026)
 
-- [ ] Première visite : visite guidée et bandeau cookies ne s'empilent plus, visite seulement sur le tableau de bord, bouton « Passer » réparé
-- [ ] Un seul bouton flottant « Aide » (Un souci ? + discussion + signaler une réponse)
-- [ ] Menu ordinateur sur une ligne
-- [ ] Accueil plus court sur téléphone
-- [ ] Tableau de bord : séjours distingués (ville/dates), doublon « Avant le départ » retiré
-- [ ] Thème sombre par défaut (identité Xplania)
-- [ ] SEO : plan du site réparé (+ Logement, + Valise), Valise visible sur Google
-- [ ] SEO : pages publiques par destination à partir des fiches pays existantes
-- [ ] Réponse : analyse du parcours utilisateur et de la proposition de valeur
+- [x] Première visite : visite guidée et bandeau cookies ne s'empilent plus, visite seulement sur le tableau de bord, bouton « Passer » réparé
+- [x] Un seul bouton flottant « Aide » (Un souci ? + discussion + signaler une réponse)
+- [x] Menu ordinateur sur une ligne
+- [x] Accueil plus court sur téléphone
+- [x] Tableau de bord : séjours distingués (ville/dates), doublon « Avant le départ » retiré
+- [x] Thème sombre par défaut (déjà le cas : le thème clair vu venait de mon test)
+- [x] SEO : plan du site réparé (+ guides pays, + Écoles) ; Valise et Logement restent cachés à Google car réservés aux comptes
+- [x] SEO : pages publiques par destination à partir des fiches pays existantes
+- [x] Réponse : analyse du parcours utilisateur et de la proposition de valeur
