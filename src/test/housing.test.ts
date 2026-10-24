@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  applyHousingToBudget, checklistIds, housingBudgetPlan, housingProgress, monthlyCost, nextStatus, phasesForStatus, safetyChecksApply, sectionOrder, stayMonths, upfrontCost,
+  applyHousingToBudget, housingFit, maxRentFromBudget, stayTotalCost, checklistIds, housingBudgetPlan, housingProgress, monthlyCost, nextStatus, phasesForStatus, safetyChecksApply, sectionOrder, stayMonths, upfrontCost,
 } from "@/lib/housing";
 import { resourcesForCountry, HOUSING_RESOURCES } from "@/data/housing-resources";
 import fr from "@/i18n/locales/fr.json";
@@ -113,5 +113,36 @@ describe("tableau de bord — 5 outils", () => {
     const p = readTripProgress({ destination: "Madrid" });
     expect(Object.keys(p)).toHaveLength(5);
     expect(overallPercent(p)).toBe(20);
+  });
+});
+
+describe("assistant logement — adapté à mon budget et à mon séjour ?", () => {
+  const ctx = { maxRent: 600, stayStart: "2027-02-01", stayEnd: "2027-06-30" };
+  it("loyer + charges sous le maximum : dans le budget", () => {
+    expect(housingFit(home, ctx).budget).toBe("fits");
+  });
+  it("jusqu'à 10 % au-dessus : juste ; au-delà : hors budget", () => {
+    expect(housingFit({ ...home, monthly_rent: 600 }, ctx).budget).toBe("tight");
+    expect(housingFit({ ...home, monthly_rent: 700 }, ctx).budget).toBe("over");
+  });
+  it("un paiement demandé avant la visite est signalé en premier", () => {
+    expect(housingFit({ ...home, payment_before_visit: true }, ctx).points[0].id).toBe("paymentBeforeVisit");
+  });
+  it("une caution de plus de 2 mois de loyer est signalée", () => {
+    expect(housingFit({ ...home, deposit: 1500 }, ctx).points.some((p) => p.id === "depositHigh")).toBe(true);
+  });
+  it("un logement qui se libère après l'arrivée est signalé", () => {
+    expect(housingFit({ ...home, available_from: "2027-03-01" }, ctx).points.some((p) => p.id === "startsLate")).toBe(true);
+  });
+  it("ne dit jamais qu'une annonce est sûre", () => {
+    const all = housingFit({ ...home, written_contract: true, visited: true, payment_before_visit: false, commute_minutes: 20, furnished: true, available_from: "2027-01-15" }, ctx);
+    expect(all.points.every((p) => p.id !== "safe")).toBe(true);
+  });
+  it("coût total du séjour : loyer et charges × mois + frais, caution à part", () => {
+    expect(stayTotalCost(home, 5)).toBe(550 * 5 + 200);
+  });
+  it("loyer maximal = ligne logement du Budget répartie sur le séjour", () => {
+    expect(maxRentFromBudget(3000, 5)).toBe(600);
+    expect(maxRentFromBudget(0, 5)).toBeNull();
   });
 });
