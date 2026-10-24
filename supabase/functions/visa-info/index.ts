@@ -27,13 +27,13 @@ const SCHEMA = {
   properties: {
     visa: {
       type: "object", additionalProperties: false,
-      required: ["status", "title", "summary", "max_stay", "cost", "processing_time", "details", "why", "official_url"],
+      required: ["status", "title", "summary", "max_stay", "cost", "processing_time", "steps", "why", "official_url"],
       properties: {
         status: { type: "string", enum: ["required", "not_required", "depends", "to_verify"] },
         title: { type: "string", description: "Max 6 words, e.g. 'Student visa required'" },
         summary: { type: "string", description: "Max 2 short sentences" },
         max_stay: { type: "string" }, cost: { type: "string" }, processing_time: { type: "string" },
-        details: { type: "array", items: { type: "string" }, description: "Max 5 short steps or conditions" },
+        steps: { type: "array", items: { type: "string" }, description: "Max 5 short steps or conditions" },
         why: { type: "string", description: "One sentence naming the profile facts used (nationality, purpose, length)" },
         official_url: { type: "string", description: "Official government or embassy URL only if certain, else empty" },
       },
@@ -166,7 +166,7 @@ ${SAFETY_RULE_FR}`;
           : "Ta nationalité te donne la libre circulation ici : une carte d'identité ou un passeport valide suffit. Au-delà de 3 mois, un enregistrement local peut être demandé.",
         max_stay: isEN ? "No limit (registration after 3 months may apply)" : "Sans limite (enregistrement possible après 3 mois)",
         cost: "", processing_time: "",
-        details: [],
+        steps: [],
         why: isEN ? "Rule applied: EU/EEA/Swiss free movement." : "Règle appliquée : libre circulation UE/EEE/Suisse.",
         official_url: isEN ? EU_SOURCE_URL_EN : EU_SOURCE_URL,
       };
@@ -174,6 +174,13 @@ ${SAFETY_RULE_FR}`;
       if (Array.isArray(result.checklist)) result.checklist = result.checklist.filter((c: any) => !/\bvisa\b/i.test(`${c?.item} ${c?.id}`));
     }
 
+    // Aliases read by the previous version of the page (until it is republished).
+    if (result.visa) {
+      result.visa.required = result.visa.status === "required";
+      result.visa.type = result.visa.title;
+      result.visa.duration = result.visa.max_stay;
+      result.visa.details = result.visa.summary;
+    }
     return json({ ...result, rule: freeMovement ? "free_movement" : null, officialGrounded: !!official, generatedAt: new Date().toISOString() });
   } catch (e) {
     console.error("visa-info error:", e);
