@@ -177,7 +177,10 @@ const GuideVisaPage = () => {
           destination: destinationName,
           nationality: nationalityName,
           duration: tripData?.duration || "7",
-          travelerType: tripData?.travelerType || "touriste",
+          travelerType: tripData?.travelerType || (tripData?.stayType === "internship" ? (isFr ? "stagiaire" : "intern") : tripData?.stayType ? (isFr ? "étudiant" : "student") : (isFr ? "touriste" : "tourist")),
+          residence: countryList.find((c) => c.code === tripData?.residence)?.name || "",
+          secondNationality: countryList.find((c) => c.code === tripData?.secondNationality)?.name || "",
+          stayPurpose: tripData?.tripTypes?.[0] || "",
           locale: i18n.language.startsWith("fr") ? "fr" : "en",
         },
       });
@@ -215,7 +218,7 @@ const GuideVisaPage = () => {
     } finally {
       setIsGenerating(false);
     }
-  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType, t, i18n.language, reached, consume]);
+  }, [hasValidDestination, destinationName, nationalityName, tripData?.duration, tripData?.travelerType, tripData?.stayType, tripData?.residence, tripData?.secondNationality, tripData?.tripTypes, isFr, t, i18n.language, reached, consume]);
 
   const handleRegenerate = useCallback(async () => {
     toast.loading(t("guideVisa.regenLoading"), { id: "regen-visa" });

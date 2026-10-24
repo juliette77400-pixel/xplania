@@ -7,8 +7,9 @@ import { track } from "@/lib/analytics";
 import { useAuth } from "@/hooks/useAuth";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
-import DualAudienceSection from "@/components/xplania/DualAudienceSection";
-import JourneyTimelineSection from "@/components/xplania/JourneyTimelineSection";
+import ProblemSection from "@/components/xplania/ProblemSection";
+import HowItWorksSection from "@/components/xplania/HowItWorksSection";
+import BenefitsSection from "@/components/xplania/BenefitsSection";
 import FeaturesSection from "@/components/xplania/FeaturesSection";
 import BetaSection from "@/components/xplania/BetaSection";
 import Testimonials from "@/components/xplania/Testimonials";
@@ -17,13 +18,11 @@ import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
 import QuickJump from "@/components/shared/QuickJump";
 import DialogSkeleton from "@/components/shared/DialogSkeleton";
-import JourneyIntro from "@/components/tinder/JourneyIntro";
 
 
 // Dialogs are only mounted when the user opens them — keep them out of the entry bundle.
 const TravelFormDialog = lazy(() => import("@/components/xplania/TravelFormDialog"));
 const FeedbackDialog = lazy(() => import("@/components/xplania/FeedbackDialog"));
-const OnboardingDialog = lazy(() => import("@/components/xplania/OnboardingDialog"));
 const QuotaReachedDialog = lazy(() => import("@/components/xplania/QuotaReachedDialog"));
 import { useTravelContext } from "@/contexts/TravelContext";
 import { hasReachedFreeQuota } from "@/stores/usePlanStore";
@@ -31,7 +30,6 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { FEATURE_FLAGS, PREPARATION_HOME } from "@/config/featureFlags";
 
 const Index = () => {
-  const [introSeen, setIntroSeen] = useState(false);
   const [travelFormOpen, setTravelFormOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
@@ -47,7 +45,9 @@ const Index = () => {
   const handleCreateTrip = () => {
     // Beta: no AI itinerary — trips are created on the preparation dashboard.
     if (!FEATURE_FLAGS.ENABLE_AI_ITINERARY) {
-      navigate(PREPARATION_HOME, { state: { createTrip: true } });
+      track("cta_click", { cta: "prepare_departure" });
+      // Signed in: the dashboard sends people without a trip to the questionnaire.
+      navigate(user ? PREPARATION_HOME : "/auth?mode=signup&next=/preparation");
       return;
     }
     if (hasReachedFreeQuota()) {
@@ -66,18 +66,6 @@ const Index = () => {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  if (location.pathname === "/" && !introSeen) {
-    return (
-      <JourneyIntro
-        onStart={() => {
-          setIntroSeen(true);
-          if (FEATURE_FLAGS.ENABLE_TRAVELER_DNA) navigate("/parcours", { state: { skipIntro: true } });
-          else navigate(user ? PREPARATION_HOME : "/auth?mode=signup");
-        }}
-      />
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
@@ -88,9 +76,10 @@ const Index = () => {
       </div>
       <main id="main-content" tabIndex={-1}>
         <HeroSection onCreateTrip={handleCreateTrip} />
-        <DualAudienceSection />
-        <JourneyTimelineSection />
+        <ProblemSection />
         <FeaturesSection />
+        <HowItWorksSection onStart={handleCreateTrip} />
+        <BenefitsSection />
         <Testimonials />
         <BetaSection onFeedback={() => setFeedbackOpen(true)} />
         <FaqSection />
@@ -158,9 +147,6 @@ const Index = () => {
           <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
         </Suspense>
       )}
-      <Suspense fallback={null}>
-        <OnboardingDialog onCreateTrip={handleCreateTrip} />
-      </Suspense>
       {quotaOpen && (
         <Suspense fallback={<DialogSkeleton size="sm" compact />}>
           <QuotaReachedDialog open={quotaOpen} onOpenChange={setQuotaOpen} />

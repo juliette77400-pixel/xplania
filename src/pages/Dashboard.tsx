@@ -1,15 +1,14 @@
 // Beta dashboard — built around the four preparation tools only
 // (Budget, Visa, Valise, Culture), with per-module progress for the selected trip.
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, CalendarDays, FileCheck, Globe2, Luggage, MapPin, Plus, Sparkles, Wallet } from "lucide-react";
+import { ArrowRight, Briefcase, CalendarDays, CircleDashed, CircleCheck, FileCheck, Globe2, GraduationCap, ListTodo, Loader, Luggage, MapPin, Plus, Sparkles, Wallet } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips, type Trip } from "@/hooks/useTrips";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,10 +16,10 @@ import TripActionsMenu from "@/components/shared/TripActionsMenu";
 import TripCountdown from "@/components/shared/TripCountdown";
 import TripReminderChecklist from "@/components/shared/TripReminderChecklist";
 import SatisfactionSurveyCard from "@/components/dashboard/SatisfactionSurveyCard";
-import CreateTripForm from "@/components/dashboard/CreateTripForm";
+import { track } from "@/lib/analytics";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
 import { isPathEnabled } from "@/config/featureFlags";
-import { overallPercent, readTripProgress, PREP_PROGRESS_EVENT, type ModuleProgress, type PrepModule } from "@/lib/prep-progress";
+import { overallPercent, readTripProgress, moduleStatus, nextActionKey, PREP_PROGRESS_EVENT, type ModuleProgress, type ModuleStatus, type PrepModule } from "@/lib/prep-progress";
 
 const MODULES: Array<{ key: PrepModule; to: string; icon: typeof Wallet }> = [
   { key: "budget", to: "/guide-budget", icon: Wallet },
@@ -35,6 +34,12 @@ const Bar = ({ value, label }: { value: number; label: string }) => (
   </div>
 );
 
+const STATUS_STYLE: Record<ModuleStatus, { icon: typeof CircleCheck; className: string }> = {
+  notStarted: { icon: CircleDashed, className: "border-border text-muted-foreground" },
+  inProgress: { icon: Loader, className: "border-primary/40 bg-primary/10 text-primary" },
+  done: { icon: CircleCheck, className: "border-secondary/40 bg-secondary/15 text-foreground" },
+};
+
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -43,17 +48,23 @@ const Dashboard = () => {
   const activeTripId = useActiveTrip((s) => s.tripId);
   const clearActiveTrip = useActiveTrip((s) => s.clearActiveTrip);
   const [profile, setProfile] = useState<{ display_name: string | null } | null>(null);
-  const [createOpen, setCreateOpen] = useState(false);
   const [progressTick, setProgressTick] = useState(0);
   const location = useLocation();
 
-  // "Créer mon voyage" buttons elsewhere land here with createTrip=true.
+  const viewTracked = useRef(false);
+
+  // "Je prépare mon départ" buttons elsewhere land here with createTrip=true.
   useEffect(() => {
     if ((location.state as { createTrip?: boolean } | null)?.createTrip && !loading && trips.length > 0) {
-      setCreateOpen(true);
-      navigate(location.pathname, { replace: true, state: null });
+      navigate("/preparation?new=1", { replace: true });
     }
-  }, [location.state, location.pathname, loading, trips.length, navigate]);
+  }, [location.state, loading, trips.length, navigate]);
+
+  useEffect(() => {
+    if (loading || trips.length === 0 || viewTracked.current) return;
+    viewTracked.current = true;
+    track("dashboard_viewed", { trips: trips.length });
+  }, [loading, trips.length]);
 
   useEffect(() => {
     if (!user) return;
@@ -105,12 +116,28 @@ const Dashboard = () => {
     return t(`prepDashboard.progress.${key}`, { done: p.done, total: p.total });
   };
 
-  const openModule = async (to: string) => {
+  const openModule = async (key: PrepModule, to: string) => {
+    const p = progress?.[key];
+    if (!p || moduleStatus(p) === "notStarted") track("guide_started", { module: key });
     if (selected) await hydrateTravelStoreFromTrip(selected.id);
     navigate(to);
   };
 
   const modules = MODULES.filter((m) => isPathEnabled(m.to));
+
+  const stayType = (selected?.form_data as { stayType?: string } | null)?.stayType;
+  const stayLabel = stayType === "erasmus" || stayType === "internship" || stayType === "other"
+    ? t(`prepQuiz.stay.${stayType}.title`)
+    : stayType === "trip" ? t("prepTrip.stay.trip") : "";
+  const StayIcon = stayType === "internship" ? Briefcase : GraduationCap;
+
+  const nextActions = progress
+    ? modules
+        .map((m) => ({ ...m, key: m.key, action: nextActionKey(m.key, progress[m.key]) }))
+        .filter((m): m is typeof m & { action: string } => !!m.action)
+    : [];
+
+  if (!loading && !selected) return <Navigate to="/preparation" replace />;
 
   return (
     <div className="min-h-screen bg-background">
@@ -123,7 +150,7 @@ const Dashboard = () => {
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">{t("prepDashboard.subtitle")}</p>
           </div>
           {trips.length > 0 && (
-            <Button onClick={() => setCreateOpen(true)} className="gradient-button self-start sm:self-auto">
+            <Button onClick={() => navigate("/preparation?new=1")} className="gradient-button self-start sm:self-auto">
               <Plus className="mr-1.5 h-4 w-4" />{t("prepDashboard.newTrip")}
             </Button>
           )}
@@ -131,14 +158,7 @@ const Dashboard = () => {
 
         {loading ? (
           <div className="space-y-4"><Skeleton className="h-32 rounded-2xl" /><div className="grid gap-4 sm:grid-cols-2"><Skeleton className="h-40 rounded-2xl" /><Skeleton className="h-40 rounded-2xl" /></div></div>
-        ) : !selected ? (
-          <Card className="rounded-[1.75rem] border-primary/20 p-6 sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("prepDashboard.firstStepKicker")}</p>
-            <h2 className="mt-1 text-2xl font-bold">{t("prepDashboard.firstStepTitle")}</h2>
-            <p className="mt-2 mb-6 text-sm text-muted-foreground">{t("prepDashboard.firstStepDesc")}</p>
-            <CreateTripForm />
-          </Card>
-        ) : (
+        ) : !selected ? null : (
           <>
             {trips.length > 1 && (
               <div className="flex flex-wrap gap-2" role="group" aria-label={t("prepDashboard.myTrips")}>
@@ -157,8 +177,11 @@ const Dashboard = () => {
                   <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("prepDashboard.currentTrip")}</p>
                   <h2 className="mt-1 flex items-center gap-2 text-2xl font-bold"><MapPin className="h-5 w-5 shrink-0 text-primary" /><span className="truncate">{selected.arrival_city && selected.arrival_city !== selected.destination ? `${selected.arrival_city}, ${selected.destination}` : selected.destination}</span></h2>
                   <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarDays className="h-4 w-4" />
-                    {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
+                    {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : (selected.form_data as { durationBucket?: string } | null)?.durationBucket ? t(`prepQuiz.dates.bucket.${(selected.form_data as { durationBucket: string }).durationBucket}`) : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
                   </p>
+                  {stayLabel && (
+                    <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><StayIcon className="h-4 w-4" />{stayLabel}</p>
+                  )}
                 </div>
                 <TripActionsMenu
                   trip={selected}
@@ -177,27 +200,49 @@ const Dashboard = () => {
               )}
             </Card>
 
+            {nextActions.length > 0 && (
+              <section aria-labelledby="next-title" className="rounded-2xl border border-border/70 bg-card/60 p-5">
+                <h2 id="next-title" className="flex items-center gap-2 text-lg font-bold"><ListTodo className="h-5 w-5 text-primary" />{t("prepDashboard.next.title")}</h2>
+                <ul className="mt-3 space-y-2">
+                  {nextActions.map(({ key, to, icon: Icon, action }) => (
+                    <li key={key}>
+                      <button type="button" onClick={() => void openModule(key, to)} className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-background/50 px-4 py-3 text-left text-sm transition-colors hover:border-primary/50">
+                        <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                        <span className="flex-1">{t(action)}</span>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground" aria-hidden />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
             <section aria-labelledby="modules-title" className="space-y-4">
               <h2 id="modules-title" className="text-xl font-bold sm:text-2xl">{t("prepDashboard.modulesTitle")}</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 {modules.map(({ key, to, icon: Icon }, i) => {
                   const p = progress?.[key] ?? { done: 0, total: 0 };
                   const pct = p.total > 0 ? Math.round((p.done / p.total) * 100) : 0;
+                  const status = moduleStatus(p);
+                  const { icon: StatusIcon, className: statusClass } = STATUS_STYLE[status];
                   return (
                     <motion.article key={key} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
                       className="flex flex-col rounded-2xl border border-border/70 bg-card/60 p-5 interactive-card">
                       <div className="flex items-center gap-3">
                         <div className="gradient-button flex h-11 w-11 items-center justify-center rounded-xl"><Icon className="h-5 w-5 text-primary-foreground" /></div>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <h3 className="font-bold">{t(`prepDashboard.modules.${key}.title`)}</h3>
                           <p className="text-xs text-muted-foreground">{t(`prepDashboard.modules.${key}.desc`)}</p>
                         </div>
+                        <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${statusClass}`}>
+                          <StatusIcon className="h-3 w-3" aria-hidden />{t(`prepDashboard.status.${status}`)}
+                        </span>
                       </div>
                       <div className="mt-4">
                         <div className="mb-1.5 flex items-center justify-between text-xs"><span className="text-muted-foreground">{progressLabel(key, p)}</span><span className="font-semibold">{pct} %</span></div>
                         <Bar value={pct} label={t(`prepDashboard.modules.${key}.title`)} />
                       </div>
-                      <Button variant="outline" className="mt-4 self-start" onClick={() => void openModule(to)}>
+                      <Button variant="outline" className="mt-4 self-start" onClick={() => void openModule(key, to)}>
                         {p.done > 0 ? t("prepDashboard.continue") : t("prepDashboard.start")}<ArrowRight className="ml-1.5 h-4 w-4" />
                       </Button>
                     </motion.article>
@@ -215,15 +260,6 @@ const Dashboard = () => {
         </p>
       </main>
 
-      <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{t("prepDashboard.firstStepTitle")}</DialogTitle>
-            <DialogDescription>{t("prepDashboard.firstStepDesc")}</DialogDescription>
-          </DialogHeader>
-          <CreateTripForm onCreated={() => setCreateOpen(false)} onCancel={() => setCreateOpen(false)} />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

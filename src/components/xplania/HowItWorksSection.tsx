@@ -1,44 +1,40 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { ArrowRight, LayoutDashboard, MapPin, Route } from "lucide-react";
 
-const HowItWorksSection = () => {
+interface Props {
+  onStart: () => void;
+}
+
+const STEPS = [
+  { key: "s1", icon: MapPin },
+  { key: "s2", icon: LayoutDashboard },
+  { key: "s3", icon: Route },
+] as const;
+
+const HowItWorksSection = ({ onStart }: Props) => {
   const { t } = useTranslation();
-  const steps = [
-    { num: 1, title: t("howItWorks.step1Title"), desc: t("howItWorks.step1Desc") },
-    { num: 2, title: t("howItWorks.step2Title"), desc: t("howItWorks.step2Desc") },
-    { num: 3, title: t("howItWorks.step3Title"), desc: t("howItWorks.step3Desc") },
-  ];
-
   return (
-    <section id="how-it-works" className="py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">{t("howItWorks.title")}</h2>
-          <p className="mt-3 text-muted-foreground">{t("howItWorks.subtitle")}</p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((s, i) => (
-            <motion.div
-              key={s.num}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="text-center"
-            >
-              <div className="w-14 h-14 mx-auto rounded-2xl gradient-button flex items-center justify-center text-2xl font-bold text-primary-foreground mb-5">
-                {s.num}
+    <section id="comment-ca-marche" aria-labelledby="how-title" className="scroll-mt-20 border-y border-border/60 bg-card/25 px-4 py-20 sm:py-24">
+      <div className="mx-auto max-w-5xl">
+        <h2 id="how-title" className="text-center text-3xl font-extrabold tracking-tight sm:text-5xl">{t("prepLanding.how.title")}</h2>
+        <ol className="mt-12 grid gap-5 md:grid-cols-3">
+          {STEPS.map(({ key, icon: Icon }, i) => (
+            <motion.li key={key} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .1 }}
+              className="rounded-2xl border border-border/70 bg-background/60 p-6">
+              <div className="flex items-center gap-3">
+                <span className="gradient-button flex h-10 w-10 items-center justify-center rounded-full text-sm font-extrabold text-primary-foreground">{i + 1}</span>
+                <Icon className="h-5 w-5 text-primary" aria-hidden />
               </div>
-              <h3 className="text-xl font-bold text-foreground">{s.title}</h3>
-              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
-            </motion.div>
+              <h3 className="mt-4 text-lg font-bold">{t(`prepLanding.how.${key}.title`)}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{t(`prepLanding.how.${key}.desc`)}</p>
+            </motion.li>
           ))}
+        </ol>
+        <div className="mt-10 text-center">
+          <button onClick={onStart} className="gradient-button inline-flex items-center gap-2 rounded-xl px-7 py-4 font-bold text-primary-foreground transition hover:-translate-y-0.5">
+            {t("prepLanding.how.cta")}<ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </section>

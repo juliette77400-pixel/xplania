@@ -4,6 +4,7 @@ import { generateJson, generateJsonSplit, aiErrorResponse } from "../_shared/ai-
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
+import { SAFETY_RULE_EN, SAFETY_RULE_FR } from "../_shared/prompts.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -24,7 +25,12 @@ serve(withQuotaRefund(async (req) => {
 
 
   try {
-    const { destination, nationality, duration, travelerType, locale = "fr" } = await req.json();
+    const { destination, nationality, duration, travelerType, residence, secondNationality, stayPurpose, locale = "fr" } = await req.json();
+    // Optional details from the preparation questionnaire (short strings only).
+    const clip = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 80) : "");
+    const residenceTxt = clip(residence);
+    const secondNatTxt = clip(secondNationality);
+    const purposeTxt = clip(stayPurpose);
     const isEN = locale === "en";
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -43,26 +49,32 @@ serve(withQuotaRefund(async (req) => {
  Reply with the JSON object only. ALL string fields must be in ENGLISH.
 
 ACCURACY (it is 2026): only give information valid in 2026. For the embassy/consulate, check it is actually open: if the traveler's country representation is closed or suspended (e.g. the French embassy in Kabul, closed since 2021), say so clearly and give the nearest competent representation or the foreign ministry crisis centre. When unsure, point to the official website rather than inventing an address.
-Tailor EVERYTHING (visa, checklist, steps, contacts) to the traveler's nationality.`
+Tailor EVERYTHING (visa, checklist, steps, contacts) to the traveler's nationality, country of residence and purpose of stay (studies or internship).
+Always remind the traveler to confirm with official sources (embassy, consulate, official government websites).
+
+${SAFETY_RULE_EN}`
       : `Tu es un expert en formalités de voyage et diplomatie internationale. Tu fournis des informations précises, actualisées et pratiques sur les visas, la sécurité, la santé et les documents nécessaires pour voyager.
 
  Réponds uniquement avec l'objet JSON.
 
 EXACTITUDE (nous sommes en 2026) : donne uniquement des informations valables en 2026. Pour l'ambassade ou le consulat, vérifie qu'il est réellement ouvert : si la représentation du pays du voyageur est fermée ou suspendue (ex. ambassade de France à Kaboul fermée depuis 2021), dis-le clairement et indique la représentation compétente la plus proche (ex. ambassade de France à Islamabad) ou le Centre de crise et de soutien du ministère. En cas de doute, renvoie vers le site officiel plutôt que d'inventer une adresse.
-Adapte TOUT (visa, checklist, démarches, contacts) à la nationalité du voyageur.`;
+Adapte TOUT (visa, checklist, démarches, contacts) à la nationalité du voyageur, à son pays de résidence et au motif du séjour (études ou stage).
+Rappelle toujours de vérifier auprès des sources officielles (ambassade, consulat, sites gouvernementaux).
+
+${SAFETY_RULE_FR}`;
 
     const userPrompt = isEN
       ? `Destination: ${destination}
 Traveler nationality: ${nationality || "France"}
 Stay duration: ${duration || "7"} days
 Traveler type: ${travelerType || "tourist"}
-
+${residenceTxt ? `Country of residence: ${residenceTxt}\n` : ""}${secondNatTxt ? `Second nationality: ${secondNatTxt}\n` : ""}${purposeTxt ? `Purpose of stay: ${purposeTxt}\n` : ""}
 Generate complete formalities information for this trip. All text in ENGLISH.`
       : `Destination : ${destination}
 Nationalité du voyageur : ${nationality || "France"}
 Durée du séjour : ${duration || "7"} jours
 Type de voyageur : ${travelerType || "touriste"}
-
+${residenceTxt ? `Pays de résidence : ${residenceTxt}\n` : ""}${secondNatTxt ? `Seconde nationalité : ${secondNatTxt}\n` : ""}${purposeTxt ? `Motif du séjour : ${purposeTxt}\n` : ""}
 Génère les informations complètes de formalités pour ce voyage.`;
 
     const SCHEMA = {

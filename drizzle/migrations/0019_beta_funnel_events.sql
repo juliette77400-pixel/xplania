@@ -1,0 +1,2 @@
+ALTER TABLE public.analytics_events DROP CONSTRAINT IF EXISTS analytics_events_event_check;
+ALTER TABLE public.analytics_events ADD CONSTRAINT analytics_events_event_check CHECK (event = ANY (ARRAY['page_view','signup_started','signup_completed','login','quiz_started','quiz_completed','trip_created','itinerary_generated','guide_generated','carnet_created','waitlist_joined','cta_click','quiz_step','dashboard_viewed','guide_started','guide_action']::text[]));

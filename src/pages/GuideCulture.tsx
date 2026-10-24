@@ -8,6 +8,7 @@ import { findCountry, normCountry } from "@/lib/country-match";
 import { useTravelStore } from "@/stores/useTravelStore";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import AppNavbar from "@/components/shared/AppNavbar";
+import { track } from "@/lib/analytics";
 import HowItWorks from "@/components/shared/HowItWorks";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ const SEV: Record<string, string> = { low: "🟢", medium: "🟠", high: "🔴" 
 export default function GuideCulture() {
   useHydrateActiveTrip();
   const tripDestination = useTravelStore((s) => s.tripData?.destination);
+  const stayType = useTravelStore((s) => s.tripData?.stayType);
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
   const [query, setQuery] = useState("");
@@ -52,7 +54,12 @@ export default function GuideCulture() {
     const c = findCountry(query);
     if (c) choose(c); else { setTouched(true); setNotFound(true); setCode(null); }
   };
-  const toggle = (k: string) => setDone((d) => { const n = { ...d, [k]: !d[k] }; localStorage.setItem(PROGRESS_KEY, JSON.stringify(n)); return n; });
+  const toggle = (k: string) => setDone((d) => {
+    const n = { ...d, [k]: !d[k] };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(n));
+    if (n[k]) track("guide_action", { module: "culture", pillar: k.split(":")[1] || k });
+    return n;
+  });
 
   const countryName = code ? getCountryName(code) : "";
   const featured = code ? FEATURED_COUNTRIES.includes(code) : false;
@@ -121,6 +128,12 @@ export default function GuideCulture() {
               <p className="text-xs text-muted-foreground mt-1">{t("culture.progress", { done: doneCount, total: CULTURE_PILLARS.length })}</p>
             </div>
             <TipOfDay code={code} lang={lang} onOpen={setPillar} />
+            {(stayType === "erasmus" || stayType === "internship" || stayType === "other") && (
+              <button type="button" onClick={() => setPillar("work")} className="flex w-full items-center gap-3 rounded-2xl border border-primary/30 bg-primary/10 p-4 text-left text-sm transition hover:border-primary/60">
+                <span className="text-2xl" aria-hidden>🎓</span>
+                <span><span className="block font-semibold text-foreground">{t(`culture.stayHint.${stayType}`)}</span><span className="text-muted-foreground">{t("culture.stayHintCta", { pillar: t("culture.pillars.work") })}</span></span>
+              </button>
+            )}
             <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
               {CULTURE_PILLARS.map((p) => (
                 <button key={p.id} onClick={() => setPillar(p.id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">

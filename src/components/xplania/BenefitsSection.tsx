@@ -1,51 +1,29 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Clock, Shield, BarChart3 } from "lucide-react";
+import { Gauge, Layers3, Target } from "lucide-react";
+
+const BENEFITS = [
+  { key: "oneplace", icon: Layers3 },
+  { key: "remaining", icon: Gauge },
+  { key: "adapted", icon: Target },
+] as const;
 
 const BenefitsSection = () => {
   const { t } = useTranslation();
-  const benefits = [
-    { icon: Clock, title: t("benefits.timeTitle"), desc: t("benefits.timeDesc") },
-    { icon: Shield, title: t("benefits.calmTitle"), desc: t("benefits.calmDesc") },
-    { icon: BarChart3, title: t("benefits.controlTitle"), desc: t("benefits.controlDesc") },
-  ];
-
   return (
-    <section className="py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            {t("benefits.titlePart1")}{" "}
-            <span className="gradient-text">{t("benefits.titlePart2")}</span>
-          </h2>
-          <p className="mt-4 text-muted-foreground max-w-3xl mx-auto">
-            {t("benefits.subtitle")}
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {benefits.map((b, i) => (
-            <motion.div
-              key={b.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="glass-card rounded-2xl p-8 text-center interactive-card"
-            >
-              <div className="w-14 h-14 mx-auto rounded-2xl gradient-button flex items-center justify-center mb-5">
-                <b.icon className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <h3 className="text-lg font-bold text-foreground">{b.title}</h3>
-              <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
-            </motion.div>
+    <section aria-labelledby="benefits-title" className="px-4 py-20 sm:py-24">
+      <div className="mx-auto max-w-5xl">
+        <h2 id="benefits-title" className="mx-auto max-w-3xl text-center text-3xl font-extrabold tracking-tight sm:text-5xl">{t("prepLanding.benefits.title")}</h2>
+        <ul className="mt-12 grid gap-5 md:grid-cols-3">
+          {BENEFITS.map(({ key, icon: Icon }, i) => (
+            <motion.li key={key} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .1 }}
+              className="rounded-2xl border border-border/70 bg-card/60 p-6 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10"><Icon className="h-6 w-6 text-primary" /></div>
+              <h3 className="text-lg font-bold">{t(`prepLanding.benefits.${key}.title`)}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{t(`prepLanding.benefits.${key}.desc`)}</p>
+            </motion.li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

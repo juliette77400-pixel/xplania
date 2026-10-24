@@ -39,6 +39,7 @@ const GuideBudget = lazy(() => import("./pages/GuideBudget.tsx"));
 const GuideValise = lazy(() => import("./pages/GuideValise.tsx"));
 const GuideVisa = lazy(() => import("./pages/GuideVisa.tsx"));
 const GuideCulture = lazy(() => import("./pages/GuideCulture.tsx"));
+const PrepQuiz = lazy(() => import("./pages/PrepQuiz.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Offres = lazy(() => import("./pages/Offres.tsx"));
 const Auth = lazy(() => import("./pages/Auth.tsx"));
@@ -161,6 +162,7 @@ const App = () => (
             <Route path="/admin/seed-rag" element={<ProtectedRoute><AdminSeedRag /></ProtectedRoute>} />
             <Route path="/admin/stats" element={<ProtectedRoute><AdminStats /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/preparation" element={<ProtectedRoute><PrepQuiz /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />

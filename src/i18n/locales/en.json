@@ -270,9 +270,9 @@
     "step6Desc": "Add your name and avatar for a tailored, consistent experience.",
     "cta6": "Complete my profile",
     "prep": {
-      "s1Title": "Create your trip",
-      "s1Desc": "Destination, dates, nationality, budget and type of stay: the 4 tools adapt automatically.",
-      "s1Cta": "Create my trip",
+      "s1Title": "Your dashboard",
+      "s1Desc": "Find your stay, the status of each guide and your next actions here. You can change your answers at any time.",
+      "s1Cta": "See my dashboard",
       "s2Title": "Plan your budget",
       "s2Desc": "A realistic estimate based on your destination and length of stay, then tracking of your planned expenses.",
       "s2Cta": "Open Budget",
@@ -5955,7 +5955,18 @@
     },
     "emptyState": "No data yet — visitors who accept cookies will show up here.",
     "restrictedTitle": "Restricted access",
-    "restrictedDesc": "This page is for the administrator only."
+    "restrictedDesc": "This page is for the administrator only.",
+    "beta": {
+      "title": "Beta funnel (questionnaire → dashboard → guides)",
+      "desc": "Number of sessions, only for people who accepted analytics.",
+      "quizStarted": "Questionnaire started",
+      "stepReached": "Step {{n}} validated",
+      "quizCompleted": "Questionnaire completed",
+      "dashboard": "Dashboard opened",
+      "guide": "Guide",
+      "started": "Started",
+      "acted": "Action done"
+    }
   },
   "help": {
     "label": "Need help?",
@@ -6303,7 +6314,13 @@
     "quizPerfect": "Well done, you've mastered this topic!",
     "quizKeep": "Reread the tips and try again!",
     "heroKicker": "Prepare your arrival",
-    "contextKicker": "Your destination"
+    "contextKicker": "Your destination",
+    "stayHint": {
+      "erasmus": "You're going on Erasmus or a university exchange",
+      "internship": "You're doing an internship abroad",
+      "other": "You're going on a student mobility"
+    },
+    "stayHintCta": "Start with the “{{pillar}}” topic: university and work life in this country."
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
@@ -6320,7 +6337,7 @@
   "prepDashboard": {
     "kicker": "My preparation space",
     "subtitle": "Budget, visa, packing and culture: everything to prepare before you leave, in one place.",
-    "newTrip": "New trip",
+    "newTrip": "New stay",
     "firstStepKicker": "Step 1",
     "firstStepTitle": "Create your trip",
     "firstStepDesc": "A few details are enough: the 4 preparation tools then adapt automatically.",
@@ -6358,6 +6375,28 @@
         "title": "Culture guide",
         "desc": "Dress, food, gestures and customs"
       }
+    },
+    "status": {
+      "notStarted": "Not started",
+      "inProgress": "In progress",
+      "done": "Done"
+    },
+    "next": {
+      "title": "Your next actions",
+      "budgetStart": "Budget: generate your expense estimate",
+      "budgetExpense": "Budget: record your first planned expense",
+      "visaStart": "Visa: view your paperwork and tick your first step",
+      "visaContinue": "Visa: keep ticking your steps",
+      "valiseStart": "Packing: tick the first items on your list",
+      "valiseContinue": "Packing: finish your list",
+      "cultureStart": "Culture: read a first topic and mark it as understood",
+      "cultureContinue": "Culture: continue with the next topics"
+    },
+    "missing": {
+      "title": "Some information is missing",
+      "budget": "You haven't entered a budget yet: the amounts shown are starting examples.",
+      "dates": "Your dates or length are not known yet: some tips stay general.",
+      "cta": "Complete my stay"
     }
   },
   "prepTrip": {
@@ -6395,5 +6434,202 @@
     "inc4": "Ping, your preparation assistant, in French and English",
     "cta": "Start my preparation",
     "after": "Post-beta offers will be announced later."
+  },
+  "prepLanding": {
+    "hero": {
+      "badge": "Your move abroad, made simple.",
+      "titleStart": "Your Erasmus or internship abroad",
+      "titleAccent": "starts here.",
+      "subtitle": "Budget, visa, packing, local culture… Prepare your departure without getting lost across dozens of websites and procedures. Xplania brings the essentials together and guides you step by step.",
+      "primary": "Prepare my departure",
+      "secondary": "See how it works",
+      "note": "Free during the beta · No credit card",
+      "previewLabel": "Preview of your preparation space",
+      "previewExample": "Example: Erasmus in Madrid · 5 months",
+      "previewNote": "Illustration: progress depends on what you have actually done in each guide."
+    },
+    "problem": {
+      "title": "Going abroad is exciting. Preparing everything, less so.",
+      "text": "Between paperwork, the budget to plan, what to pack and cultural differences, preparing an international mobility can quickly get complicated.",
+      "items": {
+        "scattered": {
+          "title": "Too much scattered information",
+          "desc": "You jump from one website to another to find the right information."
+        },
+        "forget": {
+          "title": "The fear of forgetting something essential",
+          "desc": "Documents, procedures, budget, belongings… Hard to know if everything is ready."
+        },
+        "bearings": {
+          "title": "No clear starting point",
+          "desc": "You don't always know where to start or which steps come first."
+        }
+      },
+      "conclusion": "What if you could prepare everything from one place?"
+    },
+    "solution": {
+      "title": "One space to prepare your departure.",
+      "subtitle": "Xplania brings together four complementary guides, adapted to the details of your stay.",
+      "stepLabel": "Guide {{n}}",
+      "cards": {
+        "budget": {
+          "name": "Budget",
+          "desc": "Anticipate your expenses and organise your budget for your stay abroad.",
+          "benefit": "You know how much to plan before leaving."
+        },
+        "visa": {
+          "name": "Visa & paperwork",
+          "desc": "Identify the administrative steps to check for your destination and situation.",
+          "benefit": "You know which documents to prepare and where to check them."
+        },
+        "valise": {
+          "name": "Smart packing",
+          "desc": "Build a checklist adapted to your stay so you don't forget the essentials.",
+          "benefit": "You leave without forgetting the essentials."
+        },
+        "culture": {
+          "name": "Intercultural guide",
+          "desc": "Learn the habits, cultural codes and practical tips to prepare your arrival.",
+          "benefit": "You arrive more at ease in your new country."
+        }
+      }
+    },
+    "how": {
+      "title": "Your departure, prepared in a few steps.",
+      "s1": {
+        "title": "Tell us about your stay",
+        "desc": "Enter your destination, your dates and a few useful details."
+      },
+      "s2": {
+        "title": "Find your guides",
+        "desc": "Access your four preparation tools, adapted to your profile and stay."
+      },
+      "s3": {
+        "title": "Move forward at your pace",
+        "desc": "Complete your preparations and follow your progress from your dashboard."
+      },
+      "cta": "Start my preparation"
+    },
+    "benefits": {
+      "title": "Less searching. More peace of mind before you leave.",
+      "oneplace": {
+        "title": "Everything in one place",
+        "desc": "Budget, paperwork, packing and culture together, without retyping your details."
+      },
+      "remaining": {
+        "title": "Know what's left to prepare",
+        "desc": "Your dashboard shows what's done and the next action in each guide."
+      },
+      "adapted": {
+        "title": "Information adapted to your stay",
+        "desc": "Destination, nationality, length and type of mobility are taken into account."
+      }
+    },
+    "final": {
+      "title": "Ready to prepare your move abroad?",
+      "text": "Erasmus, university exchange or internship: start your preparation with Xplania.",
+      "cta": "Prepare my departure",
+      "note": "Free during the beta."
+    }
+  },
+  "prepQuiz": {
+    "stepOf": "Step {{current}} of {{total}}",
+    "progress": "Questionnaire progress",
+    "swipeHint": "Swipe the photo or use the buttons",
+    "back": "Back",
+    "next": "Continue",
+    "finish": "Finish",
+    "retry": "Try again",
+    "saveError": "Your answers could not be saved. They are kept: please try again.",
+    "privacy": "Your answers are only used to adapt your four guides. You can change them at any time.",
+    "destination": {
+      "title": "Where are you heading?",
+      "subtitle": "Enter the country where you will study or do your internship.",
+      "country": "Destination country",
+      "countryPlaceholder": "E.g. Spain",
+      "city": "City (optional)",
+      "cityPlaceholder": "E.g. Madrid"
+    },
+    "origin": {
+      "title": "Where are you leaving from?",
+      "subtitle": "This helps us identify the paperwork that fits your situation.",
+      "nationality": "Your nationality",
+      "residence": "Your current country of residence",
+      "second": "Second nationality (optional)",
+      "countryPlaceholder": "Start typing a country",
+      "secondPlaceholder": "Only if you have one"
+    },
+    "stay": {
+      "title": "What is your project abroad?",
+      "subtitle": "Choose the type of stay that matches your departure.",
+      "erasmus": {
+        "title": "Erasmus / university exchange",
+        "desc": "A semester or a year at a partner university."
+      },
+      "internship": {
+        "title": "Internship abroad",
+        "desc": "Work experience in a company."
+      },
+      "other": {
+        "title": "Other student mobility",
+        "desc": "Gap year, volunteering, language stay…"
+      }
+    },
+    "dates": {
+      "title": "When does your adventure start?",
+      "subtitle": "Enter your dates to adapt your preparation.",
+      "departure": "Departure date",
+      "return": "Return date (optional)",
+      "bucketLegend": "No exact dates yet? Choose an estimated length:",
+      "bucket": {
+        "lt3": "Less than 3 months",
+        "3to6": "Between 3 and 6 months",
+        "gt6": "More than 6 months",
+        "unknown": "I don't know yet"
+      },
+      "hint": "You can change your dates from your dashboard."
+    },
+    "budget": {
+      "title": "What budget have you planned?",
+      "subtitle": "Even an estimate is enough to start.",
+      "label": "Total budget for your stay",
+      "placeholder": "E.g. 4000",
+      "unknown": "I don't know yet"
+    },
+    "housing": {
+      "title": "Where will you stay?",
+      "subtitle": "This helps us anticipate your expenses and needs.",
+      "residence": "Student residence",
+      "flatshare": "Flatshare / apartment",
+      "family": "Host family",
+      "unknown": "I don't know yet"
+    },
+    "errors": {
+      "destination": "Choose your destination country from the list.",
+      "nationality": "Enter your nationality.",
+      "residence": "Enter your current country of residence.",
+      "stay": "Choose the type of stay.",
+      "dates": "The return date must be after the departure date.",
+      "datesMissing": "Enter a departure date or choose a length (even “I don't know yet”).",
+      "budget": "Enter an amount or choose “I don't know yet”.",
+      "housing": "Choose your type of housing."
+    },
+    "summary": {
+      "title": "Your preparation space is ready!",
+      "subtitle": "Find your four guides now to prepare your move abroad, step by step.",
+      "destination": "Destination",
+      "stay": "Type of stay",
+      "when": "Dates or length",
+      "budget": "Planned budget",
+      "noDates": "Not known yet",
+      "cta": "Go to my preparation"
+    }
+  },
+  "prepEdit": {
+    "title": "Edit my stay",
+    "desc": "Your guides will automatically use this new information.",
+    "save": "Save",
+    "saved": "Stay updated.",
+    "error": "Could not save your changes. Please try again."
   }
 }
