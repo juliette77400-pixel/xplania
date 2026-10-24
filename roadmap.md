@@ -22,3 +22,4 @@
 - [x] Budget : plus de réécriture automatique, SAFETY_RULE dans budget-tips
 - [x] Traductions FR/EN, tests, vérifications des 5 profils
 - [ ] Après republication : supprimer l'ancienne fonction visa-official-info (encore utilisée par la version en ligne)
+- [x] Vérification téléphone + anglais des pages Visa et Budget (simulateur corrigé)
