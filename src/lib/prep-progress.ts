@@ -3,6 +3,7 @@
 // tiny summary so the dashboard never depends on itinerary or AI data.
 import { findCountry } from "@/lib/country-match";
 import { track } from "@/lib/analytics";
+import { CULTURE_PATHS, pathForStay } from "@/data/culture-guide";
 
 export type PrepModule = "budget" | "visa" | "valise" | "culture" | "housing";
 
@@ -14,12 +15,13 @@ export interface ModuleProgress {
 export interface TripRef {
   destination: string | null | undefined;
   departureDate?: string | null;
+  /** Questionnaire stay type: picks the cultural guide path counted for progress. */
+  stayType?: string | null;
 }
 
 const SUMMARY_PREFIX = "xplania-prep";
 const CULTURE_KEY = "xplania-culture-progress";
 const BUDGET_PREFIX = "xplania-budget-state";
-export const CULTURE_PILLAR_COUNT = 12;
 export const PREP_PROGRESS_EVENT = "xplania:prep-progress";
 
 const norm = (s: string | null | undefined) => (s || "").trim().toLowerCase();
@@ -57,12 +59,13 @@ function budgetProgress(trip: TripRef): ModuleProgress {
   return { done, total: 2 };
 }
 
-/** Culture: pillars marked as understood for the destination country. */
+/** Culture: themes of the student's path marked as understood for the destination country. */
 function cultureProgress(trip: TripRef): ModuleProgress {
   const code = findCountry(trip.destination);
   const all = readJson<Record<string, boolean>>(CULTURE_KEY) || {};
-  const done = code ? Object.entries(all).filter(([k, v]) => v && k.startsWith(`${code}:`)).length : 0;
-  return { done: Math.min(done, CULTURE_PILLAR_COUNT), total: CULTURE_PILLAR_COUNT };
+  const path = CULTURE_PATHS[pathForStay(trip.stayType)];
+  const done = code ? path.filter((p) => all[`${code}:${p}`]).length : 0;
+  return { done, total: path.length };
 }
 
 export function readTripProgress(trip: TripRef): Record<PrepModule, ModuleProgress> {

@@ -105,7 +105,7 @@ const Dashboard = () => {
 
   const progress = useMemo<Record<PrepModule, ModuleProgress> | null>(() => {
     if (!selected) return null;
-    return readTripProgress({ destination: selected.destination, departureDate: selected.departure_date });
+    return readTripProgress({ destination: selected.destination, departureDate: selected.departure_date, stayType: (selected.form_data as { stayType?: string } | null)?.stayType });
     // progressTick forces a re-read of the saved progress.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected, progressTick]);
