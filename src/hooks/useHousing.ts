@@ -87,7 +87,7 @@ export function useHousingChecklist(tripId: string | null) {
     mutationFn: async ({ item, done }: { item: string; done: boolean }) => {
       if (!user || !tripId) throw new Error("no session");
       if (done) {
-        const { error } = await supabase.from("housing_checklist").upsert({ user_id: user.id, trip_id: tripId, item }, { onConflict: "trip_id,item" });
+        const { error } = await supabase.from("housing_checklist").upsert({ user_id: user.id, trip_id: tripId, item }, { onConflict: "trip_id,item", ignoreDuplicates: true });
         if (error) throw error;
       } else {
         const { error } = await supabase.from("housing_checklist").delete().eq("trip_id", tripId).eq("item", item).eq("user_id", user.id);
