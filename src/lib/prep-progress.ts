@@ -2,6 +2,7 @@
 // Every module keeps its own detailed state; this file only reads/writes a
 // tiny summary so the dashboard never depends on itinerary or AI data.
 import { findCountry } from "@/lib/country-match";
+import { track } from "@/lib/analytics";
 
 export type PrepModule = "budget" | "visa" | "valise" | "culture";
 
@@ -38,6 +39,8 @@ const readJson = <T,>(key: string): T | null => {
 export function saveModuleProgress(module: PrepModule, destination: string | null | undefined, progress: ModuleProgress) {
   if (!norm(destination)) return;
   try {
+    const previous = readJson<ModuleProgress>(summaryKey(module, destination));
+    if (progress.done > (previous?.done ?? 0)) track("guide_action", { module, done: progress.done, total: progress.total });
     localStorage.setItem(summaryKey(module, destination), JSON.stringify(progress));
     window.dispatchEvent(new Event(PREP_PROGRESS_EVENT));
   } catch {
@@ -76,4 +79,21 @@ export function readTripProgress(trip: TripRef): Record<PrepModule, ModuleProgre
 export function overallPercent(progress: Record<PrepModule, ModuleProgress>): number {
   const parts = Object.values(progress).map((p) => (p.total > 0 ? Math.min(1, p.done / p.total) : 0));
   return Math.round((parts.reduce((a, b) => a + b, 0) / parts.length) * 100);
+}
+
+export type ModuleStatus = "notStarted" | "inProgress" | "done";
+
+/** Status shown on the dashboard — based only on saved actions, never on visits. */
+export function moduleStatus(p: ModuleProgress): ModuleStatus {
+  if (p.done <= 0) return "notStarted";
+  if (p.total > 0 && p.done >= p.total) return "done";
+  return "inProgress";
+}
+
+/** i18n key of the next concrete action for a module, or null when it is done. */
+export function nextActionKey(module: PrepModule, p: ModuleProgress): string | null {
+  const status = moduleStatus(p);
+  if (status === "done") return null;
+  if (module === "budget") return p.done === 0 ? "prepDashboard.next.budgetStart" : "prepDashboard.next.budgetExpense";
+  return status === "notStarted" ? `prepDashboard.next.${module}Start` : `prepDashboard.next.${module}Continue`;
 }
