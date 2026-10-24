@@ -86,11 +86,14 @@ const GuideValisePage = () => {
         if (parsed && typeof parsed === "object") {
           setCategories(parsed);
         }
+      } else {
+        setCategories(buildCategories(luggageMode, transport));
       }
     } catch {
       /* ignore */
     }
     hydratedRef.current = storageKey;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
 
   // Save on change (after hydration for this key)
