@@ -30,6 +30,11 @@ import BudgetOnboardingChat from "@/components/budget/BudgetOnboardingChat";
 import CurrencyConverter from "@/components/shared/CurrencyConverter";
 import MissingTripInfo from "@/components/shared/MissingTripInfo";
 import { suggestCategoryAmount, buildAdjustmentExplanation, buildScenarios, type CategoryKey } from "@/lib/cost-of-living";
+import BudgetKpis from "@/components/budget/BudgetKpis";
+import BudgetRecommendations from "@/components/budget/BudgetRecommendations";
+import BudgetSimulator from "@/components/budget/BudgetSimulator";
+import BudgetConfirmDialog from "@/components/budget/BudgetConfirmDialog";
+import { budgetRecommendations, changedLines, summarizeBudget, type BudgetLine } from "@/lib/budget-math";
 
 /* =============================================================================
  * DEV NOTE — Item 6: Bank-transaction integration feasibility (research only)
@@ -76,9 +81,10 @@ const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData, recommendations } = useTravelStore();
   const { t, i18n } = useTranslation();
+  // "Paris" is only the historical storage-key fallback; it is never shown as the student's destination.
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
-  const userBudget = tripData?.totalBudget || 820;
+  const userBudget = tripData?.totalBudget || 0;
   const travelers = useMemo(() => {
     const child = tripData?.childrenCount ?? 0;
     return Math.max(1, 1 + child);
@@ -130,13 +136,22 @@ const GuideBudgetPage = () => {
     }));
   }, [insights.data, locale, destination]);
 
+  // Any change that replaces several amounts waits for the student's confirmation.
+  const [pending, setPending] = useState<{ title: string; description: string; confirmLabel: string; next: BudgetCategory[]; onDone?: () => void } | null>(null);
+
   const applyScenario = useCallback((sc: BudgetScenario) => {
-    setCategories((prev) => prev.map((c) => {
+    const next = categories.map((c) => {
       const a = sc.split?.find((x) => x.key === c.key)?.amount;
       return typeof a === "number" && a > 0 ? { ...c, planned: Math.round(a) } : c;
-    }));
-    toast.success(t("budget.scenarioApplied"));
-  }, [t]);
+    });
+    setPending({
+      title: t("budget2.confirm.scenarioTitle"),
+      description: t("budget2.confirm.scenarioDesc"),
+      confirmLabel: t("budget.scenarioApply"),
+      next,
+      onDone: () => toast.success(t("budget.scenarioApplied")),
+    });
+  }, [categories, t]);
 
   const budgetContextKey = `${destination}|${days}|${userBudget}|${travelers}|${tripData?.departureDate || ""}`;
 
@@ -310,12 +325,17 @@ const GuideBudgetPage = () => {
     }
   }, [buildTripAwareCategories, hasGenerated, hydratedFromStorage, tripData?.destination]);
 
-  useEffect(() => {
-    if (hasGenerated && generatedContextKey && generatedContextKey !== budgetContextKey) {
-      setCategories(buildTripAwareCategories());
-      setGeneratedContextKey(budgetContextKey);
-    }
-  }, [budgetContextKey, buildTripAwareCategories, generatedContextKey, hasGenerated]);
+  // The stay changed (length, budget, dates…): offer a new estimate, never replace amounts silently.
+  const contextChanged = hasGenerated && !!generatedContextKey && generatedContextKey !== budgetContextKey;
+  const askRecalculate = useCallback(() => {
+    setPending({
+      title: t("budget2.confirm.recalcTitle"),
+      description: t("budget2.confirm.recalcDesc"),
+      confirmLabel: t("budget2.confirm.recalcCta"),
+      next: buildTripAwareCategories().map((c) => ({ ...c, spent: categories.find((x) => x.key === c.key)?.spent ?? 0 })),
+      onDone: () => { setGeneratedContextKey(budgetContextKey); setRegenCount((n) => n + 1); toast.success(t("guideBudget.toastRecalcDone")); },
+    });
+  }, [buildTripAwareCategories, budgetContextKey, categories, t]);
 
   const runGeneration = useCallback(async () => {
     if (isGenerating) return;
@@ -339,21 +359,7 @@ const GuideBudgetPage = () => {
     }
   }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating]);
 
-  const handleRegenerate = useCallback(async () => {
-    toast.loading(t("guideBudget.toastRecalc"), { id: "regen" });
-    setIsGenerating(true);
-    setGenStep(0);
-    for (let i = 0; i < STEPS.length; i++) {
-      await new Promise((r) => setTimeout(r, 600));
-      setGenStep(i + 1);
-    }
-    await new Promise((r) => setTimeout(r, 300));
-    setCategories(buildTripAwareCategories());
-    setGeneratedContextKey(budgetContextKey);
-    setIsGenerating(false);
-    setRegenCount((n) => n + 1);
-    toast.success(t("guideBudget.toastRecalcDone"), { id: "regen" });
-  }, [t, buildTripAwareCategories, budgetContextKey]);
+  const handleRegenerate = askRecalculate;
 
   const handleAiAdjust = (idx: number) => {
     setCategories((prev) =>
@@ -383,6 +389,15 @@ const GuideBudgetPage = () => {
       });
     });
     toast.success(t("budget.aiResultTotalUpdated"));
+  };
+
+  const lines: BudgetLine[] = categories.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent }));
+  const summary = summarizeBudget(lines, expenses, userBudget, days);
+  const daysUntilDeparture = tripData?.departureDate ? Math.ceil((new Date(tripData.departureDate).getTime() - Date.now()) / 86_400_000) : null;
+  const recommendationsList = budgetRecommendations(lines, summary, daysUntilDeparture);
+  const applySimulation = (next: BudgetLine[]) => {
+    setCategories((prev) => prev.map((c) => ({ ...c, planned: next.find((n) => n.key === c.key)?.planned ?? c.planned })));
+    toast.success(t("budget2.sim.applied"));
   };
 
   const handleAddExpense = (expense: Expense) => {
@@ -506,16 +521,21 @@ const GuideBudgetPage = () => {
                 </div>
               </div>
 
+              {contextChanged && (
+                <div role="status" className="flex flex-col gap-3 rounded-2xl border border-warning/40 bg-warning/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold">{t("budget2.context.title")}</p>
+                    <p className="text-xs text-muted-foreground">{t("budget2.context.body")}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => setGeneratedContextKey(budgetContextKey)} className="rounded-xl border border-border px-3 py-2 text-sm font-semibold hover:bg-muted">{t("budget2.context.keep")}</button>
+                    <button type="button" onClick={askRecalculate} className="gradient-button rounded-xl px-3 py-2 text-sm font-semibold text-primary-foreground">{t("budget2.context.recalc")}</button>
+                  </div>
+                </div>
+              )}
+              <BudgetKpis summary={summary} />
+              <BudgetRecommendations items={recommendationsList} />
               <BudgetConfig tripData={tripData} />
-              <BudgetAiResult
-                totalBudget={totalBudget}
-                days={days}
-                destination={destination}
-                onTotalBudgetChange={handleUpdateTotalBudget}
-                insights={insights.data}
-                insightsLoading={insights.isFetching}
-                onApplyScenario={applyScenario}
-              />
               <BudgetForecast
                 totalBudget={totalBudget}
                 categories={categories}
@@ -525,17 +545,21 @@ const GuideBudgetPage = () => {
               />
               <AddExpenseForm onAdd={handleAddExpense} />
               <ExpenseTracker categories={categories} expenses={expenses} onRemoveExpense={handleRemoveExpense} />
-              <CollapsibleSection
-                title={t("collapsible.budget.charts")}
-                subtitle={t("collapsible.budget.chartsSub")}
-                sectionId="charts"
-              >
-                <div ref={chartRef}>
-                  <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
-                    <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
-                  </Suspense>
-                </div>
-              </CollapsibleSection>
+              <BudgetSimulator lines={lines} days={days} budget={userBudget} onApply={applySimulation} />
+              <div ref={chartRef}>
+                <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
+                  <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                </Suspense>
+              </div>
+              <BudgetAiResult
+                totalBudget={totalBudget}
+                days={days}
+                destination={destination}
+                onTotalBudgetChange={handleUpdateTotalBudget}
+                insights={insights.data}
+                insightsLoading={insights.isFetching}
+                onApplyScenario={applyScenario}
+              />
 
               <CollapsibleSection
                 title={t("collapsible.budget.alerts")}
@@ -600,6 +624,20 @@ const GuideBudgetPage = () => {
         />
       )}
 
+      <BudgetConfirmDialog
+        open={!!pending}
+        onOpenChange={(v) => { if (!v) setPending(null); }}
+        title={pending?.title || ""}
+        description={pending?.description || ""}
+        changes={pending ? changedLines(lines, pending.next.map((c) => ({ key: c.key, planned: c.planned, spent: c.spent }))) : []}
+        confirmLabel={pending?.confirmLabel || ""}
+        onConfirm={() => {
+          if (!pending) return;
+          setCategories(pending.next);
+          pending.onDone?.();
+          setPending(null);
+        }}
+      />
       <QuickJump />
     </div>
   );
