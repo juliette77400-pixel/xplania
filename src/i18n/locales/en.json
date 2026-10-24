@@ -6748,6 +6748,34 @@
       "shortlist": "I've found a few places",
       "confirmed": "My housing is confirmed",
       "lost": "I don't know where to start"
+    },
+    "preview": {
+      "kicker": "Your personalised preview",
+      "title": "Your 3 priorities before leaving: {{country}}",
+      "countdown_one": "Leaving in {{count}} day",
+      "countdown_other": "Leaving in {{count}} days",
+      "priority": "Priority {{n}}",
+      "module": {
+        "visa": "Visa & paperwork",
+        "housing": "Housing",
+        "budget": "Budget"
+      },
+      "steps": {
+        "visaFree": "No visa needed with your European nationality: just check your ID card or passport stays valid for the whole stay.",
+        "visaCheck": "Check whether you need a visa for {{country}} with your nationality, and how long it takes.",
+        "visaCheckSoon": "Your departure is close: check now whether you need a visa for {{country}}, some take several weeks.",
+        "housingLost": "Start with housing: we help you know where to look and which traps to avoid.",
+        "housingStart": "Start your housing search and compare several options before paying anything.",
+        "housingCompare": "Compare the places you found: rent, deposit, commute and lease terms.",
+        "housingSettle": "Housing confirmed: plan the deposit, home insurance and move-in inventory.",
+        "budgetFirstMonth": "Check that your €{{amount}} covers your first month: deposit, first rent and move-in.",
+        "budgetEstimate": "Estimate your budget, including the first month: it's often the most expensive."
+      },
+      "note": "Preview computed from your answers. They stay in this browser until you create an account.",
+      "cta": "Create my free account to save",
+      "edit": "Edit my answers",
+      "signin": "I already have an account",
+      "free": "Free during the beta · No credit card"
     }
   },
   "prepEdit": {

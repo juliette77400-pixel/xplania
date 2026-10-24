@@ -6748,6 +6748,34 @@
       "shortlist": "J'ai trouvé quelques logements",
       "confirmed": "Mon logement est confirmé",
       "lost": "Je ne sais pas par où commencer"
+    },
+    "preview": {
+      "kicker": "Ton aperçu personnalisé",
+      "title": "Tes 3 priorités pour ton départ : {{country}}",
+      "countdown_one": "Départ dans {{count}} jour",
+      "countdown_other": "Départ dans {{count}} jours",
+      "priority": "Priorité {{n}}",
+      "module": {
+        "visa": "Visa & formalités",
+        "housing": "Logement",
+        "budget": "Budget"
+      },
+      "steps": {
+        "visaFree": "Pas de visa à prévoir avec ta nationalité européenne : vérifie juste que ta carte d'identité ou ton passeport reste valide pendant tout le séjour.",
+        "visaCheck": "Vérifie si un visa est nécessaire pour {{country}} avec ta nationalité, et combien de temps prend la démarche.",
+        "visaCheckSoon": "Ton départ approche : vérifie dès maintenant si un visa est nécessaire pour {{country}}, certains délais dépassent plusieurs semaines.",
+        "housingLost": "Commence par le logement : on t'aide à savoir où chercher et quels pièges éviter.",
+        "housingStart": "Lance ta recherche de logement et compare plusieurs options avant de payer quoi que ce soit.",
+        "housingCompare": "Compare les logements repérés : loyer, caution, trajet et conditions du bail.",
+        "housingSettle": "Logement confirmé : prépare la caution, l'assurance habitation et l'état des lieux.",
+        "budgetFirstMonth": "Vérifie que tes {{amount}} € couvrent ton premier mois : caution, premier loyer et installation.",
+        "budgetEstimate": "Estime ton budget, premier mois compris : c'est souvent le plus cher."
+      },
+      "note": "Aperçu calculé à partir de tes réponses. Tes réponses restent dans ce navigateur tant que tu n'as pas créé de compte.",
+      "cta": "Créer mon compte gratuit pour enregistrer",
+      "edit": "Modifier mes réponses",
+      "signin": "J'ai déjà un compte",
+      "free": "Gratuit pendant la bêta · Sans carte bancaire"
     }
   },
   "prepEdit": {

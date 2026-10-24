@@ -170,7 +170,8 @@ const App = () => (
             <Route path="/admin/stats" element={<ProtectedRoute><AdminStats /></ProtectedRoute>} />
             <Route path="/admin/sources" element={<ProtectedRoute><AdminSources /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/preparation" element={<ProtectedRoute><PrepQuiz /></ProtectedRoute>} />
+            {/* Open to visitors: answers stay in the browser until they sign up (then saved as the trip). */}
+            <Route path="/preparation" element={<PrepQuiz />} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Parametres /></ProtectedRoute>} />

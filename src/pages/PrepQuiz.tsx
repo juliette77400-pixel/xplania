@@ -5,7 +5,8 @@ import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion, useDragControls, useReducedMotion, type PanInfo } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, Loader2, RefreshCw } from "lucide-react";
+import { ArrowLeft, ArrowRight, BedDouble, Check, FileCheck, Loader2, RefreshCw, Wallet } from "lucide-react";
+import { previewSteps, daysUntil } from "@/lib/prep-preview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +54,15 @@ const STATUS_IMAGES = { starting: imgStatusStarting, shortlist: imgStatusShortli
 
 const SWIPE = 110;
 const draftKey = (userId: string) => `xplania:prep-quiz:${userId}`;
+// Visitors answer before having an account; the answers stay in this browser
+// and become their trip right after they sign up.
+const GUEST_DRAFT = "xplania:prep-quiz:guest";
+interface GuestDraft { answers: PrepAnswers; step: number; complete?: boolean }
+const readGuestDraft = (): GuestDraft | null => {
+  try { const raw = localStorage.getItem(GUEST_DRAFT); return raw ? (JSON.parse(raw) as GuestDraft) : null; } catch { return null; }
+};
+const RESUME_PATH = "/preparation?resume=1";
+const PREVIEW_ICONS = { visa: FileCheck, housing: BedDouble, budget: Wallet } as const;
 
 const PrepQuiz = () => {
   const { t, i18n } = useTranslation();
@@ -77,14 +87,36 @@ const PrepQuiz = () => {
   const [saved, setSaved] = useState<TravelFormData | null>(null);
   const restored = useRef(false);
   const started = useRef(false);
+  const [guestPending] = useState(() => readGuestDraft()?.complete === true);
+  const [preview, setPreview] = useState(false);
 
   const step = PREP_STEPS[stepIndex];
   const isFr = i18n.language.startsWith("fr");
 
   // Restore an interrupted questionnaire, or pre-fill the origin from a previous trip.
   useEffect(() => {
-    if (!user || restored.current || tripsLoading) return;
+    if (restored.current) return;
+    if (!user) {
+      restored.current = true;
+      const g = readGuestDraft();
+      if (g) {
+        setAnswers({ ...emptyPrepAnswers(), ...g.answers });
+        setStepIndex(Math.min(Math.max(0, g.step || 0), PREP_STEPS.length - 1));
+        if (g.complete) setPreview(true);
+      }
+      return;
+    }
+    if (tripsLoading) return;
     restored.current = true;
+    // Answers given before signing up: save them as the trip now.
+    const g = readGuestDraft();
+    if (g?.complete) {
+      const a = { ...emptyPrepAnswers(), ...g.answers };
+      setAnswers(a);
+      setStepIndex(PREP_STEPS.length - 1);
+      void persist(a);
+      return;
+    }
     try {
       const raw = localStorage.getItem(draftKey(user.id));
       if (raw) {
@@ -99,12 +131,14 @@ const PrepQuiz = () => {
       const prev = answersFromTrip(last.form_data as Partial<TravelFormData>, last.destination);
       setAnswers((a) => ({ ...a, nationality: prev.nationality, residence: prev.residence, secondNationality: prev.secondNationality }));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, trips, tripsLoading]);
 
   useEffect(() => {
-    if (!user || !restored.current || saved) return;
-    try { localStorage.setItem(draftKey(user.id), JSON.stringify({ answers, step: stepIndex })); } catch { /* storage full */ }
-  }, [answers, stepIndex, user, saved]);
+    if (!restored.current || saved || saving) return;
+    if (!user && preview) return; // the completed guest draft is written by next()
+    try { localStorage.setItem(user ? draftKey(user.id) : GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* storage full */ }
+  }, [answers, stepIndex, user, saved, saving, preview]);
 
   useEffect(() => {
     if (started.current) return;
@@ -162,7 +196,7 @@ const PrepQuiz = () => {
       departureDate: data.departureDate || null,
       returnDate: data.returnDate || null,
     });
-    try { localStorage.removeItem(draftKey(user.id)); } catch { /* ignore */ }
+    try { localStorage.removeItem(draftKey(user.id)); localStorage.removeItem(GUEST_DRAFT); } catch { /* ignore */ }
     setSaving(false);
     setSaved(data);
   }, [user, t, queryClient, setTripData, setRecommendations, setActiveTrip]);
@@ -173,11 +207,20 @@ const PrepQuiz = () => {
     if (invalid) { setError(t(invalid)); return false; }
     setError(null);
     track("quiz_step", { flow: "prep", step, index: stepIndex + 1 });
-    if (stepIndex === PREP_STEPS.length - 1) { void persist(a); return true; }
+    if (stepIndex === PREP_STEPS.length - 1) {
+      if (!user) {
+        try { localStorage.setItem(GUEST_DRAFT, JSON.stringify({ answers: a, step: stepIndex, complete: true })); } catch { /* storage full */ }
+        track("quiz_completed", { flow: "prep_guest", stay: a.stayType });
+        setPreview(true);
+        return true;
+      }
+      void persist(a);
+      return true;
+    }
     setDirection(1);
     setStepIndex((i) => i + 1);
     return true;
-  }, [answers, step, stepIndex, persist, t]);
+  }, [answers, step, stepIndex, persist, t, user]);
 
   const back = () => {
     if (stepIndex === 0) return;
@@ -198,9 +241,9 @@ const PrepQuiz = () => {
     else if (info.offset.x < -SWIPE) back();
   };
 
-  if (!user) return <Navigate to="/auth?mode=signup&next=/preparation" replace />;
-  // Someone who already has a trip is never pushed back into the questionnaire.
-  if (!isNewTrip && !tripsLoading && trips.length > 0 && !saved && !saving) return <Navigate to="/app" replace />;
+  // Someone who already has a trip is never pushed back into the questionnaire
+  // (except to save the answers they gave before signing up).
+  if (user && !isNewTrip && !guestPending && !tripsLoading && trips.length > 0 && !saved && !saving) return <Navigate to="/app" replace />;
 
   const variants = reduceMotion
     ? { enter: { opacity: 0 }, center: { opacity: 1 }, exit: { opacity: 0 } }
@@ -212,6 +255,48 @@ const PrepQuiz = () => {
 
   const dateLocale = isFr ? "fr-FR" : "en-GB";
   const fmt = (d: string) => new Date(d).toLocaleDateString(dateLocale, { day: "numeric", month: "long", year: "numeric" });
+
+  if (!user && preview) {
+    const steps = previewSteps(answers);
+    const days = daysUntil(answers.departureDate);
+    const country = countryName(answers.destinationCode);
+    const signup = `/auth?mode=signup&next=${encodeURIComponent(RESUME_PATH)}`;
+    const signin = `/auth?next=${encodeURIComponent(RESUME_PATH)}`;
+    return (
+      <div className="min-h-screen bg-background px-4 py-10 sm:py-16">
+        <motion.main id="main-content" tabIndex={-1} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-xl">
+          <div className="overflow-hidden rounded-[2rem] border border-primary/25 bg-card p-6 shadow-[0_20px_60px_hsl(var(--primary)/.15)] sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{t("prepQuiz.preview.kicker")}</p>
+            <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">{t("prepQuiz.preview.title", { country })}</h1>
+            {days !== null && days >= 0 && <p className="mt-2 text-sm font-semibold text-foreground">{t("prepQuiz.preview.countdown", { count: days })}</p>}
+            <ol className="mt-5 space-y-3">
+              {steps.map((st, i) => {
+                const Icon = PREVIEW_ICONS[st.module];
+                return (
+                  <li key={st.id} className="flex gap-3 rounded-2xl border border-border/60 bg-background/50 p-4">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl gradient-button"><Icon className="h-4 w-4 text-primary-foreground" aria-hidden /></span>
+                    <span>
+                      <span className="block text-xs font-semibold text-primary">{t("prepQuiz.preview.priority", { n: i + 1 })} · {t(`prepQuiz.preview.module.${st.module}`)}</span>
+                      <span className="mt-0.5 block text-sm font-medium">{t(`prepQuiz.preview.steps.${st.key}`, { country, ...(st.vars || {}) })}</span>
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+            <p className="mt-4 text-xs text-muted-foreground">{t("prepQuiz.preview.note")}</p>
+            <Button className="gradient-button mt-5 h-12 w-full text-base" onClick={() => navigate(signup)}>
+              {t("prepQuiz.preview.cta")}<ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
+              <button type="button" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline" onClick={() => { setPreview(false); try { localStorage.setItem(GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* ignore */ } }}>{t("prepQuiz.preview.edit")}</button>
+              <Link to={signin} className="font-semibold text-primary hover:underline">{t("prepQuiz.preview.signin")}</Link>
+            </div>
+            <p className="mt-4 text-center text-xs text-muted-foreground">{t("prepQuiz.preview.free")}</p>
+          </div>
+        </motion.main>
+      </div>
+    );
+  }
 
   if (saved) {
     const when = saved.departureDate
@@ -273,7 +358,7 @@ const PrepQuiz = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="mx-auto flex max-w-xl items-center justify-between px-4 pt-6">
-        <Link to={isNewTrip ? "/app" : "/home"} className="text-lg font-extrabold gradient-text">Xplania</Link>
+        <Link to={user && isNewTrip ? "/app" : "/home"} className="text-lg font-extrabold gradient-text">Xplania</Link>
         <span className="text-xs font-semibold text-muted-foreground">{t("prepQuiz.stepOf", { current: stepIndex + 1, total: PREP_STEPS.length })}</span>
       </header>
       <div className="mx-auto mt-3 max-w-xl px-4">
