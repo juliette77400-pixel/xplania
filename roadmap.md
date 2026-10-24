@@ -47,7 +47,7 @@
 
 # Roadmap — Parcours + proposition de valeur (24 oct. 2026)
 
-- [ ] Questionnaire accessible sans compte + aperçu personnalisé (3 démarches prioritaires), inscription pour enregistrer, séjour créé automatiquement après connexion
-- [ ] Accès cohérent : Valise et Logement affichent une page d'explication (au lieu d'un renvoi brutal à la connexion) + « Essaie le Budget sans compte »
-- [ ] Rappel par email avant le départ (2 mois : visa, logement), désactivable
-- [ ] Accueil : phrase de valeur sous le titre
+- [x] Questionnaire accessible sans compte + aperçu personnalisé (3 démarches prioritaires), inscription pour enregistrer, séjour créé automatiquement après connexion
+- [x] Accès cohérent : Valise et Logement affichent une page d'explication (au lieu d'un renvoi brutal à la connexion) + « Essaie le Budget sans compte »
+- [x] Rappel par email avant le départ (2 mois : visa, logement), désactivable
+- [x] Accueil : phrase de valeur sous le titre
