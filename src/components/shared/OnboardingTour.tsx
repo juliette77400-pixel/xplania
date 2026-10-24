@@ -1,12 +1,14 @@
 // ============= NEW FILE — Post-signup guided tour for authenticated users =============
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Sparkles, Compass, BookOpen, MapPinned, ArrowRight, ArrowLeft, Wallet, FileCheck, Luggage, Globe2, BedDouble } from "lucide-react";
 import { isPathEnabled } from "@/config/featureFlags";
 import { useAuth } from "@/hooks/useAuth";
+import { getConsent, subscribeConsent } from "@/lib/consent";
+import { PREPARATION_HOME } from "@/config/featureFlags";
 
 const FULL_ICONS = [Sparkles, Compass, MapPinned, BookOpen];
 
@@ -43,18 +45,24 @@ const OnboardingTour = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
+  const { pathname } = useLocation();
+  // The cookie banner is answered first: the two never stack on screen.
+  const [consentDone, setConsentDone] = useState(() => !!getConsent());
+  useEffect(() => subscribeConsent((c) => setConsentDone(!!c)), []);
 
-  // Auto-open once per user after signup/first login
+  // Auto-open once per user, only on the dashboard (the tour starts there).
   useEffect(() => {
-    if (!user) return;
+    if (!user || !consentDone || pathname !== PREPARATION_HOME) return;
     if (typeof window === "undefined") return;
     const seen = localStorage.getItem(storageKey(user.id));
     if (!seen) {
-      localStorage.setItem(storageKey(user.id), "1");
-      const tm = setTimeout(() => setOpen(true), 800);
+      const tm = setTimeout(() => {
+        localStorage.setItem(storageKey(user.id), "1");
+        setOpen(true);
+      }, 800);
       return () => clearTimeout(tm);
     }
-  }, [user]);
+  }, [user, consentDone, pathname]);
 
   const close = () => {
     if (user) localStorage.setItem(storageKey(user.id), "1");
@@ -86,7 +94,7 @@ const OnboardingTour = () => {
           <div className="relative p-7 sm:p-9">
             <button
               onClick={close}
-              className="absolute top-3 right-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute top-3 left-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               {t("common.skip")}
             </button>
