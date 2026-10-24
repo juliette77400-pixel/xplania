@@ -23,7 +23,12 @@ const BudgetSimulator = ({ lines, days, budget, onApply }: Props) => {
   const [confirm, setConfirm] = useState(false);
   useEffect(() => { setInput(defaults); }, [defaults]);
 
-  const sim = useMemo(() => simulateBudget(lines, days, input), [lines, days, input]);
+  // Untouched sliders must not "change" anything because of rounding.
+  const untouched = input.accommodationMonthly === defaults.accommodationMonthly && input.foodMonthly === defaults.foodMonthly && input.reservePct === defaults.reservePct;
+  const sim = useMemo(
+    () => (untouched ? { lines, total: Math.round(lines.reduce((s, l) => s + l.planned, 0)) } : simulateBudget(lines, days, input)),
+    [untouched, lines, days, input],
+  );
   const changes = changedLines(lines, sim.lines);
   const current = lines.reduce((s, l) => s + l.planned, 0);
   const delta = sim.total - current;
