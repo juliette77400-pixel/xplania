@@ -7498,5 +7498,28 @@
         }
       }
     }
+  },
+  "culture2": {
+    "pathsTitle": "Your path",
+    "forYourStay": "Your stay",
+    "paths": {
+      "study": {
+        "title": "I'm going to study",
+        "desc": "Campus life, relationships with teachers, group work, fitting in as a student."
+      },
+      "internship": {
+        "title": "I'm doing an internship",
+        "desc": "Workplace codes, talking to a manager, meetings, punctuality and expectations at work."
+      },
+      "daily": {
+        "title": "Everyday life",
+        "desc": "Transport, shopping, local paperwork, social life, useful phrases and daily habits."
+      }
+    },
+    "pathProgress": "{{done}} of the {{total}} themes of your path understood",
+    "priorityTitle": "Read first",
+    "moreTitle": "Go further ({{count}} themes)",
+    "moreSub": "Pop culture, festivals, traditions, food… whenever you like",
+    "nuance": "These are tendencies, not absolute rules: every person and region is different. When in doubt, watch and ask."
   }
 }

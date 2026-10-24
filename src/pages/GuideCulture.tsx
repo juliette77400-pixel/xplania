@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Check, Loader2, Compass, ArrowLeft, Globe2 } from "lucide-react";
+import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon } from "lucide-react";
+import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import QuickJump from "@/components/shared/QuickJump";
 import { findCountry, normCountry } from "@/lib/country-match";
 import { useTravelStore } from "@/stores/useTravelStore";
@@ -15,12 +16,14 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
-import { CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
+import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 
 const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";
 const loadProgress = (): Record<string, boolean> => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}"); } catch { return {}; } };
 const SEV: Record<string, string> = { low: "🟢", medium: "🟠", high: "🔴" };
+const PATH_ICON: Record<CulturePath, typeof GraduationCap> = { study: GraduationCap, internship: Briefcase, daily: HomeIcon };
+const EMOJI: Record<string, string> = Object.fromEntries(CULTURE_PILLARS.map((p) => [p.id, p.emoji]));
 
 export default function GuideCulture() {
   useHydrateActiveTrip();
@@ -34,6 +37,9 @@ export default function GuideCulture() {
   const [pillar, setPillar] = useState<PillarId | null>(null);
   const [done, setDone] = useState<Record<string, boolean>>(loadProgress);
   const [touched, setTouched] = useState(false);
+  const [path, setPath] = useState<CulturePath>(() => pathForStay(stayType));
+  const [pathTouched, setPathTouched] = useState(false);
+  useEffect(() => { if (!pathTouched) setPath(pathForStay(stayType)); }, [stayType, pathTouched]);
 
   // Open the guide on the trip's destination country until the traveler picks another one.
   useEffect(() => {
@@ -63,7 +69,17 @@ export default function GuideCulture() {
 
   const countryName = code ? getCountryName(code) : "";
   const featured = code ? FEATURED_COUNTRIES.includes(code) : false;
-  const doneCount = code ? CULTURE_PILLARS.filter((p) => done[`${code}:${p.id}`]).length : 0;
+  const pathPillars = CULTURE_PATHS[path];
+  const doneCount = code ? pathPillars.filter((p) => done[`${code}:${p}`]).length : 0;
+  const pillarCard = (id: PillarId) => (
+    <button key={id} onClick={() => setPillar(id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">
+      <span className="text-2xl" aria-hidden>{EMOJI[id]}</span>
+      <p className="mt-2 text-sm font-semibold text-foreground">{t(`culture.pillars.${id}`)}</p>
+      <p className="text-[11px] text-muted-foreground mt-1">
+        {done[`${code}:${id}`] ? `✓ ${t("culture.understood")}` : hasPrewritten(code!, id) ? t("culture.readySheet") : t("culture.aiSheet")}
+      </p>
+    </button>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -122,29 +138,41 @@ export default function GuideCulture() {
             <div className="glass-card rounded-2xl p-5">
               <h2 className="text-xl font-bold text-foreground">{countryName}</h2>
               <p className="text-sm text-muted-foreground mt-1">{featured ? t("culture.welcomeFeatured") : t("culture.welcomeOther")}</p>
-              <div className="mt-3 h-2 rounded-full bg-muted overflow-hidden" aria-label={t("culture.progress", { done: doneCount, total: CULTURE_PILLARS.length })}>
-                <div className="h-full bg-primary transition-all" style={{ width: `${(doneCount / CULTURE_PILLARS.length) * 100}%` }} />
+              <div className="mt-3 h-2 rounded-full bg-muted overflow-hidden" role="progressbar" aria-valuenow={doneCount} aria-valuemin={0} aria-valuemax={pathPillars.length} aria-label={t("culture.progress", { done: doneCount, total: pathPillars.length })}>
+                <div className="h-full bg-primary transition-all" style={{ width: `${(doneCount / pathPillars.length) * 100}%` }} />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">{t("culture.progress", { done: doneCount, total: CULTURE_PILLARS.length })}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("culture2.pathProgress", { done: doneCount, total: pathPillars.length })}</p>
             </div>
+
+            <div role="radiogroup" aria-label={t("culture2.pathsTitle")} className="space-y-2">
+              <p className="text-sm font-semibold text-foreground">{t("culture2.pathsTitle")}</p>
+              <div className="grid gap-2 sm:grid-cols-3">
+                {CULTURE_PATH_IDS.map((id) => {
+                  const Icon = PATH_ICON[id];
+                  const active = path === id;
+                  return (
+                    <button key={id} type="button" role="radio" aria-checked={active} onClick={() => { setPath(id); setPathTouched(true); }}
+                      className={`rounded-2xl border-2 p-3 text-left transition-colors ${active ? "border-primary bg-primary/10" : "border-border/50 hover:border-primary/40"}`}>
+                      <span className="flex items-center gap-2 text-sm font-bold text-foreground"><Icon className={`h-4 w-4 ${active ? "text-primary" : "text-muted-foreground"}`} aria-hidden />{t(`culture2.paths.${id}.title`)}</span>
+                      <span className="mt-1 block text-xs text-muted-foreground">{t(`culture2.paths.${id}.desc`)}</span>
+                      {id === pathForStay(stayType) && stayType && <span className="mt-1 inline-block rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold text-primary">{t("culture2.forYourStay")}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <TipOfDay code={code} lang={lang} onOpen={setPillar} />
-            {(stayType === "erasmus" || stayType === "internship" || stayType === "other") && (
-              <button type="button" onClick={() => setPillar("work")} className="flex w-full items-center gap-3 rounded-2xl border border-primary/30 bg-primary/10 p-4 text-left text-sm transition hover:border-primary/60">
-                <span className="text-2xl" aria-hidden>🎓</span>
-                <span><span className="block font-semibold text-foreground">{t(`culture.stayHint.${stayType}`)}</span><span className="text-muted-foreground">{t("culture.stayHintCta", { pillar: t("culture.pillars.work") })}</span></span>
-              </button>
-            )}
-            <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
-              {CULTURE_PILLARS.map((p) => (
-                <button key={p.id} onClick={() => setPillar(p.id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">
-                  <span className="text-2xl" aria-hidden>{p.emoji}</span>
-                  <p className="mt-2 text-sm font-semibold text-foreground">{t(`culture.pillars.${p.id}`)}</p>
-                  <p className="text-[11px] text-muted-foreground mt-1">
-                    {done[`${code}:${p.id}`] ? `✓ ${t("culture.understood")}` : hasPrewritten(code, p.id) ? t("culture.readySheet") : t("culture.aiSheet")}
-                  </p>
-                </button>
-              ))}
+
+            <div>
+              <h3 className="mb-2 text-sm font-semibold text-foreground">{t("culture2.priorityTitle")}</h3>
+              <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">{pathPillars.map(pillarCard)}</div>
             </div>
+
+            <CollapsibleSection title={t("culture2.moreTitle", { count: morePillars(path).length })} subtitle={t("culture2.moreSub")} sectionId="culture-more">
+              <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">{morePillars(path).map(pillarCard)}</div>
+            </CollapsibleSection>
+
             <SituationCard code={code} lang={lang} />
           </section>
         )}
@@ -291,6 +319,7 @@ function SituationCard({ code, lang }: { code: string; lang: "fr" | "en" }) {
           <p className="text-sm text-foreground">{pick === s.correct ? "" : `${t("culture.notQuite")} `}{s.ping}</p>
         </div>
       )}
+      {pick !== null && <p className="text-xs italic text-muted-foreground">{t("culture2.nuance")}</p>}
       {pick !== null && <Button variant="ghost" size="sm" onClick={() => setPick(null)}>{t("culture.retry")}</Button>}
     </div>
   );
@@ -323,7 +352,7 @@ function MiniQuiz({ content }: { content: PillarContent }) {
       ))}
       {answered === quiz.length && (
         <div className="flex items-center justify-between gap-2">
-          <p className="text-sm text-foreground">🐧 {t("culture.quizScore", { score, total: quiz.length })} {score === quiz.length ? t("culture.quizPerfect") : t("culture.quizKeep")}</p>
+          <p className="text-sm text-foreground">🐧 {t("culture.quizScore", { score, total: quiz.length })} {score === quiz.length ? t("culture.quizPerfect") : t("culture.quizKeep")}<span className="mt-1 block text-xs italic text-muted-foreground">{t("culture2.nuance")}</span></p>
           <Button variant="ghost" size="sm" onClick={() => setAnswers({})}>{t("culture.retry")}</Button>
         </div>
       )}
