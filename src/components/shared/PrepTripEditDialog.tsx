@@ -12,7 +12,7 @@ import CountryCombobox from "@/components/prep/CountryCombobox";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
-  STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS,
+  STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
   answersFromTrip, buildTripFromAnswers, firstInvalidStep, validatePrepStep, type PrepAnswers,
 } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";
