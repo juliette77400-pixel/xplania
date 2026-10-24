@@ -7525,5 +7525,31 @@
     "moreTitle": "Pour aller plus loin ({{count}} thèmes)",
     "moreSub": "Culture populaire, fêtes, traditions, gastronomie… à lire quand tu veux",
     "nuance": "Ce sont des tendances, pas des règles absolues : chaque personne et chaque région sont différentes. Dans le doute, observe et demande."
+  },
+  "adminSources": {
+    "link": "Relire les sources officielles du guide Visa →",
+    "back": "← Statistiques",
+    "title": "Relecture des sources officielles",
+    "desc": "Chaque fiche résume des pages officielles lues automatiquement. Relis-la en ouvrant les liens, puis marque-la comme relue.",
+    "todo": "{{count}} fiche(s) à relire sur {{total}}",
+    "steps": [
+      "Ouvre chaque lien (France Diplomatie, Institut Pasteur) et compare avec le résumé.",
+      "Si un point est faux ou manquant, note-le et signale-le (bouton « Signaler une réponse incorrecte »).",
+      "Clique « Marquer comme relu » : la fiche affiche alors « relu par l'équipe Xplania » aux étudiants.",
+      "Quand une page officielle change, le résumé est refait et repasse automatiquement « à relire ».",
+      "Rythme conseillé : chaque semaine pendant la bêta, en commençant par les fiches « à relire »."
+    ],
+    "fetched": "Pages lues le {{date}}",
+    "reviewedOn": "Relu le {{date}}",
+    "toReview": "À relire",
+    "show": "Voir le résumé",
+    "hide": "Masquer",
+    "entry": "Entrée (ressortissants français)",
+    "notePlaceholder": "Note de relecture (facultatif)",
+    "markReviewed": "Marquer comme relu",
+    "unmark": "Annuler la relecture",
+    "saved": "Relecture enregistrée",
+    "cleared": "Relecture annulée",
+    "error": "Impossible d'enregistrer. Réessaie."
   }
 }

@@ -163,6 +163,7 @@ const App = () => (
             <Route path="/admin/badges" element={gate("ENABLE_GAMIFICATION", <ProtectedRoute><AdminBadges /></ProtectedRoute>)} />
             <Route path="/admin/seed-rag" element={<ProtectedRoute><AdminSeedRag /></ProtectedRoute>} />
             <Route path="/admin/stats" element={<ProtectedRoute><AdminStats /></ProtectedRoute>} />
+            <Route path="/admin/sources" element={<ProtectedRoute><AdminSources /></ProtectedRoute>} />
             <Route path="/app" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/preparation" element={<ProtectedRoute><PrepQuiz /></ProtectedRoute>} />
             <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />

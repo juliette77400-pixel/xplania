@@ -7525,5 +7525,31 @@
     "moreTitle": "Go further ({{count}} themes)",
     "moreSub": "Pop culture, festivals, traditions, food… whenever you like",
     "nuance": "These are tendencies, not absolute rules: every person and region is different. When in doubt, watch and ask."
+  },
+  "adminSources": {
+    "link": "Review the Visa guide's official sources →",
+    "back": "← Statistics",
+    "title": "Official sources review",
+    "desc": "Each sheet summarises official pages read automatically. Re-read it by opening the links, then mark it reviewed.",
+    "todo": "{{count}} sheet(s) to review out of {{total}}",
+    "steps": [
+      "Open each link (France Diplomatie, Institut Pasteur) and compare with the summary.",
+      "If something is wrong or missing, note it and report it (“Report an incorrect answer” button).",
+      "Click “Mark as reviewed”: students then see “reviewed by the Xplania team”.",
+      "When an official page changes, the summary is rebuilt and automatically goes back to “to review”.",
+      "Suggested pace: every week during the beta, starting with sheets “to review”."
+    ],
+    "fetched": "Pages read on {{date}}",
+    "reviewedOn": "Reviewed on {{date}}",
+    "toReview": "To review",
+    "show": "Show summary",
+    "hide": "Hide",
+    "entry": "Entry (French nationals)",
+    "notePlaceholder": "Review note (optional)",
+    "markReviewed": "Mark as reviewed",
+    "unmark": "Undo review",
+    "saved": "Review saved",
+    "cleared": "Review cleared",
+    "error": "Could not save. Try again."
   }
 }
