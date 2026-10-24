@@ -38,7 +38,7 @@ const Bar = ({ value, label }: { value: number; label: string }) => (
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { trips, loading } = useTrips();
+  const { trips, loading, refetch, removeTrip } = useTrips();
   const { t, i18n } = useTranslation();
   const activeTripId = useActiveTrip((s) => s.tripId);
   const clearActiveTrip = useActiveTrip((s) => s.clearActiveTrip);
@@ -160,7 +160,12 @@ const Dashboard = () => {
                     {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
                   </p>
                 </div>
-                <TripActionsMenu trip={selected} onDuplicated={(id) => selectTrip(id)} onDeleted={() => clearActiveTrip()} />
+                <TripActionsMenu
+                  trip={selected}
+                  onChanged={async () => { await refetch(); await hydrateTravelStoreFromTrip(selected.id); }}
+                  onDuplicated={async (id) => { await refetch(); selectTrip(id); }}
+                  onDeleted={() => { removeTrip(selected.id); clearActiveTrip(); }}
+                />
               </div>
               <div className="mt-4"><TripCountdown departureDate={selected.departure_date} returnDate={selected.return_date} /></div>
               <div className="mt-5 rounded-xl border border-border/60 bg-background/50 p-4"><TripReminderChecklist tripId={selected.id} /></div>
