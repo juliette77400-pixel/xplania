@@ -4640,7 +4640,18 @@
       "tips": "AI saving tips",
       "tipsSub": "How to save money on the ground",
       "currency": "Currency converter",
-      "currencySub": "Convert your spending into your currency"
+      "currencySub": "Convert your spending into your currency",
+      "incomes": "My income",
+      "incomesSub": "Grant, internship pay, family help",
+      "categories": "Breakdown by category",
+      "categoriesSub": "See and edit each amount",
+      "payments": "My payments",
+      "paymentsSub_one": "{{count}} payment recorded · add or remove",
+      "paymentsSub_other": "{{count}} payments recorded · add or remove",
+      "simulator": "Simulator",
+      "simulatorSub": "Try another rent or food budget",
+      "analysis": "AI analysis and scenarios",
+      "analysisSub": "Indicative estimate: economy, realistic, comfort"
     }
   },
   "travelerProfile": {
@@ -7208,7 +7219,7 @@
       },
       "incomeMissing": {
         "title": "Add your grant or internship pay",
-        "body": "Without your income, the margin doesn't reflect your real situation. Fill it in below."
+        "body": "Without your income, the margin doesn't reflect your real situation. Fill it in just below."
       }
     },
     "sim": {

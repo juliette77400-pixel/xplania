@@ -4640,7 +4640,18 @@
       "tips": "Astuces d'économie IA",
       "tipsSub": "Comment économiser sur place",
       "currency": "Convertisseur de devise",
-      "currencySub": "Calcule tes dépenses dans ta monnaie"
+      "currencySub": "Calcule tes dépenses dans ta monnaie",
+      "incomes": "Mes rentrées d'argent",
+      "incomesSub": "Bourse, gratification, aide de la famille",
+      "categories": "Détail par catégorie",
+      "categoriesSub": "Voir et modifier chaque montant",
+      "payments": "Mes paiements",
+      "paymentsSub_one": "{{count}} paiement noté · ajouter ou supprimer",
+      "paymentsSub_other": "{{count}} paiements notés · ajouter ou supprimer",
+      "simulator": "Simulateur",
+      "simulatorSub": "Tester un autre loyer ou budget nourriture",
+      "analysis": "Analyse IA et scénarios",
+      "analysisSub": "Estimation indicative : éco, réaliste, confort"
     }
   },
   "travelerProfile": {
@@ -7208,7 +7219,7 @@
       },
       "incomeMissing": {
         "title": "Ajoute ta bourse ou ta gratification",
-        "body": "Sans tes rentrées d'argent, la marge ne reflète pas ta vraie situation. Renseigne-les plus bas."
+        "body": "Sans tes rentrées d'argent, la marge ne reflète pas ta vraie situation. Renseigne-les juste en dessous."
       }
     },
     "sim": {
