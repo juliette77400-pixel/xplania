@@ -305,18 +305,10 @@ const GuideBudgetPage = () => {
       return { ...c, planned: Math.max(1, Math.round(base)), spent: 0 };
     });
 
-    const targetTotal = Number(userBudget) > 0 ? Number(userBudget) : raw.reduce((sum, c) => sum + c.planned, 0);
-    const rawTotal = raw.reduce((sum, c) => sum + c.planned, 0) || 1;
-    let allocated = 0;
-
-    return recomputeAiSuggestions(raw.map((c, index) => {
-      const planned = index === raw.length - 1
-        ? Math.max(1, Math.round(targetTotal - allocated))
-        : Math.max(1, Math.round((c.planned / rawTotal) * targetTotal));
-      allocated += planned;
-      return { ...c, planned };
-    }));
-  }, [days, destination, recommendations?.budgetBreakdown, recomputeAiSuggestions, travelers, userBudget]);
+    // The estimate comes from local costs only: it is NOT stretched to match the
+    // student's budget, so "budget vs estimate" stays meaningful.
+    return recomputeAiSuggestions(raw);
+  }, [days, destination, recommendations?.budgetBreakdown, recomputeAiSuggestions, travelers]);
 
   useEffect(() => {
     if (!hydratedFromStorage) return;
