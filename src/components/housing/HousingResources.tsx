@@ -1,15 +1,17 @@
 // Module 1 — where to look. Only hand-checked links, never generated ones.
 import { useTranslation } from "react-i18next";
-import { Building2, ExternalLink, Info, Landmark, Search, Users } from "lucide-react";
+import { Building2, ExternalLink, Info, Landmark, PiggyBank, Search, ShieldAlert, Users } from "lucide-react";
 import { resourcesForCountry, VERIFIED_ON, type HousingResource, type ResourceCategory } from "@/data/housing-resources";
 
 const CATEGORY_ICON: Record<ResourceCategory, typeof Building2> = {
   residence: Building2,
   platform: Search,
   flatshare: Users,
+  money: PiggyBank,
+  fraud: ShieldAlert,
   institutional: Landmark,
 };
-const CATEGORIES: ResourceCategory[] = ["residence", "platform", "flatshare", "institutional"];
+const CATEGORIES: ResourceCategory[] = ["residence", "platform", "flatshare", "money", "fraud", "institutional"];
 
 interface Props {
   countryCode: string;
