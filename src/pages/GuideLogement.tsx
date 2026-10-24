@@ -21,7 +21,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
 import { findCountry } from "@/lib/country-match";
 import { saveModuleProgress } from "@/lib/prep-progress";
-import { HOUSING_STATUSES, housingProgress, isHousingStatus, sectionOrder, type HousingSection, type HousingStatus } from "@/lib/housing";
+import { HOUSING_STATUSES, housingProgress, isHousingStatus, safetyChecksApply, sectionOrder, type HousingSection, type HousingStatus } from "@/lib/housing";
 import type { TravelFormData } from "@/types/travel";
 import imgStarting from "@/assets/prep-quiz/housing-status-starting.jpg";
 import imgShortlist from "@/assets/prep-quiz/housing-status-shortlist.jpg";
@@ -117,17 +117,25 @@ const GuideLogement = () => {
     </div>
   );
 
+  /** Title/description key of a block — wording follows the situation. */
+  const sectionKey = (s: HousingSection) => {
+    if (s === "install") return `housing.sections.install.${status === "confirmed" ? "confirmed" : status === "shortlist" ? "shortlist" : "starting"}`;
+    if (s === "compare" && status === "confirmed") return "housing.sections.compareConfirmed";
+    if (s === "safety" && !safetyChecksApply(status)) return "housing.sections.safetyAlerts";
+    return `housing.sections.${s}`;
+  };
+
   const sectionBody = (s: HousingSection) => {
     if (!trip) return null;
     switch (s) {
       case "resources":
         return <HousingResources countryCode={countryCode} countryName={destination} />;
       case "compare":
-        return <HousingComparator tripId={trip.id} destination={destination} city={city || destination} departureDate={departureDate} durationDays={durationDays} />;
+        return <HousingComparator tripId={trip.id} destination={destination} city={city || destination} departureDate={departureDate} durationDays={durationDays} confirmed={status === "confirmed"} />;
       case "safety":
-        return <SafetyChecklist checked={checked} onToggle={onToggle} disabled={checklistLoading} remindersOnly={status === "confirmed"} />;
+        return <SafetyChecklist checked={checked} onToggle={onToggle} disabled={checklistLoading} remindersOnly={!safetyChecksApply(status)} status={status} />;
       case "install":
-        return <InstallChecklist status={status} checked={checked} onToggle={onToggle} disabled={checklistLoading} officialUrl={OFFICIAL_RENT_PAGE[countryCode]} />;
+        return <InstallChecklist status={status} checked={checked} onToggle={onToggle} disabled={checklistLoading} officialUrl={OFFICIAL_RENT_PAGE[countryCode]} onNextStatus={(s) => void chooseStatus(s)} />;
     }
   };
 
@@ -184,8 +192,8 @@ const GuideLogement = () => {
                         <div className="gradient-button flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"><Icon className="h-5 w-5 text-primary-foreground" /></div>
                         <div>
                           <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("housing.step", { n: i + 1 })}</p>
-                          <h2 id={`sec-${s}`} className="text-xl font-bold">{t(`housing.sections.${s}.title`)}</h2>
-                          <p className="text-sm text-muted-foreground">{t(`housing.sections.${s}.desc`)}</p>
+                          <h2 id={`sec-${s}`} className="text-xl font-bold">{t(`${sectionKey(s)}.title`)}</h2>
+                          <p className="text-sm text-muted-foreground">{t(`${sectionKey(s)}.desc`)}</p>
                         </div>
                       </div>
                       {sectionBody(s)}

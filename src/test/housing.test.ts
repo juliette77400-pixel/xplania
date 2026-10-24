@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  applyHousingToBudget, checklistIds, housingBudgetPlan, housingProgress, monthlyCost, phasesForStatus, sectionOrder, stayMonths, upfrontCost,
+  applyHousingToBudget, checklistIds, housingBudgetPlan, housingProgress, monthlyCost, nextStatus, phasesForStatus, safetyChecksApply, sectionOrder, stayMonths, upfrontCost,
 } from "@/lib/housing";
 import { resourcesForCountry, HOUSING_RESOURCES } from "@/data/housing-resources";
 import { overallPercent, readTripProgress } from "@/lib/prep-progress";
@@ -8,21 +8,31 @@ import { overallPercent, readTripProgress } from "@/lib/prep-progress";
 const home = { monthly_rent: 500, charges_included: false, monthly_charges: 50, deposit: 1000, extra_fees: 200 };
 
 describe("assistant logement — personnalisation", () => {
-  it("commence par les ressources quand l'étudiant débute ou est perdu", () => {
-    expect(sectionOrder("starting")[0]).toBe("resources");
-    expect(sectionOrder("lost")[0]).toBe("resources");
+  it("débute ou perdu : ressources et premiers pas, sans étapes de signature ni d'arrivée", () => {
+    for (const st of ["starting", "lost"] as const) {
+      expect(sectionOrder(st)[0]).toBe("resources");
+      expect(phasesForStatus(st)).toEqual(["gettingStarted"]);
+      expect(safetyChecksApply(st)).toBe(false);
+      expect(housingProgress(st, []).total).toBe(4);
+    }
   });
-  it("commence par l'installation quand le logement est confirmé, sans étape « avant la signature »", () => {
-    expect(sectionOrder("confirmed")[0]).toBe("install");
+  it("logements repérés : comparaison d'abord, 9 vérifications et étapes avant signature", () => {
+    expect(sectionOrder("shortlist")[0]).toBe("compare");
+    expect(phasesForStatus("shortlist")).toEqual(["beforeSigning"]);
+    expect(safetyChecksApply("shortlist")).toBe(true);
+    expect(housingProgress("shortlist", []).total).toBe(13);
+  });
+  it("logement confirmé : départ et arrivée seulement, plus de recherche de ressources", () => {
+    expect(sectionOrder("confirmed")).toEqual(["install", "compare", "safety"]);
     expect(phasesForStatus("confirmed")).toEqual(["beforeDeparture", "arrival"]);
     expect(checklistIds("confirmed").some((id) => id.startsWith("safety:"))).toBe(false);
-  });
-  it("met la comparaison en premier quand des logements sont repérés", () => {
-    expect(sectionOrder("shortlist")[0]).toBe("compare");
-  });
-  it("compte la progression uniquement sur les étapes de la situation choisie", () => {
-    expect(housingProgress("starting", []).total).toBe(22);
     expect(housingProgress("confirmed", ["safety:owner", "install:arrival:inventory"])).toEqual({ done: 1, total: 9 });
+  });
+  it("propose la situation suivante une fois les étapes faites", () => {
+    expect(nextStatus("lost")).toBe("shortlist");
+    expect(nextStatus("starting")).toBe("shortlist");
+    expect(nextStatus("shortlist")).toBe("confirmed");
+    expect(nextStatus("confirmed")).toBeNull();
   });
 });
 

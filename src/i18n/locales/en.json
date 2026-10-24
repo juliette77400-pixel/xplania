@@ -6402,7 +6402,7 @@
       "valiseContinue": "Packing: finish your list",
       "cultureStart": "Culture: read a first topic and mark it as understood",
       "cultureContinue": "Culture: continue with the next topics",
-      "housingStart": "Housing: say where you stand and tick your first check",
+      "housingStart": "Housing: tick your first step",
       "housingContinue": "Housing: continue your checklist"
     },
     "missing": {
@@ -6673,7 +6673,7 @@
     "progressLabel": "Housing preparation progress",
     "step": "Step {{n}}",
     "focus": {
-      "starting": "You're starting your search: first find the right resources, then note the places you like so you can compare them.",
+      "starting": "You're starting your search: find the right resources, set your criteria (maximum rent, type of housing) and note the places you like.",
       "lost": "Don't panic: start with your host institution's housing office and the resources below, then go step by step.",
       "shortlist": "You've spotted a few places: compare them, then run the checks before booking or signing.",
       "confirmed": "Your home is confirmed: get your arrival, documents and move-in costs ready."
@@ -6692,8 +6692,26 @@
         "desc": "To check before booking or signing."
       },
       "install": {
-        "title": "Ready for your arrival?",
-        "desc": "Your move-in steps, adapted to your situation."
+        "starting": {
+          "title": "Your first steps",
+          "desc": "To start your search on the right foot."
+        },
+        "shortlist": {
+          "title": "Before signing",
+          "desc": "What to sort out before you commit."
+        },
+        "confirmed": {
+          "title": "Ready for your arrival?",
+          "desc": "The steps before leaving and on arrival."
+        }
+      },
+      "compareConfirmed": {
+        "title": "Your home",
+        "desc": "Note its amounts to add them to your budget."
+      },
+      "safetyAlerts": {
+        "title": "Warning signs",
+        "desc": "To spot in listings and exchanges with landlords."
       }
     },
     "resources": {
@@ -6774,7 +6792,11 @@
       "budgetSynced": "The costs of “{{name}}” are in your budget.",
       "budgetOutdated": "Your budget no longer matches “{{name}}”. Update it?",
       "budgetAdd": "Add costs to budget",
-      "budgetUpdate": "Update budget"
+      "budgetUpdate": "Update budget",
+      "helpConfirmed": "Add your confirmed home to keep its details in one place and send its costs to your budget.",
+      "addConfirmed": "Add my home",
+      "emptyTitleConfirmed": "Your home isn't noted yet",
+      "emptyDescConfirmed": "Add it with its rent, deposit and fees to prepare your budget."
     },
     "form": {
       "addTitle": "Add a place",
@@ -6854,20 +6876,22 @@
         "noProof": "No credible proof that the place exists (visit, live video, exact address)"
       },
       "disclaimer": "This list reduces some risks but does not guarantee that a listing is reliable. If in doubt, pay nothing and ask your host institution for advice.",
-      "confirmedNote": "Your home is confirmed: keep these warning signs in mind if you're asked for another payment or a change of terms before you arrive."
+      "confirmedNote": "Your home is confirmed: keep these warning signs in mind if you're asked for another payment or a change of terms before you arrive.",
+      "earlyNote": "You don't have a place in sight yet: keep these signs in mind when reading listings. The verification checklist will appear once you've spotted some places."
     },
     "install": {
       "phases": {
         "beforeSigning": "Before signing",
         "beforeDeparture": "Before leaving",
-        "arrival": "On arrival"
+        "arrival": "On arrival",
+        "gettingStarted": "Getting started"
       },
       "items": {
         "beforeSigning": {
-          "compare": "Compare the places",
           "conditions": "Check the rental conditions",
           "documents": "Prepare the requested documents",
-          "fees": "Check fees and guarantees"
+          "fees": "Check fees and guarantees",
+          "visit": "Visit the place or ask for a live video tour"
         },
         "beforeDeparture": {
           "arrival": "Confirm arrival arrangements",
@@ -6881,10 +6905,20 @@
           "checkEquipment": "Check the equipment",
           "keepDocs": "Keep useful documents (contract, receipts, inventory)",
           "localSteps": "Check the required local formalities (registration, insurance…)"
+        },
+        "gettingStarted": {
+          "contactSchool": "Email the international or housing office of my host institution",
+          "maxRent": "Set the maximum rent I can afford",
+          "housingType": "Choose the type of housing that suits me (residence, flatshare, studio…)",
+          "shortlist": "Spot at least 3 places and add them to my comparison"
         }
       },
       "legal": "Renting rules differ from country to country: always check an official source or ask your host institution.",
-      "officialLink": "Official page"
+      "officialLink": "Official page",
+      "next": {
+        "shortlist": "Found a few places? Change your situation to check them before signing.",
+        "confirmed": "Home signed? Change your situation to prepare your departure and arrival."
+      }
     },
     "checklistError": "This box could not be saved. Please try again.",
     "checklistLoadError": "Your checked boxes could not be loaded. Reload the page.",
