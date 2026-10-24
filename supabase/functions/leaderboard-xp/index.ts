@@ -24,6 +24,12 @@ const XP = {
   moodReactions: 12,
 };
 
+// Self-reported activity (journal blocks, favourites, reviews, reactions) is
+// capped per user, per kind and per UTC day, so mass inserts cannot inflate
+// the ranking. Timestamps are set by the database (see force_server_* triggers).
+const DAILY_CAP = 5;
+const dayOf = (ts: unknown) => (typeof ts === "string" && ts.length >= 10 ? ts.slice(0, 10) : "unknown");
+
 interface Row {
   user_id: string;
   display_name: string | null;
@@ -48,16 +54,16 @@ Deno.serve(async (req) => {
     const [profiles, nodes, blocks, favs, eb, jb, mb, settings, reviews, reactions] = await Promise.all([
       sb.from("profiles").select("user_id, display_name, avatar_url").limit(2000),
       Promise.resolve({ data: [] as any[] }), // explore_nodes are client-writable: not counted for leaderboard XP
-      sb.from("journal_blocks").select("user_id, type"),
-      sb.from("mood_favorites").select("user_id, place_id, mood_places!inner(hidden_gem)"),
+      sb.from("journal_blocks").select("user_id, type, created_at"),
+      sb.from("mood_favorites").select("user_id, place_id, saved_at, mood_places!inner(hidden_gem)"),
       // Only server-validated badge claims count toward XP: self-reported
       // explore/journal/mood badge rows are written by the client and cannot be trusted.
       sb.from("gam_badge_claims").select("user_id").eq("status", "validated"),
       Promise.resolve({ data: [] as any[] }),
       Promise.resolve({ data: [] as any[] }),
       sb.from("gam_user_settings").select("user_id, competition_visibility"),
-      sb.from("place_reviews").select("user_id"),
-      sb.from("mood_reactions").select("user_id"),
+      sb.from("place_reviews").select("user_id, created_at"),
+      sb.from("mood_reactions").select("user_id, created_at"),
     ]);
 
     // Build visibility map (default: public)
@@ -79,15 +85,27 @@ Deno.serve(async (req) => {
       return s;
     };
 
+    const dayCounts = new Map<string, number>();
+    const withinCap = (userId: string, kind: string, ts: unknown) => {
+      const key = `${userId}|${kind}|${dayOf(ts)}`;
+      const n = (dayCounts.get(key) || 0) + 1;
+      dayCounts.set(key, n);
+      return n <= DAILY_CAP;
+    };
+
     (nodes.data || []).forEach((n: any) => { get(n.user_id).visited++; });
     (blocks.data || []).forEach((b: any) => {
+      const kind = b.type === "place" ? "location" : b.type;
+      if (!["note", "photo", "location", "mood"].includes(kind)) return;
+      if (!withinCap(b.user_id, `journal:${kind}`, b.created_at)) return;
       const s = get(b.user_id);
-      if (b.type === "note") s.notes++;
-      else if (b.type === "photo") s.photos++;
-      else if (b.type === "location" || b.type === "place") s.locations++;
-      else if (b.type === "mood") s.moods++;
+      if (kind === "note") s.notes++;
+      else if (kind === "photo") s.photos++;
+      else if (kind === "location") s.locations++;
+      else if (kind === "mood") s.moods++;
     });
     (favs.data || []).forEach((f: any) => {
+      if (!withinCap(f.user_id, "favorite", f.saved_at)) return;
       const s = get(f.user_id);
       s.favorites++;
       if (f.mood_places?.hidden_gem) s.hiddenGems++;
@@ -96,8 +114,12 @@ Deno.serve(async (req) => {
       get(r.user_id).badges++;
     });
 
-    (reviews.data || []).forEach((r: any) => { get(r.user_id).reviews++; });
-    (reactions.data || []).forEach((r: any) => { get(r.user_id).reactions++; });
+    (reviews.data || []).forEach((r: any) => {
+      if (withinCap(r.user_id, "review", r.created_at)) get(r.user_id).reviews++;
+    });
+    (reactions.data || []).forEach((r: any) => {
+      if (withinCap(r.user_id, "reaction", r.created_at)) get(r.user_id).reactions++;
+    });
 
     const profileMap = new Map<string, { display_name: string | null; avatar_url: string | null }>();
     (profiles.data || []).forEach((p: any) => {
