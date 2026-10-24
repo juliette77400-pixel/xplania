@@ -20,9 +20,11 @@ interface Props {
   city: string;
   departureDate: string | null;
   durationDays: string | number | null;
+  /** Home already confirmed: the block is used to note its costs for the budget. */
+  confirmed?: boolean;
 }
 
-const HousingComparator = ({ tripId, destination, city, departureDate, durationDays }: Props) => {
+const HousingComparator = ({ tripId, destination, city, departureDate, durationDays, confirmed }: Props) => {
   const { t, i18n } = useTranslation();
   const { options, loading, error, refetch, save, remove, setFavorite } = useHousingOptions(tripId);
   const [formOpen, setFormOpen] = useState(false);
@@ -93,8 +95,8 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground">{t("housing.compare.help")}</p>
-        <Button onClick={openAdd} className="gradient-button"><Plus className="mr-1.5 h-4 w-4" />{t("housing.compare.add")}</Button>
+        <p className="text-sm text-muted-foreground">{t(confirmed ? "housing.compare.helpConfirmed" : "housing.compare.help")}</p>
+        <Button onClick={openAdd} className="gradient-button"><Plus className="mr-1.5 h-4 w-4" />{t(confirmed && options.length === 0 ? "housing.compare.addConfirmed" : "housing.compare.add")}</Button>
       </div>
 
       {loading ? (

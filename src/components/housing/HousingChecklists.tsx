@@ -2,7 +2,8 @@
 import { useTranslation } from "react-i18next";
 import { AlertTriangle, ExternalLink } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { SAFETY_ITEMS, INSTALL_PHASES, phasesForStatus, type HousingStatus } from "@/lib/housing";
+import { Button } from "@/components/ui/button";
+import { SAFETY_ITEMS, INSTALL_PHASES, nextStatus, phasesForStatus, type HousingStatus } from "@/lib/housing";
 
 interface ListProps {
   ids: string[];
@@ -38,13 +39,13 @@ interface Props {
 }
 
 /** With a confirmed home the checks are shown as reminders only (not counted). */
-export const SafetyChecklist = ({ checked, onToggle, disabled, remindersOnly }: Props & { remindersOnly?: boolean }) => {
+export const SafetyChecklist = ({ checked, onToggle, disabled, remindersOnly, status }: Props & { remindersOnly?: boolean; status: HousingStatus | null }) => {
   const { t } = useTranslation();
   const alerts = ["rush", "noContract", "contradictions", "transfer", "lowPrice", "noProof"];
   return (
     <div className="space-y-5">
       {remindersOnly ? (
-        <p className="text-sm text-muted-foreground">{t("housing.safety.confirmedNote")}</p>
+        <p className="text-sm text-muted-foreground">{t(status === "confirmed" ? "housing.safety.confirmedNote" : "housing.safety.earlyNote")}</p>
       ) : (
         <CheckList ids={SAFETY_ITEMS.map((i) => `safety:${i}`)} labelPrefix="housing.safety.items" checked={checked} onToggle={onToggle} disabled={disabled} />
       )}
@@ -59,8 +60,10 @@ export const SafetyChecklist = ({ checked, onToggle, disabled, remindersOnly }: 
   );
 };
 
-export const InstallChecklist = ({ status, checked, onToggle, disabled, officialUrl }: Props & { status: HousingStatus | null; officialUrl?: string }) => {
+export const InstallChecklist = ({ status, checked, onToggle, disabled, officialUrl, onNextStatus }: Props & { status: HousingStatus | null; officialUrl?: string; onNextStatus?: (s: HousingStatus) => void }) => {
   const { t } = useTranslation();
+  const next = nextStatus(status);
+  const showLegal = status === "shortlist" || status === "confirmed";
   return (
     <div className="space-y-5">
       {phasesForStatus(status).map((phase) => (
@@ -75,12 +78,20 @@ export const InstallChecklist = ({ status, checked, onToggle, disabled, official
           />
         </section>
       ))}
-      <p className="text-xs text-muted-foreground">
-        {t("housing.install.legal")}
-        {officialUrl && (
-          <> <a href={officialUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary underline">{t("housing.install.officialLink")}<ExternalLink className="h-3 w-3" aria-hidden /></a></>
-        )}
-      </p>
+      {next && onNextStatus && (
+        <div className="flex flex-col gap-3 rounded-xl border border-primary/30 bg-primary/10 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <span>{t(`housing.install.next.${next}`)}</span>
+          <Button size="sm" variant="outline" onClick={() => onNextStatus(next)}>{t(`prepQuiz.housingStatus.${next}`)}</Button>
+        </div>
+      )}
+      {showLegal && (
+        <p className="text-xs text-muted-foreground">
+          {t("housing.install.legal")}
+          {officialUrl && (
+            <> <a href={officialUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary underline">{t("housing.install.officialLink")}<ExternalLink className="h-3 w-3" aria-hidden /></a></>
+          )}
+        </p>
+      )}
     </div>
   );
 };
