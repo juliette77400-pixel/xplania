@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Home, Bus, Ticket, Utensils, ShoppingBag, AlertTriangle, Sparkles, Edit3, Check, Plane, ShieldCheck, Wifi, Receipt } from "lucide-react";
+import { Home, Bus, Ticket, Utensils, ShoppingBag, AlertTriangle, Sparkles, Edit3, Check, Plane, ShieldCheck, Wifi, Receipt, KeyRound, PackageOpen, Undo2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 export interface BudgetCategory {
@@ -28,6 +28,10 @@ const defaultCategories: BudgetCategory[] = [
   { key: "insurance", planned: 30, aiSuggested: 30, spent: 0, icon: ShieldCheck, color: "text-emerald-400" },
   { key: "connectivity", planned: 15, aiSuggested: 12, spent: 0, icon: Wifi, color: "text-cyan-400" },
   { key: "fees", planned: 25, aiSuggested: 25, spent: 0, icon: Receipt, color: "text-amber-400" },
+  // Long-stay lines: 0 by default so adding them never changes an existing budget.
+  { key: "deposit", planned: 0, aiSuggested: 0, spent: 0, icon: KeyRound, color: "text-primary" },
+  { key: "setup", planned: 0, aiSuggested: 0, spent: 0, icon: PackageOpen, color: "text-secondary" },
+  { key: "returnFees", planned: 0, aiSuggested: 0, spent: 0, icon: Undo2, color: "text-muted-foreground" },
 ];
 
 interface Props {

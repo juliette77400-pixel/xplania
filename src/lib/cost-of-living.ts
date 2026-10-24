@@ -14,7 +14,10 @@ export type CategoryKey =
   | "flights"
   | "insurance"
   | "connectivity"
-  | "fees";
+  | "fees"
+  | "deposit"
+  | "setup"
+  | "returnFees";
 
 interface CityProfile {
   match: RegExp;
@@ -177,12 +180,19 @@ export const suggestCategoryAmount = (
       case "insurance": baseline = days * 1.3 * travelers; break;
       case "connectivity": baseline = 15 * months; break;
       case "fees": baseline = profile.mealCost * 0.5 * months * travelers; break;
+      // Housing deposit ≈ one month of rent (often refundable), moving-in kit, end-of-stay costs.
+      case "deposit": baseline = rent; break;
+      case "setup": baseline = profile.mealCost * 10; break;
+      case "returnFees": baseline = profile.mealCost * 4; break;
     }
-    const mult = category === "flights" || category === "insurance" || category === "unexpected" ? 1 : profile.mult[category] ?? 1;
+    const mult = category === "deposit" ? profile.mult.accommodation ?? 1
+      : ["flights", "insurance", "unexpected", "setup", "returnFees"].includes(category) ? 1 : profile.mult[category] ?? 1;
     const est = baseline * mult * season;
     const blendedLong = currentPlanned > 0 ? est * 0.55 + currentPlanned * 0.45 : est;
     return Math.max(10, Math.round(blendedLong / 10) * 10);
   }
+  // Short trips: no deposit, moving-in or end-of-stay costs.
+  if (category === "deposit" || category === "setup" || category === "returnFees") return 0;
   switch (category) {
     case "accommodation":
       baseline = profile.hotelNight * Math.max(1, opts.days) * 0.9;

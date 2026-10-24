@@ -303,7 +303,7 @@ const GuideBudgetPage = () => {
       const base = typeof rec?.amount === "number" && rec.amount > 0
         ? rec.amount
         : suggestCategoryAmount(c.key as CategoryKey, 0, { destination, days, travelers });
-      return { ...c, planned: Math.max(1, Math.round(base)), spent: 0 };
+      return { ...c, planned: Math.max(0, Math.round(base)), spent: 0 };
     });
 
     // The estimate comes from local costs only: it is NOT stretched to match the
