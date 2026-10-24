@@ -96,13 +96,22 @@ const PrepQuiz = () => {
   // Restore an interrupted questionnaire, or pre-fill the origin from a previous trip.
   useEffect(() => {
     if (restored.current) return;
+    const picked = (params.get("pays") || "").toUpperCase();
+    const pickedCountry = countryName(picked) ? picked : "";
+    const prefill = () => {
+      if (pickedCountry) setAnswers((a) => (a.destinationCode ? a : { ...a, destinationCode: pickedCountry }));
+    };
     if (!user) {
       restored.current = true;
       const g = readGuestDraft();
-      if (g) {
+      if (g && !(pickedCountry && !g.complete && g.answers?.destinationCode !== pickedCountry)) {
         setAnswers({ ...emptyPrepAnswers(), ...g.answers });
         setStepIndex(Math.min(Math.max(0, g.step || 0), PREP_STEPS.length - 1));
         if (g.complete) setPreview(true);
+      } else if (pickedCountry) {
+        // A new country picked on the home page starts a fresh questionnaire.
+        setAnswers({ ...emptyPrepAnswers(), destinationCode: pickedCountry });
+        setStepIndex(0);
       }
       return;
     }
@@ -131,6 +140,7 @@ const PrepQuiz = () => {
       const prev = answersFromTrip(last.form_data as Partial<TravelFormData>, last.destination);
       setAnswers((a) => ({ ...a, nationality: prev.nationality, residence: prev.residence, secondNationality: prev.secondNationality }));
     }
+    prefill();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, trips, tripsLoading]);
 

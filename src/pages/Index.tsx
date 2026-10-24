@@ -7,17 +7,12 @@ import { track } from "@/lib/analytics";
 import { useAuth } from "@/hooks/useAuth";
 import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
-import ProblemSection from "@/components/xplania/ProblemSection";
-import HowItWorksSection from "@/components/xplania/HowItWorksSection";
-import BenefitsSection from "@/components/xplania/BenefitsSection";
-import FeaturesSection from "@/components/xplania/FeaturesSection";
-import DemoSection from "@/components/xplania/DemoSection";
-import BetaSection from "@/components/xplania/BetaSection";
+import QuestionsSection from "@/components/xplania/QuestionsSection";
+import ResultSection from "@/components/xplania/ResultSection";
 import Testimonials from "@/components/xplania/Testimonials";
 import FaqSection from "@/components/xplania/FaqSection";
 import FinalCtaSection from "@/components/xplania/FinalCtaSection";
 import Footer from "@/components/xplania/Footer";
-import QuickJump from "@/components/shared/QuickJump";
 import DialogSkeleton from "@/components/shared/DialogSkeleton";
 
 
@@ -58,6 +53,12 @@ const Index = () => {
     setTravelFormOpen(true);
   };
 
+  // Hero country choice: open the questionnaire with this country already filled in.
+  const handlePickCountry = (code: string) => {
+    track("cta_click", { cta: "prepare_departure", location: "hero_country", country: code });
+    navigate(`/preparation?pays=${encodeURIComponent(code)}`);
+  };
+
   useEffect(() => {
     if (location.hash === "#create") handleCreateTrip();
   }, [location.hash]);
@@ -76,17 +77,13 @@ const Index = () => {
         <button onClick={scrollToFeedback}>fb</button>
       </div>
       <main id="main-content" tabIndex={-1}>
-        {/* Path: hero → problem → solution → demo → how → benefits → proof → beta → FAQ → final CTA */}
-        <HeroSection onCreateTrip={() => handleCreateTrip("hero")} />
-        <ProblemSection />
-        <FeaturesSection />
-        <DemoSection />
-        <HowItWorksSection onStart={() => handleCreateTrip("how_it_works")} />
-        <BenefitsSection />
+        {/* Student's path: want to leave → my questions → what I get → proof → FAQ → start */}
+        <HeroSection onCreateTrip={() => handleCreateTrip("hero")} onPickCountry={handlePickCountry} />
+        <QuestionsSection />
+        <ResultSection onStart={() => handleCreateTrip("example")} />
         <Testimonials />
-        <BetaSection onFeedback={() => setFeedbackOpen(true)} />
-        <FaqSection />
-        <FinalCtaSection onCreateTrip={() => handleCreateTrip("final")} />
+        <FaqSection keys={["q1", "q7", "q2", "q3", "q6"]} />
+        <FinalCtaSection onCreateTrip={() => handleCreateTrip("final")} onFeedback={() => setFeedbackOpen(true)} />
         <Footer onCreateTrip={() => handleCreateTrip("footer")} />
       </main>
       {travelFormOpen && (
@@ -144,7 +141,6 @@ const Index = () => {
           {t("index.openJournal")}
         </a>
       )}
-      <QuickJump />
       {feedbackOpen && (
         <Suspense fallback={<DialogSkeleton size="md" />}>
           <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
