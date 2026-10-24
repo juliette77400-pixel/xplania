@@ -23,3 +23,7 @@
 - [x] Traductions FR/EN, tests, vérifications des 5 profils
 - [ ] Après republication : supprimer l'ancienne fonction visa-official-info (encore utilisée par la version en ligne)
 - [x] Vérification téléphone + anglais des pages Visa et Budget (simulateur corrigé)
+- [x] Budget séjours longs : caution, installation, frais de retour (lignes à part)
+- [x] Budget : rentrées d'argent (bourse, gratification, famille, autre) dans la marge
+- [x] Budget : carte « Ton premier mois »
+- [x] Tableau de bord : « Ce qu'il te reste à préparer » (liste unique, la plus urgente d'abord)
