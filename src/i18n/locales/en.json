@@ -6728,7 +6728,9 @@
         "residence": "University residences",
         "platform": "Housing platforms",
         "flatshare": "Flatshares",
-        "institutional": "Official and support resources"
+        "money": "Grants, aid and guarantees",
+        "fraud": "Scams, disputes and deposits",
+        "institutional": "Official advice and tenant rights"
       },
       "items": {
         "housinganywhere": "Mid- and long-term rooms and homes, widely used by international students.",
@@ -6751,7 +6753,20 @@
         "howtorent": "Official UK government guide to renting rights and steps.",
         "reportfraud": "Official service to report a scam in the UK.",
         "otodom": "Large property listings website in Poland, including rentals.",
-        "studyaustralia": "Official Australian Government website for international students, with housing advice."
+        "studyaustralia": "Official Australian Government website for international students, with housing advice.",
+        "erasmusplus": "Official Erasmus+ information for students, including grants that help fund your stay (rent included).",
+        "eccnet": "Free help if you have a dispute with a business in another European country, such as a rental agency or platform.",
+        "youreurope": "Your consumer rights in the EU and what to do if a business doesn't respect them.",
+        "youthportal": "Official EU portal for young people going to study or intern in another European country.",
+        "anil": "Free, neutral information on tenant rights in France; local ADIL offices answer your questions (lease, deposit, bills).",
+        "huurcommissie": "Official Dutch committee that settles disagreements about rent and service costs.",
+        "shelter": "Leading UK housing charity: free advice on renting, deposits and scams.",
+        "citizensadvice": "Free official advice on renting in the UK (contract, deposit, problems with the landlord).",
+        "ucas": "Advice on choosing and booking student accommodation in the UK.",
+        "threshold": "Irish charity giving free advice to tenants (contract, deposit, eviction).",
+        "rtb": "Official Irish tenancy body: registers tenancies and settles disputes, including deposits.",
+        "cmhc": "Canada's official housing agency, with renting guides.",
+        "antifraudca": "Official service to report fraud in Canada, including fake rental listings."
       }
     },
     "types": {

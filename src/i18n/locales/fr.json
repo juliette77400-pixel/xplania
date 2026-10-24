@@ -6728,7 +6728,9 @@
         "residence": "Résidences universitaires",
         "platform": "Plateformes de logement",
         "flatshare": "Colocations",
-        "institutional": "Ressources officielles et d'accompagnement"
+        "money": "Aides, bourses et garanties",
+        "fraud": "Arnaques, litiges et caution",
+        "institutional": "Conseils officiels et droits des locataires"
       },
       "items": {
         "housinganywhere": "Location de chambres et de logements en moyenne et longue durée, très utilisée par les étudiants internationaux.",
@@ -6751,7 +6753,20 @@
         "howtorent": "Guide officiel du gouvernement britannique sur les droits et les étapes de la location.",
         "reportfraud": "Service officiel pour signaler une arnaque au Royaume-Uni.",
         "otodom": "Grand site d'annonces immobilières en Pologne, location comprise.",
-        "studyaustralia": "Site officiel du gouvernement australien pour les étudiants internationaux, avec des conseils sur le logement."
+        "studyaustralia": "Site officiel du gouvernement australien pour les étudiants internationaux, avec des conseils sur le logement.",
+        "erasmusplus": "Infos officielles Erasmus+ pour les étudiants, dont les bourses qui aident à financer ton séjour (loyer compris).",
+        "eccnet": "Aide gratuite si tu as un litige avec un professionnel d'un autre pays européen, par exemple une agence ou une plateforme de location.",
+        "youreurope": "Tes droits de consommateur dans l'UE et que faire si un professionnel ne les respecte pas.",
+        "youthportal": "Portail officiel de l'UE pour les jeunes qui partent étudier ou faire un stage dans un autre pays européen.",
+        "anil": "Infos gratuites et neutres sur les droits des locataires en France ; les ADIL locales répondent à tes questions (bail, caution, charges).",
+        "huurcommissie": "Commission officielle néerlandaise qui tranche les désaccords sur le loyer et les charges.",
+        "shelter": "Association britannique de référence : conseils gratuits sur la location, la caution et les arnaques.",
+        "citizensadvice": "Conseils gratuits et officiels sur la location au Royaume-Uni (contrat, caution, problèmes avec le propriétaire).",
+        "ucas": "Conseils pour choisir et réserver un logement étudiant au Royaume-Uni.",
+        "threshold": "Association irlandaise qui conseille gratuitement les locataires (contrat, caution, expulsion).",
+        "rtb": "Organisme officiel irlandais des locations : enregistrement des baux et règlement des litiges, y compris sur la caution.",
+        "cmhc": "Agence officielle canadienne du logement, avec des guides pour louer.",
+        "antifraudca": "Service officiel pour signaler une fraude au Canada, dont les fausses annonces de location."
       }
     },
     "types": {
