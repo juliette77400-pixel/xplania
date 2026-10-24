@@ -6483,7 +6483,7 @@
     "solution": {
       "title": "One space to prepare your departure.",
       "subtitle": "Xplania brings together five complementary tools, adapted to the details of your stay.",
-      "stepLabel": "Guide {{n}}",
+      "stepLabel": "Tool {{n}}",
       "cards": {
         "budget": {
           "name": "Budget",

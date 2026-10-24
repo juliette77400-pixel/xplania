@@ -6483,7 +6483,7 @@
     "solution": {
       "title": "Un seul espace pour préparer ton départ.",
       "subtitle": "Xplania rassemble cinq outils complémentaires, adaptés aux informations de ton séjour.",
-      "stepLabel": "Guide {{n}}",
+      "stepLabel": "Outil {{n}}",
       "cards": {
         "budget": {
           "name": "Budget",
