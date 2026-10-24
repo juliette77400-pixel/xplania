@@ -14,7 +14,6 @@ const baseCategoriesFr: Record<string, ChecklistItem[]> = {
     { name: "Pull léger", description: "Pour les soirées fraîches", checked: true },
     { name: "Pantalon confortable", description: "Idéal pour marcher", checked: true },
     { name: "Short", description: "Pour les journées chaudes", checked: false },
-    { name: "Tenue de soirée", description: "Élégante mais décontractée", checked: false },
     { name: "Veste légère", description: "Adaptée au climat", checked: true },
     { name: "Sous-vêtements (×5)", description: "Prévoir lavage", checked: true },
     { name: "Pyjama", description: "Confortable", checked: false },
@@ -22,13 +21,12 @@ const baseCategoriesFr: Record<string, ChecklistItem[]> = {
   "Accessoires & Protection": [
     { name: "Lunettes de soleil", description: "Protection UV", checked: true },
     { name: "Casquette / chapeau", description: "Pour les visites en plein jour", checked: true },
-    { name: "Écharpe légère", description: "Style et confort", checked: false },
     { name: "Parapluie compact", description: "En cas de pluie", checked: false },
   ],
   "Technologie": [
     { name: "Chargeurs & câbles", description: "Téléphone + appareils", checked: true },
     { name: "Batterie externe", description: "10000mAh minimum", checked: true },
-    { name: "Adaptateur universel", description: "Pour la destination", checked: true },
+    { name: "Adaptateur électrique", description: "Vérifie le type de prise du pays", checked: true },
     { name: "Écouteurs / AirPods", description: "Pour les trajets", checked: true },
   ],
   "Documents importants": [
@@ -60,7 +58,6 @@ const baseCategoriesEn: Record<string, ChecklistItem[]> = {
     { name: "Light sweater", description: "For cool evenings", checked: true },
     { name: "Comfortable trousers", description: "Ideal for walking", checked: true },
     { name: "Shorts", description: "For warm days", checked: false },
-    { name: "Evening outfit", description: "Elegant but casual", checked: false },
     { name: "Light jacket", description: "Adapted to the climate", checked: true },
     { name: "Underwear (×5)", description: "Allow for laundry", checked: true },
     { name: "Pyjamas", description: "Comfortable", checked: false },
@@ -68,13 +65,12 @@ const baseCategoriesEn: Record<string, ChecklistItem[]> = {
   "Accessories & Protection": [
     { name: "Sunglasses", description: "UV protection", checked: true },
     { name: "Cap / hat", description: "For daytime sightseeing", checked: true },
-    { name: "Light scarf", description: "Style and comfort", checked: false },
     { name: "Compact umbrella", description: "In case of rain", checked: false },
   ],
   "Technology": [
     { name: "Chargers & cables", description: "Phone + devices", checked: true },
     { name: "Power bank", description: "10,000mAh minimum", checked: true },
-    { name: "Universal adapter", description: "For the destination", checked: true },
+    { name: "Plug adapter", description: "Check the country's plug type", checked: true },
     { name: "Earphones / AirPods", description: "For the journeys", checked: true },
   ],
   "Important documents": [
@@ -108,165 +104,105 @@ export const baseCategories = new Proxy({} as Record<string, ChecklistItem[]>, {
 });
 
 const modeExtrasFr: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
-  minimaliste: {},
-  confort: {
-    "Confort supplémentaire": [
-      { name: "Oreiller de voyage", description: "Mémoire de forme", checked: true },
-      { name: "Masque de sommeil", description: "Qualité soie", checked: true },
-      { name: "Bouchons d'oreilles", description: "Anti-bruit", checked: true },
+  erasmus: {
+    "Séjour long (Erasmus) 🎓": [
+      { name: "Attestation d'inscription / Learning Agreement", description: "Imprimée + PDF sur ton téléphone", checked: false },
+      { name: "Carte européenne d'assurance maladie ou assurance santé", description: "Valable toute la durée du séjour", checked: false },
+      { name: "Photos d'identité (×4)", description: "Pour la carte étudiante, le transport…", checked: false },
+      { name: "Carte bancaire sans frais à l'étranger", description: "+ une deuxième carte de secours", checked: false },
+      { name: "Médicaments habituels pour 1 à 3 mois", description: "Avec l'ordonnance (en anglais si possible)", checked: false },
+      { name: "Vêtements pour deux saisons", description: "Superposables : t-shirts, pull, veste", checked: false },
+      { name: "Drap housse + serviette pour les premiers jours", description: "Le logement n'en fournit pas toujours", checked: false },
+      { name: "Multiprise", description: "Une seule prise adaptée suffit alors", checked: false },
     ],
   },
-  stylée: {
-    "Style & Apparence": [
-      { name: "Tenues coordonnées (×3)", description: "Looks complets", checked: true },
-      { name: "Chaussures élégantes", description: "Polyvalentes", checked: true },
-      { name: "Trousse maquillage", description: "Essentiels beauté", checked: false },
+  stage: {
+    "Stage professionnel 💼": [
+      { name: "Tenues professionnelles (2-3)", description: "Selon le code vestimentaire de l'entreprise", checked: false },
+      { name: "Chaussures de ville confortables", description: "Pour toute une journée", checked: false },
+      { name: "Ordinateur portable + chargeur", description: "Vérifie s'il est fourni par l'entreprise", checked: false },
+      { name: "Contrat ou attestation de stage", description: "Imprimé + PDF", checked: false },
+      { name: "CV et pièce d'identité", description: "Pour les démarches d'arrivée", checked: false },
+      { name: "Carnet et stylo", description: "Pour les premières réunions", checked: false },
     ],
   },
-  aventure: {
-    "Équipement aventure": [
-      { name: "Couteau suisse", description: "Multi-usage (en soute)", checked: true },
-      { name: "Lampe frontale", description: "Rechargeable USB", checked: true },
-      { name: "Filtre à eau portable", description: "Indispensable trek", checked: false },
+  cabine: {
+    "Bagage cabine uniquement 🎒": [
+      { name: "Valise aux dimensions de ta compagnie", description: "Souvent 55 × 40 × 20 cm : vérifie sur ton billet", checked: false },
+      { name: "Pèse-bagage", description: "Poids cabine souvent limité à 7-10 kg", checked: false },
+      { name: "Liquides ≤ 100 ml dans un sac transparent", description: "1 litre au total", checked: false },
+      { name: "Vêtements combinables", description: "Une garde-robe réduite qui va ensemble", checked: false },
+      { name: "Lessive voyage", description: "Pour laver sur place plutôt que d'emporter plus", checked: false },
     ],
   },
-  business: {
-    "Business": [
-      { name: "Costume / tailleur", description: "Dans housse", checked: true },
-      { name: "Chaussures formelles", description: "Cirées", checked: true },
-      { name: "Ordinateur portable", description: "+ chargeur + souris", checked: true },
-      { name: "Cartes de visite", description: "En quantité", checked: true },
+  soute: {
+    "Bagage en soute 🧳": [
+      { name: "Étiquette nom + téléphone + adresse sur place", description: "À l'intérieur et à l'extérieur", checked: false },
+      { name: "Pèse-bagage", description: "Franchise souvent 23 kg : vérifie sur ton billet", checked: false },
+      { name: "Cadenas TSA", description: "", checked: false },
+      { name: "Objets de valeur et médicaments en cabine", description: "Jamais en soute", checked: false },
+      { name: "Une tenue de rechange en cabine", description: "Au cas où la valise arrive en retard", checked: false },
     ],
   },
-  photo: {
-    "Matériel photo / vidéo": [
-      { name: "Appareil photo", description: "Boîtier + objectifs", checked: true },
-      { name: "Trépied carbone", description: "Léger et stable", checked: true },
-      { name: "Batteries (×4)", description: "Chargées", checked: true },
-      { name: "Cartes SD (256Go)", description: "×2 minimum", checked: true },
-    ],
-  },
-  randonnée: {
-    "Équipement randonnée": [
-      { name: "Chaussures de trek", description: "Rodées", checked: true },
-      { name: "Sac à dos 30-50L", description: "Avec ceinture ventrale", checked: true },
-      { name: "Gourde / Camelbak", description: "2L minimum", checked: true },
-      { name: "Poncho pluie", description: "Couvre aussi le sac", checked: true },
-    ],
-  },
-  plage: {
-    "Essentiels plage": [
-      { name: "Maillots de bain (×2)", description: "Pour alterner", checked: true },
-      { name: "Paréo / serviette XL", description: "Multi-usage", checked: true },
-      { name: "Tongs / sandales", description: "Résistantes à l'eau", checked: true },
-      { name: "Crème solaire SPF 50", description: "Waterproof", checked: true },
-      { name: "Sac étanche", description: "Pour téléphone + clés", checked: true },
-    ],
-  },
-  roadtrip: {
-    "Essentiels road trip": [
-      { name: "Glacière pliable", description: "Pour snacks et boissons", checked: true },
-      { name: "Support téléphone", description: "Pour la navigation", checked: true },
-      { name: "Câble chargeur voiture", description: "USB-C + Lightning", checked: true },
-      { name: "Kit premier secours auto", description: "Obligatoire dans certains pays", checked: true },
-    ],
-  },
-  urbain: {
-    "Essentiels city break 🏙️": [
-      { name: "Sneakers confortables", description: "Stylées et marche longue", checked: true },
-      { name: "Sac à bandoulière anti-vol", description: "Sécurise tes affaires en ville", checked: true },
-      { name: "Veste polyvalente", description: "Jour & soir", checked: true },
-      { name: "Carte de transport / app", description: "Métro, bus, vélos", checked: false },
-    ],
-  },
-  luxe: {
-    "Essentiels luxe 💎": [
-      { name: "Valise rigide premium", description: "Cabine + soute", checked: true },
-      { name: "Tenue de soirée", description: "Smoking / robe cocktail", checked: true },
-      { name: "Trousse de toilette cuir", description: "Soins haut de gamme", checked: true },
-      { name: "Bijoux discrets", description: "Coffre-fort hôtel conseillé", checked: false },
+  sport: {
+    "Équipement sportif ⚽": [
+      { name: "Ton équipement de sport", description: "Raquette, crampons, tenue…", checked: false },
+      { name: "Housse de transport", description: "Vérifie le tarif bagage spécial de ta compagnie", checked: false },
+      { name: "Chaussures de sport", description: "", checked: false },
+      { name: "Gourde", description: "", checked: false },
+      { name: "Assurance couvrant ce sport", description: "Certaines excluent les sports à risque", checked: false },
     ],
   },
 };
 
 const modeExtrasEn: Record<LuggageMode, Record<string, ChecklistItem[]>> = {
-  minimaliste: {},
-  confort: {
-    "Extra comfort": [
-      { name: "Travel pillow", description: "Memory foam", checked: true },
-      { name: "Sleep mask", description: "Silk quality", checked: true },
-      { name: "Earplugs", description: "Noise cancelling", checked: true },
+  erasmus: {
+    "Long stay (Erasmus) 🎓": [
+      { name: "Enrolment certificate / Learning Agreement", description: "Printed + PDF on your phone", checked: false },
+      { name: "European Health Insurance Card or health insurance", description: "Valid for the whole stay", checked: false },
+      { name: "ID photos (×4)", description: "For student card, transport pass…", checked: false },
+      { name: "Bank card with no foreign fees", description: "+ a second backup card", checked: false },
+      { name: "Usual medication for 1-3 months", description: "With the prescription (in English if possible)", checked: false },
+      { name: "Clothes for two seasons", description: "Layers: t-shirts, jumper, jacket", checked: false },
+      { name: "Fitted sheet + towel for the first days", description: "Housing doesn't always provide them", checked: false },
+      { name: "Power strip", description: "Then one adapter is enough", checked: false },
     ],
   },
-  stylée: {
-    "Style & Look": [
-      { name: "Coordinated outfits (×3)", description: "Complete looks", checked: true },
-      { name: "Elegant shoes", description: "Versatile", checked: true },
-      { name: "Makeup bag", description: "Beauty essentials", checked: false },
+  stage: {
+    "Internship 💼": [
+      { name: "Work outfits (2-3)", description: "Depending on the company dress code", checked: false },
+      { name: "Comfortable smart shoes", description: "For a full day", checked: false },
+      { name: "Laptop + charger", description: "Check whether the company provides one", checked: false },
+      { name: "Internship contract or certificate", description: "Printed + PDF", checked: false },
+      { name: "CV and ID", description: "For arrival paperwork", checked: false },
+      { name: "Notebook and pen", description: "For the first meetings", checked: false },
     ],
   },
-  aventure: {
-    "Adventure gear": [
-      { name: "Swiss army knife", description: "Multi-purpose (checked baggage)", checked: true },
-      { name: "Headlamp", description: "USB rechargeable", checked: true },
-      { name: "Portable water filter", description: "Essential for trekking", checked: false },
+  cabine: {
+    "Cabin bag only 🎒": [
+      { name: "Suitcase matching your airline's size", description: "Often 55 × 40 × 20 cm: check your ticket", checked: false },
+      { name: "Luggage scale", description: "Cabin weight often limited to 7-10 kg", checked: false },
+      { name: "Liquids ≤ 100 ml in a clear bag", description: "1 litre in total", checked: false },
+      { name: "Mix-and-match clothes", description: "A small wardrobe that goes together", checked: false },
+      { name: "Travel detergent", description: "Wash there rather than pack more", checked: false },
     ],
   },
-  business: {
-    "Business": [
-      { name: "Suit", description: "In garment bag", checked: true },
-      { name: "Formal shoes", description: "Polished", checked: true },
-      { name: "Laptop", description: "+ charger + mouse", checked: true },
-      { name: "Business cards", description: "Plenty of them", checked: true },
+  soute: {
+    "Checked luggage 🧳": [
+      { name: "Tag with name + phone + address there", description: "Inside and outside", checked: false },
+      { name: "Luggage scale", description: "Allowance often 23 kg: check your ticket", checked: false },
+      { name: "TSA lock", description: "", checked: false },
+      { name: "Valuables and medication in the cabin", description: "Never in the hold", checked: false },
+      { name: "A change of clothes in the cabin", description: "In case your bag arrives late", checked: false },
     ],
   },
-  photo: {
-    "Photo / video gear": [
-      { name: "Camera", description: "Body + lenses", checked: true },
-      { name: "Carbon tripod", description: "Light and stable", checked: true },
-      { name: "Batteries (×4)", description: "Charged", checked: true },
-      { name: "SD cards (256GB)", description: "×2 minimum", checked: true },
-    ],
-  },
-  randonnée: {
-    "Hiking gear": [
-      { name: "Trekking shoes", description: "Broken in", checked: true },
-      { name: "30-50L backpack", description: "With hip belt", checked: true },
-      { name: "Water bottle / Camelbak", description: "2L minimum", checked: true },
-      { name: "Rain poncho", description: "Also covers the backpack", checked: true },
-    ],
-  },
-  plage: {
-    "Beach essentials": [
-      { name: "Swimsuits (×2)", description: "For rotating", checked: true },
-      { name: "Sarong / XL towel", description: "Multi-purpose", checked: true },
-      { name: "Flip-flops / sandals", description: "Water resistant", checked: true },
-      { name: "SPF 50 sunscreen", description: "Waterproof", checked: true },
-      { name: "Waterproof bag", description: "For phone + keys", checked: true },
-    ],
-  },
-  roadtrip: {
-    "Road trip essentials": [
-      { name: "Foldable cooler", description: "For snacks and drinks", checked: true },
-      { name: "Phone mount", description: "For navigation", checked: true },
-      { name: "Car charger cable", description: "USB-C + Lightning", checked: true },
-      { name: "Car first-aid kit", description: "Mandatory in some countries", checked: true },
-    ],
-  },
-  urbain: {
-    "City break essentials 🏙️": [
-      { name: "Comfortable sneakers", description: "Stylish and good for long walks", checked: true },
-      { name: "Anti-theft shoulder bag", description: "Keeps your belongings safe in the city", checked: true },
-      { name: "Versatile jacket", description: "Day & night", checked: true },
-      { name: "Transit card / app", description: "Metro, bus, bikes", checked: false },
-    ],
-  },
-  luxe: {
-    "Luxury essentials 💎": [
-      { name: "Premium hard-shell suitcase", description: "Cabin + hold", checked: true },
-      { name: "Evening outfit", description: "Tuxedo / cocktail dress", checked: true },
-      { name: "Leather toiletry bag", description: "High-end care products", checked: true },
-      { name: "Discreet jewellery", description: "Hotel safe recommended", checked: false },
+  sport: {
+    "Sports equipment ⚽": [
+      { name: "Your sports gear", description: "Racket, boots, kit…", checked: false },
+      { name: "Travel cover", description: "Check your airline's special baggage fee", checked: false },
+      { name: "Sports shoes", description: "", checked: false },
+      { name: "Water bottle", description: "", checked: false },
+      { name: "Insurance covering this sport", description: "Some exclude risky sports", checked: false },
     ],
   },
 };
@@ -359,19 +295,7 @@ export function buildCategories(mode: LuggageMode, transport: TransportMode): Re
   const base = isEn() ? baseCategoriesEn : baseCategoriesFr;
   const modeSet = (isEn() ? modeExtrasEn : modeExtrasFr)[mode] || {};
   const transportSet = (isEn() ? transportExtrasEn : transportExtrasFr)[transport] || {};
-  return { ...base, ...modeSet, ...transportSet };
-}
-
-export function detectSuggestedMode(tripTypes?: string[], objectives?: string[]): LuggageMode | null {
-  const all = [...(tripTypes || []), ...(objectives || [])].join(" ").toLowerCase();
-  if (all.includes("plage") || all.includes("balnéaire") || all.includes("mer") || all.includes("beach")) return "plage";
-  if (all.includes("rando") || all.includes("trek") || all.includes("nature") || all.includes("hik")) return "randonnée";
-  if (all.includes("business") || all.includes("professionnel")) return "business";
-  if (all.includes("road") || all.includes("voiture") || all.includes("car")) return "roadtrip";
-  if (all.includes("photo") || all.includes("créat") || all.includes("creativ")) return "photo";
-  if (all.includes("aventure") || all.includes("adventure") || all.includes("sport")) return "aventure";
-  if (all.includes("luxe") || all.includes("luxury") || all.includes("premium")) return "luxe";
-  if (all.includes("city") || all.includes("urbain") || all.includes("ville")) return "urbain";
-  if (all.includes("confort") || all.includes("comfort")) return "confort";
-  return null;
+  const all = { ...base, ...modeSet, ...transportSet };
+  // Nothing is ticked before the student packs it.
+  return Object.fromEntries(Object.entries(all).map(([k, items]) => [k, items.map((i) => ({ ...i, checked: false }))]));
 }

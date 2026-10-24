@@ -99,6 +99,17 @@ const GuideLogement = () => {
     toast.success(t("housing.status.saved"));
   };
 
+  /** Merge into the latest form_data so other answers are never overwritten. */
+  const saveMaxRent = async (v: number | null) => {
+    if (!trip || !user) return;
+    const { data: row, error: readErr } = await supabase.from("trips").select("form_data").eq("id", trip.id).eq("user_id", user.id).maybeSingle();
+    if (readErr) throw readErr;
+    const next = { ...((row?.form_data as Record<string, unknown>) || {}), maxRent: v };
+    const { error } = await supabase.from("trips").update({ form_data: next as never }).eq("id", trip.id).eq("user_id", user.id);
+    if (error) throw error;
+    await refetch();
+  };
+
   const onToggle = (item: string, done: boolean) =>
     toggle.mutate({ item, done }, { onError: () => toast.error(t("housing.checklistError")) });
 
@@ -131,7 +142,8 @@ const GuideLogement = () => {
       case "resources":
         return <HousingResources countryCode={countryCode} countryName={destination} />;
       case "compare":
-        return <HousingComparator tripId={trip.id} destination={destination} city={city || destination} departureDate={departureDate} durationDays={durationDays} confirmed={status === "confirmed"} />;
+        return <HousingComparator tripId={trip.id} destination={destination} city={city || destination} departureDate={departureDate} durationDays={durationDays} confirmed={status === "confirmed"}
+          returnDate={form.returnDate || trip.return_date || null} maxRentOverride={typeof form.maxRent === "number" ? form.maxRent : null} onSaveMaxRent={saveMaxRent} />;
       case "safety":
         return <SafetyChecklist checked={checked} onToggle={onToggle} disabled={checklistLoading} remindersOnly={!safetyChecksApply(status)} status={status} />;
       case "install":

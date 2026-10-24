@@ -6879,7 +6879,16 @@
       "helpConfirmed": "Ajoute ton logement confirmé pour garder ses infos au même endroit et envoyer ses frais au budget.",
       "addConfirmed": "Ajouter mon logement",
       "emptyTitleConfirmed": "Ton logement n'est pas encore noté",
-      "emptyDescConfirmed": "Ajoute-le avec son loyer, sa caution et ses frais pour préparer ton budget."
+      "emptyDescConfirmed": "Ajoute-le avec son loyer, sa caution et ses frais pour préparer ton budget.",
+      "budgetFit": "Ton budget",
+      "stayTotal": "Total sur {{months}} mois",
+      "minutes": "{{n}} min",
+      "lease": "Bail",
+      "contract": "Contrat écrit",
+      "risks": "Points d'attention",
+      "risksCount_one": "1 point à vérifier",
+      "risksCount_other": "{{count}} points à vérifier",
+      "risksNone": "Aucun signal relevé"
     },
     "form": {
       "addTitle": "Ajouter un logement",
@@ -6914,8 +6923,17 @@
         "amount": "Les montants doivent être des nombres positifs.",
         "url": "Le lien doit commencer par http:// ou https://",
         "dates": "La date de fin doit être après la date de début.",
-        "save": "L'enregistrement a échoué. Réessaie."
-      }
+        "save": "L'enregistrement a échoué. Réessaie.",
+        "minutes": "Indique un temps de trajet entre 0 et 600 minutes."
+      },
+      "beforePaying": "Avant de payer quoi que ce soit",
+      "writtenContract": "Un contrat de location écrit est prévu ?",
+      "visited": "As-tu visité (sur place ou en vidéo en direct) ?",
+      "paymentBeforeVisit": "Te demande-t-on de payer avant la visite ou la signature ?",
+      "unknownHint": "Laisse vide si tu ne sais pas encore : Xplania te dira quoi vérifier.",
+      "commuteMinutes": "Trajet jusqu'au campus ou au stage (minutes)",
+      "leaseNotes": "Conditions du bail",
+      "leaseNotesPlaceholder": "Durée minimale, préavis, sous-location, assurance habitation…"
     },
     "budget": {
       "title": "Ajouter les dépenses au budget",
@@ -7007,7 +7025,110 @@
     "checklistLoadError": "Tes cases cochées n'ont pas pu être chargées. Recharge la page.",
     "saving": "Enregistrement…",
     "footer": "Les montants de ton logement peuvent compléter ton",
-    "footerBudget": "guide Budget"
+    "footerBudget": "guide Budget",
+    "maxRent": {
+      "value": "Ton loyer maximal : {{amount}} / mois",
+      "none": "Ton loyer maximal n'est pas encore défini",
+      "fromBudget": "Calculé à partir de la ligne Logement de ton Budget, sur {{months}} mois.",
+      "fromYou": "Montant que tu as choisi.",
+      "noBudget": "Crée ton Budget ou indique un montant pour comparer les logements.",
+      "edit": "Modifier",
+      "label": "Loyer + charges max (€/mois)",
+      "saved": "Loyer maximal enregistré",
+      "error": "Impossible d'enregistrer ce montant."
+    },
+    "fit": {
+      "cta": "Est-il adapté ?",
+      "title": "« {{name}} » est-il adapté à ton budget et à ton séjour ?",
+      "desc": "D'après ce que tu as noté. Les points les plus importants sont en haut.",
+      "total": "Coût sur {{months}} mois (loyer, charges, frais) : {{total}}",
+      "depositApart": "Caution en plus : {{amount}} (en principe rendue à la fin du bail).",
+      "disclaimer": "Cette vérification ne garantit pas qu'une annonce est sûre. Avant de réserver ou de payer, coche les vérifications anti-arnaque plus bas.",
+      "badge": {
+        "fits": "Dans ton budget",
+        "tight": "Juste",
+        "over": "Hors budget",
+        "unknown": "Budget non défini"
+      },
+      "points": {
+        "budget_fits": {
+          "title": "Dans ton budget",
+          "body": "{{monthly}} par mois, sous ton maximum de {{max}}."
+        },
+        "budget_tight": {
+          "title": "Un peu au-dessus de ton maximum",
+          "body": "{{diff}} de plus par mois que prévu : vérifie où compenser dans ton Budget."
+        },
+        "budget_over": {
+          "title": "Hors budget",
+          "body": "{{diff}} de plus par mois que ton maximum de {{max}}."
+        },
+        "budget_unknown": {
+          "title": "Ton loyer maximal n'est pas défini",
+          "body": "Indique-le en haut du comparateur pour savoir si ce logement rentre dans ton budget."
+        },
+        "paymentBeforeVisit": {
+          "title": "Paiement demandé avant visite ou signature",
+          "body": "C'est un signe fréquent d'arnaque. Ne paie rien avant d'avoir vu le logement et signé un contrat."
+        },
+        "noContract": {
+          "title": "Pas de contrat écrit",
+          "body": "Sans contrat, difficile de récupérer ta caution ou de faire valoir tes droits. Demande un bail écrit."
+        },
+        "contractUnknown": {
+          "title": "Contrat écrit ?",
+          "body": "Demande s'il y aura un bail écrit, à ton nom, avec les dates du séjour."
+        },
+        "notVisited": {
+          "title": "Logement pas encore visité",
+          "body": "Organise une visite sur place ou en vidéo en direct avant de t'engager."
+        },
+        "chargesUnknown": {
+          "title": "Charges inconnues",
+          "body": "Demande si l'eau, l'électricité, le chauffage et Internet sont inclus."
+        },
+        "depositUnknown": {
+          "title": "Caution inconnue",
+          "body": "Demande son montant et les conditions pour la récupérer."
+        },
+        "depositHigh": {
+          "title": "Caution élevée",
+          "body": "Environ {{months}} mois de loyer : vérifie que c'est autorisé dans le pays et prévu au contrat."
+        },
+        "feesUnknown": {
+          "title": "Frais d'agence ou de dossier ?",
+          "body": "Demande s'il y a des frais en plus du loyer et de la caution."
+        },
+        "unfurnished": {
+          "title": "Logement non meublé",
+          "body": "Prévois l'équipement (lit, cuisine, linge) dans la ligne Installation de ton Budget."
+        },
+        "furnishedUnknown": {
+          "title": "Meublé ?",
+          "body": "Demande ce qui est fourni : lit, bureau, cuisine équipée, linge."
+        },
+        "startsLate": {
+          "title": "Disponible seulement à partir du {{date}}",
+          "body": "C'est après ton arrivée : prévois où dormir les premiers jours."
+        },
+        "endsEarly": {
+          "title": "Se termine le {{date}}",
+          "body": "C'est avant la fin de ton séjour : vérifie si tu peux prolonger."
+        },
+        "datesUnknown": {
+          "title": "Dates de disponibilité inconnues",
+          "body": "Vérifie que le logement couvre toute la durée de ton séjour."
+        },
+        "longCommute": {
+          "title": "Trajet de {{minutes}} min",
+          "body": "C'est long au quotidien : compare avec le coût et le temps des transports."
+        },
+        "commuteUnknown": {
+          "title": "Temps de trajet inconnu",
+          "body": "Calcule le trajet jusqu'à ton campus ou ton stage."
+        }
+      }
+    }
   },
   "visa2": {
     "toolName": "Visa & formalités",
@@ -7275,5 +7396,130 @@
       "save": "Enregistrer mes rentrées",
       "saved": "Rentrées enregistrées"
     }
+  },
+  "valise2": {
+    "profiles": {
+      "title": "Ton type de valise",
+      "subtitle": "Choisis ce qui correspond à ton séjour : la liste s'adapte.",
+      "suggested": "Suggéré",
+      "erasmus": {
+        "label": "Erasmus longue durée",
+        "desc": "Plusieurs mois : documents, deux saisons, premiers jours"
+      },
+      "stage": {
+        "label": "Stage professionnel",
+        "desc": "Tenues de travail, ordinateur, papiers du stage"
+      },
+      "cabine": {
+        "label": "Bagage cabine uniquement",
+        "desc": "Dimensions, poids, liquides, garde-robe réduite"
+      },
+      "soute": {
+        "label": "Bagage en soute",
+        "desc": "Franchise, étiquette, ce qui reste en cabine"
+      },
+      "sport": {
+        "label": "Avec équipement sportif",
+        "desc": "Housse, bagage spécial, assurance"
+      }
+    },
+    "aiTips": {
+      "erasmus": {
+        "title": "🎓 Tes papiers d'abord",
+        "tip": "Garde dans ton bagage cabine passeport, attestation d'inscription, assurance santé et une copie PDF de chaque document."
+      },
+      "stage": {
+        "title": "💼 Le code vestimentaire",
+        "tip": "Demande à ton tuteur le code vestimentaire avant de partir : 2 à 3 tenues suffisent pour la première semaine."
+      },
+      "cabine": {
+        "title": "🎒 Pèse ton sac",
+        "tip": "Vérifie les dimensions et le poids autorisés sur ton billet : beaucoup de compagnies limitent la cabine à 7-10 kg."
+      },
+      "soute": {
+        "title": "🧳 L'essentiel en cabine",
+        "tip": "Médicaments, chargeurs, documents et une tenue de rechange restent avec toi, au cas où ta valise arrive en retard."
+      },
+      "sport": {
+        "title": "⚽ Bagage spécial",
+        "tip": "Les équipements de sport sont souvent facturés à part : réserve-les avec ton billet, c'est moins cher qu'à l'aéroport."
+      }
+    },
+    "climate": {
+      "title": "Le temps habituel à {{city}} pendant ton séjour",
+      "subtitle": "Températures minimales / maximales moyennes et jours de pluie, mois par mois.",
+      "noDates": "Sans dates de séjour : les 3 prochains mois. Ajoute tes dates pour un résultat précis.",
+      "loading": "Recherche des températures…",
+      "unavailable": "Températures indisponibles pour le moment. Réessaie plus tard.",
+      "notFound": "Ville « {{city}} » introuvable : vérifie son nom dans ton séjour.",
+      "rainyDays_one": "{{count}} jour de pluie",
+      "rainyDays_other": "{{count}} jours de pluie",
+      "whatToPack": "Ce que ça implique pour ta valise",
+      "addAll": "Ajouter à ma liste",
+      "category": "Selon la météo du séjour",
+      "source": "D'après le temps observé du {{from}} au {{to}} (mêmes dates, l'an dernier) —",
+      "hints": {
+        "cold": {
+          "text": "Il peut geler : manteau chaud, bonnet, gants.",
+          "items": [
+            "Manteau chaud",
+            "Bonnet et gants",
+            "Sous-vêtements thermiques"
+          ]
+        },
+        "cool": {
+          "text": "Matins frais : pull et veste chaude.",
+          "items": [
+            "Pull chaud",
+            "Veste mi-saison"
+          ]
+        },
+        "hot": {
+          "text": "Fortes chaleurs : vêtements légers et protection solaire.",
+          "items": [
+            "Vêtements légers et respirants",
+            "Crème solaire",
+            "Casquette ou chapeau"
+          ]
+        },
+        "rain": {
+          "text": "Mois pluvieux : imperméable et chaussures qui résistent à l'eau.",
+          "items": [
+            "Veste imperméable",
+            "Chaussures imperméables",
+            "Parapluie compact"
+          ]
+        },
+        "twoSeasons": {
+          "text": "Gros écart de températures : prévois deux saisons, ou achète sur place.",
+          "items": [
+            "Vêtements superposables (deux saisons)"
+          ]
+        }
+      }
+    }
+  },
+  "culture2": {
+    "pathsTitle": "Ton parcours",
+    "forYourStay": "Ton séjour",
+    "paths": {
+      "study": {
+        "title": "Je pars étudier",
+        "desc": "Vie sur le campus, relations avec les professeurs, travaux de groupe, intégration étudiante."
+      },
+      "internship": {
+        "title": "Je pars en stage",
+        "desc": "Codes professionnels, communication avec un manager, réunions, ponctualité et attentes au travail."
+      },
+      "daily": {
+        "title": "Je m'installe au quotidien",
+        "desc": "Transports, courses, démarches locales, vie sociale, expressions utiles et habitudes quotidiennes."
+      }
+    },
+    "pathProgress": "{{done}} thème(s) compris sur les {{total}} de ton parcours",
+    "priorityTitle": "À lire en priorité",
+    "moreTitle": "Pour aller plus loin ({{count}} thèmes)",
+    "moreSub": "Culture populaire, fêtes, traditions, gastronomie… à lire quand tu veux",
+    "nuance": "Ce sont des tendances, pas des règles absolues : chaque personne et chaque région sont différentes. Dans le doute, observe et demande."
   }
 }

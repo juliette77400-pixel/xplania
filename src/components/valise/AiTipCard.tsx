@@ -9,16 +9,14 @@ interface AiTipCardProps {
   mode: LuggageMode;
   isLoading?: boolean;
   destination?: string;
+  /** Stay dates, so clothes match the season. */
+  months?: string;
 }
 
-const emojis: Record<LuggageMode, string> = {
-  minimaliste: "🎒", confort: "✨", stylée: "👗", aventure: "🧭",
-  business: "💼", photo: "📸", randonnée: "🥾", plage: "🏖️",
-  roadtrip: "🚗", urbain: "🏙️", luxe: "💎",
-};
+const emojis: Record<LuggageMode, string> = { erasmus: "🎓", stage: "💼", cabine: "🎒", soute: "🧳", sport: "⚽" };
 
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1h
-const CACHE_PREFIX = "xplania-valise-aitip-v1:";
+const CACHE_PREFIX = "xplania-valise-aitip-v2:";
 
 interface CachedTip {
   title: string;
@@ -59,12 +57,13 @@ function parseTip(raw: string, fallbackTitle: string): { title: string; tip: str
   return { title: fallbackTitle, tip: trimmed };
 }
 
-const AiTipCard = ({ mode, isLoading, destination }: AiTipCardProps) => {
+const AiTipCard = ({ mode, isLoading, destination, months }: AiTipCardProps) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
-  const staticTitle = t(`valise.aiTips.${mode}.title`, { defaultValue: t("valise.aiTipFallbackTitle") });
-  const staticTip = t(`valise.aiTips.${mode}.tip`, { defaultValue: "" });
+  const staticTitle = t(`valise2.aiTips.${mode}.title`, { defaultValue: t("valise.aiTipFallbackTitle") });
+  const staticTip = t(`valise2.aiTips.${mode}.tip`, { defaultValue: "" });
+  const profileLabel = t(`valise2.profiles.${mode}.label`);
 
   const cacheKey = `${lang}:${mode}:${(destination || "").toLowerCase().trim()}`;
 
@@ -87,12 +86,12 @@ const AiTipCard = ({ mode, isLoading, destination }: AiTipCardProps) => {
       try {
         const question =
           lang === "en"
-            ? `Give me ONE fresh, very concrete packing tip (max 50 words) for a "${mode}" traveller${
-                destination ? ` going to ${destination}` : ""
-              }. Format: line 1 = short catchy title with one emoji, line 2 = the actionable tip. No intro, no outro.`
-            : `Donne-moi UN conseil packing frais, très concret (max 50 mots) pour un voyageur "${mode}"${
-                destination ? ` qui part à ${destination}` : ""
-              }. Format : ligne 1 = titre court accrocheur avec un emoji, ligne 2 = le conseil actionnable. Pas d'intro ni d'outro.`;
+            ? `Give me ONE concrete packing tip (max 50 words) for a student, profile "${profileLabel}"${
+                destination ? `, going to ${destination}` : ""
+              }${months ? `, stay ${months}` : ""}. Pick ONE of: plug adapter type, documents to carry, clothes for the season of those months, luggage size/weight limits, equipment for an internship. No gadget, no anecdote, no product brand. Format: line 1 = short title with one emoji, line 2 = the actionable tip. No intro, no outro.`
+            : `Donne-moi UN conseil de valise concret (max 50 mots) pour un étudiant, profil « ${profileLabel} »${
+                destination ? `, qui part à ${destination}` : ""
+              }${months ? `, séjour ${months}` : ""}. Choisis UN sujet parmi : type d'adaptateur électrique, documents à emporter, vêtements adaptés à la saison de ces mois, limites de taille/poids des bagages, équipement pour un stage. Pas de gadget, pas d'anecdote, pas de marque. Format : ligne 1 = titre court avec un emoji, ligne 2 = le conseil actionnable. Pas d'intro ni d'outro.`;
 
         const { data, error } = await supabase.functions.invoke("valise-qa", {
           body: {
@@ -117,7 +116,7 @@ const AiTipCard = ({ mode, isLoading, destination }: AiTipCardProps) => {
         setLoadingDynamic(false);
       }
     },
-    [cacheKey, destination, lang, mode, staticTitle],
+    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months],
   );
 
   // On mode/destination/lang change: load from cache or fetch.

@@ -6879,7 +6879,16 @@
       "helpConfirmed": "Add your confirmed home to keep its details in one place and send its costs to your budget.",
       "addConfirmed": "Add my home",
       "emptyTitleConfirmed": "Your home isn't noted yet",
-      "emptyDescConfirmed": "Add it with its rent, deposit and fees to prepare your budget."
+      "emptyDescConfirmed": "Add it with its rent, deposit and fees to prepare your budget.",
+      "budgetFit": "Your budget",
+      "stayTotal": "Total over {{months}} months",
+      "minutes": "{{n}} min",
+      "lease": "Lease",
+      "contract": "Written contract",
+      "risks": "Watch-outs",
+      "risksCount_one": "1 thing to check",
+      "risksCount_other": "{{count}} things to check",
+      "risksNone": "No warning sign noted"
     },
     "form": {
       "addTitle": "Add a place",
@@ -6914,8 +6923,17 @@
         "amount": "Amounts must be positive numbers.",
         "url": "The link must start with http:// or https://",
         "dates": "The end date must be after the start date.",
-        "save": "Saving failed. Please try again."
-      }
+        "save": "Saving failed. Please try again.",
+        "minutes": "Enter a commute between 0 and 600 minutes."
+      },
+      "beforePaying": "Before paying anything",
+      "writtenContract": "Is there a written rental contract?",
+      "visited": "Have you visited (in person or live video)?",
+      "paymentBeforeVisit": "Are you asked to pay before the visit or signing?",
+      "unknownHint": "Leave empty if you don't know yet: Xplania will tell you what to check.",
+      "commuteMinutes": "Commute to campus or internship (minutes)",
+      "leaseNotes": "Lease conditions",
+      "leaseNotesPlaceholder": "Minimum length, notice, sublet, home insurance…"
     },
     "budget": {
       "title": "Add costs to budget",
@@ -7007,7 +7025,110 @@
     "checklistLoadError": "Your checked boxes could not be loaded. Reload the page.",
     "saving": "Saving…",
     "footer": "Your housing amounts can feed your",
-    "footerBudget": "Budget guide"
+    "footerBudget": "Budget guide",
+    "maxRent": {
+      "value": "Your maximum rent: {{amount}} / month",
+      "none": "Your maximum rent isn't set yet",
+      "fromBudget": "Worked out from the Housing line of your Budget, over {{months}} months.",
+      "fromYou": "Amount you chose.",
+      "noBudget": "Create your Budget or enter an amount to compare homes.",
+      "edit": "Edit",
+      "label": "Max rent + charges (€/month)",
+      "saved": "Maximum rent saved",
+      "error": "Could not save this amount."
+    },
+    "fit": {
+      "cta": "Is it right for me?",
+      "title": "Is “{{name}}” right for your budget and stay?",
+      "desc": "Based on what you noted. Most important points first.",
+      "total": "Cost over {{months}} months (rent, charges, fees): {{total}}",
+      "depositApart": "Deposit on top: {{amount}} (normally returned at the end of the lease).",
+      "disclaimer": "This check doesn't guarantee a listing is safe. Before booking or paying, tick the anti-scam checks below.",
+      "badge": {
+        "fits": "Within budget",
+        "tight": "Tight",
+        "over": "Over budget",
+        "unknown": "Budget not set"
+      },
+      "points": {
+        "budget_fits": {
+          "title": "Within your budget",
+          "body": "{{monthly}} per month, under your {{max}} maximum."
+        },
+        "budget_tight": {
+          "title": "Slightly over your maximum",
+          "body": "{{diff}} more per month than planned: check where to make it up in your Budget."
+        },
+        "budget_over": {
+          "title": "Over budget",
+          "body": "{{diff}} more per month than your {{max}} maximum."
+        },
+        "budget_unknown": {
+          "title": "Your maximum rent isn't set",
+          "body": "Set it at the top of the comparator to know if this home fits your budget."
+        },
+        "paymentBeforeVisit": {
+          "title": "Payment asked before visit or signing",
+          "body": "This is a common scam sign. Pay nothing before seeing the home and signing a contract."
+        },
+        "noContract": {
+          "title": "No written contract",
+          "body": "Without a contract, it's hard to get your deposit back or defend your rights. Ask for a written lease."
+        },
+        "contractUnknown": {
+          "title": "Written contract?",
+          "body": "Ask whether there will be a written lease, in your name, with your stay dates."
+        },
+        "notVisited": {
+          "title": "Home not visited yet",
+          "body": "Arrange an in-person or live video visit before committing."
+        },
+        "chargesUnknown": {
+          "title": "Charges unknown",
+          "body": "Ask whether water, electricity, heating and internet are included."
+        },
+        "depositUnknown": {
+          "title": "Deposit unknown",
+          "body": "Ask how much it is and how to get it back."
+        },
+        "depositHigh": {
+          "title": "High deposit",
+          "body": "About {{months}} months of rent: check it's allowed in the country and written in the contract."
+        },
+        "feesUnknown": {
+          "title": "Agency or admin fees?",
+          "body": "Ask whether there are fees on top of rent and deposit."
+        },
+        "unfurnished": {
+          "title": "Unfurnished home",
+          "body": "Plan equipment (bed, kitchen, linen) in the Moving-in line of your Budget."
+        },
+        "furnishedUnknown": {
+          "title": "Furnished?",
+          "body": "Ask what's provided: bed, desk, equipped kitchen, linen."
+        },
+        "startsLate": {
+          "title": "Only available from {{date}}",
+          "body": "That's after you arrive: plan where to sleep the first days."
+        },
+        "endsEarly": {
+          "title": "Ends on {{date}}",
+          "body": "That's before your stay ends: check whether you can extend."
+        },
+        "datesUnknown": {
+          "title": "Availability dates unknown",
+          "body": "Check the home covers your whole stay."
+        },
+        "longCommute": {
+          "title": "{{minutes}} min commute",
+          "body": "That's long every day: compare with transport cost and time."
+        },
+        "commuteUnknown": {
+          "title": "Commute time unknown",
+          "body": "Work out the commute to your campus or internship."
+        }
+      }
+    }
   },
   "visa2": {
     "toolName": "Visa & formalities",
@@ -7275,5 +7396,130 @@
       "save": "Save my income",
       "saved": "Income saved"
     }
+  },
+  "valise2": {
+    "profiles": {
+      "title": "Your type of luggage",
+      "subtitle": "Pick what matches your stay: the list adapts.",
+      "suggested": "Suggested",
+      "erasmus": {
+        "label": "Long Erasmus stay",
+        "desc": "Several months: documents, two seasons, first days"
+      },
+      "stage": {
+        "label": "Internship",
+        "desc": "Work outfits, laptop, internship papers"
+      },
+      "cabine": {
+        "label": "Cabin bag only",
+        "desc": "Size, weight, liquids, small wardrobe"
+      },
+      "soute": {
+        "label": "Checked luggage",
+        "desc": "Allowance, tag, what stays in the cabin"
+      },
+      "sport": {
+        "label": "With sports equipment",
+        "desc": "Cover, special baggage, insurance"
+      }
+    },
+    "aiTips": {
+      "erasmus": {
+        "title": "🎓 Papers first",
+        "tip": "Keep passport, enrolment certificate, health insurance and a PDF copy of each in your cabin bag."
+      },
+      "stage": {
+        "title": "💼 The dress code",
+        "tip": "Ask your supervisor about the dress code before leaving: 2-3 outfits are enough for the first week."
+      },
+      "cabine": {
+        "title": "🎒 Weigh your bag",
+        "tip": "Check allowed size and weight on your ticket: many airlines cap cabin bags at 7-10 kg."
+      },
+      "soute": {
+        "title": "🧳 Essentials in the cabin",
+        "tip": "Medication, chargers, documents and a change of clothes stay with you, in case your bag is late."
+      },
+      "sport": {
+        "title": "⚽ Special baggage",
+        "tip": "Sports gear is often charged separately: book it with your ticket, it's cheaper than at the airport."
+      }
+    },
+    "climate": {
+      "title": "Usual weather in {{city}} during your stay",
+      "subtitle": "Average low / high temperatures and rainy days, month by month.",
+      "noDates": "No stay dates: next 3 months. Add your dates for an accurate result.",
+      "loading": "Looking up temperatures…",
+      "unavailable": "Temperatures unavailable for now. Try again later.",
+      "notFound": "City “{{city}}” not found: check its name in your stay.",
+      "rainyDays_one": "{{count}} rainy day",
+      "rainyDays_other": "{{count}} rainy days",
+      "whatToPack": "What it means for your suitcase",
+      "addAll": "Add to my list",
+      "category": "For the stay's weather",
+      "source": "Based on observed weather from {{from}} to {{to}} (same dates, last year) —",
+      "hints": {
+        "cold": {
+          "text": "It can freeze: warm coat, hat, gloves.",
+          "items": [
+            "Warm coat",
+            "Hat and gloves",
+            "Thermal underwear"
+          ]
+        },
+        "cool": {
+          "text": "Cool mornings: jumper and warm jacket.",
+          "items": [
+            "Warm jumper",
+            "Mid-season jacket"
+          ]
+        },
+        "hot": {
+          "text": "Hot days: light clothes and sun protection.",
+          "items": [
+            "Light breathable clothes",
+            "Sunscreen",
+            "Cap or hat"
+          ]
+        },
+        "rain": {
+          "text": "Rainy months: raincoat and water-resistant shoes.",
+          "items": [
+            "Rain jacket",
+            "Water-resistant shoes",
+            "Compact umbrella"
+          ]
+        },
+        "twoSeasons": {
+          "text": "Big temperature range: pack for two seasons, or buy there.",
+          "items": [
+            "Layering clothes (two seasons)"
+          ]
+        }
+      }
+    }
+  },
+  "culture2": {
+    "pathsTitle": "Your path",
+    "forYourStay": "Your stay",
+    "paths": {
+      "study": {
+        "title": "I'm going to study",
+        "desc": "Campus life, relationships with teachers, group work, fitting in as a student."
+      },
+      "internship": {
+        "title": "I'm doing an internship",
+        "desc": "Workplace codes, talking to a manager, meetings, punctuality and expectations at work."
+      },
+      "daily": {
+        "title": "Everyday life",
+        "desc": "Transport, shopping, local paperwork, social life, useful phrases and daily habits."
+      }
+    },
+    "pathProgress": "{{done}} of the {{total}} themes of your path understood",
+    "priorityTitle": "Read first",
+    "moreTitle": "Go further ({{count}} themes)",
+    "moreSub": "Pop culture, festivals, traditions, food… whenever you like",
+    "nuance": "These are tendencies, not absolute rules: every person and region is different. When in doubt, watch and ask."
   }
 }

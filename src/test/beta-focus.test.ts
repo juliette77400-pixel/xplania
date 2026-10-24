@@ -65,9 +65,12 @@ describe("progression par outil", () => {
     expect(readTripProgress({ destination: "Portugal" }).valise).toEqual({ done: 12, total: 30 });
   });
 
-  it("Culture : compte seulement les thèmes du pays du voyage, sur 12", () => {
-    localStorage.setItem("xplania-culture-progress", JSON.stringify({ "PT:greetings": true, "PT:food": true, "JP:food": true }));
-    expect(readTripProgress({ destination: "Portugal" }).culture).toEqual({ done: 2, total: 12 });
+  it("Culture : compte les 5 thèmes du parcours, pour le pays du voyage seulement", () => {
+    localStorage.setItem("xplania-culture-progress", JSON.stringify({ "PT:greetings": true, "PT:food": true, "PT:popculture": true, "JP:work": true }));
+    // Erasmus → parcours « Je pars étudier » : greetings compte, food et popculture sont des suggestions.
+    expect(readTripProgress({ destination: "Portugal", stayType: "erasmus" }).culture).toEqual({ done: 1, total: 5 });
+    // Stage → parcours « Je pars en stage ».
+    expect(readTripProgress({ destination: "Portugal", stayType: "internship" }).culture).toEqual({ done: 1, total: 5 });
   });
 
   it("Budget : 2 étapes (budget estimé, première dépense)", () => {

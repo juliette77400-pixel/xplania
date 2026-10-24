@@ -16,6 +16,28 @@ export const CULTURE_PILLARS = [
 ] as const;
 export type PillarId = (typeof CULTURE_PILLARS)[number]["id"];
 
+/** Three entry paths. Each shows its priority themes first; every other theme stays one click away. */
+export const CULTURE_PATHS = {
+  study: ["greetings", "work", "social", "language", "shock"],
+  internship: ["work", "greetings", "dress", "gestures", "language"],
+  daily: ["social", "food", "language", "calendar", "shock"],
+} as const satisfies Record<string, readonly PillarId[]>;
+export type CulturePath = keyof typeof CULTURE_PATHS;
+export const CULTURE_PATH_IDS = Object.keys(CULTURE_PATHS) as CulturePath[];
+
+/** Path suggested from the questionnaire's stay type. */
+export function pathForStay(stayType: string | null | undefined): CulturePath {
+  if (stayType === "internship") return "internship";
+  if (stayType === "erasmus") return "study";
+  return "daily";
+}
+
+/** Themes not in the path, offered as suggestions to go further. */
+export function morePillars(path: CulturePath): PillarId[] {
+  const inPath = new Set<string>(CULTURE_PATHS[path]);
+  return CULTURE_PILLARS.map((p) => p.id).filter((id) => !inPath.has(id));
+}
+
 type L = { fr: string; en: string };
 export interface Tip { text: string; why: string; severity?: "low" | "medium" | "high" }
 export interface PillarContent { ping: string; dos: Tip[]; donts: Tip[]; homeVsHere: string[] }

@@ -163,3 +163,84 @@ export function applyHousingToBudget<T extends BudgetCategoryLike>(
 export const budgetStorageKey = (destination: string | null | undefined, departureDate: string | null | undefined) =>
   `xplania-budget-state::${destination || "Paris"}::${departureDate || "na"}`;
 export const housingSyncKey = (tripId: string) => `xplania-housing-budget-sync::${tripId}`;
+
+// ---------- "Is this home right for my budget and my stay?" ----------
+
+/** Rent + charges over the whole stay, plus one-off fees (deposit counted apart: it may come back). */
+export function stayTotalCost(o: HousingCosts, months: number): number {
+  return Math.round(monthlyCost(o) * Math.max(1, months) + n(o.extra_fees));
+}
+
+/** Maximum monthly housing cost the Budget plans: its accommodation line spread over the stay. */
+export function maxRentFromBudget(accommodationPlanned: number, months: number | null): number | null {
+  if (!months || months < 1 || !(accommodationPlanned > 0)) return null;
+  return Math.round(accommodationPlanned / months);
+}
+
+export interface FitHome extends HousingCosts {
+  available_from?: string | null;
+  available_to?: string | null;
+  furnished?: boolean | null;
+  commute_minutes?: number | null;
+  written_contract?: boolean | null;
+  visited?: boolean | null;
+  payment_before_visit?: boolean | null;
+}
+
+export interface FitContext {
+  maxRent: number | null;
+  stayStart: string | null;
+  stayEnd: string | null;
+}
+
+export type FitTone = "ok" | "check" | "warn" | "danger";
+export interface FitPoint {
+  id: string;
+  tone: FitTone;
+  vars?: Record<string, string | number>;
+}
+export interface FitResult {
+  /** Budget verdict only — never a safety verdict. */
+  budget: "fits" | "tight" | "over" | "unknown";
+  points: FitPoint[];
+}
+
+/**
+ * Checks a home against the student's budget and dates, and lists forgotten
+ * costs and things to verify. It never says a listing is safe.
+ */
+export function housingFit(o: FitHome, ctx: FitContext): FitResult {
+  const points: FitPoint[] = [];
+  const monthly = monthlyCost(o);
+  let budget: FitResult["budget"] = "unknown";
+  if (ctx.maxRent && ctx.maxRent > 0) {
+    if (monthly <= ctx.maxRent) budget = "fits";
+    else if (monthly <= ctx.maxRent * 1.1) budget = "tight";
+    else budget = "over";
+    points.push({ id: `budget_${budget}`, tone: budget === "fits" ? "ok" : budget === "tight" ? "warn" : "danger", vars: { monthly, max: ctx.maxRent, diff: Math.abs(monthly - ctx.maxRent) } });
+  } else points.push({ id: "budget_unknown", tone: "check" });
+
+  // Scam signs first.
+  if (o.payment_before_visit === true) points.push({ id: "paymentBeforeVisit", tone: "danger" });
+  if (o.written_contract === false) points.push({ id: "noContract", tone: "danger" });
+  else if (o.written_contract == null) points.push({ id: "contractUnknown", tone: "check" });
+  if (o.visited === false || o.visited == null) points.push({ id: "notVisited", tone: "check" });
+
+  // Forgotten costs.
+  if (o.charges_included == null && o.monthly_charges == null) points.push({ id: "chargesUnknown", tone: "check" });
+  if (o.deposit == null) points.push({ id: "depositUnknown", tone: "check" });
+  else if (n(o.monthly_rent) > 0 && n(o.deposit) > 2 * n(o.monthly_rent)) points.push({ id: "depositHigh", tone: "warn", vars: { months: Math.round((n(o.deposit) / n(o.monthly_rent)) * 10) / 10 } });
+  if (o.extra_fees == null) points.push({ id: "feesUnknown", tone: "check" });
+  if (o.furnished === false) points.push({ id: "unfurnished", tone: "warn" });
+  else if (o.furnished == null) points.push({ id: "furnishedUnknown", tone: "check" });
+
+  // Stay fit.
+  if (ctx.stayStart && o.available_from && o.available_from > ctx.stayStart) points.push({ id: "startsLate", tone: "warn", vars: { date: o.available_from } });
+  if (ctx.stayEnd && o.available_to && o.available_to < ctx.stayEnd) points.push({ id: "endsEarly", tone: "warn", vars: { date: o.available_to } });
+  if (!o.available_from) points.push({ id: "datesUnknown", tone: "check" });
+  if (o.commute_minutes != null && o.commute_minutes > 45) points.push({ id: "longCommute", tone: "warn", vars: { minutes: o.commute_minutes } });
+  else if (o.commute_minutes == null) points.push({ id: "commuteUnknown", tone: "check" });
+
+  const order: Record<FitTone, number> = { danger: 0, warn: 1, check: 2, ok: 3 };
+  return { budget, points: points.sort((a, b) => order[a.tone] - order[b.tone]) };
+}
