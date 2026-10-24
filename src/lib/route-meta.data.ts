@@ -75,10 +75,56 @@ META["/blog/how-to-plan-a-trip-with-ai"] = {
   fr: ["Comment planifier un voyage avec l'IA — Xplania", "Guide étape par étape pour planifier un voyage avec l'IA : itinéraire, budget, visa, valise et découvertes locales."],
   en: ["How to plan a trip with AI — Xplania", "Step-by-step guide to plan a trip with an AI travel planner: itinerary, budget, visa, packing and local tips."],
 };
+// Public country guides (src/data/destination-pages.ts).
+META["/preparer"] = {
+  fr: ["Préparer son Erasmus ou son stage : guides par pays — Xplania", "Formalités, santé, budget, logement et codes culturels pour préparer ton Erasmus ou ton stage à l'étranger, pays par pays."],
+  en: ["Preparing your Erasmus or internship: country guides — Xplania", "Paperwork, health, budget, housing and cultural codes to prepare your Erasmus or internship abroad, country by country."],
+};
+META["/preparer/espagne"] = {
+  fr: ["Préparer son Erasmus ou son stage en Espagne — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Espagne, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Spain — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Spain, with official links."],
+};
+META["/preparer/royaume-uni"] = {
+  fr: ["Préparer son Erasmus ou son stage au Royaume-Uni — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Royaume-Uni, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in the UK — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in the UK, with official links."],
+};
+META["/preparer/pays-bas"] = {
+  fr: ["Préparer son Erasmus ou son stage aux Pays-Bas — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage aux Pays-Bas, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in the Netherlands — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in the Netherlands, with official links."],
+};
+META["/preparer/pologne"] = {
+  fr: ["Préparer son Erasmus ou son stage en Pologne — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Pologne, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Poland — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Poland, with official links."],
+};
+META["/preparer/etats-unis"] = {
+  fr: ["Préparer son Erasmus ou son stage aux États-Unis — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage aux États-Unis, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in the United States — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in the United States, with official links."],
+};
+META["/preparer/australie"] = {
+  fr: ["Préparer son Erasmus ou son stage en Australie — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Australie, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Australia — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Australia, with official links."],
+};
+META["/preparer/japon"] = {
+  fr: ["Préparer son Erasmus ou son stage au Japon — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Japon, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Japan — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Japan, with official links."],
+};
+META["/preparer/chine"] = {
+  fr: ["Préparer son Erasmus ou son stage en Chine — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Chine, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in China — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in China, with official links."],
+};
+META["/preparer/mexique"] = {
+  fr: ["Préparer son Erasmus ou son stage au Mexique — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Mexique, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Mexico — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Mexico, with official links."],
+};
+META["/preparer/bresil"] = {
+  fr: ["Préparer son Erasmus ou son stage au Brésil — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Brésil, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Brazil — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Brazil, with official links."],
+};
 // Pages that manage their own head (public shares, legal).
 export const SELF_MANAGED = [/^\/carnet\/public\//, /^\/suivi\/public\//, /^\/legal/, /^\/mentions-legales/, /^\/politique-de-confidentialite/, /^\/conditions-utilisation/];
 
 // Routes that must never be indexed by search engines (auth flows, no content
 // value for SEO). RouteMeta sets a robots noindex meta tag at runtime for
 // these, and the build-time prerender plugin bakes it into their static HTML.
-export const NOINDEX_ROUTES = ["/auth", "/reset-password", "/guide-valise"];
+// Valise and Logement need an account: crawlers would only reach the sign-in page.
+export const NOINDEX_ROUTES = ["/auth", "/reset-password", "/guide-valise", "/guide-logement"];

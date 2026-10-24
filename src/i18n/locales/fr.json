@@ -136,7 +136,9 @@
     "groupAccount": "Mon compte",
     "dna": "ADN Voyageur",
     "culture": "Guide culturel",
-    "housing": "Logement"
+    "housing": "Logement",
+    "visaShort": "Visa",
+    "cultureShort": "Culture"
   },
   "about": {
     "metaTitle": "À propos — Xplania, préparer son départ sans soucis",
@@ -4425,7 +4427,8 @@
     "placeholder": "Pose ta question…",
     "error": "Impossible de répondre, réessaie.",
     "openLabel": "Ouvrir le chat",
-    "freeMode": "Mode libre"
+    "freeMode": "Mode libre",
+    "close": "Fermer l'assistante"
   },
   "suiviAlerts": {
     "title": "Alertes voyage",
@@ -6010,7 +6013,11 @@
   "help": {
     "label": "Un souci ?",
     "subject": "Xplania bêta – un souci",
-    "body": "Bonjour,\n\nJ'ai un souci sur cette page : {{page}}\n\nCe qui se passe :\n\n"
+    "body": "Bonjour,\n\nJ'ai un souci sur cette page : {{page}}\n\nCe qui se passe :\n\n",
+    "menuButton": "Aide",
+    "menuLabel": "Ouvrir le menu d'aide",
+    "askAssistant": "Poser une question à l'assistante",
+    "writeTeam": "Écrire à l'équipe Xplania"
   },
   "report": {
     "cta": "Signaler ce carnet",
@@ -7570,5 +7577,47 @@
     "saved": "Relecture enregistrée",
     "cleared": "Relecture annulée",
     "error": "Impossible d'enregistrer. Réessaie."
+  },
+  "destPages": {
+    "kicker": "Guide de départ",
+    "hubTitle": "Préparer son Erasmus ou son stage à l'étranger : guides par pays",
+    "hubShort": "Guides par pays",
+    "hubIntro": "Formalités, santé, budget, logement et codes culturels : l'essentiel à préparer avant ton départ, avec les liens officiels vérifiés.",
+    "cardTitle": "Préparer son départ {{place}}",
+    "footerLink": "Guides par pays",
+    "breadcrumb": "Fil d'Ariane",
+    "h1": "Préparer son Erasmus ou son stage {{place}}",
+    "intro": "Tu pars étudier ou faire un stage {{place}} ? Voici ce qu'il faut préparer avant le départ : formalités, santé, budget, logement et codes culturels.",
+    "cta": "Je prépare mon départ",
+    "free": "Gratuit pendant la bêta · Sans carte bancaire",
+    "newTab": "(s'ouvre dans un nouvel onglet)",
+    "visaTitle": "Visa et formalités",
+    "visaEu": "Si tu es citoyen·ne de l'Union européenne, de l'EEE ou de Suisse, tu n'as pas besoin de visa pour étudier ou faire un stage {{place}} : une carte d'identité ou un passeport valide suffit. Une démarche d'enregistrement peut être demandée pour un séjour de plus de 3 mois. Pour une autre nationalité, les règles sont différentes : vérifie-les sur les sites officiels.",
+    "visaOther": "Les règles d'entrée pour étudier ou faire un stage {{place}} dépendent de ta nationalité, de la durée du séjour et de son type. Ne te fie qu'aux sites officiels :",
+    "franceDiplomatie": "France Diplomatie — Entrée / séjour",
+    "forFrench": "pour les ressortissants français",
+    "forOthers": "site officiel du pays, pour toutes les nationalités",
+    "visaTool": "Dans Xplania, le guide Visa résume ces pages officielles selon ton profil, avec la date de consultation, et te donne une liste de documents à cocher.",
+    "healthTitle": "Santé et vaccins",
+    "healthText": "Les vaccins et précautions recommandés dépendent de la durée du séjour et des régions visitées. Consulte la fiche officielle de l'Institut Pasteur et parles-en à ton médecin avant de partir.",
+    "pasteur": "Institut Pasteur — recommandations santé : {{country}}",
+    "budgetTitle": "Budget",
+    "budgetText": "Les coûts varient beaucoup selon la ville et ton logement. Plutôt qu'un chiffre moyen, prépare ces postes un par un :",
+    "budgetItems": [
+      "la caution et les frais d'installation du logement",
+      "le coût de ton premier mois, souvent le plus cher",
+      "les dépenses avant, pendant et après le séjour (billets, assurance, retour)",
+      "tes rentrées d'argent : bourse, gratification de stage, aide familiale"
+    ],
+    "housingTitle": "Logement",
+    "housingText": "Commence ta recherche tôt et compare plusieurs options : résidence, colocation ou logement chez l'habitant. Quelques ressources vérifiées à la main :",
+    "scam": "Ne paie jamais de caution avant d'avoir visité le logement (en vrai ou en visio) et signé un contrat.",
+    "cultureTitle": "Codes culturels {{place}}",
+    "situation": "Mise en situation",
+    "cultureNote": "Ce sont des tendances observées, pas des règles absolues : chaque personne est différente.",
+    "finalTitle": "Prépare ton départ {{place}} étape par étape",
+    "finalText": "Un questionnaire de 2 minutes, puis 5 outils connectés : budget, visa, valise, culture et logement.",
+    "checkedOn": "Liens vérifiés le {{date}}. Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir.",
+    "others": "Autres destinations"
   }
 }

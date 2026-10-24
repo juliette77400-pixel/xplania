@@ -15,7 +15,7 @@ const STEPS = [
 const HowItWorksSection = ({ onStart }: Props) => {
   const { t } = useTranslation();
   return (
-    <section id="comment-ca-marche" aria-labelledby="how-title" className="scroll-mt-20 px-4 py-20 sm:py-24">
+    <section id="comment-ca-marche" aria-labelledby="how-title" className="scroll-mt-20 px-4 py-14 sm:py-24">
       <div className="mx-auto max-w-5xl">
         <h2 id="how-title" className="text-balance text-center text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">{t("prepLanding.how.title")}</h2>
         <ol className="mt-12 grid gap-5 md:grid-cols-3">

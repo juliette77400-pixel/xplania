@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
+import { X, Send, Loader2, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { isPipHidden, onOpenPipChat } from "@/lib/help-events";
 
 interface Msg {
   role: "user" | "assistant";
@@ -14,7 +15,7 @@ interface Msg {
   intent?: string;
 }
 
-const HIDE_ROUTES = ["/auth", "/onboarding", "/carnet/", "/carnet", "/guide-budget"];
+
 
 const GlobalPipChat = () => {
   const { t } = useTranslation();
@@ -28,8 +29,9 @@ const GlobalPipChat = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { scrollRef.current?.scrollTo({ top: 1e9, behavior: "smooth" }); }, [msgs, open]);
+  useEffect(() => onOpenPipChat(() => setOpen(true)), []);
 
-  if (HIDE_ROUTES.some((p) => loc.pathname.startsWith(p))) return null;
+  if (isPipHidden(loc.pathname)) return null;
 
   const send = async () => {
     const text = input.trim();
@@ -63,15 +65,6 @@ const GlobalPipChat = () => {
 
   return (
     <>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-20 right-4 z-50 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center md:bottom-6"
-        aria-label={t("pip.openLabel")}
-      >
-        {open ? <X className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
-      </motion.button>
 
       <AnimatePresence>
         {open && (
@@ -79,12 +72,15 @@ const GlobalPipChat = () => {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-36 right-4 z-50 w-[calc(100vw-2rem)] sm:w-96 max-h-[70vh] glass-card rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden md:bottom-24"
+            className="fixed bottom-20 right-4 z-50 w-[calc(100vw-2rem)] sm:w-96 max-h-[70vh] glass-card rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden"
           >
             <div className="px-4 py-3 border-b border-border flex items-center gap-2 bg-background/80 backdrop-blur">
               <Sparkles className="w-4 h-4 text-primary" />
               <p className="font-semibold text-sm">{t("pip.title")}</p>
               {freeMode && <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground ml-auto">{t("pip.freeMode")}</span>}
+              <button type="button" onClick={() => setOpen(false)} aria-label={t("pip.close")} className={`${freeMode ? "" : "ml-auto "}rounded-full p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}>
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
             </div>
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2 min-h-[160px]">
               {msgs.length === 0 && (

@@ -13,7 +13,7 @@ const Testimonials = () => {
   }));
 
   return (
-    <section id="testimonials" className="py-20">
+    <section id="testimonials" className="py-14 sm:py-20">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -32,7 +32,7 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto -mx-4 px-4 pb-3 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:grid md:grid-cols-2 md:gap-6 max-w-5xl md:mx-auto">
           {items.map((item, i) => (
             <motion.div
               key={item.name}
@@ -40,7 +40,7 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card rounded-2xl p-6 flex flex-col"
+              className="glass-card rounded-2xl p-6 flex flex-col w-[82%] shrink-0 snap-start md:w-auto"
             >
               <Quote className="w-8 h-8 text-primary/40 mb-3" />
               <div className="flex gap-0.5 mb-3">

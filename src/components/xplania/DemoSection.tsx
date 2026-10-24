@@ -22,7 +22,7 @@ const USES = [
 const DemoSection = () => {
   const { t } = useTranslation();
   return (
-    <section aria-labelledby="demo-title" className="border-y border-border/60 bg-card/25 px-4 py-20 sm:py-24">
+    <section aria-labelledby="demo-title" className="border-y border-border/60 bg-card/25 px-4 py-14 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
           <h2 id="demo-title" className="text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">{t("prepLanding.demo.title")}</h2>

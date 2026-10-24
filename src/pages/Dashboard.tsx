@@ -14,7 +14,7 @@ import { useTrips, type Trip } from "@/hooks/useTrips";
 import { supabase } from "@/integrations/supabase/client";
 import TripActionsMenu from "@/components/shared/TripActionsMenu";
 import TripCountdown from "@/components/shared/TripCountdown";
-import TripReminderChecklist from "@/components/shared/TripReminderChecklist";
+import { tripLabels } from "@/lib/trip-label";
 import SatisfactionSurveyCard from "@/components/dashboard/SatisfactionSurveyCard";
 import { track } from "@/lib/analytics";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
@@ -176,12 +176,12 @@ const Dashboard = () => {
           <>
             {trips.length > 1 && (
               <div className="flex flex-wrap gap-2" role="group" aria-label={t("prepDashboard.myTrips")}>
-                {trips.map((tr) => (
+                {(() => { const labels = tripLabels(trips, i18n.language, t("myDashboard.untitledTrip")); return trips.map((tr) => (
                   <button key={tr.id} type="button" onClick={() => selectTrip(tr.id)} aria-pressed={tr.id === selected.id}
                     className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${tr.id === selected.id ? "border-primary bg-primary/15 text-foreground" : "border-border text-muted-foreground hover:text-foreground"}`}>
-                    {tr.destination || tr.title || t("myDashboard.untitledTrip")}
+                    {labels[tr.id]}
                   </button>
-                ))}
+                )); })()}
               </div>
             )}
 
@@ -205,7 +205,6 @@ const Dashboard = () => {
                 />
               </div>
               <div className="mt-4"><TripCountdown departureDate={selected.departure_date} returnDate={selected.return_date} /></div>
-              <div className="mt-5 rounded-xl border border-border/60 bg-background/50 p-4"><TripReminderChecklist tripId={selected.id} /></div>
               {progress && (
                 <div className="mt-5">
                   <div className="mb-1.5 flex items-center justify-between text-sm"><span className="font-semibold">{t("prepDashboard.overall")}</span><span className="font-bold text-primary">{overallPercent(progress)} %</span></div>

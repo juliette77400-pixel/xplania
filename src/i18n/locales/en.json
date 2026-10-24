@@ -136,7 +136,9 @@
     "groupAccount": "My account",
     "dna": "Traveler DNA",
     "culture": "Culture guide",
-    "housing": "Housing"
+    "housing": "Housing",
+    "visaShort": "Visa",
+    "cultureShort": "Culture"
   },
   "about": {
     "metaTitle": "About — Xplania, prepare your departure without the hassle",
@@ -4425,7 +4427,8 @@
     "placeholder": "Ask anything…",
     "error": "Couldn't reply, try again.",
     "openLabel": "Open chat",
-    "freeMode": "Free mode"
+    "freeMode": "Free mode",
+    "close": "Close the assistant"
   },
   "suiviAlerts": {
     "title": "Trip alerts",
@@ -6010,7 +6013,11 @@
   "help": {
     "label": "Need help?",
     "subject": "Xplania beta – an issue",
-    "body": "Hello,\n\nI have an issue on this page: {{page}}\n\nWhat happens:\n\n"
+    "body": "Hello,\n\nI have an issue on this page: {{page}}\n\nWhat happens:\n\n",
+    "menuButton": "Help",
+    "menuLabel": "Open the help menu",
+    "askAssistant": "Ask the assistant",
+    "writeTeam": "Email the Xplania team"
   },
   "report": {
     "cta": "Report this journal",
@@ -7570,5 +7577,47 @@
     "saved": "Review saved",
     "cleared": "Review cleared",
     "error": "Could not save. Try again."
+  },
+  "destPages": {
+    "kicker": "Departure guide",
+    "hubTitle": "Preparing your Erasmus or internship abroad: country guides",
+    "hubShort": "Country guides",
+    "hubIntro": "Paperwork, health, budget, housing and cultural codes: what to prepare before you leave, with checked official links.",
+    "cardTitle": "Preparing to leave {{place}}",
+    "footerLink": "Country guides",
+    "breadcrumb": "Breadcrumb",
+    "h1": "Preparing your Erasmus or internship {{place}}",
+    "intro": "Leaving to study or do an internship {{place}}? Here is what to prepare before you go: paperwork, health, budget, housing and cultural codes.",
+    "cta": "I'm preparing my departure",
+    "free": "Free during the beta · No credit card",
+    "newTab": "(opens in a new tab)",
+    "visaTitle": "Visa and paperwork",
+    "visaEu": "If you are an EU, EEA or Swiss citizen, you don't need a visa to study or do an internship {{place}}: a valid ID card or passport is enough. A registration step may be required for stays over 3 months. Other nationalities follow different rules: check them on the official sites.",
+    "visaOther": "Entry rules to study or do an internship {{place}} depend on your nationality, the length of your stay and its type. Only rely on official sites:",
+    "franceDiplomatie": "France Diplomatie — Entry / stay",
+    "forFrench": "for French nationals",
+    "forOthers": "the country's official site, for all nationalities",
+    "visaTool": "In Xplania, the Visa guide summarises these official pages for your profile, with the date they were read, and gives you a document checklist.",
+    "healthTitle": "Health and vaccines",
+    "healthText": "Recommended vaccines and precautions depend on the length of your stay and the regions you visit. Read the Institut Pasteur official sheet and talk to your doctor before leaving.",
+    "pasteur": "Institut Pasteur — health advice: {{country}}",
+    "budgetTitle": "Budget",
+    "budgetText": "Costs vary a lot with the city and your housing. Rather than an average figure, plan these items one by one:",
+    "budgetItems": [
+      "your housing deposit and move-in costs",
+      "the cost of your first month, often the most expensive",
+      "costs before, during and after the stay (tickets, insurance, return)",
+      "your income: grant, internship pay, family support"
+    ],
+    "housingTitle": "Housing",
+    "housingText": "Start looking early and compare several options: residence, flatshare or homestay. A few hand-checked resources:",
+    "scam": "Never pay a deposit before visiting the place (in person or by video) and signing a contract.",
+    "cultureTitle": "Cultural codes {{place}}",
+    "situation": "Real-life situation",
+    "cultureNote": "These are general trends, not absolute rules: everyone is different.",
+    "finalTitle": "Prepare your departure {{place}} step by step",
+    "finalText": "A 2-minute questionnaire, then 5 connected tools: budget, visa, packing, culture and housing.",
+    "checkedOn": "Links checked on {{date}}. Rules can change: always check the official sites before leaving.",
+    "others": "Other destinations"
   }
 }

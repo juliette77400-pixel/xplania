@@ -29,6 +29,8 @@ interface NavItem {
   labelKey: string;
   icon: typeof Home;
   premium?: boolean;
+  /** Shorter label for the desktop bar, so it fits on one line. */
+  shortKey?: string;
 }
 
 // The primary navigation lists the preparation tools first; modules switched
@@ -36,9 +38,9 @@ interface NavItem {
 const PRIMARY_ALL: NavItem[] = [
   { to: "/app", labelKey: "appNav.home", icon: Home },
   { to: "/guide-budget", labelKey: "appNav.budget", icon: Wallet },
-  { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck },
+  { to: "/guide-visa", labelKey: "appNav.visa", icon: FileCheck, shortKey: "appNav.visaShort" },
   { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
-  { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
+  { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2, shortKey: "appNav.cultureShort" },
   { to: "/guide-logement", labelKey: "appNav.housing", icon: BedDouble },
   { to: "/discover", labelKey: "appNav.explorePhase", icon: Compass },
   { to: "/suivi", labelKey: "appNav.travelPhase", icon: Activity },
@@ -117,14 +119,15 @@ const AppNavbar = () => {
               <Link
                 key={it.to}
                 to={it.to}
-                className={`relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                title={it.shortKey ? t(it.labelKey) : undefined}
+                className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
                   active
                     ? "bg-primary/15 text-primary"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
-                <span>{t(it.labelKey)}</span>
+                <span>{t(it.shortKey ?? it.labelKey)}</span>
                 {it.premium && (
                   <Sparkles className="w-2.5 h-2.5 text-amber-500" />
                 )}
@@ -132,7 +135,7 @@ const AppNavbar = () => {
             );
           })}
           <DropdownMenu>
-            <DropdownMenuTrigger className="relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60">
+            <DropdownMenuTrigger className="relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60">
               <MoreHorizontal className="w-3.5 h-3.5" /> {t("appNav.more")}
               {user && missionsRemaining > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-3.5 px-1 rounded-full bg-primary text-[9px] font-bold text-primary-foreground flex items-center justify-center">

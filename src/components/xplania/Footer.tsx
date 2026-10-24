@@ -45,6 +45,7 @@ const Footer = (_: Props) => {
     { icon: Heart, label: t("features.items.mood.title"), to: "/mood" },
     { icon: MapPinned, label: t("features.items.discover.title"), to: "/discover" },
     { icon: Trophy, label: t("appNav.badges"), to: "/gamification" },
+    { icon: MapPinned, label: t("destPages.footerLink"), to: "/preparer" },
   ].filter((item) => isPathEnabled(item.to));
 
 
