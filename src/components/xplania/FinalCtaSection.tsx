@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface Props {
   onCreateTrip: () => void;
@@ -8,21 +8,17 @@ interface Props {
 const FinalCtaSection = ({ onCreateTrip }: Props) => {
   const { t } = useTranslation();
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-3xl mx-auto text-center glass-card rounded-3xl p-8 md:p-12 border border-primary/20">
-        <h2 className="text-3xl md:text-4xl font-extrabold mb-3">
-          {t("home.ctaFinal.title")}
-        </h2>
-        <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-          {t("home.ctaFinal.subtitle")}
-        </p>
+    <section className="px-4 py-20">
+      <div className="glass-card mx-auto max-w-3xl rounded-3xl border border-primary/20 p-8 text-center md:p-12">
+        <h2 className="mb-3 text-3xl font-extrabold md:text-4xl">{t("prepLanding.final.title")}</h2>
+        <p className="mx-auto mb-8 max-w-xl text-muted-foreground">{t("prepLanding.final.text")}</p>
         <button
           onClick={onCreateTrip}
-          className="gradient-button px-8 py-4 rounded-xl text-primary-foreground font-semibold inline-flex items-center gap-2 hover:opacity-90 transition-opacity"
+          className="gradient-button inline-flex items-center gap-2 rounded-xl px-8 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
         >
-          <Sparkles className="w-5 h-5" />
-          {t("home.ctaFinal.cta")}
+          {t("prepLanding.final.cta")}<ArrowRight className="h-5 w-5" />
         </button>
+        <p className="mt-4 text-sm text-muted-foreground">{t("prepLanding.final.note")}</p>
       </div>
     </section>
   );
