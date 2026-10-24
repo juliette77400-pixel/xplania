@@ -12,12 +12,13 @@
 
 # Roadmap — Refonte Visa & Budget (oct. 2026)
 
-- [ ] Sources officielles réellement consultées (France Diplomatie + Institut Pasteur) avec cache 24 h
-- [ ] Visa : bloc profil (passeport, transit, régions) + champs manquants
-- [ ] Visa : 4 cartes (Visa, Passeport, Santé, Sécurité) + niveaux de fiabilité
-- [ ] Visa : santé en 4 groupes, sécurité en catégories publiées, urgences sourcées
-- [ ] Visa : checklist personnalisée sauvegardée, règle fixe Europe
-- [ ] Budget : 5 indicateurs, frais de départ / par mois / global, payé vs estimé
-- [ ] Budget : graphiques réels, 3 recommandations calculées, simulateur avec confirmation
-- [ ] Budget : plus de réécriture automatique, SAFETY_RULE dans budget-tips
-- [ ] Traductions FR/EN, tests, vérifications des 5 profils
+- [x] Sources officielles réellement consultées (France Diplomatie + Institut Pasteur) avec cache 24 h
+- [x] Visa : bloc profil (passeport, transit, régions) + champs manquants
+- [x] Visa : 4 cartes (Visa, Passeport, Santé, Sécurité) + niveaux de fiabilité
+- [x] Visa : santé en 4 groupes, sécurité en catégories publiées, urgences sourcées
+- [x] Visa : checklist personnalisée sauvegardée, règle fixe Europe
+- [x] Budget : 5 indicateurs, frais de départ / par mois / global, payé vs estimé
+- [x] Budget : graphiques réels, 3 recommandations calculées, simulateur avec confirmation
+- [x] Budget : plus de réécriture automatique, SAFETY_RULE dans budget-tips
+- [x] Traductions FR/EN, tests, vérifications des 5 profils
+- [ ] Après republication : supprimer l'ancienne fonction visa-official-info (encore utilisée par la version en ligne)
