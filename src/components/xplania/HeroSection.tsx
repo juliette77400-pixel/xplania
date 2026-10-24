@@ -65,7 +65,7 @@ const HeroSection = ({ onCreateTrip }: Props) => {
                     <motion.li key={key} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .4 + i * .08 }}
                       className="flex items-center gap-3 rounded-xl border border-border/60 bg-muted/40 px-3.5 py-2.5 text-sm">
                       <span className="gradient-button flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"><Icon className="h-4 w-4 text-primary-foreground" aria-hidden /></span>
-                      <span className="min-w-0 flex-1 truncate font-medium">{t(`prepDashboard.modules.${key}.title`)}</span>
+                      <span className="min-w-0 flex-1 font-medium leading-tight">{t(`prepDashboard.modules.${key}.title`)}</span>
                       <span className={`inline-flex shrink-0 items-center gap-1 text-xs ${state === "active" ? "text-primary" : "text-muted-foreground"}`}>
                         <StatusIcon className="h-3.5 w-3.5" aria-hidden />{t(`prepLanding.hero.preview.${key}`)}
                       </span>
