@@ -183,6 +183,13 @@
       "when": 1792873708990,
       "tag": "0025_server_set_activity_timestamps",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1793093906240,
+      "tag": "0026_migration",
+      "breakpoints": true
     }
   ]
 }

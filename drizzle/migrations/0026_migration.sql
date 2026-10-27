@@ -1,0 +1,1 @@
+ALTER TYPE public.quota_tool ADD VALUE IF NOT EXISTS 'culture';
