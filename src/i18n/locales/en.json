@@ -531,7 +531,7 @@
   },
   "guideVisa": {
     "title": "Visa & Administrative Paperwork",
-    "heroKicker": "Your copilot checks the paperwork",
+    "heroKicker": "Visa, documents, health",
     "contextKicker": "Your situation",
     "contextHelp": "The result depends on your destination and nationality.",
     "resourcesKicker": "Go further",
@@ -598,8 +598,8 @@
     "tipsTitle": "Practical tips",
     "inlineDisclaimer": "ℹ️ Always double-check this information on the official embassy website (diplomatie.gouv.fr).",
     "disclaimer": {
-      "title": "Important —",
-      "body": "For any detail or question, it's always best to check with the embassy or consulate of your destination before leaving. Xplania cannot be held responsible if a problem occurs.",
+      "title": "Good to know:",
+      "body": "Xplania helps you find your way, but only the embassy or consulate is authoritative: if in doubt, ask them.",
       "cta": "Official embassy website",
       "checkedOn": "Info prepared on {{date}} from known rules. Always double-check before you leave."
     },
@@ -2181,15 +2181,15 @@
     "headerTitle": "🧳 Smart Suitcase",
     "headerSubtitle": "Xplania Advanced AI",
     "headerSelected": "selected",
-    "heroBadge": "Xplania Advanced AI",
-    "heroTitleA": "The AI that packs",
+    "heroBadge": "Your suitcase",
+    "heroTitleA": "Packing",
     "heroTitleB": "your bag for {{destination}}",
-    "heroDesc": "Xplania analyzes real weather, local culture and your travel style to generate a perfectly tailored suitcase in seconds.",
+    "heroDesc": "A list based on the usual weather of your months there, your type of stay and your luggage. Tick items off as you go.",
     "heroCta": "🧳 Generate my suitcase",
-    "generateHint": "First pick your transport and luggage type above, then generate: the list will adapt to those choices and your trip criteria.",
-    "heroBadgeWeather": "Live weather analyzed",
+    "generateHint": "Plane and luggage type are already chosen from your stay. Change them if needed, then create your list.",
+    "heroBadgeWeather": "Usual local weather",
     "heroBadgeCulture": "Cultural tips",
-    "heroBadgeOptimized": "Optimized packing",
+    "heroBadgeOptimized": "Checklist",
     "heroDays": "{{count}} day",
     "heroDays_other": "{{count}} days",
     "progressLabel": "Packing progress",
@@ -2668,7 +2668,7 @@
       "s4": "Activity analysis…",
       "s5": "Optimizing suitcase…"
     },
-    "voyageTitle": "AI analysis of your trip",
+    "voyageTitle": "What we know about your stay",
     "voyageDestination": "Destination",
     "voyageDuration": "Duration",
     "voyageStyle": "Style",
@@ -2813,9 +2813,9 @@
     "aiIllustration": "AI illustration"
   },
   "budget": {
-    "heroBadge": "Powered by Xplania AI",
-    "heroTitle": "Smart Budget",
-    "heroSubtitle": "Plan, track and optimize your spending with Xplania AI.",
+    "heroBadge": "Your departure budget",
+    "heroTitle": "How much do you really need?",
+    "heroSubtitle": "First month, rent, deposit, transport: see what your stay costs and what's left each month.",
     "heroCta": "Create my forecast budget",
     "heroAnalyzing": "Analyzing…",
     "configTitle": "AI Budget Configuration",
@@ -2837,7 +2837,7 @@
     "configConstraints": "📝 Your constraints:",
     "summaryTitle": "Trip recap",
     "summaryMoreContext": "View the preferences used",
-    "summarySubtitle": "AI will use this data to build a tailored budget",
+    "summarySubtitle": "Your estimate starts from this information. You can adjust everything afterwards.",
     "summaryNoTrip": "No trip configured",
     "summaryNoTripDesc": "To generate a personal budget, fill the travel form on the home page first.",
     "summaryCreateTrip": "Create my trip",
@@ -6305,8 +6305,8 @@
     "howStep3Desc": "Save places to your lists and get an alert when you walk nearby."
   },
   "culture": {
-    "title": "Cultural immersion guide",
-    "subtitle": "The codes, customs and little gestures to feel at ease in your host country.",
+    "title": "What's it like over there?",
+    "subtitle": "Greetings, how to behave in class or at work, everyday codes: so you arrive feeling at ease.",
     "howTitle": "How does it work?",
     "howStep1Title": "Pick your country",
     "howStep1Desc": "Type the country name or pick one of the most requested.",
@@ -6327,7 +6327,7 @@
     "understood": "Understood",
     "markUnderstood": "Mark as understood",
     "readySheet": "Ready sheet",
-    "aiSheet": "Prepared on opening",
+    "aiSheet": "Gets ready when you open it",
     "back": "All topics",
     "loginNeeded": "Sign in to open this topic: it will be prepared for you and kept for future travellers.",
     "login": "Sign in",
@@ -6371,7 +6371,9 @@
       "internship": "You're doing an internship abroad",
       "other": "You're going on a student mobility"
     },
-    "stayHintCta": "Start with the “{{pillar}}” topic: university and work life in this country."
+    "stayHintCta": "Start with the “{{pillar}}” topic: university and work life in this country.",
+    "yourCountry": "Your destination:",
+    "changeCountry": "Change country"
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
@@ -6796,8 +6798,8 @@
   },
   "housing": {
     "kicker": "Housing assistant",
-    "title": "Your home abroad",
-    "subtitle": "From searching to moving in, find the key information and steps to get your housing ready.",
+    "title": "Finding a place over there",
+    "subtitle": "Where to look, what to compare, the traps to avoid, then moving in: step by step.",
     "status": {
       "label": "Your situation:",
       "change": "Change my situation",
@@ -7201,7 +7203,7 @@
   "visa2": {
     "toolName": "Visa & formalities",
     "titleFor": "Your formalities for {{destination}}",
-    "subtitle": "Your profile, the essentials in four cards, then your checklist. Every piece of information shows its source and how reliable it is.",
+    "subtitle": "The essentials in four cards, then your checklist. Every piece of information shows where it comes from and when it was checked.",
     "yourDestination": "your destination",
     "opensNewTab": "(opens in a new tab)",
     "reliability": {

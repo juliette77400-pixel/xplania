@@ -37,6 +37,8 @@ export default function GuideCulture() {
   const [pillar, setPillar] = useState<PillarId | null>(null);
   const [done, setDone] = useState<Record<string, boolean>>(loadProgress);
   const [touched, setTouched] = useState(false);
+  // The country comes from the trip: the picker only shows when asked for (or when no country is known).
+  const [picking, setPicking] = useState(false);
   const [path, setPath] = useState<CulturePath>(() => pathForStay(stayType));
   const [pathTouched, setPathTouched] = useState(false);
   useEffect(() => { if (!pathTouched) setPath(pathForStay(stayType)); }, [stayType, pathTouched]);
@@ -54,7 +56,7 @@ export default function GuideCulture() {
     return countryList.filter((c) => norm(c.name).includes(n)).slice(0, 6);
   }, [query]);
 
-  const choose = (c: string) => { setTouched(true); setCode(c); setPillar(null); setNotFound(false); setQuery(""); };
+  const choose = (c: string) => { setTouched(true); setCode(c); setPillar(null); setNotFound(false); setQuery(""); setPicking(false); };
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const c = findCountry(query);
@@ -92,6 +94,12 @@ export default function GuideCulture() {
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">{t("culture.subtitle")}</p>
         </header>
 
+        {code && !picking && !notFound ? (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/70 bg-card/45 px-5 py-4">
+            <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryName(code)}</span></p>
+            <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
+          </div>
+        ) : (
         <form onSubmit={submit} className="rounded-2xl border border-border/70 bg-card/45 p-6 space-y-3">
           <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("culture.contextKicker")}</p>
           <label htmlFor="culture-country" className="block text-xl font-bold text-foreground">{t("culture.searchLabel")}</label>
@@ -122,6 +130,7 @@ export default function GuideCulture() {
             </div>
           </div>
         </form>
+        )}
 
         {!code && <HowItWorks prefix="culture" />}
 

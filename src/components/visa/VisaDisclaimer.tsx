@@ -11,25 +11,21 @@ const VisaDisclaimer = () => {
     <div
       role="note"
       aria-label={t("guideVisa.disclaimer.title")}
-      className="border border-amber-400/50 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-4 py-3 rounded-xl flex flex-col sm:flex-row sm:items-center gap-3"
+      className="border border-amber-400/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-3 py-2 rounded-xl flex flex-wrap items-center gap-x-3 gap-y-1.5"
     >
-      <div className="flex items-start gap-2 flex-1">
-        <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" aria-hidden />
-        <div className="text-xs sm:text-sm leading-snug">
-          <strong className="block sm:inline">{t("guideVisa.disclaimer.title")} </strong>
-          <span>{t("guideVisa.disclaimer.body")}</span>
-          <span className="block mt-1 opacity-80">
-            {t("guideVisa.disclaimer.checkedOn", { date: new Date().toLocaleDateString(i18n.language.startsWith("en") ? "en-US" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }) })}
-          </span>
-        </div>
+      <div className="flex min-w-0 flex-1 items-start gap-2">
+        <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" aria-hidden />
+        <p className="text-xs leading-snug">
+          <strong>{t("guideVisa.disclaimer.title")} </strong>{t("guideVisa.disclaimer.body")}
+        </p>
       </div>
       <a
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-400 text-amber-900 dark:text-amber-100 text-xs font-semibold hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors"
+        className="shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-lg text-amber-900 dark:text-amber-100 text-xs font-semibold underline-offset-2 hover:underline"
       >
-        🏛️ {t("guideVisa.disclaimer.cta")}
+        {t("guideVisa.disclaimer.cta")}
         <ExternalLink className="w-3 h-3" />
       </a>
     </div>
