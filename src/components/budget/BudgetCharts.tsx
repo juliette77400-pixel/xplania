@@ -15,15 +15,18 @@ interface Props {
 const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-US";
-  const totalSpent = categories.reduce((s, c) => s + c.spent, 0);
+  const totalSpent = categories.reduce((s, c) => s + (Number(c.spent) || 0), 0);
   const usedPct = totalBudget > 0 ? Math.round((totalSpent / totalBudget) * 100) : 0;
 
   // Build daily data from REAL expenses
   const byDay = new Map<string, number>();
   for (const e of expenses) {
-    const d = new Date(e.date);
+    // A payment saved without a valid date (older saves, typed dates) must not crash the charts.
+    const amount = Number(e.amount) || 0;
+    const d = e.date ? new Date(e.date) : null;
+    if (!d || Number.isNaN(d.getTime()) || amount <= 0) continue;
     const key = d.toISOString().slice(0, 10);
-    byDay.set(key, (byDay.get(key) ?? 0) + e.amount);
+    byDay.set(key, (byDay.get(key) ?? 0) + amount);
   }
   const sortedDays = [...byDay.entries()].sort(([a], [b]) => a.localeCompare(b));
   const dailyData = sortedDays.length > 0
@@ -33,8 +36,8 @@ const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) =
       }))
     : [];
   const PIE_COLORS = ["hsl(var(--primary))", "hsl(var(--secondary))", "hsl(var(--success))", "hsl(var(--warning))", "hsl(var(--destructive))", "hsl(var(--muted-foreground))"];
-  const pieData = categories.filter((c) => c.planned > 0).sort((a, b) => b.planned - a.planned)
-    .map((c) => ({ name: t(`budget.categories.${c.key}`, { defaultValue: c.key }), value: c.planned }));
+  const pieData = categories.filter((c) => Number(c.planned) > 0).sort((a, b) => b.planned - a.planned)
+    .map((c) => ({ name: t(`budget.categories.${c.key}`, { defaultValue: c.key }), value: Math.round(Number(c.planned) || 0) }));
 
   const maxDay = dailyData.length ? dailyData.reduce((max, d) => (d.amount > max.amount ? d : max), dailyData[0]) : null;
 
@@ -43,9 +46,9 @@ const BudgetCharts = ({ categories, days, totalBudget, expenses = [] }: Props) =
     const label = t(`budget.categories.${c.key}`, { defaultValue: c.key });
     return {
       name: label.length > 12 ? label.slice(0, 10) + "…" : label,
-      planned: c.planned,
-      spent: c.spent,
-      over: c.spent > c.planned,
+      planned: Math.round(Number(c.planned) || 0),
+      spent: Math.round(Number(c.spent) || 0),
+      over: (Number(c.spent) || 0) > (Number(c.planned) || 0),
     };
   });
 

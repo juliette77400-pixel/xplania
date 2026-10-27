@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { PiggyBank, RefreshCw, Sparkles } from "lucide-react";
-import type { BudgetInsights } from "@/hooks/useBudgetInsights";
+import type { BudgetInsights, InsightsErrorKind } from "@/hooks/useBudgetInsights";
 
 interface Props {
   destination: string;
   tips?: BudgetInsights["tips"] | null;
   loading?: boolean;
   failed?: boolean;
+  errorKind?: InsightsErrorKind | null;
   onRefresh: () => void;
 }
 
@@ -24,7 +25,7 @@ const CAT_EMOJI: Record<string, string> = {
   fees: "💳",
 };
 
-const BudgetSavingTips = ({ destination, tips, loading, failed, onRefresh }: Props) => {
+const BudgetSavingTips = ({ destination, tips, loading, failed, errorKind, onRefresh }: Props) => {
   const { t } = useTranslation();
   const list = tips ?? [];
 
@@ -69,7 +70,7 @@ const BudgetSavingTips = ({ destination, tips, loading, failed, onRefresh }: Pro
       )}
 
       {!loading && list.length === 0 && (
-        <p className="text-sm text-muted-foreground">{t(failed ? "budget.savingTipsError" : "budget.savingTipsEmpty")}</p>
+        <p className="text-sm text-muted-foreground">{failed ? t(`budget.insightsError.${errorKind || "server"}`) : t("budget.savingTipsEmpty")}</p>
       )}
 
       {!loading && list.length > 0 && (

@@ -5,6 +5,7 @@ import type { LuggageMode } from "@/components/valise/LuggageModes";
 import type { TransportMode } from "@/components/valise/TransportSelector";
 import type { ChecklistItem } from "@/components/valise/ChecklistSection";
 import i18n from "@/i18n";
+import { activityChecklist, type ValiseActivity } from "@/lib/valise-activities";
 
 const isEn = () => i18n.language?.startsWith("en");
 
@@ -247,6 +248,17 @@ const transportExtrasFr: Record<TransportMode, Record<string, ChecklistItem[]>> 
       { name: "Sac étanche", description: "Protection téléphone/papiers", checked: false },
     ],
   },
+  velo: {
+    "Spécial Vélo 🚲": [
+      { name: "Casque", description: "Obligatoire pour les mineurs dans plusieurs pays, conseillé pour tous", checked: false },
+      { name: "Éclairage avant et arrière", description: "Obligatoire la nuit dans la plupart des pays européens", checked: false },
+      { name: "Gilet ou bandes réfléchissantes", description: "Pour être vu·e le soir", checked: false },
+      { name: "Antivol solide", description: "Les vols de vélos sont fréquents en ville", checked: false },
+      { name: "Sacoches ou sac étanche", description: "Pour transporter tes affaires sous la pluie", checked: false },
+      { name: "Kit de réparation + pompe", description: "Rustines, démonte-pneus", checked: false },
+      { name: "Veste de pluie légère", description: "Se range dans une sacoche", checked: false },
+    ],
+  },
 };
 
 const transportExtrasEn: Record<TransportMode, Record<string, ChecklistItem[]>> = {
@@ -285,17 +297,34 @@ const transportExtrasEn: Record<TransportMode, Record<string, ChecklistItem[]>> 
       { name: "Waterproof bag", description: "Phone/papers protection", checked: false },
     ],
   },
+  velo: {
+    "Bike special 🚲": [
+      { name: "Helmet", description: "Mandatory for minors in several countries, advised for everyone", checked: false },
+      { name: "Front and rear lights", description: "Mandatory at night in most European countries", checked: false },
+      { name: "Reflective vest or bands", description: "To be seen in the evening", checked: false },
+      { name: "Sturdy lock", description: "Bike theft is common in cities", checked: false },
+      { name: "Panniers or waterproof bag", description: "To carry your things in the rain", checked: false },
+      { name: "Repair kit + pump", description: "Patches, tyre levers", checked: false },
+      { name: "Light rain jacket", description: "Fits in a pannier", checked: false },
+    ],
+  },
 };
 
 export const transportExtras = new Proxy({} as Record<TransportMode, Record<string, ChecklistItem[]>>, {
   get: (_t, prop) => (isEn() ? transportExtrasEn : transportExtrasFr)[prop as TransportMode],
 });
 
-export function buildCategories(mode: LuggageMode, transport: TransportMode): Record<string, ChecklistItem[]> {
+export function buildCategories(
+  mode: LuggageMode,
+  transport: TransportMode,
+  activities: ValiseActivity[] = [],
+  activityOther = "",
+): Record<string, ChecklistItem[]> {
   const base = isEn() ? baseCategoriesEn : baseCategoriesFr;
   const modeSet = (isEn() ? modeExtrasEn : modeExtrasFr)[mode] || {};
   const transportSet = (isEn() ? transportExtrasEn : transportExtrasFr)[transport] || {};
-  const all = { ...base, ...modeSet, ...transportSet };
+  const activitySet = activityChecklist(activities, activityOther, !!isEn());
+  const all = { ...base, ...modeSet, ...transportSet, ...activitySet };
   // Nothing is ticked before the student packs it.
   return Object.fromEntries(Object.entries(all).map(([k, items]) => [k, items.map((i) => ({ ...i, checked: false }))]));
 }

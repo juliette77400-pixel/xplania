@@ -8,7 +8,7 @@ export type HousingStatus = (typeof HOUSING_STATUSES)[number];
 export const isHousingStatus = (v: unknown): v is HousingStatus =>
   typeof v === "string" && (HOUSING_STATUSES as readonly string[]).includes(v);
 
-export const HOUSING_TYPES = ["residence", "flatshare", "studio", "family", "other"] as const;
+export const HOUSING_TYPES = ["residence", "flatshare", "studio", "family", "hotel", "other"] as const;
 export type HousingType = (typeof HOUSING_TYPES)[number];
 
 /** Checks done before booking or signing (module 3). */

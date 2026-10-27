@@ -16,6 +16,14 @@ interface ChatMessage {
   content: string;
 }
 
+const SECTION_LABELS: Record<string, string> = {
+  analysis: "analysis and total budget",
+  forecast: "planned amounts per category",
+  tracker: "real payments versus plan",
+  charts: "charts and breakdown",
+  tips: "local saving tips",
+};
+
 serve(withQuotaRefund(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   const __auth = await requireAuth(req, corsHeaders);
@@ -48,6 +56,7 @@ serve(withQuotaRefund(async (req) => {
       accommodationStanding = "",
       organization = "",
       rhythm = "",
+      section = "",
     } = await req.json();
 
     if (!question || typeof question !== "string") {
@@ -109,7 +118,8 @@ Per category: ${breakdown || "n/a"}
 EXPENSES (recent)
 ${expensesList}
 
-CURRENT DATE: ${today}`;
+CURRENT DATE: ${today}
+SECTION OPEN ON THE PAGE: ${SECTION_LABELS[String(section)] || "n/a"} (answer about this part of the budget when the question is vague)`;
 
     const isEN = String(locale).startsWith("en");
     const cleanName = cleanField(firstName, 40);

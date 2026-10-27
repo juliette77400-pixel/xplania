@@ -4,6 +4,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { lookupPlace } from "../_shared/place-lookup.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -45,9 +46,7 @@ serve(async (req) => {
   const pastEnd = new Date(end.getFullYear() - shift, end.getMonth(), end.getDate());
 
   try {
-    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=${lang}${country ? `&countryCode=${country}` : ""}`;
-    const geo = await fetch(geoUrl).then((r) => (r.ok ? r.json() : null));
-    const place = geo?.results?.[0];
+    const place = await lookupPlace(city, country, lang);
     if (!place) return json({ status: "not_found" });
 
     const archUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${place.latitude}&longitude=${place.longitude}&start_date=${iso(pastStart)}&end_date=${iso(pastEnd)}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`;
@@ -73,7 +72,7 @@ serve(async (req) => {
     return json({
       status: "ok",
       planned,
-      place: { name: place.name, region: place.admin1 || "", country: place.country || "" },
+      place: { name: place.name, region: place.region, country: place.country, kind: place.kind },
       observed: { from: iso(pastStart), to: iso(pastEnd) },
       months,
       source: { name: "Open-Meteo", url: "https://open-meteo.com/" },

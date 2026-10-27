@@ -2203,7 +2203,9 @@
       "avionHint": "Liquides <100ml, bagage cabine",
       "trainHint": "Confort & flexibilité",
       "voitureHint": "Espace illimité, route",
-      "bateauHint": "Anti-mal de mer, soleil"
+      "bateauHint": "Anti-mal de mer, soleil",
+      "velo": "Vélo",
+      "veloHint": "Casque, éclairage, antivol"
     },
     "modesTitle": "Type de valise",
     "modesSubtitle": "11 styles premium — sélectionne pour adapter le contenu instantanément",
@@ -2926,7 +2928,7 @@
     "chartsAiOver": "Si tu maintiens ce rythme, tu risques de dépasser ton budget de {{amount}}€. L'IA te recommande de réduire les dépenses activités ou d'augmenter ton budget prévisionnel.",
     "chartsAiOk": "À ce rythme, tu resteras dans ton budget avec une marge de {{amount}}€. Continue comme ça !",
     "alertsTitle": "Alertes & Optimisation IA",
-    "alertsSubtitle": "L'IA surveille tes dépenses et te propose des solutions",
+    "alertsSubtitle": "Tes postes à surveiller et des idées pour dépenser moins sur place",
     "alertsOver": "Dépassement du budget {{category}} !",
     "alertsHigh": "Prix des {{category}} plus élevés que prévu.",
     "alertsLow": "Tu es en dessous du budget prévu pour {{category}} !",
@@ -3171,8 +3173,18 @@
     "scenarioApply": "Appliquer ce scénario",
     "scenarioApplied": "Scénario appliqué à ton budget",
     "dealsEmpty": "Les bons plans arrivent après la génération.",
-    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications.",
-    "splitHint": "Passe la souris ou appuie sur une couleur pour voir sa part du budget."
+    "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels.",
+    "splitHint": "Passe la souris ou appuie sur une couleur pour voir sa part du budget.",
+    "insightsError": {
+      "quota": "Tu as utilisé tes essais Budget de ce mois. Ils reviennent le mois prochain.",
+      "ai_unavailable": "Le service d'IA est momentanément indisponible. Ton budget et tes montants restent utilisables : réessaie un peu plus tard.",
+      "rate": "Beaucoup de demandes en même temps. Réessaie dans une minute.",
+      "server": "Impossible de générer les idées pour l'instant. Réessaie."
+    },
+    "insightsRetry": "Réessayer",
+    "dealsNote": "Pistes d'économies durables, avec des prix indicatifs à vérifier. Ce ne sont pas des promotions en cours.",
+    "heroNoDestination": "Destination à choisir",
+    "heroChooseDestination": "Indiquer ma destination"
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
@@ -6375,7 +6387,15 @@
     },
     "stayHintCta": "Commence par le thème « {{pillar}} » : la vie à l'université et au travail dans ce pays.",
     "yourCountry": "Ta destination :",
-    "changeCountry": "Changer de pays"
+    "changeCountry": "Changer de pays",
+    "daily": {
+      "context": "Le contexte :",
+      "example": "Exemple :",
+      "nuance": "À éviter / nuance :",
+      "note": "Une tendance générale, pas une règle : chaque personne est différente. Nouveau geste chaque jour.",
+      "openTheme": "Voir le thème"
+    },
+    "enrichNote": "Conseils rédigés par Xplania ; exemples et nuances ajoutés par l'IA, à prendre comme des repères."
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
@@ -6914,7 +6934,8 @@
       "flatshare": "Colocation",
       "studio": "Studio / appartement",
       "family": "Famille d'accueil",
-      "other": "Autre"
+      "other": "Autre",
+      "hotel": "Hôtel / auberge"
     },
     "compare": {
       "help": "Ajoute les logements repérés sur d'autres sites. Seuls le nom et le loyer sont obligatoires.",
@@ -6957,10 +6978,12 @@
       "minutes": "{{n}} min",
       "lease": "Bail",
       "contract": "Contrat écrit",
-      "risks": "Points d'attention",
+      "risks": "Signaux à vérifier",
       "risksCount_one": "1 point à vérifier",
       "risksCount_other": "{{count}} points à vérifier",
-      "risksNone": "Aucun signal relevé"
+      "risksNone": "Aucun signal relevé",
+      "editShort": "Modifier",
+      "updated": "Modifications enregistrées"
     },
     "form": {
       "addTitle": "Ajouter un logement",
@@ -6987,7 +7010,7 @@
       "url": "Lien de l'annonce",
       "pros": "Avantages",
       "cons": "Inconvénients",
-      "notes": "Notes personnelles",
+      "notes": "Points d'attention",
       "privacy": "N'enregistre ici ni pièce d'identité, ni contrat, ni coordonnées bancaires.",
       "errors": {
         "name": "Indique un nom pour ce logement.",
@@ -7005,7 +7028,8 @@
       "unknownHint": "Laisse vide si tu ne sais pas encore : Xplania te dira quoi vérifier.",
       "commuteMinutes": "Trajet jusqu'au campus ou au stage (minutes)",
       "leaseNotes": "Conditions du bail",
-      "leaseNotesPlaceholder": "Durée minimale, préavis, sous-location, assurance habitation…"
+      "leaseNotesPlaceholder": "Durée minimale, préavis, sous-location, assurance habitation…",
+      "editDesc": "Tes réponses sont déjà remplies : change ce que tu veux puis enregistre."
     },
     "budget": {
       "title": "Ajouter les dépenses au budget",
@@ -7783,6 +7807,48 @@
       "i2": "Documents : passeport, attestations, copies",
       "i3": "Trousse de secours et adaptateurs",
       "note": "Liste d'exemple. Génère ta valise pour une liste adaptée à ta destination et à la saison."
+    }
+  },
+  "valise3": {
+    "activities": {
+      "title": "Qu'est-ce que tu vas faire sur place ?",
+      "subtitle": "Coche tout ce qui te concerne : ta liste, tes tenues et tes conseils s'adaptent.",
+      "items": {
+        "study": "Cours à l'université",
+        "internship": "Stage / travail",
+        "hiking": "Randonnée",
+        "beach": "Plage et baignade",
+        "sport": "Sport",
+        "nightlife": "Sorties et soirées",
+        "culture": "Visites culturelles",
+        "excursions": "Voyages et excursions"
+      },
+      "other": "Autre activité",
+      "otherPlaceholder": "Ex. : surf, ski, bénévolat…",
+      "saved": "Activités enregistrées pour ce séjour",
+      "saveError": "Impossible d'enregistrer tes activités. Réessaie.",
+      "applyToList": "Mettre à jour ma liste",
+      "applied": "Ta liste a été complétée avec tes activités"
+    },
+    "transportSaved": "Transport enregistré pour ce séjour",
+    "weather": {
+      "title": "Météo à {{place}} maintenant",
+      "subtitle": "Mesures réelles d'une station météo, pas une estimation de l'IA.",
+      "now": "Température actuelle",
+      "feels": "Ressenti {{t}}°",
+      "humidity": "Humidité",
+      "wind": "Vent",
+      "forecast": "Prévisions des prochains jours",
+      "updated": "Mesuré à {{time}} (heure locale) · source",
+      "loading": "Récupération de la météo…",
+      "unavailable": "Météo actuelle indisponible pour l'instant. Rien n'est affiché à la place : réessaie plus tard ou consulte un service météo local.",
+      "notFound": "On ne trouve pas « {{city}} » dans ce pays. Indique la ville précise de ton séjour pour avoir sa météo.",
+      "retry": "Réessayer",
+      "seasonalNote": "Les moyennes de saison ci-dessous servent à préparer ta valise ; la météo du jour peut être différente."
+    },
+    "tip": {
+      "error": "Impossible de générer un nouveau conseil pour l'instant. Réessaie dans un moment.",
+      "quota": "Tu as utilisé tes essais Valise de ce mois."
     }
   }
 }

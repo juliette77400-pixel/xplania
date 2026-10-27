@@ -2203,7 +2203,9 @@
       "avionHint": "Liquids <100ml, cabin baggage",
       "trainHint": "Comfort & flexibility",
       "voitureHint": "Unlimited space, road",
-      "bateauHint": "Anti-seasickness, sun"
+      "bateauHint": "Anti-seasickness, sun",
+      "velo": "Bike",
+      "veloHint": "Helmet, lights, lock"
     },
     "modesTitle": "Suitcase style",
     "modesSubtitle": "11 premium styles — pick one to instantly adapt the contents",
@@ -2926,7 +2928,7 @@
     "chartsAiOver": "At this pace, you risk going over budget by €{{amount}}. The AI recommends reducing activity spending or increasing your planned budget.",
     "chartsAiOk": "At this rate, you'll stay within budget with a €{{amount}} margin. Keep going!",
     "alertsTitle": "Alerts & AI Optimization",
-    "alertsSubtitle": "AI watches your spending and suggests fixes",
+    "alertsSubtitle": "Lines to watch and ideas to spend less once there",
     "alertsOver": "Budget exceeded for {{category}}!",
     "alertsHigh": "{{category}} prices are higher than expected.",
     "alertsLow": "You're under budget for {{category}}!",
@@ -3171,8 +3173,18 @@
     "scenarioApply": "Apply this scenario",
     "scenarioApplied": "Scenario applied to your budget",
     "dealsEmpty": "Deals appear after generation.",
-    "disclaimerAdjust": "This budget is an estimate you can adjust anytime. Always double-check your spending and real prices: Xplania helps, but doesn't replace your own checks.",
-    "splitHint": "Hover or tap a colour to see its share of the budget."
+    "disclaimerAdjust": "This budget is an estimate you can adjust anytime. Always double-check your spending and real prices.",
+    "splitHint": "Hover or tap a colour to see its share of the budget.",
+    "insightsError": {
+      "quota": "You've used this month's Budget tries. They come back next month.",
+      "ai_unavailable": "The AI service is temporarily unavailable. Your budget and amounts still work: try again a bit later.",
+      "rate": "Lots of requests at once. Try again in a minute.",
+      "server": "Couldn't generate ideas right now. Try again."
+    },
+    "insightsRetry": "Try again",
+    "dealsNote": "Lasting ways to save, with indicative prices to check. These are not current promotions.",
+    "heroNoDestination": "Destination to choose",
+    "heroChooseDestination": "Add my destination"
   },
   "gamification": {
     "heroTitle": "Badge Collection",
@@ -6375,7 +6387,15 @@
     },
     "stayHintCta": "Start with the “{{pillar}}” topic: university and work life in this country.",
     "yourCountry": "Your destination:",
-    "changeCountry": "Change country"
+    "changeCountry": "Change country",
+    "daily": {
+      "context": "Context:",
+      "example": "Example:",
+      "nuance": "Avoid / nuance:",
+      "note": "A general tendency, not a rule: everyone is different. A new gesture every day.",
+      "openTheme": "See the theme"
+    },
+    "enrichNote": "Tips written by Xplania; examples and nuances added by AI, to take as pointers."
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
@@ -6914,7 +6934,8 @@
       "flatshare": "Flatshare",
       "studio": "Studio / flat",
       "family": "Host family",
-      "other": "Other"
+      "other": "Other",
+      "hotel": "Hotel / hostel"
     },
     "compare": {
       "help": "Add the places you found on other websites. Only the name and rent are required.",
@@ -6957,10 +6978,12 @@
       "minutes": "{{n}} min",
       "lease": "Lease",
       "contract": "Written contract",
-      "risks": "Watch-outs",
+      "risks": "Things to check",
       "risksCount_one": "1 thing to check",
       "risksCount_other": "{{count}} things to check",
-      "risksNone": "No warning sign noted"
+      "risksNone": "No warning sign noted",
+      "editShort": "Edit",
+      "updated": "Changes saved"
     },
     "form": {
       "addTitle": "Add a place",
@@ -6987,7 +7010,7 @@
       "url": "Listing link",
       "pros": "Pros",
       "cons": "Cons",
-      "notes": "Personal notes",
+      "notes": "Points to watch",
       "privacy": "Don't save ID documents, contracts or bank details here.",
       "errors": {
         "name": "Enter a name for this place.",
@@ -7005,7 +7028,8 @@
       "unknownHint": "Leave empty if you don't know yet: Xplania will tell you what to check.",
       "commuteMinutes": "Commute to campus or internship (minutes)",
       "leaseNotes": "Lease conditions",
-      "leaseNotesPlaceholder": "Minimum length, notice, sublet, home insurance…"
+      "leaseNotesPlaceholder": "Minimum length, notice, sublet, home insurance…",
+      "editDesc": "Your answers are already filled in: change what you want, then save."
     },
     "budget": {
       "title": "Add costs to budget",
@@ -7783,6 +7807,48 @@
       "i2": "Documents: passport, certificates, copies",
       "i3": "First-aid kit and adapters",
       "note": "Example list. Generate your packing list tailored to your destination and season."
+    }
+  },
+  "valise3": {
+    "activities": {
+      "title": "What will you do there?",
+      "subtitle": "Tick everything that applies: your list, outfits and tips adapt.",
+      "items": {
+        "study": "University classes",
+        "internship": "Internship / work",
+        "hiking": "Hiking",
+        "beach": "Beach and swimming",
+        "sport": "Sport",
+        "nightlife": "Going out",
+        "culture": "Cultural visits",
+        "excursions": "Trips and excursions"
+      },
+      "other": "Other activity",
+      "otherPlaceholder": "e.g. surfing, skiing, volunteering…",
+      "saved": "Activities saved for this stay",
+      "saveError": "Couldn't save your activities. Try again.",
+      "applyToList": "Update my list",
+      "applied": "Your list now includes your activities"
+    },
+    "transportSaved": "Transport saved for this stay",
+    "weather": {
+      "title": "Weather in {{place}} right now",
+      "subtitle": "Real measurements from a weather station, not an AI estimate.",
+      "now": "Current temperature",
+      "feels": "Feels like {{t}}°",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "forecast": "Forecast for the next days",
+      "updated": "Measured at {{time}} (local time) · source",
+      "loading": "Getting the weather…",
+      "unavailable": "Current weather unavailable right now. Nothing is shown instead: try again later or check a local weather service.",
+      "notFound": "We can't find \"{{city}}\" in this country. Add the exact city of your stay to get its weather.",
+      "retry": "Try again",
+      "seasonalNote": "The seasonal averages below help you pack; today's weather may differ."
+    },
+    "tip": {
+      "error": "Couldn't generate a new tip right now. Try again in a moment.",
+      "quota": "You've used this month's Valise tries."
     }
   }
 }

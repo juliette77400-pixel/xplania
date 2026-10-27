@@ -39,7 +39,7 @@ export function morePillars(path: CulturePath): PillarId[] {
 }
 
 type L = { fr: string; en: string };
-export interface Tip { text: string; why: string; severity?: "low" | "medium" | "high" }
+export interface Tip { text: string; why: string; severity?: "low" | "medium" | "high"; /** Concrete scene (AI themes, or added to hand-written tips). */ example?: string; /** Frequent mistake or local variation. */ nuance?: string }
 export interface PillarContent { ping: string; dos: Tip[]; donts: Tip[]; homeVsHere: string[] }
 interface RawTip { text: L; why: L; severity?: "low" | "medium" | "high" }
 interface RawPillar { ping: L; dos: RawTip[]; donts: RawTip[]; homeVsHere: L[] }
@@ -315,17 +315,23 @@ export function getSituation(code: string, lang: "fr" | "en"): Situation | null 
 }
 
 /** "Gesture of the day": one pre-written tip per day, rotating through the country's sheets. */
-export function getTipOfDay(code: string, lang: "fr" | "en"): { pillar: PillarId; tip: Tip; kind: "do" | "dont" } | null {
+/**
+ * Hand-written gesture of the day (visitors, or when the AI one is unavailable).
+ * `date` is the destination's local date: the tip stays the same all day and changes at midnight there.
+ * Themes of the student's path come first; consecutive days never show the same tip.
+ */
+export function getTipOfDay(code: string, lang: "fr" | "en", path: CulturePath = "daily", date: string = new Date().toISOString().slice(0, 10)): { pillar: PillarId; tip: Tip; kind: "do" | "dont" } | null {
+  const order: PillarId[] = [...CULTURE_PATHS[path], ...morePillars(path)];
   const all: { pillar: PillarId; tip: Tip; kind: "do" | "dont" }[] = [];
-  for (const p of CULTURE_PILLARS) {
-    const c = getPrewritten(code, p.id, lang);
+  for (const id of order) {
+    const c = getPrewritten(code, id, lang);
     if (!c) continue;
-    c.dos.forEach((tip) => all.push({ pillar: p.id, tip, kind: "do" }));
-    c.donts.forEach((tip) => all.push({ pillar: p.id, tip, kind: "dont" }));
+    c.dos.forEach((tip) => all.push({ pillar: id, tip, kind: "do" }));
+    c.donts.forEach((tip) => all.push({ pillar: id, tip, kind: "dont" }));
   }
   if (!all.length) return null;
-  const day = Math.floor(Date.now() / 86_400_000);
-  return all[day % all.length];
+  const day = Math.floor(Date.parse(`${date}T00:00:00Z`) / 86_400_000);
+  return all[((day % all.length) + all.length) % all.length];
 }
 
 /** Mini-quiz built from a pillar's content (works for pre-written and AI sheets). */

@@ -249,6 +249,7 @@ const BudgetOnboardingChat = ({
         accommodationStanding: tripData?.accommodationStanding || "",
         organization: tripData?.organization || "",
         rhythm: tripData?.rhythm || "",
+        section: activeSection,
       };
       const invokePromise = supabase.functions.invoke("budget-qa", { body: payload });
       const timeoutPromise = new Promise<never>((_, reject) =>

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RotateCcw, Check, FileDown } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
@@ -13,6 +13,7 @@ import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 import { useBudgetInsights, type BudgetScenario } from "@/hooks/useBudgetInsights";
 
 import BudgetHero from "@/components/budget/BudgetHero";
@@ -84,6 +85,8 @@ const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData, recommendations } = useTravelStore();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const hasDestination = !!tripData?.destination;
   // "Paris" is only the historical storage-key fallback; it is never shown as the student's destination.
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
@@ -200,6 +203,10 @@ const GuideBudgetPage = () => {
             return {
               ...def,
               ...c,
+              // Older saves may hold text or missing amounts: charts and totals need numbers.
+              planned: Math.max(0, Number(c.planned) || 0),
+              spent: Math.max(0, Number(c.spent) || 0),
+              aiSuggested: Math.max(0, Number(c.aiSuggested) || 0),
               icon: def.icon,
               color: def.color,
             } as BudgetCategory;
@@ -208,7 +215,7 @@ const GuideBudgetPage = () => {
             if (!rehydrated.some((c) => c.key === def.key)) rehydrated.push({ ...def });
           }
           setCategories(rehydrated);
-          setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
+          setExpenses(Array.isArray(parsed.expenses) ? (parsed.expenses as Expense[]).filter((e) => e && typeof e === "object").map((e) => ({ ...e, amount: Math.max(0, Number(e.amount) || 0) })) : []);
           setIncomes(sanitizeIncomes(parsed.incomes));
           setIncomesGiven(!!parsed.incomes);
           setHasGenerated(true);
@@ -340,6 +347,8 @@ const GuideBudgetPage = () => {
 
   const runGeneration = useCallback(async () => {
     if (isGenerating) return;
+    // No destination yet: never build a budget for a made-up city, ask for the trip first.
+    if (!hasDestination) { navigate("/preparation"); return; }
     if (reached) { setShowUpgrade(true); return; }
     consume();
     setIsGenerating(true);
@@ -358,7 +367,7 @@ const GuideBudgetPage = () => {
     } finally {
       setIsGenerating(false);
     }
-  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating]);
+  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating, hasDestination, navigate]);
 
   const handleRegenerate = askRecalculate;
 
@@ -430,20 +439,31 @@ const GuideBudgetPage = () => {
     });
   };
 
+  // While Ping scrolls to a section, the scroll observer must not switch back to the one passed on the way.
+  const pickedSectionAt = useRef(0);
   const scrollToSection = (name: "analysis" | "forecast" | "tracker" | "charts" | "tips") => {
+    // The chosen feature drives Ping's title and text right away, not only the scroll position.
+    pickedSectionAt.current = Date.now();
+    setActiveBudgetSection(name);
     // Force-open the matching collapsible if needed before scrolling
     window.dispatchEvent(new CustomEvent("xpl:open-section", { detail: { id: name } }));
-    requestAnimationFrame(() => {
+    // The folded content mounts after opening: wait for it before scrolling.
+    let tries = 0;
+    const go = () => {
       const el = document.querySelector(`[data-budget-section="${name}"]`);
-      el?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      else if (tries++ < 10) window.setTimeout(go, 60);
+    };
+    requestAnimationFrame(go);
   };
 
+  // Sections live in folded blocks that mount later: observe them as they appear.
   useEffect(() => {
     if (!hasGenerated) return;
     const sections = ["analysis", "forecast", "tracker", "charts", "tips"] as const;
     const observer = new IntersectionObserver(
       (entries) => {
+        if (Date.now() - pickedSectionAt.current < 1500) return;
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -452,11 +472,17 @@ const GuideBudgetPage = () => {
       },
       { threshold: [0.25, 0.5, 0.75], rootMargin: "-20% 0px -45% 0px" }
     );
-    sections.forEach((section) => {
-      const el = document.querySelector(`[data-budget-section="${section}"]`);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    const watched = new Set<Element>();
+    const scan = () => {
+      sections.forEach((section) => {
+        const el = document.querySelector(`[data-budget-section="${section}"]`);
+        if (el && !watched.has(el)) { watched.add(el); observer.observe(el); }
+      });
+    };
+    scan();
+    const mo = new MutationObserver(scan);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => { observer.disconnect(); mo.disconnect(); };
   }, [hasGenerated]);
 
   return (
@@ -467,10 +493,10 @@ const GuideBudgetPage = () => {
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
-        <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
+        <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={hasDestination ? destination : ""} days={tripData?.duration ? days : null} initialBudget={userBudget} />
         <MissingTripInfo needs={["budget", "dates"]} />
         <p className="mx-auto mt-3 max-w-3xl rounded-xl border border-border bg-muted/40 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground">
-          {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications." })}
+          {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels." })}
         </p>
 
         {!hasGenerated && !isGenerating && (
@@ -589,9 +615,11 @@ const GuideBudgetPage = () => {
 
               <CollapsibleSection title={t("collapsible.budget.charts")} subtitle={t("collapsible.budget.chartsSub")} sectionId="charts">
                 <div ref={chartRef}>
-                  <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
-                    <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
-                  </Suspense>
+                  <ErrorBoundary>
+                    <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
+                      <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                    </Suspense>
+                  </ErrorBoundary>
                 </div>
               </CollapsibleSection>
 
@@ -611,7 +639,7 @@ const GuideBudgetPage = () => {
                 title={t("collapsible.budget.alerts")}
                 subtitle={t("collapsible.budget.alertsSub")}
               >
-                <BudgetAlerts categories={categories} destination={destination} deals={insights.data?.deals} loading={insights.isFetching} />
+                <BudgetAlerts categories={categories} destination={destination} deals={insights.data?.deals} loading={insights.isFetching} errorKind={insights.errorKind} onRetry={insights.refresh} />
               </CollapsibleSection>
 
               <CollapsibleSection
@@ -624,6 +652,7 @@ const GuideBudgetPage = () => {
                   tips={insights.data?.tips}
                   loading={insights.isFetching}
                   failed={insights.isError}
+                  errorKind={insights.errorKind}
                   onRefresh={insights.refresh}
                 />
               </CollapsibleSection>

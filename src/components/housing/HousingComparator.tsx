@@ -111,6 +111,7 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
     { label: t("housing.compare.dates"), value: (o) => (o.available_from ? `${fmtDate(o.available_from)}${o.available_to ? ` → ${fmtDate(o.available_to)}` : ""}` : unknown) },
     { label: t("housing.form.pros"), value: (o) => o.pros || "—" },
     { label: t("housing.form.cons"), value: (o) => o.cons || "—" },
+    { label: t("housing.form.notes"), value: (o) => o.notes || "—" },
   ];
 
   const actions = (o: HousingOption) => (
@@ -119,7 +120,7 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
         <Star className={`mr-1 h-3.5 w-3.5 ${o.is_favorite ? "fill-current" : ""}`} />{o.is_favorite ? t("housing.compare.favorite") : t("housing.compare.markFavorite")}
       </Button>
       <Button size="sm" variant="outline" onClick={() => setFitFor(o)}><ClipboardCheck className="mr-1 h-3.5 w-3.5" />{t("housing.fit.cta")}</Button>
-      <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={t("housing.compare.edit", { name: o.name })} onClick={() => openEdit(o)}><Pencil className="h-3.5 w-3.5" /></Button>
+      <Button size="sm" variant="outline" aria-label={t("housing.compare.edit", { name: o.name })} onClick={() => openEdit(o)}><Pencil className="mr-1 h-3.5 w-3.5" />{t("housing.compare.editShort")}</Button>
       <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive" aria-label={t("housing.compare.delete", { name: o.name })} onClick={() => setToDelete(o)}><Trash2 className="h-3.5 w-3.5" /></Button>
       {o.listing_url && (
         <Button size="icon" variant="ghost" className="h-8 w-8" asChild>
@@ -238,7 +239,7 @@ const HousingComparator = ({ tripId, destination, city, departureDate, durationD
         defaultCity={city}
         onSubmit={async (values) => {
           await save.mutateAsync({ id: editing?.id, values });
-          toast.success(t("housing.compare.saved"));
+          toast.success(t(editing ? "housing.compare.updated" : "housing.compare.saved"));
         }}
       />
 

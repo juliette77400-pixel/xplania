@@ -1,20 +1,10 @@
 // Usual weather in the student's city during the months of the stay (observed
 // one year earlier, same dates) and the clothes it implies.
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { CloudRain, Loader2, Plus, Thermometer } from "lucide-react";
-import { invokeProtectedFunction } from "@/lib/protected-functions";
 import { Button } from "@/components/ui/button";
-import { climateHints, type ClimateMonth } from "@/lib/valise-profiles";
-
-interface ClimateResult {
-  status: "ok" | "not_found" | "unavailable";
-  planned?: boolean;
-  place?: { name: string; region: string; country: string };
-  observed?: { from: string; to: string };
-  months?: ClimateMonth[];
-  source?: { name: string; url: string };
-}
+import { climateHints } from "@/lib/valise-profiles";
+import { useClimateMonths } from "@/hooks/useClimateMonths";
 
 interface Props {
   city: string;
@@ -28,17 +18,7 @@ const ClimateSection = ({ city, countryCode, start, end, onAdd }: Props) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("fr") ? "fr" : "en";
   const locale = lang === "fr" ? "fr-FR" : "en-GB";
-  const q = useQuery({
-    queryKey: ["climate-months", city, countryCode, start, end, lang],
-    enabled: city.length >= 2,
-    staleTime: 24 * 60 * 60 * 1000,
-    retry: false,
-    queryFn: async () => {
-      const { data, error } = await invokeProtectedFunction<ClimateResult>("climate-months", { body: { city, countryCode, start, end, locale: lang } });
-      if (error) throw error;
-      return data as ClimateResult;
-    },
-  });
+  const q = useClimateMonths(city, countryCode, start, end, lang);
   const monthName = (m: number) => new Date(2000, m - 1, 1).toLocaleDateString(locale, { month: "long" });
   const fmtDay = (d: string) => new Date(d).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" });
   const r = q.data;

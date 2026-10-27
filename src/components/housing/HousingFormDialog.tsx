@@ -129,7 +129,7 @@ const HousingFormDialog = ({ open, onOpenChange, initial, defaultCity, onSubmit 
       <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{initial ? t("housing.form.editTitle") : t("housing.form.addTitle")}</DialogTitle>
-          <DialogDescription>{t("housing.form.desc")}</DialogDescription>
+          <DialogDescription>{initial ? t("housing.form.editDesc") : t("housing.form.desc")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} noValidate className="space-y-4">
           <div className="space-y-1.5">

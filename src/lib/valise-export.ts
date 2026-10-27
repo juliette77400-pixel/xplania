@@ -16,6 +16,7 @@ const transportEmoji: Record<TransportMode, string> = {
   train: "Train",
   voiture: "Voiture",
   bateau: "Bateau",
+  velo: "Vélo",
 };
 
 export async function exportValisePdf(opts: ValisePdfOptions) {

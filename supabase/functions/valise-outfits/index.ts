@@ -40,7 +40,18 @@ serve(withQuotaRefund(async (req) => {
       luggage = "",
       locale = "fr",
       variation = 0,
+      climate = "",
+      stayType = "",
+      city = "",
+      dates = "",
     } = await req.json();
+    const clean = (x: unknown, max: number) => (typeof x === "string" ? x.replace(/[\u0000-\u001f<>{}`]/g, " ").trim().slice(0, max) : "");
+    const climateFacts = clean(climate, 600);
+    const STAY: Record<string, { fr: string; en: string }> = {
+      erasmus: { fr: "semestre d'études (Erasmus / échange universitaire)", en: "study semester (Erasmus / university exchange)" },
+      internship: { fr: "stage en entreprise", en: "internship in a company" },
+      other: { fr: "séjour long", en: "long stay" },
+    };
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -51,14 +62,14 @@ serve(withQuotaRefund(async (req) => {
     const ANGLES_FR = [
       "Pense 'jour / soirée / activité' : trois moments distincts, palettes de couleurs différentes.",
       "Pense 'tendance locale' : inspire-toi des codes vestimentaires actuels sur place (rues, cafés, créateurs locaux).",
-      "Pense 'météo extrême' : prépare des tenues qui gèrent un imprévu (averse, vent, vague de chaleur typique de la destination).",
+      "Pense 'semaine type' : une tenue de cours ou de travail, une tenue de week-end, une tenue de sortie, qui se combinent entre elles.",
       "Pense 'minimaliste-fonctionnel' : pièces multi-usages, matières techniques, peu d'accessoires.",
       "Pense 'photogénique' : tenues qui rendent bien sur les spots iconiques de la destination, sans être déplacées culturellement.",
     ];
     const ANGLES_EN = [
       "Think 'day / evening / activity': three distinct moments, different color palettes.",
       "Think 'local trend': draw from current dress codes on site (streets, cafés, local designers).",
-      "Think 'extreme weather': prepare outfits that handle a typical local hazard (shower, wind, heatwave).",
+      "Think 'typical week': one class or work outfit, one weekend outfit, one evening outfit, all mixable together.",
       "Think 'minimal-functional': multi-purpose pieces, technical fabrics, few accessories.",
       "Think 'photogenic': outfits that look great at the destination's iconic spots without being culturally inappropriate.",
     ];
@@ -69,31 +80,43 @@ serve(withQuotaRefund(async (req) => {
       ? `You are a travel stylist for Xplania. Generate 3 outfit ideas STRICTLY adapted to the destination, trip type, activities and typical weather there.
 HARD REQUIREMENTS:
 - "context" must name a REAL place or moment on site (e.g. "Sunset walk at Kiyomizu-dera", "Tapas dinner in El Born, Barcelona").
-- "weatherTip" and "culturalTip" must cite concrete local facts (real seasonal temperature range, named neighborhood dress code, local etiquette word).
+- "weatherTip" must rely ONLY on the climate figures given in the data (temperatures, rainy days). If none are given, talk about layers for the season without any figure. NEVER invent a weather event (hail, storm, snow, heatwave…) that the figures do not show.
+- "culturalTip" is only about clothing: dress codes for classes, the workplace, religious sites or going out at this destination.
+- The outfits must fit the planned activities and the kind of stay (classes, internship, weekends), and be realistic for a student's suitcase.
+- "look" picks the picture closest to the outfit: casualUrban, elegantEvening, natureExploration, beachRelax or businessTravel. Use different looks when the outfits differ.
 - "items" must be specific (fabric + color when relevant), not generic ("white linen shirt" not "a shirt").
 - Three outfits must be CLEARLY different from each other (different occasion, palette and silhouette).
 ${angle}
 Return ONLY a JSON object with this exact shape:
-{"outfits":[{"title":"...","context":"...","badge":"...","emoji":"👟🧥","tags":["...","..."],"items":["item 1","item 2",...],"weatherTip":"...","culturalTip":"..."}]}
+{"outfits":[{"title":"...","context":"...","badge":"...","emoji":"👟🧥","look":"casualUrban","tags":["...","..."],"items":["item 1","item 2",...],"weatherTip":"...","culturalTip":"..."}]}
 NO markdown, NO commentary, JSON only.`
       : `Tu es styliste voyage pour Xplania. Génère 3 idées de tenues STRICTEMENT adaptées à la destination, au type de voyage, aux activités et à la météo typique sur place.
 EXIGENCES IMPÉRATIVES :
 - "context" doit nommer un VRAI lieu ou moment sur place (ex. "Coucher de soleil à Kiyomizu-dera", "Dîner tapas dans El Born à Barcelone").
-- "weatherTip" et "culturalTip" doivent citer des faits locaux concrets (vraie plage de températures saisonnières, dress code d'un quartier nommé, mot d'étiquette locale).
+- "weatherTip" s'appuie UNIQUEMENT sur les chiffres de climat fournis dans les données (températures, jours de pluie). S'il n'y en a pas, parle de couches adaptées à la saison sans aucun chiffre. N'INVENTE JAMAIS un phénomène météo (grêle, orage, neige, canicule…) que les chiffres ne montrent pas.
+- "culturalTip" concerne uniquement l'habillement : codes vestimentaires en cours, au travail, dans les lieux religieux ou en soirée dans cette destination.
+- Les tenues collent aux activités prévues et au type de séjour (cours, stage, week-ends), et restent réalistes pour la valise d'un étudiant.
+- "look" choisit l'image la plus proche de la tenue : casualUrban, elegantEvening, natureExploration, beachRelax ou businessTravel. Utilise des looks différents quand les tenues diffèrent.
 - "items" doivent être spécifiques (matière + couleur quand pertinent), pas génériques ("chemise en lin blanc" et pas "une chemise").
 - Les 3 tenues doivent être CLAIREMENT différentes (occasion, palette et silhouette différentes).
 ${angle}
 Retourne UNIQUEMENT un objet JSON de cette forme exacte :
-{"outfits":[{"title":"...","context":"...","badge":"...","emoji":"👟🧥","tags":["...","..."],"items":["pièce 1","pièce 2",...],"weatherTip":"...","culturalTip":"..."}]}
+{"outfits":[{"title":"...","context":"...","badge":"...","emoji":"👟🧥","look":"casualUrban","tags":["...","..."],"items":["pièce 1","pièce 2",...],"weatherTip":"...","culturalTip":"..."}]}
 PAS de markdown, PAS de commentaire, uniquement le JSON.`;
 
     const user = isEN
-      ? `Destination: ${destination || "(unknown)"}
+      ? `Destination: ${destination || "(unknown)"}${clean(city, 80) ? ` — city: ${clean(city, 80)}` : ""}
+Dates: ${clean(dates, 40) || "(unknown)"}
+Kind of stay: ${STAY[clean(stayType, 20)]?.en || "(unknown)"}
+Climate figures for the stay months (real observations): ${climateFacts || "(none available)"}
 Trip type: ${tripType || "(unknown)"}
 Activities: ${actList || "(unknown)"}
 Luggage: ${luggage || "(unknown)"}
 Variation seed: ${v} (produce outfits clearly different from previous variations).`
-      : `Destination : ${destination || "(inconnue)"}
+      : `Destination : ${destination || "(inconnue)"}${clean(city, 80) ? ` — ville : ${clean(city, 80)}` : ""}
+Dates : ${clean(dates, 40) || "(inconnues)"}
+Type de séjour : ${STAY[clean(stayType, 20)]?.fr || "(inconnu)"}
+Climat des mois du séjour (observations réelles) : ${climateFacts || "(non disponible)"}
 Type de voyage : ${tripType || "(inconnu)"}
 Activités : ${actList || "(inconnues)"}
 Bagage : ${luggage || "(inconnu)"}
@@ -154,6 +177,7 @@ Graine de variation : ${v} (produis des tenues clairement différentes des varia
       context: String(o.context || ""),
       badge: String(o.badge || ""),
       emoji: String(o.emoji || "👕"),
+      look: ["casualUrban", "elegantEvening", "natureExploration", "beachRelax", "businessTravel"].includes(o.look) ? o.look : "",
       gradient: GRADIENTS[(gradientOffset + i) % GRADIENTS.length],
       tags: Array.isArray(o.tags) ? o.tags.map((t: any) => String(t)).slice(0, 5) : [],
       items: Array.isArray(o.items) ? o.items.map((it: any) => String(it)).slice(0, 10) : [],

@@ -122,7 +122,13 @@ const Dashboard = () => {
   const openModule = async (key: PrepModule, to: string) => {
     const p = progress?.[key];
     if (!p || moduleStatus(p) === "notStarted") track("guide_started", { module: key });
-    if (selected) await hydrateTravelStoreFromTrip(selected.id);
+    // Load the shown trip into the tools, but never let a slow or failed network call block the button.
+    if (selected) {
+      await Promise.race([
+        hydrateTravelStoreFromTrip(selected.id).catch(() => undefined),
+        new Promise((r) => setTimeout(r, 1500)),
+      ]);
+    }
     navigate(to);
   };
 

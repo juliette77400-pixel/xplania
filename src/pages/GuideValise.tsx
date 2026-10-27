@@ -16,7 +16,15 @@ import AiTipCard from "@/components/valise/AiTipCard";
 import ChecklistSection, { type ChecklistItem } from "@/components/valise/ChecklistSection";
 import MissingItemsCheck from "@/components/valise/MissingItemsCheck";
 import ActivityItems from "@/components/valise/ActivityItems";
-import CulturalTips from "@/components/valise/CulturalTips";
+import ValiseActivitiesPicker from "@/components/valise/ValiseActivitiesPicker";
+import CurrentWeatherCard from "@/components/valise/CurrentWeatherCard";
+import { useClimateMonths, climateSummary } from "@/hooks/useClimateMonths";
+import { activityChecklist, cleanActivities, type ValiseActivity } from "@/lib/valise-activities";
+import { isTransportMode } from "@/components/valise/TransportSelector";
+import { useActiveTrip } from "@/stores/useActiveTrip";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import type { TravelFormData } from "@/types/travel";
 import OutfitRecommendations from "@/components/valise/OutfitRecommendations";
 import ActionButtons from "@/components/valise/ActionButtons";
 import ValiseSummary from "@/components/valise/ValiseSummary";
@@ -38,8 +46,11 @@ import { buildCategories } from "./guide-valise-data";
 
 const GuideValisePage = () => {
   useHydrateActiveTrip();
-  const { tripData } = useTravelStore();
-  const { t } = useTranslation();
+  const { tripData, setTripData } = useTravelStore();
+  const { t, i18n } = useTranslation();
+  const lang: "fr" | "en" = i18n.language?.startsWith("en") ? "en" : "fr";
+  const { user } = useAuth();
+  const tripId = useActiveTrip((s) => s.tripId);
   const destination = tripData?.destination || t("ui2.GuideValise.destinationFallback");
   const days = tripData?.duration ? parseInt(tripData.duration) || 7 : 7;
 
@@ -47,9 +58,16 @@ const GuideValisePage = () => {
 
   const [luggageMode, setLuggageMode] = useState<LuggageMode>(suggestedMode);
   useEffect(() => { setLuggageMode(suggestedMode); }, [suggestedMode]);
-  const [transport, setTransport] = useState<TransportMode>("avion");
+  // Choices saved with the trip: activities and transport come back on every visit.
+  const savedTransport = isTransportMode(tripData?.valiseTransport) ? tripData!.valiseTransport as TransportMode : "avion";
+  const [transport, setTransport] = useState<TransportMode>(savedTransport);
+  useEffect(() => { setTransport(savedTransport); }, [savedTransport]);
+  const activitiesKey = (tripData?.valiseActivities || []).join(",");
+  const activities = useMemo<ValiseActivity[]>(() => cleanActivities(tripData?.valiseActivities), [activitiesKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const activityOther = tripData?.valiseActivityOther || "";
+  const [savingPrefs, setSavingPrefs] = useState(false);
   const [categories, setCategories] = useState(() => {
-    return buildCategories(suggestProfile(tripData?.stayType, days), "avion");
+    return buildCategories(suggestProfile(tripData?.stayType, days), savedTransport, activities, activityOther);
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
@@ -88,7 +106,7 @@ const GuideValisePage = () => {
           setCategories(parsed);
         }
       } else {
-        setCategories(buildCategories(luggageMode, transport));
+        setCategories(buildCategories(luggageMode, transport, activities, activityOther));
       }
     } catch {
       /* ignore */
@@ -112,20 +130,57 @@ const GuideValisePage = () => {
     setIsSwitchingMode(true);
     setLuggageMode(mode);
     await new Promise((r) => setTimeout(r, 1000));
-    setCategories(buildCategories(mode, transport));
+    setCategories(buildCategories(mode, transport, activities, activityOther));
     setIsSwitchingMode(false);
     toast.success(t("guideValise.toastModeOn", { mode: t(`valise2.profiles.${mode}.label`) }), { description: t("guideValise.toastModeOnDesc") });
   }, [luggageMode, transport, t]);
+
+  /** Merges Valise choices into the trip's saved answers (other answers are never overwritten). */
+  const savePrefs = useCallback(async (patch: Partial<TravelFormData>): Promise<boolean> => {
+    if (tripData) setTripData({ ...tripData, ...patch });
+    if (!user || !tripId) return true;
+    setSavingPrefs(true);
+    try {
+      const { data: row, error: readErr } = await supabase.from("trips").select("form_data").eq("id", tripId).eq("user_id", user.id).maybeSingle();
+      if (readErr || !row) throw readErr ?? new Error("trip not found");
+      const next = { ...((row.form_data as Record<string, unknown>) || {}), ...patch };
+      const { error } = await supabase.from("trips").update({ form_data: next as never }).eq("id", tripId).eq("user_id", user.id);
+      if (error) throw error;
+      return true;
+    } catch {
+      toast.error(t("valise3.activities.saveError"));
+      return false;
+    } finally {
+      setSavingPrefs(false);
+    }
+  }, [tripData, setTripData, user, tripId, t]);
 
   const handleTransportChange = useCallback(async (tr: TransportMode) => {
     if (tr === transport) return;
     setIsSwitchingMode(true);
     setTransport(tr);
+    const saved = savePrefs({ valiseTransport: tr });
     await new Promise((r) => setTimeout(r, 800));
-    setCategories(buildCategories(luggageMode, tr));
+    setCategories(buildCategories(luggageMode, tr, activities, activityOther));
     setIsSwitchingMode(false);
-    toast.success(t("guideValise.toastTransport", { mode: tr }), { description: t("guideValise.toastTransportDesc") });
-  }, [luggageMode, transport, t]);
+    if (await saved) toast.success(t("guideValise.toastTransport", { mode: t(`valise.transports.${tr}`) }), { description: t("valise3.transportSaved") });
+  }, [luggageMode, transport, t, savePrefs, activities, activityOther]);
+
+  const handleActivitiesChange = useCallback(async (next: ValiseActivity[], other: string) => {
+    const added = next.filter((a) => !activities.includes(a));
+    const otherAdded = other && other !== activityOther ? other : "";
+    const ok = await savePrefs({ valiseActivities: next, valiseActivityOther: other });
+    // The list follows right away: items for newly chosen activities are added (nothing is removed).
+    const extra = activityChecklist(added, otherAdded, lang === "en");
+    for (const [cat, items] of Object.entries(extra)) {
+      setCategories((prev) => {
+        const existing = prev[cat] || [];
+        const fresh = items.filter((i) => !existing.some((e) => e.name.toLowerCase() === i.name.toLowerCase()));
+        return fresh.length ? { ...prev, [cat]: [...existing, ...fresh] } : prev;
+      });
+    }
+    if (ok) toast.success(t("valise3.activities.saved"));
+  }, [activities, activityOther, savePrefs, lang, t]);
 
   const toggleItem = (cat: string, idx: number) => {
     setCategories((prev) => ({
@@ -175,7 +230,7 @@ const GuideValisePage = () => {
     consume();
     // Build a fresh checklist that respects the current transport + luggage type,
     // with nothing checked yet (so readiness starts at 0%).
-    setCategories(buildCategories(luggageMode, transport));
+    setCategories(buildCategories(luggageMode, transport, activities, activityOther));
     setIsGenerating(true);
     setGenerationStep(0);
     for (let i = 0; i < STEPS.length; i++) {
@@ -190,14 +245,14 @@ const GuideValisePage = () => {
     try { localStorage.setItem(genKey, "1"); } catch { /* ignore */ }
     track("guide_generated", { guide: "valise" });
     toast.success(t("guideValise.toastValiseReady"), { description: t("guideValise.toastValiseReadyDesc") });
-  }, [t, consume, reached, luggageMode, transport, genKey]);
+  }, [t, consume, reached, luggageMode, transport, genKey, activities, activityOther]);
 
   const handleRegenerate = useCallback(
     async (scope: "all" | "clothes" | "activities") => {
       setIsRegenerating(true);
       toast.loading(t("guideValise.toastRegen"), { id: "regen" });
       await new Promise((r) => setTimeout(r, 1800));
-      setCategories(buildCategories(luggageMode, transport));
+      setCategories(buildCategories(luggageMode, transport, activities, activityOther));
       setIsRegenerating(false);
       const msg =
         scope === "all" ? t("guideValise.toastRegenAll")
@@ -205,7 +260,7 @@ const GuideValisePage = () => {
         : t("guideValise.toastRegenActivities");
       toast.success(msg, { id: "regen" });
     },
-    [luggageMode, transport, t]
+    [luggageMode, transport, t, activities, activityOther]
   );
 
   const handleExportPdf = useCallback(async () => {
@@ -284,6 +339,16 @@ const GuideValisePage = () => {
     return out;
   }, [categories]);
   const tripTypeLabel = tripData?.tripTypes?.[0] || tripData?.objectives?.[0] || "";
+  // Labels of the chosen activities, as sent to the AI tips and outfits.
+  const activityLabels = useMemo(
+    () => [...activities.map((a) => t(`valise3.activities.items.${a}`)), ...(activityOther ? [activityOther] : [])],
+    [activities, activityOther, t],
+  );
+  const weatherCity = tripData?.arrivalCity || tripData?.destination || "";
+  const countryCode = findCountry(tripData?.destination);
+  const climateQ = useClimateMonths(weatherCity, countryCode, tripData?.departureDate || null, tripData?.returnDate || null, lang);
+  const climate = climateSummary(climateQ.data, lang);
+  const stayDates = tripData?.departureDate ? `${tripData.departureDate} → ${tripData.returnDate || ""}` : "";
 
   return (
     <div className="min-h-screen bg-background">
@@ -298,10 +363,13 @@ const GuideValisePage = () => {
 
         <VoyageAnalysis tripData={tripData} destination={destination} days={days} />
 
-        <div id="weather-section">
+        <ValiseActivitiesPicker value={activities} other={activityOther} saving={savingPrefs} onChange={(next, other) => void handleActivitiesChange(next, other)} />
+
+        <div id="weather-section" className="space-y-4">
+          {weatherCity && <CurrentWeatherCard city={weatherCity} countryCode={countryCode} />}
           <ClimateSection
-            city={tripData?.arrivalCity || tripData?.destination || ""}
-            countryCode={findCountry(tripData?.destination)}
+            city={weatherCity}
+            countryCode={countryCode}
             start={tripData?.departureDate || null}
             end={tripData?.returnDate || null}
             onAdd={(items) => addItemsToCategory(t("valise2.climate.category"), items)}
@@ -317,7 +385,7 @@ const GuideValisePage = () => {
             suggestedMode={suggestedMode}
             isLoading={isSwitchingMode}
           />
-          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} destination={destination} months={tripData?.departureDate ? `${tripData.departureDate} → ${tripData.returnDate || ""}` : ""} />
+          <AiTipCard mode={luggageMode} isLoading={isSwitchingMode} destination={tripData?.arrivalCity && tripData.arrivalCity !== tripData.destination ? `${tripData.arrivalCity}, ${destination}` : destination} months={stayDates} activities={activityLabels} stayType={tripData?.stayType} transport={t(`valise.transports.${transport}`)} days={days} climate={climate} />
         </div>
 
         {/* Generate CTA — placed after the transport + luggage-type choices so the
@@ -382,7 +450,7 @@ const GuideValisePage = () => {
           destination={destination}
           days={days}
           tripTypes={tripData?.tripTypes}
-          activities={tripData?.objectives}
+          activities={activityLabels}
           luggage={luggageMode}
           transport={transport}
           departureDate={tripData?.departureDate}
@@ -394,16 +462,10 @@ const GuideValisePage = () => {
           title={t("collapsible.valise.activities")}
           subtitle={t("collapsible.valise.activitiesSub")}
         >
-          <ActivityItems objectives={[...(tripData?.objectives || []), ...(tripData?.tripTypes || [])]} onAddToChecklist={addActivityItems} />
+          <ActivityItems objectives={[...activityLabels, ...(tripData?.objectives || []), ...(tripData?.tripTypes || [])]} onAddToChecklist={addActivityItems} />
         </CollapsibleSection>
 
-        <CollapsibleSection
-          title={t("collapsible.valise.cultural")}
-          subtitle={t("collapsible.valise.culturalSub")}
-        >
-          <CulturalTips destination={destination} tripType={tripTypeLabel} />
-        </CollapsibleSection>
-
+        {/* General cultural codes live in the Culture guide; outfits keep the dress-code advice. */}
         <CollapsibleSection
           title={t("collapsible.valise.outfits")}
           subtitle={t("collapsible.valise.outfitsSub")}
@@ -411,9 +473,13 @@ const GuideValisePage = () => {
           <OutfitRecommendations
             tripType={tripTypeLabel}
             destination={destination}
-            activities={tripData?.objectives}
+            activities={activityLabels}
             luggage={luggageMode}
             onAddToChecklist={addOutfitItems}
+            climate={climate}
+            stayType={tripData?.stayType}
+            city={tripData?.arrivalCity && tripData.arrivalCity !== tripData.destination ? tripData.arrivalCity : ""}
+            dates={stayDates}
           />
         </CollapsibleSection>
 

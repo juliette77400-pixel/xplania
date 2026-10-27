@@ -1,29 +1,35 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { AlertTriangle, TrendingDown, CheckCircle, Lightbulb, Trees, Utensils, Bus, Heart } from "lucide-react";
+import { AlertTriangle, TrendingDown, CheckCircle, Lightbulb, Trees, Utensils, Bus, Heart, RefreshCw } from "lucide-react";
 import type { BudgetCategory } from "./BudgetForecast";
-import type { BudgetInsights, BudgetPlace } from "@/hooks/useBudgetInsights";
+import type { BudgetInsights, BudgetPlace, InsightsErrorKind } from "@/hooks/useBudgetInsights";
 
 interface Props {
   categories: BudgetCategory[];
   destination: string;
   deals?: BudgetInsights["deals"] | null;
   loading?: boolean;
+  /** Why the AI ideas failed, if they did. */
+  errorKind?: InsightsErrorKind | null;
+  onRetry?: () => void;
 }
 
-const BudgetAlerts = ({ categories, deals, loading }: Props) => {
+const BudgetAlerts = ({ categories, deals, loading, errorKind, onRetry }: Props) => {
   const { t } = useTranslation();
 
   // Build alerts using translated category labels
   const alerts: { message: string; type: "warning" | "danger" | "success" }[] = [];
   categories.forEach((cat) => {
-    const ratio = cat.spent / cat.planned;
+    const planned = Number(cat.planned) || 0;
+    const spent = Number(cat.spent) || 0;
+    if (planned <= 0 && spent <= 0) return;
+    const ratio = planned > 0 ? spent / planned : 2;
     const label = t(`budget.categories.${cat.key}`, { defaultValue: cat.key }).toLowerCase();
     if (ratio > 1) {
       alerts.push({ message: t("budget.alertsOver", { category: label }), type: "danger" });
     } else if (ratio > 0.8) {
       alerts.push({ message: t("budget.alertsHigh", { category: label }), type: "warning" });
-    } else if (ratio < 0.5 && cat.spent > 0) {
+    } else if (ratio < 0.5 && spent > 0) {
       alerts.push({ message: t("budget.alertsLow", { category: label }), type: "success" });
     }
   });
@@ -76,10 +82,21 @@ const BudgetAlerts = ({ categories, deals, loading }: Props) => {
       )}
 
       <div>
-        <h3 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+        <h3 className="text-sm font-bold text-foreground mb-1 flex items-center gap-2">
           <Lightbulb className="w-4 h-4 text-primary" />
           {t("budget.alertsTipsTitle")}
         </h3>
+        <p className="mb-4 text-xs text-muted-foreground">{t("budget.dealsNote")}</p>
+        {errorKind && !loading && (
+          <div role="alert" className="mb-4 flex flex-col gap-3 rounded-xl border border-warning/30 bg-warning/10 p-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-foreground">{t(`budget.insightsError.${errorKind}`)}</p>
+            {onRetry && errorKind !== "quota" && (
+              <button type="button" onClick={onRetry} className="inline-flex items-center gap-1.5 self-start rounded-lg bg-muted px-3 py-1.5 text-xs font-semibold hover:bg-muted/80 sm:self-auto">
+                <RefreshCw className="h-3.5 w-3.5" aria-hidden />{t("budget.insightsRetry")}
+              </button>
+            )}
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {tipSections.map((section, i) => (
             <motion.div
