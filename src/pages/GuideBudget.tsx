@@ -430,20 +430,31 @@ const GuideBudgetPage = () => {
     });
   };
 
+  // While Ping scrolls to a section, the scroll observer must not switch back to the one passed on the way.
+  const pickedSectionAt = useRef(0);
   const scrollToSection = (name: "analysis" | "forecast" | "tracker" | "charts" | "tips") => {
+    // The chosen feature drives Ping's title and text right away, not only the scroll position.
+    pickedSectionAt.current = Date.now();
+    setActiveBudgetSection(name);
     // Force-open the matching collapsible if needed before scrolling
     window.dispatchEvent(new CustomEvent("xpl:open-section", { detail: { id: name } }));
-    requestAnimationFrame(() => {
+    // The folded content mounts after opening: wait for it before scrolling.
+    let tries = 0;
+    const go = () => {
       const el = document.querySelector(`[data-budget-section="${name}"]`);
-      el?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      else if (tries++ < 10) window.setTimeout(go, 60);
+    };
+    requestAnimationFrame(go);
   };
 
+  // Sections live in folded blocks that mount later: observe them as they appear.
   useEffect(() => {
     if (!hasGenerated) return;
     const sections = ["analysis", "forecast", "tracker", "charts", "tips"] as const;
     const observer = new IntersectionObserver(
       (entries) => {
+        if (Date.now() - pickedSectionAt.current < 1500) return;
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -452,11 +463,17 @@ const GuideBudgetPage = () => {
       },
       { threshold: [0.25, 0.5, 0.75], rootMargin: "-20% 0px -45% 0px" }
     );
-    sections.forEach((section) => {
-      const el = document.querySelector(`[data-budget-section="${section}"]`);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    const watched = new Set<Element>();
+    const scan = () => {
+      sections.forEach((section) => {
+        const el = document.querySelector(`[data-budget-section="${section}"]`);
+        if (el && !watched.has(el)) { watched.add(el); observer.observe(el); }
+      });
+    };
+    scan();
+    const mo = new MutationObserver(scan);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => { observer.disconnect(); mo.disconnect(); };
   }, [hasGenerated]);
 
   return (
