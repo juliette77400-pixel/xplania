@@ -3180,7 +3180,9 @@
       "server": "Couldn't generate ideas right now. Try again."
     },
     "insightsRetry": "Try again",
-    "dealsNote": "Lasting ways to save, with indicative prices to check. These are not current promotions."
+    "dealsNote": "Lasting ways to save, with indicative prices to check. These are not current promotions.",
+    "heroNoDestination": "Destination to choose",
+    "heroChooseDestination": "Add my destination"
   },
   "gamification": {
     "heroTitle": "Badge Collection",

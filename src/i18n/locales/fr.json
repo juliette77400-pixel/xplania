@@ -3180,7 +3180,9 @@
       "server": "Impossible de générer les idées pour l'instant. Réessaie."
     },
     "insightsRetry": "Réessayer",
-    "dealsNote": "Pistes d'économies durables, avec des prix indicatifs à vérifier. Ce ne sont pas des promotions en cours."
+    "dealsNote": "Pistes d'économies durables, avec des prix indicatifs à vérifier. Ce ne sont pas des promotions en cours.",
+    "heroNoDestination": "Destination à choisir",
+    "heroChooseDestination": "Indiquer ma destination"
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
