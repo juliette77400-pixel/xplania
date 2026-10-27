@@ -13,6 +13,7 @@ import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 import { useBudgetInsights, type BudgetScenario } from "@/hooks/useBudgetInsights";
 
 import BudgetHero from "@/components/budget/BudgetHero";
@@ -606,9 +607,11 @@ const GuideBudgetPage = () => {
 
               <CollapsibleSection title={t("collapsible.budget.charts")} subtitle={t("collapsible.budget.chartsSub")} sectionId="charts">
                 <div ref={chartRef}>
-                  <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
-                    <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
-                  </Suspense>
+                  <ErrorBoundary>
+                    <Suspense fallback={<div className="h-64 w-full rounded-2xl bg-muted animate-pulse" />}>
+                      <BudgetCharts categories={categories} days={days} totalBudget={totalBudget} expenses={expenses} />
+                    </Suspense>
+                  </ErrorBoundary>
                 </div>
               </CollapsibleSection>
 
