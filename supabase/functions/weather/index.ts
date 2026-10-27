@@ -4,6 +4,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { lookupPlace } from "../_shared/place-lookup.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -46,14 +47,11 @@ serve(async (req) => {
 
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
       if (city.length < 2) return json({ error: "city_required" }, 400);
-      const q = encodeURIComponent(country ? `${city},${country}` : city);
-      const geo = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=1&appid=${key}`).then((r) => (r.ok ? r.json() : []));
-      const g = Array.isArray(geo) ? geo[0] : null;
-      if (!g || (country && g.country !== country)) {
-        return json({ fallback: true, error: "city_not_found", advice: [] });
-      }
-      lat = g.lat; lon = g.lon;
-      place = { name: (g.local_names?.[lang] as string) || g.name, country: g.country, state: g.state || "" };
+      // Same place lookup as the seasonal averages, so both blocks describe the same spot.
+      const p = await lookupPlace(city, country, lang);
+      if (!p) return json({ fallback: true, error: "city_not_found", advice: [] });
+      lat = p.latitude; lon = p.longitude;
+      place = { name: p.name, country: p.countryCode, state: p.region };
     }
 
     const base = `lat=${lat}&lon=${lon}&units=metric&lang=${lang}&appid=${key}`;
