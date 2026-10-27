@@ -470,7 +470,7 @@ const GuideBudgetPage = () => {
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
         <MissingTripInfo needs={["budget", "dates"]} />
         <p className="mx-auto mt-3 max-w-3xl rounded-xl border border-border bg-muted/40 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground">
-          {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels : Xplania t'aide, mais ne remplace pas tes propres vérifications." })}
+          {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels." })}
         </p>
 
         {!hasGenerated && !isGenerating && (
