@@ -3,7 +3,7 @@ import { PREPARATION_HOME } from "@/config/featureFlags";
 import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { safeNextPath } from "@/lib/safe-redirect";
-import { hasCompleteGuestDraft, PREP_RESUME_PATH } from "@/lib/prep-quiz";
+import { hasCompleteGuestDraft, PREP_RESUME_PATH, finishedGuestAnswers, ACCOUNT_DRAFT_META_KEY } from "@/lib/prep-quiz";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Sparkles, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,12 +45,19 @@ const Auth = () => {
     track("signup_started");
     setLoading(true);
     try {
+    // Finished questionnaire answers travel with the account, so confirming the email
+    // on another device (e.g. a phone) still creates the trip there.
+    const guestAnswers = finishedGuestAnswers();
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}${next}`,
-        data: { display_name: displayName, locale: browserLang() },
+        data: {
+          display_name: displayName,
+          locale: browserLang(),
+          ...(guestAnswers ? { [ACCOUNT_DRAFT_META_KEY]: guestAnswers } : {}),
+        },
       },
     });
     setLoading(false);

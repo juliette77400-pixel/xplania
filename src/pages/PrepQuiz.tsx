@@ -20,6 +20,7 @@ import { useTravelStore } from "@/stores/useTravelStore";
 import {
   PREP_STEPS, STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
   emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip, GUEST_DRAFT_KEY, PREP_RESUME_PATH, hasCompleteGuestDraft,
+  ACCOUNT_DRAFT_META_KEY, cleanFinishedAnswers, answersMatchTrip,
   type PrepAnswers, type PrepStep,
 } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";
@@ -91,6 +92,12 @@ const PrepQuiz = () => {
   const step = PREP_STEPS[stepIndex];
   const isFr = i18n.language.startsWith("fr");
 
+  // Answers sent with the signup are only needed until the trip exists.
+  const clearAccountDraft = useCallback(async () => {
+    if (!user?.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) return;
+    try { await supabase.auth.updateUser({ data: { [ACCOUNT_DRAFT_META_KEY]: null } }); } catch { /* retried on next visit */ }
+  }, [user]);
+
   // Restore an interrupted questionnaire, or pre-fill the origin from a previous trip.
   useEffect(() => {
     if (restored.current) return;
@@ -116,13 +123,24 @@ const PrepQuiz = () => {
     }
     if (tripsLoading) return;
     restored.current = true;
-    // Answers given before signing up: save them as the trip now.
+    // Answers given before signing up: save them as the trip now. They come from this
+    // browser, or from the account when the email was confirmed on another device.
     const g = readGuestDraft();
-    if (g?.complete) {
-      const a = { ...emptyPrepAnswers(), ...g.answers };
-      setAnswers(a);
+    const local = g?.complete ? (cleanFinishedAnswers(g.answers) ?? { ...emptyPrepAnswers(), ...g.answers }) : null;
+    const fromAccount = trips.length === 0 ? cleanFinishedAnswers(user.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) : null;
+    if (!fromAccount && trips.length > 0) void clearAccountDraft();
+    const pending = local ?? fromAccount;
+    if (pending) {
+      if (answersMatchTrip(pending, trips)) {
+        // Already saved, e.g. on the other device: tidy up instead of creating a duplicate.
+        try { localStorage.removeItem(GUEST_DRAFT); } catch { /* ignore */ }
+        void clearAccountDraft();
+        navigate("/app", { replace: true });
+        return;
+      }
+      setAnswers(pending);
       setStepIndex(PREP_STEPS.length - 1);
-      void persist(a);
+      void persist(pending);
       return;
     }
     try {
@@ -208,9 +226,10 @@ const PrepQuiz = () => {
       returnDate: data.returnDate || null,
     });
     try { localStorage.removeItem(draftKey(user.id)); localStorage.removeItem(GUEST_DRAFT); } catch { /* ignore */ }
+    void clearAccountDraft();
     setSaving(false);
     setSaved(data);
-  }, [user, t, queryClient, setTripData, setRecommendations, setActiveTrip]);
+  }, [user, t, queryClient, setTripData, setRecommendations, setActiveTrip, clearAccountDraft]);
 
   const next = useCallback((override?: PrepAnswers) => {
     const a = override ?? answers;
