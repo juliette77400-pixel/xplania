@@ -2,7 +2,7 @@
 // on error nothing replaces the data, the student is told it is unavailable.
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { CloudSun, Droplets, Loader2, RefreshCw, Wind } from "lucide-react";
+import { Cloud, CloudFog, CloudLightning, CloudRain, CloudSun, Droplets, Loader2, RefreshCw, Snowflake, Sun, Wind } from "lucide-react";
 import { invokeProtectedFunction } from "@/lib/protected-functions";
 import { Button } from "@/components/ui/button";
 
@@ -16,6 +16,13 @@ interface WeatherNow {
 }
 
 interface Props { city: string; countryCode: string | null }
+
+// Icons drawn locally: the weather provider never receives the student's IP address.
+function WeatherIcon({ code, className }: { code: string; className?: string }) {
+  const k = code.slice(0, 2);
+  const Icon = k === "01" ? Sun : k === "02" ? CloudSun : k === "09" || k === "10" ? CloudRain : k === "11" ? CloudLightning : k === "13" ? Snowflake : k === "50" ? CloudFog : Cloud;
+  return <Icon className={className} aria-hidden />;
+}
 
 const CurrentWeatherCard = ({ city, countryCode }: Props) => {
   const { t, i18n } = useTranslation();
@@ -37,7 +44,6 @@ const CurrentWeatherCard = ({ city, countryCode }: Props) => {
   // Local time at the place: UTC + the offset given by the station.
   const localTime = c ? new Date(new Date(c.observedAt).getTime() + c.timezoneOffset * 1000).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) : "";
   const dayLabel = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString(locale, { weekday: "short", day: "numeric", timeZone: "UTC" });
-  const icon = (code: string) => `https://openweathermap.org/img/wn/${code}@2x.png`;
 
   return (
     <section aria-labelledby="weather-now-title" className="glass-card rounded-2xl p-5 sm:p-6">
@@ -69,7 +75,7 @@ const CurrentWeatherCard = ({ city, countryCode }: Props) => {
         <>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <div className="flex items-center gap-2">
-              <img src={icon(c.icon)} alt="" width={56} height={56} className="h-14 w-14" />
+              <WeatherIcon code={c.icon} className="h-12 w-12 text-primary" />
               <div>
                 <p className="text-xs text-muted-foreground">{t("valise3.weather.now")}</p>
                 <p className="text-3xl font-extrabold tabular-nums">{c.temp}°C</p>
@@ -90,7 +96,7 @@ const CurrentWeatherCard = ({ city, countryCode }: Props) => {
               <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {d.forecast.map((f) => (
                   <li key={f.date} className="flex items-center gap-2 rounded-xl bg-muted/40 p-2.5">
-                    <img src={icon(f.icon)} alt="" width={36} height={36} className="h-9 w-9" />
+                    <WeatherIcon code={f.icon} className="h-7 w-7 shrink-0 text-primary" />
                     <div className="min-w-0">
                       <p className="text-xs font-semibold capitalize">{dayLabel(f.date)}</p>
                       <p className="text-sm font-bold tabular-nums">{f.tmin}° / {f.tmax}°</p>
