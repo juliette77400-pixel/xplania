@@ -140,20 +140,19 @@ const PrepQuiz = () => {
       void persist(pending);
     };
     const restoreOwnDraft = () => {
-      try {
-        const raw = localStorage.getItem(draftKey(user.id));
-        if (raw) {
-          const d = JSON.parse(raw) as { answers: PrepAnswers; step: number };
-          setAnswers({ ...emptyPrepAnswers(), ...d.answers });
-          setStepIndex(Math.min(Math.max(0, d.step || 0), PREP_STEPS.length - 1));
-          return;
-        }
-      } catch { /* ignore broken draft */ }
-      const last = trips[0];
-      if (last) {
-        const prev = answersFromTrip(last.form_data as Partial<TravelFormData>, last.destination);
-        setAnswers((a) => ({ ...a, nationality: prev.nationality, residence: prev.residence, secondNationality: prev.secondNationality }));
+      // A country picked on the home page wins over an older unfinished draft.
+      if (!pickedCountry) {
+        try {
+          const raw = localStorage.getItem(draftKey(user.id));
+          if (raw) {
+            const d = JSON.parse(raw) as { answers: PrepAnswers; step: number };
+            setAnswers({ ...emptyPrepAnswers(), ...d.answers });
+            setStepIndex(Math.min(Math.max(0, d.step || 0), PREP_STEPS.length - 1));
+            return;
+          }
+        } catch { /* ignore broken draft */ }
       }
+      // A new trip starts empty: answers from another trip (often a test one) are never copied in.
       prefill();
     };
     const g = readGuestDraft();
