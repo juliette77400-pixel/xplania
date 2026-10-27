@@ -6329,6 +6329,8 @@
     "readySheet": "Ready sheet",
     "aiSheet": "Gets ready when you open it",
     "back": "All topics",
+    "quotaReached": "You have used your 10 new Culture topics this month. Ready sheets and topics already opened stay available.",
+    "quotaSeeOffers": "See the plans",
     "loginNeeded": "Sign in to open this topic: it will be prepared for you and kept for future travellers.",
     "login": "Sign in",
     "loading": "Ping is gathering local codes…",
