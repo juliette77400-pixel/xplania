@@ -32,14 +32,15 @@ const KEYWORDS: [RegExp, string][] = [
   [/business|pro|travail|work|stage|intern|réunion|meeting|bureau|office/i, "businessTravel"],
 ];
 
-function pickOutfitImage(outfit: { id: string; title?: string; tags?: string[]; context?: string }) {
+function pickOutfitImage(outfit: { id: string; look?: string; title?: string; tags?: string[]; context?: string }) {
+  if (outfit.look && OUTFIT_IMAGES[outfit.look]) return OUTFIT_IMAGES[outfit.look];
   if (OUTFIT_IMAGES[outfit.id]) return OUTFIT_IMAGES[outfit.id];
   const hay = [outfit.id, outfit.title, outfit.context, ...(outfit.tags ?? [])].join(" ");
   for (const [re, key] of KEYWORDS) if (re.test(hay)) return OUTFIT_IMAGES[key];
   return OUTFIT_IMAGES.casualUrban;
 }
 
-function OutfitPhoto({ outfit }: { outfit: { id: string; title?: string; tags?: string[]; context?: string } }) {
+function OutfitPhoto({ outfit }: { outfit: { id: string; look?: string; title?: string; tags?: string[]; context?: string } }) {
   const { t } = useTranslation();
   return (
     <>
@@ -56,6 +57,8 @@ interface Outfit {
   id: string;
   gradient: string;
   emoji: string;
+  /** Picture matching the outfit, chosen by the AI among the bundled illustrations. */
+  look?: string;
   title?: string;
   context?: string;
   badge?: string;
@@ -72,6 +75,11 @@ interface OutfitRecommendationsProps {
   activities?: string[];
   luggage?: string;
   onAddToChecklist?: (items: string[]) => void;
+  /** Real climate figures for the stay months (never invented). */
+  climate?: string;
+  stayType?: string;
+  city?: string;
+  dates?: string;
 }
 
 // ----- Static fallback (i18n-driven) -----
@@ -97,7 +105,7 @@ function getRelevantFallback(tripType?: string): Outfit[] {
 
 // ----- AI cache -----
 const CACHE_TTL_MS = 60 * 60 * 1000;
-const CACHE_PREFIX = "xplania-valise-outfits-v1:";
+const CACHE_PREFIX = "xplania-valise-outfits-v2:";
 
 interface CachedOutfits { outfits: Outfit[]; ts: number; }
 
@@ -120,7 +128,7 @@ function writeCache(key: string, outfits: Outfit[]) {
   } catch { /* quota */ }
 }
 
-const OutfitRecommendations = ({ tripType, destination, activities, luggage, onAddToChecklist }: OutfitRecommendationsProps) => {
+const OutfitRecommendations = ({ tripType, destination, activities, luggage, onAddToChecklist, climate, stayType, city, dates }: OutfitRecommendationsProps) => {
   const { t, i18n } = useTranslation();
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
   const [aiOutfits, setAiOutfits] = useState<Outfit[] | null>(null);
@@ -135,8 +143,8 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
     || destination.toLowerCase().includes("your destination");
 
   const cacheKey = useMemo(
-    () => `${lang}:${(destination || "").toLowerCase().trim()}:${(tripType || "").toLowerCase().trim()}`,
-    [lang, destination, tripType]
+    () => `${lang}:${(destination || "").toLowerCase().trim()}:${(city || "").toLowerCase().trim()}:${(tripType || "").toLowerCase().trim()}:${stayType || ""}:${(activities || []).join(",")}:${dates || ""}:${climate ? "c" : ""}`,
+    [lang, destination, city, tripType, stayType, activities, dates, climate]
   );
 
   const fetchOutfits = useCallback(async (force = false, variationSeed = 0) => {
@@ -156,6 +164,10 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
           luggage: luggage || "",
           locale: lang,
           variation: variationSeed,
+          climate: climate || "",
+          stayType: stayType || "",
+          city: city || "",
+          dates: dates || "",
         },
       });
       if (error) {
@@ -181,7 +193,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
     } finally {
       setIsFetching(false);
     }
-  }, [cacheKey, destination, tripType, activities, luggage, lang, isPlaceholderDest]);
+  }, [cacheKey, destination, tripType, activities, luggage, lang, isPlaceholderDest, climate, stayType, city, dates]);
 
   const handleRegenerate = useCallback(() => {
     const next = variation + 1;
