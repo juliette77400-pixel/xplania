@@ -8,11 +8,11 @@
 - [ ] À proposer plus tard : montrer un premier résultat sans IA avant les boutons « Créer / Lancer / Générer » (Budget, Visa, Valise)
 
 ## Corrections fonctionnelles avant la bêta (prompt du 27/10)
-- [ ] 1. Admin juliette77400@gmail.com : rôle admin par identifiant, quotas illimités côté serveur
-- [ ] 2. Questionnaire : pas de Maroc par défaut
-- [ ] 3. Logement : bouton Modifier (type, meublé, trajet, points d'attention, avantages, inconvénients)
-- [ ] 4. Culture : geste du jour quotidien par pays/contexte + 2-3 infos par conseil
-- [ ] 5. Valise : activités, météo actuelle réelle, régénération conseil, retrait doublons culture, tenues, vélo
-- [ ] 6. Espace de préparation : boutons « Ouvrir »
-- [ ] 7. Budget : phrase retirée, illustration, astuces locales, alertes & bons plans, graphique/répartition, Ping descriptions
-- [ ] 8-9. Vérifications + rapport
+- [x] 1. Admin juliette77400@gmail.com : rôle admin par identifiant, quotas illimités côté serveur
+- [x] 2. Questionnaire : pas de Maroc par défaut
+- [x] 3. Logement : bouton Modifier (type, meublé, trajet, points d'attention, avantages, inconvénients)
+- [x] 4. Culture : geste du jour quotidien par pays/contexte + 2-3 infos par conseil
+- [x] 5. Valise : activités, météo actuelle réelle, régénération conseil, retrait doublons culture, tenues, vélo
+- [x] 6. Espace de préparation : boutons « Ouvrir »
+- [x] 7. Budget : phrase retirée, illustration, astuces locales, alertes & bons plans, graphique/répartition, Ping descriptions
+- [x] 8-9. Vérifications + rapport
