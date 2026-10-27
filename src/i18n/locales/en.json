@@ -6707,10 +6707,10 @@
       "hint": "You can change your dates from your dashboard."
     },
     "budget": {
-      "title": "What budget have you planned?",
-      "subtitle": "Even an estimate is enough to start.",
-      "label": "Total budget for your stay",
-      "placeholder": "E.g. 4000",
+      "title": "How much do you have set aside?",
+      "subtitle": "Savings, grant, help from family: a rough figure is enough.",
+      "label": "Money available for the whole stay",
+      "placeholder": "E.g. 3000",
       "unknown": "I don't know yet"
     },
     "housing": {
@@ -6776,7 +6776,8 @@
       "cta": "Create my free account to save",
       "edit": "Edit my answers",
       "signin": "I already have an account",
-      "free": "Free during the beta · No credit card"
+      "free": "Free during the beta · No credit card",
+      "tryBudget": "Or try the Budget first, no account"
     }
   },
   "prepEdit": {

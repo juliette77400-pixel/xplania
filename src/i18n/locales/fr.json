@@ -6707,10 +6707,10 @@
       "hint": "Tu pourras modifier tes dates depuis ton tableau de bord."
     },
     "budget": {
-      "title": "Quel budget as-tu prévu ?",
-      "subtitle": "Même une estimation suffit pour commencer.",
-      "label": "Budget total pour ton séjour",
-      "placeholder": "Ex. : 4000",
+      "title": "Combien as-tu de côté pour partir ?",
+      "subtitle": "Économies, bourse, aide de ta famille : une estimation suffit.",
+      "label": "Argent disponible pour tout le séjour",
+      "placeholder": "Ex. : 3000",
       "unknown": "Je ne sais pas encore"
     },
     "housing": {
@@ -6776,7 +6776,8 @@
       "cta": "Créer mon compte gratuit pour enregistrer",
       "edit": "Modifier mes réponses",
       "signin": "J'ai déjà un compte",
-      "free": "Gratuit pendant la bêta · Sans carte bancaire"
+      "free": "Gratuit pendant la bêta · Sans carte bancaire",
+      "tryBudget": "Ou essaie d'abord le Budget, sans compte"
     }
   },
   "prepEdit": {

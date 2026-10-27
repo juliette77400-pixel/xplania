@@ -295,9 +295,22 @@ const PrepQuiz = () => {
               })}
             </ol>
             <p className="mt-4 text-xs text-muted-foreground">{t("prepQuiz.preview.note")}</p>
-            <Button className="gradient-button mt-5 h-12 w-full text-base" onClick={() => navigate(signup)}>
-              {t("prepQuiz.preview.cta")}<ArrowRight className="ml-2 h-4 w-4" />
+            <Button className="gradient-button mt-5 h-auto min-h-12 w-full whitespace-normal py-3 text-base leading-snug" onClick={() => navigate(signup)}>
+              {t("prepQuiz.preview.cta")}<ArrowRight className="ml-2 h-4 w-4 shrink-0" />
             </Button>
+            <button
+              type="button"
+              onClick={() => {
+                // Budget works without an account: hand it the answers, nothing is saved online.
+                setTripData(buildTripFromAnswers(answers, labels));
+                setRecommendations(null);
+                track("cta_click", { cta: "try_budget_guest", location: "prep_preview" });
+                navigate("/guide-budget");
+              }}
+              className="mt-3 w-full rounded-xl border border-border/70 px-4 py-3 text-sm font-semibold text-foreground transition hover:border-primary/60 hover:bg-primary/10"
+            >
+              {t("prepQuiz.preview.tryBudget")}
+            </button>
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
               <button type="button" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline" onClick={() => { setPreview(false); try { localStorage.setItem(GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* ignore */ } }}>{t("prepQuiz.preview.edit")}</button>
               <Link to={signin} className="font-semibold text-primary hover:underline">{t("prepQuiz.preview.signin")}</Link>
@@ -407,7 +420,6 @@ const PrepQuiz = () => {
             >
               <img src={STEP_IMAGES[step]} alt="" draggable={false} width={768} height={1024} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
-              <p className="absolute right-4 top-4 rounded-full border border-border/60 bg-background/70 px-3 py-1 text-[11px] font-medium text-muted-foreground backdrop-blur-md">{t("prepQuiz.swipeHint")}</p>
             </div>
 
             <div className="space-y-5 px-6 pb-6 sm:px-8 sm:pb-8">
