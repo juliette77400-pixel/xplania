@@ -4574,7 +4574,7 @@
       },
       "reminders": {
         "title": "Departure reminders",
-        "hint": "An email 2 months before (visa, housing, budget) and 7 days before you leave (paperwork).",
+        "hint": "An email 2 months before (visa, housing, budget), 10 days before (arrival), 7 days before (paperwork) and 5 days before you leave (suitcase).",
         "error": "Could not save your choice. Try again."
       }
     },

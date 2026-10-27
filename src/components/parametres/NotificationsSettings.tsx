@@ -45,7 +45,7 @@ const NotificationsSettings = () => {
   const [prefs, setPrefs] = useState<Prefs>(DEFAULTS);
   const [pushStatus, setPushStatus] = useState<NotificationPermission>("default");
   const { user } = useAuth();
-  // Departure reminders (J-60, J-7) are sent by the server, so the choice lives in the account.
+  // Departure reminders (J-60, J-10, J-7, J-5) are sent by the server, so the choice lives in the account.
   const [reminders, setReminders] = useState(true);
   const [remindersSaving, setRemindersSaving] = useState(false);
   useEffect(() => { setReminders(user?.user_metadata?.departure_reminders !== false); }, [user]);

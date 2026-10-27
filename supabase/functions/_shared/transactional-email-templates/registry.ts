@@ -21,12 +21,14 @@ import { template as tripReminder } from './trip-reminder.tsx'
 import { template as budgetAlert } from './budget-alert.tsx'
 import { template as weatherAlert } from './weather-alert.tsx'
 import { template as departureReminder } from './departure-reminder.tsx'
+import { template as countdownReminder } from './countdown-reminder.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'trip-reminder': tripReminder,
   'budget-alert': budgetAlert,
   'weather-alert': weatherAlert,
   'departure-reminder': departureReminder,
+  'countdown-reminder': countdownReminder,
   // Add templates here as they are created, e.g.:
   // 'welcome': welcomeTemplate,
 }
