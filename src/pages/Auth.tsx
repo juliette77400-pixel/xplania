@@ -3,6 +3,7 @@ import { PREPARATION_HOME } from "@/config/featureFlags";
 import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { safeNextPath } from "@/lib/safe-redirect";
+import { hasCompleteGuestDraft, PREP_RESUME_PATH } from "@/lib/prep-quiz";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Sparkles, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +27,8 @@ const Auth = () => {
   // send them back there instead.
   const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
   // Beta: signing in leads straight to the preparation dashboard.
-  const next = safeNextPath(params.get("next") || (from && from !== "/" && from !== "/auth" ? from : null), PREPARATION_HOME);
+  // A visitor who finished the questionnaire always comes back to it, so the answers become the trip.
+  const next = safeNextPath(params.get("next") || (hasCompleteGuestDraft() ? PREP_RESUME_PATH : null) || (from && from !== "/" && from !== "/auth" ? from : null), PREPARATION_HOME);
   const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");

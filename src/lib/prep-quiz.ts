@@ -184,3 +184,19 @@ export function answersFromTrip(form: Partial<TravelFormData> | null | undefined
     housingStatus: isHousingStatus(f.housingStatus) ? f.housingStatus : "",
   };
 }
+
+// Visitors answer before having an account; the answers stay in this browser
+// and become their trip right after they sign up.
+export const GUEST_DRAFT_KEY = "xplania:prep-quiz:guest";
+/** Where a visitor with finished answers lands after signing up or in, so the answers become the trip. */
+export const PREP_RESUME_PATH = "/preparation?resume=1";
+
+/** True when a visitor finished the questionnaire in this browser and has not saved it yet. */
+export function hasCompleteGuestDraft(storage: Pick<Storage, "getItem"> | null = typeof localStorage === "undefined" ? null : localStorage): boolean {
+  try {
+    const raw = storage?.getItem(GUEST_DRAFT_KEY);
+    return !!raw && (JSON.parse(raw) as { complete?: boolean }).complete === true;
+  } catch {
+    return false;
+  }
+}
