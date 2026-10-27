@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
+import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -109,7 +110,7 @@ Graine de variation : ${v} (produis des tenues clairement différentes des varia
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: system },
+          { role: "system", content: system + (isEN ? "" : "\n\nTutoie toujours le voyageur (\"tu\", jamais \"vous\").") + "\n\n" + (isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR) },
           { role: "user", content: user },
         ],
         temperature: 0.95,
