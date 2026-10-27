@@ -7,6 +7,7 @@ import { getTipOfDay } from "@/data/culture-guide";
 import { HOUSING_TYPES } from "@/lib/housing";
 import { emptyPrepAnswers } from "@/lib/prep-quiz";
 import fr from "@/i18n/locales/fr.json";
+import i18n from "@/i18n";
 
 describe("questionnaire — aucune destination imposée", () => {
   it("un nouveau questionnaire démarre sans pays de destination ni nationalité", () => {
@@ -35,7 +36,8 @@ describe("valise — activités et vélo", () => {
     expect(cleanActivities(["study", "hacker", "study", 3])).toEqual(["study"]);
   });
 
-  it("le vélo est un transport valide qui ajoute casque et éclairage", () => {
+  it("le vélo est un transport valide qui ajoute casque et éclairage", async () => {
+    await i18n.changeLanguage("fr");
     expect(isTransportMode("velo")).toBe(true);
     const cats = buildCategories("erasmus", "velo");
     const names = Object.values(cats).flat().map((i) => i.name);
