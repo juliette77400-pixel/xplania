@@ -6978,7 +6978,7 @@
       "minutes": "{{n}} min",
       "lease": "Lease",
       "contract": "Written contract",
-      "risks": "Watch-outs",
+      "risks": "Things to check",
       "risksCount_one": "1 thing to check",
       "risksCount_other": "{{count}} things to check",
       "risksNone": "No warning sign noted",

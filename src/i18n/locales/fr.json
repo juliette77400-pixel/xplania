@@ -6978,7 +6978,7 @@
       "minutes": "{{n}} min",
       "lease": "Bail",
       "contract": "Contrat écrit",
-      "risks": "Points d'attention",
+      "risks": "Signaux à vérifier",
       "risksCount_one": "1 point à vérifier",
       "risksCount_other": "{{count}} points à vérifier",
       "risksNone": "Aucun signal relevé",
