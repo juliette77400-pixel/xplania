@@ -116,13 +116,24 @@ const PrepQuiz = () => {
     }
     if (tripsLoading) return;
     restored.current = true;
-    // Answers given before signing up: save them as the trip now.
+    // Answers given before signing up: save them as the trip now. They come from this
+    // browser, or from the account when the email was confirmed on another device.
     const g = readGuestDraft();
-    if (g?.complete) {
-      const a = { ...emptyPrepAnswers(), ...g.answers };
-      setAnswers(a);
+    const local = g?.complete ? (cleanFinishedAnswers(g.answers) ?? { ...emptyPrepAnswers(), ...g.answers }) : null;
+    const fromAccount = trips.length === 0 ? cleanFinishedAnswers(user.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) : null;
+    if (!fromAccount && trips.length > 0) void clearAccountDraft();
+    const pending = local ?? fromAccount;
+    if (pending) {
+      if (answersMatchTrip(pending, trips)) {
+        // Already saved, e.g. on the other device: tidy up instead of creating a duplicate.
+        try { localStorage.removeItem(GUEST_DRAFT); } catch { /* ignore */ }
+        void clearAccountDraft();
+        navigate("/app", { replace: true });
+        return;
+      }
+      setAnswers(pending);
       setStepIndex(PREP_STEPS.length - 1);
-      void persist(a);
+      void persist(pending);
       return;
     }
     try {
@@ -208,6 +219,7 @@ const PrepQuiz = () => {
       returnDate: data.returnDate || null,
     });
     try { localStorage.removeItem(draftKey(user.id)); localStorage.removeItem(GUEST_DRAFT); } catch { /* ignore */ }
+    void clearAccountDraft();
     setSaving(false);
     setSaved(data);
   }, [user, t, queryClient, setTripData, setRecommendations, setActiveTrip]);
