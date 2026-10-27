@@ -7250,7 +7250,10 @@
       "removeTransit": "Remove {{country}}",
       "regions": "Regions or cities visited",
       "regionsQuestion": "Regions or cities you plan to visit (optional)",
-      "regionsPlaceholder": "e.g. Tokyo, Kyoto, Hokkaido"
+      "regionsPlaceholder": "e.g. Tokyo, Kyoto, Hokkaido",
+      "quickIntro_one": "Just 1 quick question and your analysis can start.",
+      "quickIntro_other": "Just {{count}} quick questions and your analysis can start.",
+      "editAll": "See full profile"
     },
     "cards": {
       "title": "The essentials",
@@ -7744,5 +7747,9 @@
       "text": "Answer 7 questions, see your priorities, then move forward tool by tool, at your own pace.",
       "feedback": "Give my feedback"
     }
+  },
+  "guestSave": {
+    "text": "Your stay is only kept in this browser. Create your free account to save it and find your 5 tools.",
+    "cta": "Save my stay"
   }
 }

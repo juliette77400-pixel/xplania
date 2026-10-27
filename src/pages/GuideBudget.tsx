@@ -36,6 +36,7 @@ import BudgetSimulator from "@/components/budget/BudgetSimulator";
 import BudgetConfirmDialog from "@/components/budget/BudgetConfirmDialog";
 import BudgetIncomesForm from "@/components/budget/BudgetIncomes";
 import { budgetRecommendations, changedLines, emptyIncomes, sanitizeIncomes, summarizeBudget, type BudgetIncomes, type BudgetLine } from "@/lib/budget-math";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 /* =============================================================================
  * DEV NOTE — Item 6: Bank-transaction integration feasibility (research only)
@@ -461,6 +462,7 @@ const GuideBudgetPage = () => {
     <div className="min-h-screen bg-background">
       <AppNavbar />
       <QuotaBanner tool="budget" toolLabel="Budget" />
+      <div className="px-4"><GuestSaveBanner /></div>
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">

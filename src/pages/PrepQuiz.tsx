@@ -19,7 +19,7 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { useTravelStore } from "@/stores/useTravelStore";
 import {
   PREP_STEPS, STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
-  emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip,
+  emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip, GUEST_DRAFT_KEY, PREP_RESUME_PATH, hasCompleteGuestDraft,
   type PrepAnswers, type PrepStep,
 } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";
@@ -54,14 +54,12 @@ const STATUS_IMAGES = { starting: imgStatusStarting, shortlist: imgStatusShortli
 
 const SWIPE = 110;
 const draftKey = (userId: string) => `xplania:prep-quiz:${userId}`;
-// Visitors answer before having an account; the answers stay in this browser
-// and become their trip right after they sign up.
-const GUEST_DRAFT = "xplania:prep-quiz:guest";
+const GUEST_DRAFT = GUEST_DRAFT_KEY;
 interface GuestDraft { answers: PrepAnswers; step: number; complete?: boolean }
 const readGuestDraft = (): GuestDraft | null => {
   try { const raw = localStorage.getItem(GUEST_DRAFT); return raw ? (JSON.parse(raw) as GuestDraft) : null; } catch { return null; }
 };
-const RESUME_PATH = "/preparation?resume=1";
+const RESUME_PATH = PREP_RESUME_PATH;
 const PREVIEW_ICONS = { visa: FileCheck, housing: BedDouble, budget: Wallet } as const;
 
 const PrepQuiz = () => {
@@ -147,7 +145,9 @@ const PrepQuiz = () => {
 
   useEffect(() => {
     if (!restored.current || saved || saving) return;
-    if (!user && preview) return; // the completed guest draft is written by next()
+    // A finished guest draft is only written by next() or "edit my answers": never overwrite it here,
+    // or reopening the preview would wipe the answers before signup.
+    if (!user && (preview || hasCompleteGuestDraft())) return;
     try { localStorage.setItem(user ? draftKey(user.id) : GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* storage full */ }
   }, [answers, stepIndex, user, saved, saving, preview]);
 

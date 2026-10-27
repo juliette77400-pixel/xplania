@@ -36,6 +36,7 @@ import {
   visaProfileFromTrip, visaProfileKey, visaStateKey, visaStayDays, type SavedVisaState, type VisaProfile,
 } from "@/lib/visa-rules";
 import type { TravelFormData } from "@/types/travel";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 const GuideVisaPage = () => {
   useHydrateActiveTrip();
@@ -194,6 +195,7 @@ const GuideVisaPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <div className="px-4"><GuestSaveBanner /></div>
       <QuotaBanner tool="visa" toolLabel={t("visa2.toolName")} />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName={t("visa2.toolName")} />
 

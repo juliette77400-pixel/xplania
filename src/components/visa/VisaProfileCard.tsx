@@ -23,12 +23,17 @@ const chip = (active: boolean) =>
 const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
   const { t } = useTranslation();
   const missing = missingVisaFields(profile);
-  const [editing, setEditing] = useState(missing.length > 0);
+  // "quick": only the missing answers are asked (e.g. passport and stopover, which the questionnaire does not ask).
+  const [mode, setMode] = useState<"view" | "quick" | "full">(missing.length > 0 ? "quick" : "view");
+  const editing = mode !== "view";
+  const setEditing = (on: boolean) => setMode(on ? "full" : "view");
   const [draft, setDraft] = useState<VisaProfile>(profile);
   const [transitPick, setTransitPick] = useState("");
 
   useEffect(() => { setDraft(profile); }, [profile]);
-  useEffect(() => { if (missingVisaFields(profile).length > 0) setEditing(true); }, [profile]);
+  useEffect(() => { if (missingVisaFields(profile).length > 0) setMode((m) => (m === "full" ? m : "quick")); }, [profile]);
+  // Fields shown in the form: all of them, or only the ones still missing when the profile was loaded.
+  const shows = (f: VisaField | "regions") => mode === "full" || (f !== "regions" && missing.includes(f));
 
   const set = <K extends keyof VisaProfile>(k: K, v: VisaProfile[K]) => setDraft((d) => ({ ...d, [k]: v }));
   const draftMissing = missingVisaFields(draft);
@@ -63,16 +68,17 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
             <p className="text-xs text-muted-foreground">{t("visa2.profile.help")}</p>
           </div>
         </div>
-        {!editing && (
-          <Button variant="outline" size="sm" onClick={() => setEditing(true)}><Pencil className="mr-1.5 h-3.5 w-3.5" />{t("visa2.profile.edit")}</Button>
+        {mode !== "full" && (
+          <Button variant="outline" size="sm" onClick={() => setEditing(true)}><Pencil className="mr-1.5 h-3.5 w-3.5" />{mode === "quick" ? t("visa2.profile.editAll") : t("visa2.profile.edit")}</Button>
         )}
       </div>
 
-      {!editing && (
-        <dl className="grid gap-2 sm:grid-cols-2">
+      {mode !== "full" && (
+        <dl className={cn("grid gap-2 sm:grid-cols-2", mode === "quick" && "mb-5")}>
           {rows.map((r) => {
             const isMissing = r.field ? missing.includes(r.field) : false;
             if (!r.field && !r.value) return null;
+            if (mode === "quick" && isMissing) return null;
             return (
               <div key={r.label} className={cn("rounded-xl px-3 py-2", isMissing ? "border border-warning/40 bg-warning/10" : "bg-muted/30")}>
                 <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{r.label}</dt>
@@ -85,22 +91,31 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
 
       {editing && (
         <div className="space-y-5">
-          {draftMissing.length > 0 && (
+          {mode === "quick" ? (
+            <p role="status" className="rounded-xl border border-primary/30 bg-primary/10 px-3 py-2 text-sm font-medium text-foreground">
+              {t("visa2.profile.quickIntro", { count: missing.length })}
+            </p>
+          ) : draftMissing.length > 0 && (
             <p role="status" className="rounded-xl border border-warning/40 bg-warning/10 px-3 py-2 text-sm text-foreground">
               {t("visa2.profile.missingIntro", { count: draftMissing.length })}
             </p>
           )}
+          {(shows("destination") || shows("nationality") || shows("residence")) && (
           <div className="grid gap-4 sm:grid-cols-2">
-            <CountryCombobox key={`d-${draft.destinationCode}`} label={t("visa2.profile.destination")} value={draft.destinationCode} onChange={(c) => set("destinationCode", c)} />
+            {shows("destination") && <CountryCombobox key={`d-${draft.destinationCode}`} label={t("visa2.profile.destination")} value={draft.destinationCode} onChange={(c) => set("destinationCode", c)} />}
+            {shows("destination") && (
             <div className="space-y-1.5">
               <Label htmlFor="vp-city">{t("visa2.profile.city")}</Label>
               <Input id="vp-city" className="h-12 text-base" value={draft.city} onChange={(e) => set("city", e.target.value)} />
             </div>
-            <CountryCombobox key={`n-${draft.nationality}`} label={t("visa2.profile.nationality")} value={draft.nationality} onChange={(c) => set("nationality", c)} />
-            <CountryCombobox key={`s-${draft.secondNationality}`} label={t("visa2.profile.secondNationality")} value={draft.secondNationality} onChange={(c) => set("secondNationality", c)} placeholder={t("prepQuiz.origin.secondPlaceholder")} />
-            <CountryCombobox key={`r-${draft.residence}`} label={t("visa2.profile.residence")} value={draft.residence} onChange={(c) => set("residence", c)} />
+            )}
+            {shows("nationality") && <CountryCombobox key={`n-${draft.nationality}`} label={t("visa2.profile.nationality")} value={draft.nationality} onChange={(c) => set("nationality", c)} />}
+            {shows("nationality") && <CountryCombobox key={`s-${draft.secondNationality}`} label={t("visa2.profile.secondNationality")} value={draft.secondNationality} onChange={(c) => set("secondNationality", c)} placeholder={t("prepQuiz.origin.secondPlaceholder")} />}
+            {shows("residence") && <CountryCombobox key={`r-${draft.residence}`} label={t("visa2.profile.residence")} value={draft.residence} onChange={(c) => set("residence", c)} />}
           </div>
+          )}
 
+          {shows("stayType") && (
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">{t("visa2.profile.purpose")}</legend>
             <div className="flex flex-wrap gap-2">
@@ -109,7 +124,9 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
               ))}
             </div>
           </fieldset>
+          )}
 
+          {shows("duration") && (<>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="vp-dep">{t("prepQuiz.dates.departure")}</Label>
@@ -130,7 +147,9 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
               </div>
             </fieldset>
           )}
+          </>)}
 
+          {shows("passportType") && (
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">{t("visa2.profile.passport")}</legend>
             <div className="flex flex-wrap gap-2">
@@ -139,7 +158,9 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
               ))}
             </div>
           </fieldset>
+          )}
 
+          {shows("transit") && (
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">{t("visa2.profile.transitQuestion")}</legend>
             <div className="flex flex-wrap gap-2">
@@ -170,14 +191,18 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
               </div>
             )}
           </fieldset>
+          )}
 
+          {shows("regions") && (
           <div className="space-y-1.5">
             <Label htmlFor="vp-regions">{t("visa2.profile.regionsQuestion")}</Label>
             <Input id="vp-regions" maxLength={200} value={draft.regions} placeholder={t("visa2.profile.regionsPlaceholder")} onChange={(e) => set("regions", e.target.value)} />
           </div>
+          )}
 
           <div className="flex flex-wrap justify-end gap-2">
             {missing.length === 0 && <Button variant="outline" onClick={() => { setDraft(profile); setEditing(false); }} disabled={saving}>{t("common.cancel")}</Button>}
+            {missing.length > 0 && mode === "full" && <Button variant="outline" onClick={() => { setDraft(profile); setMode("quick"); }} disabled={saving}>{t("common.cancel")}</Button>}
             <Button onClick={save} disabled={saving || (draft.departureDate && draft.returnDate ? draft.returnDate < draft.departureDate : false)} className="gradient-button">
               {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}{t("visa2.profile.save")}
             </Button>

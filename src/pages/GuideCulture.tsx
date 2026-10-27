@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";
@@ -86,6 +87,7 @@ export default function GuideCulture() {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <div className="px-4"><GuestSaveBanner /></div>
       <main id="main-content" tabIndex={-1} className="container mx-auto max-w-4xl px-4 sm:px-6 py-6 pb-16 space-y-6">
         {/* Same layout as « Visa & Préparatifs »: hero, then the destination card. */}
         <header className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-10">
