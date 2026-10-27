@@ -93,8 +93,10 @@ const PrepQuiz = () => {
   const isFr = i18n.language.startsWith("fr");
 
   // Answers sent with the signup are only needed until the trip exists.
+  const accountDraftSeen = useRef(false);
   const clearAccountDraft = useCallback(async () => {
-    if (!user?.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) return;
+    if (!accountDraftSeen.current && !user?.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) return;
+    accountDraftSeen.current = false;
     try { await supabase.auth.updateUser({ data: { [ACCOUNT_DRAFT_META_KEY]: null } }); } catch { /* retried on next visit */ }
   }, [user]);
 
@@ -125,12 +127,7 @@ const PrepQuiz = () => {
     restored.current = true;
     // Answers given before signing up: save them as the trip now. They come from this
     // browser, or from the account when the email was confirmed on another device.
-    const g = readGuestDraft();
-    const local = g?.complete ? (cleanFinishedAnswers(g.answers) ?? { ...emptyPrepAnswers(), ...g.answers }) : null;
-    const fromAccount = trips.length === 0 ? cleanFinishedAnswers(user.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) : null;
-    if (!fromAccount && trips.length > 0) void clearAccountDraft();
-    const pending = local ?? fromAccount;
-    if (pending) {
+    const savePending = (pending: PrepAnswers) => {
       if (answersMatchTrip(pending, trips)) {
         // Already saved, e.g. on the other device: tidy up instead of creating a duplicate.
         try { localStorage.removeItem(GUEST_DRAFT); } catch { /* ignore */ }
@@ -141,23 +138,38 @@ const PrepQuiz = () => {
       setAnswers(pending);
       setStepIndex(PREP_STEPS.length - 1);
       void persist(pending);
+    };
+    const restoreOwnDraft = () => {
+      try {
+        const raw = localStorage.getItem(draftKey(user.id));
+        if (raw) {
+          const d = JSON.parse(raw) as { answers: PrepAnswers; step: number };
+          setAnswers({ ...emptyPrepAnswers(), ...d.answers });
+          setStepIndex(Math.min(Math.max(0, d.step || 0), PREP_STEPS.length - 1));
+          return;
+        }
+      } catch { /* ignore broken draft */ }
+      const last = trips[0];
+      if (last) {
+        const prev = answersFromTrip(last.form_data as Partial<TravelFormData>, last.destination);
+        setAnswers((a) => ({ ...a, nationality: prev.nationality, residence: prev.residence, secondNationality: prev.secondNationality }));
+      }
+      prefill();
+    };
+    const g = readGuestDraft();
+    const local = g?.complete ? (cleanFinishedAnswers(g.answers) ?? { ...emptyPrepAnswers(), ...g.answers }) : null;
+    if (local) { savePending(local); return; }
+    if (trips.length > 0) {
+      void clearAccountDraft();
+      restoreOwnDraft();
       return;
     }
-    try {
-      const raw = localStorage.getItem(draftKey(user.id));
-      if (raw) {
-        const d = JSON.parse(raw) as { answers: PrepAnswers; step: number };
-        setAnswers({ ...emptyPrepAnswers(), ...d.answers });
-        setStepIndex(Math.min(Math.max(0, d.step || 0), PREP_STEPS.length - 1));
-        return;
-      }
-    } catch { /* ignore broken draft */ }
-    const last = trips[0];
-    if (last) {
-      const prev = answersFromTrip(last.form_data as Partial<TravelFormData>, last.destination);
-      setAnswers((a) => ({ ...a, nationality: prev.nationality, residence: prev.residence, secondNationality: prev.secondNationality }));
-    }
-    prefill();
+    // No trip yet: read the account fresh, the answers may have been sent with the signup.
+    void supabase.auth.getUser().then(({ data }) => {
+      const fromAccount = cleanFinishedAnswers(data.user?.user_metadata?.[ACCOUNT_DRAFT_META_KEY]);
+      if (fromAccount) { accountDraftSeen.current = true; savePending(fromAccount); }
+      else restoreOwnDraft();
+    }).catch(restoreOwnDraft);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, trips, tripsLoading]);
 
