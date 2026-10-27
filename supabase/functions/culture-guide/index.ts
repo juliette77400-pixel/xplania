@@ -59,7 +59,7 @@ serve(withQuotaRefund(async (req) => {
 
     const rl = rateLimitResponse(checkRateLimit({ key: "culture-guide", subject: auth.userId, limit: 10, windowMs: 60_000 }), cors);
     if (rl) return rl;
-    const quota = await enforceQuota("valise", req, cors);
+    const quota = await enforceQuota("culture", req, cors);
     if (quota) return quota;
 
     const p = PILLARS[pillar][lang];

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon } from "lucide-react";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import QuickJump from "@/components/shared/QuickJump";
@@ -210,6 +210,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
   const pre = getPrewritten(code, pillar, lang);
   const sensitive = CULTURE_PILLARS.find((p) => p.id === pillar && "sensitive" in p);
 
+  const qc = useQueryClient();
   const q = useQuery({
     queryKey: ["culture-guide", code, pillar, lang],
     enabled: !pre && !!user,
@@ -220,10 +221,14 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
         .eq("country_code", code).eq("pillar", pillar).eq("locale", lang).maybeSingle();
       if (cached) return cached.content as unknown as PillarContent;
       const { data, error } = await supabase.functions.invoke("culture-guide", { body: { countryCode: code, countryName, pillar, locale: lang } });
+      // Culture has its own monthly tries, separate from Valise.
+      if ((error as { context?: { status?: number } } | null)?.context?.status === 402) throw new Error("quota_exceeded");
       if (error || !data?.content) throw error ?? new Error("no content");
+      if (!data.cached) qc.invalidateQueries({ queryKey: ["quota"] });
       return data.content as PillarContent;
     },
   });
+  const quotaReached = q.error instanceof Error && q.error.message === "quota_exceeded";
   const content = pre ?? q.data;
 
   return (
@@ -244,7 +249,14 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> {t("culture.loading")}
         </div>
       )}
-      {q.isError && (
+      {q.isError && quotaReached && (
+        <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-3">
+          <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
+          <p className="text-sm text-muted-foreground">{t("culture.quotaReached")}</p>
+          <Button asChild variant="outline"><Link to="/offres">{t("culture.quotaSeeOffers")}</Link></Button>
+        </div>
+      )}
+      {q.isError && !quotaReached && (
         <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
           <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>

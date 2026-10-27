@@ -113,7 +113,7 @@ const FREE_TOOLS: Array<{ labelKey: string; tool: QuotaTool }> = [
   { labelKey: "appNav.budget", tool: "budget" },
   { labelKey: "appNav.visa", tool: "visa" },
   { labelKey: "appNav.suitcase", tool: "valise" },
-  { labelKey: "appNav.culture", tool: "valise" },
+  { labelKey: "appNav.culture", tool: "culture" },
 ];
 
 /** Remaining free tries for one tool, read from the server quota (signed in) — visitors see the monthly allowance. */
