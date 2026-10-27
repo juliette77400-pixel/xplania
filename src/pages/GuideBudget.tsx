@@ -201,6 +201,10 @@ const GuideBudgetPage = () => {
             return {
               ...def,
               ...c,
+              // Older saves may hold text or missing amounts: charts and totals need numbers.
+              planned: Math.max(0, Number(c.planned) || 0),
+              spent: Math.max(0, Number(c.spent) || 0),
+              aiSuggested: Math.max(0, Number(c.aiSuggested) || 0),
               icon: def.icon,
               color: def.color,
             } as BudgetCategory;
@@ -209,7 +213,7 @@ const GuideBudgetPage = () => {
             if (!rehydrated.some((c) => c.key === def.key)) rehydrated.push({ ...def });
           }
           setCategories(rehydrated);
-          setExpenses(Array.isArray(parsed.expenses) ? parsed.expenses : []);
+          setExpenses(Array.isArray(parsed.expenses) ? (parsed.expenses as Expense[]).filter((e) => e && typeof e === "object").map((e) => ({ ...e, amount: Math.max(0, Number(e.amount) || 0) })) : []);
           setIncomes(sanitizeIncomes(parsed.incomes));
           setIncomesGiven(!!parsed.incomes);
           setHasGenerated(true);
