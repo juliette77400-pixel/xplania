@@ -91,6 +91,12 @@ const PrepQuiz = () => {
   const step = PREP_STEPS[stepIndex];
   const isFr = i18n.language.startsWith("fr");
 
+  // Answers sent with the signup are only needed until the trip exists.
+  const clearAccountDraft = useCallback(async () => {
+    if (!user?.user_metadata?.[ACCOUNT_DRAFT_META_KEY]) return;
+    try { await supabase.auth.updateUser({ data: { [ACCOUNT_DRAFT_META_KEY]: null } }); } catch { /* retried on next visit */ }
+  }, [user]);
+
   // Restore an interrupted questionnaire, or pre-fill the origin from a previous trip.
   useEffect(() => {
     if (restored.current) return;
