@@ -23,6 +23,21 @@ interface Args {
   tripData?: TravelFormData | null;
 }
 
+/** Why the tips could not be generated: shown to the student in plain words. */
+export type InsightsErrorKind = "quota" | "ai_unavailable" | "rate" | "server";
+
+async function insightsErrorKind(error: unknown): Promise<InsightsErrorKind> {
+  const ctx = (error as { context?: Response })?.context;
+  const status = ctx?.status;
+  let body: { error?: string } = {};
+  try { if (ctx && typeof ctx.clone === "function") body = await ctx.clone().json(); } catch { /* not JSON */ }
+  if (status === 402 && body.error === "quota_exceeded") return "quota";
+  // 402 without the quota marker = the AI provider has no credits left (not the student's tries).
+  if (status === 402 || status === 403) return "ai_unavailable";
+  if (status === 429) return "rate";
+  return "server";
+}
+
 /**
  * One AI call per trip context returning scenarios, a personal analysis,
  * localized deals and saving tips. `refresh()` asks for brand-new ideas.
@@ -42,7 +57,8 @@ export function useBudgetInsights(a: Args) {
     queryKey: key,
     enabled: a.enabled && !!a.destination,
     staleTime: Infinity,
-    retry: 1,
+    // A missing credit or an exhausted quota will not fix itself on retry.
+    retry: (count, err) => count < 1 && !(err instanceof Error && ["quota", "ai_unavailable"].includes(err.message)),
     queryFn: async (): Promise<BudgetInsights> => {
       const p = payloadRef.current;
       const td = p.tripData;
@@ -70,8 +86,8 @@ export function useBudgetInsights(a: Args) {
           seed: `${Date.now()}-${nonce}`,
         },
       });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
+      if (error) throw new Error(await insightsErrorKind(error));
+      if (data?.error) throw new Error("server");
       const res = data as BudgetInsights;
       const names = [
         ...(res.tips || []).map((t) => t.title),
@@ -83,5 +99,9 @@ export function useBudgetInsights(a: Args) {
   });
 
   const refresh = useCallback(() => setNonce((n) => n + 1), []);
-  return { ...query, refresh };
+  const msg = query.error instanceof Error ? query.error.message : "";
+  const errorKind: InsightsErrorKind | null = query.isError
+    ? (["quota", "ai_unavailable", "rate"].includes(msg) ? (msg as InsightsErrorKind) : "server")
+    : null;
+  return { ...query, refresh, errorKind };
 }
