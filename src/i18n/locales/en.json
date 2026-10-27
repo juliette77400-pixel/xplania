@@ -2926,7 +2926,7 @@
     "chartsAiOver": "At this pace, you risk going over budget by €{{amount}}. The AI recommends reducing activity spending or increasing your planned budget.",
     "chartsAiOk": "At this rate, you'll stay within budget with a €{{amount}} margin. Keep going!",
     "alertsTitle": "Alerts & AI Optimization",
-    "alertsSubtitle": "AI watches your spending and suggests fixes",
+    "alertsSubtitle": "Lines to watch and ideas to spend less once there",
     "alertsOver": "Budget exceeded for {{category}}!",
     "alertsHigh": "{{category}} prices are higher than expected.",
     "alertsLow": "You're under budget for {{category}}!",
@@ -3172,7 +3172,15 @@
     "scenarioApplied": "Scenario applied to your budget",
     "dealsEmpty": "Deals appear after generation.",
     "disclaimerAdjust": "This budget is an estimate you can adjust anytime. Always double-check your spending and real prices.",
-    "splitHint": "Hover or tap a colour to see its share of the budget."
+    "splitHint": "Hover or tap a colour to see its share of the budget.",
+    "insightsError": {
+      "quota": "You've used this month's Budget tries. They come back next month.",
+      "ai_unavailable": "The AI service is temporarily unavailable. Your budget and amounts still work: try again a bit later.",
+      "rate": "Lots of requests at once. Try again in a minute.",
+      "server": "Couldn't generate ideas right now. Try again."
+    },
+    "insightsRetry": "Try again",
+    "dealsNote": "Lasting ways to save, with indicative prices to check. These are not current promotions."
   },
   "gamification": {
     "heroTitle": "Badge Collection",

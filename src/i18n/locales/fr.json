@@ -2926,7 +2926,7 @@
     "chartsAiOver": "Si tu maintiens ce rythme, tu risques de dépasser ton budget de {{amount}}€. L'IA te recommande de réduire les dépenses activités ou d'augmenter ton budget prévisionnel.",
     "chartsAiOk": "À ce rythme, tu resteras dans ton budget avec une marge de {{amount}}€. Continue comme ça !",
     "alertsTitle": "Alertes & Optimisation IA",
-    "alertsSubtitle": "L'IA surveille tes dépenses et te propose des solutions",
+    "alertsSubtitle": "Tes postes à surveiller et des idées pour dépenser moins sur place",
     "alertsOver": "Dépassement du budget {{category}} !",
     "alertsHigh": "Prix des {{category}} plus élevés que prévu.",
     "alertsLow": "Tu es en dessous du budget prévu pour {{category}} !",
@@ -3172,7 +3172,15 @@
     "scenarioApplied": "Scénario appliqué à ton budget",
     "dealsEmpty": "Les bons plans arrivent après la génération.",
     "disclaimerAdjust": "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels.",
-    "splitHint": "Passe la souris ou appuie sur une couleur pour voir sa part du budget."
+    "splitHint": "Passe la souris ou appuie sur une couleur pour voir sa part du budget.",
+    "insightsError": {
+      "quota": "Tu as utilisé tes essais Budget de ce mois. Ils reviennent le mois prochain.",
+      "ai_unavailable": "Le service d'IA est momentanément indisponible. Ton budget et tes montants restent utilisables : réessaie un peu plus tard.",
+      "rate": "Beaucoup de demandes en même temps. Réessaie dans une minute.",
+      "server": "Impossible de générer les idées pour l'instant. Réessaie."
+    },
+    "insightsRetry": "Réessayer",
+    "dealsNote": "Pistes d'économies durables, avec des prix indicatifs à vérifier. Ce ne sont pas des promotions en cours."
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
