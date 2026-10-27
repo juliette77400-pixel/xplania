@@ -353,17 +353,8 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   }, [drainQueue]);
 
 
-  if (!open) {
-    return (
-      <button
-        onClick={() => setOpen(true)}
-        aria-label={t("valise.chatbot.openLabel")}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
-      >
-        <Backpack className="w-6 h-6" />
-      </button>
-    );
-  }
+  // Opened from the single "Aide" button; no floating launcher of its own.
+  if (!open) return null;
 
   const scrollToId = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
