@@ -91,7 +91,7 @@ serve(withQuotaRefund(async (req) => {
     const today = new Date().toISOString().slice(0, 10);
 
     const context = `USER
-First name: ${firstName || "(unknown)"}
+First name: ${cleanField(firstName, 40) || "(unknown)"}
 
 TRIP
 Destination: ${destination}
