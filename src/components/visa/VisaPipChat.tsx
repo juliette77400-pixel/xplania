@@ -80,6 +80,9 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
     }
   }, [openSignal]);
 
+  // "Aide" → "Ask the assistant" opens this page's assistant.
+  useEffect(() => onOpenPipChat(() => setOpen(true)), []);
+
   useEffect(() => {
     if (scrollerRef.current) scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
   }, [history, loading, stage]);

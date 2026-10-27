@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { onOpenPipChat } from "@/lib/help-events";
 
 import {
   ACTIVITIES,
@@ -83,6 +84,9 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
       setStage((s) => (s === "welcome" ? "qa" : s));
     }
   }, [openSignal]);
+
+  // "Aide" → "Ask the assistant" opens this page's assistant.
+  useEffect(() => onOpenPipChat(() => setOpen(true)), []);
 
   useEffect(() => {
     if (scrollerRef.current) scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
