@@ -6924,7 +6924,8 @@
       "flatshare": "Flatshare",
       "studio": "Studio / flat",
       "family": "Host family",
-      "other": "Other"
+      "other": "Other",
+      "hotel": "Hotel / hostel"
     },
     "compare": {
       "help": "Add the places you found on other websites. Only the name and rent are required.",
@@ -6970,7 +6971,9 @@
       "risks": "Watch-outs",
       "risksCount_one": "1 thing to check",
       "risksCount_other": "{{count}} things to check",
-      "risksNone": "No warning sign noted"
+      "risksNone": "No warning sign noted",
+      "editShort": "Edit",
+      "updated": "Changes saved"
     },
     "form": {
       "addTitle": "Add a place",
@@ -6997,7 +7000,7 @@
       "url": "Listing link",
       "pros": "Pros",
       "cons": "Cons",
-      "notes": "Personal notes",
+      "notes": "Points to watch",
       "privacy": "Don't save ID documents, contracts or bank details here.",
       "errors": {
         "name": "Enter a name for this place.",
@@ -7015,7 +7018,8 @@
       "unknownHint": "Leave empty if you don't know yet: Xplania will tell you what to check.",
       "commuteMinutes": "Commute to campus or internship (minutes)",
       "leaseNotes": "Lease conditions",
-      "leaseNotesPlaceholder": "Minimum length, notice, sublet, home insurance…"
+      "leaseNotesPlaceholder": "Minimum length, notice, sublet, home insurance…",
+      "editDesc": "Your answers are already filled in: change what you want, then save."
     },
     "budget": {
       "title": "Add costs to budget",

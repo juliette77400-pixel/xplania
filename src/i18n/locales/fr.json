@@ -6924,7 +6924,8 @@
       "flatshare": "Colocation",
       "studio": "Studio / appartement",
       "family": "Famille d'accueil",
-      "other": "Autre"
+      "other": "Autre",
+      "hotel": "Hôtel / auberge"
     },
     "compare": {
       "help": "Ajoute les logements repérés sur d'autres sites. Seuls le nom et le loyer sont obligatoires.",
@@ -6970,7 +6971,9 @@
       "risks": "Points d'attention",
       "risksCount_one": "1 point à vérifier",
       "risksCount_other": "{{count}} points à vérifier",
-      "risksNone": "Aucun signal relevé"
+      "risksNone": "Aucun signal relevé",
+      "editShort": "Modifier",
+      "updated": "Modifications enregistrées"
     },
     "form": {
       "addTitle": "Ajouter un logement",
@@ -6997,7 +7000,7 @@
       "url": "Lien de l'annonce",
       "pros": "Avantages",
       "cons": "Inconvénients",
-      "notes": "Notes personnelles",
+      "notes": "Points d'attention",
       "privacy": "N'enregistre ici ni pièce d'identité, ni contrat, ni coordonnées bancaires.",
       "errors": {
         "name": "Indique un nom pour ce logement.",
@@ -7015,7 +7018,8 @@
       "unknownHint": "Laisse vide si tu ne sais pas encore : Xplania te dira quoi vérifier.",
       "commuteMinutes": "Trajet jusqu'au campus ou au stage (minutes)",
       "leaseNotes": "Conditions du bail",
-      "leaseNotesPlaceholder": "Durée minimale, préavis, sous-location, assurance habitation…"
+      "leaseNotesPlaceholder": "Durée minimale, préavis, sous-location, assurance habitation…",
+      "editDesc": "Tes réponses sont déjà remplies : change ce que tu veux puis enregistre."
     },
     "budget": {
       "title": "Ajouter les dépenses au budget",
