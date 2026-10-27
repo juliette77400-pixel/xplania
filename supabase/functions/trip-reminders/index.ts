@@ -1,6 +1,6 @@
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from '../_shared/prompts.ts'
-// Daily job: emails a J-60 reminder (visa, housing, first-month budget) and a J-7 reminder
-// (formalities checklist) to trip owners, unless they turned departure reminders off.
+// Daily job: emails J-60 (visa, housing, first-month budget), J-10 (arrival), J-7
+// (formalities checklist) and J-5 (suitcase) reminders to trip owners, unless they turned departure reminders off.
 // Idempotent per trip, so repeated calls never send duplicates.
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
