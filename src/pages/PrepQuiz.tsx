@@ -531,7 +531,7 @@ const PrepQuiz = () => {
               )}
 
               <div className="flex items-center justify-between gap-3 pt-1">
-                <Button type="button" variant="ghost" onClick={back} disabled={stepIndex === 0 || saving}>
+                <Button type="button" variant="ghost" onClick={() => (stepIndex === 0 ? navigate("/") : back())} disabled={saving}>
                   <ArrowLeft className="mr-1.5 h-4 w-4" />{t("prepQuiz.back")}
                 </Button>
                 <Button type="submit" className="gradient-button h-11 px-6" disabled={saving}>
