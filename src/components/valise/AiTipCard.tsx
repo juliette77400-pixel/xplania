@@ -11,7 +11,18 @@ interface AiTipCardProps {
   destination?: string;
   /** Stay dates, so clothes match the season. */
   months?: string;
+  /** Planned activities, in the user's language. */
+  activities?: string[];
+  stayType?: string;
+  transport?: string;
+  days?: number;
+  /** Real climate figures for the stay months (never invented). */
+  climate?: string;
 }
+
+// Each click asks about another angle, so a new tip is really new.
+const TOPICS_FR = ["vêtements pour la saison et le climat de ces mois", "équipement lié à une des activités prévues", "documents et copies à emporter", "adaptateur et électronique", "limites de taille et de poids des bagages pour ce transport", "trousse de santé et pharmacie pour un long séjour", "affaires pour les cours ou le stage", "ce qu'il vaut mieux acheter sur place plutôt qu'emporter"];
+const TOPICS_EN = ["clothes for the season and climate of these months", "gear for one of the planned activities", "documents and copies to bring", "plug adapter and electronics", "luggage size and weight limits for this transport", "health kit for a long stay", "things for classes or the internship", "what is better bought there than packed"];
 
 const emojis: Record<LuggageMode, string> = { erasmus: "🎓", stage: "💼", cabine: "🎒", soute: "🧳", sport: "⚽" };
 
@@ -57,7 +68,7 @@ function parseTip(raw: string, fallbackTitle: string): { title: string; tip: str
   return { title: fallbackTitle, tip: trimmed };
 }
 
-const AiTipCard = ({ mode, isLoading, destination, months }: AiTipCardProps) => {
+const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stayType, transport, days, climate }: AiTipCardProps) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("en") ? "en" : "fr";
 
@@ -65,11 +76,15 @@ const AiTipCard = ({ mode, isLoading, destination, months }: AiTipCardProps) => 
   const staticTip = t(`valise2.aiTips.${mode}.tip`, { defaultValue: "" });
   const profileLabel = t(`valise2.profiles.${mode}.label`);
 
-  const cacheKey = `${lang}:${mode}:${(destination || "").toLowerCase().trim()}`;
+  const actKey = activities.join(",");
+  const cacheKey = `${lang}:${mode}:${(destination || "").toLowerCase().trim()}:${actKey}:${transport || ""}:${months || ""}`;
 
   const [dynamicTip, setDynamicTip] = useState<{ title: string; tip: string } | null>(null);
   const [loadingDynamic, setLoadingDynamic] = useState(false);
+  const [tipError, setTipError] = useState<"quota" | "error" | null>(null);
   const inFlightRef = useRef(false);
+  const shownRef = useRef<string[]>([]);
+  const topicRef = useRef(Math.floor(Math.random() * TOPICS_FR.length));
 
   const fetchTip = useCallback(
     async (force = false) => {
@@ -84,14 +99,14 @@ const AiTipCard = ({ mode, isLoading, destination, months }: AiTipCardProps) => 
       inFlightRef.current = true;
       setLoadingDynamic(true);
       try {
+        topicRef.current = (topicRef.current + (force ? 1 : 0)) % TOPICS_FR.length;
+        const topic = (lang === "en" ? TOPICS_EN : TOPICS_FR)[topicRef.current];
+        const avoid = shownRef.current.slice(-6).join(" | ");
         const question =
           lang === "en"
-            ? `Give me ONE concrete packing tip (max 50 words) for a student, profile "${profileLabel}"${
-                destination ? `, going to ${destination}` : ""
-              }${months ? `, stay ${months}` : ""}. Pick ONE of: plug adapter type, documents to carry, clothes for the season of those months, luggage size/weight limits, equipment for an internship. No gadget, no anecdote, no product brand. Format: line 1 = short title with one emoji, line 2 = the actionable tip. No intro, no outro.`
-            : `Donne-moi UN conseil de valise concret (max 50 mots) pour un étudiant, profil « ${profileLabel} »${
-                destination ? `, qui part à ${destination}` : ""
-              }${months ? `, séjour ${months}` : ""}. Choisis UN sujet parmi : type d'adaptateur électrique, documents à emporter, vêtements adaptés à la saison de ces mois, limites de taille/poids des bagages, équipement pour un stage. Pas de gadget, pas d'anecdote, pas de marque. Format : ligne 1 = titre court avec un emoji, ligne 2 = le conseil actionnable. Pas d'intro ni d'outro.`;
+            ? `Give me ONE new, concrete packing tip (max 50 words) for this student. Topic: ${topic}. Use the trip data provided (destination, dates, length, kind of stay, activities, transport, luggage profile "${profileLabel}"${climate ? `, real climate figures: ${climate}` : ""}). Never invent a weather event the figures don't show. No gadget, no brand, nothing valid for any trip. Different from these previous tips: ${avoid || "none"}. Format: line 1 = short title with one emoji, line 2 = the actionable tip. No intro, no outro.`
+            : `Donne-moi UN nouveau conseil de valise concret (max 50 mots) pour cet étudiant. Sujet : ${topic}. Appuie-toi sur les données du séjour fournies (destination, dates, durée, type de séjour, activités, transport, profil de bagage « ${profileLabel} »${climate ? `, chiffres réels du climat : ${climate}` : ""}). N'invente jamais un phénomène météo absent des chiffres. Pas de gadget, pas de marque, rien qui vaille pour n'importe quel voyage. Différent de ces conseils déjà donnés : ${avoid || "aucun"}. Format : ligne 1 = titre court avec un emoji, ligne 2 = le conseil actionnable. Pas d'intro ni d'outro.`;
+        setTipError(null);
 
         const { data, error } = await supabase.functions.invoke("valise-qa", {
           body: {
@@ -100,23 +115,37 @@ const AiTipCard = ({ mode, isLoading, destination, months }: AiTipCardProps) => 
             destination: destination || "",
             luggage: mode,
             locale: lang,
+            activities,
+            tripType: stayType || "",
+            duration: days ? `${days} days` : "",
+            startDate: months?.split(" → ")[0] || "",
+            endDate: months?.split(" → ")[1] || "",
           },
         });
-        if (error) throw error;
+        if (error) {
+          const status = (error as { context?: Response })?.context?.status;
+          setTipError(status === 402 ? "quota" : "error");
+          return;
+        }
         const answer = (data as { answer?: string } | null)?.answer || "";
         const parsed = parseTip(answer, staticTitle);
         if (parsed.tip) {
           setDynamicTip(parsed);
+          shownRef.current = [...shownRef.current, parsed.title].slice(-10);
           writeCache(cacheKey, parsed);
+        } else {
+          setTipError("error");
         }
       } catch (e) {
         console.warn("AiTipCard fetch failed", e);
+        setTipError("error");
       } finally {
         inFlightRef.current = false;
         setLoadingDynamic(false);
       }
     },
-    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months, actKey, stayType, transport, days, climate],
   );
 
   // On mode/destination/lang change: load from cache or fetch.
@@ -191,7 +220,8 @@ const AiTipCard = ({ mode, isLoading, destination, months }: AiTipCardProps) => 
                 </span>
               </button>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{displayTip}</p>
+            <p className={`text-sm text-muted-foreground leading-relaxed transition-opacity ${loadingDynamic ? "opacity-50" : ""}`}>{displayTip}</p>
+            {tipError && <p role="status" className="mt-2 text-xs text-warning">{t(tipError === "quota" ? "valise3.tip.quota" : "valise3.tip.error")}</p>}
           </div>
         </motion.div>
       )}
