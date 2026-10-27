@@ -1,4 +1,5 @@
 // Visa guide: profile → four summary cards → personalised checklist →
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 // emergency contacts. Official pages (security, entry, health, contacts) are
 // read for real; visa/passport answers for the exact profile come from the AI
 // and are saved with the trip so nothing is regenerated on each visit.
@@ -194,6 +195,7 @@ const GuideVisaPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <div className="px-4"><GuestSaveBanner /></div>
       <QuotaBanner tool="visa" toolLabel={t("visa2.toolName")} />
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName={t("visa2.toolName")} />
 

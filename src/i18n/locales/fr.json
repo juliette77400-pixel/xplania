@@ -7744,5 +7744,9 @@
       "text": "Réponds à 7 questions, vois tes priorités, puis avance outil par outil, à ton rythme.",
       "feedback": "Donner mon feedback"
     }
+  },
+  "guestSave": {
+    "text": "Ton séjour n'est gardé que dans ce navigateur. Crée ton compte gratuit pour l'enregistrer et retrouver tes 5 outils.",
+    "cta": "Enregistrer mon séjour"
   }
 }

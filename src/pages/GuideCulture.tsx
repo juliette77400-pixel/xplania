@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
@@ -86,6 +87,7 @@ export default function GuideCulture() {
   return (
     <div className="min-h-screen bg-background">
       <AppNavbar />
+      <div className="px-4"><GuestSaveBanner /></div>
       <main id="main-content" tabIndex={-1} className="container mx-auto max-w-4xl px-4 sm:px-6 py-6 pb-16 space-y-6">
         {/* Same layout as « Visa & Préparatifs »: hero, then the destination card. */}
         <header className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-10">

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -461,6 +462,7 @@ const GuideBudgetPage = () => {
     <div className="min-h-screen bg-background">
       <AppNavbar />
       <QuotaBanner tool="budget" toolLabel="Budget" />
+      <div className="px-4"><GuestSaveBanner /></div>
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
