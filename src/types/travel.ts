@@ -93,6 +93,14 @@ export interface TravelFormData {
   visitedRegions?: string;
   /** Maximum monthly rent set in the housing assistant (overrides the Budget value). */
   maxRent?: number | null;
+
+  // Valise guide choices, saved per trip
+  /** Planned activities (ids from src/lib/valise-activities.ts). */
+  valiseActivities?: string[];
+  /** Activity typed by the student. */
+  valiseActivityOther?: string;
+  /** Transport to get there: "avion" | "train" | "voiture" | "bateau" | "velo". */
+  valiseTransport?: string;
 }
 
 export interface WeatherData {
