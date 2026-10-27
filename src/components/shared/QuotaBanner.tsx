@@ -2,6 +2,7 @@ import { Sparkles, Lock } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { type QuotaTool, isDevMode } from "@/lib/usage-quota";
 import { useQuota } from "@/hooks/useQuota";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Props {
   tool: QuotaTool;
@@ -12,11 +13,13 @@ const QuotaBanner = ({ tool, toolLabel }: Props) => {
   const { t } = useTranslation();
   // Server count (10 per tool and per month); unlimited for admins.
   const { remaining, limit } = useQuota(tool);
+  const { user } = useAuth();
 
   // ✨ MODIFIED (Tâche — retrait mentions UI dev mode) :
   // En mode dev/test on n'affiche AUCUN bandeau. La logique interne de bypass
   // reste active (quotas illimités), mais elle est invisible côté utilisateur.
-  if (isDevMode() || !Number.isFinite(limit)) return null;
+  // Visitors have no counter yet: AI parts ask them to sign in first.
+  if (isDevMode() || !user || !Number.isFinite(limit)) return null;
 
   if (remaining <= 0) {
     return (
