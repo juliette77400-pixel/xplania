@@ -635,7 +635,7 @@ const GuideBudgetPage = () => {
                 title={t("collapsible.budget.alerts")}
                 subtitle={t("collapsible.budget.alertsSub")}
               >
-                <BudgetAlerts categories={categories} destination={destination} deals={insights.data?.deals} loading={insights.isFetching} />
+                <BudgetAlerts categories={categories} destination={destination} deals={insights.data?.deals} loading={insights.isFetching} errorKind={insights.errorKind} onRetry={insights.refresh} />
               </CollapsibleSection>
 
               <CollapsibleSection
@@ -648,6 +648,7 @@ const GuideBudgetPage = () => {
                   tips={insights.data?.tips}
                   loading={insights.isFetching}
                   failed={insights.isError}
+                  errorKind={insights.errorKind}
                   onRefresh={insights.refresh}
                 />
               </CollapsibleSection>
