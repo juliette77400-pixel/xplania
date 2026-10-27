@@ -145,7 +145,9 @@ const PrepQuiz = () => {
 
   useEffect(() => {
     if (!restored.current || saved || saving) return;
-    if (!user && preview) return; // the completed guest draft is written by next()
+    // A finished guest draft is only written by next() or "edit my answers": never overwrite it here,
+    // or reopening the preview would wipe the answers before signup.
+    if (!user && (preview || hasCompleteGuestDraft())) return;
     try { localStorage.setItem(user ? draftKey(user.id) : GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* storage full */ }
   }, [answers, stepIndex, user, saved, saving, preview]);
 
