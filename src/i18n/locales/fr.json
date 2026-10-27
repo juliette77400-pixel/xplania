@@ -7274,6 +7274,8 @@
       "maxStay": "Durée autorisée",
       "cost": "Coût",
       "delay": "Délai",
+      "feesTitle": "Tarif et délai",
+      "feesOfficialOnly": "Xplania n'affiche que les montants officiels. Consulte le tarif et le délai à jour ici :",
       "aiGenerated": "Généré par l'IA Xplania le {{date}}",
       "officialSite": "Site officiel conseillé",
       "euSource": "Règle de libre circulation — Your Europe (Union européenne)",
