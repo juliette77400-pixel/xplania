@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
-import { Plane, Train, Car, Ship } from "lucide-react";
+import { Plane, Train, Car, Ship, Bike } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export type TransportMode = "avion" | "train" | "voiture" | "bateau";
+export type TransportMode = "avion" | "train" | "voiture" | "bateau" | "velo";
+
+export const TRANSPORT_MODES: TransportMode[] = ["avion", "train", "voiture", "bateau", "velo"];
+export const isTransportMode = (v: unknown): v is TransportMode => typeof v === "string" && (TRANSPORT_MODES as string[]).includes(v);
 
 interface TransportSelectorProps {
   active: TransportMode;
@@ -16,6 +19,7 @@ export const transports: { id: TransportMode; icon: React.ReactNode; emoji: stri
   { id: "train", icon: <Train className="w-4 h-4" />, emoji: "🚆" },
   { id: "voiture", icon: <Car className="w-4 h-4" />, emoji: "🚗" },
   { id: "bateau", icon: <Ship className="w-4 h-4" />, emoji: "🚢" },
+  { id: "velo", icon: <Bike className="w-4 h-4" />, emoji: "🚲" },
 ];
 
 const TransportSelector = ({ active, onSelect, isLoading }: TransportSelectorProps) => {
@@ -35,7 +39,7 @@ const TransportSelector = ({ active, onSelect, isLoading }: TransportSelectorPro
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
         {transports.map((tr) => {
           const isActive = active === tr.id;
           return (
