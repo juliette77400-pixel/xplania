@@ -6385,7 +6385,15 @@
     },
     "stayHintCta": "Start with the “{{pillar}}” topic: university and work life in this country.",
     "yourCountry": "Your destination:",
-    "changeCountry": "Change country"
+    "changeCountry": "Change country",
+    "daily": {
+      "context": "Context:",
+      "example": "Example:",
+      "nuance": "Avoid / nuance:",
+      "note": "A general tendency, not a rule: everyone is different. A new gesture every day.",
+      "openTheme": "See the theme"
+    },
+    "enrichNote": "Tips written by Xplania; examples and nuances added by AI, to take as pointers."
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."

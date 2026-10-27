@@ -18,6 +18,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
+import { localDateFor } from "@/lib/country-timezone";
 
 const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";
@@ -173,7 +174,7 @@ export default function GuideCulture() {
               </div>
             </div>
 
-            <TipOfDay code={code} lang={lang} onOpen={setPillar} />
+            <TipOfDay code={code} lang={lang} path={path} onOpen={setPillar} />
 
             <div>
               <h3 className="mb-2 text-sm font-semibold text-foreground">{t("culture2.priorityTitle")}</h3>
@@ -229,7 +230,32 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
     },
   });
   const quotaReached = q.error instanceof Error && q.error.message === "quota_exceeded";
-  const content = pre ?? q.data;
+  // Hand-written tips get a concrete example and a nuance, generated once and shared (no try used).
+  const preTips = pre ? [...pre.dos, ...pre.donts].map((x) => x.text) : [];
+  const enrich = useQuery({
+    queryKey: ["culture-enrich", code, pillar, lang, preTips.join("|")],
+    enabled: !!pre && !!user && preTips.length > 0,
+    staleTime: Infinity,
+    retry: false,
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke("culture-guide", { body: { kind: "enrich", countryCode: code, pillar, locale: lang, tips: preTips } });
+      if (error || !data?.content) throw error ?? new Error("no content");
+      return (data.content as { items: { example: string; nuance: string }[] }).items;
+    },
+  });
+  const content: PillarContent | undefined = pre
+    ? (() => {
+        const items = enrich.data ?? [];
+        const add = (x: PillarContent["dos"][number], i: number) => (items[i] ? { ...x, example: items[i].example, nuance: items[i].nuance } : x);
+        return { ...pre, dos: pre.dos.map((x, i) => add(x, i)), donts: pre.donts.map((x, i) => add(x, i + pre.dos.length)) };
+      })()
+    : q.data;
+  const extra = (d: { example?: string; nuance?: string }) => (
+    <>
+      {d.example && <p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.example")}</span> {d.example}</p>}
+      {d.nuance && <p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.nuance")}</span> {d.nuance}</p>}
+    </>
+  );
 
   return (
     <section className="space-y-4">
@@ -277,13 +303,13 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
             <div className="glass-card rounded-2xl p-4 space-y-3">
               <h3 className="font-semibold text-foreground">✅ {t("culture.dos")}</h3>
               {content.dos.map((d, i) => (
-                <div key={i}><p className="text-sm text-foreground">{d.text}</p><p className="text-xs text-muted-foreground">{t("culture.why")} {d.why}</p></div>
+                <div key={i} className="space-y-0.5"><p className="text-sm text-foreground">{d.text}</p><p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.context")}</span> {d.why}</p>{extra(d)}</div>
               ))}
             </div>
             <div className="glass-card rounded-2xl p-4 space-y-3">
               <h3 className="font-semibold text-foreground">⛔ {t("culture.donts")}</h3>
               {content.donts.map((d, i) => (
-                <div key={i}><p className="text-sm text-foreground">{d.severity ? `${SEV[d.severity]} ` : ""}{d.text}</p><p className="text-xs text-muted-foreground">{t("culture.why")} {d.why}</p></div>
+                <div key={i} className="space-y-0.5"><p className="text-sm text-foreground">{d.severity ? `${SEV[d.severity]} ` : ""}{d.text}</p><p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.context")}</span> {d.why}</p>{extra(d)}</div>
               ))}
               <p className="text-[11px] text-muted-foreground">{t("culture.severityLegend")}</p>
             </div>
@@ -295,7 +321,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
             </div>
           )}
           {sensitive && <p className="text-xs text-muted-foreground italic">{t("culture.evolving")}</p>}
-          {!pre && <p className="text-[11px] text-muted-foreground">{t("culture.aiNote")}</p>}
+          {(!pre || !!enrich.data?.length) && <p className="text-[11px] text-muted-foreground">{t(pre ? "culture.enrichNote" : "culture.aiNote")}</p>}
           <MiniQuiz key={`${code}-${pillar}`} content={content} />
           <Button variant={done ? "secondary" : "default"} onClick={onToggle}>
             <Check className="h-4 w-4 mr-1" aria-hidden /> {done ? t("culture.understood") : t("culture.markUnderstood")}
@@ -306,15 +332,72 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
   );
 }
 
-function TipOfDay({ code, lang, onOpen }: { code: string; lang: "fr" | "en"; onOpen: (p: PillarId) => void }) {
+interface DailyGesture { title: string; context: string; example: string; nuance: string; theme: PillarId; date: string }
+
+/**
+ * Gesture of the day: one per destination, entry path and local day (shared by every student, so
+ * it costs one generation per day). Visitors and failures get a hand-written tip instead.
+ */
+function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en"; path: CulturePath; onOpen: (p: PillarId) => void }) {
   const { t } = useTranslation();
-  const tip = getTipOfDay(code, lang);
-  if (!tip) return null;
+  const { user } = useAuth();
+  // Re-checked every minute so the tip changes at the destination's midnight without a reload.
+  const [date, setDate] = useState(() => localDateFor(code));
+  useEffect(() => {
+    setDate(localDateFor(code));
+    const id = window.setInterval(() => setDate(localDateFor(code)), 60_000);
+    return () => window.clearInterval(id);
+  }, [code]);
+  const q = useQuery({
+    queryKey: ["culture-daily", code, path, date, lang],
+    enabled: !!user,
+    staleTime: Infinity,
+    retry: false,
+    queryFn: async (): Promise<DailyGesture> => {
+      const key = `daily:${path}:${date}`;
+      const { data: cached } = await supabase.from("culture_guide_cache").select("content")
+        .eq("country_code", code).eq("pillar", key).eq("locale", lang).maybeSingle();
+      if (cached) return cached.content as unknown as DailyGesture;
+      const { data, error } = await supabase.functions.invoke("culture-guide", { body: { kind: "daily", countryCode: code, path, date, locale: lang } });
+      if (error || !data?.content) throw error ?? new Error("no content");
+      return data.content as DailyGesture;
+    },
+  });
+  const fallback = getTipOfDay(code, lang, path, date);
+  const card = "glass-card w-full rounded-2xl border border-primary/30 p-4 text-left";
+
+  if (user && q.isLoading) {
+    return (
+      <div className={card} role="status">
+        <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")}</p>
+        <div className="mt-2 space-y-2"><div className="h-3 w-3/4 animate-pulse rounded bg-muted/60" /><div className="h-3 w-1/2 animate-pulse rounded bg-muted/60" /></div>
+      </div>
+    );
+  }
+  if (q.data) {
+    const g = q.data;
+    return (
+      <div className={card}>
+        <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")} · {t(`culture.pillars.${g.theme}`)}</p>
+        <p className="mt-1 text-sm font-semibold text-foreground">{g.title}</p>
+        <dl className="mt-2 space-y-1.5 text-xs leading-relaxed">
+          <div><dt className="inline font-semibold text-foreground">{t("culture.daily.context")} </dt><dd className="inline text-muted-foreground">{g.context}</dd></div>
+          <div><dt className="inline font-semibold text-foreground">{t("culture.daily.example")} </dt><dd className="inline text-muted-foreground">{g.example}</dd></div>
+          <div><dt className="inline font-semibold text-foreground">{t("culture.daily.nuance")} </dt><dd className="inline text-muted-foreground">{g.nuance}</dd></div>
+        </dl>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <p className="text-[11px] text-muted-foreground">{t("culture.daily.note")}</p>
+          <button type="button" onClick={() => onOpen(g.theme)} className="text-xs font-semibold text-primary hover:underline">{t("culture.daily.openTheme")}</button>
+        </div>
+      </div>
+    );
+  }
+  if (!fallback) return null;
   return (
-    <button onClick={() => onOpen(tip.pillar)} className="glass-card w-full rounded-2xl p-4 text-left border border-primary/30">
-      <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")}</p>
-      <p className="mt-1 text-sm text-foreground">{tip.kind === "do" ? "✅" : "⛔"} {tip.tip.text}</p>
-      <p className="text-xs text-muted-foreground">{t("culture.why")} {tip.tip.why}</p>
+    <button onClick={() => onOpen(fallback.pillar)} className={card}>
+      <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")} · {t(`culture.pillars.${fallback.pillar}`)}</p>
+      <p className="mt-1 text-sm text-foreground">{fallback.kind === "do" ? "✅" : "⛔"} {fallback.tip.text}</p>
+      <p className="text-xs text-muted-foreground">{t("culture.why")} {fallback.tip.why}</p>
     </button>
   );
 }

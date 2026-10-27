@@ -6385,7 +6385,15 @@
     },
     "stayHintCta": "Commence par le thème « {{pillar}} » : la vie à l'université et au travail dans ce pays.",
     "yourCountry": "Ta destination :",
-    "changeCountry": "Changer de pays"
+    "changeCountry": "Changer de pays",
+    "daily": {
+      "context": "Le contexte :",
+      "example": "Exemple :",
+      "nuance": "À éviter / nuance :",
+      "note": "Une tendance générale, pas une règle : chaque personne est différente. Nouveau geste chaque jour.",
+      "openTheme": "Voir le thème"
+    },
+    "enrichNote": "Conseils rédigés par Xplania ; exemples et nuances ajoutés par l'IA, à prendre comme des repères."
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
