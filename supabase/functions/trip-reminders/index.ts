@@ -45,8 +45,10 @@ Deno.serve(async (req) => {
     } catch (e) { console.error('trip-reminder failed', t.id, e) }
   }
   const twoMonthsSent = await twoMonthReminders(admin)
+  const tenDaysSent = await countdownReminders(admin, 10, 'j10')
+  const fiveDaysSent = await countdownReminders(admin, 5, 'j5')
   const weatherSent = await weatherAlerts(admin)
-  return new Response(JSON.stringify({ checked: trips?.length || 0, sent, twoMonthsSent, weatherSent }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+  return new Response(JSON.stringify({ checked: trips?.length || 0, sent, twoMonthsSent, tenDaysSent, fiveDaysSent, weatherSent }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
 })
 
 // Students can turn departure reminders off in Settings (stored in their own metadata).
@@ -74,6 +76,29 @@ async function twoMonthReminders(admin: any) {
       })
       if (r.sent) sent++
     } catch (e) { console.error('departure-reminder failed', t.id, e) }
+  }
+  return sent
+}
+
+// ---- J-10 (arrival on site) and J-5 (suitcase): the last stretch ----
+// deno-lint-ignore no-explicit-any
+async function countdownReminders(admin: any, days: number, stage: 'j10' | 'j5') {
+  const target = new Date(Date.now() + days * 86400000).toISOString().slice(0, 10)
+  const { data: trips } = await admin.from('trips').select('id,user_id,destination,departure_date,form_data').eq('departure_date', target).limit(500)
+  let sent = 0
+  for (const t of trips || []) {
+    try {
+      const { data: u } = await admin.auth.admin.getUserById(t.user_id)
+      const email = u?.user?.email
+      if (!email || !remindersOn(u.user)) continue
+      const lang = langOf(u.user)
+      const dateLabel = new Date(t.departure_date + 'T12:00:00Z').toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+      const r = await sendTemplateEmail('countdown-reminder', email, {
+        templateData: { stage, destination: t.destination || '', departureDate: dateLabel, housingConfirmed: t.form_data?.housingStatus === 'confirmed', lang },
+        idempotencyKey: `countdown-reminder-${stage}-${t.id}-${t.departure_date}`,
+      })
+      if (r.sent) sent++
+    } catch (e) { console.error('countdown-reminder failed', stage, t.id, e) }
   }
   return sent
 }
