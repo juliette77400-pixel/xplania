@@ -205,36 +205,59 @@ const Dashboard = () => {
                 />
               </div>
               <div className="mt-4"><TripCountdown departureDate={selected.departure_date} returnDate={selected.return_date} /></div>
-              {progress && (
+              {progress && overallPercent(progress) > 0 && (
                 <div className="mt-5">
                   <div className="mb-1.5 flex items-center justify-between text-sm"><span className="font-semibold">{t("prepDashboard.overall")}</span><span className="font-bold text-primary">{overallPercent(progress)} %</span></div>
                   <Bar value={overallPercent(progress)} label={t("prepDashboard.overall")} />
                 </div>
               )}
+              {progress && overallPercent(progress) === 0 && (
+                <p className="mt-5 text-sm font-medium text-foreground">{t("prepDashboard.overallZero")}</p>
+              )}
             </Card>
 
-            {nextSteps.length > 0 && (
-              <section aria-labelledby="next-title" className="rounded-2xl border border-border/70 bg-card/60 p-5">
-                <h2 id="next-title" className="flex items-center gap-2 text-lg font-bold"><ListTodo className="h-5 w-5 text-primary" />{t("prepDashboard.next.title")}</h2>
-                <ul className="mt-3 space-y-2">
-                  {nextSteps.map((step) => {
-                    const { to, icon: Icon } = moduleOf(step.module);
-                    return (
-                    <li key={step.id}>
-                      <button type="button" onClick={() => void openModule(step.module, to)} className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-background/50 px-4 py-3 text-left text-sm transition-colors hover:border-primary/50">
-                        <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                        <span className="flex-1">
-                          <span className="block">{step.key ? t(step.key, step.vars) : step.text}</span>
-                          <span className="block text-[11px] text-muted-foreground">{t(`prepDashboard.modules.${step.module}.title`)}{step.urgency === 1 ? ` · ${t("prepDashboard.steps.urgent")}` : ""}</span>
-                        </span>
-                        <ArrowRight className="h-4 w-4 text-muted-foreground" aria-hidden />
-                      </button>
-                    </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            )}
+            {nextSteps.length > 0 && (() => {
+              // The most urgent step gets a big card; the others follow in a short list.
+              const [first, ...rest] = nextSteps;
+              const { to: firstTo, icon: FirstIcon } = moduleOf(first.module);
+              return (
+                <section aria-labelledby="next-title" className="space-y-3">
+                  <div className="relative overflow-hidden rounded-[1.75rem] border border-primary/30 bg-card p-6 shadow-[0_20px_60px_hsl(var(--primary)/.12)] sm:p-7">
+                    <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/15 blur-3xl" aria-hidden />
+                    <p id="next-title" className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("prepDashboard.nextStep.kicker")}</p>
+                    <div className="mt-3 flex items-start gap-4">
+                      <span className="gradient-button flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"><FirstIcon className="h-5 w-5 text-primary-foreground" aria-hidden /></span>
+                      <div className="min-w-0">
+                        <p className="text-lg font-bold leading-snug sm:text-xl">{first.key ? t(first.key, first.vars) : first.text}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{t(`prepDashboard.modules.${first.module}.title`)}{first.urgency === 1 ? ` · ${t("prepDashboard.steps.urgent")}` : ""}</p>
+                      </div>
+                    </div>
+                    <Button className="gradient-button mt-5 h-12 w-full text-base sm:w-auto sm:px-8" onClick={() => void openModule(first.module, firstTo)}>
+                      {t("prepDashboard.nextStep.cta")}<ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                    </Button>
+                  </div>
+                  {rest.length > 0 && (
+                    <div className="rounded-2xl border border-border/70 bg-card/60 p-4 sm:p-5">
+                      <h2 className="flex items-center gap-2 text-sm font-bold text-muted-foreground"><ListTodo className="h-4 w-4 text-primary" aria-hidden />{t("prepDashboard.nextStep.then")}</h2>
+                      <ul className="mt-2 divide-y divide-border/60">
+                        {rest.map((step) => {
+                          const { to, icon: Icon } = moduleOf(step.module);
+                          return (
+                            <li key={step.id}>
+                              <button type="button" onClick={() => void openModule(step.module, to)} className="flex w-full items-center gap-3 py-3 text-left text-sm transition-colors hover:text-primary">
+                                <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                                <span className="flex-1">{step.key ? t(step.key, step.vars) : step.text}</span>
+                                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                </section>
+              );
+            })()}
 
             <section aria-labelledby="modules-title" className="space-y-4">
               <h2 id="modules-title" className="text-xl font-bold sm:text-2xl">{t("prepDashboard.modulesTitle")}</h2>
@@ -246,7 +269,7 @@ const Dashboard = () => {
                   const { icon: StatusIcon, className: statusClass } = STATUS_STYLE[status];
                   return (
                     <motion.article key={key} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-                      className="flex flex-col rounded-2xl border border-border/70 bg-card/60 p-5 interactive-card">
+                      className="flex flex-col rounded-2xl border border-border/70 bg-card/60 p-4 sm:p-5 interactive-card">
                       <div className="flex items-center gap-3">
                         <div className="gradient-button flex h-11 w-11 items-center justify-center rounded-xl"><Icon className="h-5 w-5 text-primary-foreground" /></div>
                         <div className="min-w-0 flex-1">
@@ -260,12 +283,14 @@ const Dashboard = () => {
                           <StatusIcon className="h-3 w-3" aria-hidden />{t(`prepDashboard.status.${status}`)}
                         </span>
                       </div>
-                      <div className="mt-4">
-                        <div className="mb-1.5 flex items-center justify-between text-xs"><span className="text-muted-foreground">{progressLabel(key, p)}</span><span className="font-semibold">{pct} %</span></div>
-                        <Bar value={pct} label={t(`prepDashboard.modules.${key}.title`)} />
-                      </div>
-                      <Button variant="outline" className="mt-4 self-start" onClick={() => void openModule(key, to)}>
-                        {p.done > 0 ? t("prepDashboard.continue") : t("prepDashboard.start")}<ArrowRight className="ml-1.5 h-4 w-4" />
+                      {p.done > 0 && (
+                        <div className="mt-4">
+                          <div className="mb-1.5 flex items-center justify-between text-xs"><span className="text-muted-foreground">{progressLabel(key, p)}</span><span className="font-semibold">{pct} %</span></div>
+                          <Bar value={pct} label={t(`prepDashboard.modules.${key}.title`)} />
+                        </div>
+                      )}
+                      <Button variant="outline" size="sm" className="mt-4 self-start" onClick={() => void openModule(key, to)}>
+                        {p.done > 0 ? t("prepDashboard.continue") : t("prepDashboard.open")}<ArrowRight className="ml-1.5 h-4 w-4" />
                       </Button>
                     </motion.article>
                   );

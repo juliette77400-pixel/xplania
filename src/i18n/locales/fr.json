@@ -6398,7 +6398,7 @@
     "durationDays_other": "{{count}} jours",
     "noDates": "Dates à préciser",
     "overall": "Préparation globale",
-    "modulesTitle": "Tes 5 outils de préparation",
+    "modulesTitle": "Tes 5 outils",
     "start": "Commencer",
     "continue": "Continuer",
     "offersHint": "10 essais gratuits par outil chaque mois —",
@@ -6433,7 +6433,7 @@
       }
     },
     "status": {
-      "notStarted": "Non commencé",
+      "notStarted": "À faire",
       "inProgress": "En cours",
       "done": "Terminé"
     },
@@ -6465,6 +6465,13 @@
       "budgetFirstMonth": "Mets de côté {{amount}} € de plus pour ton premier mois",
       "budgetIncome": "Ajoute ta bourse ou ta gratification au budget",
       "housingFind": "Trouve et sécurise ton logement"
+    },
+    "overallZero": "Ta préparation commence par une seule étape. Commence par celle ci-dessous, le reste suivra.",
+    "open": "Ouvrir",
+    "nextStep": {
+      "kicker": "Ta prochaine étape",
+      "cta": "C'est parti",
+      "then": "Ensuite"
     }
   },
   "prepTrip": {

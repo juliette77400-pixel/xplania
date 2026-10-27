@@ -6398,7 +6398,7 @@
     "durationDays_other": "{{count}} days",
     "noDates": "Dates to be confirmed",
     "overall": "Overall preparation",
-    "modulesTitle": "Your 5 preparation tools",
+    "modulesTitle": "Your 5 tools",
     "start": "Start",
     "continue": "Continue",
     "offersHint": "10 free tries per tool every month —",
@@ -6433,7 +6433,7 @@
       }
     },
     "status": {
-      "notStarted": "Not started",
+      "notStarted": "To do",
       "inProgress": "In progress",
       "done": "Done"
     },
@@ -6465,6 +6465,13 @@
       "budgetFirstMonth": "Set aside {{amount}} € more for your first month",
       "budgetIncome": "Add your grant or internship pay to the budget",
       "housingFind": "Find and secure your housing"
+    },
+    "overallZero": "Your preparation starts with a single step. Begin with the one below, the rest will follow.",
+    "open": "Open",
+    "nextStep": {
+      "kicker": "Your next step",
+      "cta": "Let's go",
+      "then": "Then"
     }
   },
   "prepTrip": {
