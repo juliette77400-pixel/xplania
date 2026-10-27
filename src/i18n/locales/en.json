@@ -7755,5 +7755,34 @@
   "guestSave": {
     "text": "Your stay is only kept in this browser. Create your free account to save it and find your 5 tools.",
     "cta": "Save my stay"
+  },
+  "guidePreview": {
+    "label": "Example",
+    "defaultNote": "Example preview. Your result will be personalised to your project.",
+    "budget": {
+      "title": "Estimated monthly budget (example)",
+      "housing": "Housing",
+      "food": "Food",
+      "transport": "Transport",
+      "leisure": "Leisure",
+      "note": "Example amounts. Generate to get a budget tailored to your destination and length of stay."
+    },
+    "visa": {
+      "title": "Entry formalities (example)",
+      "visaLabel": "Visa",
+      "visaValue": "Depends on your nationality",
+      "passportLabel": "Passport",
+      "passportValue": "Valid 6 months after return",
+      "vaccinesLabel": "Vaccines",
+      "vaccinesValue": "Check per country",
+      "note": "Illustrative example. Run the analysis for your destination's formalities, with the official site."
+    },
+    "valise": {
+      "title": "Your suitcase (example)",
+      "i1": "Clothes suited to the climate of your travel months",
+      "i2": "Documents: passport, certificates, copies",
+      "i3": "First-aid kit and adapters",
+      "note": "Example list. Generate your packing list tailored to your destination and season."
+    }
   }
 }

@@ -70,6 +70,10 @@ export const META: Record<string, Meta> = {
     fr: ["Xplania vs ChatGPT — préparer son voyage à l'étranger", "Xplania vs ChatGPT : budget, visa, valise, codes culturels et logement organisés autour de ton voyage, sans copier-coller de prompts."],
     en: ["Xplania vs ChatGPT — preparing a trip abroad", "Xplania vs ChatGPT: budget, visa, packing, cultural codes and housing organised around your trip, no prompt copy-pasting."],
   },
+  "/preparation": {
+    fr: ["Prépare ton départ en 2 minutes — Xplania", "Réponds à un court questionnaire pour préparer ton Erasmus ou ton stage à l'étranger : budget, visa, valise et culture, adaptés à ton projet."],
+    en: ["Prepare your departure in 2 minutes — Xplania", "Answer a short questionnaire to prepare your Erasmus or internship abroad: budget, visa, packing and culture tailored to your project."],
+  },
 };
 META["/blog/how-to-plan-a-trip-with-ai"] = {
   fr: ["Comment planifier un voyage avec l'IA — Xplania", "Guide étape par étape pour planifier un voyage avec l'IA : itinéraire, budget, visa, valise et découvertes locales."],

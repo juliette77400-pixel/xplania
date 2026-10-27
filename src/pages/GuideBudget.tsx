@@ -17,6 +17,7 @@ import { useBudgetInsights, type BudgetScenario } from "@/hooks/useBudgetInsight
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
+import ExampleResultPreview from "@/components/shared/ExampleResultPreview";
 import BudgetConfig from "@/components/budget/BudgetConfig";
 import BudgetGenerationAnim, { STEPS } from "@/components/budget/BudgetGenerationAnim";
 import BudgetAiResult from "@/components/budget/BudgetAiResult";
@@ -473,7 +474,19 @@ const GuideBudgetPage = () => {
         </p>
 
         {!hasGenerated && !isGenerating && (
-          <TripSummaryDashboard tripData={tripData} />
+          <>
+            <ExampleResultPreview
+              title={t("guidePreview.budget.title")}
+              rows={[
+                { label: t("guidePreview.budget.housing"), value: "~450 €" },
+                { label: t("guidePreview.budget.food"), value: "~220 €" },
+                { label: t("guidePreview.budget.transport"), value: "~90 €" },
+                { label: t("guidePreview.budget.leisure"), value: "~120 €" },
+              ]}
+              note={t("guidePreview.budget.note")}
+            />
+            <TripSummaryDashboard tripData={tripData} />
+          </>
         )}
 
         <AnimatePresence>

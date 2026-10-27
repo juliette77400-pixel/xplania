@@ -7755,5 +7755,34 @@
   "guestSave": {
     "text": "Ton séjour n'est gardé que dans ce navigateur. Crée ton compte gratuit pour l'enregistrer et retrouver tes 5 outils.",
     "cta": "Enregistrer mon séjour"
+  },
+  "guidePreview": {
+    "label": "Exemple",
+    "defaultNote": "Aperçu d'exemple. Ton résultat sera personnalisé selon ton projet.",
+    "budget": {
+      "title": "Budget mensuel estimé (exemple)",
+      "housing": "Logement",
+      "food": "Nourriture",
+      "transport": "Transport",
+      "leisure": "Loisirs",
+      "note": "Montants d'exemple. Lance la génération pour un budget adapté à ta destination et à ta durée."
+    },
+    "visa": {
+      "title": "Formalités d'entrée (exemple)",
+      "visaLabel": "Visa",
+      "visaValue": "Selon ta nationalité",
+      "passportLabel": "Passeport",
+      "passportValue": "Valide 6 mois après le retour",
+      "vaccinesLabel": "Vaccins",
+      "vaccinesValue": "À vérifier selon le pays",
+      "note": "Exemple indicatif. Lance l'analyse pour les formalités de ta destination, avec le site officiel."
+    },
+    "valise": {
+      "title": "Ta valise (exemple)",
+      "i1": "Vêtements adaptés au climat des mois de ton séjour",
+      "i2": "Documents : passeport, attestations, copies",
+      "i3": "Trousse de secours et adaptateurs",
+      "note": "Liste d'exemple. Génère ta valise pour une liste adaptée à ta destination et à la saison."
+    }
   }
 }

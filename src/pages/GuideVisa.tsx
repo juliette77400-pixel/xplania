@@ -12,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
+import ExampleResultPreview from "@/components/shared/ExampleResultPreview";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import RotatingStatusMessage from "@/components/shared/RotatingStatusMessage";
 import VisaDisclaimer from "@/components/visa/VisaDisclaimer";
@@ -220,6 +221,19 @@ const GuideVisaPage = () => {
             days={days}
             isFrenchNational={isFrench}
             destinationCode={profile.destinationCode}
+          />
+        )}
+
+        {/* Example first result, shown before the analysis is launched */}
+        {!analysis && !generating && (
+          <ExampleResultPreview
+            title={t("guidePreview.visa.title")}
+            rows={[
+              { label: t("guidePreview.visa.visaLabel"), value: t("guidePreview.visa.visaValue") },
+              { label: t("guidePreview.visa.passportLabel"), value: t("guidePreview.visa.passportValue") },
+              { label: t("guidePreview.visa.vaccinesLabel"), value: t("guidePreview.visa.vaccinesValue") },
+            ]}
+            note={t("guidePreview.visa.note")}
           />
         )}
 
