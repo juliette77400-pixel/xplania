@@ -200,3 +200,53 @@ export function hasCompleteGuestDraft(storage: Pick<Storage, "getItem"> | null =
     return false;
   }
 }
+
+// A visitor may confirm their email on another device (e.g. phone) than the one
+// used for the questionnaire. Their finished answers are therefore also sent with
+// the signup (account metadata, user-editable) and read back here, as plain data.
+export const ACCOUNT_DRAFT_META_KEY = "prep_draft";
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const str = (v: unknown, max = 120) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+const oneOf = <T extends string>(v: unknown, list: readonly T[]): T | "" => (list as readonly string[]).includes(v as string) ? (v as T) : "";
+
+/** Cleans answers coming from storage or account metadata; null unless every step is valid. */
+export function cleanFinishedAnswers(raw: unknown): PrepAnswers | null {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const r = raw as Record<string, unknown>;
+  const date = (v: unknown) => (typeof v === "string" && DATE_RE.test(v) ? v : "");
+  const a: PrepAnswers = {
+    destinationCode: str(r.destinationCode, 3).toUpperCase(),
+    city: str(r.city),
+    nationality: str(r.nationality, 3).toUpperCase(),
+    residence: str(r.residence, 3).toUpperCase(),
+    secondNationality: str(r.secondNationality, 3).toUpperCase(),
+    stayType: oneOf(r.stayType, STAY_TYPES),
+    departureDate: date(r.departureDate),
+    returnDate: date(r.returnDate),
+    durationBucket: oneOf(r.durationBucket, DURATION_BUCKETS),
+    budget: str(r.budget, 12).replace(/[^\d.]/g, ""),
+    budgetUnknown: r.budgetUnknown === true,
+    housing: oneOf(r.housing, HOUSING_OPTIONS),
+    housingStatus: isHousingStatus(r.housingStatus as string) ? (r.housingStatus as HousingStatus) : "",
+  };
+  return firstInvalidStep(a) === null ? a : null;
+}
+
+/** Finished visitor answers saved in this browser, cleaned; null when none. */
+export function finishedGuestAnswers(storage: Pick<Storage, "getItem"> | null = typeof localStorage === "undefined" ? null : localStorage): PrepAnswers | null {
+  try {
+    const raw = storage?.getItem(GUEST_DRAFT_KEY);
+    const d = raw ? (JSON.parse(raw) as { answers?: unknown; complete?: boolean }) : null;
+    return d?.complete === true ? cleanFinishedAnswers(d.answers) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** True when the account already has the trip these answers describe (same country and departure date). */
+export function answersMatchTrip(a: PrepAnswers, trips: Array<{ destination?: string | null; departure_date?: string | null }>): boolean {
+  const destination = countryName(a.destinationCode);
+  const departure = a.departureDate || null;
+  return trips.some((t) => (t.destination || "") === destination && (t.departure_date || null) === departure);
+}
