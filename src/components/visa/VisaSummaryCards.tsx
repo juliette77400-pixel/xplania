@@ -136,6 +136,10 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
   const visaRel: Reliability | null = !v ? null : analysis?.rule ? "verified" : aiOnly || v.status === "depends" || v.status === "to_verify" ? "to_verify" : "indicative";
   const visaTone: Tone = !v ? "neutral" : aiOnly ? "warn" : v.status === "not_required" ? "good" : "warn";
   const reviewed = official?.reviewedAt ? t("visa2.cards.reviewedOn", { date: fmtDayOnly(official.reviewedAt, i18n.language) }) : "";
+  // Fees and delays: only figures the server kept from an official text; otherwise the official site.
+  const officialCost = analysis?.figuresChecked ? v?.cost || "" : "";
+  const officialDelay = analysis?.figuresChecked ? v?.processing_time || "" : "";
+  const feesUrl = entrySite?.url || v?.official_url || FD_HOME;
 
   // ── Health ──
   const health = healthSrc && content ? content.health : null;
@@ -193,11 +197,22 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
           {(v || officialEntry) && (
             <>
               {v?.why && <p className="text-muted-foreground">{v.why}</p>}
-              {v && (v.max_stay || v.cost || v.processing_time) && (
+              {v && (
                 <dl className="grid gap-1 text-xs">
                   {v.max_stay && <div><dt className="inline font-semibold">{t("visa2.cards.maxStay")} : </dt><dd className="inline">{v.max_stay}</dd></div>}
-                  {v.cost && <div><dt className="inline font-semibold">{t("visa2.cards.cost")} : </dt><dd className="inline">{v.cost}</dd></div>}
-                  {v.processing_time && <div><dt className="inline font-semibold">{t("visa2.cards.delay")} : </dt><dd className="inline">{v.processing_time}</dd></div>}
+                  {officialCost && <div><dt className="inline font-semibold">{t("visa2.cards.cost")} : </dt><dd className="inline">{officialCost}</dd></div>}
+                  {officialDelay && <div><dt className="inline font-semibold">{t("visa2.cards.delay")} : </dt><dd className="inline">{officialDelay}</dd></div>}
+                  {!analysis?.rule && !(officialCost && officialDelay) && (
+                    <div>
+                      <dt className="inline font-semibold">{t("visa2.cards.feesTitle")} : </dt>
+                      <dd className="inline">
+                        {t("visa2.cards.feesOfficialOnly")}{" "}
+                        <a href={feesUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
+                          {entrySite?.label || t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span>
+                        </a>
+                      </dd>
+                    </div>
+                  )}
                 </dl>
               )}
               {v && <List items={v.steps} />}

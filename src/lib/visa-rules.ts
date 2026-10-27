@@ -135,6 +135,8 @@ export interface VisaAnalysis {
   emergency_contacts: { embassy: string; local_emergency: string };
   rule: "free_movement" | null;
   officialGrounded: boolean;
+  /** Set by the server once fees and delays were kept only when official. Older saved answers lack it. */
+  figuresChecked?: boolean;
   generatedAt: string;
 }
 
@@ -225,6 +227,7 @@ export function normalizeAnalysis(raw: any): VisaAnalysis | null {
     },
     rule: raw.rule === "free_movement" ? "free_movement" : null,
     officialGrounded: !!raw.officialGrounded,
+    figuresChecked: raw.figuresChecked === true,
     generatedAt: String(raw.generatedAt || new Date().toISOString()),
   };
 }
