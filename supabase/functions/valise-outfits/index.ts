@@ -110,7 +110,7 @@ Graine de variation : ${v} (produis des tenues clairement différentes des varia
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: system + "\n\n" + (isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR) },
+          { role: "system", content: system + (isEN ? "" : "\n\nTutoie toujours le voyageur (\"tu\", jamais \"vous\").") + "\n\n" + (isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR) },
           { role: "user", content: user },
         ],
         temperature: 0.95,
