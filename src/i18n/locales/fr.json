@@ -7250,7 +7250,10 @@
       "removeTransit": "Retirer {{country}}",
       "regions": "Régions ou villes visitées",
       "regionsQuestion": "Régions ou villes que tu comptes visiter (facultatif)",
-      "regionsPlaceholder": "Ex. Tokyo, Kyoto, Hokkaido"
+      "regionsPlaceholder": "Ex. Tokyo, Kyoto, Hokkaido",
+      "quickIntro_one": "Encore 1 petite question et ton analyse peut démarrer.",
+      "quickIntro_other": "Encore {{count}} petites questions et ton analyse peut démarrer.",
+      "editAll": "Voir tout le profil"
     },
     "cards": {
       "title": "L'essentiel",
