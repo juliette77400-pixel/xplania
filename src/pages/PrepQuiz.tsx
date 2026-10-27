@@ -20,6 +20,7 @@ import { useTravelStore } from "@/stores/useTravelStore";
 import {
   PREP_STEPS, STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
   emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip, GUEST_DRAFT_KEY, PREP_RESUME_PATH, hasCompleteGuestDraft,
+  ACCOUNT_DRAFT_META_KEY, cleanFinishedAnswers, answersMatchTrip,
   type PrepAnswers, type PrepStep,
 } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";
@@ -228,7 +229,7 @@ const PrepQuiz = () => {
     void clearAccountDraft();
     setSaving(false);
     setSaved(data);
-  }, [user, t, queryClient, setTripData, setRecommendations, setActiveTrip]);
+  }, [user, t, queryClient, setTripData, setRecommendations, setActiveTrip, clearAccountDraft]);
 
   const next = useCallback((override?: PrepAnswers) => {
     const a = override ?? answers;
