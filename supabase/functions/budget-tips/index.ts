@@ -45,7 +45,16 @@ serve(withQuotaRefund(async (req) => {
       avoid = [] as string[],
       moods = [] as string[],
       seed = "",
+      city = "",
+      stayType = "",
+      housing = "",
+      housingStatus = "",
     } = await req.json();
+    const clean = (v: unknown, max = 80) => (typeof v === "string" ? v.replace(/[\r\n<>{}]/g, " ").trim().slice(0, max) : "");
+    const cityName = clean(city);
+    const STAY: Record<string, string> = { erasmus: "Erasmus / university exchange student", internship: "intern (work placement)", other: "other long stay" };
+    const stayLabel = STAY[clean(stayType, 20)] || "";
+    const months = Math.max(1, Math.round((Number(days) || 0) / 30));
 
     const isEN = locale === "en";
 
@@ -62,6 +71,9 @@ serve(withQuotaRefund(async (req) => {
       rhythm ? `rhythm: ${rhythm}` : "",
       travelStyle ? `style: ${travelStyle}` : "",
       moods?.length ? `mood: ${moods.join(", ")}` : "",
+      stayLabel ? `stay: ${stayLabel}` : "",
+      clean(housing) ? `housing: ${clean(housing)}` : "",
+      clean(housingStatus, 30) ? `housing search status: ${clean(housingStatus, 30)}` : "",
     ].filter(Boolean).join(" | ");
     const dateBits = departureDate ? `${departureDate}${returnDate ? ` → ${returnDate}` : ""}` : "n/a";
     const travelerCtx = await getTravelerContextSnippet(__auth.userId, isEN ? "en" : "fr");
@@ -71,8 +83,9 @@ serve(withQuotaRefund(async (req) => {
 
 1. SCENARIOS: compute three full-trip budgets (economy, realistic, comfort) in EUR from real prices at that destination for these dates, traveler count and accommodation standing. Each has a total and a per-category split using the same category keys as the user's breakdown. "realistic" must be the best value-for-money option: credible without overspending. Give one short sentence per scenario explaining what it includes.
 2. ANALYSIS: 2-3 sentences addressed to THIS traveler, based on their profile, priorities and current split vs the realistic scenario. Then 2-4 concrete points (what to increase, what to cut, and why), never generic.
-3. DEALS: good deals that match the trip type and profile, grouped in activities, restaurants, transport and mood (things matching the traveler's mood/vibe). 2-3 items per group. Each has a real place or service name, its zone (e.g. north, south, city centre, a named district) and city, and one short enticing sentence with a price hint. No standard advice valid in any city.
-4. TIPS: 4 money-saving tips specific to the trip type, each naming a real place, pass, market or local practice, with its zone and city. 1-2 sentences.
+3. DEALS: lasting low-cost options that match the stay type and profile, grouped in activities, restaurants, transport and mood (things matching the traveler's vibe). 2-3 items per group. Each has a real place or service name, its zone (e.g. north, south, city centre, a named district) and city, and one short sentence with an indicative price to check. No standard advice valid in any city. NEVER present a promotion, discount code, sale or limited-time offer as currently available: you cannot verify live offers. Student or youth fares are fine only as a general scheme to check on the official site.
+4. TIPS: 4 money-saving tips specific to the stay type and to the student's biggest spending lines (largest planned categories first), each naming a real place, pass, market or local practice, with its zone and city. 1-2 sentences. For a semester or internship, think monthly: transport passes, student cards, markets, phone plans, housing costs, not tourist one-offs.
+LOCATION: if a city is given, every deal and tip is in that city. If only the country is known, use the country's main student cities and always name the city in the item; never pretend it is the student's own city.
 Novelty: never repeat any idea listed in "Already shown". Variation seed: ${seed}.
 Only include places you genuinely know exist. Prefer fewer but solid items.
 Every amount is an ESTIMATE: never present a price as guaranteed or official; when unsure, give a rounded range in the note.
@@ -81,7 +94,8 @@ ${isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR}
 
 ${travelerCtx}`;
 
-    const input = `Destination: ${destination}
+    const input = `Destination: ${destination}${cityName ? ` — city: ${cityName}` : " — city: unknown"}
+Stay length: about ${months} month(s)
 Dates: ${dateBits}
 Total budget: €${totalBudget} (${travelers} traveler(s), ${days} days)
 Traveler profile: ${styleBits || "n/a"}

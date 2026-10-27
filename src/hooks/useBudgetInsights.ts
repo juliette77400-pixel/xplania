@@ -35,7 +35,7 @@ export function useBudgetInsights(a: Args) {
 
   const key = [
     "budget-insights", a.destination, a.days, a.travelers, a.locale,
-    a.tripData?.departureDate || "", a.tripData?.totalBudget || 0, nonce,
+    a.tripData?.departureDate || "", a.tripData?.totalBudget || 0, a.tripData?.arrivalCity || "", a.tripData?.stayType || "", nonce,
   ];
 
   const query = useQuery({
@@ -61,6 +61,11 @@ export function useBudgetInsights(a: Args) {
           accommodationStanding: td?.accommodationStanding || "",
           organization: td?.organization || "",
           rhythm: td?.rhythm || "",
+          // Stay facts from the questionnaire: city, kind of stay and housing make the tips local and relevant.
+          city: td?.arrivalCity && td.arrivalCity !== td.destination ? td.arrivalCity : "",
+          stayType: td?.stayType || "",
+          housing: td?.accommodationType || td?.housing || "",
+          housingStatus: td?.housingStatus || "",
           avoid: seen.current,
           seed: `${Date.now()}-${nonce}`,
         },
