@@ -19,7 +19,7 @@ import { useActiveTrip } from "@/stores/useActiveTrip";
 import { useTravelStore } from "@/stores/useTravelStore";
 import {
   PREP_STEPS, STAY_TYPES, DURATION_BUCKETS, HOUSING_OPTIONS, HOUSING_STATUSES,
-  emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip, GUEST_DRAFT_KEY, PREP_RESUME_PATH,
+  emptyPrepAnswers, validatePrepStep, buildTripFromAnswers, countryName, answersFromTrip, GUEST_DRAFT_KEY, PREP_RESUME_PATH, hasCompleteGuestDraft,
   type PrepAnswers, type PrepStep,
 } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";
