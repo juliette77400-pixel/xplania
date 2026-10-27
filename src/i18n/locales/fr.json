@@ -531,7 +531,7 @@
   },
   "guideVisa": {
     "title": "Visa & Démarches Administratives",
-    "heroKicker": "Ton copilote vérifie les formalités",
+    "heroKicker": "Visa, papiers, santé",
     "contextKicker": "Ta situation",
     "contextHelp": "Le résultat dépend de ta destination et de ta nationalité.",
     "resourcesKicker": "Pour aller plus loin",
@@ -598,8 +598,8 @@
     "tipsTitle": "Astuces pratiques",
     "inlineDisclaimer": "ℹ️ Vérifie toujours ces informations sur le site officiel de l'ambassade (diplomatie.gouv.fr).",
     "disclaimer": {
-      "title": "Avis important —",
-      "body": "Pour tout détail ou toute question, il vaut toujours mieux consulter l'ambassade ou le consulat de ta destination avant de partir. Xplania ne peut pas être tenu responsable en cas de problème.",
+      "title": "À savoir :",
+      "body": "Xplania t'aide à t'y retrouver, mais seuls l'ambassade ou le consulat font foi : en cas de doute, demande-leur.",
       "cta": "Site officiel de l'ambassade",
       "checkedOn": "Infos préparées le {{date}} à partir des règles connues. Revérifie toujours avant de partir."
     },
@@ -2181,15 +2181,15 @@
     "headerTitle": "🧳 Valise Intelligente",
     "headerSubtitle": "IA Avancée Xplania",
     "headerSelected": "sélectionnés",
-    "heroBadge": "IA Avancée Xplania",
-    "heroTitleA": "L'IA qui prépare",
+    "heroBadge": "Ta valise",
+    "heroTitleA": "Bien remplir",
     "heroTitleB": "ta valise {{destination, pour}}",
-    "heroDesc": "Xplania analyse la météo réelle, la culture locale et ton style de voyage pour générer une valise parfaitement adaptée en quelques secondes.",
+    "heroDesc": "Une liste selon la météo habituelle de tes mois sur place, ton type de séjour et ton bagage. Tu coches au fur et à mesure.",
     "heroCta": "🧳 Générer ma valise",
-    "generateHint": "Choisis d'abord ton transport et ton type de valise ci-dessus, puis génère : la liste s'adaptera à ces choix et aux critères de ton voyage.",
-    "heroBadgeWeather": "Météo réelle analysée",
+    "generateHint": "L'avion et ton type de valise sont déjà choisis selon ton séjour. Change-les si besoin, puis crée ta liste.",
+    "heroBadgeWeather": "Météo habituelle sur place",
     "heroBadgeCulture": "Conseils culturels",
-    "heroBadgeOptimized": "Valise optimisée",
+    "heroBadgeOptimized": "Liste à cocher",
     "heroDays": "{{count}} jour",
     "heroDays_other": "{{count}} jours",
     "progressLabel": "État de préparation",
@@ -2668,7 +2668,7 @@
       "s4": "Analyse des activités…",
       "s5": "Optimisation de la valise…"
     },
-    "voyageTitle": "Analyse IA de ton voyage",
+    "voyageTitle": "Ce qu'on sait de ton séjour",
     "voyageDestination": "Destination",
     "voyageDuration": "Durée",
     "voyageStyle": "Style",
@@ -2813,9 +2813,9 @@
     "aiIllustration": "Illustration IA"
   },
   "budget": {
-    "heroBadge": "Propulsé par IA Xplania",
-    "heroTitle": "Budget Intelligent",
-    "heroSubtitle": "Planifie, suis et optimise tes dépenses grâce à l'IA Xplania.",
+    "heroBadge": "Ton budget de départ",
+    "heroTitle": "Combien il te faut, vraiment ?",
+    "heroSubtitle": "Premier mois, loyer, caution, transport : vois ce que coûte ton séjour et ce qu'il te reste chaque mois.",
     "heroCta": "Créer mon budget prévisionnel",
     "heroAnalyzing": "Analyse en cours…",
     "configTitle": "Configuration IA du Budget",
@@ -2837,7 +2837,7 @@
     "configConstraints": "📝 Tes contraintes :",
     "summaryTitle": "Récapitulatif de ton voyage",
     "summaryMoreContext": "Voir les préférences prises en compte",
-    "summarySubtitle": "L'IA utilisera ces données pour créer un budget sur-mesure",
+    "summarySubtitle": "Ton estimation part de ces informations. Tu pourras tout ajuster ensuite.",
     "summaryNoTrip": "Aucun voyage configuré",
     "summaryNoTripDesc": "Pour générer un budget personnalisé, remplis d'abord le formulaire de voyage sur la page d'accueil.",
     "summaryCreateTrip": "Créer mon voyage",
@@ -6305,8 +6305,8 @@
     "howStep3Desc": "Enregistre les lieux dans tes listes et reçois une alerte quand tu passes à côté."
   },
   "culture": {
-    "title": "Guide d'immersion culturelle",
-    "subtitle": "Les codes, usages et petites attentions pour te sentir à l'aise dans ton pays d'accueil.",
+    "title": "Comment ça se passe, là-bas ?",
+    "subtitle": "Saluer, se comporter en cours ou en stage, les petits codes du quotidien : pour arriver plus serein.",
     "howTitle": "Comment ça marche ?",
     "howStep1Title": "Choisis ton pays",
     "howStep1Desc": "Tape le nom du pays ou choisis-en un parmi les plus demandés.",
@@ -6327,7 +6327,7 @@
     "understood": "Compris",
     "markUnderstood": "Marquer comme compris",
     "readySheet": "Fiche prête",
-    "aiSheet": "Préparé à l'ouverture",
+    "aiSheet": "Se prépare quand tu l'ouvres",
     "back": "Tous les thèmes",
     "loginNeeded": "Connecte-toi pour ouvrir ce thème : il sera préparé pour toi puis gardé pour les prochains voyageurs.",
     "login": "Se connecter",
@@ -6371,7 +6371,9 @@
       "internship": "Tu pars en stage à l'étranger",
       "other": "Tu pars pour une mobilité étudiante"
     },
-    "stayHintCta": "Commence par le thème « {{pillar}} » : la vie à l'université et au travail dans ce pays."
+    "stayHintCta": "Commence par le thème « {{pillar}} » : la vie à l'université et au travail dans ce pays.",
+    "yourCountry": "Ta destination :",
+    "changeCountry": "Changer de pays"
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
@@ -6398,7 +6400,7 @@
     "durationDays_other": "{{count}} jours",
     "noDates": "Dates à préciser",
     "overall": "Préparation globale",
-    "modulesTitle": "Tes 5 outils de préparation",
+    "modulesTitle": "Tes 5 outils",
     "start": "Commencer",
     "continue": "Continuer",
     "offersHint": "10 essais gratuits par outil chaque mois —",
@@ -6433,7 +6435,7 @@
       }
     },
     "status": {
-      "notStarted": "Non commencé",
+      "notStarted": "À faire",
       "inProgress": "En cours",
       "done": "Terminé"
     },
@@ -6465,6 +6467,13 @@
       "budgetFirstMonth": "Mets de côté {{amount}} € de plus pour ton premier mois",
       "budgetIncome": "Ajoute ta bourse ou ta gratification au budget",
       "housingFind": "Trouve et sécurise ton logement"
+    },
+    "overallZero": "Ta préparation commence par une seule étape. Commence par celle ci-dessous, le reste suivra.",
+    "open": "Ouvrir",
+    "nextStep": {
+      "kicker": "Ta prochaine étape",
+      "cta": "C'est parti",
+      "then": "Ensuite"
     }
   },
   "prepTrip": {
@@ -6707,10 +6716,10 @@
       "hint": "Tu pourras modifier tes dates depuis ton tableau de bord."
     },
     "budget": {
-      "title": "Quel budget as-tu prévu ?",
-      "subtitle": "Même une estimation suffit pour commencer.",
-      "label": "Budget total pour ton séjour",
-      "placeholder": "Ex. : 4000",
+      "title": "Combien as-tu de côté pour partir ?",
+      "subtitle": "Économies, bourse, aide de ta famille : une estimation suffit.",
+      "label": "Argent disponible pour tout le séjour",
+      "placeholder": "Ex. : 3000",
       "unknown": "Je ne sais pas encore"
     },
     "housing": {
@@ -6776,7 +6785,8 @@
       "cta": "Créer mon compte gratuit pour enregistrer",
       "edit": "Modifier mes réponses",
       "signin": "J'ai déjà un compte",
-      "free": "Gratuit pendant la bêta · Sans carte bancaire"
+      "free": "Gratuit pendant la bêta · Sans carte bancaire",
+      "tryBudget": "Ou essaie d'abord le Budget, sans compte"
     }
   },
   "prepEdit": {
@@ -6788,8 +6798,8 @@
   },
   "housing": {
     "kicker": "Assistant Logement",
-    "title": "Ton logement à l'étranger",
-    "subtitle": "De la recherche à ton installation, retrouve les informations et les étapes essentielles pour préparer ton logement.",
+    "title": "Trouver ton logement là-bas",
+    "subtitle": "Où chercher, quoi comparer, les pièges à éviter, puis ton installation : étape par étape.",
     "status": {
       "label": "Ta situation :",
       "change": "Modifier ma situation",
@@ -7193,7 +7203,7 @@
   "visa2": {
     "toolName": "Visa & formalités",
     "titleFor": "Tes formalités pour {{destination}}",
-    "subtitle": "Ton profil, l'essentiel en quatre cartes, puis ta checklist. Chaque information indique sa source et sa fiabilité.",
+    "subtitle": "L'essentiel en quatre cartes, puis ta checklist. Chaque info indique d'où elle vient et quand elle a été vérifiée.",
     "yourDestination": "ta destination",
     "opensNewTab": "(s'ouvre dans un nouvel onglet)",
     "reliability": {

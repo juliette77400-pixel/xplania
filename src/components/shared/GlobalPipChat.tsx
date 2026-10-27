@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { isPipHidden, onOpenPipChat } from "@/lib/help-events";
+import { hasToolPip, isPipHidden, onOpenPipChat } from "@/lib/help-events";
 
 interface Msg {
   role: "user" | "assistant";
@@ -31,7 +31,7 @@ const GlobalPipChat = () => {
   useEffect(() => { scrollRef.current?.scrollTo({ top: 1e9, behavior: "smooth" }); }, [msgs, open]);
   useEffect(() => onOpenPipChat(() => setOpen(true)), []);
 
-  if (isPipHidden(loc.pathname)) return null;
+  if (isPipHidden(loc.pathname) || hasToolPip(loc.pathname)) return null;
 
   const send = async () => {
     const text = input.trim();

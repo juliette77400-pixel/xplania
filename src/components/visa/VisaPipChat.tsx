@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { onOpenPipChat } from "@/lib/help-events";
 
 interface Props {
   destination?: string;
@@ -79,6 +80,9 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
     }
   }, [openSignal]);
 
+  // "Aide" → "Ask the assistant" opens this page's assistant.
+  useEffect(() => onOpenPipChat(() => setOpen(true)), []);
+
   useEffect(() => {
     if (scrollerRef.current) scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
   }, [history, loading, stage]);
@@ -147,17 +151,8 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
     }
   };
 
-  if (!open) {
-    return (
-      <button
-        onClick={() => setOpen(true)}
-        aria-label={t("guideVisa.chatbot.openLabel")}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
-      >
-        <Globe className="w-6 h-6" />
-      </button>
-    );
-  }
+  // Opened from the single "Aide" button or the in-page link; no floating launcher of its own.
+  if (!open) return null;
 
   const officialUrl = isFr
     ? "https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/"
