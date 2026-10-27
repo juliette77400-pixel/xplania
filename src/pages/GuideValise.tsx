@@ -29,6 +29,7 @@ import QuickJump from "@/components/shared/QuickJump";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
+import ExampleResultPreview from "@/components/shared/ExampleResultPreview";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
@@ -321,6 +322,18 @@ const GuideValisePage = () => {
 
         {/* Generate CTA — placed after the transport + luggage-type choices so the
             suitcase respects them. Hidden once generated. */}
+        {!hasGenerated && (
+          <ExampleResultPreview
+            title={t("guidePreview.valise.title")}
+            rows={[
+              { label: t("guidePreview.valise.i1") },
+              { label: t("guidePreview.valise.i2") },
+              { label: t("guidePreview.valise.i3") },
+            ]}
+            note={t("guidePreview.valise.note")}
+          />
+        )}
+
         {!hasGenerated && (
           <div className="flex flex-col items-center gap-3 rounded-2xl border border-primary/15 bg-primary/5 p-6 text-center">
             <p className="max-w-md text-sm text-muted-foreground">{t("valise.generateHint")}</p>
