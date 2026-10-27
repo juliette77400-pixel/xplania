@@ -28,11 +28,13 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 void (async () => {
-  const [{ default: App }, { ThemeProvider }, { registerAppSW }] = await Promise.all([
+  const [{ default: App }, { ThemeProvider }, { registerAppSW }, { installInvokeRetry }] = await Promise.all([
     import("./App.tsx"),
     import("@/hooks/useTheme"),
     import("@/pwa/registerSW"),
+    import("@/lib/invoke-retry"),
   ]);
+  installInvokeRetry();
 
   createRoot(rootEl).render(
     <ThemeProvider>
