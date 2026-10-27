@@ -14,7 +14,7 @@ const VoyageAnalysis = ({ tripData, destination, days }: VoyageAnalysisProps) =>
     { label: t("valise.voyageDestination"), value: destination },
     { label: t("valise.voyageDuration"), value: t("valise.heroDays", { count: days }) },
     { label: t("valise.voyageStyle"), value: tripData?.travelerType || t("valise.voyageDefaultStyle") },
-    { label: t("valise.voyageActivities"), value: tripData?.objectives?.slice(0, 3).join(", ") || "—" },
+    { label: t("valise.voyageActivities"), value: (tripData?.valiseActivities?.length ? tripData.valiseActivities.map((a) => t(`valise3.activities.items.${a}`)) : tripData?.objectives ?? []).slice(0, 3).join(", ") || "—" },
     { label: t("valise.voyageTransport"), value: tripData?.localTransport?.join(", ") || "—" },
     { label: t("valise.voyageAccommodation"), value: tripData?.accommodationType || t("valise.voyageStandard") },
     { label: t("valise.voyageBaggage"), value: tripData?.baggageTypes?.join(", ") || t("valise.voyageStandard") },
