@@ -41,8 +41,8 @@ serve(async (req) => {
     const city = typeof body.city === "string" ? body.city.trim().slice(0, 80) : "";
     const country = typeof body.countryCode === "string" && /^[A-Za-z]{2}$/.test(body.countryCode) ? body.countryCode.toUpperCase() : "";
     const lang = body.lang === "en" || body.locale === "en" ? "en" : "fr";
-    let lat = typeof body.lat === "number" ? body.lat : Number(body.lat);
-    let lon = typeof body.lon === "number" ? body.lon : Number(body.lon);
+    let lat = typeof body.lat === "number" ? body.lat : NaN;
+    let lon = typeof body.lon === "number" ? body.lon : NaN;
     let place: { name: string; country: string; state: string } | null = null;
 
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) {

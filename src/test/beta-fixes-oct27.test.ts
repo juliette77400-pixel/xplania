@@ -77,3 +77,18 @@ describe("budget — texte des recommandations", () => {
     expect(text).toContain("Revérifie toujours tes dépenses et les prix réels.");
   });
 });
+
+import { pickPlace } from "../../supabase/functions/_shared/place-lookup";
+
+describe("météo — lieu mesuré", () => {
+  it("une île (Gran Canaria) est rattachée à une ville ou à son aéroport, pas au sommet", () => {
+    const picked = pickPlace([
+      { name: "Grande Canarie", feature_code: "ISL", elevation: 1682 },
+      { name: "Aéroport de Gran Canaria", feature_code: "AIRP", elevation: 23 },
+    ]);
+    expect(picked?.name).toBe("Aéroport de Gran Canaria");
+  });
+  it("une ville reste la ville choisie", () => {
+    expect(pickPlace([{ name: "Madrid", feature_code: "PPLC", elevation: 667 }])?.name).toBe("Madrid");
+  });
+});
