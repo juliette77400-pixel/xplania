@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RotateCcw, Check, FileDown } from "lucide-react";
 import { useTravelStore } from "@/stores/useTravelStore";
@@ -85,6 +85,8 @@ const GuideBudgetPage = () => {
   useHydrateActiveTrip();
   const { tripData, recommendations } = useTravelStore();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const hasDestination = !!tripData?.destination;
   // "Paris" is only the historical storage-key fallback; it is never shown as the student's destination.
   const destination = tripData?.destination || "Paris";
   const days = tripData?.duration ? parseInt(tripData.duration) || 5 : 5;
@@ -345,6 +347,8 @@ const GuideBudgetPage = () => {
 
   const runGeneration = useCallback(async () => {
     if (isGenerating) return;
+    // No destination yet: never build a budget for a made-up city, ask for the trip first.
+    if (!hasDestination) { navigate("/preparation"); return; }
     if (reached) { setShowUpgrade(true); return; }
     consume();
     setIsGenerating(true);
@@ -363,7 +367,7 @@ const GuideBudgetPage = () => {
     } finally {
       setIsGenerating(false);
     }
-  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating]);
+  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating, hasDestination, navigate]);
 
   const handleRegenerate = askRecalculate;
 
@@ -489,7 +493,7 @@ const GuideBudgetPage = () => {
       <UpgradeDialog open={showUpgrade} onOpenChange={setShowUpgrade} toolName="Budget" />
 
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
-        <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={destination} days={days} initialBudget={userBudget} />
+        <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={hasDestination ? destination : ""} days={tripData?.duration ? days : null} initialBudget={userBudget} />
         <MissingTripInfo needs={["budget", "dates"]} />
         <p className="mx-auto mt-3 max-w-3xl rounded-xl border border-border bg-muted/40 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground">
           {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels." })}
