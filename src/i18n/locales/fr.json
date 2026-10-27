@@ -2203,7 +2203,9 @@
       "avionHint": "Liquides <100ml, bagage cabine",
       "trainHint": "Confort & flexibilité",
       "voitureHint": "Espace illimité, route",
-      "bateauHint": "Anti-mal de mer, soleil"
+      "bateauHint": "Anti-mal de mer, soleil",
+      "velo": "Vélo",
+      "veloHint": "Casque, éclairage, antivol"
     },
     "modesTitle": "Type de valise",
     "modesSubtitle": "11 styles premium — sélectionne pour adapter le contenu instantanément",
@@ -7805,6 +7807,48 @@
       "i2": "Documents : passeport, attestations, copies",
       "i3": "Trousse de secours et adaptateurs",
       "note": "Liste d'exemple. Génère ta valise pour une liste adaptée à ta destination et à la saison."
+    }
+  },
+  "valise3": {
+    "activities": {
+      "title": "Qu'est-ce que tu vas faire sur place ?",
+      "subtitle": "Coche tout ce qui te concerne : ta liste, tes tenues et tes conseils s'adaptent.",
+      "items": {
+        "study": "Cours à l'université",
+        "internship": "Stage / travail",
+        "hiking": "Randonnée",
+        "beach": "Plage et baignade",
+        "sport": "Sport",
+        "nightlife": "Sorties et soirées",
+        "culture": "Visites culturelles",
+        "excursions": "Voyages et excursions"
+      },
+      "other": "Autre activité",
+      "otherPlaceholder": "Ex. : surf, ski, bénévolat…",
+      "saved": "Activités enregistrées pour ce séjour",
+      "saveError": "Impossible d'enregistrer tes activités. Réessaie.",
+      "applyToList": "Mettre à jour ma liste",
+      "applied": "Ta liste a été complétée avec tes activités"
+    },
+    "transportSaved": "Transport enregistré pour ce séjour",
+    "weather": {
+      "title": "Météo à {{place}} maintenant",
+      "subtitle": "Mesures réelles d'une station météo, pas une estimation de l'IA.",
+      "now": "Température actuelle",
+      "feels": "Ressenti {{t}}°",
+      "humidity": "Humidité",
+      "wind": "Vent",
+      "forecast": "Prévisions des prochains jours",
+      "updated": "Mesuré à {{time}} (heure locale) · source",
+      "loading": "Récupération de la météo…",
+      "unavailable": "Météo actuelle indisponible pour l'instant. Rien n'est affiché à la place : réessaie plus tard ou consulte un service météo local.",
+      "notFound": "On ne trouve pas « {{city}} » dans ce pays. Indique la ville précise de ton séjour pour avoir sa météo.",
+      "retry": "Réessayer",
+      "seasonalNote": "Les moyennes de saison ci-dessous servent à préparer ta valise ; la météo du jour peut être différente."
+    },
+    "tip": {
+      "error": "Impossible de générer un nouveau conseil pour l'instant. Réessaie dans un moment.",
+      "quota": "Tu as utilisé tes essais Valise de ce mois."
     }
   }
 }

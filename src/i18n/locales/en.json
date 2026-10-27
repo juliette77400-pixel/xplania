@@ -2203,7 +2203,9 @@
       "avionHint": "Liquids <100ml, cabin baggage",
       "trainHint": "Comfort & flexibility",
       "voitureHint": "Unlimited space, road",
-      "bateauHint": "Anti-seasickness, sun"
+      "bateauHint": "Anti-seasickness, sun",
+      "velo": "Bike",
+      "veloHint": "Helmet, lights, lock"
     },
     "modesTitle": "Suitcase style",
     "modesSubtitle": "11 premium styles — pick one to instantly adapt the contents",
@@ -7805,6 +7807,48 @@
       "i2": "Documents: passport, certificates, copies",
       "i3": "First-aid kit and adapters",
       "note": "Example list. Generate your packing list tailored to your destination and season."
+    }
+  },
+  "valise3": {
+    "activities": {
+      "title": "What will you do there?",
+      "subtitle": "Tick everything that applies: your list, outfits and tips adapt.",
+      "items": {
+        "study": "University classes",
+        "internship": "Internship / work",
+        "hiking": "Hiking",
+        "beach": "Beach and swimming",
+        "sport": "Sport",
+        "nightlife": "Going out",
+        "culture": "Cultural visits",
+        "excursions": "Trips and excursions"
+      },
+      "other": "Other activity",
+      "otherPlaceholder": "e.g. surfing, skiing, volunteering…",
+      "saved": "Activities saved for this stay",
+      "saveError": "Couldn't save your activities. Try again.",
+      "applyToList": "Update my list",
+      "applied": "Your list now includes your activities"
+    },
+    "transportSaved": "Transport saved for this stay",
+    "weather": {
+      "title": "Weather in {{place}} right now",
+      "subtitle": "Real measurements from a weather station, not an AI estimate.",
+      "now": "Current temperature",
+      "feels": "Feels like {{t}}°",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "forecast": "Forecast for the next days",
+      "updated": "Measured at {{time}} (local time) · source",
+      "loading": "Getting the weather…",
+      "unavailable": "Current weather unavailable right now. Nothing is shown instead: try again later or check a local weather service.",
+      "notFound": "We can't find \"{{city}}\" in this country. Add the exact city of your stay to get its weather.",
+      "retry": "Try again",
+      "seasonalNote": "The seasonal averages below help you pack; today's weather may differ."
+    },
+    "tip": {
+      "error": "Couldn't generate a new tip right now. Try again in a moment.",
+      "quota": "You've used this month's Valise tries."
     }
   }
 }
