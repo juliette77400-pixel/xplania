@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
-import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -37,6 +36,7 @@ import BudgetSimulator from "@/components/budget/BudgetSimulator";
 import BudgetConfirmDialog from "@/components/budget/BudgetConfirmDialog";
 import BudgetIncomesForm from "@/components/budget/BudgetIncomes";
 import { budgetRecommendations, changedLines, emptyIncomes, sanitizeIncomes, summarizeBudget, type BudgetIncomes, type BudgetLine } from "@/lib/budget-math";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 /* =============================================================================
  * DEV NOTE — Item 6: Bank-transaction integration feasibility (research only)

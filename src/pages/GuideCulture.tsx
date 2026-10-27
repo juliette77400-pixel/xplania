@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";

@@ -1,5 +1,4 @@
 // Visa guide: profile → four summary cards → personalised checklist →
-import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 // emergency contacts. Official pages (security, entry, health, contacts) are
 // read for real; visa/passport answers for the exact profile come from the AI
 // and are saved with the trip so nothing is regenerated on each visit.
@@ -37,6 +36,7 @@ import {
   visaProfileFromTrip, visaProfileKey, visaStateKey, visaStayDays, type SavedVisaState, type VisaProfile,
 } from "@/lib/visa-rules";
 import type { TravelFormData } from "@/types/travel";
+import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 const GuideVisaPage = () => {
   useHydrateActiveTrip();
