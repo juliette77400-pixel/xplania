@@ -15,6 +15,8 @@ export async function generateJson<T = any>(opts: {
   name?: string;
   strict?: boolean;
   effort?: "low" | "medium" | "high";
+  /** Defaults to openai/gpt-6-astra. */
+  model?: string;
 }): Promise<T> {
   const key = Deno.env.get("LOVABLE_API_KEY");
   if (!key) throw new AiHttpError(500, "LOVABLE_API_KEY is not configured");
@@ -27,7 +29,7 @@ export async function generateJson<T = any>(opts: {
       "X-Lovable-AIG-SDK": "fetch",
     },
     body: JSON.stringify({
-      model: "openai/gpt-6-astra",
+      model: opts.model ?? "openai/gpt-6-astra",
       instructions: opts.instructions,
       input: opts.input,
       stream: true,

@@ -125,7 +125,9 @@ Already shown (do not repeat): ${(avoid as string[]).slice(0, 30).join(" | ") ||
 
     let parsed: unknown;
     try {
-      parsed = await generateJsonSplit({ instructions: instructions + countryContext(destination), input, schema: SCHEMA, name: "budget_insights", strict: true, parts: [["scenarios"], ["analysis"], ["deals"], ["tips"]] });
+      parsed = await generateJsonSplit({ instructions: instructions + countryContext(destination), input, schema: SCHEMA, name: "budget_insights", strict: true, effort: "low",
+        // Lighter model: about 10 s instead of 35 s for the same four parts.
+        model: "openai/gpt-6-luna", parts: [["scenarios"], ["analysis"], ["deals"], ["tips"]] });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;

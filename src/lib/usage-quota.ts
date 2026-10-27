@@ -23,17 +23,20 @@ export type QuotaTool =
   | "mood"
   | "explore"
   | "carnet"
-  | "suivi";
+  | "suivi"
+  | "culture";
 
+// Fallback mirror of the server limit (get_quota_limit: 10 per tool and per month).
 const LIMITS: Record<QuotaTool, number> = {
-  valise: 3,
-  budget: 3,
-  visa: 3,
-  discover: 1,
-  mood: 3,
-  explore: 1,
-  carnet: 1,
-  suivi: 1,
+  valise: 10,
+  budget: 10,
+  visa: 10,
+  discover: 10,
+  mood: 10,
+  explore: 10,
+  carnet: 10,
+  suivi: 10,
+  culture: 10,
 };
 
 const KEY = (t: QuotaTool) => `xplania_usage_${t}`;
