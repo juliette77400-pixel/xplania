@@ -7958,5 +7958,64 @@
     "title": "Xplania's AI is taking a short break",
     "message": "Your results already generated stay on screen and this try was not counted. Please try again a little later.",
     "chat": "I'm taking a short break and can't answer right now 😴 Everything you've already prepared is still here, and this question didn't use any of your tries. Please try again a little later."
+  },
+  "assistant": {
+    "ideas": "Question ideas",
+    "placeholder": "Ask your question…",
+    "send": "Send",
+    "thinking": "The assistant is thinking…",
+    "restart": "New conversation",
+    "error": "I couldn't answer this time. Your try wasn't counted: please try again in a moment.",
+    "quotaReached": "You've used all this month's tries for this tool. They come back on the 1st of next month.",
+    "quotaNote_one": "Each question uses 1 {{tool}} try · {{count}} left this month.",
+    "quotaNote_other": "Each question uses 1 {{tool}} try · {{count}} left this month.",
+    "quotaUnlimited": "Each question counts as a {{tool}} try: yours are unlimited right now.",
+    "open": "Ask the assistant",
+    "toolNames": {
+      "budget": "Budget",
+      "visa": "Visa",
+      "valise": "Packing",
+      "culture": "Culture",
+      "housing": "Housing"
+    },
+    "culture": {
+      "title": "Culture assistant",
+      "greeting": "A question about everyday customs in {{country}}? I'll explain local habits as general tendencies: everyone is different.",
+      "suggestions": [
+        "How should I greet people?",
+        "Which cultural mistakes should I avoid?",
+        "How can I fit in better?"
+      ]
+    },
+    "housing": {
+      "title": "Housing helper",
+      "greeting": "I can help you compare the homes you saved and prepare your questions. I never suggest listings or websites: the checked resources are on this page.",
+      "suggestions": [
+        "What should I check before signing?",
+        "What are the advantages of this home?",
+        "What should I ask the landlord?"
+      ]
+    },
+    "budget": {
+      "suggestions": [
+        "How can I cut my housing budget?",
+        "Is my budget realistic?",
+        "Which expenses have I forgotten?"
+      ]
+    },
+    "visa": {
+      "suggestions": [
+        "Do I need a visa?",
+        "Which documents should I prepare?",
+        "Which steps should I take first?"
+      ]
+    },
+    "valise": {
+      "suggestions": [
+        "Why should I pack this item?",
+        "What should I plan for rainy days?",
+        "How can I pack lighter?"
+      ]
+    }
   }
 }

@@ -7958,5 +7958,64 @@
     "title": "L'IA d'Xplania fait une petite pause",
     "message": "Tes résultats déjà générés restent affichés et ton essai n'a pas été décompté. Réessaie un peu plus tard.",
     "chat": "Je fais une petite pause et je ne peux pas répondre pour le moment 😴 Ce que tu as déjà préparé reste disponible, et cette question ne t'a coûté aucun essai. Réessaie un peu plus tard."
+  },
+  "assistant": {
+    "ideas": "Idées de questions",
+    "placeholder": "Pose ta question…",
+    "send": "Envoyer",
+    "thinking": "L'assistant réfléchit…",
+    "restart": "Nouvelle conversation",
+    "error": "Je n'ai pas pu répondre cette fois-ci. Ton essai n'a pas été décompté : réessaie dans un instant.",
+    "quotaReached": "Tu as utilisé tous tes essais du mois pour cet outil. Ils reviennent le 1er du mois prochain.",
+    "quotaNote_one": "Chaque question utilise 1 essai {{tool}} · encore {{count}} ce mois-ci.",
+    "quotaNote_other": "Chaque question utilise 1 essai {{tool}} · encore {{count}} ce mois-ci.",
+    "quotaUnlimited": "Chaque question compte comme un essai {{tool}} : les tiens sont illimités en ce moment.",
+    "open": "Poser une question à l'assistant",
+    "toolNames": {
+      "budget": "Budget",
+      "visa": "Visa",
+      "valise": "Valise",
+      "culture": "Culture",
+      "housing": "Logement"
+    },
+    "culture": {
+      "title": "Assistant Culture",
+      "greeting": "Une question sur les usages en {{country}} ? Je t'explique les habitudes locales, en restant sur des tendances : chaque personne est différente.",
+      "suggestions": [
+        "Comment saluer les habitants ?",
+        "Quelles erreurs culturelles éviter ?",
+        "Comment mieux m'intégrer ?"
+      ]
+    },
+    "housing": {
+      "title": "Aide au logement",
+      "greeting": "Je t'aide à comparer les logements que tu as enregistrés et à préparer tes questions. Je ne propose aucune annonce ni aucun site : les ressources vérifiées sont sur cette page.",
+      "suggestions": [
+        "Quels sont les points à vérifier avant de signer ?",
+        "Quels sont les avantages de ce logement ?",
+        "Quelles questions poser au propriétaire ?"
+      ]
+    },
+    "budget": {
+      "suggestions": [
+        "Comment réduire mon budget logement ?",
+        "Est-ce que mon budget est réaliste ?",
+        "Quelles dépenses ai-je oubliées ?"
+      ]
+    },
+    "visa": {
+      "suggestions": [
+        "Ai-je besoin d'un visa ?",
+        "Quels documents dois-je préparer ?",
+        "Quelles démarches dois-je faire en priorité ?"
+      ]
+    },
+    "valise": {
+      "suggestions": [
+        "Pourquoi dois-je prendre ce vêtement ?",
+        "Que prévoir pour les jours de pluie ?",
+        "Comment alléger ma valise ?"
+      ]
+    }
   }
 }
