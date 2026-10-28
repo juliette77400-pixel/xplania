@@ -9,6 +9,8 @@ import AppNavbar from "@/components/shared/AppNavbar";
 import HeroSection from "@/components/xplania/HeroSection";
 import QuestionsSection from "@/components/xplania/QuestionsSection";
 import ResultSection from "@/components/xplania/ResultSection";
+import PersonalizationSection from "@/components/xplania/PersonalizationSection";
+import BetaAccessSection from "@/components/xplania/BetaAccessSection";
 import Testimonials from "@/components/xplania/Testimonials";
 import FaqSection from "@/components/xplania/FaqSection";
 import FinalCtaSection from "@/components/xplania/FinalCtaSection";
@@ -77,12 +79,14 @@ const Index = () => {
         <button onClick={scrollToFeedback}>fb</button>
       </div>
       <main id="main-content" tabIndex={-1}>
-        {/* Student's path: want to leave → my questions → what I get → proof → FAQ → start */}
+        {/* Student's path: want to leave → my questions → tailored to me → what I get → proof → what's free → FAQ → start */}
         <HeroSection onCreateTrip={() => handleCreateTrip("hero")} onPickCountry={handlePickCountry} />
         <QuestionsSection />
+        <PersonalizationSection />
         <ResultSection onStart={() => handleCreateTrip("example")} />
         <Testimonials />
-        <FaqSection keys={["q1", "q7", "q2", "q3", "q6"]} />
+        <BetaAccessSection />
+        <FaqSection keys={["q1", "q2", "q3", "q6"]} />
         <FinalCtaSection onCreateTrip={() => handleCreateTrip("final")} onFeedback={() => setFeedbackOpen(true)} />
         <Footer onCreateTrip={() => handleCreateTrip("footer")} />
       </main>

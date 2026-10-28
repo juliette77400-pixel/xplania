@@ -71,7 +71,7 @@ const HeroSection = ({ onCreateTrip, onPickCountry }: Props) => {
               {t("landing2.hero.secondary")}
             </button>
           </div>
-          <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-muted-foreground"><Check className="h-4 w-4 text-primary" aria-hidden />{t("prepLanding.reassurance")}</p>
+          <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-muted-foreground"><Check className="h-4 w-4 text-primary" aria-hidden />{t("landing2.hero.micro")}</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: .97, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: .7, delay: .1 }} className="relative mx-auto w-full max-w-md lg:max-w-none">
