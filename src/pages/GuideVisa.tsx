@@ -38,6 +38,7 @@ import {
   visaProfileFromTrip, visaProfileKey, visaStateKey, visaStayDays, type SavedVisaState, type VisaProfile,
 } from "@/lib/visa-rules";
 import type { TravelFormData } from "@/types/travel";
+import { withEssentials, type EssentialContext } from "@/lib/visa-essentials";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 
 const GuideVisaPage = () => {
@@ -59,6 +60,8 @@ const GuideVisaPage = () => {
   const destinationName = countryLabel(profile.destinationCode);
   const nationalityName = countryLabel(profile.nationality);
   const isFrench = profile.nationality === "FR" || profile.secondNationality === "FR";
+  const freeMovement = profile.destinationCode ? hasFreeMovement(profile.destinationCode, [profile.nationality, profile.secondNationality]) : false;
+  const essentialCtx = useMemo<EssentialContext>(() => ({ days, stayType: profile.stayType, freeMovement, isFrench }), [days, profile.stayType, freeMovement, isFrench]);
 
   const [saved, setSaved] = useState<SavedVisaState | null>(null);
   const [generating, setGenerating] = useState(false);
@@ -73,13 +76,15 @@ const GuideVisaPage = () => {
   const analysis = saved?.analysis ?? null;
   const outdated = !!saved && saved.profileKey !== pKey;
   const checked = saved?.checked ?? {};
+  // The AI list completed with the points a student must never miss.
+  const checklist = useMemo(() => (analysis ? withEssentials(analysis.checklist, essentialCtx, t) : []), [analysis, essentialCtx, t]);
 
   // Dashboard progress for this destination.
   useEffect(() => {
     if (!analysis || !tripData?.destination) return;
-    const done = analysis.checklist.filter((i) => checked[i.id]).length;
-    saveModuleProgress("visa", tripData.destination, { done, total: analysis.checklist.length });
-  }, [analysis, checked, tripData?.destination]);
+    const done = checklist.filter((i) => checked[i.id]).length;
+    saveModuleProgress("visa", tripData.destination, { done, total: checklist.length });
+  }, [analysis, checklist, checked, tripData?.destination]);
 
   const saveProfile = useCallback(async (next: VisaProfile): Promise<boolean> => {
     if (!user || !tripId) { toast.error(t("visa2.profile.noTrip")); return false; }
@@ -165,7 +170,8 @@ const GuideVisaPage = () => {
       const result = normalizeAnalysis(data);
       if (!result) throw new Error(t("visa2.analysis.incomplete"));
       consume();
-      const next: SavedVisaState = { profileKey: pKey, analysis: result, checked: carryChecked(saved?.checked ?? {}, result.checklist) };
+      const full = { ...result, checklist: withEssentials(result.checklist, essentialCtx, t) };
+      const next: SavedVisaState = { profileKey: pKey, analysis: full, checked: carryChecked(saved?.checked ?? {}, full.checklist) };
       saveVisaState(stateKey, next);
       setSaved(next);
       track("guide_generated", { guide: "visa" });
@@ -176,7 +182,7 @@ const GuideVisaPage = () => {
     } finally {
       setGenerating(false);
     }
-  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, stateKey]);
+  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, stateKey, essentialCtx]);
 
   const toggle = (id: string) => {
     if (!saved) return;
@@ -192,8 +198,6 @@ const GuideVisaPage = () => {
     if (r.status === "unavailable" && r.reason !== AI_UNAVAILABLE) toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
     else toast.success(r.changed ? t("visa2.cards.refreshChanged") : t("visa2.cards.refreshSame"));
   };
-
-  const freeMovement = profile.destinationCode ? hasFreeMovement(profile.destinationCode, [profile.nationality, profile.secondNationality]) : false;
 
   return (
     <div className="min-h-screen bg-background">
@@ -278,7 +282,7 @@ const GuideVisaPage = () => {
           </section>
         )}
 
-        {analysis && analysis.checklist.length > 0 && <VisaChecklist items={analysis.checklist} checked={checked} onToggle={toggle} />}
+        {checklist.length > 0 && <VisaChecklist items={checklist} checked={checked} onToggle={toggle} />}
 
         {profile.destinationCode && <VisaEmergency official={official.data} analysis={analysis} />}
 
