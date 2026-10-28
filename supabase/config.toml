@@ -28,5 +28,6 @@ verify_jwt = false
 
 [functions.budget-alert]
 verify_jwt = false
-  [functions.link-check]
-    verify_jwt = false
+
+[functions.link-check]
+verify_jwt = false
