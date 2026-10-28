@@ -8069,5 +8069,107 @@
         "Comment alléger ma valise ?"
       ]
     }
+  },
+  "islands": {
+    "kicker": "Île ou territoire à part",
+    "title": "{{place}} : ce qui change",
+    "sameTitle": "{{place}} : mêmes règles, quelques différences pratiques",
+    "sources": "Sources officielles",
+    "checked": "Vérifié à la main le {{date}}. Les règles peuvent changer : vérifie toujours la source officielle.",
+    "guideTitle": "Et les îles ?",
+    "guideIntro": "Certaines îles {{in}} ont des règles ou une vie quotidienne différentes du continent.",
+    "items": {
+      "drom": {
+        "name": "Outre-mer (Réunion, Antilles, Mayotte, Guyane)",
+        "points": [
+          "C'est la France et l'Union européenne, mais pas l'espace Schengen. Français et Européens : carte d'identité ou passeport, pas de visa.",
+          "Autres nationalités : un visa Schengen ne suffit pas. Il faut un visa spécifique pour l'outre-mer, sauf si tu as déjà un titre de séjour français ou un visa long séjour valide.",
+          "Santé : ta Sécurité sociale française s'applique (carte Vitale), pas besoin de carte européenne. Regarde la fiche de l'Institut Pasteur (moustiques, dengue).",
+          "Colis : pour la douane, l'outre-mer est traité à part. Un colis envoyé depuis la métropole doit être déclaré et peut être taxé à l'arrivée.",
+          "Budget : prévois un billet long-courrier et des courses souvent plus chères qu'en métropole."
+        ]
+      },
+      "pacific": {
+        "name": "Nouvelle-Calédonie, Polynésie, Wallis-et-Futuna",
+        "points": [
+          "Territoires français hors Union européenne et hors espace Schengen. Français : carte d'identité ou passeport. Autres nationalités : règles propres à chaque territoire.",
+          "Monnaie : le franc Pacifique (XPF), pas l'euro.",
+          "Santé : chaque territoire a sa propre protection sociale (CAFAT en Nouvelle-Calédonie, CPS en Polynésie). Vérifie avec ta caisse et ton école comment tu es couvert avant de partir.",
+          "Colis : envoi hors Union européenne, déclaration en douane obligatoire et taxes possibles.",
+          "Budget : billet très long-courrier et vie chère, surtout l'alimentation."
+        ]
+      },
+      "canaries": {
+        "name": "Îles Canaries",
+        "points": [
+          "Espagne, Union européenne et espace Schengen : mêmes formalités que sur le continent (inscription après 3 mois, NIE).",
+          "Fiscalité à part : les Canaries sont hors de la zone TVA européenne (taxe locale IGIC). Un colis venant de France peut devoir être déclaré et taxé.",
+          "Santé : carte européenne d'assurance maladie, comme en Espagne.",
+          "Pratique : se déplacer entre les îles se fait en avion ou en bateau, pense à ces trajets dans ton budget."
+        ]
+      },
+      "baleares": {
+        "name": "Îles Baléares (Majorque, Minorque, Ibiza)",
+        "points": [
+          "Mêmes formalités que dans le reste de l'Espagne.",
+          "Logement : loyers très élevés et beaucoup de locations saisonnières l'été. Cherche tôt et méfie-toi des baux qui finissent avant la saison touristique.",
+          "Pratique : liaisons en avion ou en bateau vers le continent et entre les îles, moins fréquentes hors saison."
+        ]
+      },
+      "madeira_azores": {
+        "name": "Madère et Açores",
+        "points": [
+          "Portugal et Union européenne : mêmes formalités que sur le continent.",
+          "Pratique : vols entre les îles et vers Lisbonne à prévoir dans ton budget ; météo très changeante aux Açores."
+        ]
+      },
+      "sicily_sardinia": {
+        "name": "Sicile et Sardaigne",
+        "points": [
+          "Mêmes formalités que dans le reste de l'Italie (codice fiscale, inscription à la mairie).",
+          "Pratique : ferries et vols vers le continent ; loyers plus chers l'été dans les zones touristiques."
+        ]
+      },
+      "greek_islands": {
+        "name": "Îles grecques (Crète, Cyclades, Dodécanèse…)",
+        "points": [
+          "Mêmes formalités que dans le reste de la Grèce.",
+          "Logement : beaucoup de locations saisonnières, loyers qui montent l'été ; demande un contrat qui couvre toute ta période.",
+          "Pratique : ferries réduits hors saison, vérifie les liaisons pour tes dates."
+        ]
+      },
+      "faroe_greenland": {
+        "name": "Îles Féroé et Groenland",
+        "points": [
+          "Territoires danois hors Union européenne et hors espace Schengen : tes papiers sont contrôlés à l'arrivée.",
+          "Santé : ta carte européenne d'assurance maladie peut ne pas suffire, vérifie ton assurance avant de partir.",
+          "Pratique : vols peu nombreux et chers, météo rude ; réserve tes trajets tôt."
+        ]
+      },
+      "svalbard": {
+        "name": "Svalbard",
+        "points": [
+          "Hors espace Schengen : contrôle des papiers en partant de la Norvège continentale. Pour arriver, tu passes par la Norvège : il faut pouvoir y entrer.",
+          "Sécurité : règles strictes à cause des ours polaires ; on ne sort pas des zones habitées sans protection.",
+          "Pratique : vie très chère, logement rare, réserve-le avant de partir."
+        ]
+      },
+      "rapa_nui": {
+        "name": "Île de Pâques (Rapa Nui)",
+        "points": [
+          "C'est le Chili, mais l'entrée sur l'île a ses propres règles : formulaire à remplir avant le vol et durée de séjour limitée pour les visiteurs.",
+          "Pour un séjour plus long (stage, recherche), il faut une justification ; demande à ton organisme d'accueil.",
+          "Pratique : vols seulement depuis Santiago, vie plus chère que sur le continent."
+        ]
+      },
+      "bali": {
+        "name": "Bali",
+        "points": [
+          "Mêmes règles de visa que dans le reste de l'Indonésie : jamais de stage avec un visa touristique.",
+          "Une taxe touristique est demandée aux visiteurs étrangers. Paie-la uniquement sur le site officiel du gouvernement de Bali : il existe des sites copies.",
+          "Culture : tenue couverte (sarong) dans les temples, respect des cérémonies dans la rue."
+        ]
+      }
+    }
   }
 }

@@ -102,8 +102,9 @@ export interface ResourcesForCountry {
   european: HousingResource[];
 }
 
-// French overseas departments use the French schemes (CROUS, CAF, Visale…).
-const FRENCH_OVERSEAS = new Set(["RE", "GP", "MQ", "YT", "GF"]);
+// French overseas departments use the French schemes (CROUS, CAF, Visale…). Mayotte is left out:
+// its benefits are run by its own social security fund.
+const FRENCH_OVERSEAS = new Set(["RE", "GP", "MQ", "GF"]);
 
 export function resourcesForCountry(code: string | null | undefined): ResourcesForCountry {
   const raw = (code || "").toUpperCase();

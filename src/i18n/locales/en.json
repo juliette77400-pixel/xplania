@@ -8069,5 +8069,107 @@
         "How can I pack lighter?"
       ]
     }
+  },
+  "islands": {
+    "kicker": "Island or territory with its own rules",
+    "title": "{{place}}: what changes",
+    "sameTitle": "{{place}}: same rules, a few practical differences",
+    "sources": "Official sources",
+    "checked": "Checked by hand on {{date}}. Rules can change: always check the official source.",
+    "guideTitle": "What about the islands?",
+    "guideIntro": "Some islands {{in}} have rules or a daily life that differ from the mainland.",
+    "items": {
+      "drom": {
+        "name": "French overseas (Réunion, Antilles, Mayotte, Guiana)",
+        "points": [
+          "It is France and the European Union, but not the Schengen area. French and EU citizens: ID card or passport, no visa.",
+          "Other nationalities: a Schengen visa is not enough. You need a specific overseas visa, unless you already hold a French residence permit or a valid long-stay visa.",
+          "Health: French social security applies (carte Vitale), no European card needed. Read the Institut Pasteur page (mosquitoes, dengue).",
+          "Parcels: for customs, overseas territories are treated separately. A parcel sent from mainland France must be declared and may be taxed on arrival.",
+          "Budget: plan a long-haul flight and groceries often pricier than in mainland France."
+        ]
+      },
+      "pacific": {
+        "name": "New Caledonia, French Polynesia, Wallis and Futuna",
+        "points": [
+          "French territories outside the EU and the Schengen area. French citizens: ID card or passport. Other nationalities: each territory has its own rules.",
+          "Currency: the CFP franc (XPF), not the euro.",
+          "Health: each territory has its own social security (CAFAT in New Caledonia, CPS in Polynesia). Check with your fund and school how you are covered before leaving.",
+          "Parcels: sent outside the EU, customs declaration required and taxes possible.",
+          "Budget: very long-haul flight and high living costs, especially food."
+        ]
+      },
+      "canaries": {
+        "name": "Canary Islands",
+        "points": [
+          "Spain, EU and Schengen: same paperwork as the mainland (registration after 3 months, NIE).",
+          "Separate tax area: the Canaries are outside the EU VAT area (local IGIC tax). A parcel from France may have to be declared and taxed.",
+          "Health: European Health Insurance Card, as in Spain.",
+          "Practical: getting between islands means flights or ferries, budget for them."
+        ]
+      },
+      "baleares": {
+        "name": "Balearic Islands (Mallorca, Menorca, Ibiza)",
+        "points": [
+          "Same paperwork as the rest of Spain.",
+          "Housing: very high rents and many summer holiday lets. Search early and beware of leases ending before the tourist season.",
+          "Practical: flights or ferries to the mainland and between islands, less frequent off-season."
+        ]
+      },
+      "madeira_azores": {
+        "name": "Madeira and the Azores",
+        "points": [
+          "Portugal and EU: same paperwork as the mainland.",
+          "Practical: budget for flights between islands and to Lisbon; very changeable weather in the Azores."
+        ]
+      },
+      "sicily_sardinia": {
+        "name": "Sicily and Sardinia",
+        "points": [
+          "Same paperwork as the rest of Italy (codice fiscale, town hall registration).",
+          "Practical: ferries and flights to the mainland; higher summer rents in tourist areas."
+        ]
+      },
+      "greek_islands": {
+        "name": "Greek islands (Crete, Cyclades, Dodecanese…)",
+        "points": [
+          "Same paperwork as the rest of Greece.",
+          "Housing: many holiday lets, rents rise in summer; ask for a contract covering your whole stay.",
+          "Practical: fewer ferries off-season, check connections for your dates."
+        ]
+      },
+      "faroe_greenland": {
+        "name": "Faroe Islands and Greenland",
+        "points": [
+          "Danish territories outside the EU and the Schengen area: your documents are checked on arrival.",
+          "Health: your European Health Insurance Card may not be enough, check your insurance before leaving.",
+          "Practical: few and expensive flights, harsh weather; book early."
+        ]
+      },
+      "svalbard": {
+        "name": "Svalbard",
+        "points": [
+          "Outside the Schengen area: document check when leaving mainland Norway. You travel through Norway, so you must be allowed to enter it.",
+          "Safety: strict rules because of polar bears; no leaving settlements without protection.",
+          "Practical: very expensive, scarce housing, book it before leaving."
+        ]
+      },
+      "rapa_nui": {
+        "name": "Easter Island (Rapa Nui)",
+        "points": [
+          "It is Chile, but entering the island has its own rules: a form before the flight and a limited stay for visitors.",
+          "Longer stays (internship, research) need a justification; ask your host organisation.",
+          "Practical: flights only from Santiago, higher costs than the mainland."
+        ]
+      },
+      "bali": {
+        "name": "Bali",
+        "points": [
+          "Same visa rules as the rest of Indonesia: never intern on a tourist visa.",
+          "Foreign visitors must pay a tourist levy. Pay it only on the Bali government's official site: copycat sites exist.",
+          "Culture: covered clothing (sarong) in temples, respect ceremonies in the street."
+        ]
+      }
+    }
   }
 }
