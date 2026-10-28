@@ -31,6 +31,8 @@ interface CityProfile {
   mult: Partial<Record<CategoryKey, number>>;
   /** Currency hint */
   currency: string;
+  /** Typical round-trip flight from France in EUR, when known (else guessed from hotel prices). */
+  flight?: number;
 }
 
 const PROFILES: CityProfile[] = [
@@ -91,7 +93,7 @@ const PROFILES: CityProfile[] = [
     currency: "USD",
   },
   {
-    match: /lisbon|lisbonne|portugal|porto/i,
+    match: /lisbon|lisbonne|portugal|porto(?! alegre)/i,
     mealCost: 12,
     transitDay: 6,
     hotelNight: 75,
@@ -121,6 +123,170 @@ const PROFILES: CityProfile[] = [
     hotelNight: 45,
     mult: { accommodation: 0.5, localTransport: 0.35, activities: 0.55, food: 0.4, shopping: 0.6, extras: 0.5, unexpected: 0.6 },
     currency: "MAD",
+  },
+  // Added 28 Oct 2026 — rough student orders of magnitude (EUR) from public cost-of-living
+  // comparisons, to be refreshed; rent ≈ hotelNight × 6 × accommodation, food ≈ mealCost × 20 × food.
+  {
+    match: /cor[eé]e|korea|s[eé]oul|busan|pusan|daejeon|incheon/i,
+    mealCost: 9,
+    transitDay: 4,
+    hotelNight: 85,
+    flight: 850,
+    mult: { accommodation: 0.98, localTransport: 0.85, activities: 0.85, food: 1.67, shopping: 0.85, extras: 0.85, unexpected: 0.85 },
+    currency: "KRW",
+  },
+  {
+    match: /nouvelle[- ]z[eé]lande|new zealand|auckland|wellington|christchurch|dunedin/i,
+    mealCost: 18,
+    transitDay: 9,
+    hotelNight: 120,
+    flight: 1500,
+    mult: { accommodation: 1.04, localTransport: 1.0, activities: 1.0, food: 1.0, shopping: 1.0, extras: 1.0, unexpected: 1.0 },
+    currency: "NZD",
+  },
+  {
+    match: /\bchili\b|\bchile\b|santiago|valpara[ií]so|concepci[oó]n/i,
+    mealCost: 9,
+    transitDay: 3,
+    hotelNight: 65,
+    flight: 1050,
+    mult: { accommodation: 1.03, localTransport: 0.65, activities: 0.65, food: 1.39, shopping: 0.65, extras: 0.65, unexpected: 0.65 },
+    currency: "CLP",
+  },
+  {
+    match: /argentin|buenos aires|c[oó]rdoba|rosario|mendoza/i,
+    mealCost: 8,
+    transitDay: 2,
+    hotelNight: 55,
+    flight: 1050,
+    mult: { accommodation: 1.06, localTransport: 0.55, activities: 0.55, food: 1.38, shopping: 0.55, extras: 0.55, unexpected: 0.55 },
+    currency: "ARS",
+  },
+  {
+    match: /danemark|denmark|copenhag|k[øo]benhavn|aarhus|odense|aalborg/i,
+    mealCost: 20,
+    transitDay: 10,
+    hotelNight: 140,
+    flight: 250,
+    mult: { accommodation: 0.95, localTransport: 1.25, activities: 1.25, food: 0.95, shopping: 1.25, extras: 1.25, unexpected: 1.25 },
+    currency: "DKK",
+  },
+  {
+    match: /su[eè]de|sweden|stockholm|g[oö]teborg|gothenburg|uppsala|lund|malm[oö]/i,
+    mealCost: 13,
+    transitDay: 9,
+    hotelNight: 120,
+    flight: 250,
+    mult: { accommodation: 0.83, localTransport: 1.05, activities: 1.05, food: 1.27, shopping: 1.05, extras: 1.05, unexpected: 1.05 },
+    currency: "SEK",
+  },
+  {
+    match: /hongrie|hungary|budapest|debrecen|szeged|p[eé]cs/i,
+    mealCost: 9,
+    transitDay: 4,
+    hotelNight: 70,
+    flight: 200,
+    mult: { accommodation: 1.07, localTransport: 0.6, activities: 0.6, food: 1.28, shopping: 0.6, extras: 0.6, unexpected: 0.6 },
+    currency: "HUF",
+  },
+  {
+    match: /suisse|switzerland|schweiz|gen[eè]ve|geneva|zurich|z[uü]rich|lausanne|\bberne?\b|b[aâ]le|basel|lucerne|luzern/i,
+    mealCost: 28,
+    transitDay: 12,
+    hotelNight: 180,
+    flight: 200,
+    mult: { accommodation: 0.93, localTransport: 1.5, activities: 1.5, food: 0.89, shopping: 1.5, extras: 1.5, unexpected: 1.5 },
+    currency: "CHF",
+  },
+  {
+    match: /norv[eè]ge|norway|oslo|bergen|trondheim|stavanger|troms[oø]/i,
+    mealCost: 22,
+    transitDay: 11,
+    hotelNight: 150,
+    flight: 300,
+    mult: { accommodation: 0.89, localTransport: 1.35, activities: 1.35, food: 1.02, shopping: 1.35, extras: 1.35, unexpected: 1.35 },
+    currency: "NOK",
+  },
+  {
+    match: /gr[eè]ce|greece|ath[eè]nes|athens|thessalonique|thessaloniki|patras|h[eé]raklion|heraklion/i,
+    mealCost: 13,
+    transitDay: 5,
+    hotelNight: 80,
+    flight: 250,
+    mult: { accommodation: 0.83, localTransport: 0.75, activities: 0.75, food: 1.0, shopping: 0.75, extras: 0.75, unexpected: 0.75 },
+    currency: "EUR",
+  },
+  {
+    match: /afrique du sud|south africa|le cap|cape town|johannesburg|durban|pretoria|stellenbosch/i,
+    mealCost: 9,
+    transitDay: 4,
+    hotelNight: 70,
+    flight: 900,
+    mult: { accommodation: 0.95, localTransport: 0.55, activities: 0.55, food: 1.22, shopping: 0.55, extras: 0.55, unexpected: 0.55 },
+    currency: "ZAR",
+  },
+  {
+    match: /autriche|austria|\bvienne\b|vienna|\bwien\b|graz|salzbourg|salzburg|innsbruck|linz/i,
+    mealCost: 15,
+    transitDay: 6,
+    hotelNight: 100,
+    flight: 200,
+    mult: { accommodation: 0.92, localTransport: 0.95, activities: 0.95, food: 1.07, shopping: 0.95, extras: 0.95, unexpected: 0.95 },
+    currency: "EUR",
+  },
+  {
+    match: /bulgarie|bulgaria|sofia|plovdiv|varna/i,
+    mealCost: 8,
+    transitDay: 2,
+    hotelNight: 55,
+    flight: 250,
+    mult: { accommodation: 1.06, localTransport: 0.5, activities: 0.5, food: 1.25, shopping: 0.5, extras: 0.5, unexpected: 0.5 },
+    currency: "EUR",
+  },
+  {
+    match: /irlande|ireland|dublin|\bcork\b|galway|limerick/i,
+    mealCost: 18,
+    transitDay: 8,
+    hotelNight: 150,
+    flight: 200,
+    mult: { accommodation: 1.0, localTransport: 1.15, activities: 1.15, food: 1.0, shopping: 1.15, extras: 1.15, unexpected: 1.15 },
+    currency: "EUR",
+  },
+  {
+    match: /p[eé]rou|\bperu\b|\blima\b|cusco|cuzco|arequipa/i,
+    mealCost: 5,
+    transitDay: 2,
+    hotelNight: 50,
+    flight: 1000,
+    mult: { accommodation: 1.0, localTransport: 0.45, activities: 0.45, food: 1.8, shopping: 0.45, extras: 0.45, unexpected: 0.45 },
+    currency: "PEN",
+  },
+  {
+    match: /\binde\b|\bindia\b|new delhi|delhi|mumbai|bombay|bangalore|bengaluru|pondich[eé]ry|chennai|pune|hyderabad|kolkata/i,
+    mealCost: 3,
+    transitDay: 2,
+    hotelNight: 40,
+    flight: 650,
+    mult: { accommodation: 0.83, localTransport: 0.35, activities: 0.35, food: 2.0, shopping: 0.35, extras: 0.35, unexpected: 0.35 },
+    currency: "INR",
+  },
+  {
+    match: /mexi|guadalajara|oaxaca|monterrey|canc[uú]n/i,
+    mealCost: 7,
+    transitDay: 2,
+    hotelNight: 60,
+    flight: 750,
+    mult: { accommodation: 0.97, localTransport: 0.5, activities: 0.5, food: 1.43, shopping: 0.5, extras: 0.5, unexpected: 0.5 },
+    currency: "MXN",
+  },
+  {
+    match: /br[eé]sil|brazil|rio de janeiro|s[aã]o paulo|salvador|florian[oó]polis|belo horizonte|porto alegre|recife/i,
+    mealCost: 7,
+    transitDay: 2,
+    hotelNight: 60,
+    flight: 800,
+    mult: { accommodation: 0.97, localTransport: 0.5, activities: 0.5, food: 1.57, shopping: 0.5, extras: 0.5, unexpected: 0.5 },
+    currency: "BRL",
   },
 ];
 
@@ -176,7 +342,7 @@ export const suggestCategoryAmount = (
       case "shopping": baseline = profile.mealCost * 2.5 * months * travelers; break;
       case "extras": baseline = profile.mealCost * 2 * months * travelers; break;
       case "unexpected": baseline = (rent + food) * months * 0.05; break;
-      case "flights": baseline = (profile.hotelNight < 60 ? 650 : profile.hotelNight > 150 ? 550 : 220) * travelers; break;
+      case "flights": baseline = (profile.flight ?? (profile.hotelNight < 60 ? 650 : profile.hotelNight > 150 ? 550 : 220)) * travelers; break;
       case "insurance": baseline = days * 1.3 * travelers; break;
       case "connectivity": baseline = 15 * months; break;
       case "fees": baseline = profile.mealCost * 0.5 * months * travelers; break;
@@ -217,7 +383,7 @@ export const suggestCategoryAmount = (
       break;
     case "flights":
       // Round-trip transport: long-haul destinations (cheap local costs) tend to be far away.
-      baseline = (profile.hotelNight < 60 ? 650 : profile.hotelNight > 150 ? 550 : 220) * travelers;
+      baseline = (profile.flight ?? (profile.hotelNight < 60 ? 650 : profile.hotelNight > 150 ? 550 : 220)) * travelers;
       break;
     case "insurance":
       baseline = (18 + Math.max(1, opts.days) * 2.2) * travelers;

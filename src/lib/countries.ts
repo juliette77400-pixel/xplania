@@ -1,8 +1,10 @@
 import countries from "i18n-iso-countries";
 import frLocale from "i18n-iso-countries/langs/fr.json";
+import enLocale from "i18n-iso-countries/langs/en.json";
 
 // Register French locale
 countries.registerLocale(frLocale);
+countries.registerLocale(enLocale);
 
 export interface CountryOption {
   code: string;
@@ -44,3 +46,8 @@ export function getCountryNameIn(code: string, lang: string | undefined): string
     return getCountryName(code);
   }
 }
+
+/** Every English name of each country (official and common forms), for matching typed text only. */
+export const englishCountryNames: { code: string; names: string[] }[] = Object.entries(
+  countries.getNames("en", { select: "all" }) as Record<string, string[]>,
+).map(([code, names]) => ({ code, names }));

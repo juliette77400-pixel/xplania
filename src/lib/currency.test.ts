@@ -15,6 +15,18 @@ describe("guessCurrency", () => {
     expect(guessCurrency("Genève, Suisse")).toBe("CHF");
   });
 
+  it("knows the currency of the countries added in October 2026", () => {
+    expect(guessCurrency("Vienne, Autriche")).toBe("EUR");
+    expect(guessCurrency("Dublin, Irlande")).toBe("EUR");
+    expect(guessCurrency("Sofia, Bulgarie")).toBe("EUR");
+    expect(guessCurrency("Budapest, Hongrie")).toBe("HUF");
+    expect(guessCurrency("Chili")).toBe("CLP");
+    expect(guessCurrency("Argentine")).toBe("ARS");
+    expect(guessCurrency("Lima, Pérou")).toBe("PEN");
+    expect(guessCurrency("Corée du Sud")).toBe("KRW");
+    expect(guessCurrency("Sweden")).toBe("SEK");
+  });
+
   it("falls back to USD for an unrecognised destination", () => {
     expect(guessCurrency("Zanzibar")).toBe("USD");
   });
