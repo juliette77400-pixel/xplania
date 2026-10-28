@@ -7253,7 +7253,7 @@
   "visa2": {
     "toolName": "Visa & formalités",
     "titleFor": "Tes formalités pour {{destination}}",
-    "subtitle": "L'essentiel en quatre cartes, puis ta checklist. Chaque info indique d'où elle vient et quand elle a été vérifiée.",
+    "subtitle": "Ce qu'il te faut pour partir l'esprit tranquille : quatre cartes, puis ta checklist. Chaque info te dit d'où elle vient et quand elle a été vérifiée.",
     "yourDestination": "ta destination",
     "opensNewTab": "(s'ouvre dans un nouvel onglet)",
     "reliability": {
@@ -7270,7 +7270,7 @@
     },
     "profile": {
       "title": "Ton profil",
-      "help": "Ces réponses servent à l'analyse. Tu peux les corriger ici.",
+      "help": "On s'appuie sur ces réponses pour adapter tes formalités. Corrige-les si quelque chose a changé.",
       "edit": "Modifier",
       "save": "Enregistrer mon profil",
       "saved": "Profil enregistré",
@@ -7313,9 +7313,9 @@
       "safety": "Sécurité",
       "showDetails": "Voir le détail",
       "hideDetails": "Masquer le détail",
-      "toAnalyze": "Analyse à lancer",
-      "visaPending": "Lance l'analyse pour savoir quel visa correspond à ton profil.",
-      "passportPending": "Lance l'analyse pour connaître les règles de passeport pour ton profil.",
+      "toAnalyze": "Pas encore analysé",
+      "visaPending": "Lance l'analyse : on te dit si tu as besoin d'un visa, et lequel.",
+      "passportPending": "Lance l'analyse pour savoir quel document te suffit et jusqu'à quand il doit être valable.",
       "idCardOk": "Carte d'identité acceptée",
       "passportNeeded": "Passeport valide nécessaire",
       "forYourProfile": "Pour ton profil",
@@ -7375,7 +7375,7 @@
       "ariane": "S'inscrire sur Fil d'Ariane"
     },
     "analysis": {
-      "ctaTitle": "Analyse ton visa et ta checklist pour ce profil",
+      "ctaTitle": "Vois ce qu'il te faut pour ce séjour, étape par étape",
       "outdated": "Ton profil a changé depuis la dernière analyse",
       "upToDate": "Analyse à jour pour ce profil",
       "completeFirst": "Complète d'abord les informations manquantes de ton profil.",
@@ -7385,12 +7385,12 @@
       "rerun": "Relancer l'analyse",
       "done": "Analyse prête",
       "error": "L'analyse n'a pas pu aboutir. Ton essai t'est rendu.",
-      "incomplete": "Réponse incomplète."
+      "incomplete": "La réponse est arrivée incomplète. Relance l'analyse dans un instant."
     },
     "checklist": {
       "title": "Ta checklist",
       "progress": "{{done}}/{{total}} faits",
-      "note": "Établie par l'IA à partir de ton profil : confirme les obligations auprès des sources officielles.",
+      "note": "Préparée pour ton profil par l'IA Xplania. Pour les obligations, c'est la règle officielle qui compte : vérifie-les sur les sites indiqués.",
       "when": "Si : {{condition}}",
       "cat": {
         "documents": "Documents",

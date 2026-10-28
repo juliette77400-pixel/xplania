@@ -7253,7 +7253,7 @@
   "visa2": {
     "toolName": "Visa & formalities",
     "titleFor": "Your formalities for {{destination}}",
-    "subtitle": "The essentials in four cards, then your checklist. Every piece of information shows where it comes from and when it was checked.",
+    "subtitle": "What you need to leave with peace of mind: four cards, then your checklist. Each piece of information tells you where it comes from and when it was checked.",
     "yourDestination": "your destination",
     "opensNewTab": "(opens in a new tab)",
     "reliability": {
@@ -7270,7 +7270,7 @@
     },
     "profile": {
       "title": "Your profile",
-      "help": "These answers are used for the analysis. You can correct them here.",
+      "help": "We use these answers to tailor your paperwork. Update them if anything has changed.",
       "edit": "Edit",
       "save": "Save my profile",
       "saved": "Profile saved",
@@ -7313,9 +7313,9 @@
       "safety": "Safety",
       "showDetails": "See details",
       "hideDetails": "Hide details",
-      "toAnalyze": "Analysis to run",
-      "visaPending": "Run the analysis to know which visa fits your profile.",
-      "passportPending": "Run the analysis to see the passport rules for your profile.",
+      "toAnalyze": "Not analysed yet",
+      "visaPending": "Run the analysis: we'll tell you whether you need a visa, and which one.",
+      "passportPending": "Run the analysis to see which document is enough and how long it must stay valid.",
       "idCardOk": "ID card accepted",
       "passportNeeded": "Valid passport needed",
       "forYourProfile": "For your profile",
@@ -7375,7 +7375,7 @@
       "ariane": "Register on Fil d'Ariane"
     },
     "analysis": {
-      "ctaTitle": "Analyse your visa and checklist for this profile",
+      "ctaTitle": "See what you need for this stay, step by step",
       "outdated": "Your profile changed since the last analysis",
       "upToDate": "Analysis up to date for this profile",
       "completeFirst": "Complete the missing answers of your profile first.",
@@ -7385,12 +7385,12 @@
       "rerun": "Run again",
       "done": "Analysis ready",
       "error": "The analysis could not finish. Your trial is given back.",
-      "incomplete": "Incomplete answer."
+      "incomplete": "The answer came back incomplete. Please run the analysis again in a moment."
     },
     "checklist": {
       "title": "Your checklist",
       "progress": "{{done}}/{{total}} done",
-      "note": "Built by the AI from your profile: confirm obligations with official sources.",
+      "note": "Prepared for your profile by Xplania AI. For legal requirements, the official rule is what counts: check them on the sites shown.",
       "when": "If: {{condition}}",
       "cat": {
         "documents": "Documents",
