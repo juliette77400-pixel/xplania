@@ -7922,5 +7922,17 @@
       "error": "pas de réponse",
       "pending": "pas encore testé"
     }
+  },
+  "promo": {
+    "labelOptional": "Code promo (facultatif)",
+    "label": "Code promo",
+    "title": "Code promo bêta",
+    "apply": "Activer",
+    "applied": "Code activé : tes essais IA sont illimités pendant la bêta.",
+    "active": "Code bêta actif : essais IA illimités jusqu'au {{date}}.",
+    "invalid": "Ce code promo n'existe pas.",
+    "expired": "Ce code promo n'est plus valable.",
+    "error": "Impossible de vérifier le code pour l'instant. Réessaie.",
+    "note": "Un code bêta donne des essais IA illimités sur les outils jusqu'à la fin de la bêta."
   }
 }

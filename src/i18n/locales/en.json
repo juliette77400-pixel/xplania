@@ -7922,5 +7922,17 @@
       "error": "no answer",
       "pending": "not tested yet"
     }
+  },
+  "promo": {
+    "labelOptional": "Promo code (optional)",
+    "label": "Promo code",
+    "title": "Beta promo code",
+    "apply": "Apply",
+    "applied": "Code applied: your AI tries are unlimited during the beta.",
+    "active": "Beta code active: unlimited AI tries until {{date}}.",
+    "invalid": "This promo code doesn't exist.",
+    "expired": "This promo code is no longer valid.",
+    "error": "Couldn't check the code right now. Try again.",
+    "note": "A beta code gives unlimited AI tries on the tools until the end of the beta."
   }
 }

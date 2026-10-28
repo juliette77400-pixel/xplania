@@ -18,6 +18,7 @@ import ErrorBoundary from "./components/shared/ErrorBoundary";
 import OnboardingSyncGate from "./components/onboarding/OnboardingSyncGate";
 import AdminGate from "./components/admin/AdminGate";
 import HelpButton from "@/components/shared/HelpButton";
+import PromoRedeemer from "@/components/shared/PromoRedeemer";
 const CookieBanner = lazy(() => import("./components/shared/CookieBanner"));
 import RouteTracker from "./components/shared/RouteTracker";
 import { FEATURE_FLAGS, PREPARATION_HOME, type FeatureFlag } from "@/config/featureFlags";
@@ -200,6 +201,7 @@ const App = () => (
             <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
             <Suspense fallback={null}><CookieBanner /></Suspense>
             <HelpButton />
+            <PromoRedeemer />
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>

@@ -16,6 +16,7 @@ import SecuritySettings from "@/components/parametres/SecuritySettings";
 import NotificationsSettings from "@/components/parametres/NotificationsSettings";
 import RevokeSharesCard from "@/components/parametres/RevokeSharesCard";
 import DataSettings from "@/components/parametres/DataSettings";
+import PromoCodeCard from "@/components/parametres/PromoCodeCard";
 import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 const TABS_ALL = [
@@ -69,9 +70,7 @@ const Parametres = () => {
           </TabsList>
 
           <TabsContent value="compte" className="space-y-5 mt-0">
-            <Card className="p-6">
-              <p className="text-sm text-muted-foreground">{t("settings.accountSoon")}</p>
-            </Card>
+            <PromoCodeCard />
           </TabsContent>
 
           <TabsContent value="preferences" className="space-y-5 mt-0">
