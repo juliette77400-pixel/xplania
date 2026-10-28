@@ -31,6 +31,8 @@ interface EssentialRule {
   covered: RegExp;
   /** Condition shown under the item (translation key suffix), if any. */
   conditional?: boolean;
+  /** Translation key of the detail when it depends on the profile (default "detail"). */
+  detailKey?: (c: EssentialContext) => string;
 }
 
 export const LONG_STAY_DAYS = 90;
@@ -41,7 +43,9 @@ const RULES: EssentialRule[] = [
   { id: "admission-proof", category: "documents", priority: "recommended", applies: () => true,
     covered: /convention|learning agreement|acceptance|admission|enrol?ment|attestation d.inscription|lettre d.accept|offer letter|internship agreement/i },
   { id: "health-insurance", category: "health", priority: "recommended", applies: () => true,
-    covered: /insurance|assurance|ceam|ehic|ghic|sécurité sociale|social security|health cover|couverture/i },
+    covered: /insurance|assurance|ceam|ehic|ghic|sécurité sociale|social security|health cover|couverture/i,
+    // The European card only works between free-movement countries.
+    detailKey: (c) => (c.freeMovement ? "detail" : "detailWorld") },
   { id: "internship-authorisation", category: "documents", priority: "required",
     applies: (c) => c.stayType === "internship" && !c.freeMovement,
     covered: /work permit|permis de travail|autorisation de travail|work authori[sz]|right to work|droit de travailler|working holiday|internship visa|visa (de )?stage|trainee visa|visa stagiaire/i },
@@ -72,7 +76,7 @@ export function withEssentials(
   const extra = missingEssentials(items, ctx).map((r) => ({
     id: ESSENTIAL_PREFIX + r.id,
     item: t(`visa2.essentials.${r.id}.item`),
-    detail: t(`visa2.essentials.${r.id}.detail`),
+    detail: t(`visa2.essentials.${r.id}.${r.detailKey ? r.detailKey(ctx) : "detail"}`),
     category: r.category,
     priority: r.priority,
     condition: r.conditional ? t(`visa2.essentials.${r.id}.condition`) : "",
