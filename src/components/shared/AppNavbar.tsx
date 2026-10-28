@@ -5,7 +5,7 @@ import { Globe2,
   Plane, Home, Compass, Activity, BookOpen, Luggage,
   Wallet, FileCheck, Smile, Map, Trophy, Crown, Info,
   MoreHorizontal, Menu, X, LogOut, LogIn, Sparkles, User as UserIcon, LayoutDashboard, Zap, Settings as SettingsIcon,
-  Dna, BedDouble,
+  Dna, BedDouble, MapPinned,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useDisplayName } from "@/lib/data/profiles";
@@ -59,6 +59,7 @@ const GROUPS_ALL: NavGroup[] = [
     { to: "/guide-valise", labelKey: "appNav.suitcase", icon: Luggage },
     { to: "/guide-culture", labelKey: "appNav.culture", icon: Globe2 },
     { to: "/guide-logement", labelKey: "appNav.housing", icon: BedDouble },
+    { to: "/preparer", labelKey: "appNav.countryGuides", icon: MapPinned },
   ] },
   { labelKey: "appNav.groupExplore", items: [
     { to: "/mood", labelKey: "appNav.mood", icon: Smile },

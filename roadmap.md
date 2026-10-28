@@ -23,7 +23,7 @@
 - [x] 3. Offres écoles : sélecteur Mensuel | Annuel, total + coût par étudiant, sans remise inventée
 - [x] 4. Culture : geste du jour qui change chaque jour par destination sans répétition rapprochée ; présentation plus visuelle (cartes, pictos, À faire / À éviter / Bon à savoir)
 - [x] 5. Budget : bouton « Régénérer » pour Alertes et Optimisations IA (2-3 conseils, anti double clic, sans inventer de problème, crédits vérifiés)
-- [ ] 6. Visa : audit — BLOQUÉ : le texte du document s'arrête au milieu de la section 6, en attente de la suite par Juliette
+- [x] 6. Visa : audit des informations essentielles — filet de sécurité ajouté à la checklist (passeport, admission, santé, autorisation de stage, résidence, copies, Ariane)
 - [ ] Accès « étendu » écoles partenaires : non mis en place (mêmes 10 essais pour tous) — décision de Juliette attendue
 
 ## Crédits IA épuisés (28/10)
@@ -37,3 +37,7 @@
 - [x] 5A. Chatbot Budget : audit + vrais tests
 - [x] 5B-E. Assistant réutilisable par outil (Visa, Valise, Culture, Logement) avec quotas et sécurité
 - [x] 6-7. Tests + compte rendu
+
+## Retours du 28/10 (3e)
+- [x] Guides par pays dans la partie outils de l'accueil et dans le menu
+- [ ] 21 nouveaux pays + îles — en attente de l'accord de Juliette

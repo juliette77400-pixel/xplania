@@ -138,7 +138,8 @@
     "culture": "Culture guide",
     "housing": "Housing",
     "visaShort": "Visa",
-    "cultureShort": "Culture"
+    "cultureShort": "Culture",
+    "countryGuides": "Country guides"
   },
   "about": {
     "metaTitle": "About — Xplania, prepare your departure without the hassle",
@@ -7424,6 +7425,38 @@
       "embassy": "Embassy / consulate",
       "local": "Local emergencies",
       "checkOfficial": "Check these numbers on the embassy website before you leave."
+    },
+    "essentials": {
+      "passport-validity": {
+        "item": "Passport or ID card valid for your whole stay",
+        "detail": "Check the expiry date now: some countries ask for validity beyond your return, and a renewal takes time."
+      },
+      "admission-proof": {
+        "item": "Internship agreement or admission letter",
+        "detail": "Keep the original and a copy in your cabin bag: you may be asked for it for the visa or at the border."
+      },
+      "health-insurance": {
+        "item": "Health cover for your whole stay",
+        "detail": "Ask your health insurer for your European Health Insurance Card (EHIC) before leaving, and check what it doesn't cover (repatriation, for example).",
+        "detailWorld": "Pick health insurance that covers your whole stay, repatriation included: it is often required for the visa. Also ask your school what it offers."
+      },
+      "internship-authorisation": {
+        "item": "A visa that really allows your internship",
+        "detail": "A student or tourist visa doesn't always allow an internship, even an unpaid one: get it confirmed by the country's embassy or consulate."
+      },
+      "residence-registration": {
+        "item": "Register your residence when you arrive",
+        "detail": "In many countries a long stay must be declared locally (town hall, police or immigration office) within the first weeks. Ask your school or host company for the exact steps.",
+        "condition": "your stay lasts more than 3 months"
+      },
+      "document-copies": {
+        "item": "Digital copies of your documents",
+        "detail": "Scan your passport, visa, agreement and insurance, and keep them in a secure online space: if you lose anything, everything goes much faster."
+      },
+      "ariane": {
+        "item": "Sign up to Ariane (France Diplomatie)",
+        "detail": "This free service from the French foreign ministry warns you in a crisis and lets the authorities reach you."
+      }
     }
   },
   "budget2": {
@@ -7798,6 +7831,11 @@
         "housing": "A student compares housing listings on her laptop",
         "valise": "A suitcase in an empty room",
         "culture": "Students sharing a meal with a family"
+      },
+      "countries": {
+        "title": "Country guides",
+        "subtitle": "Formalities, health, budget, housing and cultural codes: the essentials for each destination, with official links.",
+        "all": "All guides"
       }
     },
     "result": {
