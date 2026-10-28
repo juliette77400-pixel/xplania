@@ -5,6 +5,7 @@ import {
   Globe, Loader2, MessageCircle, Send, X, Sparkles, RotateCcw, ExternalLink,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 import { useAuth } from "@/hooks/useAuth";
 import { onOpenPipChat } from "@/lib/help-events";
 
@@ -145,7 +146,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
       setHistory((prev) => [...prev, { role: "assistant", content: answer, ts: Date.now() }]);
     } catch (e) {
       console.error("visa-qa failed", e);
-      setHistory((prev) => [...prev, { role: "assistant", content: t("guideVisa.chatbot.errorAnswer"), ts: Date.now() }]);
+      setHistory((prev) => [...prev, { role: "assistant", content: isAiPause(e) ? t("aiPause.chat") : t("guideVisa.chatbot.errorAnswer"), ts: Date.now() }]);
     } finally {
       setLoading(false);
     }

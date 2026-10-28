@@ -28,6 +28,7 @@ import { useQuota } from "@/hooks/useQuota";
 import { useAuth } from "@/hooks/useAuth";
 import { useOfficialInfo } from "@/hooks/useOfficialInfo";
 import { supabase } from "@/integrations/supabase/client";
+import { AI_UNAVAILABLE } from "@/lib/ai-pause";
 import { friendlyInvokeError } from "@/lib/invoke-error";
 import { saveModuleProgress } from "@/lib/prep-progress";
 import { track } from "@/lib/analytics";
@@ -187,7 +188,8 @@ const GuideVisaPage = () => {
   const refreshOfficial = async () => {
     const r = await official.refresh();
     if (!r) return;
-    if (r.status === "unavailable") toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
+    // An AI pause is already explained by the shared notice.
+    if (r.status === "unavailable" && r.reason !== AI_UNAVAILABLE) toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
     else toast.success(r.changed ? t("visa2.cards.refreshChanged") : t("visa2.cards.refreshSame"));
   };
 

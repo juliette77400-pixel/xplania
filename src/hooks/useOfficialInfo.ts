@@ -4,6 +4,7 @@
 import { useCallback, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { AI_UNAVAILABLE, isAiPause } from "@/lib/ai-pause";
 
 export type SafetyCategory = "normal" | "reinforced" | "avoid_unless_essential" | "formally_advised_against" | "not_stated";
 export type OfficialSourceKey = "security" | "entry" | "contacts" | "health";
@@ -57,6 +58,7 @@ async function fetchOfficial(countryCode: string, locale: "fr" | "en", force: bo
   const { data, error } = await supabase.functions.invoke("official-sources", { body: { countryCode, locale, force } });
   if (error) {
     const status = (error as { context?: { status?: number } })?.context?.status;
+    if (isAiPause(error)) return unavailable(AI_UNAVAILABLE);
     return unavailable(status === 402 ? "quota" : status === 401 ? "auth" : "error");
   }
   if (!data || typeof data !== "object") return unavailable("error");

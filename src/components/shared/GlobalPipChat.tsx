@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { X, Send, Loader2, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { hasToolPip, isPipHidden, onOpenPipChat } from "@/lib/help-events";
@@ -59,7 +60,7 @@ const GlobalPipChat = () => {
       }
       setMsgs((m) => [...m, reply]);
     } catch (e: any) {
-      setMsgs((m) => [...m, { role: "assistant", content: t("pip.error") }]);
+      setMsgs((m) => [...m, { role: "assistant", content: isAiPause(e) ? t("aiPause.chat") : t("pip.error") }]);
     } finally { setLoading(false); }
   };
 
