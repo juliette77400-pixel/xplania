@@ -7693,7 +7693,8 @@
     "finalTitle": "Prépare ton départ {{place}} étape par étape",
     "finalText": "Un questionnaire de 2 minutes, puis 5 outils connectés : budget, visa, valise, culture et logement.",
     "checkedOn": "Liens vérifiés le {{date}}. Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir.",
-    "others": "Autres destinations"
+    "others": "Autres destinations",
+    "rulesChange": "Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir."
   },
   "accountNeeded": {
     "valise": {
@@ -7849,6 +7850,33 @@
     "tip": {
       "error": "Impossible de générer un nouveau conseil pour l'instant. Réessaie dans un moment.",
       "quota": "Tu as utilisé tes essais Valise de ce mois."
+    }
+  },
+  "linkCheck": {
+    "allOk": "Liens testés automatiquement le {{date}} : ils s'ouvrent tous.",
+    "someRecheck_one": "1 lien n'a pas répondu au dernier test automatique : vérification à renouveler.",
+    "someRecheck_other": "{{count}} liens n'ont pas répondu au dernier test automatique : vérification à renouveler.",
+    "someManual_one": "1 site bloque les tests automatiques : il est vérifié à la main.",
+    "someManual_other": "{{count}} sites bloquent les tests automatiques : ils sont vérifiés à la main.",
+    "content": "Contenu des liens relu à la main le {{date}}.",
+    "caveat": "Un lien qui s'ouvre ne garantit pas que les règles n'ont pas changé : vérifie toujours sur le site officiel avant de partir.",
+    "oneOk": "Lien testé le {{date}}",
+    "oneRecheck": "Lien à revérifier",
+    "oneManual": "Site vérifié à la main",
+    "lastOk": "dernier test réussi le {{date}}",
+    "admin": {
+      "title": "Test automatique des liens (chaque jour à 5 h)",
+      "summary": "Dernier passage : {{date}} · {{total}} liens · {{issues}} à revoir · {{manual}} bloquent les robots.",
+      "issues": "À revoir (page introuvable, déplacée ou erreur)",
+      "manual": "Sites qui refusent les robots : à ouvrir toi-même de temps en temps"
+    },
+    "outcome": {
+      "ok": "OK",
+      "moved": "redirigé vers un autre site",
+      "broken": "page introuvable",
+      "blocked": "refuse les robots",
+      "error": "pas de réponse",
+      "pending": "pas encore testé"
     }
   }
 }

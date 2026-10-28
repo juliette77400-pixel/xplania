@@ -7693,7 +7693,8 @@
     "finalTitle": "Prepare your departure {{place}} step by step",
     "finalText": "A 2-minute questionnaire, then 5 connected tools: budget, visa, packing, culture and housing.",
     "checkedOn": "Links checked on {{date}}. Rules can change: always check the official sites before leaving.",
-    "others": "Other destinations"
+    "others": "Other destinations",
+    "rulesChange": "Rules can change: always check the official sites before leaving."
   },
   "accountNeeded": {
     "valise": {
@@ -7849,6 +7850,33 @@
     "tip": {
       "error": "Couldn't generate a new tip right now. Try again in a moment.",
       "quota": "You've used this month's Valise tries."
+    }
+  },
+  "linkCheck": {
+    "allOk": "Links tested automatically on {{date}}: they all open.",
+    "someRecheck_one": "1 link failed the latest automatic test: it needs checking again.",
+    "someRecheck_other": "{{count}} links failed the latest automatic test: they need checking again.",
+    "someManual_one": "1 site blocks automatic tests: it is checked by hand.",
+    "someManual_other": "{{count}} sites block automatic tests: they are checked by hand.",
+    "content": "Link content re-read by hand on {{date}}.",
+    "caveat": "A link that opens does not guarantee the rules haven't changed: always check the official site before you leave.",
+    "oneOk": "Link tested on {{date}}",
+    "oneRecheck": "Link to re-check",
+    "oneManual": "Site checked by hand",
+    "lastOk": "last successful test on {{date}}",
+    "admin": {
+      "title": "Automatic link test (every day at 5 am)",
+      "summary": "Last run: {{date}} · {{total}} links · {{issues}} to review · {{manual}} block robots.",
+      "issues": "To review (page not found, moved or error)",
+      "manual": "Sites that refuse robots: open them yourself from time to time"
+    },
+    "outcome": {
+      "ok": "OK",
+      "moved": "redirected to another site",
+      "broken": "page not found",
+      "blocked": "refuses robots",
+      "error": "no answer",
+      "pending": "not tested yet"
     }
   }
 }
