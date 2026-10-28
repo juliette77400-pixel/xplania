@@ -12,3 +12,12 @@ export function clampStudents(raw: number): number {
 export function schoolTotal(studentPrice: number, students: number): number {
   return Math.round(studentPrice * clampStudents(students) * 100) / 100;
 }
+
+/** The school simulator offers only these two periods (prices come from the student packs). */
+export type SchoolCycle = "monthly" | "yearly";
+export const SCHOOL_CYCLES: SchoolCycle[] = ["monthly", "yearly"];
+
+/** Yearly price spread over 12 months, rounded to the cent: a display aid, never a discount. */
+export function monthlyEquivalent(yearlyPrice: number): number {
+  return Math.round((yearlyPrice / 12) * 100) / 100;
+}
