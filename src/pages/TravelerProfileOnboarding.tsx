@@ -762,7 +762,7 @@ const TravelerProfileOnboarding = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("travelerProfile.exitTitle", "Quitter le quiz ?")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("travelerProfile.exitDesc", "Ta progression est sauvegardée automatiquement. Tu pourras reprendre où tu t'es arrêté(e).")}
+              {t("travelerProfile.exitDesc", "Ta progression est sauvegardée automatiquement. Tu pourras reprendre où tu t'es arrêté.")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

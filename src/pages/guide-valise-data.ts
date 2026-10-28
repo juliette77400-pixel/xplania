@@ -252,7 +252,7 @@ const transportExtrasFr: Record<TransportMode, Record<string, ChecklistItem[]>> 
     "Spécial Vélo 🚲": [
       { name: "Casque", description: "Obligatoire pour les mineurs dans plusieurs pays, conseillé pour tous", checked: false },
       { name: "Éclairage avant et arrière", description: "Obligatoire la nuit dans la plupart des pays européens", checked: false },
-      { name: "Gilet ou bandes réfléchissantes", description: "Pour être vu·e le soir", checked: false },
+      { name: "Gilet ou bandes réfléchissantes", description: "Pour être vu le soir", checked: false },
       { name: "Antivol solide", description: "Les vols de vélos sont fréquents en ville", checked: false },
       { name: "Sacoches ou sac étanche", description: "Pour transporter tes affaires sous la pluie", checked: false },
       { name: "Kit de réparation + pompe", description: "Rustines, démonte-pneus", checked: false },
