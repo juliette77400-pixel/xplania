@@ -21,7 +21,7 @@ import { useTrips, type Trip } from "@/hooks/useTrips";
 import { useHousingChecklist } from "@/hooks/useHousing";
 import { supabase } from "@/integrations/supabase/client";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
-import { findCountry } from "@/lib/country-match";
+import { findCountry, placeName } from "@/lib/country-match";
 import { saveModuleProgress } from "@/lib/prep-progress";
 import { HOUSING_STATUSES, housingProgress, isHousingStatus, safetyChecksApply, sectionOrder, type HousingSection, type HousingStatus } from "@/lib/housing";
 import type { TravelFormData } from "@/types/travel";
@@ -168,7 +168,7 @@ const GuideLogement = () => {
               <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">{t("housing.subtitle")}</p>
 
               <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-                <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-primary" />{city ? `${city}, ${destination}` : destination}</span>
+                <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-primary" />{city ? `${city}, ${placeName(destination, i18n.language)}` : placeName(destination, i18n.language)}</span>
                 <span className="flex items-center gap-1.5 text-muted-foreground"><CalendarDays className="h-4 w-4" />{when}</span>
               </div>
 

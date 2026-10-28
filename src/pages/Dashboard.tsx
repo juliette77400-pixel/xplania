@@ -2,6 +2,7 @@
 // (Budget, Visa, Valise, Culture, Housing), with per-module progress for the selected trip.
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useFirstName } from "@/lib/data/profiles";
+import { placeName } from "@/lib/country-match";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -191,7 +192,7 @@ const Dashboard = () => {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("prepDashboard.currentTrip")}</p>
-                  <h2 className="mt-1 flex items-center gap-2 text-2xl font-bold"><MapPin className="h-5 w-5 shrink-0 text-primary" /><span className="truncate">{selected.arrival_city && selected.arrival_city !== selected.destination ? `${selected.arrival_city}, ${selected.destination}` : selected.destination}</span></h2>
+                  <h2 className="mt-1 flex items-center gap-2 text-2xl font-bold"><MapPin className="h-5 w-5 shrink-0 text-primary" /><span className="truncate">{selected.arrival_city && selected.arrival_city !== selected.destination ? `${selected.arrival_city}, ${placeName(selected.destination, i18n.language)}` : placeName(selected.destination, i18n.language)}</span></h2>
                   <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarDays className="h-4 w-4" />
                     {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : (selected.form_data as { durationBucket?: string } | null)?.durationBucket ? t(`prepQuiz.dates.bucket.${(selected.form_data as { durationBucket: string }).durationBucket}`) : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
                   </p>
