@@ -1,12 +1,14 @@
 // Assistant Logement — 5th preparation tool. Helps the student find where to
 // look, compare homes spotted elsewhere, avoid scams and get ready to move in.
-// No listings, bookings or payments; no AI. Reads the trip from the questionnaire.
+// No listings, bookings or payments. Reads the trip from the questionnaire. The only AI is the
+// optional helper panel (tool-assistant), which never names sites or listings.
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { CalendarDays, Check, ClipboardCheck, Home, Loader2, MapPin, Search, ShieldAlert, Scale } from "lucide-react";
+import { CalendarDays, Check, ClipboardCheck, Home, Loader2, MapPin, MessageCircle, Search, ShieldAlert, Scale } from "lucide-react";
+import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
 import AppNavbar from "@/components/shared/AppNavbar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -50,6 +52,7 @@ const GuideLogement = () => {
   const activeTripId = useActiveTrip((s) => s.tripId);
   const [statusOpen, setStatusOpen] = useState(false);
   const [savingStatus, setSavingStatus] = useState<HousingStatus | null>(null);
+  const [assistantSignal, setAssistantSignal] = useState(0);
 
   const trip: Trip | undefined = useMemo(() => trips.find((tr) => tr.id === activeTripId) ?? trips[0], [trips, activeTripId]);
   const form = (trip?.form_data as Partial<TravelFormData> | null) || {};
@@ -173,7 +176,10 @@ const GuideLogement = () => {
                 <div className="mt-5 space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="text-sm"><span className="text-muted-foreground">{t("housing.status.label")} </span><span className="font-semibold">{t(`prepQuiz.housingStatus.${status}`)}</span></p>
-                    <Button size="sm" variant="outline" onClick={() => setStatusOpen(true)}>{t("housing.status.change")}</Button>
+                    <div className="flex flex-wrap gap-2">
+                      <Button size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>
+                      <Button size="sm" variant="outline" onClick={() => setStatusOpen(true)}>{t("housing.status.change")}</Button>
+                    </div>
                   </div>
                   <div>
                     <div className="mb-1.5 flex justify-between text-xs"><span className="text-muted-foreground">{t("housing.progress", { done: progress.done, total: progress.total })}</span><span className="font-semibold">{pct} %</span></div>
@@ -221,6 +227,13 @@ const GuideLogement = () => {
           </>
         )}
       </main>
+
+      {trip && (
+        <ToolAssistant tool="housing" quotaTool="housing" openSignal={assistantSignal}
+          title={t("assistant.housing.title")} greeting={t("assistant.housing.greeting")}
+          suggestions={t("assistant.housing.suggestions", { returnObjects: true }) as string[]}
+          context={() => ({ tripId: trip.id })} />
+      )}
 
       <Dialog open={statusOpen} onOpenChange={setStatusOpen}>
         <DialogContent className="max-w-lg">

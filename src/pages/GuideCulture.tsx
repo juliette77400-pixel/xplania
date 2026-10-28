@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon, CircleCheck, CircleX, Lightbulb, ChevronDown } from "lucide-react";
+import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon, CircleCheck, CircleX, Lightbulb, ChevronDown, MessageCircle } from "lucide-react";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import QuickJump from "@/components/shared/QuickJump";
 import { findCountry, normCountry } from "@/lib/country-match";
@@ -20,7 +20,6 @@ import { countryList, getCountryNameIn } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
-import { MessageCircle } from "lucide-react";
 import { localDateFor } from "@/lib/country-timezone";
 
 const norm = normCountry;
