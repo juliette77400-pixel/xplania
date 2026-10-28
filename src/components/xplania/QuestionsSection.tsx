@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MapPinned } from "lucide-react";
+import { DESTINATION_PAGES, DESTINATIONS_HUB, destinationPath } from "@/data/destination-pages";
 import { isPathEnabled } from "@/config/featureFlags";
 import { isOpenTool } from "@/config/open-tools";
 import { track } from "@/lib/analytics";
@@ -21,7 +22,8 @@ const ITEMS = [
 ] as const;
 
 const QuestionsSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isFr = i18n.language.startsWith("fr");
   const items = ITEMS.filter((it) => isPathEnabled(it.to));
 
   return (
@@ -72,6 +74,44 @@ const QuestionsSection = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Public country guides, reachable from the features as well as the footer. */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8 rounded-3xl border border-border/60 bg-card/60 p-5 sm:p-6"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary" aria-hidden><MapPinned className="h-5 w-5" /></span>
+              <div>
+                <h3 className="text-xl font-bold">{t("landing2.questions.countries.title")}</h3>
+                <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("landing2.questions.countries.subtitle")}</p>
+              </div>
+            </div>
+            <Link
+              to={DESTINATIONS_HUB}
+              onClick={() => track("cta_click", { cta: "country_guides_all", location: "questions" })}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+            >
+              {t("landing2.questions.countries.all")}<ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </div>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {DESTINATION_PAGES.map((d) => (
+              <li key={d.slug}>
+                <Link
+                  to={destinationPath(d)}
+                  onClick={() => track("cta_click", { cta: `country_guide_${d.slug}`, location: "questions" })}
+                  className="inline-flex min-h-[40px] items-center rounded-full border border-border/70 bg-muted/30 px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-primary/50 hover:text-primary"
+                >
+                  {isFr ? d.nameFr : d.nameEn}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
       </div>
     </section>
   );
