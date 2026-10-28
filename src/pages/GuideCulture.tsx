@@ -19,6 +19,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryNameIn } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
+import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
+import { MessageCircle } from "lucide-react";
 import { localDateFor } from "@/lib/country-timezone";
 
 const norm = normCountry;
@@ -44,6 +46,7 @@ export default function GuideCulture() {
   const [picking, setPicking] = useState(false);
   const [path, setPath] = useState<CulturePath>(() => pathForStay(stayType));
   const [pathTouched, setPathTouched] = useState(false);
+  const [assistantSignal, setAssistantSignal] = useState(0);
   useEffect(() => { if (!pathTouched) setPath(pathForStay(stayType)); }, [stayType, pathTouched]);
 
   // Open the guide on the trip's destination country until the traveler picks another one.
@@ -113,7 +116,10 @@ export default function GuideCulture() {
         {code && !picking && !notFound ? (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/70 bg-card/45 px-5 py-4">
             <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryNameIn(code, lang)}</span></p>
-            <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
+            <div className="flex flex-wrap gap-2">
+              {user && <Button type="button" size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>}
+              <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
+            </div>
           </div>
         ) : (
         <form onSubmit={submit} className="rounded-2xl border border-border/70 bg-card/45 p-6 space-y-3">
@@ -212,6 +218,15 @@ export default function GuideCulture() {
         </p>
       </main>
       <QuickJump />
+      {user && code && (
+        <ToolAssistant tool="culture" quotaTool="culture" openSignal={assistantSignal}
+          title={t("assistant.culture.title")} greeting={t("assistant.culture.greeting", { country: countryName })}
+          suggestions={t("assistant.culture.suggestions", { returnObjects: true }) as string[]}
+          context={() => {
+            const pre = pillar ? getPrewritten(code, pillar, lang) : null;
+            return { countryCode: code, path, pillar, pageTips: pre ? [...pre.dos.map((x) => `+ ${x.text}`), ...pre.donts.map((x) => `- ${x.text}`)] : [] };
+          }} />
+      )}
     </div>
   );
 }
