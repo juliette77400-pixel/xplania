@@ -35,3 +35,4 @@
 - The display name is read and saved only through src/lib/data/profiles.ts (useDisplayName / useFirstName / useUpdateDisplayName); its rules live in src/lib/display-name.ts and the profiles trigger cleans every write the same way — why: a rename shows everywhere at once and never touches the e-mail or sign-in data.
 - Saved destinations are displayed through placeName (src/lib/country-match.ts) so bare country names follow the interface language — why: trips typed in French must not show French country names in English.
 
+- The Visa checklist is completed client-side by src/lib/visa-essentials.ts with essential points (passport validity, admission proof, health cover, internship authorisation, residence registration, copies, Ariane) when the AI list misses them; texts come from i18n, never AI, figures or links — why: an AI omission must never leave out a step a student cannot skip.
