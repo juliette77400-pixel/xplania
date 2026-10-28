@@ -6494,6 +6494,11 @@
       "housing": {
         "title": "Housing",
         "desc": "Organise your search and prepare your move-in"
+      },
+      "countryGuide": {
+        "title": "Country guide",
+        "desc": "Paperwork, health, housing and cultural codes: {{place}}.",
+        "descAll": "Paperwork, health, housing and cultural codes, country by country."
       }
     },
     "status": {

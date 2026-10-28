@@ -298,6 +298,25 @@ const Dashboard = () => {
                     </motion.article>
                   );
                 })}
+                {(() => {
+                  const code = findCountry(selected?.destination);
+                  const page = DESTINATION_PAGES.find((d) => d.code === code);
+                  return (
+                    <motion.article initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: modules.length * 0.06 }}
+                      className="flex flex-col rounded-2xl border border-border/70 bg-card/60 p-4 sm:p-5 interactive-card">
+                      <div className="flex items-center gap-3">
+                        <div className="gradient-button flex h-11 w-11 items-center justify-center rounded-xl"><MapPin className="h-5 w-5 text-primary-foreground" /></div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-bold">{t("prepDashboard.modules.countryGuide.title")}</h3>
+                          <p className="text-xs text-muted-foreground">{page ? t("prepDashboard.modules.countryGuide.desc", { place: i18n.language.startsWith("en") ? page.nameEn : page.nameFr }) : t("prepDashboard.modules.countryGuide.descAll")}</p>
+                        </div>
+                      </div>
+                      <Button asChild variant="outline" size="sm" className="mt-4 self-start">
+                        <Link to={page ? destinationPath(page) : DESTINATIONS_HUB}>{t("prepDashboard.open")}<ArrowRight className="ml-1.5 h-4 w-4" /></Link>
+                      </Button>
+                    </motion.article>
+                  );
+                })()}
               </div>
             </section>
           </>

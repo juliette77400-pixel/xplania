@@ -6494,6 +6494,11 @@
       "housing": {
         "title": "Logement",
         "desc": "Organise ta recherche et prépare ton installation"
+      },
+      "countryGuide": {
+        "title": "Guide par pays",
+        "desc": "Formalités, santé, logement et codes culturels : {{place}}.",
+        "descAll": "Formalités, santé, logement et codes culturels, pays par pays."
       }
     },
     "status": {
