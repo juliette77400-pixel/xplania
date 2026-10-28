@@ -54,7 +54,7 @@ const Schools = () => {
               <a href={mailto} className="gradient-button inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold text-primary-foreground transition hover:opacity-90">
                 {t("schools.ctaPrimary")}<ArrowRight className="h-4 w-4" />
               </a>
-              <Link to="/home" className="inline-flex items-center justify-center rounded-full border border-border bg-background/50 px-6 py-3 font-semibold text-foreground transition hover:bg-muted/50">
+              <Link to="/" className="inline-flex items-center justify-center rounded-full border border-border bg-background/50 px-6 py-3 font-semibold text-foreground transition hover:bg-muted/50">
                 {t("schools.ctaSecondary")}
               </Link>
             </div>

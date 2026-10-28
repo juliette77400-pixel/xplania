@@ -50,7 +50,7 @@ const Profil = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/home");
+    navigate("/");
   };
 
   const initials = (displayName || user?.email || "X").slice(0, 2).toUpperCase();

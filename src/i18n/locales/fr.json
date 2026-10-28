@@ -1130,7 +1130,8 @@
     "errPassword": "Mot de passe trop faible : au moins 6 caractères.",
     "errRate": "Trop d'essais. Patiente une minute puis réessaie.",
     "errGeneric": "Une erreur est survenue. Réessaie dans un instant.",
-    "errSamePassword": "Choisis un mot de passe différent de l'ancien."
+    "errSamePassword": "Choisis un mot de passe différent de l'ancien.",
+    "pageHeading": "Se connecter ou créer un compte Xplania"
   },
   "resetPassword": {
     "title": "Nouveau mot de passe",
