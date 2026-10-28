@@ -2936,7 +2936,7 @@
     "alertsOver": "Budget exceeded for {{category}}!",
     "alertsHigh": "{{category}} prices are higher than expected.",
     "alertsLow": "You're under budget for {{category}}!",
-    "alertsTipsTitle": "Tips to balance your budget",
+    "alertsTipsTitle": "AI optimisations",
     "alertsActivities": "Free activities",
     "alertsRestaurants": "Affordable restaurants",
     "alertsTransportAlt": "Transport alternatives",
@@ -3188,7 +3188,16 @@
     "insightsRetry": "Try again",
     "dealsNote": "Lasting ways to save, with indicative prices to check. These are not current promotions.",
     "heroNoDestination": "Destination to choose",
-    "heroChooseDestination": "Add my destination"
+    "heroChooseDestination": "Add my destination",
+    "realAlertsTitle": "Budget alerts",
+    "realAlertsNone": "Nothing to flag: your spending stays within what you planned.",
+    "realAlertsMore_one": "+ 1 more line to watch in the category details.",
+    "realAlertsMore_other": "+ {{count}} more lines to watch in the category details.",
+    "realAlertsNote": "Worked out from your planned and paid amounts: they update by themselves, without AI.",
+    "regenerate": "Regenerate",
+    "regenerating": "New ideas…",
+    "regenerateCost": "Regenerating uses 1 Budget try and doesn't change any of your amounts.",
+    "regenerateNoNew": "No genuinely useful new idea for your current budget: these remain the most relevant."
   },
   "gamification": {
     "heroTitle": "Badge Collection",
