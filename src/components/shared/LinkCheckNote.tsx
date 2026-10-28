@@ -19,6 +19,9 @@ export function LinkCheckNote({ urls, contentCheckedOn, className }: { urls: str
       {s.recheck.length > 0 && (
         <p className="flex items-start gap-1.5 text-warning"><AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />{t("linkCheck.someRecheck", { count: s.recheck.length })}</p>
       )}
+      {s.manual.length > 0 && (
+        <p className="flex items-start gap-1.5"><Link2 className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />{t("linkCheck.someManual", { count: s.manual.length })}</p>
+      )}
       {contentCheckedOn && (
         <p className="flex items-start gap-1.5"><BadgeCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />{t("linkCheck.content", { date: formatDay(contentCheckedOn, i18n.language) })}</p>
       )}
@@ -35,6 +38,9 @@ export function LinkCheckBadge({ url }: { url: string }) {
   if (s.state === "unknown") return null;
   if (s.state === "ok") {
     return <span className="text-[11px] text-muted-foreground">{t("linkCheck.oneOk", { date: formatDay(s.checkedAt, i18n.language) })}</span>;
+  }
+  if (s.state === "manual") {
+    return <span className="text-[11px] text-muted-foreground">{t("linkCheck.oneManual")}</span>;
   }
   return (
     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-warning" title={s.lastSuccessAt ? t("linkCheck.lastOk", { date: formatDay(s.lastSuccessAt, i18n.language) }) : undefined}>

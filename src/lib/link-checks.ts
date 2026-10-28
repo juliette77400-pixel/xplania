@@ -28,26 +28,32 @@ export function useLinkChecks() {
 export type LinkState =
   | { state: "ok"; checkedAt: string }
   | { state: "recheck"; lastSuccessAt: string | null }
+  /** The site refuses automatic visits (robot protection): only a person can check it. */
+  | { state: "manual"; lastSuccessAt: string | null }
   | { state: "unknown" };
 
 /** Status of one link: tested OK at its last check, to re-check after a failure, or never tested. */
 export function linkState(check: LinkCheck | undefined): LinkState {
   if (!check || !check.last_checked_at || check.outcome === "pending") return { state: "unknown" };
   if (check.outcome === "ok") return { state: "ok", checkedAt: check.last_success_at || check.last_checked_at };
+  if (check.outcome === "blocked") return { state: "manual", lastSuccessAt: check.last_success_at };
   return { state: "recheck", lastSuccessAt: check.last_success_at };
 }
 
 export interface LinksSummary {
   /** Oldest last-success date among the links: every link worked at least on that date. */
   allOkSince: string | null;
-  /** Links whose latest check failed. */
+  /** Links whose latest check failed (broken, moved, error). */
   recheck: string[];
+  /** Links the site does not let a robot test. */
+  manual: string[];
   tested: number;
 }
 
 /** Summary for a group of links shown together on a page. */
 export function summarizeLinks(urls: string[], checks: Record<string, LinkCheck> | undefined): LinksSummary {
   const recheck: string[] = [];
+  const manual: string[] = [];
   let oldest: string | null = null;
   let tested = 0;
   for (const u of new Set(urls)) {
@@ -55,7 +61,9 @@ export function summarizeLinks(urls: string[], checks: Record<string, LinkCheck>
     if (s.state === "unknown") continue;
     tested++;
     if (s.state === "recheck") { recheck.push(u); continue; }
+    if (s.state === "manual") { manual.push(u); continue; }
     if (!oldest || s.checkedAt < oldest) oldest = s.checkedAt;
   }
-  return { allOkSince: recheck.length === 0 && tested > 0 ? oldest : null, recheck, tested };
+  // The date is shown only when every testable link passed: a failure must never hide behind an older date.
+  return { allOkSince: recheck.length === 0 && oldest ? oldest : null, recheck, manual, tested };
 }
