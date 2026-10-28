@@ -1407,6 +1407,39 @@ export type Database = {
           },
         ]
       }
+      link_checks: {
+        Row: {
+          consecutive_failures: number
+          final_url: string | null
+          http_status: number | null
+          last_checked_at: string | null
+          last_success_at: string | null
+          outcome: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          consecutive_failures?: number
+          final_url?: string | null
+          http_status?: number | null
+          last_checked_at?: string | null
+          last_success_at?: string | null
+          outcome?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          consecutive_failures?: number
+          final_url?: string | null
+          http_status?: number | null
+          last_checked_at?: string | null
+          last_success_at?: string | null
+          outcome?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       map_load_counters: {
         Row: {
           day: string
