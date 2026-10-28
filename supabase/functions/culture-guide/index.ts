@@ -5,7 +5,7 @@
 //              a hash of the tip texts so a caller can never overwrite what other students read).
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-import { generateJson, aiErrorResponse } from "../_shared/ai-json.ts";
+import { generateJson, generateJsonSplit, aiErrorResponse } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
@@ -174,7 +174,8 @@ serve(withQuotaRefund(async (req) => {
       : `${header}\n\nTu rédiges un guide d'immersion culturelle pour étudiants et stagiaires qui partent à l'étranger. Donne 3-4 "dos" (à faire) et 3-4 "donts" (à éviter). Chacun a : "text" (court), "why" (le contexte culturel, une phrase), "example" (une scène concrète du quotidien, une phrase avec un détail local), "nuance" (une erreur fréquente ou comment ça varie, une phrase) ; les donts ont aussi severity (low=anodin, medium=maladroit, high=offensant). Ajoute 2 comparaisons "Chez toi (France) / Ici" et une courte astuce bienveillante de Ping. Réponds uniquement avec le JSON.`;
     const input = lang === "en" ? `Country: ${country}\nPillar: ${p}` : `Pays : ${country}\nPilier : ${p}`;
 
-    const content = await generateJson({ instructions, input, schema: SCHEMA, name: "culture_pillar", strict: true, effort: "low" });
+    // "À faire" and "À éviter" are written in parallel: the student waits for the slower half only.
+    const content = await generateJsonSplit({ instructions, input, schema: SCHEMA, name: "culture_pillar", strict: true, effort: "low", parts: [["ping", "dos"], ["donts", "homeVsHere"]] });
     await writeCache(pillar, content);
     return json({ content, updatedAt: new Date().toISOString(), cached: false });
   } catch (e) {
