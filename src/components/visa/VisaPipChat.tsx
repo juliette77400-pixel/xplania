@@ -293,7 +293,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
             </div>
           ))}
 
-          {(stage === "qa" || stage === "summary") && history.filter((m) => m.role === "user").length === 0 && !loading && (
+          {(stage === "welcome" || stage === "qa" || stage === "summary") && history.filter((m) => m.role === "user").length === 0 && !loading && (
             <AssistantSuggestions items={t("assistant.visa.suggestions", { returnObjects: true }) as string[]} onPick={(q) => { setStage("qa"); void askPip(q); }} />
           )}
 

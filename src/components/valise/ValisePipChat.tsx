@@ -576,7 +576,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             </div>
           ))}
 
-          {(stage === "qa" || stage === "summary") && history.filter((m) => m.role === "user").length === 0 && !loading && (
+          {(stage === "welcome" || stage === "qa" || stage === "summary") && history.filter((m) => m.role === "user").length === 0 && !loading && (
             <AssistantSuggestions items={t("assistant.valise.suggestions", { returnObjects: true }) as string[]} onPick={(q) => { setStage("qa"); void askPip(q); }} />
           )}
 
