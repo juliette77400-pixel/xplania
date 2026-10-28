@@ -6399,7 +6399,14 @@
       "note": "A general tendency, not a rule: everyone is different. A new gesture every day.",
       "openTheme": "See the theme"
     },
-    "enrichNote": "Tips written by Xplania; examples and nuances added by AI, to take as pointers."
+    "enrichNote": "Tips written by Xplania; examples and nuances added by AI, to take as pointers.",
+    "goodToKnow": "Good to know",
+    "whyAndExample": "Why, with an example",
+    "severity": {
+      "low": "harmless",
+      "medium": "awkward",
+      "high": "offensive"
+    }
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."

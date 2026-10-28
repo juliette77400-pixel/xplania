@@ -6399,7 +6399,14 @@
       "note": "Une tendance générale, pas une règle : chaque personne est différente. Nouveau geste chaque jour.",
       "openTheme": "Voir le thème"
     },
-    "enrichNote": "Conseils rédigés par Xplania ; exemples et nuances ajoutés par l'IA, à prendre comme des repères."
+    "enrichNote": "Conseils rédigés par Xplania ; exemples et nuances ajoutés par l'IA, à prendre comme des repères.",
+    "goodToKnow": "Bon à savoir",
+    "whyAndExample": "Pourquoi et exemple",
+    "severity": {
+      "low": "anodin",
+      "medium": "maladroit",
+      "high": "offensant"
+    }
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
