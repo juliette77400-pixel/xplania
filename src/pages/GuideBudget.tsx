@@ -646,7 +646,7 @@ const GuideBudgetPage = () => {
                   loading={insights.isFetching}
                   errorKind={insights.errorKind}
                   onRetry={insights.refresh}
-                  onRegenerate={user ? insights.regenerateDeals : undefined}
+                  onRegenerate={insights.regenerateDeals}
                   regenerating={insights.deals.loading}
                   noNew={insights.deals.noNew}
                   regenError={insights.deals.errorKind}
