@@ -7934,5 +7934,10 @@
     "expired": "This promo code is no longer valid.",
     "error": "Couldn't check the code right now. Try again.",
     "note": "A beta code gives unlimited AI tries on the tools until the end of the beta."
+  },
+  "aiPause": {
+    "title": "Xplania's AI is taking a short break",
+    "message": "Your results already generated stay on screen and this try was not counted. Please try again a little later.",
+    "chat": "I'm taking a short break and can't answer right now 😴 Everything you've already prepared is still here, and this question didn't use any of your tries. Please try again a little later."
   }
 }
