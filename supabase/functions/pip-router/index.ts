@@ -2,6 +2,7 @@ import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
+import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
 // Intelligent chatbot router: classifies user intent and returns a route or free-mode reply.
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -93,7 +94,7 @@ Si la demande porte sur autre chose (itinéraire, lieux à visiter, suivi sur pl
     });
     if (!r.ok) {
       if (r.status === 429) return new Response(JSON.stringify({ error: "rate_limited" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (r.status === 402) return new Response(JSON.stringify({ error: "credits_exhausted" }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (r.status === 402) return aiUnavailableResponse(corsHeaders);
       const t = await r.text();
       console.error("pip-router AI error", r.status, t);
       return new Response(JSON.stringify({ error: "AI error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });

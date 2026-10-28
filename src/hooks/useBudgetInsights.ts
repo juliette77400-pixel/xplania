@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 import type { TravelFormData } from "@/types/travel";
 
 export interface BudgetPlace { name: string; zone: string; city: string; detail: string }
@@ -31,6 +32,7 @@ async function insightsErrorKind(error: unknown): Promise<InsightsErrorKind> {
   const status = ctx?.status;
   let body: { error?: string } = {};
   try { if (ctx && typeof ctx.clone === "function") body = await ctx.clone().json(); } catch { /* not JSON */ }
+  if (isAiPause(error)) return "ai_unavailable";
   if (status === 402 && body.error === "quota_exceeded") return "quota";
   // 402 without the quota marker = the AI provider has no credits left (not the student's tries).
   if (status === 402 || status === 403) return "ai_unavailable";

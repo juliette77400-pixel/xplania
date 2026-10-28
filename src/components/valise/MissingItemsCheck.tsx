@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Loader2, Plus, SearchCheck, Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 
 interface Missing { item: string; reason: string }
 
@@ -39,7 +40,8 @@ const MissingItemsCheck = ({ destination, days, tripTypes, activities, luggage, 
       setAdded(new Set());
     } catch (e) {
       console.error("valise-missing failed", e);
-      toast.error(t("valise.missing.error"));
+      // The shared notice already explains an AI pause.
+      if (!isAiPause(e)) toast.error(t("valise.missing.error"));
     } finally {
       setLoading(false);
     }

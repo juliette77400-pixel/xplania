@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { chatErrorReply } from "@/lib/ai-pause";
 import { useAuth } from "@/hooks/useAuth";
 import type { BudgetCategory } from "./BudgetForecast";
 import type { Expense } from "./AddExpenseForm";
@@ -266,7 +267,7 @@ const BudgetOnboardingChat = ({
       console.error("budget-qa failed", e);
       setQaHistory((prev) => [
         ...prev,
-        { role: "assistant", content: t("budget.qa.errorAnswer"), ts: Date.now() },
+        { role: "assistant", content: chatErrorReply(e, t("budget.qa.errorAnswer")), ts: Date.now() },
       ]);
     } finally {
       setQaLoading(false);

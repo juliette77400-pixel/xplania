@@ -14,6 +14,7 @@ import HowItWorks from "@/components/shared/HowItWorks";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 import { useAuth } from "@/hooks/useAuth";
 import { countryList, getCountryName } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
@@ -279,7 +280,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
         <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
           <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>
-          <p className="text-sm text-muted-foreground">{t("culture.pillarPending")}</p>
+          <p className="text-sm text-muted-foreground">{isAiPause(q.error) ? t("aiPause.message") : t("culture.pillarPending")}</p>
           <button onClick={() => q.refetch()} className="mt-2 rounded-full border border-border px-4 py-1.5 text-sm text-foreground hover:bg-muted/60">
             {t("common.retry")}
           </button>

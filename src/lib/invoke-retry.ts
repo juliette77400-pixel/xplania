@@ -2,6 +2,7 @@
 // students call them at the same second (503 BOOT_ERROR). The function never
 // ran (no AI call, no try used), so the call is simply retried a few times.
 import { supabase } from "@/integrations/supabase/client";
+import { markAiPause } from "@/lib/ai-pause";
 
 export const BOOT_RETRY_DELAYS_MS = [1200, 2500, 4000];
 
@@ -43,6 +44,7 @@ export function installInvokeRetry() {
   const proto = Object.getPrototypeOf(supabase.functions) as { invoke: (...args: unknown[]) => Promise<InvokeResult> };
   const original = proto.invoke;
   proto.invoke = function (this: unknown, ...args: unknown[]) {
-    return withBootRetry(() => original.apply(this, args));
+    // Out-of-AI-credits answers are tagged and explained once (src/lib/ai-pause.ts).
+    return withBootRetry(() => original.apply(this, args)).then((r) => markAiPause(r));
   };
 }

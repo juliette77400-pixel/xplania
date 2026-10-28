@@ -14,6 +14,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { SAFETY_RULE_EN, SAFETY_RULE_FR, NEUTRALITY_RULE_EN, NEUTRALITY_RULE_FR } from "../_shared/prompts.ts";
 import { FD_SLUGS, PASTEUR_SLUGS } from "./slugs.ts";
+import { AI_UNAVAILABLE, isAiCreditBlock } from "../_shared/ai-unavailable.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -243,7 +244,11 @@ serve(withQuotaRefund(async (req) => {
     content = await generateJson({ instructions: instructions(lang), input, schema: SCHEMA, name: "official_summary", strict: true, effort: "low" });
   } catch (e) {
     console.error("[official-sources] AI failed", e);
-    const status = e instanceof AiHttpError && [402, 429].includes(e.status) ? e.status : 502;
+    // Out of AI credits: own reason and a 503, never the student's quota 402 (the try is refunded).
+    if (e instanceof AiHttpError && isAiCreditBlock(e.status, e.body)) {
+      return json({ status: "unavailable", reason: AI_UNAVAILABLE, code: AI_UNAVAILABLE, fetchedAt, sources: publicSources(sources), content: null }, 503);
+    }
+    const status = e instanceof AiHttpError && e.status === 429 ? 429 : 502;
     return json({ status: "unavailable", reason: "summary_failed", fetchedAt, sources: publicSources(sources), content: null }, status);
   }
 

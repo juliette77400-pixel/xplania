@@ -7934,5 +7934,10 @@
     "expired": "Ce code promo n'est plus valable.",
     "error": "Impossible de vérifier le code pour l'instant. Réessaie.",
     "note": "Un code bêta donne des essais IA illimités sur les outils jusqu'à la fin de la bêta."
+  },
+  "aiPause": {
+    "title": "L'IA d'Xplania fait une petite pause",
+    "message": "Tes résultats déjà générés restent affichés et ton essai n'a pas été décompté. Réessaie un peu plus tard.",
+    "chat": "Je fais une petite pause et je ne peux pas répondre pour le moment 😴 Ce que tu as déjà préparé reste disponible, et cette question ne t'a coûté aucun essai. Réessaie un peu plus tard."
   }
 }

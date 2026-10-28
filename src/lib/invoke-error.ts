@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import { isAiPause } from "@/lib/ai-pause";
 
 /** Turns a raw edge-function error into a friendly, translated message. */
 export async function friendlyInvokeError(error: unknown): Promise<string> {
@@ -12,6 +13,7 @@ export async function friendlyInvokeError(error: unknown): Promise<string> {
     }
   } catch { /* ignore */ }
   const t = i18n.t.bind(i18n);
+  if (isAiPause(error)) return t("aiPause.message");
   if (status === 429) return t("invokeError.rateLimit");
   if (status === 402) return t("invokeError.quota");
   if (status === 401) return t("invokeError.auth");

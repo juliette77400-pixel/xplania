@@ -5,6 +5,7 @@ import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
+import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
 
 type Tip = { title: string; text: string };
 
@@ -145,11 +146,7 @@ Graine de variation : ${v} (produis un résultat clairement différent des varia
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "credits_exhausted" }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      if (response.status === 402) return aiUnavailableResponse(corsHeaders);
       throw new Error(`AI gateway ${response.status}: ${txt.slice(0, 200)}`);
     }
 

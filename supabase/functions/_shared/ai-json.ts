@@ -2,8 +2,10 @@
 // Responses API (streamed, so long reasoning runs don't hit request timeouts).
 // deno-lint-ignore-file no-explicit-any
 
+import { creditBlockResponse } from "./ai-unavailable.ts";
+
 export class AiHttpError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(public status: number, message: string, public body = "") {
     super(message);
   }
 }
@@ -49,7 +51,7 @@ export async function generateJson<T = any>(opts: {
   if (!res.ok) {
     const txt = await res.text();
     console.error("AI gateway error", res.status, txt.slice(0, 500));
-    throw new AiHttpError(res.status, `AI gateway error: ${res.status}`);
+    throw new AiHttpError(res.status, `AI gateway error: ${res.status}`, txt.slice(0, 500));
   }
 
   let out = "";
@@ -79,10 +81,13 @@ export async function generateJson<T = any>(opts: {
 
 export function aiErrorResponse(e: unknown, cors: Record<string, string>): Response | null {
   if (!(e instanceof AiHttpError)) return null;
-  const status = [402, 403, 429].includes(e.status) ? e.status : 500;
+  // Workspace out of AI credits: never a 402, which means "student out of tries".
+  const blocked = creditBlockResponse(e.status, e.body, cors);
+  if (blocked) return blocked;
+  const status = [403, 429].includes(e.status) ? e.status : 500;
   const msg = status === 429
     ? "Trop de requêtes, réessaie dans quelques instants."
-    : status === 402 ? "Crédits IA insuffisants." : "Erreur du service IA";
+    : "Erreur du service IA";
   return new Response(JSON.stringify({ error: msg }), {
     status,
     headers: { ...cors, "Content-Type": "application/json" },
