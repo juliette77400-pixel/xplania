@@ -608,7 +608,7 @@ const TravelerProfileOnboarding = () => {
         <p className="mt-3 text-center text-sm text-muted-foreground">{message}</p>
         <div className="mt-2 flex items-center justify-center gap-4">
           <Link
-            to="/home"
+            to="/"
             className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
           >
             <Info className="h-3 w-3" />
@@ -767,7 +767,7 @@ const TravelerProfileOnboarding = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("travelerProfile.exitStay", "Continuer le quiz")}</AlertDialogCancel>
-            <AlertDialogAction onClick={() => navigate("/home")}>
+            <AlertDialogAction onClick={() => navigate("/")}>
               {t("travelerProfile.exitConfirm", "Quitter")}
             </AlertDialogAction>
           </AlertDialogFooter>

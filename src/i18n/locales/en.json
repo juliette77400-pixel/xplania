@@ -1130,7 +1130,8 @@
     "errPassword": "Password too weak: at least 6 characters.",
     "errRate": "Too many attempts. Wait a minute and try again.",
     "errGeneric": "Something went wrong. Please try again.",
-    "errSamePassword": "Choose a password different from your previous one."
+    "errSamePassword": "Choose a password different from your previous one.",
+    "pageHeading": "Sign in or create an Xplania account"
   },
   "resetPassword": {
     "title": "New password",
