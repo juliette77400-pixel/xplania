@@ -8077,7 +8077,7 @@
     "sources": "Official sources",
     "checked": "Checked by hand on {{date}}. Rules can change: always check the official source.",
     "guideTitle": "What about the islands?",
-    "guideIntro": "Some islands {{in}} have rules or a daily life that differ from the mainland.",
+    "guideIntro": "For a stay {{in}}, some islands have rules or a daily life that differ from the mainland.",
     "items": {
       "drom": {
         "name": "French overseas (Réunion, Antilles, Mayotte, Guiana)",

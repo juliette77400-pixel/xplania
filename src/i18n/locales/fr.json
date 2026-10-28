@@ -8077,7 +8077,7 @@
     "sources": "Sources officielles",
     "checked": "Vérifié à la main le {{date}}. Les règles peuvent changer : vérifie toujours la source officielle.",
     "guideTitle": "Et les îles ?",
-    "guideIntro": "Certaines îles {{in}} ont des règles ou une vie quotidienne différentes du continent.",
+    "guideIntro": "Pour un départ {{in}}, certaines îles ont des règles ou une vie quotidienne différentes du continent.",
     "items": {
       "drom": {
         "name": "Outre-mer (Réunion, Antilles, Mayotte, Guyane)",
