@@ -420,7 +420,7 @@ function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en
   if (q.data) {
     const g = q.data;
     return (
-      <div className={`${card} animate-fade-in`}>
+      <div className={card}>
         <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")} · {t(`culture.pillars.${g.theme}`)}</p>
         <p className="mt-1 text-sm font-semibold text-foreground">{g.title}</p>
         <dl className="mt-2 space-y-1.5 text-xs leading-relaxed">
