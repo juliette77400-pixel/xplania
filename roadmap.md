@@ -25,3 +25,6 @@
 - [x] 5. Budget : bouton « Régénérer » pour Alertes et Optimisations IA (2-3 conseils, anti double clic, sans inventer de problème, crédits vérifiés)
 - [ ] 6. Visa : audit — BLOQUÉ : le texte du document s'arrête au milieu de la section 6, en attente de la suite par Juliette
 - [ ] Accès « étendu » écoles partenaires : non mis en place (mêmes 10 essais pour tous) — décision de Juliette attendue
+
+## Crédits IA épuisés (28/10)
+- [x] Message clair « IA en pause » dans tous les outils au lieu d'une erreur ou de « plus d'essais », résultats déjà affichés conservés, essai rendu
