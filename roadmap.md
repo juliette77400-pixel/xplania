@@ -40,4 +40,5 @@
 
 ## Retours du 28/10 (3e)
 - [x] Guides par pays dans la partie outils de l'accueil et dans le menu
-- [ ] 21 nouveaux pays + îles — en attente de l'accord de Juliette
+- [x] 21 pays : 19 nouveaux guides publics (MX, BR existaient), fiches culture écrites à la main, sites visa ID/ZA, 14 ressources logement vérifiées
+- [ ] Îles (Réunion, Canaries, Baléares…) — à cadrer avec Juliette
