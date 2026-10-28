@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useFirstName } from "@/lib/data/profiles";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -63,48 +64,8 @@ const BudgetOnboardingChat = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const [profileName, setProfileName] = useState<string>("");
-
-  useEffect(() => {
-    if (!user?.id) {
-      setProfileName("");
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      try {
-        const { data } = await supabase
-          .from("profiles")
-          .select("display_name")
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (!cancelled && data?.display_name) setProfileName(data.display_name as string);
-      } catch {
-        /* ignore */
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user?.id]);
-
-  const firstName = (() => {
-    const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
-    const candidates = [
-      meta.first_name,
-      meta.firstName,
-      meta.given_name,
-      typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
-      typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
-      typeof meta.display_name === "string" ? (meta.display_name as string).split(" ")[0] : undefined,
-      profileName ? profileName.split(" ")[0] : undefined,
-      user?.email ? user.email.split("@")[0] : undefined,
-    ];
-    const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
-    if (!found) return "";
-    const clean = found.trim().replace(/[._-]+/g, " ").split(" ")[0];
-    return clean.charAt(0).toUpperCase() + clean.slice(1);
-  })();
+  // Saved profile name first, so a renamed student is greeted with the new name.
+  const firstName = useFirstName();
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;

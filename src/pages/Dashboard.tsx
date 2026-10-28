@@ -1,6 +1,7 @@
 // Beta dashboard — built around the five preparation tools only
 // (Budget, Visa, Valise, Culture, Housing), with per-module progress for the selected trip.
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useFirstName } from "@/lib/data/profiles";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -50,7 +51,6 @@ const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const activeTripId = useActiveTrip((s) => s.tripId);
   const clearActiveTrip = useActiveTrip((s) => s.clearActiveTrip);
-  const [profile, setProfile] = useState<{ display_name: string | null } | null>(null);
   const [progressTick, setProgressTick] = useState(0);
   const location = useLocation();
 
@@ -69,11 +69,6 @@ const Dashboard = () => {
     track("dashboard_viewed", { trips: trips.length });
   }, [loading, trips.length]);
 
-  useEffect(() => {
-    if (!user) return;
-    supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle().then(({ data }) => setProfile(data));
-  }, [user]);
-
   // Refresh module progress when a tool saves it or the tab regains focus.
   useEffect(() => {
     const bump = () => setProgressTick((n) => n + 1);
@@ -89,7 +84,8 @@ const Dashboard = () => {
 
   const isFr = i18n.language.startsWith("fr");
   const dateLocale = isFr ? "fr-FR" : "en-US";
-  const firstName = profile?.display_name?.split(" ")[0] || user?.email?.split("@")[0] || (isFr ? "voyageur" : "traveler");
+  const savedFirstName = useFirstName();
+  const firstName = savedFirstName || (isFr ? "voyageur" : "traveler");
 
   const selected: Trip | undefined = useMemo(
     () => trips.find((tr) => tr.id === activeTripId) ?? trips[0],
