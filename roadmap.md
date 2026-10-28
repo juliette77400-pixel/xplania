@@ -18,9 +18,10 @@
 - [x] 8-9. Vérifications + rapport
 
 ## Optimisations ciblées avant la bêta (prompt du 28/10)
-- [ ] 1. Vérification quotidienne automatique des liens (date réelle en base, échec = ancienne date + « à revérifier », lien accessible ≠ contenu contrôlé)
-- [ ] 2. Accueil : titre/sous-titre/CTA, présentation, personnalisation (3 badges), gratuité en 2 cartes (écoles partenaires / autres), FAQ gratuité + lien Offres
-- [ ] 3. Offres écoles : sélecteur Mensuel | Annuel, total + coût par étudiant, sans remise inventée
-- [ ] 4. Culture : geste du jour qui change chaque jour par destination sans répétition rapprochée ; présentation plus visuelle (cartes, pictos, À faire / À éviter / Bon à savoir)
-- [ ] 5. Budget : bouton « Régénérer » pour Alertes et Optimisations IA (2-3 conseils, anti double clic, sans inventer de problème, crédits vérifiés)
-- [ ] 6. Visa : audit — texte du prompt coupé, en attente du texte complet de Juliette
+- [x] 1. Vérification quotidienne automatique des liens (date réelle en base, échec = ancienne date + « à revérifier », lien accessible ≠ contenu contrôlé)
+- [x] 2. Accueil : titre/sous-titre/CTA, présentation, personnalisation (3 badges), gratuité en 2 cartes (écoles partenaires / autres), FAQ gratuité + lien Offres
+- [x] 3. Offres écoles : sélecteur Mensuel | Annuel, total + coût par étudiant, sans remise inventée
+- [x] 4. Culture : geste du jour qui change chaque jour par destination sans répétition rapprochée ; présentation plus visuelle (cartes, pictos, À faire / À éviter / Bon à savoir)
+- [x] 5. Budget : bouton « Régénérer » pour Alertes et Optimisations IA (2-3 conseils, anti double clic, sans inventer de problème, crédits vérifiés)
+- [ ] 6. Visa : audit — BLOQUÉ : le texte du document s'arrête au milieu de la section 6, en attente de la suite par Juliette
+- [ ] Accès « étendu » écoles partenaires : non mis en place (mêmes 10 essais pour tous) — décision de Juliette attendue
