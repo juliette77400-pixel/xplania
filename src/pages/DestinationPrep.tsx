@@ -165,7 +165,6 @@ const DestinationPrep = () => {
           urls={[franceDiplomatieEntryUrl(d), pasteurUrl(d), ...(entry ? [entry.url] : []), ...housingLinks.map((r) => r.url)]}
           contentCheckedOn={LINKS_CHECKED_ON}
         />
-        <p className="mt-1 text-xs text-muted-foreground">{t("destPages.rulesChange")}</p>
 
         <section className="mt-10">
           <h2 className="text-lg font-bold">{t("destPages.others")}</h2>
