@@ -112,7 +112,7 @@ export default function GuideCulture() {
 
         {code && !picking && !notFound ? (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/70 bg-card/45 px-5 py-4">
-            <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryName(code)}</span></p>
+            <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryNameIn(code, lang)}</span></p>
             <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
           </div>
         ) : (
@@ -140,7 +140,7 @@ export default function GuideCulture() {
               {FEATURED_COUNTRIES.map((c) => (
                 <button key={c} type="button" onClick={() => choose(c)}
                   className={`rounded-full border px-3 py-1 text-xs ${code === c ? "border-primary bg-primary/20 text-foreground" : "border-border bg-muted/30 text-muted-foreground hover:text-foreground"}`}>
-                  {getCountryName(c)}
+                  {getCountryNameIn(c, lang)}
                 </button>
               ))}
             </div>
