@@ -5,6 +5,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 import { cleanField, contextDataMessage, DATA_RULE_FR, DATA_RULE_EN } from "../_shared/untrusted.ts";
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
+import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -170,11 +171,7 @@ ${DATA_RULE_FR}`;
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "credits_exhausted" }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      if (response.status === 402) return aiUnavailableResponse(corsHeaders);
       const txt = await response.text();
       console.error("AI gateway error", response.status, txt);
       throw new Error(`AI gateway ${response.status}`);
