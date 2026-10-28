@@ -30,8 +30,8 @@ syncHtmlLang(i18n.language);
 i18n.on("languageChanged", syncHtmlLang);
 
 // French place prepositions (« en Espagne », « au Japon », « pour l'Espagne »…); other languages keep the value.
-const fr = (lng: string | undefined) => !lng || lng.startsWith("fr");
-const place = (fn: (v: string) => string) => (value: unknown, lng?: string) => (fr(lng) ? fn(String(value ?? "")) : String(value ?? ""));
+const isFr = (lng: string | undefined) => !lng || lng.startsWith("fr");
+const place = (fn: (v: string) => string) => (value: unknown, lng?: string) => (isFr(lng) ? fn(String(value ?? "")) : String(value ?? ""));
 i18n.services.formatter?.add("pour", place(frFor));
 i18n.services.formatter?.add("en", place(frIn));
 i18n.services.formatter?.add("a", place(frTo));
