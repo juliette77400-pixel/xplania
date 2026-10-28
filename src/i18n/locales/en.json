@@ -4022,7 +4022,7 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes! During the beta you can prepare your departure for free, with no credit card. The AI tools each come with 10 free generations a month, and the Housing assistant is open to everyone. If your institution is a partner, you get every feature with its support."
+      "a": "Yes! During the beta you can prepare your departure for free, with no credit card. The AI tools each come with 10 free generations a month, and the Housing assistant is open to everyone. If your institution is a partner, its promo code gives you unlimited AI tries during the beta."
     },
     "q2": {
       "q": "What does the AI actually do?",
@@ -7811,7 +7811,7 @@
       "partner": {
         "title": "Students from partner schools",
         "text": "During the beta, students from partner institutions use every Xplania feature for free, with no credit card, with support from their institution.",
-        "note": "Current technical limit: the same 10 AI generations per month and per tool as other testers."
+        "note": "With your school's promo code, entered at signup, your AI tries are unlimited until the end of the beta."
       },
       "others": {
         "title": "Other beta testers",

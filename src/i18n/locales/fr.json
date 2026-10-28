@@ -4022,7 +4022,7 @@
     "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
     "q1": {
       "q": "Xplania est-il gratuit ?",
-      "a": "Oui ! Pendant la bêta, tu peux préparer ton départ gratuitement, sans carte bancaire. Les outils IA disposent de 10 générations mensuelles gratuites chacun, et l'Assistant Logement est accessible librement. Si ton établissement est partenaire, tu profites de toutes les fonctionnalités avec son accompagnement."
+      "a": "Oui ! Pendant la bêta, tu peux préparer ton départ gratuitement, sans carte bancaire. Les outils IA disposent de 10 générations mensuelles gratuites chacun, et l'Assistant Logement est accessible librement. Si ton établissement est partenaire, son code promo te donne des essais IA illimités pendant la bêta."
     },
     "q2": {
       "q": "À quoi sert l'IA exactement ?",
@@ -7811,7 +7811,7 @@
       "partner": {
         "title": "Étudiants des écoles partenaires",
         "text": "Pendant la bêta, les étudiants des établissements partenaires utilisent gratuitement toutes les fonctionnalités Xplania, sans carte bancaire, avec l'accompagnement de leur établissement.",
-        "note": "Limite technique actuelle : les mêmes 10 générations IA par mois et par outil que les autres testeurs."
+        "note": "Avec le code promo de ton école, saisi à l'inscription, tes essais IA sont illimités jusqu'à la fin de la bêta."
       },
       "others": {
         "title": "Autres bêta-testeurs",
