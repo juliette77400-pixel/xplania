@@ -106,6 +106,27 @@ export type Database = {
         }
         Relationships: []
       }
+      beta_access: {
+        Row: {
+          code: string
+          expires_at: string
+          granted_at: string
+          user_id: string
+        }
+        Insert: {
+          code: string
+          expires_at: string
+          granted_at?: string
+          user_id: string
+        }
+        Update: {
+          code?: string
+          expires_at?: string
+          granted_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       culture_guide_cache: {
         Row: {
           content: Json
@@ -3137,6 +3158,7 @@ export type Database = {
         Returns: Json
       }
       get_waitlist_count: { Args: never; Returns: number }
+      has_beta_access: { Args: { _user: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -3187,6 +3209,7 @@ export type Database = {
       record_map_load: { Args: never; Returns: number }
       record_places_search: { Args: never; Returns: number }
       record_quiz_completion: { Args: never; Returns: Json }
+      redeem_promo_code: { Args: { _code: string }; Returns: Json }
       refund_quota: {
         Args: {
           _tool: Database["public"]["Enums"]["quota_tool"]
