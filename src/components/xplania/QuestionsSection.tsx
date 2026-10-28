@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight, MapPinned } from "lucide-react";
 import { DESTINATION_PAGES, DESTINATIONS_HUB, destinationPath } from "@/data/destination-pages";
 import { isPathEnabled } from "@/config/featureFlags";
-import { isOpenTool } from "@/config/open-tools";
 import { track } from "@/lib/analytics";
 import imgBudget from "@/assets/prep-quiz/budget.jpg";
 import imgVisa from "@/assets/prep-quiz/origin.jpg";
