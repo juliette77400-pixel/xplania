@@ -32,8 +32,8 @@
 ## Performances, personnalisation, traductions, assistants (prompt du 28/10, 2e)
 - [x] 1. Culture : mesurer puis réduire le temps de chargement (cache, affichage progressif, squelettes, réessai)
 - [x] 2. Visa : textes plus humains, tutoiement, personnalisés, sans rien inventer
-- [ ] 3. Profil : modifier son nom affiché (Enregistrer/Annuler, validation, partout dans l'app)
-- [ ] 4. Audit traductions FR/EN (textes en dur, cohérence, mobile)
-- [ ] 5A. Chatbot Budget : audit + vrais tests
-- [ ] 5B-E. Assistant réutilisable par outil (Visa, Valise, Culture, Logement) avec quotas et sécurité
-- [ ] 6-7. Tests + compte rendu
+- [x] 3. Profil : modifier son nom affiché (Enregistrer/Annuler, validation, partout dans l'app)
+- [x] 4. Audit traductions FR/EN (textes en dur, cohérence, mobile)
+- [x] 5A. Chatbot Budget : audit + vrais tests
+- [x] 5B-E. Assistant réutilisable par outil (Visa, Valise, Culture, Logement) avec quotas et sécurité
+- [x] 6-7. Tests + compte rendu
