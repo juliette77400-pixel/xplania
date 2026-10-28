@@ -11,6 +11,7 @@ import { healthRelevance, type VisaAnalysis } from "@/lib/visa-rules";
 import { formatDay, formatDayTime } from "@/lib/format-date";
 import { cn } from "@/lib/utils";
 import { entrySourceFor } from "@/data/entry-sources";
+import { LinkCheckBadge } from "@/components/shared/LinkCheckNote";
 import { formatDay as fmtDayOnly } from "@/lib/format-date";
 
 type Tone = "good" | "warn" | "bad" | "neutral";
@@ -189,7 +190,7 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
             ? <a href={EU_URL[lang]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.euSource")}<ExternalLink className="h-3 w-3" aria-hidden /></a>
             : <div className="space-y-1">
                 {entrySite && (
-                  <p><a href={entrySite.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">{t("visa2.cards.checkOn", { site: entrySite.label })}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span></a></p>
+                  <p><a href={entrySite.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">{t("visa2.cards.checkOn", { site: entrySite.label })}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span></a> <LinkCheckBadge url={entrySite.url} /></p>
                 )}
                 <p>{t("visa2.cards.aiGenerated", { date: formatDayTime(analysis!.generatedAt, i18n.language) })}{!entrySite && v.official_url && <>{" · "}<a href={v.official_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /></a></>}</p>
               </div>)}

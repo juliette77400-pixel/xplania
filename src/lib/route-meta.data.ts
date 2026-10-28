@@ -7,12 +7,12 @@ export type Meta = { fr: [string, string]; en: [string, string] };
 // Unique title (<60 chars) + description (50–160 chars) per public route.
 export const META: Record<string, Meta> = {
   "/": {
-    fr: ["Xplania | Prépare ton Erasmus ou ton stage à l'étranger", "Prépare ton Erasmus ou ton stage à l'étranger avec Xplania : budget, visa, logement, valise et culture locale réunis au même endroit."],
-    en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad with Xplania: budget, visa, housing, packing and local culture in one place."],
+    fr: ["Xplania | Prépare ton Erasmus ou ton stage à l'étranger", "Prépare ton Erasmus ou ton stage à l'étranger sans stress : démarches, budget, logement, valise et culture locale réunis au même endroit, avec des conseils adaptés à ta destination."],
+    en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad without the stress: paperwork, budget, housing, packing and local culture in one place, with advice tailored to your destination."],
   },
   "/home": {
-    fr: ["Xplania | Prépare ton Erasmus ou ton stage à l'étranger", "Prépare ton Erasmus ou ton stage à l'étranger avec Xplania : budget, visa, logement, valise et culture locale réunis au même endroit."],
-    en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad with Xplania: budget, visa, housing, packing and local culture in one place."],
+    fr: ["Xplania | Prépare ton Erasmus ou ton stage à l'étranger", "Prépare ton Erasmus ou ton stage à l'étranger sans stress : démarches, budget, logement, valise et culture locale réunis au même endroit, avec des conseils adaptés à ta destination."],
+    en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad without the stress: paperwork, budget, housing, packing and local culture in one place, with advice tailored to your destination."],
   },
   "/dashboard": {
     fr: ["Créer mon voyage — Xplania", "Renseigne ta destination, tes dates et ton type de séjour pour préparer ton départ : budget, visa, valise, culture et logement."],

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampStudents, schoolTotal } from "@/lib/school-pricing";
+import { SCHOOL_CYCLES, clampStudents, monthlyEquivalent, schoolTotal } from "@/lib/school-pricing";
 
 describe("offre école : prix étudiant × nombre d'étudiants", () => {
   it("multiplie le prix d'un étudiant par le nombre d'étudiants", () => {
@@ -13,5 +13,12 @@ describe("offre école : prix étudiant × nombre d'étudiants", () => {
     expect(clampStudents(0)).toBe(1);
     expect(clampStudents(12.7)).toBe(12);
     expect(clampStudents(Number.NaN)).toBe(1);
+  });
+  it("l'école choisit seulement Mensuel ou Annuel", () => {
+    expect(SCHOOL_CYCLES).toEqual(["monthly", "yearly"]);
+  });
+  it("en annuel, le total reste le prix annuel étudiant × effectif, sans remise ajoutée", () => {
+    expect(schoolTotal(59.9, 30)).toBe(1797);
+    expect(monthlyEquivalent(59.9)).toBe(4.99);
   });
 });

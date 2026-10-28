@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon } from "lucide-react";
+import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon, CircleCheck, CircleX, Lightbulb, ChevronDown } from "lucide-react";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import QuickJump from "@/components/shared/QuickJump";
 import { findCountry, normCountry } from "@/lib/country-match";
@@ -250,13 +250,6 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
         return { ...pre, dos: pre.dos.map((x, i) => add(x, i)), donts: pre.donts.map((x, i) => add(x, i + pre.dos.length)) };
       })()
     : q.data;
-  const extra = (d: { example?: string; nuance?: string }) => (
-    <>
-      {d.example && <p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.example")}</span> {d.example}</p>}
-      {d.nuance && <p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.nuance")}</span> {d.nuance}</p>}
-    </>
-  );
-
   return (
     <section className="space-y-4">
       <button onClick={onBack} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
@@ -299,26 +292,18 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
             <span className="text-2xl" aria-hidden>🐧</span>
             <p className="text-sm text-foreground">{content.ping}</p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="glass-card rounded-2xl p-4 space-y-3">
-              <h3 className="font-semibold text-foreground">✅ {t("culture.dos")}</h3>
-              {content.dos.map((d, i) => (
-                <div key={i} className="space-y-0.5"><p className="text-sm text-foreground">{d.text}</p><p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.context")}</span> {d.why}</p>{extra(d)}</div>
-              ))}
-            </div>
-            <div className="glass-card rounded-2xl p-4 space-y-3">
-              <h3 className="font-semibold text-foreground">⛔ {t("culture.donts")}</h3>
-              {content.donts.map((d, i) => (
-                <div key={i} className="space-y-0.5"><p className="text-sm text-foreground">{d.severity ? `${SEV[d.severity]} ` : ""}{d.text}</p><p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t("culture.daily.context")}</span> {d.why}</p>{extra(d)}</div>
-              ))}
-              <p className="text-[11px] text-muted-foreground">{t("culture.severityLegend")}</p>
-            </div>
+          <div className="grid gap-5 md:grid-cols-2">
+            <TipColumn kind="do" title={t("culture.dos")} tips={content.dos} />
+            <TipColumn kind="dont" title={t("culture.donts")} tips={content.donts} legend={t("culture.severityLegend")} />
           </div>
           {content.homeVsHere.length > 0 && (
-            <div className="glass-card rounded-2xl p-4 space-y-2">
-              <h3 className="font-semibold text-foreground">🏠 {t("culture.homeVsHere")}</h3>
-              {content.homeVsHere.map((h, i) => <p key={i} className="text-sm text-foreground">{h}</p>)}
-            </div>
+            <section aria-labelledby="good-to-know" className="rounded-2xl border border-primary/30 bg-primary/5 p-4 sm:p-5">
+              <h3 id="good-to-know" className="flex items-center gap-2 font-bold text-foreground"><Lightbulb className="h-5 w-5 text-primary" aria-hidden />{t("culture.goodToKnow")}</h3>
+              <p className="mt-0.5 text-xs text-muted-foreground">{t("culture.homeVsHere")}</p>
+              <ul className="mt-3 space-y-2">
+                {content.homeVsHere.map((h, i) => <li key={i} className="flex gap-2 text-sm leading-relaxed text-foreground"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden />{h}</li>)}
+              </ul>
+            </section>
           )}
           {sensitive && <p className="text-xs text-muted-foreground italic">{t("culture.evolving")}</p>}
           {(!pre || !!enrich.data?.length) && <p className="text-[11px] text-muted-foreground">{t(pre ? "culture.enrichNote" : "culture.aiNote")}</p>}
@@ -328,6 +313,43 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
           </Button>
         </>
       )}
+    </section>
+  );
+}
+
+type Tip = PillarContent["dos"][number] & { example?: string; nuance?: string };
+
+const TIP_STYLE = {
+  do: { icon: CircleCheck, box: "border-success/30 bg-success/5", ink: "text-success" },
+  dont: { icon: CircleX, box: "border-destructive/30 bg-destructive/5", ink: "text-destructive" },
+} as const;
+
+/** "À faire" / "À éviter": one short card per tip, the explanation and example fold away. */
+function TipColumn({ kind, title, tips, legend }: { kind: "do" | "dont"; title: string; tips: Tip[]; legend?: string }) {
+  const { t } = useTranslation();
+  const st = TIP_STYLE[kind];
+  const Icon = st.icon;
+  return (
+    <section aria-label={title} className="space-y-3">
+      <h3 className={`flex items-center gap-2 font-bold ${st.ink}`}><Icon className="h-5 w-5" aria-hidden />{title}</h3>
+      <ul className="space-y-3">
+        {tips.map((d, i) => (
+          <li key={i} className={`rounded-2xl border p-4 ${st.box}`}>
+            <p className="text-sm font-semibold leading-relaxed text-foreground">{kind === "dont" && d.severity ? <span className="mr-1" aria-label={t(`culture.severity.${d.severity}`)}>{SEV[d.severity]}</span> : null}{d.text}</p>
+            <details className="group mt-2">
+              <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-xs font-semibold text-primary [&::-webkit-details-marker]:hidden">
+                {t("culture.whyAndExample")}<ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" aria-hidden />
+              </summary>
+              <dl className="mt-2 space-y-1.5 text-xs leading-relaxed">
+                <div><dt className="inline font-semibold text-foreground">{t("culture.daily.context")} </dt><dd className="inline text-muted-foreground">{d.why}</dd></div>
+                {d.example && <div><dt className="inline font-semibold text-foreground">{t("culture.daily.example")} </dt><dd className="inline text-muted-foreground">{d.example}</dd></div>}
+                {d.nuance && <div><dt className="inline font-semibold text-foreground">{t("culture.daily.nuance")} </dt><dd className="inline text-muted-foreground">{d.nuance}</dd></div>}
+              </dl>
+            </details>
+          </li>
+        ))}
+      </ul>
+      {legend && <p className="text-[11px] text-muted-foreground">{legend}</p>}
     </section>
   );
 }

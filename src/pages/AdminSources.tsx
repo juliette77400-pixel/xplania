@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getCountryName } from "@/lib/countries";
 import { formatDay, formatDayTime } from "@/lib/format-date";
 import type { OfficialContent, OfficialSource } from "@/hooks/useOfficialInfo";
+import { linkState, useLinkChecks } from "@/lib/link-checks";
 
 interface Row {
   id: string;
@@ -95,6 +96,8 @@ export default function AdminSources() {
           {(t("adminSources.steps", { returnObjects: true }) as string[]).map((s, i) => <li key={i}>{s}</li>)}
         </ol>
 
+        <LinkChecksPanel />
+
         {q.isLoading && <Loader2 className="h-5 w-5 animate-spin text-primary" />}
         {q.isError && <p role="alert" className="text-sm text-destructive">{t("adminSources.error")}</p>}
 
@@ -154,5 +157,35 @@ function Block({ title, items }: { title: string; items: Array<string | null | u
       <p className="mb-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</p>
       <ul className="list-disc space-y-0.5 pl-5">{list.map((x, i) => <li key={i}>{x}</li>)}</ul>
     </div>
+  );
+}
+
+/** Daily automatic link test: what needs a human look (broken, moved, or blocked for robots). */
+function LinkChecksPanel() {
+  const { t, i18n } = useTranslation();
+  const { data } = useLinkChecks();
+  const all = Object.values(data || {});
+  if (!all.length) return null;
+  const last = all.reduce((m, r) => (r.last_checked_at && r.last_checked_at > m ? r.last_checked_at : m), "");
+  const issues = all.filter((r) => linkState(r).state === "recheck");
+  const manual = all.filter((r) => linkState(r).state === "manual");
+  return (
+    <section aria-labelledby="link-checks-title" className="rounded-2xl border border-border/70 bg-card/60 p-4 text-sm">
+      <h2 id="link-checks-title" className="font-bold">{t("linkCheck.admin.title")}</h2>
+      <p className="text-xs text-muted-foreground">{t("linkCheck.admin.summary", { date: formatDayTime(last, i18n.language), total: all.length, issues: issues.length, manual: manual.length })}</p>
+      {[{ key: "issues", list: issues, cls: "text-warning" }, { key: "manual", list: manual, cls: "text-muted-foreground" }].map(({ key, list, cls }) => list.length > 0 && (
+        <div key={key} className="mt-3">
+          <p className={`text-xs font-bold ${cls}`}>{t(`linkCheck.admin.${key}`)}</p>
+          <ul className="mt-1 space-y-1 text-xs">
+            {list.map((r) => (
+              <li key={r.url} className="break-all">
+                <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{r.url}</a>
+                <span className="text-muted-foreground"> · {t(`linkCheck.outcome.${r.outcome}`)}{r.last_success_at ? ` · ${t("linkCheck.lastOk", { date: formatDay(r.last_success_at, i18n.language) })}` : ""}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
   );
 }

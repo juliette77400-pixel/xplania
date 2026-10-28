@@ -12,7 +12,7 @@ import { getPrewritten, getSituation, CULTURE_PILLARS } from "@/data/culture-gui
 import { entrySourceFor } from "@/data/entry-sources";
 import { resourcesForCountry } from "@/data/housing-resources";
 import { FREE_MOVEMENT } from "@/lib/visa-rules";
-import { formatDay } from "@/lib/format-date";
+import { LinkCheckNote } from "@/components/shared/LinkCheckNote";
 import {
   DESTINATION_PAGES, DESTINATIONS_HUB, LINKS_CHECKED_ON, destinationPath, findDestination,
   franceDiplomatieEntryUrl, pasteurUrl, type DestinationPage,
@@ -160,7 +160,11 @@ const DestinationPrep = () => {
           <p className="mt-3 text-xs text-muted-foreground">{t("destPages.free")}</p>
         </section>
 
-        <p className="mt-8 text-xs text-muted-foreground">{t("destPages.checkedOn", { date: formatDay(LINKS_CHECKED_ON, i18n.language) })}</p>
+        <LinkCheckNote
+          className="mt-8"
+          urls={[franceDiplomatieEntryUrl(d), pasteurUrl(d), ...(entry ? [entry.url] : []), ...housingLinks.map((r) => r.url)]}
+          contentCheckedOn={LINKS_CHECKED_ON}
+        />
 
         <section className="mt-10">
           <h2 className="text-lg font-bold">{t("destPages.others")}</h2>

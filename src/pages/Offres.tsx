@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SCHOOL_MAX_STUDENTS, SCHOOL_MIN_STUDENTS, clampStudents, schoolTotal } from "@/lib/school-pricing";
+import { SCHOOL_CYCLES, SCHOOL_MAX_STUDENTS, SCHOOL_MIN_STUDENTS, clampStudents, monthlyEquivalent, schoolTotal, type SchoolCycle } from "@/lib/school-pricing";
 import { usePlanStore } from "@/stores/usePlanStore";
 import { Progress } from "@/components/ui/progress";
 import WaitlistDialog from "@/components/xplania/WaitlistDialog";
@@ -139,6 +139,7 @@ const PaidPlans = () => {
   const [waitlistSource, setWaitlistSource] = useState<string | undefined>(undefined);
   const [schoolPack, setSchoolPack] = useState<PackDef["id"]>(visiblePacks[0]?.id ?? "admin");
   const [studentsInput, setStudentsInput] = useState("30");
+  const [schoolCycle, setSchoolCycle] = useState<SchoolCycle>("monthly");
 
   const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-US";
   const currency = i18n.language.startsWith("fr") ? "EUR" : "EUR";
@@ -419,9 +420,10 @@ const PaidPlans = () => {
         {visiblePacks.length > 0 && (() => {
           const pack = visiblePacks.find((p) => p.id === schoolPack) ?? visiblePacks[0];
           const students = clampStudents(Number(studentsInput));
-          const unit = pack.prices[billing];
+          const unit = pack.prices[schoolCycle];
           const total = schoolTotal(unit, students);
-          const cycle = t(`offres.billing.${billing}`);
+          const cycle = t(`offres.billing.${schoolCycle}`);
+          const suffix = t(`offres.suffix.${schoolCycle}`);
           return (
             <section id="ecoles" aria-labelledby="schools-title" className="mt-14 scroll-mt-24">
               <div className="text-center mb-6">
@@ -466,15 +468,35 @@ const PaidPlans = () => {
                       className="mt-2 max-w-[10rem]"
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">{t("offres.school.cycleHint", { cycle })}</p>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground mb-2">{t("offres.school.cycleLabel")}</p>
+                    <div className="inline-flex rounded-full bg-muted p-1" role="radiogroup" aria-label={t("offres.school.cycleLabel")}>
+                      {SCHOOL_CYCLES.map((c) => (
+                        <button
+                          key={c}
+                          type="button"
+                          role="radio"
+                          aria-checked={schoolCycle === c}
+                          onClick={() => setSchoolCycle(c)}
+                          className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${schoolCycle === c ? "gradient-button text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          {t(`offres.billing.${c}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 <div className="rounded-xl bg-muted/50 border border-border/50 p-5 flex flex-col">
-                  <p className="text-sm text-muted-foreground">{t("offres.school.unit", { price: formatPrice(unit), suffix: t(`offres.suffix.${billing}`) })}</p>
                   <p className="text-sm text-muted-foreground">{t("offres.school.times", { count: students })}</p>
                   <p className="mt-3 text-xs uppercase tracking-wider text-muted-foreground">{t("offres.school.total")}</p>
                   <p className="text-3xl font-bold text-foreground" aria-live="polite">
-                    {formatPrice(total)}<span className="text-sm font-normal text-muted-foreground">{t(`offres.suffix.${billing}`)}</span>
+                    {formatPrice(total)}<span className="text-sm font-normal text-muted-foreground">{suffix}</span>
                   </p>
+                  <p className="mt-2 text-sm font-semibold text-foreground">{t("offres.school.perStudent", { price: formatPrice(unit), suffix })}</p>
+                  {schoolCycle === "yearly" && (
+                    <p className="text-xs text-muted-foreground">{t("offres.school.perStudentMonthly", { price: formatPrice(monthlyEquivalent(unit)) })}</p>
+                  )}
+                  <p className="mt-1 text-xs text-muted-foreground">{t("offres.school.samePrice")}</p>
                   <ul className="mt-4 space-y-2 flex-1">
                     {["f1", "f2", "f3"].map((fk) => (
                       <li key={fk} className="flex items-start gap-2 text-xs text-foreground">

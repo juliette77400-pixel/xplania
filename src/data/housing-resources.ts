@@ -38,7 +38,7 @@ export const HOUSING_RESOURCES: HousingResource[] = [
   { id: "anil", name: "ANIL / ADIL", url: "https://www.anil.org", category: "institutional", countries: ["FR"] },
 
   // Spain
-  { id: "fotocasa", name: "Fotocasa", url: "https://www.fotocasa.es", category: "platform", countries: ["ES"] },
+  { id: "fotocasa", name: "Fotocasa", url: "https://www.fotocasa.es/es/", category: "platform", countries: ["ES"] },
   { id: "badi", name: "Badi", url: "https://badi.com", category: "flatshare", countries: ["ES"] },
 
   // Germany

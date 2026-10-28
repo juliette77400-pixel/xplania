@@ -197,6 +197,13 @@
       "when": 1793128939129,
       "tag": "0027_housing_hotel_type_and_admin_by_user_id",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1793170719093,
+      "tag": "0028_create_link_checks",
+      "breakpoints": true
     }
   ]
 }

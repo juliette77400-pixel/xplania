@@ -892,7 +892,7 @@
     "errAuth": "Connecte-toi pour générer tes formalités."
   },
   "footer": {
-    "tagline": "Organise ton voyage à l'étranger en amont, sans soucis : budget, visa, valise, culture et logement réunis au même endroit.",
+    "tagline": "Un départ à l'étranger, ça se prépare. Xplania t'aide à organiser ton Erasmus ou ton stage, à anticiper les démarches et à retrouver toutes les informations utiles au même endroit.",
     "version": "Version 0.1 • Bêta",
     "featuresTitle": "Fonctionnalités",
     "contactTitle": "Infos & contacts",
@@ -1419,7 +1419,11 @@
       "cta": "Je représente une école — être contacté·e",
       "waitlistPack": "École — {{pack}} × {{count}} étudiants ({{cycle}})",
       "waitlistTitle": "Parlons de ta promo",
-      "waitlistTeaser": "Laisse ton email : on te recontacte pour mettre en place l'accès de tes étudiants ({{pack}})."
+      "waitlistTeaser": "Laisse ton email : on te recontacte pour mettre en place l'accès de tes étudiants ({{pack}}).",
+      "cycleLabel": "Période",
+      "perStudent": "Coût par étudiant : {{price}}{{suffix}}",
+      "perStudentMonthly": "soit {{price}} par mois et par étudiant",
+      "samePrice": "Tarif identique à l'offre étudiant, sans remise ni supplément."
     }
   },
   "quotaReached": {
@@ -2932,7 +2936,7 @@
     "alertsOver": "Dépassement du budget {{category}} !",
     "alertsHigh": "Prix des {{category}} plus élevés que prévu.",
     "alertsLow": "Tu es en dessous du budget prévu pour {{category}} !",
-    "alertsTipsTitle": "Conseils pour équilibrer ton budget",
+    "alertsTipsTitle": "Optimisations IA",
     "alertsActivities": "Activités gratuites",
     "alertsRestaurants": "Restaurants économiques",
     "alertsTransportAlt": "Alternatives transport",
@@ -3184,7 +3188,16 @@
     "insightsRetry": "Réessayer",
     "dealsNote": "Pistes d'économies durables, avec des prix indicatifs à vérifier. Ce ne sont pas des promotions en cours.",
     "heroNoDestination": "Destination à choisir",
-    "heroChooseDestination": "Indiquer ma destination"
+    "heroChooseDestination": "Indiquer ma destination",
+    "realAlertsTitle": "Alertes budgétaires",
+    "realAlertsNone": "Aucun écart à signaler : tes dépenses restent dans ce que tu as prévu.",
+    "realAlertsMore_one": "+ 1 autre poste à surveiller dans le détail des catégories.",
+    "realAlertsMore_other": "+ {{count}} autres postes à surveiller dans le détail des catégories.",
+    "realAlertsNote": "Calculées à partir de tes montants prévus et payés : elles se mettent à jour toutes seules, sans IA.",
+    "regenerate": "Régénérer",
+    "regenerating": "Nouvelles idées…",
+    "regenerateCost": "Régénérer utilise 1 essai Budget et ne change aucun de tes montants.",
+    "regenerateNoNew": "Pas de nouvelle idée vraiment utile pour ton budget actuel : celles-ci restent les plus pertinentes."
   },
   "gamification": {
     "heroTitle": "Collection de Badges",
@@ -4008,12 +4021,12 @@
     "title": "Tout ce que tu te demandes",
     "subtitle": "Réponses claires aux questions qu'on nous pose le plus souvent.",
     "q1": {
-      "q": "Xplania est gratuit ?",
-      "a": "Oui, pendant la bêta. Les 5 outils sont gratuits, sans carte bancaire ni engagement. Les outils avec IA (Budget, Visa, Valise, Guide interculturel) offrent 10 essais gratuits par mois chacun ; l'Assistant Logement est en accès libre. La page Offres présente les packs prévus ensuite."
+      "q": "Xplania est-il gratuit ?",
+      "a": "Oui ! Pendant la bêta, tu peux préparer ton départ gratuitement, sans carte bancaire. Les outils IA disposent de 10 générations mensuelles gratuites chacun, et l'Assistant Logement est accessible librement. Si ton établissement est partenaire, tu profites de toutes les fonctionnalités avec son accompagnement."
     },
     "q2": {
       "q": "À quoi sert l'IA exactement ?",
-      "a": "À préparer plus vite et mieux : elle estime ton budget, vérifie tes formalités selon ta nationalité, adapte ta valise au climat et rédige les fiches culturelles des pays qui ne sont pas encore prêts. Tout est lié à ta destination, jamais générique."
+      "a": "À personnaliser ta préparation : l'IA tient compte de ta destination, de ta nationalité, de la durée de ton séjour et de tes besoins pour estimer ton budget, lister les formalités à anticiper, adapter ta valise au climat et te donner des conseils culturels. Les règles officielles restent à vérifier sur les sites indiqués."
     },
     "q3": {
       "q": "Mes données sont-elles en sécurité ?",
@@ -4033,7 +4046,7 @@
     },
     "q7": {
       "q": "Qu'est-ce qui est disponible pendant la bêta ?",
-      "a": "Les 5 outils de préparation : Budget, Visa & formalités, Valise, Guide culturel et Assistant Logement, ainsi que ton tableau de bord de progression. Chaque outil IA offre jusqu'à 10 générations gratuites par mois (les fiches culturelles écrites par l'IA comptent avec la Valise). Si l'IA échoue, l'essai t'est rendu. L'Assistant Logement n'utilise pas l'IA et ne consomme aucun essai."
+      "a": "Les 5 outils de préparation (Budget, Visa, Valise, Guide interculturel, Assistant Logement) et ton tableau de bord. Les outils IA offrent 10 générations gratuites par mois chacun ; si l'IA échoue, l'essai t'est rendu. L'Assistant Logement n'utilise pas l'IA."
     },
     "q8": {
       "q": "Xplania a-t-il besoin de ma position ?",
@@ -6395,7 +6408,14 @@
       "note": "Une tendance générale, pas une règle : chaque personne est différente. Nouveau geste chaque jour.",
       "openTheme": "Voir le thème"
     },
-    "enrichNote": "Conseils rédigés par Xplania ; exemples et nuances ajoutés par l'IA, à prendre comme des repères."
+    "enrichNote": "Conseils rédigés par Xplania ; exemples et nuances ajoutés par l'IA, à prendre comme des repères.",
+    "goodToKnow": "Bon à savoir",
+    "whyAndExample": "Pourquoi et exemple",
+    "severity": {
+      "low": "anodin",
+      "medium": "maladroit",
+      "high": "offensant"
+    }
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
@@ -6645,7 +6665,7 @@
       "title": "Prêt à préparer ton départ à l'étranger ?",
       "text": "Erasmus, échange universitaire ou stage : commence à organiser tes préparatifs avec Xplania."
     },
-    "cta": "Je prépare mon départ",
+    "cta": "Préparer mon départ gratuitement",
     "reassurance": "Gratuit pendant la bêta · Sans carte bancaire",
     "demo": {
       "title": "Un séjour. Tes informations. Cinq outils connectés.",
@@ -7693,7 +7713,8 @@
     "finalTitle": "Prépare ton départ {{place}} étape par étape",
     "finalText": "Un questionnaire de 2 minutes, puis 5 outils connectés : budget, visa, valise, culture et logement.",
     "checkedOn": "Liens vérifiés le {{date}}. Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir.",
-    "others": "Autres destinations"
+    "others": "Autres destinations",
+    "rulesChange": "Les règles peuvent changer : vérifie toujours sur les sites officiels avant de partir."
   },
   "accountNeeded": {
     "valise": {
@@ -7711,9 +7732,9 @@
   "landing2": {
     "hero": {
       "badge": "Erasmus · échange · stage à l'étranger",
-      "titleStart": "Ton Erasmus ou ton stage à l'étranger",
-      "titleAccent": "commence ici.",
-      "subtitle": "Visa, budget du premier mois, logement, valise, codes culturels : réponds à 7 questions et repars avec ta to-do de départ. Tu commences sans créer de compte.",
+      "titleStart": "Ton Erasmus ou ton stage à l'étranger,",
+      "titleAccent": "sans le stress des préparatifs.",
+      "subtitle": "Démarches, budget, logement, différences culturelles : préparer son départ peut vite devenir compliqué. Xplania rassemble l'essentiel au même endroit et t'aide à avancer étape par étape, avec des conseils adaptés à ton profil et à ta destination.",
       "where": "Où pars-tu ?",
       "other": "Autre pays",
       "secondary": "Voir un exemple",
@@ -7722,7 +7743,8 @@
       "cardTitle": "Ma to-do de départ",
       "card1": "Pièce d'identité valide tout le séjour",
       "card2": "Budget du premier mois calculé",
-      "card3": "3 logements à comparer"
+      "card3": "3 logements à comparer",
+      "micro": "7 questions pour commencer • Sans création de compte"
     },
     "questions": {
       "kicker": "Avant de partir",
@@ -7774,6 +7796,29 @@
       "title": "Ton départ se prépare maintenant, pas la veille.",
       "text": "Réponds à 7 questions, vois tes priorités, puis avance outil par outil, à ton rythme.",
       "feedback": "Donner mon feedback"
+    },
+    "perso": {
+      "title": "Des conseils qui s'adaptent vraiment à ton voyage.",
+      "text": "Parce que chaque mobilité est différente, Xplania personnalise ta préparation selon ta destination, ta nationalité, la durée de ton séjour et tes besoins. Budget estimé, formalités à anticiper, valise adaptée au climat et conseils culturels : tu avances avec des recommandations utiles pour ton propre départ.",
+      "badges": {
+        "profile": "Adapté à ton profil",
+        "destination": "Personnalisé selon ta destination",
+        "together": "Tout au même endroit"
+      }
+    },
+    "access": {
+      "title": "Ce qui est gratuit pendant la bêta",
+      "partner": {
+        "title": "Étudiants des écoles partenaires",
+        "text": "Pendant la bêta, les étudiants des établissements partenaires utilisent gratuitement toutes les fonctionnalités Xplania, sans carte bancaire, avec l'accompagnement de leur établissement.",
+        "note": "Limite technique actuelle : les mêmes 10 générations IA par mois et par outil que les autres testeurs."
+      },
+      "others": {
+        "title": "Autres bêta-testeurs",
+        "text": "Découvre gratuitement les 5 outils de préparation : Budget, Visa, Valise, Guide interculturel et Assistant Logement, ainsi que ton tableau de bord. Les outils IA proposent jusqu'à 10 générations gratuites par mois et par outil. L'Assistant Logement reste accessible sans crédits.",
+        "note": "Dans un même outil, les différentes générations IA (par exemple l'analyse et les conseils du Budget) utilisent le même compteur. Si l'IA échoue pour une raison technique, l'essai t'est rendu."
+      },
+      "offers": "Voir les conditions détaillées et les futurs abonnements"
     }
   },
   "guestSave": {
@@ -7849,6 +7894,33 @@
     "tip": {
       "error": "Impossible de générer un nouveau conseil pour l'instant. Réessaie dans un moment.",
       "quota": "Tu as utilisé tes essais Valise de ce mois."
+    }
+  },
+  "linkCheck": {
+    "allOk": "Liens testés automatiquement le {{date}} : ils s'ouvrent tous.",
+    "someRecheck_one": "1 lien n'a pas répondu au dernier test automatique : vérification à renouveler.",
+    "someRecheck_other": "{{count}} liens n'ont pas répondu au dernier test automatique : vérification à renouveler.",
+    "someManual_one": "1 site bloque les tests automatiques : il est vérifié à la main.",
+    "someManual_other": "{{count}} sites bloquent les tests automatiques : ils sont vérifiés à la main.",
+    "content": "Contenu des liens relu à la main le {{date}}.",
+    "caveat": "Un lien qui s'ouvre ne garantit pas que les règles n'ont pas changé : vérifie toujours sur le site officiel avant de partir.",
+    "oneOk": "Lien testé le {{date}}",
+    "oneRecheck": "Lien à revérifier",
+    "oneManual": "Site vérifié à la main",
+    "lastOk": "dernier test réussi le {{date}}",
+    "admin": {
+      "title": "Test automatique des liens (chaque jour à 5 h)",
+      "summary": "Dernier passage : {{date}} · {{total}} liens · {{issues}} à revoir · {{manual}} bloquent les robots.",
+      "issues": "À revoir (page introuvable, déplacée ou erreur)",
+      "manual": "Sites qui refusent les robots : à ouvrir toi-même de temps en temps"
+    },
+    "outcome": {
+      "ok": "OK",
+      "moved": "redirigé vers un autre site",
+      "broken": "page introuvable",
+      "blocked": "refuse les robots",
+      "error": "pas de réponse",
+      "pending": "pas encore testé"
     }
   }
 }
