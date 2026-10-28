@@ -8,6 +8,7 @@ import { Globe2,
   Dna, BedDouble,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useDisplayName } from "@/lib/data/profiles";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
@@ -91,6 +92,7 @@ const useMissionsBadge = FEATURE_FLAGS.ENABLE_GAMIFICATION
 
 const AppNavbar = () => {
   const { user, signOut } = useAuth();
+  const displayName = useDisplayName(user?.id);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -187,12 +189,15 @@ const AppNavbar = () => {
                 <Avatar className="h-8 w-8 border border-border">
                   <AvatarImage src={(user.user_metadata as any)?.avatar_url} />
                   <AvatarFallback className="text-xs gradient-button text-primary-foreground">
-                    {(user.email || "X").slice(0, 2).toUpperCase()}
+                    {(displayName || user.email || "X").slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
-                <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">{user.email}</div>
+                <div className="px-2 py-1.5 min-w-0">
+                  {displayName && <p className="truncate text-sm font-semibold text-foreground">{displayName}</p>}
+                  <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/app")} className="cursor-pointer">
                   <LayoutDashboard className="w-4 h-4 mr-2" /> {t("appNav.myAccount")}
