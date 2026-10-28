@@ -230,6 +230,8 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
     enabled: !pre && !!user,
     staleTime: Infinity,
     retry: false,
+    // Already in the list of themes written for this country: shown at once, no request.
+    initialData: () => qc.getQueryData<Record<string, PillarContent>>(["culture-cached", code, lang])?.[pillar],
     queryFn: async () => {
       const { data: cached } = await supabase.from("culture_guide_cache").select("content")
         .eq("country_code", code).eq("pillar", pillar).eq("locale", lang).maybeSingle();
@@ -239,6 +241,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
       if ((error as { context?: { status?: number } } | null)?.context?.status === 402) throw new Error("quota_exceeded");
       if (error || !data?.content) throw error ?? new Error("no content");
       if (!data.cached) qc.invalidateQueries({ queryKey: ["quota"] });
+      qc.invalidateQueries({ queryKey: ["culture-cached", code, lang] });
       return data.content as PillarContent;
     },
   });
@@ -251,6 +254,11 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
     staleTime: Infinity,
     retry: false,
     queryFn: async () => {
+      // Read the shared copy directly when it exists (same key as the server), before waking the function.
+      const key = `enrich:${pillar}:${await sha8(preTips.join("\n"))}`;
+      const { data: cached } = await supabase.from("culture_guide_cache").select("content")
+        .eq("country_code", code).eq("pillar", key).eq("locale", lang).maybeSingle();
+      if (cached) return (cached.content as unknown as { items: { example: string; nuance: string }[] }).items;
       const { data, error } = await supabase.functions.invoke("culture-guide", { body: { kind: "enrich", countryCode: code, pillar, locale: lang, tips: preTips } });
       if (error || !data?.content) throw error ?? new Error("no content");
       return (data.content as { items: { example: string; nuance: string }[] }).items;
@@ -259,7 +267,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
   const content: PillarContent | undefined = pre
     ? (() => {
         const items = enrich.data ?? [];
-        const add = (x: PillarContent["dos"][number], i: number) => (items[i] ? { ...x, example: items[i].example, nuance: items[i].nuance } : x);
+        const add = (x: PillarContent["dos"][number], i: number) => (items[i]?.example ? { ...x, example: items[i].example, nuance: items[i].nuance } : x);
         return { ...pre, dos: pre.dos.map((x, i) => add(x, i)), donts: pre.donts.map((x, i) => add(x, i + pre.dos.length)) };
       })()
     : q.data;
@@ -276,11 +284,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
           <Button asChild><Link to="/auth">{t("culture.login")}</Link></Button>
         </div>
       )}
-      {q.isLoading && (
-        <div className="glass-card rounded-2xl p-6 flex items-center justify-center gap-2 text-muted-foreground" role="status">
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> {t("culture.loading")}
-        </div>
-      )}
+      {q.isLoading && <PillarSkeleton />}
       {q.isError && quotaReached && (
         <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-3">
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
@@ -289,14 +293,16 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
         </div>
       )}
       {q.isError && !quotaReached && (
-        <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
+        <div role="alert" className="glass-card rounded-2xl p-5 text-center space-y-2">
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
-          <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>
-          <p className="text-sm text-muted-foreground">{isAiPause(q.error) ? t("aiPause.message") : t("culture.pillarPending")}</p>
-          <button onClick={() => q.refetch()} className="mt-2 rounded-full border border-border px-4 py-1.5 text-sm text-foreground hover:bg-muted/60">
-            {t("common.retry")}
-          </button>
+          <p className="text-sm text-muted-foreground">{isAiPause(q.error) ? t("aiPause.message") : t("culture.genFailed")}</p>
+          <Button variant="outline" size="sm" className="mt-2" disabled={q.isFetching} onClick={() => q.refetch()}>
+            {q.isFetching && <Loader2 className="mr-1 h-4 w-4 animate-spin" aria-hidden />}{t("common.retry")}
+          </Button>
         </div>
+      )}
+      {pre && enrich.isLoading && (
+        <p role="status" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />{t("culture.enriching")}</p>
       )}
 
       {content && (
