@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useFirstName } from "@/lib/data/profiles";
+import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -222,7 +223,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
 
   const callValiseQa = useCallback(async (payload: Record<string, unknown>) => {
     const invokePromise = supabase.functions.invoke("valise-qa", { body: payload });
-    const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 25000));
+    const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 45000));
     const { data, error } = await Promise.race([invokePromise, timeout]);
     if (error) throw error;
     if (data?.error) throw new Error(data.error);
@@ -575,6 +576,10 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             </div>
           ))}
 
+          {(stage === "qa" || stage === "summary") && history.filter((m) => m.role === "user").length === 0 && !loading && (
+            <AssistantSuggestions items={t("assistant.valise.suggestions", { returnObjects: true }) as string[]} onPick={(q) => { setStage("qa"); void askPip(q); }} />
+          )}
+
           {loading && (
             <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -596,6 +601,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             <Send className="w-4 h-4" />
           </button>
         </form>
+        <div className="px-2 pb-2 bg-background/40"><AssistantQuotaNote tool="valise" /></div>
       </motion.div>
     </AnimatePresence>
   );
