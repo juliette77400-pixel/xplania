@@ -6415,7 +6415,11 @@
       "low": "harmless",
       "medium": "awkward",
       "high": "offensive"
-    }
+    },
+    "loadingFirst": "First time this topic is opened for this country: allow about fifteen seconds. After that it opens instantly, for you and every other student.",
+    "genFailed": "We couldn't prepare this topic. Your try wasn't counted: please try again in a moment.",
+    "enriching": "Adding concrete examples…",
+    "dailyComing": "Today's gesture is on its way… meanwhile, here is a tip written by Xplania."
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."

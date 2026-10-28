@@ -6415,7 +6415,11 @@
       "low": "anodin",
       "medium": "maladroit",
       "high": "offensant"
-    }
+    },
+    "loadingFirst": "Première ouverture de ce thème pour ce pays : compte une quinzaine de secondes. Ensuite, il s'ouvre tout de suite, pour toi comme pour les autres étudiants.",
+    "genFailed": "La préparation de ce thème n'a pas abouti. Ton essai n'a pas été décompté : réessaie dans un instant.",
+    "enriching": "Ajout d'exemples concrets…",
+    "dailyComing": "Le geste du jour arrive… en attendant, voici un repère rédigé par Xplania."
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
