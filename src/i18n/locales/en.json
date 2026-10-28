@@ -1283,6 +1283,21 @@
       "km": "Km traveled",
       "xpToNext": "{{xp}} XP to {{level}}",
       "maxLevel": "Max level reached 🏆"
+    },
+    "name": {
+      "edit": "Edit",
+      "editAria": "Edit your display name",
+      "none": "No name yet",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "Name saved",
+      "saveError": "We couldn't save your name. Please try again.",
+      "help": "This is the name Xplania uses to greet you. Your email address stays the same.",
+      "errors": {
+        "empty": "Type at least one letter.",
+        "tooLong": "{{max}} characters maximum.",
+        "invalid": "Use letters, spaces, hyphens or apostrophes (no < or >)."
+      }
     }
   },
   "notFound": {
