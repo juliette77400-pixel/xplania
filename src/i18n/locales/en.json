@@ -1419,7 +1419,11 @@
       "cta": "I represent a school — get in touch",
       "waitlistPack": "School — {{pack}} × {{count}} students ({{cycle}})",
       "waitlistTitle": "Let's talk about your class",
-      "waitlistTeaser": "Leave your email: we'll get back to you to set up your students' access ({{pack}})."
+      "waitlistTeaser": "Leave your email: we'll get back to you to set up your students' access ({{pack}}).",
+      "cycleLabel": "Period",
+      "perStudent": "Cost per student: {{price}}{{suffix}}",
+      "perStudentMonthly": "i.e. {{price}} per month per student",
+      "samePrice": "Same rate as the student offer, no discount or surcharge."
     }
   },
   "quotaReached": {

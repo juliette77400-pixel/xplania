@@ -1419,7 +1419,11 @@
       "cta": "Je représente une école — être contacté·e",
       "waitlistPack": "École — {{pack}} × {{count}} étudiants ({{cycle}})",
       "waitlistTitle": "Parlons de ta promo",
-      "waitlistTeaser": "Laisse ton email : on te recontacte pour mettre en place l'accès de tes étudiants ({{pack}})."
+      "waitlistTeaser": "Laisse ton email : on te recontacte pour mettre en place l'accès de tes étudiants ({{pack}}).",
+      "cycleLabel": "Période",
+      "perStudent": "Coût par étudiant : {{price}}{{suffix}}",
+      "perStudentMonthly": "soit {{price}} par mois et par étudiant",
+      "samePrice": "Tarif identique à l'offre étudiant, sans remise ni supplément."
     }
   },
   "quotaReached": {
