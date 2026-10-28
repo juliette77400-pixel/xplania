@@ -13,7 +13,7 @@ export const ENTRY_SOURCES_CHECKED_ON = "2026-10-24";
 const SITES: Record<string, EntrySource> = {
   GB: { label: "GOV.UK — Check if you need a UK visa", url: "https://www.gov.uk/check-uk-visa" },
   US: { label: "U.S. Department of State — Visas", url: "https://travel.state.gov/content/travel/en/us-visas.html" },
-  CA: { label: "Gouvernement du Canada — Exigences d'entrée par pays", url: "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/visiter-canada/exigences-entree-pays.html" },
+  CA: { label: "Gouvernement du Canada — Ai-je besoin d'un visa ou d'une AVE ?", url: "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/visiter-canada/verifiez-visa-ave.html" },
   AU: { label: "Australian Government — Visa Finder", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder" },
   NZ: { label: "Immigration New Zealand — Visas", url: "https://www.immigration.govt.nz/new-zealand-visas" },
   JP: { label: "Ministry of Foreign Affairs of Japan — Visa", url: "https://www.mofa.go.jp/j_info/visit/visa/index.html" },
