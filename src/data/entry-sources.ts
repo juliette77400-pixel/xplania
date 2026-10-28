@@ -33,6 +33,9 @@ const SITES: Record<string, EntrySource> = {
   MA: { label: "Royaume du Maroc — Visa", url: "https://www.consulat.ma/fr/visa" },
   TR: { label: "République de Türkiye — e-Visa officiel", url: "https://www.evisa.gov.tr/" },
   IE: { label: "Irish Immigration Service — Studying in Ireland", url: "https://www.irishimmigration.ie/coming-to-study-in-ireland/" },
+  // Added 28 Oct 2026 (the Indonesian site blocks automated checks: opened by hand).
+  ID: { label: "Imigrasi Indonesia — Official e-Visa", url: "https://evisa.imigrasi.go.id/" },
+  ZA: { label: "Department of Home Affairs (South Africa) — Immigration services", url: "https://www.dha.gov.za/index.php/immigration-services" },
 };
 
 const SCHENGEN_EU: EntrySource = {

@@ -73,6 +73,22 @@ export const HOUSING_RESOURCES: HousingResource[] = [
 
   // Australia
   { id: "studyaustralia", name: "Study Australia (Australian Government)", url: "https://www.studyaustralia.gov.au", category: "institutional", countries: ["AU"] },
+
+  // Added 28 Oct 2026 — opened and checked by hand.
+  { id: "studyindenmark", name: "Study in Denmark (gouvernement danois)", url: "https://studyindenmark.dk", category: "institutional", countries: ["DK"] },
+  { id: "studyinsweden", name: "Study in Sweden (Swedish Institute)", url: "https://studyinsweden.se", category: "institutional", countries: ["SE"] },
+  { id: "sssb", name: "SSSB — logements étudiants de Stockholm", url: "https://www.sssb.se", category: "residence", countries: ["SE"] },
+  { id: "studyinnorway", name: "Study in Norway", url: "https://studyinnorway.no", category: "institutional", countries: ["NO"] },
+  { id: "finn", name: "FINN.no", url: "https://www.finn.no", category: "platform", countries: ["NO"] },
+  { id: "studyinaustria", name: "Study in Austria (OeAD)", url: "https://studyinaustria.at/en", category: "institutional", countries: ["AT"] },
+  { id: "oeadhousing", name: "OeAD Student Housing", url: "https://www.oeadstudenthousing.at", category: "residence", countries: ["AT"] },
+  { id: "wgzimmer", name: "WGZimmer.ch", url: "https://www.wgzimmer.ch", category: "flatshare", countries: ["CH"] },
+  { id: "studyinswitzerland", name: "Study in Switzerland (swissuniversities)", url: "https://www.studyinswitzerland.plus", category: "institutional", countries: ["CH"] },
+  { id: "daft", name: "Daft.ie", url: "https://www.daft.ie", category: "platform", countries: ["IE"] },
+  { id: "tenancynz", name: "Tenancy Services (gouvernement néo-zélandais)", url: "https://www.tenancy.govt.nz", category: "institutional", countries: ["NZ"] },
+  { id: "trademe", name: "Trade Me Property", url: "https://www.trademe.co.nz/a/property/residential/rent", category: "platform", countries: ["NZ"] },
+  { id: "studyinkorea", name: "Study in Korea (gouvernement coréen)", url: "https://www.studyinkorea.go.kr", category: "institutional", countries: ["KR"] },
+  { id: "studyinindia", name: "Study in India (gouvernement indien)", url: "https://www.studyinindia.gov.in", category: "institutional", countries: ["IN"] },
 ];
 
 /** Countries where the multi-country European platforms operate (indicative). */

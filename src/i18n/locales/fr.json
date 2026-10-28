@@ -6966,7 +6966,21 @@
         "rtb": "Organisme officiel irlandais des locations : enregistrement des baux et règlement des litiges, y compris sur la caution.",
         "cmhc": "Agence officielle canadienne du logement, avec des guides pour louer.",
         "antifraudca": "Service officiel pour signaler une fraude au Canada, dont les fausses annonces de location.",
-        "esn": "Le réseau européen des étudiants Erasmus (association à but non lucratif). Ses sections locales accueillent les étudiants internationaux et peuvent t'orienter pour ton logement : trouve celle de ta ville d'accueil."
+        "esn": "Le réseau européen des étudiants Erasmus (association à but non lucratif). Ses sections locales accueillent les étudiants internationaux et peuvent t'orienter pour ton logement : trouve celle de ta ville d'accueil.",
+        "studyindenmark": "Site officiel du gouvernement danois pour les étudiants internationaux, avec une rubrique logement.",
+        "studyinsweden": "Site officiel de l'Institut suédois pour étudier en Suède, avec des conseils pour trouver un logement.",
+        "sssb": "Fondation qui gère des logements étudiants à Stockholm (file d'attente : inscris-toi tôt).",
+        "studyinnorway": "Portail officiel pour étudier en Norvège, avec des informations sur le logement étudiant.",
+        "finn": "Principal site d'annonces norvégien, très utilisé pour les locations. Méfie-toi des annonces trop belles.",
+        "studyinaustria": "Portail de l'agence autrichienne pour l'éducation (OeAD) : études, visa et logement.",
+        "oeadhousing": "Logements meublés pour étudiants et chercheurs internationaux en Autriche, proposés par l'OeAD.",
+        "wgzimmer": "Site suisse d'annonces de colocation, très utilisé par les étudiants.",
+        "studyinswitzerland": "Portail des hautes écoles suisses : études, coût de la vie et logement.",
+        "daft": "Principal site d'annonces de location en Irlande. Ne paie jamais avant d'avoir visité.",
+        "tenancynz": "Site officiel sur les droits des locataires : bail, caution (bond) et litiges.",
+        "trademe": "Principal site d'annonces de location en Nouvelle-Zélande.",
+        "studyinkorea": "Portail officiel coréen pour les étudiants internationaux, avec des infos sur la vie et le logement.",
+        "studyinindia": "Portail officiel du gouvernement indien pour les étudiants internationaux."
       }
     },
     "types": {

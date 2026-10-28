@@ -124,6 +124,82 @@ META["/preparer/bresil"] = {
   fr: ["Préparer son Erasmus ou son stage au Brésil — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Brésil, avec les liens officiels."],
   en: ["Preparing your Erasmus or internship in Brazil — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Brazil, with official links."],
 };
+META["/preparer/indonesie"] = {
+  fr: ["Préparer son Erasmus ou son stage en Indonésie — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Indonésie, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Indonesia — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Indonesia, with official links."],
+};
+META["/preparer/coree-du-sud"] = {
+  fr: ["Préparer son Erasmus ou son stage en Corée du Sud — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Corée du Sud, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in South Korea — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in South Korea, with official links."],
+};
+META["/preparer/nouvelle-zelande"] = {
+  fr: ["Préparer son Erasmus ou son stage en Nouvelle-Zélande — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Nouvelle-Zélande, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in New Zealand — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in New Zealand, with official links."],
+};
+META["/preparer/portugal"] = {
+  fr: ["Préparer son Erasmus ou son stage au Portugal — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Portugal, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Portugal — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Portugal, with official links."],
+};
+META["/preparer/chili"] = {
+  fr: ["Préparer son Erasmus ou son stage au Chili — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Chili, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Chile — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Chile, with official links."],
+};
+META["/preparer/argentine"] = {
+  fr: ["Préparer son Erasmus ou son stage en Argentine — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Argentine, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Argentina — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Argentina, with official links."],
+};
+META["/preparer/danemark"] = {
+  fr: ["Préparer son Erasmus ou son stage au Danemark — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Danemark, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Denmark — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Denmark, with official links."],
+};
+META["/preparer/suede"] = {
+  fr: ["Préparer son Erasmus ou son stage en Suède — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Suède, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Sweden — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Sweden, with official links."],
+};
+META["/preparer/italie"] = {
+  fr: ["Préparer son Erasmus ou son stage en Italie — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Italie, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Italy — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Italy, with official links."],
+};
+META["/preparer/hongrie"] = {
+  fr: ["Préparer son Erasmus ou son stage en Hongrie — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Hongrie, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Hungary — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Hungary, with official links."],
+};
+META["/preparer/suisse"] = {
+  fr: ["Préparer son Erasmus ou son stage en Suisse — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Suisse, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Switzerland — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Switzerland, with official links."],
+};
+META["/preparer/norvege"] = {
+  fr: ["Préparer son Erasmus ou son stage en Norvège — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Norvège, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Norway — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Norway, with official links."],
+};
+META["/preparer/grece"] = {
+  fr: ["Préparer son Erasmus ou son stage en Grèce — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Grèce, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Greece — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Greece, with official links."],
+};
+META["/preparer/afrique-du-sud"] = {
+  fr: ["Préparer son Erasmus ou son stage en Afrique du Sud — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Afrique du Sud, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in South Africa — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in South Africa, with official links."],
+};
+META["/preparer/autriche"] = {
+  fr: ["Préparer son Erasmus ou son stage en Autriche — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Autriche, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Austria — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Austria, with official links."],
+};
+META["/preparer/bulgarie"] = {
+  fr: ["Préparer son Erasmus ou son stage en Bulgarie — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Bulgarie, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Bulgaria — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Bulgaria, with official links."],
+};
+META["/preparer/irlande"] = {
+  fr: ["Préparer son Erasmus ou son stage en Irlande — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Irlande, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Ireland — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Ireland, with official links."],
+};
+META["/preparer/perou"] = {
+  fr: ["Préparer son Erasmus ou son stage au Pérou — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage au Pérou, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in Peru — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in Peru, with official links."],
+};
+META["/preparer/inde"] = {
+  fr: ["Préparer son Erasmus ou son stage en Inde — Xplania", "Visa, santé, budget, logement et codes culturels : ce qu'il faut préparer avant ton Erasmus ou ton stage en Inde, avec les liens officiels."],
+  en: ["Preparing your Erasmus or internship in India — Xplania", "Visa, health, budget, housing and cultural codes: what to prepare before your Erasmus or internship in India, with official links."],
+};
 // Pages that manage their own head (public shares, legal).
 export const SELF_MANAGED = [/^\/carnet\/public\//, /^\/suivi\/public\//, /^\/legal/, /^\/mentions-legales/, /^\/politique-de-confidentialite/, /^\/conditions-utilisation/];
 
