@@ -3,7 +3,7 @@
 // no AI, no invented figures. Each page leads to the preparation questionnaire.
 import { Link, Navigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, BedDouble, ExternalLink, FileCheck, Globe2, HeartPulse, MapPin, Wallet } from "lucide-react";
+import { ArrowRight, BedDouble, ExternalLink, FileCheck, Globe2, HeartPulse, MapPin, Palmtree, Wallet } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import Footer from "@/components/xplania/Footer";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,6 +13,8 @@ import { entrySourceFor } from "@/data/entry-sources";
 import { resourcesForCountry } from "@/data/housing-resources";
 import { FREE_MOVEMENT } from "@/lib/visa-rules";
 import { LinkCheckNote } from "@/components/shared/LinkCheckNote";
+import { IslandPoints, islandLinks } from "@/components/shared/IslandNotice";
+import { islandsOf } from "@/data/islands";
 import {
   DESTINATION_PAGES, DESTINATIONS_HUB, LINKS_CHECKED_ON, destinationPath, findDestination,
   franceDiplomatieEntryUrl, pasteurUrl, type DestinationPage,
@@ -72,6 +74,7 @@ const DestinationPrep = () => {
   const en = i18n.language.startsWith("en");
   const lang: "fr" | "en" = en ? "en" : "fr";
   const place = en ? d.inEn : d.inFr;
+  const islands = islandsOf(d.code);
   const name = en ? d.nameEn : d.nameFr;
   const cta = user ? PREPARATION_HOME : SIGNUP;
   const eu = FREE_MOVEMENT.has(d.code);
@@ -151,6 +154,25 @@ const DestinationPrep = () => {
           </Block>
         </div>
 
+        {islands.length > 0 && (
+          <div className="mt-6">
+            <Block icon={Palmtree} title={t("islands.guideTitle")}>
+              <p>{t("islands.guideIntro", { in: place })}</p>
+              {islands.map((isl) => (
+                <div key={isl.id}>
+                  <h3 className="font-semibold text-foreground">{t(`islands.items.${isl.id}.name`)}</h3>
+                  <div className="mt-1"><IslandPoints island={isl} /></div>
+                  <ul className="mt-1 flex flex-wrap gap-x-4">
+                    {islandLinks(isl, "").map((l) => (
+                      <li key={l.url}><a href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">{l.label}<ExternalLink className="h-3 w-3" aria-hidden /></a></li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </Block>
+          </div>
+        )}
+
         <section className="mt-10 rounded-2xl border border-primary/30 bg-primary/10 p-6 text-center">
           <h2 className="text-2xl font-bold">{t("destPages.finalTitle", { place })}</h2>
           <p className="mx-auto mt-2 max-w-xl text-muted-foreground">{t("destPages.finalText")}</p>
@@ -162,7 +184,7 @@ const DestinationPrep = () => {
 
         <LinkCheckNote
           className="mt-8"
-          urls={[franceDiplomatieEntryUrl(d), pasteurUrl(d), ...(entry ? [entry.url] : []), ...housingLinks.map((r) => r.url)]}
+          urls={[...new Set([franceDiplomatieEntryUrl(d), pasteurUrl(d), ...(entry ? [entry.url] : []), ...housingLinks.map((r) => r.url), ...islands.flatMap((i) => i.links.map((l) => l.url))])]}
           contentCheckedOn={d.checkedOn ?? LINKS_CHECKED_ON}
         />
 

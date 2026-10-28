@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
+import IslandNotice from "@/components/shared/IslandNotice";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -494,6 +495,7 @@ const GuideBudgetPage = () => {
 
       <main id="main-content" tabIndex={-1} className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <BudgetHero onGenerate={runGeneration} isGenerating={isGenerating} hasGenerated={hasGenerated} destination={hasDestination ? destination : ""} days={tripData?.duration ? days : null} initialBudget={userBudget} />
+        {hasDestination && <IslandNotice destination={destination} city={tripData?.arrivalCity} className="mt-4" />}
         <MissingTripInfo needs={["budget", "dates"]} />
         <p className="mx-auto mt-3 max-w-3xl rounded-xl border border-border bg-muted/40 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground">
           {t("budget.disclaimerAdjust", { defaultValue: "Ce budget est une estimation que tu peux ajuster à tout moment. Revérifie toujours tes dépenses et les prix réels." })}
