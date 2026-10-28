@@ -204,6 +204,13 @@
       "when": 1793170719093,
       "tag": "0028_create_link_checks",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1793171928978,
+      "tag": "0029_beta_promo_access",
+      "breakpoints": true
     }
   ]
 }

@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { track } from "@/lib/analytics";
 import { authErrorKey } from "@/lib/auth-errors";
+import { PROMO_META_KEY, normalizePromo } from "@/lib/promo-code";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [promo, setPromo] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -57,6 +59,8 @@ const Auth = () => {
           display_name: displayName,
           locale: browserLang(),
           ...(guestAnswers ? { [ACCOUNT_DRAFT_META_KEY]: guestAnswers } : {}),
+          // Checked by the server at the first sign-in; a wrong code gives nothing.
+          ...(normalizePromo(promo) ? { [PROMO_META_KEY]: normalizePromo(promo) } : {}),
         },
       },
     });
@@ -210,6 +214,10 @@ const Auth = () => {
                 <div>
                   <Label htmlFor="pwd-up">{t("auth.password")}</Label>
                   <Input id="pwd-up" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
+                </div>
+                <div>
+                  <Label htmlFor="promo-up">{t("promo.labelOptional")}</Label>
+                  <Input id="promo-up" type="text" autoComplete="off" maxLength={40} value={promo} onChange={(e) => setPromo(e.target.value)} />
                 </div>
                 <Button type="submit" disabled={loading} className="w-full">
                   {t("auth.signUpCta")} <ArrowRight className="w-4 h-4" />
