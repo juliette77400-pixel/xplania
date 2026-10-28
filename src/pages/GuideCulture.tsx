@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { isAiPause } from "@/lib/ai-pause";
 import { useAuth } from "@/hooks/useAuth";
-import { countryList, getCountryName } from "@/lib/countries";
+import { countryList, getCountryNameIn } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import { localDateFor } from "@/lib/country-timezone";
@@ -72,16 +72,28 @@ export default function GuideCulture() {
     return n;
   });
 
-  const countryName = code ? getCountryName(code) : "";
+  const countryName = code ? getCountryNameIn(code, lang) : "";
   const featured = code ? FEATURED_COUNTRIES.includes(code) : false;
   const pathPillars = CULTURE_PATHS[path];
   const doneCount = code ? pathPillars.filter((p) => done[`${code}:${p}`]).length : 0;
+  // Every theme already written for this country, in one request: opening one of them is instant.
+  const { user } = useAuth();
+  const cachedPillars = useQuery({
+    queryKey: ["culture-cached", code, lang],
+    enabled: !!code && !!user,
+    staleTime: 5 * 60_000,
+    queryFn: async () => {
+      const { data } = await supabase.from("culture_guide_cache").select("pillar, content")
+        .eq("country_code", code!).eq("locale", lang).in("pillar", CULTURE_PILLARS.map((p) => p.id));
+      return Object.fromEntries((data ?? []).map((r) => [r.pillar, r.content as unknown as PillarContent])) as Record<string, PillarContent>;
+    },
+  });
   const pillarCard = (id: PillarId) => (
     <button key={id} onClick={() => setPillar(id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">
       <span className="text-2xl" aria-hidden>{EMOJI[id]}</span>
       <p className="mt-2 text-sm font-semibold text-foreground">{t(`culture.pillars.${id}`)}</p>
       <p className="text-[11px] text-muted-foreground mt-1">
-        {done[`${code}:${id}`] ? `✓ ${t("culture.understood")}` : hasPrewritten(code!, id) ? t("culture.readySheet") : t("culture.aiSheet")}
+        {done[`${code}:${id}`] ? `✓ ${t("culture.understood")}` : hasPrewritten(code!, id) || cachedPillars.data?.[id] ? t("culture.readySheet") : t("culture.aiSheet")}
       </p>
     </button>
   );
