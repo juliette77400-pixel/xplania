@@ -1,26 +1,31 @@
 # Xplania
 
-> Web app that helps people going abroad (Erasmus, internship, exchange, trip) organise their departure ahead of time, without hassle: budget, visa, packing, cultural codes and housing in one place. French and English. Free during the beta.
+> Web app for students going abroad for an Erasmus, an exchange or an internship. It helps them prepare their departure: first-month budget, visa and paperwork, housing, packing list and cultural codes, in one place. French and English. Free during the beta.
 
-Xplania brings together four preparation tools around a single trip: a budget guide, a visa & paperwork guide, a smart packing list and a cultural immersion guide. A dashboard shows progress in each tool before departure.
+Xplania starts with a 2-minute questionnaire (no account needed) that shows the student's 3 priorities right away. The answers then feed five connected preparation tools — Budget, Visa & paperwork, Packing list, Culture guide and Housing assistant — and a dashboard that shows the next step and what is left to prepare. Public country guides cover 29 destinations with official links (France Diplomatie, Institut Pasteur, official entry sites).
+
+Xplania does not sell flights, hotels or tours, and does not publish housing listings.
 
 ## Pages
 
-- [Intro](/): Overview of the 4 preparation steps (entry point).
-- [Home](/home): Product overview, the 4 tools, FAQ and signup.
-- [Budget guide](/guide-budget): Realistic budget for the stay in 3 scenarios, planned-expense tracking and saving tips.
-- [Visa & paperwork guide](/guide-visa): Visa formalities, vaccines and safety advice synthesized from official sources (France Diplomatie, Institut Pasteur, WHO), with a document checklist.
-- [Culture guide](/guide-culture): Cultural codes of the destination country (dress, food etiquette, gestures, greetings), real-life situations and mini-quiz.
-- [Offers](/offres): 10 free tries per tool each month, then the Admin pack (budget, visa, packing) or the Intercultural pack.
-- [About](/a-propos): Why Xplania exists and who builds it.
-- [Trust & security](/securite): How Xplania protects user data and security contact.
+- [Home](/): What Xplania does, the questions students ask before leaving, an example of the 3 priorities, FAQ.
+- [Questionnaire](/preparation): 7 questions about the stay (destination, origin, type of stay, dates, budget, housing); open to visitors.
+- [Country guides](/preparer): Visa, health, budget, housing and cultural codes for 29 destinations, with islands and overseas territories (Canary Islands, Réunion…).
+- [Budget guide](/guide-budget): First-month budget, monthly costs and income, margin, saving tips. Usable without an account.
+- [Visa & paperwork guide](/guide-visa): Formalities for the student's nationality, summarized from official sources with the consultation date, and a checklist. Usable without an account.
+- [Culture guide](/guide-culture): Cultural codes of the destination (greetings, social life, studies and work), hand-written for most guide countries. Usable without an account.
+- [Packing list](/guide-valise): List based on the usual weather of the months on site, the type of stay and the luggage. Account required (choices are saved).
+- [Housing assistant](/guide-logement): Hand-checked places to search, comparator, anti-scam checks, link with the Budget. Account required.
+- [Offers](/offres): Free beta (10 AI tries per tool each month); student packs and school pricing (student price × number of students), payments not active yet.
+- [About](/a-propos): Why Xplania exists and who builds it (Juliette Noël, founder).
+- [Trust & security](/securite): How Xplania protects user data.
 
 ## Legal
 
-- [Privacy policy](/politique-de-confidentialite): What data is collected and how it is used.
-- [Terms of use](/conditions-utilisation): Rules for using the service.
-- [Legal notice](/mentions-legales): Publisher and hosting information.
+- [Privacy policy](/politique-de-confidentialite)
+- [Terms of use](/conditions-utilisation)
+- [Legal notice](/mentions-legales)
 
 ## Full description
 
-- [llms-full.txt](/llms-full.txt): Detailed description of every tool, access and FAQ.
+- [llms-full.txt](/llms-full.txt): Detailed description of every tool, access rules and FAQ.
