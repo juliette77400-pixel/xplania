@@ -1,3 +1,4 @@
+import { frIn } from "@/lib/fr-place";
 /**
  * Destination cost-of-living multipliers for budget AI suggestions.
  * Values are relative to a baseline of 1.0 (≈ Paris / Western Europe).
@@ -478,15 +479,15 @@ export const buildAdjustmentExplanation = (
   }
   switch (category) {
     case "accommodation":
-      return `Basé sur des hébergements milieu de gamme à ${destination} (~${profile.hotelNight} €/nuit) sur ${days} jour${days > 1 ? "s" : ""}.`;
+      return `Basé sur des hébergements milieu de gamme ${frIn(destination)} (~${profile.hotelNight} €/nuit) sur ${days} jour${days > 1 ? "s" : ""}.`;
     case "localTransport":
-      return `Les transports locaux à ${destination} coûtent ~${profile.transitDay} €/jour en ${month}.`;
+      return `Les transports locaux ${frIn(destination)} coûtent ~${profile.transitDay} €/jour en ${month}.`;
     case "food":
-      return `Le repas moyen à ${destination} tourne autour de ${profile.mealCost} € — calibré pour ${days} jour${days > 1 ? "s" : ""}.`;
+      return `Le repas moyen ${frIn(destination)} tourne autour de ${profile.mealCost} € — calibré pour ${days} jour${days > 1 ? "s" : ""}.`;
     case "activities":
-      return `Ajusté aux tarifs habituels d'activités à ${destination} (${month}).`;
+      return `Ajusté aux tarifs habituels d'activités ${frIn(destination)} (${month}).`;
     default:
-      return `Ajusté aux prix moyens à ${destination} en ${month}.`;
+      return `Ajusté aux prix moyens ${frIn(destination)} en ${month}.`;
   }
 };
 

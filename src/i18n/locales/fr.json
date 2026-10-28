@@ -738,7 +738,7 @@
       "officialCta": "Fiche officielle France-Diplomatie",
       "opensNewTab": "ouvre dans un nouvel onglet",
       "disclaimer": "Vérifie toujours la fiche officielle de ta destination avant de partir, les niveaux peuvent évoluer rapidement.",
-      "disclaimerWithDest": "Vérifie la fiche officielle de {{destination}} sur diplomatie.gouv.fr — les niveaux peuvent évoluer.",
+      "disclaimerWithDest": "Vérifie la fiche officielle {{destination, de}} sur diplomatie.gouv.fr — les niveaux peuvent évoluer.",
       "levels": [
         {
           "label": "🟢 Niveau 1 — Vigilance normale",
@@ -811,7 +811,7 @@
       "levels": {
         "1": {
           "label": "🟢 Niveau 1 — Vigilance normale",
-          "summary": "Selon les autorités françaises, {{destination}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant comme partout."
+          "summary": "Selon les autorités françaises, un séjour {{destination, en}} ne présente pas de risques particuliers pour les voyageurs. Reste vigilant comme partout."
         },
         "2": {
           "label": "🟡 Niveau 2 — Vigilance renforcée",
@@ -819,11 +819,11 @@
         },
         "3": {
           "label": "🟠 Niveau 3 — Déconseillé sauf raison impérative",
-          "summary": "Selon les autorités françaises, {{destination}} est déconseillé sauf raison impérative. Vérifie la fiche officielle avant tout déplacement."
+          "summary": "Selon les autorités françaises, les déplacements {{destination, en}} sont déconseillés sauf raison impérative. Vérifie la fiche officielle avant tout déplacement."
         },
         "4": {
           "label": "🔴 Niveau 4 — Formellement déconseillé",
-          "summary": "Selon les autorités françaises, il est formellement déconseillé de se rendre à {{destination}}."
+          "summary": "Selon les autorités françaises, il est formellement déconseillé de se rendre {{destination, en}}."
         }
       },
       "solo": {
@@ -1325,7 +1325,7 @@
   },
   "index": {
     "openJournal": "📔 Ouvrir mon Carnet",
-    "tripTitle": "Voyage à {{destination}}"
+    "tripTitle": "Voyage {{destination, en}}"
   },
   "offres": {
     "back": "Retour à l'accueil",
@@ -1830,7 +1830,7 @@
       "labelDates": "Dates",
       "labelTraveler": "Voyageur",
       "secWeather": "Météo en temps réel",
-      "secPhotos": "Photos de {{place}}",
+      "secPhotos": "Photos {{place, de}}",
       "secPhotosSub": "Images réelles via Unsplash",
       "secCulture": "Guide culturel local",
       "tipsCount_one": "{{count}} conseil",
@@ -1965,7 +1965,7 @@
       "sectionHelp": {
         "timeline": "Tu es sur les pages chronologiques. Clique un jour à gauche puis ajoute des blocs : note, photo, lieu, humeur, audio, moment fort. Plus tu remplis, plus ton carnet {{destination, pour}} prend vie.",
         "story": "Ici, l'IA transforme tes blocs en un vrai récit de voyage. Choisis un ton, laisse l'IA décider, ou utilise « Mon style » qui imite ton écriture.",
-        "insights": "Tes stats et badges sur {{destination}} : top lieux, humeurs dominantes, journée la plus heureuse. Ajoute plus de blocs pour débloquer plus de badges.",
+        "insights": "Tes stats et badges {{destination, en}} : top lieux, humeurs dominantes, journée la plus heureuse. Ajoute plus de blocs pour débloquer plus de badges.",
         "docs": "Épingle billets, PDF et reçus à un jour précis du carnet. Tu retrouves tout ce qui compte au bon endroit, au bon moment.",
         "share": "Active le lien public, génère des cartes Instagram 1080×1920 ou exporte ton carnet en PDF pour le garder à vie."
       }
@@ -1979,10 +1979,10 @@
       "greeting": "Salut {{name}} ! 👋 Je suis Ping, ton compagnon de carnet {{destination, pour}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
       "greetingNoName": "Salut ! 👋 Je suis Ping, ton compagnon de carnet {{destination, pour}}. Tu veux des idées de souvenirs, un coup de main pour générer ton récit, ou tu cherches une fonctionnalité ? Je suis là.",
       "greetings": [
-        "Hey {{name}} ! 📖 C'est Ping. Prêt à donner vie à ton carnet de {{destination}} ? Demande-moi tout.",
+        "Hey {{name}} ! 📖 C'est Ping. Prêt à donner vie à ton carnet {{destination, de}} ? Demande-moi tout.",
         "Salut {{name}} ! ✨ Moi c'est Ping, ton compagnon de carnet. Tu sais pas quoi noter aujourd'hui {{destination, pour}} ? Je t'aide.",
         "Coucou {{name}} 🌍 Ping à l'appareil. Une question sur ton récit, tes photos, ton partage ? Lâche tout.",
-        "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble comment rendre ton carnet de {{destination}} inoubliable ?",
+        "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble comment rendre ton carnet {{destination, de}} inoubliable ?",
         "Hello {{name}} ! 👋 Ping ici. Idée de bloc, prompt d'écriture, export PDF — pose-moi la question."
       ],
       "emptyState": "Pose n'importe quelle question sur ton carnet {{destination, pour}} — quoi noter, comment générer ton récit, comment partager, comment épingler un document… Je connais ton carnet en détail.",
@@ -2710,13 +2710,13 @@
     "voyageStandard": "Standard",
     "shareDialogTitle": "Partager ce voyage",
     "shareDialogDesc": "Envoie le résumé de ta préparation (valise, budget, formalités) à tes compagnons de voyage.",
-    "shareMessage": "🌍 Ma préparation pour {{destination}} ({{days}} jours) sur Xplania : valise, budget et formalités au même endroit. {{url}}",
+    "shareMessage": "🌍 Ma préparation {{destination, pour}} ({{days}} jours) sur Xplania : valise, budget et formalités au même endroit. {{url}}",
     "shareCopy": "Copier",
     "shareCopied": "Copié !",
     "shareCopyToast": "Lien copié 📋",
     "shareNative": "Partager",
     "shareEmail": "Email",
-    "shareEmailSubject": "Mon voyage à {{destination}}",
+    "shareEmailSubject": "Mon voyage {{destination, en}}",
     "shareWhatsApp": "WhatsApp",
     "activitiesItemsCount_other": "{{count}} objets",
     "activitiesToastAdded_other": "{{count}} objets ajoutés à ta valise",
@@ -2820,7 +2820,7 @@
     "discoverFeatures": "Voir mes 5 outils de préparation",
     "missing": {
       "title": "Ce qui manque peut-être",
-      "subtitle": "L'IA compare ta valise à ton voyage à {{destination}}.",
+      "subtitle": "L'IA compare ta valise à ton voyage {{destination, en}}.",
       "check": "Vérifier ma valise",
       "recheck": "Revérifier",
       "essential": "Indispensable",
@@ -3085,19 +3085,19 @@
     "chartsPlannedVsSpent": "Prévu vs Dépensé",
     "chartsAiNoData": "Ajoute tes premières dépenses pour activer la prévision IA.",
     "savingTipsTitle": "Astuces d'économie locales",
-    "savingTipsSubtitle": "Conseils IA spécifiques à {{destination}}",
+    "savingTipsSubtitle": "Conseils IA {{destination, pour}}",
     "savingTipsRefresh": "Rafraîchir",
     "savingTipsError": "Impossible de charger les astuces pour l'instant. Réessaie.",
     "savingTipsEmpty": "Aucune astuce disponible.",
     "savingTipsFallback": {
       "transportTitle": "Regarde les passes locaux",
-      "transportBody": "À {{destination}}, compare toujours le pass transport à la journée ou à la semaine avant d'acheter des tickets à l'unité.",
+      "transportBody": "Sur place, compare toujours le pass transport à la journée ou à la semaine avant d'acheter des tickets à l'unité.",
       "foodTitle": "Mange là où la ville vit",
-      "foodBody": "Cherche les marchés, boulangeries et petites cantines de quartier de {{destination}} plutôt que les rues collées aux monuments.",
+      "foodBody": "Cherche les marchés, boulangeries et petites cantines de quartier {{destination, de}} plutôt que les rues collées aux monuments.",
       "activitiesTitle": "Bloque les créneaux gratuits",
-      "activitiesBody": "Avant de réserver, vérifie les musées, points de vue, parcs et visites gratuites de {{destination}} : ils remplissent souvent une demi-journée sans toucher au budget.",
+      "activitiesBody": "Avant de réserver, vérifie les musées, points de vue, parcs et visites gratuites {{destination, de}} : ils remplissent souvent une demi-journée sans toucher au budget.",
       "extrasTitle": "Garde une vraie marge",
-      "extrasBody": "Mets de côté une petite enveloppe pour imprévus à {{destination}} afin d'éviter de rogner sur les repas ou les activités importantes."
+      "extrasBody": "Mets de côté une petite enveloppe pour imprévus {{destination, en}} afin d'éviter de rogner sur les repas ou les activités importantes."
     },
     "onboarding": {
       "title": "Ping, ton copilote budget",
@@ -3125,7 +3125,7 @@
         "forecast": "Tu es dans le prévisionnel : clique sur un montant de ligne pour l'ajuster, ou accepte une suggestion IA si elle colle mieux à ton voyage.",
         "tracker": "Ici, tu compares ton budget prévu avec tes dépenses réelles. Ajoute une dépense et le restant se recalculera automatiquement.",
         "charts": "Ces graphiques transforment tes dépenses en tendances : prévu vs dépensé, rythme quotidien et risque de dépassement.",
-        "tips": "Ces astuces sont liées à {{destination}} et à ton budget actuel. Tu peux les relancer si tu modifies fortement ton budget."
+        "tips": "Ces astuces sont liées {{destination, a}} et à ton budget actuel. Tu peux les relancer si tu modifies fortement ton budget."
       },
       "regenerate": "Relancer la génération",
       "gotIt": "C'est parti !",
@@ -3144,10 +3144,10 @@
       "greetingNoName": "Salut ! 👋 Je suis Ping, ton copilote de voyage {{destination, pour}}. Tu as des questions sur ton budget, des doutes sur tes dépenses, ou tu veux juste un conseil ? Je suis là !",
       "greetings": [
         "Hey {{name}} ! 👋 C'est Ping. Prêt à parler budget {{destination, pour}} ? Pose-moi tout ce qui te trotte dans la tête.",
-        "Salut {{name}} ! ✈️ Moi c'est Ping, ton copilote voyage. Tu te demandes si ton budget {{destination}} tient la route ? Je suis là pour t'aider.",
-        "Coucou {{name}} 🌍 Ping à l'appareil. Un doute sur une dépense, une envie de tips locaux à {{destination}} ? Lâche tout.",
+        "Salut {{name}} ! ✈️ Moi c'est Ping, ton copilote voyage. Tu te demandes si ton budget {{destination, pour}} tient la route ? Je suis là pour t'aider.",
+        "Coucou {{name}} 🌍 Ping à l'appareil. Un doute sur une dépense, une envie de tips locaux {{destination, en}} ? Lâche tout.",
         "Yo {{name}} ! 😎 C'est Ping. On regarde ensemble ton budget {{destination, pour}} ? Dis-moi ce qui te tracasse.",
-        "Hello {{name}} ! 👋 Ping ici. Que ce soit ton resto, ton transport ou ton hébergement à {{destination}}, je suis là pour t'aiguiller."
+        "Hello {{name}} ! 👋 Ping ici. Que ce soit ton resto, ton transport ou ton hébergement {{destination, en}}, je suis là pour t'aiguiller."
       ],
       "emptyState": "Pose n'importe quelle question sur ton budget {{destination, pour}} — hébergement, repas, transport, dépassements… Je m'appuie sur les données de ton voyage actuel.",
       "errorAnswer": "Je n'ai pas pu répondre pour l'instant. Réessaie dans un instant.",
@@ -3746,7 +3746,7 @@
       "save": "Enregistrer",
       "saving": "Enregistrement…",
       "success": "Ajouté au carnet ✨",
-      "successDetail": "Ajouté au carnet de {{destination}} : {{emoji}} {{mood}} ({{count}} lieux)",
+      "successDetail": "Ajouté au carnet {{destination, de}} : {{emoji}} {{mood}} ({{count}} lieux)",
       "journalFallback": "carnet",
       "error": "Impossible d'ajouter au carnet",
       "errorDesc": "Vérifie ta connexion et réessaie.",
@@ -3869,7 +3869,7 @@
       "noShare": "Active le partage ci-dessus pour générer ton QR code et ton lien public.",
       "linkCopied": "Lien copié dans le presse-papier",
       "shareTitle": "Suis mon voyage{{dest}} en direct",
-      "shareDest": " à {{destination}}",
+      "shareDest": " {{destination, en}}",
       "shareText": "Suis ma position et mon itinéraire en temps réel sur Xplania ✨"
     },
     "addedTitle": "✨ \"{{title}}\" ajouté à ton carnet",
@@ -3987,10 +3987,10 @@
       "emailSubject": "Mon carnet de voyage — {{title}}",
       "emailBody": "Salut !\n\nJ'ai envie de partager avec toi mon carnet de voyage{{dest}}.\n\nDécouvre-le ici : {{url}}\n\nÀ très vite !",
       "linkPlaceholder": "(lien à activer)",
-      "shareText": "Mon carnet de voyage à {{destination}}",
+      "shareText": "Mon carnet de voyage {{destination, en}}",
       "pdfMemories": "{{count}} jour de souvenirs",
       "pdfMemoriesPlural": "{{count}} jours de souvenirs",
-      "pdfTripTo": "Voyage à {{destination}}",
+      "pdfTripTo": "Voyage {{destination, en}}",
       "pdfMoodLabel": "Humeur: {{emoji}} {{score}}/5",
       "pdfPhotoCaption": "(photo)",
       "pdfFooter": "Carnet généré avec Xplania · {{date}}"
@@ -4230,7 +4230,7 @@
     "downloadBtn": "Télécharger PNG",
     "downloaded": "Carte téléchargée 🎴",
     "pngFail": "Échec génération PNG",
-    "shareTitle": "Mon voyage {{destination}}",
+    "shareTitle": "Mon voyage {{destination, en}}",
     "shareText": "{{pts}} pts sur Xplania ✨",
     "linkCopied": "Lien copié"
   },
@@ -5103,7 +5103,7 @@
     "ShareExport": {
       "memories_one": "{{count}} jour de souvenirs",
       "memories_other": "{{count}} jours de souvenirs",
-      "pdfTripLine": "Voyage à {{destination}}",
+      "pdfTripLine": "Voyage {{destination, en}}",
       "exportPdfHeading": "Exporter en PDF",
       "exportPdfSubtitle": "Crée un livre souvenir de ton voyage, prêt à imprimer ou à archiver.",
       "moodLine": "Humeur : {{emoji}} {{score}}/5",
@@ -6497,7 +6497,7 @@
       },
       "countryGuide": {
         "title": "Guide par pays",
-        "desc": "Formalités, santé, logement et codes culturels : {{place}}.",
+        "desc": "Formalités, santé, logement et codes culturels {{place, en}}.",
         "descAll": "Formalités, santé, logement et codes culturels, pays par pays."
       }
     },
@@ -6563,7 +6563,7 @@
       "trip": "Voyage"
     },
     "submit": "Créer mon voyage",
-    "created": "Ton voyage {{destination}} est prêt à être préparé !"
+    "created": "Ton voyage {{destination, en}} est prêt à être préparé !"
   },
   "betaOffer": {
     "tag": "Bêta gratuite",
@@ -6828,7 +6828,7 @@
     },
     "preview": {
       "kicker": "Ton aperçu personnalisé",
-      "title": "Tes 3 priorités pour ton départ : {{country}}",
+      "title": "Tes 3 priorités pour ton départ {{country, en}}",
       "countdown_one": "Départ dans {{count}} jour",
       "countdown_other": "Départ dans {{count}} jours",
       "priority": "Priorité {{n}}",
@@ -6921,7 +6921,7 @@
     "resources": {
       "schoolTitle": "Le premier réflexe : ton établissement d'accueil",
       "schoolDesc": "Le service international ou le service logement de ton université ou de ton entreprise d'accueil connaît les résidences partenaires et les solutions locales. Écris-leur dès que possible.",
-      "none": "Xplania n'a pas encore de ressources vérifiées pour {{country}}. Contacte le service international ou logement de ton établissement d'accueil : c'est la source la plus fiable.",
+      "none": "Xplania n'a pas encore de ressources vérifiées {{country, pour}}. Contacte le service international ou logement de ton établissement d'accueil : c'est la source la plus fiable.",
       "yourCountry": "ta destination",
       "scopeEurope": "Plusieurs pays d'Europe",
       "open": "Ouvrir le site",
@@ -7287,7 +7287,7 @@
   },
   "visa2": {
     "toolName": "Visa & formalités",
-    "titleFor": "Tes formalités pour {{destination}}",
+    "titleFor": "Tes formalités {{destination, pour}}",
     "subtitle": "Ce qu'il te faut pour partir l'esprit tranquille : quatre cartes, puis ta checklist. Chaque info te dit d'où elle vient et quand elle a été vérifiée.",
     "yourDestination": "ta destination",
     "opensNewTab": "(s'ouvre dans un nouvel onglet)",
@@ -7642,7 +7642,7 @@
       }
     },
     "climate": {
-      "title": "Le temps habituel à {{city}} pendant ton séjour",
+      "title": "Le temps habituel {{city, en}} pendant ton séjour",
       "subtitle": "Températures minimales / maximales moyennes et jours de pluie, mois par mois.",
       "noDates": "Sans dates de séjour : les 3 prochains mois. Ajoute tes dates pour un résultat précis.",
       "loading": "Recherche des températures…",
@@ -7758,7 +7758,7 @@
     "free": "Gratuit pendant la bêta · Sans carte bancaire",
     "newTab": "(s'ouvre dans un nouvel onglet)",
     "visaTitle": "Visa et formalités",
-    "visaEu": "Si tu es citoyen·ne de l'Union européenne, de l'EEE ou de Suisse, tu n'as pas besoin de visa pour étudier ou faire un stage {{place}} : une carte d'identité ou un passeport valide suffit. Une démarche d'enregistrement peut être demandée pour un séjour de plus de 3 mois. Pour une autre nationalité, les règles sont différentes : vérifie-les sur les sites officiels.",
+    "visaEu": "Si tu es citoyen de l'Union européenne, de l'EEE ou de Suisse, tu n'as pas besoin de visa pour étudier ou faire un stage {{place}} : une carte d'identité ou un passeport valide suffit. Une démarche d'enregistrement peut être demandée pour un séjour de plus de 3 mois. Pour une autre nationalité, les règles sont différentes : vérifie-les sur les sites officiels.",
     "visaOther": "Les règles d'entrée pour étudier ou faire un stage {{place}} dépendent de ta nationalité, de la durée du séjour et de son type. Ne te fie qu'aux sites officiels :",
     "franceDiplomatie": "France Diplomatie — Entrée / séjour",
     "forFrench": "pour les ressortissants français",
@@ -7953,7 +7953,7 @@
     },
     "transportSaved": "Transport enregistré pour ce séjour",
     "weather": {
-      "title": "Météo à {{place}} maintenant",
+      "title": "Météo {{place, en}} maintenant",
       "subtitle": "Mesures réelles d'une station météo, pas une estimation de l'IA.",
       "now": "Température actuelle",
       "feels": "Ressenti {{t}}°",
@@ -8037,7 +8037,7 @@
     },
     "culture": {
       "title": "Assistant Culture",
-      "greeting": "Une question sur les usages en {{country}} ? Je t'explique les habitudes locales, en restant sur des tendances : chaque personne est différente.",
+      "greeting": "Une question sur les usages {{country, en}} ? Je t'explique les habitudes locales, en restant sur des tendances : chaque personne est différente.",
       "suggestions": [
         "Comment saluer les habitants ?",
         "Quelles erreurs culturelles éviter ?",

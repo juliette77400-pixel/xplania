@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import IslandNotice from "@/components/shared/IslandNotice";
+import { frFor } from "@/lib/fr-place";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -140,7 +141,7 @@ const GuideBudgetPage = () => {
       if (!r) return c;
       const line = locale === "en"
         ? `AI scenarios for ${destination}: economy ~€${amt("economy")} · realistic ~€${r} · comfort ~€${amt("comfort")}. The realistic one is the best value.`
-        : `Scénarios IA pour ${destination} : éco ~${amt("economy")} € · réaliste ~${r} € · confort ~${amt("comfort")} €. Le réaliste offre le meilleur rapport qualité-prix.`;
+        : `Scénarios IA ${frFor(destination)} : éco ~${amt("economy")} € · réaliste ~${r} € · confort ~${amt("comfort")} €. Le réaliste offre le meilleur rapport qualité-prix.`;
       return { ...c, aiSuggested: r, aiExplanation: line };
     }));
   }, [insights.data, locale, destination]);
