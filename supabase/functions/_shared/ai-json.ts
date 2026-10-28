@@ -2,7 +2,7 @@
 // Responses API (streamed, so long reasoning runs don't hit request timeouts).
 // deno-lint-ignore-file no-explicit-any
 
-import { aiUnavailableResponse, isAiCreditBlock } from "./ai-unavailable.ts";
+import { creditBlockResponse } from "./ai-unavailable.ts";
 
 export class AiHttpError extends Error {
   constructor(public status: number, message: string, public body = "") {
@@ -82,7 +82,8 @@ export async function generateJson<T = any>(opts: {
 export function aiErrorResponse(e: unknown, cors: Record<string, string>): Response | null {
   if (!(e instanceof AiHttpError)) return null;
   // Workspace out of AI credits: never a 402, which means "student out of tries".
-  if (isAiCreditBlock(e.status, e.body)) return aiUnavailableResponse(cors);
+  const blocked = creditBlockResponse(e.status, e.body, cors);
+  if (blocked) return blocked;
   const status = [403, 429].includes(e.status) ? e.status : 500;
   const msg = status === 429
     ? "Trop de requêtes, réessaie dans quelques instants."

@@ -18,3 +18,8 @@ export function aiUnavailableResponse(cors: Record<string, string>): Response {
     headers: { ...cors, "Content-Type": "application/json" },
   });
 }
+
+/** The response to send when the gateway refused for credits, or null for any other error. */
+export function creditBlockResponse(status: number, body: string, cors: Record<string, string>): Response | null {
+  return isAiCreditBlock(status, body) ? aiUnavailableResponse(cors) : null;
+}

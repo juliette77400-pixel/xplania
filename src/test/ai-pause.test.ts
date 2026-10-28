@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { AiHttpError, aiErrorResponse } from "../../supabase/functions/_shared/ai-json.ts";
-import { isAiCreditBlock } from "../../supabase/functions/_shared/ai-unavailable.ts";
+import { creditBlockResponse, isAiCreditBlock } from "../../supabase/functions/_shared/ai-unavailable.ts";
 import { isAiPause, markAiPause } from "@/lib/ai-pause";
 
 const cors = { "Access-Control-Allow-Origin": "*" };
@@ -8,18 +7,18 @@ const httpError = (status: number, body: unknown) => ({ name: "FunctionsHttpErro
 
 describe("AI credits run out (workspace), not the student's tries", () => {
   it("a gateway 402 becomes a 503 ai_unavailable, never a 402", async () => {
-    const res = aiErrorResponse(new AiHttpError(402, "no credits"), cors)!;
+    const res = creditBlockResponse(402, "no credits", cors)!;
     expect(res.status).toBe(503);
     expect(await res.json()).toMatchObject({ code: "ai_unavailable" });
   });
 
   it("a 403 workspace credit limit is treated the same way", () => {
     expect(isAiCreditBlock(403, '{"type":"credit_limit_reached"}')).toBe(true);
-    expect(aiErrorResponse(new AiHttpError(403, "x", '{"type":"credit_limit_reached"}'), cors)!.status).toBe(503);
+    expect(creditBlockResponse(403, '{"type":"credit_limit_reached"}', cors)!.status).toBe(503);
   });
 
-  it("other 403 refusals keep their status", () => {
-    expect(aiErrorResponse(new AiHttpError(403, "denied", "provider denied"), cors)!.status).toBe(403);
+  it("other 403 refusals are not treated as a credits pause", () => {
+    expect(creditBlockResponse(403, "provider denied", cors)).toBeNull();
   });
 
   it("the app tags the pause and shows the notice once per answer", async () => {
