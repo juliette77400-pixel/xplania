@@ -32,7 +32,7 @@ function classify(raw: string): { name: string; kind: Kind } {
   if (NO_ARTICLE.has(n)) return { name, kind: "bare" };
   if (EN_NO_ARTICLE.has(n)) return { name, kind: "enBare" };
   const head = n.split(/[\s-]/)[0];
-  if (/^(etats|pays|iles|emirats|philippines|maldives|seychelles|comores|bahamas|fidji|antilles)/.test(n) || head.endsWith("s") && /^(etats|pays|iles)$/.test(head)) {
+  if (/^(etats|pays-bas|iles |emirats|philippines|maldives|seychelles|comores|bahamas|fidji|antilles)/.test(n)) {
     return { name, kind: "plural" };
   }
   if (head.endsWith("e") && !MASC_E.has(n) && !MASC_E.has(head)) return { name, kind: "fem" };
