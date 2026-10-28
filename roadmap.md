@@ -16,3 +16,11 @@
 - [x] 6. Espace de préparation : boutons « Ouvrir »
 - [x] 7. Budget : phrase retirée, illustration, astuces locales, alertes & bons plans, graphique/répartition, Ping descriptions
 - [x] 8-9. Vérifications + rapport
+
+## Optimisations ciblées avant la bêta (prompt du 28/10)
+- [ ] 1. Vérification quotidienne automatique des liens (date réelle en base, échec = ancienne date + « à revérifier », lien accessible ≠ contenu contrôlé)
+- [ ] 2. Accueil : titre/sous-titre/CTA, présentation, personnalisation (3 badges), gratuité en 2 cartes (écoles partenaires / autres), FAQ gratuité + lien Offres
+- [ ] 3. Offres écoles : sélecteur Mensuel | Annuel, total + coût par étudiant, sans remise inventée
+- [ ] 4. Culture : geste du jour qui change chaque jour par destination sans répétition rapprochée ; présentation plus visuelle (cartes, pictos, À faire / À éviter / Bon à savoir)
+- [ ] 5. Budget : bouton « Régénérer » pour Alertes et Optimisations IA (2-3 conseils, anti double clic, sans inventer de problème, crédits vérifiés)
+- [ ] 6. Visa : audit — texte du prompt coupé, en attente du texte complet de Juliette
