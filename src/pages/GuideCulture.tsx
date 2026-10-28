@@ -407,7 +407,9 @@ function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en
   const fallback = getTipOfDay(code, lang, path, date);
   const card = "glass-card w-full rounded-2xl border border-primary/30 p-4 text-left";
 
-  if (user && q.isLoading) {
+  const loading = !!user && q.isLoading;
+  // Nothing hand-written to show meanwhile: keep the placeholder lines.
+  if (loading && !fallback) {
     return (
       <div className={card} role="status">
         <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")}</p>
@@ -418,7 +420,7 @@ function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en
   if (q.data) {
     const g = q.data;
     return (
-      <div className={card}>
+      <div className={`${card} animate-fade-in`}>
         <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")} · {t(`culture.pillars.${g.theme}`)}</p>
         <p className="mt-1 text-sm font-semibold text-foreground">{g.title}</p>
         <dl className="mt-2 space-y-1.5 text-xs leading-relaxed">
@@ -434,13 +436,49 @@ function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en
     );
   }
   if (!fallback) return null;
+  // While today's gesture is written (first visitor of the day), a hand-written tip is shown at once.
   return (
-    <button onClick={() => onOpen(fallback.pillar)} className={card}>
+    <button onClick={() => onOpen(fallback.pillar)} className={card} aria-busy={loading}>
       <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")} · {t(`culture.pillars.${fallback.pillar}`)}</p>
       <p className="mt-1 text-sm text-foreground">{fallback.kind === "do" ? "✅" : "⛔"} {fallback.tip.text}</p>
       <p className="text-xs text-muted-foreground">{t("culture.why")} {fallback.tip.why}</p>
+      {loading && <p role="status" className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" aria-hidden />{t("culture.dailyComing")}</p>}
     </button>
   );
+}
+
+/** Same shape as a theme (Ping, two columns of cards) while it is written for the first time. */
+function PillarSkeleton() {
+  const { t } = useTranslation();
+  const bar = "animate-pulse rounded bg-muted/60";
+  const col = (
+    <div className="space-y-3">
+      <div className={`h-4 w-24 ${bar}`} />
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="rounded-2xl border border-border/50 p-4 space-y-2">
+          <div className={`h-3 w-5/6 ${bar}`} /><div className={`h-3 w-2/3 ${bar}`} />
+        </div>
+      ))}
+    </div>
+  );
+  return (
+    <div role="status" aria-live="polite" className="space-y-4">
+      <div className="glass-card rounded-2xl p-4 flex gap-3 items-center">
+        <span className="text-2xl" aria-hidden>🐧</span>
+        <div className="flex-1 space-y-1">
+          <p className="inline-flex items-center gap-1.5 text-sm text-foreground"><Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden />{t("culture.loading")}</p>
+          <p className="text-xs text-muted-foreground">{t("culture.loadingFirst")}</p>
+        </div>
+      </div>
+      <div className="grid gap-5 md:grid-cols-2">{col}{col}</div>
+    </div>
+  );
+}
+
+/** First 4 bytes of SHA-256, hex: the same key the server uses for shared examples. */
+async function sha8(text: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].slice(0, 4).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 function SituationCard({ code, lang }: { code: string; lang: "fr" | "en" }) {
