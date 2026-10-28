@@ -1,5 +1,6 @@
 // Name shown on each trip button of the dashboard. Two trips with the same
 // place get their departure month added, so they can be told apart.
+import { placeName } from "@/lib/country-match";
 export interface TripLabelInput {
   id: string;
   destination?: string | null;
@@ -8,8 +9,8 @@ export interface TripLabelInput {
   departure_date?: string | null;
 }
 
-const place = (t: TripLabelInput): string => {
-  const dest = (t.destination || "").trim();
+const place = (t: TripLabelInput, lang: string): string => {
+  const dest = placeName((t.destination || "").trim(), lang);
   const city = (t.arrival_city || "").trim();
   if (city && dest && city.toLowerCase() !== dest.toLowerCase()) return `${city}, ${dest}`;
   return dest || city || (t.title || "").trim();
@@ -23,7 +24,7 @@ const month = (iso: string | null | undefined, lang: string): string => {
 };
 
 export function tripLabels(trips: TripLabelInput[], lang: string, fallback: string): Record<string, string> {
-  const base = trips.map((t) => place(t) || fallback);
+  const base = trips.map((t) => place(t, lang) || fallback);
   const out: Record<string, string> = {};
   trips.forEach((t, i) => {
     const same = base.filter((b) => b === base[i]).length > 1;
