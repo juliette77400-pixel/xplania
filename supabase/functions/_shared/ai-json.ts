@@ -117,3 +117,57 @@ export async function generateJsonSplit<T = any>(opts: Parameters<typeof generat
   }));
   return Object.assign({}, ...results) as T;
 }
+
+/**
+ * Plain-text answer through the Responses API (streamed and joined). Used by the page
+ * assistants; `input` carries the data message, the history and the question as messages.
+ */
+export async function generateText(opts: {
+  instructions: string;
+  input: { role: "user" | "assistant"; content: string }[];
+  effort?: "low" | "medium" | "high";
+  /** Defaults to openai/gpt-6-astra. */
+  model?: string;
+}): Promise<string> {
+  const key = Deno.env.get("LOVABLE_API_KEY");
+  if (!key) throw new AiHttpError(500, "LOVABLE_API_KEY is not configured");
+  const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "fetch" },
+    body: JSON.stringify({
+      model: opts.model ?? "openai/gpt-6-astra",
+      instructions: opts.instructions,
+      input: opts.input,
+      stream: true,
+      store: false,
+      reasoning: { effort: opts.effort ?? "low" },
+    }),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    console.error("AI gateway error", res.status, txt.slice(0, 500));
+    throw new AiHttpError(res.status, `AI gateway error: ${res.status}`, txt.slice(0, 500));
+  }
+  let out = "";
+  const reader = res.body!.getReader();
+  const dec = new TextDecoder();
+  let buf = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split("\n");
+    buf = lines.pop() ?? "";
+    for (const line of lines) {
+      if (!line.startsWith("data:")) continue;
+      const payload = line.slice(5).trim();
+      if (!payload || payload === "[DONE]") continue;
+      try {
+        const ev = JSON.parse(payload);
+        if (ev.type === "response.output_text.delta") out += ev.delta ?? "";
+        else if (ev.type === "response.completed" && !out) out = ev.response?.output_text ?? "";
+      } catch { /* partial line */ }
+    }
+  }
+  return out.trim();
+}
