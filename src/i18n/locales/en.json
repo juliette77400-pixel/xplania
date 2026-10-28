@@ -892,7 +892,7 @@
     "errAuth": "Sign in to generate your travel formalities."
   },
   "footer": {
-    "tagline": "Organise your trip abroad ahead of time, without the hassle: budget, visa, packing, culture and housing in one place.",
+    "tagline": "Going abroad takes preparation. Xplania helps you organise your Erasmus or internship, get ahead on the paperwork and find all the useful information in one place.",
     "version": "Version 0.1 • Beta",
     "featuresTitle": "Features",
     "contactTitle": "Info & contacts",
@@ -4009,11 +4009,11 @@
     "subtitle": "Clear answers to the questions we get most often.",
     "q1": {
       "q": "Is Xplania free?",
-      "a": "Yes, during the beta. All 5 tools are free, no card, no commitment. The AI tools (Budget, Visa, Packing, Intercultural guide) each give 10 free tries per month; the Housing assistant is open access. The Offers page shows the packs planned afterwards."
+      "a": "Yes! During the beta you can prepare your departure for free, with no credit card. The AI tools each come with 10 free generations a month, and the Housing assistant is open to everyone. If your institution is a partner, you get every feature with its support."
     },
     "q2": {
       "q": "What does the AI actually do?",
-      "a": "To prepare faster and better: it estimates your budget, checks your paperwork for your nationality, adapts your packing to the climate and writes cultural sheets for countries not covered yet. Everything is tied to your destination, never generic."
+      "a": "To tailor your preparation: the AI takes your destination, nationality, length of stay and needs into account to estimate your budget, list the paperwork to plan ahead, adapt your packing to the climate and give you cultural tips. Official rules should still be checked on the sites shown."
     },
     "q3": {
       "q": "Is my data safe?",
@@ -4033,7 +4033,7 @@
     },
     "q7": {
       "q": "What is available during the beta?",
-      "a": "The 5 preparation tools: Budget, Visa & paperwork, Packing, the Culture guide and the Housing assistant, plus your progress dashboard. Each AI tool gives up to 10 free generations per month (AI-written culture sheets count with Packing). If the AI fails, the try is given back. The Housing assistant does not use AI and uses no tries."
+      "a": "The 5 preparation tools (Budget, Visa, Packing, Intercultural guide, Housing assistant) and your dashboard. The AI tools each offer 10 free generations a month; if the AI fails, you get the try back. The Housing assistant doesn't use AI."
     },
     "q8": {
       "q": "Does Xplania need my location?",
@@ -6645,7 +6645,7 @@
       "title": "Ready to prepare your move abroad?",
       "text": "Erasmus, university exchange or internship: start organising your preparations with Xplania."
     },
-    "cta": "Prepare my departure",
+    "cta": "Prepare my departure for free",
     "reassurance": "Free during the beta · No credit card",
     "demo": {
       "title": "One stay. Your details. Five connected tools.",
@@ -7712,9 +7712,9 @@
   "landing2": {
     "hero": {
       "badge": "Erasmus · exchange · internship abroad",
-      "titleStart": "Your Erasmus or internship abroad",
-      "titleAccent": "starts here.",
-      "subtitle": "Visa, first-month budget, housing, packing, cultural codes: answer 7 questions and leave with your departure to-do list. You start without creating an account.",
+      "titleStart": "Your Erasmus or internship abroad,",
+      "titleAccent": "without the pre-departure stress.",
+      "subtitle": "Paperwork, budget, housing, cultural differences: getting ready to leave can quickly get complicated. Xplania brings the essentials together in one place and helps you move forward step by step, with advice that fits your profile and your destination.",
       "where": "Where are you going?",
       "other": "Another country",
       "secondary": "See an example",
@@ -7723,7 +7723,8 @@
       "cardTitle": "My departure to-do",
       "card1": "ID valid for the whole stay",
       "card2": "First-month budget worked out",
-      "card3": "3 places to compare"
+      "card3": "3 places to compare",
+      "micro": "7 questions to get started • No account needed"
     },
     "questions": {
       "kicker": "Before you leave",
@@ -7775,6 +7776,29 @@
       "title": "Prepare your departure now, not the night before.",
       "text": "Answer 7 questions, see your priorities, then move forward tool by tool, at your own pace.",
       "feedback": "Give my feedback"
+    },
+    "perso": {
+      "title": "Advice that really fits your trip.",
+      "text": "Every stay abroad is different, so Xplania tailors your preparation to your destination, your nationality, how long you're staying and what you need. Estimated budget, paperwork to plan ahead, packing for the climate and cultural tips: you move forward with recommendations that are useful for your own departure.",
+      "badges": {
+        "profile": "Fits your profile",
+        "destination": "Tailored to your destination",
+        "together": "Everything in one place"
+      }
+    },
+    "access": {
+      "title": "What's free during the beta",
+      "partner": {
+        "title": "Students from partner schools",
+        "text": "During the beta, students from partner institutions use every Xplania feature for free, with no credit card, with support from their institution.",
+        "note": "Current technical limit: the same 10 AI generations per month and per tool as other testers."
+      },
+      "others": {
+        "title": "Other beta testers",
+        "text": "Try the 5 preparation tools for free: Budget, Visa, Packing, Intercultural guide and Housing assistant, plus your dashboard. The AI tools offer up to 10 free generations per month and per tool. The Housing assistant needs no credits.",
+        "note": "Within one tool, the different AI generations (for example the Budget analysis and tips) share the same counter. If the AI fails for a technical reason, you get the try back."
+      },
+      "offers": "See detailed conditions and future plans"
     }
   },
   "guestSave": {
