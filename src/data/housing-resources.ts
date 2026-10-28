@@ -102,8 +102,12 @@ export interface ResourcesForCountry {
   european: HousingResource[];
 }
 
+// French overseas departments use the French schemes (CROUS, CAF, Visale…).
+const FRENCH_OVERSEAS = new Set(["RE", "GP", "MQ", "YT", "GF"]);
+
 export function resourcesForCountry(code: string | null | undefined): ResourcesForCountry {
-  const c = (code || "").toUpperCase();
+  const raw = (code || "").toUpperCase();
+  const c = FRENCH_OVERSEAS.has(raw) ? "FR" : raw;
   return {
     local: c ? HOUSING_RESOURCES.filter((r) => r.countries.includes(c)) : [],
     european: EUROPE.has(c) ? HOUSING_RESOURCES.filter((r) => r.countries.includes("EU")) : [],

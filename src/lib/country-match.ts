@@ -1,4 +1,5 @@
 import { countryList, englishCountryNames, getCountryNameIn } from "@/lib/countries";
+import { islandParentCode } from "@/data/islands";
 
 export const normCountry = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -23,6 +24,9 @@ export function findCountry(q: string | null | undefined): string | null {
   // English names ("Sweden", "South Korea"), for trips typed in English.
   const english = englishCountryNames.find((c) => c.names.some((name) => normCountry(name) === n));
   if (english) return english.code;
+  // Islands typed on their own ("Tenerife", "Bali") belong to their country.
+  const island = islandParentCode(q);
+  if (island) return island;
   const starts = countryList.filter((c) => normCountry(c.name).startsWith(n));
   return starts.length === 1 ? starts[0].code : null;
 }

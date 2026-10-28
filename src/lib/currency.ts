@@ -8,7 +8,7 @@ export const SUPPORTED_CURRENCIES = [
   "THB", "MXN", "BRL", "INR", "ZAR", "TRY", "PLN", "SEK", "NOK", "DKK",
   "CZK", "HUF", "RON", "BGN", "HRK", "ILS", "KRW", "MYR", "NZD", "PHP", "IDR",
   // Shown by the converter (open.er-api rates); not available on Frankfurter.
-  "CLP", "ARS", "PEN",
+  "CLP", "ARS", "PEN", "XPF",
 ] as const;
 
 // Heuristique pays → devise (couvre les principales destinations)
@@ -37,6 +37,7 @@ const CODE_TO_CCY: Record<string, string> = {
   GB: "GBP", US: "USD", CA: "CAD", JP: "JPY", CH: "CHF", CN: "CNY", TH: "THB", MX: "MXN", BR: "BRL", IN: "INR",
   AU: "AUD", ZA: "ZAR", TR: "TRY", PL: "PLN", SE: "SEK", NO: "NOK", DK: "DKK", KR: "KRW", MY: "MYR", SG: "SGD",
   ID: "IDR", PH: "PHP", HK: "HKD", NZ: "NZD", HU: "HUF", CZ: "CZK", RO: "RON", CL: "CLP", AR: "ARS", PE: "PEN",
+  RE: "EUR", GP: "EUR", MQ: "EUR", YT: "EUR", GF: "EUR", NC: "XPF", PF: "XPF", WF: "XPF", FO: "DKK", GL: "DKK", SJ: "NOK",
 };
 
 export function guessCurrency(destination?: string | null): string {

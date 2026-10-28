@@ -1,7 +1,8 @@
 // Islands and overseas territories whose rules or daily life differ from the mainland
 // of the country (hand-written, no AI). Texts live in i18n under islands.items.<id>;
 // every link is hand-checked and listed in supabase/functions/_shared/checked-links.ts.
-import { normCountry } from "@/lib/country-match";
+// Same normalisation as country-match (kept local so country-match can import this file).
+const normCountry = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 export type IslandKind = "overseas" | "special" | "same";
 
@@ -53,19 +54,19 @@ export const ISLANDS: Island[] = [
   },
   {
     id: "canaries", parent: "ES", kind: "special",
-    names: ["canaries", "iles canaries", "canarias", "islas canarias", "canary islands", "tenerife", "tenerife", "gran canaria", "las palmas",
+    names: ["canaries", "iles canaries", "canarias", "islas canarias", "canary islands", "tenerife", "gran canaria", "las palmas",
       "lanzarote", "fuerteventura", "la palma", "la gomera", "el hierro", "santa cruz de tenerife"],
     links: [FD("espagne"), DOUANE_COLIS],
   },
   {
     id: "baleares", parent: "ES", kind: "same",
-    names: ["baleares", "iles baleares", "baleares", "balearic islands", "illes balears", "majorque", "mallorca", "majorca", "palma de majorque",
+    names: ["baleares", "iles baleares", "balearic islands", "illes balears", "majorque", "mallorca", "majorca", "palma de majorque",
       "palma de mallorca", "minorque", "menorca", "ibiza", "eivissa", "formentera"],
     links: [FD("espagne")],
   },
   {
     id: "madeira_azores", parent: "PT", kind: "same",
-    names: ["madere", "madeira", "funchal", "acores", "azores", "acores", "ponta delgada", "sao miguel", "terceira"],
+    names: ["madere", "madeira", "funchal", "acores", "azores", "ponta delgada", "sao miguel", "terceira"],
     links: [FD("portugal")],
   },
   {
@@ -121,3 +122,10 @@ export const islandsOf = (countryCode: string) => ISLANDS.filter((i) => i.parent
 
 /** Every external link shown for islands (kept in the daily link check). */
 export const ISLAND_LINKS: string[] = [...new Set([...ISLANDS.flatMap((i) => i.links.map((l) => l.url)), ...Object.values(OVERSEAS_PASTEUR)])];
+
+/** Country of an island typed as the destination ("Tenerife" → ES); territories with their own code are left to the country list. */
+export function islandParentCode(text: string): string | null {
+  const n = normCountry(text);
+  const hit = ISLANDS.find((i) => !i.codes && i.names.some((name) => normCountry(name) === n));
+  return hit ? hit.parent : null;
+}

@@ -135,5 +135,19 @@ export const CHECKED_LINKS: string[] =
   "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/perou",
   "https://www.diplomatie.gouv.fr/fr/information-par-pays/inde/conseils-aux-voyageurs-entree-sejour",
   "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/inde",
+  // Islands and overseas territories (src/data/islands.ts), checked 28 Oct 2026.
+  "https://www.service-public.gouv.fr/particuliers/vosdroits/F10610",
+  "https://www.douane.gouv.fr/fiche/envoyer-un-colis-un-particulier",
+  "https://www.cafat.nc/",
+  "https://www.cps.pf/",
+  "https://www.sysselmesteren.no/en/entry-and-residence/",
+  "https://lovebali.baliprov.go.id/",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/reunion-ile-de-la",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/guadeloupe",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/martinique",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/mayotte",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/guyane",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/nouvelle-caledonie",
+  "https://www.pasteur.fr/fr/votre-sante/voyages-et-sante/recommandations-sanitaires-par-pays/polynesie-francaise",
 ]
 ;

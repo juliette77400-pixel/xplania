@@ -29,6 +29,7 @@ const CURRENCIES: { code: string; flag: string; name: string }[] = [
   { code: "CLP", flag: "🇨🇱", name: "Chilean Peso" },
   { code: "ARS", flag: "🇦🇷", name: "Argentine Peso" },
   { code: "PEN", flag: "🇵🇪", name: "Peruvian Sol" },
+  { code: "XPF", flag: "🇳🇨", name: "CFP Franc" },
   { code: "INR", flag: "🇮🇳", name: "Indian Rupee" },
   { code: "IDR", flag: "🇮🇩", name: "Indonesian Rupiah" },
   { code: "MYR", flag: "🇲🇾", name: "Malaysian Ringgit" },

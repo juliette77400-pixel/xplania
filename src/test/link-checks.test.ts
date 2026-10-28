@@ -6,6 +6,7 @@ import { HOUSING_RESOURCES } from "@/data/housing-resources";
 import { entrySourceFor } from "@/data/entry-sources";
 import { DESTINATION_PAGES, franceDiplomatieEntryUrl, pasteurUrl } from "@/data/destination-pages";
 import { countryList } from "@/lib/countries";
+import { ISLAND_LINKS } from "@/data/islands";
 
 describe("vérification quotidienne des liens", () => {
   it("chaque lien affiché dans l'app est dans la liste testée chaque jour", () => {
@@ -13,6 +14,7 @@ describe("vérification quotidienne des liens", () => {
     HOUSING_RESOURCES.forEach((r) => shown.add(r.url));
     countryList.forEach((c) => { const e = entrySourceFor(c.code); if (e) shown.add(e.url); });
     DESTINATION_PAGES.forEach((d) => { shown.add(franceDiplomatieEntryUrl(d)); shown.add(pasteurUrl(d)); });
+    ISLAND_LINKS.forEach((u) => shown.add(u));
     const missing = [...shown].filter((u) => !CHECKED_LINKS.includes(u));
     expect(missing).toEqual([]);
   });
