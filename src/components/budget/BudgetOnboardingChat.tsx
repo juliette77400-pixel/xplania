@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useFirstName } from "@/lib/data/profiles";
+import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -184,8 +185,8 @@ const BudgetOnboardingChat = ({
     closeBubble();
   };
 
-  const askQuestion = async () => {
-    const q = question.trim();
+  const askQuestion = async (preset?: string) => {
+    const q = (preset ?? question).trim();
     if (!q || qaLoading) return;
     const now = Date.now();
     const nextHistory: ChatMsg[] = [...qaHistory, { role: "user", content: q, ts: now }];
@@ -215,7 +216,7 @@ const BudgetOnboardingChat = ({
       };
       const invokePromise = supabase.functions.invoke("budget-qa", { body: payload });
       const timeoutPromise = new Promise<never>((_, reject) =>
-        window.setTimeout(() => reject(new Error("qa_timeout")), 20000)
+        window.setTimeout(() => reject(new Error("qa_timeout")), 45000)
       );
       const { data, error: fnError } = await Promise.race([invokePromise, timeoutPromise]);
       if (fnError) throw fnError;
@@ -398,6 +399,9 @@ const BudgetOnboardingChat = ({
                   {m.content}
                 </div>
               ))}
+              {qaHistory.length <= 1 && !qaLoading && (
+                <AssistantSuggestions items={t("assistant.budget.suggestions", { returnObjects: true }) as string[]} onPick={(q) => void askQuestion(q)} />
+              )}
               {qaLoading && (
                 <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -409,7 +413,7 @@ const BudgetOnboardingChat = ({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                askQuestion();
+                void askQuestion();
               }}
               className="p-2 border-t border-border/50 flex items-center gap-2 bg-background/40"
             >
@@ -430,6 +434,7 @@ const BudgetOnboardingChat = ({
                 <Send className="w-4 h-4" />
               </button>
             </form>
+            <div className="px-2 pb-2 bg-background/40"><AssistantQuotaNote tool="budget" /></div>
           </>
         )}
       </motion.div>
