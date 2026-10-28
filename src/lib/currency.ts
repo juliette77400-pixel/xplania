@@ -1,3 +1,5 @@
+import { findCountry } from "@/lib/country-match";
+
 // ✨ NEW — Frankfurter API (gratuit, BCE) pour conversion de devises
 const BASE = "https://api.frankfurter.app";
 
@@ -5,6 +7,8 @@ export const SUPPORTED_CURRENCIES = [
   "EUR", "USD", "GBP", "JPY", "CHF", "CAD", "AUD", "CNY", "HKD", "SGD",
   "THB", "MXN", "BRL", "INR", "ZAR", "TRY", "PLN", "SEK", "NOK", "DKK",
   "CZK", "HUF", "RON", "BGN", "HRK", "ILS", "KRW", "MYR", "NZD", "PHP", "IDR",
+  // Shown by the converter (open.er-api rates); not available on Frankfurter.
+  "CLP", "ARS", "PEN",
 ] as const;
 
 // Heuristique pays → devise (couvre les principales destinations)
@@ -26,8 +30,22 @@ const COUNTRY_TO_CCY: Record<string, string> = {
   morocco: "EUR", "hong kong": "HKD",
 };
 
+// Currency of a country recognised by findCountry (Bulgaria uses the euro since 1 January 2026).
+const CODE_TO_CCY: Record<string, string> = {
+  FR: "EUR", ES: "EUR", IT: "EUR", PT: "EUR", GR: "EUR", DE: "EUR", BE: "EUR", NL: "EUR", AT: "EUR", IE: "EUR",
+  BG: "EUR", FI: "EUR", LU: "EUR", MT: "EUR", CY: "EUR", SK: "EUR", SI: "EUR", EE: "EUR", LV: "EUR", LT: "EUR", HR: "EUR",
+  GB: "GBP", US: "USD", CA: "CAD", JP: "JPY", CH: "CHF", CN: "CNY", TH: "THB", MX: "MXN", BR: "BRL", IN: "INR",
+  AU: "AUD", ZA: "ZAR", TR: "TRY", PL: "PLN", SE: "SEK", NO: "NOK", DK: "DKK", KR: "KRW", MY: "MYR", SG: "SGD",
+  ID: "IDR", PH: "PHP", HK: "HKD", NZ: "NZD", HU: "HUF", CZ: "CZK", RO: "RON", CL: "CLP", AR: "ARS", PE: "PEN",
+};
+
 export function guessCurrency(destination?: string | null): string {
   if (!destination) return "EUR";
+  const parts = destination.split(",").map((x) => x.trim()).reverse();
+  for (const part of parts) {
+    const code = findCountry(part);
+    if (code && CODE_TO_CCY[code]) return CODE_TO_CCY[code];
+  }
   const lower = destination.toLowerCase();
   for (const key of Object.keys(COUNTRY_TO_CCY)) {
     if (lower.includes(key)) return COUNTRY_TO_CCY[key];
