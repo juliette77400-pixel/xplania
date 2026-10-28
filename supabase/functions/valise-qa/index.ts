@@ -4,7 +4,7 @@ import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { cleanField, cleanList, contextDataMessage, DATA_RULE_FR, DATA_RULE_EN } from "../_shared/untrusted.ts";
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
-import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
+import { creditBlockResponse } from "../_shared/ai-unavailable.ts";
 
 
 const corsHeaders = {
@@ -157,8 +157,10 @@ ${DATA_RULE_FR}`;
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 402) return aiUnavailableResponse(corsHeaders);
       const txt = await response.text();
+      // Out of workspace credits (402, or 403 credit limit): calm notice, try given back.
+      const blocked = creditBlockResponse(response.status, txt, corsHeaders);
+      if (blocked) return blocked;
       console.error("AI gateway error", response.status, txt);
       throw new Error(`AI gateway ${response.status}`);
     }

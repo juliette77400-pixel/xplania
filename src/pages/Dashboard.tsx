@@ -1,6 +1,8 @@
 // Beta dashboard — built around the five preparation tools only
 // (Budget, Visa, Valise, Culture, Housing), with per-module progress for the selected trip.
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useFirstName } from "@/lib/data/profiles";
+import { placeName } from "@/lib/country-match";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -50,7 +52,6 @@ const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const activeTripId = useActiveTrip((s) => s.tripId);
   const clearActiveTrip = useActiveTrip((s) => s.clearActiveTrip);
-  const [profile, setProfile] = useState<{ display_name: string | null } | null>(null);
   const [progressTick, setProgressTick] = useState(0);
   const location = useLocation();
 
@@ -69,11 +70,6 @@ const Dashboard = () => {
     track("dashboard_viewed", { trips: trips.length });
   }, [loading, trips.length]);
 
-  useEffect(() => {
-    if (!user) return;
-    supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle().then(({ data }) => setProfile(data));
-  }, [user]);
-
   // Refresh module progress when a tool saves it or the tab regains focus.
   useEffect(() => {
     const bump = () => setProgressTick((n) => n + 1);
@@ -89,7 +85,8 @@ const Dashboard = () => {
 
   const isFr = i18n.language.startsWith("fr");
   const dateLocale = isFr ? "fr-FR" : "en-US";
-  const firstName = profile?.display_name?.split(" ")[0] || user?.email?.split("@")[0] || (isFr ? "voyageur" : "traveler");
+  const savedFirstName = useFirstName();
+  const firstName = savedFirstName || (isFr ? "voyageur" : "traveler");
 
   const selected: Trip | undefined = useMemo(
     () => trips.find((tr) => tr.id === activeTripId) ?? trips[0],
@@ -195,7 +192,7 @@ const Dashboard = () => {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{t("prepDashboard.currentTrip")}</p>
-                  <h2 className="mt-1 flex items-center gap-2 text-2xl font-bold"><MapPin className="h-5 w-5 shrink-0 text-primary" /><span className="truncate">{selected.arrival_city && selected.arrival_city !== selected.destination ? `${selected.arrival_city}, ${selected.destination}` : selected.destination}</span></h2>
+                  <h2 className="mt-1 flex items-center gap-2 text-2xl font-bold"><MapPin className="h-5 w-5 shrink-0 text-primary" /><span className="truncate">{selected.arrival_city && selected.arrival_city !== selected.destination ? `${selected.arrival_city}, ${placeName(selected.destination, i18n.language)}` : placeName(selected.destination, i18n.language)}</span></h2>
                   <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarDays className="h-4 w-4" />
                     {selected.departure_date ? `${formatDate(selected.departure_date)}${selected.return_date ? ` → ${formatDate(selected.return_date)}` : ""}` : (selected.form_data as { durationBucket?: string } | null)?.durationBucket ? t(`prepQuiz.dates.bucket.${(selected.form_data as { durationBucket: string }).durationBucket}`) : selected.duration ? t("prepDashboard.durationDays", { count: selected.duration }) : t("prepDashboard.noDates")}
                   </p>

@@ -16,7 +16,8 @@ export type QuotaTool =
   | "explore"
   | "carnet"
   | "suivi"
-  | "culture";
+  | "culture"
+  | "housing";
 
 /**
  * Increments the caller's counter atomically and returns a `Response` when

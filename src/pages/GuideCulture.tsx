@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon, CircleCheck, CircleX, Lightbulb, ChevronDown } from "lucide-react";
+import { Search, Check, Loader2, Compass, ArrowLeft, Globe2, GraduationCap, Briefcase, Home as HomeIcon, CircleCheck, CircleX, Lightbulb, ChevronDown, MessageCircle } from "lucide-react";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import QuickJump from "@/components/shared/QuickJump";
 import { findCountry, normCountry } from "@/lib/country-match";
@@ -16,9 +16,10 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { isAiPause } from "@/lib/ai-pause";
 import { useAuth } from "@/hooks/useAuth";
-import { countryList, getCountryName } from "@/lib/countries";
+import { countryList, getCountryNameIn } from "@/lib/countries";
 import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type CulturePath, CULTURE_PILLARS, FEATURED_COUNTRIES, getPrewritten, hasPrewritten, getSituation, getTipOfDay, buildQuiz, type PillarContent, type PillarId } from "@/data/culture-guide";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
+import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
 import { localDateFor } from "@/lib/country-timezone";
 
 const norm = normCountry;
@@ -44,6 +45,7 @@ export default function GuideCulture() {
   const [picking, setPicking] = useState(false);
   const [path, setPath] = useState<CulturePath>(() => pathForStay(stayType));
   const [pathTouched, setPathTouched] = useState(false);
+  const [assistantSignal, setAssistantSignal] = useState(0);
   useEffect(() => { if (!pathTouched) setPath(pathForStay(stayType)); }, [stayType, pathTouched]);
 
   // Open the guide on the trip's destination country until the traveler picks another one.
@@ -72,16 +74,28 @@ export default function GuideCulture() {
     return n;
   });
 
-  const countryName = code ? getCountryName(code) : "";
+  const countryName = code ? getCountryNameIn(code, lang) : "";
   const featured = code ? FEATURED_COUNTRIES.includes(code) : false;
   const pathPillars = CULTURE_PATHS[path];
   const doneCount = code ? pathPillars.filter((p) => done[`${code}:${p}`]).length : 0;
+  // Every theme already written for this country, in one request: opening one of them is instant.
+  const { user } = useAuth();
+  const cachedPillars = useQuery({
+    queryKey: ["culture-cached", code, lang],
+    enabled: !!code && !!user,
+    staleTime: 5 * 60_000,
+    queryFn: async () => {
+      const { data } = await supabase.from("culture_guide_cache").select("pillar, content")
+        .eq("country_code", code!).eq("locale", lang).in("pillar", CULTURE_PILLARS.map((p) => p.id));
+      return Object.fromEntries((data ?? []).map((r) => [r.pillar, r.content as unknown as PillarContent])) as Record<string, PillarContent>;
+    },
+  });
   const pillarCard = (id: PillarId) => (
     <button key={id} onClick={() => setPillar(id)} className="glass-card rounded-2xl p-4 text-left hover:border-primary/50 border border-transparent transition">
       <span className="text-2xl" aria-hidden>{EMOJI[id]}</span>
       <p className="mt-2 text-sm font-semibold text-foreground">{t(`culture.pillars.${id}`)}</p>
       <p className="text-[11px] text-muted-foreground mt-1">
-        {done[`${code}:${id}`] ? `✓ ${t("culture.understood")}` : hasPrewritten(code!, id) ? t("culture.readySheet") : t("culture.aiSheet")}
+        {done[`${code}:${id}`] ? `✓ ${t("culture.understood")}` : hasPrewritten(code!, id) || cachedPillars.data?.[id] ? t("culture.readySheet") : t("culture.aiSheet")}
       </p>
     </button>
   );
@@ -100,8 +114,11 @@ export default function GuideCulture() {
 
         {code && !picking && !notFound ? (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/70 bg-card/45 px-5 py-4">
-            <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryName(code)}</span></p>
-            <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
+            <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryNameIn(code, lang)}</span></p>
+            <div className="flex flex-wrap gap-2">
+              {user && <Button type="button" size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>}
+              <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
+            </div>
           </div>
         ) : (
         <form onSubmit={submit} className="rounded-2xl border border-border/70 bg-card/45 p-6 space-y-3">
@@ -128,7 +145,7 @@ export default function GuideCulture() {
               {FEATURED_COUNTRIES.map((c) => (
                 <button key={c} type="button" onClick={() => choose(c)}
                   className={`rounded-full border px-3 py-1 text-xs ${code === c ? "border-primary bg-primary/20 text-foreground" : "border-border bg-muted/30 text-muted-foreground hover:text-foreground"}`}>
-                  {getCountryName(c)}
+                  {getCountryNameIn(c, lang)}
                 </button>
               ))}
             </div>
@@ -200,6 +217,15 @@ export default function GuideCulture() {
         </p>
       </main>
       <QuickJump />
+      {user && code && (
+        <ToolAssistant tool="culture" quotaTool="culture" openSignal={assistantSignal}
+          title={t("assistant.culture.title")} greeting={t("assistant.culture.greeting", { country: countryName })}
+          suggestions={t("assistant.culture.suggestions", { returnObjects: true }) as string[]}
+          context={() => {
+            const pre = pillar ? getPrewritten(code, pillar, lang) : null;
+            return { countryCode: code, path, pillar, pageTips: pre ? [...pre.dos.map((x) => `+ ${x.text}`), ...pre.donts.map((x) => `- ${x.text}`)] : [] };
+          }} />
+      )}
     </div>
   );
 }
@@ -218,6 +244,8 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
     enabled: !pre && !!user,
     staleTime: Infinity,
     retry: false,
+    // Already in the list of themes written for this country: shown at once, no request.
+    initialData: () => qc.getQueryData<Record<string, PillarContent>>(["culture-cached", code, lang])?.[pillar],
     queryFn: async () => {
       const { data: cached } = await supabase.from("culture_guide_cache").select("content")
         .eq("country_code", code).eq("pillar", pillar).eq("locale", lang).maybeSingle();
@@ -227,6 +255,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
       if ((error as { context?: { status?: number } } | null)?.context?.status === 402) throw new Error("quota_exceeded");
       if (error || !data?.content) throw error ?? new Error("no content");
       if (!data.cached) qc.invalidateQueries({ queryKey: ["quota"] });
+      qc.invalidateQueries({ queryKey: ["culture-cached", code, lang] });
       return data.content as PillarContent;
     },
   });
@@ -239,6 +268,11 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
     staleTime: Infinity,
     retry: false,
     queryFn: async () => {
+      // Read the shared copy directly when it exists (same key as the server), before waking the function.
+      const key = `enrich:${pillar}:${await sha8(preTips.join("\n"))}`;
+      const { data: cached } = await supabase.from("culture_guide_cache").select("content")
+        .eq("country_code", code).eq("pillar", key).eq("locale", lang).maybeSingle();
+      if (cached) return (cached.content as unknown as { items: { example: string; nuance: string }[] }).items;
       const { data, error } = await supabase.functions.invoke("culture-guide", { body: { kind: "enrich", countryCode: code, pillar, locale: lang, tips: preTips } });
       if (error || !data?.content) throw error ?? new Error("no content");
       return (data.content as { items: { example: string; nuance: string }[] }).items;
@@ -247,7 +281,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
   const content: PillarContent | undefined = pre
     ? (() => {
         const items = enrich.data ?? [];
-        const add = (x: PillarContent["dos"][number], i: number) => (items[i] ? { ...x, example: items[i].example, nuance: items[i].nuance } : x);
+        const add = (x: PillarContent["dos"][number], i: number) => (items[i]?.example ? { ...x, example: items[i].example, nuance: items[i].nuance } : x);
         return { ...pre, dos: pre.dos.map((x, i) => add(x, i)), donts: pre.donts.map((x, i) => add(x, i + pre.dos.length)) };
       })()
     : q.data;
@@ -264,11 +298,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
           <Button asChild><Link to="/auth">{t("culture.login")}</Link></Button>
         </div>
       )}
-      {q.isLoading && (
-        <div className="glass-card rounded-2xl p-6 flex items-center justify-center gap-2 text-muted-foreground" role="status">
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> {t("culture.loading")}
-        </div>
-      )}
+      {q.isLoading && <PillarSkeleton />}
       {q.isError && quotaReached && (
         <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-3">
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
@@ -277,14 +307,16 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
         </div>
       )}
       {q.isError && !quotaReached && (
-        <div role="status" className="glass-card rounded-2xl p-5 text-center space-y-2">
+        <div role="alert" className="glass-card rounded-2xl p-5 text-center space-y-2">
           <Compass className="mx-auto h-8 w-8 text-primary" aria-hidden />
-          <p className="font-semibold text-foreground">{t("culture.notFoundTitle")}</p>
-          <p className="text-sm text-muted-foreground">{isAiPause(q.error) ? t("aiPause.message") : t("culture.pillarPending")}</p>
-          <button onClick={() => q.refetch()} className="mt-2 rounded-full border border-border px-4 py-1.5 text-sm text-foreground hover:bg-muted/60">
-            {t("common.retry")}
-          </button>
+          <p className="text-sm text-muted-foreground">{isAiPause(q.error) ? t("aiPause.message") : t("culture.genFailed")}</p>
+          <Button variant="outline" size="sm" className="mt-2" disabled={q.isFetching} onClick={() => q.refetch()}>
+            {q.isFetching && <Loader2 className="mr-1 h-4 w-4 animate-spin" aria-hidden />}{t("common.retry")}
+          </Button>
         </div>
+      )}
+      {pre && enrich.isLoading && (
+        <p role="status" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />{t("culture.enriching")}</p>
       )}
 
       {content && (
@@ -389,7 +421,9 @@ function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en
   const fallback = getTipOfDay(code, lang, path, date);
   const card = "glass-card w-full rounded-2xl border border-primary/30 p-4 text-left";
 
-  if (user && q.isLoading) {
+  const loading = !!user && q.isLoading;
+  // Nothing hand-written to show meanwhile: keep the placeholder lines.
+  if (loading && !fallback) {
     return (
       <div className={card} role="status">
         <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")}</p>
@@ -416,13 +450,49 @@ function TipOfDay({ code, lang, path, onOpen }: { code: string; lang: "fr" | "en
     );
   }
   if (!fallback) return null;
+  // While today's gesture is written (first visitor of the day), a hand-written tip is shown at once.
   return (
-    <button onClick={() => onOpen(fallback.pillar)} className={card}>
+    <button onClick={() => onOpen(fallback.pillar)} className={card} aria-busy={loading}>
       <p className="text-xs font-semibold text-primary">✨ {t("culture.tipOfDay")} · {t(`culture.pillars.${fallback.pillar}`)}</p>
       <p className="mt-1 text-sm text-foreground">{fallback.kind === "do" ? "✅" : "⛔"} {fallback.tip.text}</p>
       <p className="text-xs text-muted-foreground">{t("culture.why")} {fallback.tip.why}</p>
+      {loading && <p role="status" className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" aria-hidden />{t("culture.dailyComing")}</p>}
     </button>
   );
+}
+
+/** Same shape as a theme (Ping, two columns of cards) while it is written for the first time. */
+function PillarSkeleton() {
+  const { t } = useTranslation();
+  const bar = "animate-pulse rounded bg-muted/60";
+  const col = (
+    <div className="space-y-3">
+      <div className={`h-4 w-24 ${bar}`} />
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="rounded-2xl border border-border/50 p-4 space-y-2">
+          <div className={`h-3 w-5/6 ${bar}`} /><div className={`h-3 w-2/3 ${bar}`} />
+        </div>
+      ))}
+    </div>
+  );
+  return (
+    <div role="status" aria-live="polite" className="space-y-4">
+      <div className="glass-card rounded-2xl p-4 flex gap-3 items-center">
+        <span className="text-2xl" aria-hidden>🐧</span>
+        <div className="flex-1 space-y-1">
+          <p className="inline-flex items-center gap-1.5 text-sm text-foreground"><Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden />{t("culture.loading")}</p>
+          <p className="text-xs text-muted-foreground">{t("culture.loadingFirst")}</p>
+        </div>
+      </div>
+      <div className="grid gap-5 md:grid-cols-2">{col}{col}</div>
+    </div>
+  );
+}
+
+/** First 4 bytes of SHA-256, hex: the same key the server uses for shared examples. */
+async function sha8(text: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].slice(0, 4).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 function SituationCard({ code, lang }: { code: string; lang: "fr" | "en" }) {

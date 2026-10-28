@@ -1,4 +1,5 @@
-// jspdf loaded lazily inside the exported function.
+// jspdf loaded lazily inside the exported function. Texts follow the interface language.
+import i18n from "@/i18n";
 import type { ChecklistItem } from "@/components/valise/ChecklistSection";
 import type { LuggageMode } from "@/components/valise/LuggageModes";
 import type { TransportMode } from "@/components/valise/TransportSelector";
@@ -11,16 +12,18 @@ interface ValisePdfOptions {
   categories: Record<string, ChecklistItem[]>;
 }
 
-const transportEmoji: Record<TransportMode, string> = {
-  avion: "Avion",
-  train: "Train",
-  voiture: "Voiture",
-  bateau: "Bateau",
-  velo: "Vélo",
+const TRANSPORT: Record<"fr" | "en", Record<TransportMode, string>> = {
+  fr: { avion: "Avion", train: "Train", voiture: "Voiture", bateau: "Bateau", velo: "Vélo" },
+  en: { avion: "Plane", train: "Train", voiture: "Car", bateau: "Boat", velo: "Bike" },
 };
 
 export async function exportValisePdf(opts: ValisePdfOptions) {
   const { destination, days, mode, transport, categories } = opts;
+  const en = i18n.language?.startsWith("en");
+  const L = en
+    ? { title: "My Xplania packing list", days: (n: number) => `${n} day${n > 1 ? "s" : ""}`, mode: "Mode", transport: "Transport", progress: (c: number, t: number, p: number) => `Progress: ${c}/${t} items (${p}%)`, file: "packing" }
+    : { title: "Ma Valise Xplania", days: (n: number) => `${n} jour${n > 1 ? "s" : ""}`, mode: "Mode", transport: "Transport", progress: (c: number, t: number, p: number) => `Progression : ${c}/${t} objets (${p} %)`, file: "valise" };
+  const transportLabel = TRANSPORT[en ? "en" : "fr"][transport];
   const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
@@ -34,12 +37,12 @@ export async function exportValisePdf(opts: ValisePdfOptions) {
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("Ma Valise Xplania", margin, 22);
+  doc.text(L.title, margin, 22);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
-  doc.text(`${destination} • ${days} jour${days > 1 ? "s" : ""}`, margin, 32);
+  doc.text(`${destination} • ${L.days(days)}`, margin, 32);
   doc.setFontSize(9);
-  doc.text(`Mode : ${mode}  |  Transport : ${transportEmoji[transport]}`, margin, 40);
+  doc.text(`${L.mode} : ${mode}  |  ${L.transport} : ${transportLabel}`, margin, 40);
 
   y = 60;
   doc.setTextColor(30, 41, 59);
@@ -48,7 +51,7 @@ export async function exportValisePdf(opts: ValisePdfOptions) {
   const checked = Object.values(categories).flat().filter((i) => i.checked).length;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
-  doc.text(`Progression : ${checked}/${total} objets (${total ? Math.round((checked / total) * 100) : 0}%)`, margin, y);
+  doc.text(L.progress(checked, total, total ? Math.round((checked / total) * 100) : 0), margin, y);
   y += 10;
 
   Object.entries(categories).forEach(([cat, items]) => {
@@ -91,9 +94,9 @@ export async function exportValisePdf(opts: ValisePdfOptions) {
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 160);
-    doc.text(`Xplania • ${new Date().toLocaleDateString("fr-FR")}`, margin, pageH - 8);
+    doc.text(`Xplania • ${new Date().toLocaleDateString(en ? "en-GB" : "fr-FR")}`, margin, pageH - 8);
     doc.text(`${i} / ${pages}`, pageW - margin - 10, pageH - 8);
   }
 
-  doc.save(`valise-${destination.toLowerCase().replace(/\s+/g, "-")}.pdf`);
+  doc.save(`${L.file}-${destination.toLowerCase().replace(/\s+/g, "-")}.pdf`);
 }

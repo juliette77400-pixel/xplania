@@ -1,41 +1,39 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LogOut, Save, User as UserIcon, Mail, Loader2, Settings as SettingsIcon, BookOpen, CalendarDays, ArrowRight } from "lucide-react";
+import { LogOut, Mail, Settings as SettingsIcon, BookOpen, CalendarDays, ArrowRight } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import ProfileStats from "@/components/profil/ProfileStats";
 import BadgeShowcase from "@/components/profil/BadgeShowcase";
 import ProfilePersonalization from "@/components/profil/ProfilePersonalization";
 import AvatarEditor from "@/components/profil/AvatarEditor";
+import DisplayNameEditor from "@/components/profil/DisplayNameEditor";
+import { useDisplayName } from "@/lib/data/profiles";
 import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 const Profil = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [displayName, setDisplayName] = useState("");
+  // Shared with the dashboard, the menu and the assistants: a saved change shows up everywhere.
+  const displayName = useDisplayName(user?.id) ?? "";
   const [avatarUrl, setAvatarUrl] = useState("");
   const [memberSince, setMemberSince] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle()
+    supabase.from("profiles").select("avatar_url, created_at").eq("user_id", user.id).maybeSingle()
       .then(({ data, error }) => {
         if (error) {
           setLoadError(true);
         } else {
-          setDisplayName(data?.display_name || "");
           setAvatarUrl(data?.avatar_url || "");
           setMemberSince(data?.created_at || user.created_at || null);
         }
@@ -44,24 +42,11 @@ const Profil = () => {
   }, [user]);
 
   const formattedMemberSince = memberSince
-    ? new Date(memberSince).toLocaleDateString(i18n.language?.startsWith("fr") ? "fr-FR" : "en-US", {
+    ? new Date(memberSince).toLocaleDateString(i18n.language?.startsWith("fr") ? "fr-FR" : "en-GB", {
         month: "long",
         year: "numeric",
       })
     : null;
-
-  const handleSave = async () => {
-    if (!user) return;
-    setSaving(true);
-    const { error } = await supabase.from("profiles").upsert({
-      user_id: user.id,
-      display_name: displayName.trim() || null,
-      avatar_url: avatarUrl.trim() || null,
-    }, { onConflict: "user_id" });
-    setSaving(false);
-    if (error) toast.error(t("profil.saveError"));
-    else toast.success(t("profil.saveSuccess"));
-  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -108,17 +93,7 @@ const Profil = () => {
               <p className="text-xs text-destructive">{t("profil.loadError")}</p>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="name" className="flex items-center gap-1.5">
-                <UserIcon className="w-3.5 h-3.5" /> {t("profil.displayName")}
-              </Label>
-              <Input id="name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={t("profil.displayNamePlaceholder")} />
-            </div>
-
-            <Button onClick={handleSave} disabled={saving} className="w-full gradient-button">
-              {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-              {t("profil.save")}
-            </Button>
+            <DisplayNameEditor />
           </Card>
         )}
 

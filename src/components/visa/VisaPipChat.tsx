@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useFirstName } from "@/lib/data/profiles";
+import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
+import ChatText from "@/components/shared/assistant/ChatText";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -44,19 +47,8 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
   const isFr = locale === "fr";
 
-  const firstName = (() => {
-    const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
-    const candidates = [
-      meta.first_name, meta.firstName, meta.given_name,
-      typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
-      typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
-      user?.email ? user.email.split("@")[0] : undefined,
-    ];
-    const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
-    if (!found) return "";
-    const clean = found.trim().replace(/[._-]+/g, " ").split(" ")[0];
-    return clean.charAt(0).toUpperCase() + clean.slice(1);
-  })();
+  // Saved profile name first, so a renamed student is greeted with the new name.
+  const firstName = useFirstName();
 
   const [open, setOpen] = useState(initialOpen);
   const [stage, setStage] = useState<Stage>("welcome");
@@ -136,7 +128,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
           locale,
         },
       });
-      const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 20000));
+      const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 45000));
       const { data, error } = await Promise.race([invokePromise, timeout]);
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
@@ -293,7 +285,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
 
           {(stage === "summary" || stage === "qa") && history.map((m, i) => (
             <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}>
-              {m.content}
+              <ChatText text={m.content} />
               {m.role === "assistant" && (
                 <div className="text-xs text-muted-foreground mt-1.5">
                   {t("guideVisa.chatbot.disclaimer")}
@@ -301,6 +293,10 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
               )}
             </div>
           ))}
+
+          {(stage === "welcome" || stage === "qa" || stage === "summary") && history.filter((m) => m.role === "user").length === 0 && !loading && (
+            <AssistantSuggestions items={t("assistant.visa.suggestions", { returnObjects: true }) as string[]} onPick={(q) => { setStage("qa"); void askPip(q); }} />
+          )}
 
           {loading && (
             <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
@@ -323,6 +319,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
             <Send className="w-4 h-4" />
           </button>
         </form>
+        <div className="px-2 pb-2 bg-background/40"><AssistantQuotaNote tool="visa" /></div>
       </motion.div>
     </AnimatePresence>
   );

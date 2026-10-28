@@ -8,7 +8,7 @@ export const PIP_HIDDEN_ROUTES = ["/auth", "/onboarding", "/carnet/", "/carnet",
 export const isPipHidden = (pathname: string) => PIP_HIDDEN_ROUTES.some((p) => pathname.startsWith(p));
 
 /** Pages with their own specialised assistant: "Aide" opens it instead of the general one. */
-export const TOOL_PIP_ROUTES = ["/guide-visa", "/guide-valise"];
+export const TOOL_PIP_ROUTES = ["/guide-visa", "/guide-valise", "/guide-culture", "/guide-logement"];
 export const hasToolPip = (pathname: string) => TOOL_PIP_ROUTES.some((p) => pathname.startsWith(p));
 
 export const openPipChat = () => window.dispatchEvent(new Event(OPEN_PIP));

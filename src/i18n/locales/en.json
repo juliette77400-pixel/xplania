@@ -872,7 +872,7 @@
       "qaEmpty": "Ask me anything — visa, safety, paperwork, currency… I'm here.",
       "disclaimer": "⚠️ Always verify on the official embassy site before booking.",
       "nav": {
-        "process": "Process",
+        "process": "Steps",
         "convert": "Convert",
         "safety": "Safety",
         "embassy": "Embassy"
@@ -1283,6 +1283,21 @@
       "km": "Km traveled",
       "xpToNext": "{{xp}} XP to {{level}}",
       "maxLevel": "Max level reached 🏆"
+    },
+    "name": {
+      "edit": "Edit",
+      "editAria": "Edit your display name",
+      "none": "No name yet",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "Name saved",
+      "saveError": "We couldn't save your name. Please try again.",
+      "help": "This is the name Xplania uses to greet you. Your email address stays the same.",
+      "errors": {
+        "empty": "Type at least one letter.",
+        "tooLong": "{{max}} characters maximum.",
+        "invalid": "Use letters, spaces, hyphens or apostrophes (no < or >)."
+      }
     }
   },
   "notFound": {
@@ -6415,7 +6430,11 @@
       "low": "harmless",
       "medium": "awkward",
       "high": "offensive"
-    }
+    },
+    "loadingFirst": "First time this topic is opened for this country: allow about fifteen seconds. After that it opens instantly, for you and every other student.",
+    "genFailed": "We couldn't prepare this topic. Your try wasn't counted: please try again in a moment.",
+    "enriching": "Adding concrete examples…",
+    "dailyComing": "Today's gesture is on its way… meanwhile, here is a tip written by Xplania."
   },
   "offlineBanner": {
     "text": "No internet connection. What you already opened stays visible; AI will be back with the network."
@@ -7249,7 +7268,7 @@
   "visa2": {
     "toolName": "Visa & formalities",
     "titleFor": "Your formalities for {{destination}}",
-    "subtitle": "The essentials in four cards, then your checklist. Every piece of information shows where it comes from and when it was checked.",
+    "subtitle": "What you need to leave with peace of mind: four cards, then your checklist. Each piece of information tells you where it comes from and when it was checked.",
     "yourDestination": "your destination",
     "opensNewTab": "(opens in a new tab)",
     "reliability": {
@@ -7266,7 +7285,7 @@
     },
     "profile": {
       "title": "Your profile",
-      "help": "These answers are used for the analysis. You can correct them here.",
+      "help": "We use these answers to tailor your paperwork. Update them if anything has changed.",
       "edit": "Edit",
       "save": "Save my profile",
       "saved": "Profile saved",
@@ -7309,9 +7328,9 @@
       "safety": "Safety",
       "showDetails": "See details",
       "hideDetails": "Hide details",
-      "toAnalyze": "Analysis to run",
-      "visaPending": "Run the analysis to know which visa fits your profile.",
-      "passportPending": "Run the analysis to see the passport rules for your profile.",
+      "toAnalyze": "Not analysed yet",
+      "visaPending": "Run the analysis: we'll tell you whether you need a visa, and which one.",
+      "passportPending": "Run the analysis to see which document is enough and how long it must stay valid.",
       "idCardOk": "ID card accepted",
       "passportNeeded": "Valid passport needed",
       "forYourProfile": "For your profile",
@@ -7371,7 +7390,7 @@
       "ariane": "Register on Fil d'Ariane"
     },
     "analysis": {
-      "ctaTitle": "Analyse your visa and checklist for this profile",
+      "ctaTitle": "See what you need for this stay, step by step",
       "outdated": "Your profile changed since the last analysis",
       "upToDate": "Analysis up to date for this profile",
       "completeFirst": "Complete the missing answers of your profile first.",
@@ -7381,12 +7400,12 @@
       "rerun": "Run again",
       "done": "Analysis ready",
       "error": "The analysis could not finish. Your trial is given back.",
-      "incomplete": "Incomplete answer."
+      "incomplete": "The answer came back incomplete. Please run the analysis again in a moment."
     },
     "checklist": {
       "title": "Your checklist",
       "progress": "{{done}}/{{total}} done",
-      "note": "Built by the AI from your profile: confirm obligations with official sources.",
+      "note": "Prepared for your profile by Xplania AI. For legal requirements, the official rule is what counts: check them on the sites shown.",
       "when": "If: {{condition}}",
       "cat": {
         "documents": "Documents",
@@ -7939,5 +7958,64 @@
     "title": "Xplania's AI is taking a short break",
     "message": "Your results already generated stay on screen and this try was not counted. Please try again a little later.",
     "chat": "I'm taking a short break and can't answer right now 😴 Everything you've already prepared is still here, and this question didn't use any of your tries. Please try again a little later."
+  },
+  "assistant": {
+    "ideas": "Question ideas",
+    "placeholder": "Ask your question…",
+    "send": "Send",
+    "thinking": "The assistant is thinking…",
+    "restart": "New conversation",
+    "error": "I couldn't answer this time. Your try wasn't counted: please try again in a moment.",
+    "quotaReached": "You've used all this month's tries for this tool. They come back on the 1st of next month.",
+    "quotaNote_one": "Each question uses 1 {{tool}} try · {{count}} left this month.",
+    "quotaNote_other": "Each question uses 1 {{tool}} try · {{count}} left this month.",
+    "quotaUnlimited": "Each question counts as a {{tool}} try: yours are unlimited right now.",
+    "open": "Ask the assistant",
+    "toolNames": {
+      "budget": "Budget",
+      "visa": "Visa",
+      "valise": "Packing",
+      "culture": "Culture",
+      "housing": "Housing"
+    },
+    "culture": {
+      "title": "Culture assistant",
+      "greeting": "A question about everyday customs in {{country}}? I'll explain local habits as general tendencies: everyone is different.",
+      "suggestions": [
+        "How should I greet people?",
+        "Which cultural mistakes should I avoid?",
+        "How can I fit in better?"
+      ]
+    },
+    "housing": {
+      "title": "Housing helper",
+      "greeting": "I can help you compare the homes you saved and prepare your questions. I never suggest listings or websites: the checked resources are on this page.",
+      "suggestions": [
+        "What should I check before signing?",
+        "What are the advantages of this home?",
+        "What should I ask the landlord?"
+      ]
+    },
+    "budget": {
+      "suggestions": [
+        "How can I cut my housing budget?",
+        "Is my budget realistic?",
+        "Which expenses have I forgotten?"
+      ]
+    },
+    "visa": {
+      "suggestions": [
+        "Do I need a visa?",
+        "Which documents should I prepare?",
+        "Which steps should I take first?"
+      ]
+    },
+    "valise": {
+      "suggestions": [
+        "Why should I pack this item?",
+        "What should I plan for rainy days?",
+        "How can I pack lighter?"
+      ]
+    }
   }
 }

@@ -5,7 +5,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 import { cleanField, contextDataMessage, DATA_RULE_FR, DATA_RULE_EN } from "../_shared/untrusted.ts";
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
-import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
+import { creditBlockResponse } from "../_shared/ai-unavailable.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -67,29 +67,16 @@ serve(withQuotaRefund(async (req) => {
       ? `NEUTRALITY: Never take political or geopolitical sides. When citing safety levels or restrictions, attribute them to "French authorities" / official advisories (diplomatie.gouv.fr). Never explain WHY a country is dangerous in political terms.`
       : `NEUTRALITÉ: Ne prends JAMAIS parti politiquement ou géopolitiquement. Quand tu cites un niveau de sécurité ou une restriction, attribue-le aux "autorités françaises" (diplomatie.gouv.fr). N'explique JAMAIS pourquoi un pays est dangereux en termes politiques.`;
 
+    // The chat already shows a "check the official site" line under every answer.
     const disclaimerRule = isEN
-      ? `MANDATORY DISCLAIMER: End EVERY reply about visas, entry requirements, safety, or formalities with a small line: "⚠️ Always verify on the official embassy site (diplomatie.gouv.fr) before booking."`
-      : `DISCLAIMER OBLIGATOIRE: Termine CHAQUE réponse sur les visas, formalités d'entrée, sécurité ou démarches par une petite ligne: "⚠️ Vérifie toujours sur le site officiel (diplomatie.gouv.fr) avant de réserver."`;
+      ? `Do not add a disclaimer line at the end: the app already shows one under each answer.`
+      : `N'ajoute pas de ligne d'avertissement à la fin : l'app en affiche déjà une sous chaque réponse.`;
 
     const structureRule = isEN
-      ? `LENGTH & STRUCTURE:
-- For short follow-up questions: 3-6 warm sentences.
-- When the user asks for a country summary, recap, or "what do I need for X": reply LONG and STRUCTURED with these sections (use the exact emoji headers, in this order, only those that apply):
-  📋 Visa & entry requirements — type, validity, entries, where to find the official fee and processing time (never write an amount or a delay yourself), where/how to apply (embassy, e-visa, on-arrival), full document list, common mistakes, practical tips.
-  💉 Vaccines & health — mandatory 🔴, recommended 🟠, French vaccination schedule 🔵, antimalarial drugs if relevant, mention "consult a doctor or international vaccination centre 4-8 weeks before departure".
-  🛡️ Safety — official French advisory level, areas to avoid, identified risks, Ariane registration, solo-traveller tips if relevant, emergency line +33 1 77 25 10 00.
-  💱 Local currency — name, ISO code, indicative rate, practical exchange tips.
-- Each section: short paragraph + bullet list. Always end the whole reply with the mandatory disclaimer line.`
-      : `LONGUEUR & STRUCTURE:
-- Pour les questions de relance courtes : 3-6 phrases chaleureuses.
-- Quand l'utilisateur demande un résumé pays, un récap, ou "qu'est-ce qu'il me faut pour X" : réponds LONG et STRUCTURÉ avec ces sections (en-têtes emoji exacts, dans cet ordre, garde seulement celles qui s'appliquent):
-  📋 Visa & formalités d'entrée — type, validité, nombre d'entrées, où trouver le tarif et le délai officiels (n'écris jamais toi-même un montant ni un délai), où/comment déposer (ambassade, e-visa, à l'arrivée), liste complète des documents, erreurs fréquentes, conseils pratiques.
-  💉 Vaccins & santé — obligatoires 🔴, recommandés 🟠, calendrier vaccinal français 🔵, antipaludéens si pertinent, mention "consulte un médecin ou un centre de vaccination internationale 4 à 8 semaines avant le départ".
-  🛡️ Sécurité — niveau d'alerte officiel (autorités françaises), zones à éviter, risques identifiés, inscription Ariane, conseils solo si pertinent, numéro d'urgence +33 1 77 25 10 00.
-  💱 Devise locale — nom, code ISO, taux indicatif, conseils pratiques de change.
-- Chaque section : court paragraphe + liste à puces. Termine TOUJOURS la réponse complète par la ligne disclaimer obligatoire.
+      ? `LENGTH & STRUCTURE: answer the question asked, nothing more. 3 to 6 short sentences; for "what do I need for X", at most 10 short lines grouped under the emoji headers that apply (📋 Visa & entry, 💉 Health, 🛡️ Safety), most urgent step first. Plain text: short "- " bullets are fine, no bold, no tables. Health: point to a doctor or an international vaccination centre 4-8 weeks before departure. Safety: attribute the level to the French authorities and mention Ariane registration when relevant.`
+      : `LONGUEUR & STRUCTURE : réponds à la question posée, sans plus. 3 à 6 phrases courtes ; pour « qu'est-ce qu'il me faut pour X », 10 lignes courtes maximum, regroupées sous les en-têtes emoji utiles (📋 Visa & entrée, 💉 Santé, 🛡️ Sécurité), l'étape la plus urgente en premier. Texte simple : des puces courtes « - » sont possibles, pas de gras, pas de tableau. Santé : renvoie vers un médecin ou un centre de vaccinations internationales 4 à 8 semaines avant le départ. Sécurité : attribue le niveau aux autorités françaises et cite l'inscription Ariane si utile.
 
-USAGE DU PRÉNOM: si tu connais le prénom, glisse-le naturellement environ 1 fois toutes les 3-4 phrases (jamais à chaque phrase). Varie les formules ("[Prénom]", "Et [Prénom],", "Pour toi [Prénom],").`;
+USAGE DU PRÉNOM : si tu connais le prénom, utilise-le au plus une fois.`;
 
     // Caller-supplied values never enter the system prompt.
     const contextData = {
@@ -119,7 +106,7 @@ ${structureRule}
 
 FEES & DELAYS: NEVER write a visa fee amount or a processing time, not even approximate ("about €25", "around 2 weeks"): they change with nationality and consulate. Instead write that the official fee and processing time are on the country's official visa site or its embassy's site.
 
-You NEVER say you can't answer. If you're not 100% sure, say so honestly and still give your best estimate with context — except for visa fees and processing times (see above). Write like you're texting a friend. Occasional emoji is fine ✈️.
+HONESTY: never invent an obligation, a visa, an exemption, a delay or a document. Separate clearly what is certain for this profile from what must be confirmed, and say with whom (embassy, consulate, host university). If a key detail is missing (nationality, purpose, length), ask ONE precise question instead of guessing. Put the most urgent step first. Write warmly and simply, short sentences, like a study-abroad adviser talking to a student. Occasional emoji is fine ✈️.
 
 ${SAFETY_RULE_EN}
 
@@ -138,7 +125,7 @@ ${structureRule}
 
 FRAIS & DÉLAIS : n'écris JAMAIS de montant de frais de visa ni de délai de traitement, même approximatif (« environ 25 € », « compte 2 semaines ») : ils changent selon la nationalité et le consulat. Écris à la place que le tarif et le délai officiels sont sur le site officiel des visas du pays ou sur celui de son ambassade.
 
-Tu ne dis JAMAIS que tu ne peux pas répondre. Si tu n'es pas sûr à 100%, dis-le honnêtement et donne ta meilleure estimation — sauf pour les frais et délais de visa (voir ci-dessus). Écris comme si tu textais à un pote. Un emoji de temps en temps ✈️.
+HONNÊTETÉ : n'invente jamais une obligation, un visa, une exemption, un délai ou un document. Sépare clairement ce qui est sûr pour ce profil de ce qui doit être confirmé, et dis auprès de qui (ambassade, consulat, université d'accueil). S'il manque une info clé (nationalité, motif, durée), pose UNE question précise au lieu de supposer. Mets l'étape la plus urgente en premier. Écris avec chaleur et simplicité, phrases courtes, comme un·e conseiller·ère mobilité qui parle à un·e étudiant·e.
 
 ${SAFETY_RULE_FR}
 
@@ -171,8 +158,10 @@ ${DATA_RULE_FR}`;
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 402) return aiUnavailableResponse(corsHeaders);
       const txt = await response.text();
+      // Out of workspace credits (402, or 403 credit limit): calm notice, try given back.
+      const blocked = creditBlockResponse(response.status, txt, corsHeaders);
+      if (blocked) return blocked;
       console.error("AI gateway error", response.status, txt);
       throw new Error(`AI gateway ${response.status}`);
     }

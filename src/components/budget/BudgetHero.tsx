@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, CalendarDays, MapPin, Sparkles, Wallet } from "lucide-react";
+import { placeName } from "@/lib/country-match";
 import budgetIllustration from "@/assets/budget/budget-illustration.jpg";
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const BudgetHero = ({ onGenerate, isGenerating, hasGenerated, destination, days, initialBudget }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const chip = "inline-flex items-center gap-2 rounded-xl border border-border bg-background/55 px-3 py-2";
   return (
     <motion.header initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="py-10 sm:py-16">
@@ -26,7 +27,7 @@ const BudgetHero = ({ onGenerate, isGenerating, hasGenerated, destination, days,
             <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{t("budget.heroTitle")}</h1>
             <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">{t("budget.heroSubtitle")}</p>
             <div className="mt-6 flex flex-wrap gap-2 text-sm">
-              <span className={chip}><MapPin className="h-4 w-4 text-primary" />{destination || t("budget.heroNoDestination")}</span>
+              <span className={chip}><MapPin className="h-4 w-4 text-primary" />{placeName(destination, i18n.language) || t("budget.heroNoDestination")}</span>
               {days ? <span className={chip}><CalendarDays className="h-4 w-4 text-primary" />{t("budget.configDays", { count: days })}</span> : null}
               <span className={chip}><Wallet className="h-4 w-4 text-primary" />{initialBudget > 0 ? `${initialBudget} €` : t("budget2.kpi.notGiven")}</span>
             </div>

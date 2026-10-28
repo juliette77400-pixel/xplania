@@ -872,7 +872,7 @@
       "qaEmpty": "Pose-moi une question — visa, sécurité, démarches, change… je suis là.",
       "disclaimer": "⚠️ Vérifie toujours sur le site officiel avant de réserver.",
       "nav": {
-        "process": "Process",
+        "process": "Démarches",
         "convert": "Convertir",
         "safety": "Sécurité",
         "embassy": "Ambassade"
@@ -1283,6 +1283,21 @@
       "km": "Km parcourus",
       "xpToNext": "Encore {{xp}} XP pour {{level}}",
       "maxLevel": "Niveau maximum atteint 🏆"
+    },
+    "name": {
+      "edit": "Modifier",
+      "editAria": "Modifier ton nom affiché",
+      "none": "Pas encore de nom",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "saved": "Nom enregistré",
+      "saveError": "Ton nom n'a pas pu être enregistré. Réessaie.",
+      "help": "C'est le nom que Xplania utilise pour te saluer. Ton adresse e-mail ne change pas.",
+      "errors": {
+        "empty": "Écris au moins une lettre.",
+        "tooLong": "{{max}} caractères maximum.",
+        "invalid": "Utilise des lettres, espaces, tirets ou apostrophes (pas de < ni >)."
+      }
     }
   },
   "notFound": {
@@ -6415,7 +6430,11 @@
       "low": "anodin",
       "medium": "maladroit",
       "high": "offensant"
-    }
+    },
+    "loadingFirst": "Première ouverture de ce thème pour ce pays : compte une quinzaine de secondes. Ensuite, il s'ouvre tout de suite, pour toi comme pour les autres étudiants.",
+    "genFailed": "La préparation de ce thème n'a pas abouti. Ton essai n'a pas été décompté : réessaie dans un instant.",
+    "enriching": "Ajout d'exemples concrets…",
+    "dailyComing": "Le geste du jour arrive… en attendant, voici un repère rédigé par Xplania."
   },
   "offlineBanner": {
     "text": "Pas de connexion internet. Ce que tu as déjà ouvert reste visible ; l'IA reviendra avec le réseau."
@@ -7249,7 +7268,7 @@
   "visa2": {
     "toolName": "Visa & formalités",
     "titleFor": "Tes formalités pour {{destination}}",
-    "subtitle": "L'essentiel en quatre cartes, puis ta checklist. Chaque info indique d'où elle vient et quand elle a été vérifiée.",
+    "subtitle": "Ce qu'il te faut pour partir l'esprit tranquille : quatre cartes, puis ta checklist. Chaque info te dit d'où elle vient et quand elle a été vérifiée.",
     "yourDestination": "ta destination",
     "opensNewTab": "(s'ouvre dans un nouvel onglet)",
     "reliability": {
@@ -7266,7 +7285,7 @@
     },
     "profile": {
       "title": "Ton profil",
-      "help": "Ces réponses servent à l'analyse. Tu peux les corriger ici.",
+      "help": "On s'appuie sur ces réponses pour adapter tes formalités. Corrige-les si quelque chose a changé.",
       "edit": "Modifier",
       "save": "Enregistrer mon profil",
       "saved": "Profil enregistré",
@@ -7309,9 +7328,9 @@
       "safety": "Sécurité",
       "showDetails": "Voir le détail",
       "hideDetails": "Masquer le détail",
-      "toAnalyze": "Analyse à lancer",
-      "visaPending": "Lance l'analyse pour savoir quel visa correspond à ton profil.",
-      "passportPending": "Lance l'analyse pour connaître les règles de passeport pour ton profil.",
+      "toAnalyze": "Pas encore analysé",
+      "visaPending": "Lance l'analyse : on te dit si tu as besoin d'un visa, et lequel.",
+      "passportPending": "Lance l'analyse pour savoir quel document te suffit et jusqu'à quand il doit être valable.",
       "idCardOk": "Carte d'identité acceptée",
       "passportNeeded": "Passeport valide nécessaire",
       "forYourProfile": "Pour ton profil",
@@ -7371,7 +7390,7 @@
       "ariane": "S'inscrire sur Fil d'Ariane"
     },
     "analysis": {
-      "ctaTitle": "Analyse ton visa et ta checklist pour ce profil",
+      "ctaTitle": "Vois ce qu'il te faut pour ce séjour, étape par étape",
       "outdated": "Ton profil a changé depuis la dernière analyse",
       "upToDate": "Analyse à jour pour ce profil",
       "completeFirst": "Complète d'abord les informations manquantes de ton profil.",
@@ -7381,12 +7400,12 @@
       "rerun": "Relancer l'analyse",
       "done": "Analyse prête",
       "error": "L'analyse n'a pas pu aboutir. Ton essai t'est rendu.",
-      "incomplete": "Réponse incomplète."
+      "incomplete": "La réponse est arrivée incomplète. Relance l'analyse dans un instant."
     },
     "checklist": {
       "title": "Ta checklist",
       "progress": "{{done}}/{{total}} faits",
-      "note": "Établie par l'IA à partir de ton profil : confirme les obligations auprès des sources officielles.",
+      "note": "Préparée pour ton profil par l'IA Xplania. Pour les obligations, c'est la règle officielle qui compte : vérifie-les sur les sites indiqués.",
       "when": "Si : {{condition}}",
       "cat": {
         "documents": "Documents",
@@ -7939,5 +7958,64 @@
     "title": "L'IA d'Xplania fait une petite pause",
     "message": "Tes résultats déjà générés restent affichés et ton essai n'a pas été décompté. Réessaie un peu plus tard.",
     "chat": "Je fais une petite pause et je ne peux pas répondre pour le moment 😴 Ce que tu as déjà préparé reste disponible, et cette question ne t'a coûté aucun essai. Réessaie un peu plus tard."
+  },
+  "assistant": {
+    "ideas": "Idées de questions",
+    "placeholder": "Pose ta question…",
+    "send": "Envoyer",
+    "thinking": "L'assistant réfléchit…",
+    "restart": "Nouvelle conversation",
+    "error": "Je n'ai pas pu répondre cette fois-ci. Ton essai n'a pas été décompté : réessaie dans un instant.",
+    "quotaReached": "Tu as utilisé tous tes essais du mois pour cet outil. Ils reviennent le 1er du mois prochain.",
+    "quotaNote_one": "Chaque question utilise 1 essai {{tool}} · encore {{count}} ce mois-ci.",
+    "quotaNote_other": "Chaque question utilise 1 essai {{tool}} · encore {{count}} ce mois-ci.",
+    "quotaUnlimited": "Chaque question compte comme un essai {{tool}} : les tiens sont illimités en ce moment.",
+    "open": "Poser une question à l'assistant",
+    "toolNames": {
+      "budget": "Budget",
+      "visa": "Visa",
+      "valise": "Valise",
+      "culture": "Culture",
+      "housing": "Logement"
+    },
+    "culture": {
+      "title": "Assistant Culture",
+      "greeting": "Une question sur les usages en {{country}} ? Je t'explique les habitudes locales, en restant sur des tendances : chaque personne est différente.",
+      "suggestions": [
+        "Comment saluer les habitants ?",
+        "Quelles erreurs culturelles éviter ?",
+        "Comment mieux m'intégrer ?"
+      ]
+    },
+    "housing": {
+      "title": "Aide au logement",
+      "greeting": "Je t'aide à comparer les logements que tu as enregistrés et à préparer tes questions. Je ne propose aucune annonce ni aucun site : les ressources vérifiées sont sur cette page.",
+      "suggestions": [
+        "Quels sont les points à vérifier avant de signer ?",
+        "Quels sont les avantages de ce logement ?",
+        "Quelles questions poser au propriétaire ?"
+      ]
+    },
+    "budget": {
+      "suggestions": [
+        "Comment réduire mon budget logement ?",
+        "Est-ce que mon budget est réaliste ?",
+        "Quelles dépenses ai-je oubliées ?"
+      ]
+    },
+    "visa": {
+      "suggestions": [
+        "Ai-je besoin d'un visa ?",
+        "Quels documents dois-je préparer ?",
+        "Quelles démarches dois-je faire en priorité ?"
+      ]
+    },
+    "valise": {
+      "suggestions": [
+        "Pourquoi dois-je prendre ce vêtement ?",
+        "Que prévoir pour les jours de pluie ?",
+        "Comment alléger ma valise ?"
+      ]
+    }
   }
 }

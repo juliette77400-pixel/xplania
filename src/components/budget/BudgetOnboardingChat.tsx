@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { useFirstName } from "@/lib/data/profiles";
+import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
+import ChatText from "@/components/shared/assistant/ChatText";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -63,48 +66,8 @@ const BudgetOnboardingChat = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const [profileName, setProfileName] = useState<string>("");
-
-  useEffect(() => {
-    if (!user?.id) {
-      setProfileName("");
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      try {
-        const { data } = await supabase
-          .from("profiles")
-          .select("display_name")
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (!cancelled && data?.display_name) setProfileName(data.display_name as string);
-      } catch {
-        /* ignore */
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user?.id]);
-
-  const firstName = (() => {
-    const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
-    const candidates = [
-      meta.first_name,
-      meta.firstName,
-      meta.given_name,
-      typeof meta.full_name === "string" ? (meta.full_name as string).split(" ")[0] : undefined,
-      typeof meta.name === "string" ? (meta.name as string).split(" ")[0] : undefined,
-      typeof meta.display_name === "string" ? (meta.display_name as string).split(" ")[0] : undefined,
-      profileName ? profileName.split(" ")[0] : undefined,
-      user?.email ? user.email.split("@")[0] : undefined,
-    ];
-    const found = candidates.find((v) => typeof v === "string" && v.trim().length > 0) as string | undefined;
-    if (!found) return "";
-    const clean = found.trim().replace(/[._-]+/g, " ").split(" ")[0];
-    return clean.charAt(0).toUpperCase() + clean.slice(1);
-  })();
+  // Saved profile name first, so a renamed student is greeted with the new name.
+  const firstName = useFirstName();
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -223,8 +186,8 @@ const BudgetOnboardingChat = ({
     closeBubble();
   };
 
-  const askQuestion = async () => {
-    const q = question.trim();
+  const askQuestion = async (preset?: string) => {
+    const q = (preset ?? question).trim();
     if (!q || qaLoading) return;
     const now = Date.now();
     const nextHistory: ChatMsg[] = [...qaHistory, { role: "user", content: q, ts: now }];
@@ -254,7 +217,7 @@ const BudgetOnboardingChat = ({
       };
       const invokePromise = supabase.functions.invoke("budget-qa", { body: payload });
       const timeoutPromise = new Promise<never>((_, reject) =>
-        window.setTimeout(() => reject(new Error("qa_timeout")), 20000)
+        window.setTimeout(() => reject(new Error("qa_timeout")), 45000)
       );
       const { data, error: fnError } = await Promise.race([invokePromise, timeoutPromise]);
       if (fnError) throw fnError;
@@ -434,9 +397,12 @@ const BudgetOnboardingChat = ({
                   key={i}
                   className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[90%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}
                 >
-                  {m.content}
+                  <ChatText text={m.content} />
                 </div>
               ))}
+              {qaHistory.length <= 1 && !qaLoading && (
+                <AssistantSuggestions items={t("assistant.budget.suggestions", { returnObjects: true }) as string[]} onPick={(q) => void askQuestion(q)} />
+              )}
               {qaLoading && (
                 <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -448,7 +414,7 @@ const BudgetOnboardingChat = ({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                askQuestion();
+                void askQuestion();
               }}
               className="p-2 border-t border-border/50 flex items-center gap-2 bg-background/40"
             >
@@ -469,6 +435,7 @@ const BudgetOnboardingChat = ({
                 <Send className="w-4 h-4" />
               </button>
             </form>
+            <div className="px-2 pb-2 bg-background/40"><AssistantQuotaNote tool="budget" /></div>
           </>
         )}
       </motion.div>

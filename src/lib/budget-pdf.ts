@@ -17,7 +17,11 @@ interface ExportBudgetPdfArgs {
   t: (key: string, opts?: Record<string, unknown>) => string;
 }
 
-const fmt = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`;
+// PDF fonts have no narrow no-break space (French thousands separator): use a plain space.
+const money = (n: number, locale: "fr" | "en") => {
+  const v = Math.round(n).toLocaleString(locale === "fr" ? "fr-FR" : "en-GB").replace(/[\u202f\u00a0]/g, " ");
+  return locale === "fr" ? `${v} €` : `€${v}`;
+};
 
 export async function exportBudgetPdf({
   destination,
@@ -32,6 +36,7 @@ export async function exportBudgetPdf({
   chartElement,
   t,
 }: ExportBudgetPdfArgs) {
+  const fmt = (n: number) => money(n, locale);
   const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();

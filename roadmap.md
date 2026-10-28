@@ -28,3 +28,12 @@
 
 ## Crédits IA épuisés (28/10)
 - [x] Message clair « IA en pause » dans tous les outils au lieu d'une erreur ou de « plus d'essais », résultats déjà affichés conservés, essai rendu
+
+## Performances, personnalisation, traductions, assistants (prompt du 28/10, 2e)
+- [x] 1. Culture : mesurer puis réduire le temps de chargement (cache, affichage progressif, squelettes, réessai)
+- [x] 2. Visa : textes plus humains, tutoiement, personnalisés, sans rien inventer
+- [x] 3. Profil : modifier son nom affiché (Enregistrer/Annuler, validation, partout dans l'app)
+- [x] 4. Audit traductions FR/EN (textes en dur, cohérence, mobile)
+- [x] 5A. Chatbot Budget : audit + vrais tests
+- [x] 5B-E. Assistant réutilisable par outil (Visa, Valise, Culture, Logement) avec quotas et sécurité
+- [x] 6-7. Tests + compte rendu
