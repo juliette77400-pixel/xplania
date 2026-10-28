@@ -2,6 +2,7 @@
 import { useTranslation } from "react-i18next";
 import { Building2, ExternalLink, Info, Landmark, PiggyBank, Search, ShieldAlert, Users } from "lucide-react";
 import { resourcesForCountry, VERIFIED_ON, type HousingResource, type ResourceCategory } from "@/data/housing-resources";
+import { LinkCheckBadge, LinkCheckNote } from "@/components/shared/LinkCheckNote";
 
 const CATEGORY_ICON: Record<ResourceCategory, typeof Building2> = {
   residence: Building2,
@@ -22,7 +23,6 @@ const HousingResources = ({ countryCode, countryName }: Props) => {
   const { t, i18n } = useTranslation();
   const { local, european } = resourcesForCountry(countryCode);
   const all = [...local, ...european];
-  const verified = new Date(VERIFIED_ON).toLocaleDateString(i18n.language.startsWith("fr") ? "fr-FR" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
 
   const card = (r: HousingResource) => {
     const Icon = CATEGORY_ICON[r.category];
@@ -41,7 +41,7 @@ const HousingResources = ({ countryCode, countryName }: Props) => {
           <a href={r.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-primary underline-offset-4 hover:underline">
             {t("housing.resources.open")}<ExternalLink className="h-3.5 w-3.5" aria-hidden /><span className="sr-only">{t("housing.resources.newTab")}</span>
           </a>
-          <span className="text-[11px] text-muted-foreground">{t("housing.resources.verified", { date: verified })}</span>
+          <LinkCheckBadge url={r.url} />
         </div>
       </li>
     );
@@ -75,6 +75,7 @@ const HousingResources = ({ countryCode, countryName }: Props) => {
           );
         })
       )}
+      {all.length > 0 && <LinkCheckNote urls={all.map((r) => r.url)} contentCheckedOn={VERIFIED_ON} />}
       <p className="text-xs text-muted-foreground">{t("housing.resources.disclaimer")}</p>
     </div>
   );
