@@ -1,4 +1,4 @@
-import { countryList } from "@/lib/countries";
+import { countryList, getCountryNameIn } from "@/lib/countries";
 
 export const normCountry = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -21,4 +21,16 @@ export function findCountry(q: string | null | undefined): string | null {
   if (exact) return exact.code;
   const starts = countryList.filter((c) => normCountry(c.name).startsWith(n));
   return starts.length === 1 ? starts[0].code : null;
+}
+
+/**
+ * Display name of a saved destination in the interface language: a bare country name typed in
+ * French ("Espagne") shows as "Spain" in English. Cities and free text are shown as typed.
+ */
+export function placeName(name: string | null | undefined, lang: string | undefined): string {
+  if (!name) return "";
+  if (!lang?.startsWith("en")) return name;
+  const n = normCountry(name);
+  const exact = countryList.find((c) => normCountry(c.name) === n) ?? (ALIASES[n] ? { code: ALIASES[n] } : null);
+  return exact ? getCountryNameIn(exact.code, "en") : name;
 }
