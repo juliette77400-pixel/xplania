@@ -26,6 +26,26 @@ export const DESTINATION_PAGES: DestinationPage[] = [
   { code: "CN", slug: "chine", nameFr: "Chine", nameEn: "China", inFr: "en Chine", inEn: "in China", officialSlug: "chine" },
   { code: "MX", slug: "mexique", nameFr: "Mexique", nameEn: "Mexico", inFr: "au Mexique", inEn: "in Mexico", officialSlug: "mexique" },
   { code: "BR", slug: "bresil", nameFr: "Brésil", nameEn: "Brazil", inFr: "au Brésil", inEn: "in Brazil", officialSlug: "bresil" },
+  // Added 28 Oct 2026 — France Diplomatie and Institut Pasteur pages opened (HTTP 200).
+  { code: "ID", slug: "indonesie", nameFr: "Indonésie", nameEn: "Indonesia", inFr: "en Indonésie", inEn: "in Indonesia", officialSlug: "indonesie" },
+  { code: "KR", slug: "coree-du-sud", nameFr: "Corée du Sud", nameEn: "South Korea", inFr: "en Corée du Sud", inEn: "in South Korea", officialSlug: "coree-du-sud" },
+  { code: "NZ", slug: "nouvelle-zelande", nameFr: "Nouvelle-Zélande", nameEn: "New Zealand", inFr: "en Nouvelle-Zélande", inEn: "in New Zealand", officialSlug: "nouvelle-zelande" },
+  { code: "PT", slug: "portugal", nameFr: "Portugal", nameEn: "Portugal", inFr: "au Portugal", inEn: "in Portugal", officialSlug: "portugal" },
+  { code: "CL", slug: "chili", nameFr: "Chili", nameEn: "Chile", inFr: "au Chili", inEn: "in Chile", officialSlug: "chili" },
+  { code: "AR", slug: "argentine", nameFr: "Argentine", nameEn: "Argentina", inFr: "en Argentine", inEn: "in Argentina", officialSlug: "argentine" },
+  { code: "DK", slug: "danemark", nameFr: "Danemark", nameEn: "Denmark", inFr: "au Danemark", inEn: "in Denmark", officialSlug: "danemark" },
+  { code: "SE", slug: "suede", nameFr: "Suède", nameEn: "Sweden", inFr: "en Suède", inEn: "in Sweden", officialSlug: "suede" },
+  { code: "IT", slug: "italie", nameFr: "Italie", nameEn: "Italy", inFr: "en Italie", inEn: "in Italy", officialSlug: "italie" },
+  { code: "HU", slug: "hongrie", nameFr: "Hongrie", nameEn: "Hungary", inFr: "en Hongrie", inEn: "in Hungary", officialSlug: "hongrie" },
+  { code: "CH", slug: "suisse", nameFr: "Suisse", nameEn: "Switzerland", inFr: "en Suisse", inEn: "in Switzerland", officialSlug: "suisse" },
+  { code: "NO", slug: "norvege", nameFr: "Norvège", nameEn: "Norway", inFr: "en Norvège", inEn: "in Norway", officialSlug: "norvege" },
+  { code: "GR", slug: "grece", nameFr: "Grèce", nameEn: "Greece", inFr: "en Grèce", inEn: "in Greece", officialSlug: "grece" },
+  { code: "ZA", slug: "afrique-du-sud", nameFr: "Afrique du Sud", nameEn: "South Africa", inFr: "en Afrique du Sud", inEn: "in South Africa", officialSlug: "afrique-du-sud" },
+  { code: "AT", slug: "autriche", nameFr: "Autriche", nameEn: "Austria", inFr: "en Autriche", inEn: "in Austria", officialSlug: "autriche" },
+  { code: "BG", slug: "bulgarie", nameFr: "Bulgarie", nameEn: "Bulgaria", inFr: "en Bulgarie", inEn: "in Bulgaria", officialSlug: "bulgarie" },
+  { code: "IE", slug: "irlande", nameFr: "Irlande", nameEn: "Ireland", inFr: "en Irlande", inEn: "in Ireland", officialSlug: "irlande" },
+  { code: "PE", slug: "perou", nameFr: "Pérou", nameEn: "Peru", inFr: "au Pérou", inEn: "in Peru", officialSlug: "perou" },
+  { code: "IN", slug: "inde", nameFr: "Inde", nameEn: "India", inFr: "en Inde", inEn: "in India", officialSlug: "inde" },
 ];
 
 export const DESTINATIONS_HUB = "/preparer";

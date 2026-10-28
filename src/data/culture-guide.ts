@@ -1,5 +1,6 @@
 // Cultural immersion guide — pillar config + pre-written country sheets (free, no AI).
 // Pillar order/list can be changed here only.
+import { MORE_SHEETS } from "./culture-sheets-more";
 export const CULTURE_PILLARS = [
   { id: "greetings", emoji: "👋" },
   { id: "food", emoji: "🍽️" },
@@ -47,7 +48,7 @@ interface RawPillar { ping: L; dos: RawTip[]; donts: RawTip[]; homeVsHere: L[] }
 const l = (fr: string, en: string): L => ({ fr, en });
 const tip = (tf: string, te: string, wf: string, we: string, severity?: Tip["severity"]): RawTip => ({ text: l(tf, te), why: l(wf, we), severity });
 
-const SHEETS: Record<string, Partial<Record<PillarId, RawPillar>>> = {
+const BASE_SHEETS: Record<string, Partial<Record<PillarId, RawPillar>>> = {
   GB: {
     social: {
       ping: l("Ici, la file d'attente est presque sacrée !", "Here, queuing is almost sacred!"),
@@ -262,6 +263,8 @@ const SHEETS: Record<string, Partial<Record<PillarId, RawPillar>>> = {
     },
   },
 };
+// Countries added later live in culture-sheets-more.ts (same shape, hand-written).
+const SHEETS: Record<string, Partial<Record<PillarId, RawPillar>>> = { ...BASE_SHEETS, ...MORE_SHEETS };
 
 export const FEATURED_COUNTRIES = ["GB", "US", "MX", "BR", "AU", "JP", "CN", "NL", "PL", "ES"];
 

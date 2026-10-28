@@ -6966,7 +6966,21 @@
         "rtb": "Official Irish tenancy body: registers tenancies and settles disputes, including deposits.",
         "cmhc": "Canada's official housing agency, with renting guides.",
         "antifraudca": "Official service to report fraud in Canada, including fake rental listings.",
-        "esn": "The European Erasmus students' network (non-profit association). Its local sections welcome international students and can point you in the right direction for housing: find the one in your host city."
+        "esn": "The European Erasmus students' network (non-profit association). Its local sections welcome international students and can point you in the right direction for housing: find the one in your host city.",
+        "studyindenmark": "Official Danish government site for international students, with a housing section.",
+        "studyinsweden": "Official Swedish Institute site for studying in Sweden, with tips on finding housing.",
+        "sssb": "Foundation running student housing in Stockholm (queue system: sign up early).",
+        "studyinnorway": "Official portal for studying in Norway, with information on student housing.",
+        "finn": "Norway's main classifieds site, widely used for rentals. Beware of offers that look too good.",
+        "studyinaustria": "Portal of the Austrian education agency (OeAD): studies, visa and housing.",
+        "oeadhousing": "Furnished housing for international students and researchers in Austria, run by OeAD.",
+        "wgzimmer": "Swiss flatshare listings site, widely used by students.",
+        "studyinswitzerland": "Portal of Swiss universities: studies, cost of living and housing.",
+        "daft": "Ireland's main rental listings site. Never pay before visiting.",
+        "tenancynz": "Official site on tenants' rights: lease, bond and disputes.",
+        "trademe": "New Zealand's main rental listings site.",
+        "studyinkorea": "Official Korean portal for international students, with information on daily life and housing.",
+        "studyinindia": "Official Indian government portal for international students."
       }
     },
     "types": {
