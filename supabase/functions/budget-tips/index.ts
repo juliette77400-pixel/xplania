@@ -49,7 +49,10 @@ serve(withQuotaRefund(async (req) => {
       stayType = "",
       housing = "",
       housingStatus = "",
+      only = "",
     } = await req.json();
+    // "Régénérer" in the optimisation block asks only for new deals: one smaller AI call (still one Budget try).
+    const dealsOnly = only === "deals";
     const clean = (v: unknown, max = 80) => (typeof v === "string" ? v.replace(/[\r\n<>{}]/g, " ").trim().slice(0, max) : "");
     const cityName = clean(city);
     const STAY: Record<string, string> = { erasmus: "Erasmus / university exchange student", internship: "intern (work placement)", other: "other long stay" };
@@ -83,10 +86,10 @@ serve(withQuotaRefund(async (req) => {
 
 1. SCENARIOS: compute three full-trip budgets (economy, realistic, comfort) in EUR from real prices at that destination for these dates, traveler count and accommodation standing. Each has a total and a per-category split using the same category keys as the user's breakdown. "realistic" must be the best value-for-money option: credible without overspending. Give one short sentence per scenario explaining what it includes.
 2. ANALYSIS: 2-3 sentences addressed to THIS traveler, based on their profile, priorities and current split vs the realistic scenario. Then 2-4 concrete points (what to increase, what to cut, and why), never generic.
-3. DEALS: lasting low-cost options that match the stay type and profile, grouped in activities, restaurants, transport and mood (things matching the traveler's vibe). 2-3 items per group. Each has a real place or service name, its zone (e.g. north, south, city centre, a named district) and city, and one short sentence with an indicative price to check. No standard advice valid in any city. NEVER present a promotion, discount code, sale or limited-time offer as currently available: you cannot verify live offers. Student or youth fares are fine only as a general scheme to check on the official site.
+3. DEALS: lasting low-cost options that match the stay type and profile, grouped in activities, restaurants, transport and mood (things matching the traveler's vibe). 2-3 items per group. Start with the groups where the breakdown shows real pressure (spent close to or above planned, or the largest planned lines); a group with nothing new and relevant gets an empty list. Each has a real place or service name, its zone (e.g. north, south, city centre, a named district) and city, and one short sentence with an indicative price to check. No standard advice valid in any city. NEVER present a promotion, discount code, sale or limited-time offer as currently available: you cannot verify live offers. Student or youth fares are fine only as a general scheme to check on the official site.
 4. TIPS: 4 money-saving tips specific to the stay type and to the student's biggest spending lines (largest planned categories first), each naming a real place, pass, market or local practice, with its zone and city. 1-2 sentences. For a semester or internship, think monthly: transport passes, student cards, markets, phone plans, housing costs, not tourist one-offs.
 LOCATION: if a city is given, every deal and tip is in that city. If only the country is known, use the country's main student cities and always name the city in the item; never pretend it is the student's own city.
-Novelty: never repeat any idea listed in "Already shown". Variation seed: ${seed}.
+Novelty: never repeat any idea listed in "Already shown". If no new idea is genuinely useful, return fewer items or an empty list: never reword an old idea or invent a problem to look different. Variation seed: ${seed}.
 Only include places you genuinely know exist. Prefer fewer but solid items.
 Every amount is an ESTIMATE: never present a price as guaranteed or official; when unsure, give a rounded range in the note.
 
@@ -100,7 +103,7 @@ Dates: ${dateBits}
 Total budget: €${totalBudget} (${travelers} traveler(s), ${days} days)
 Traveler profile: ${styleBits || "n/a"}
 Current breakdown: ${breakdown || "none"}
-Already shown (do not repeat): ${(avoid as string[]).slice(0, 30).join(" | ") || "none"}`;
+Already shown (do not repeat): ${(Array.isArray(avoid) ? avoid : []).slice(-30).map((x) => clean(x, 80)).filter(Boolean).join(" | ") || "none"}`;
 
     const item = { type: "object", properties: { name: { type: "string" }, zone: { type: "string" }, city: { type: "string" }, detail: { type: "string" } }, required: ["name", "zone", "city", "detail"], additionalProperties: false };
     const scenario = {
@@ -141,7 +144,7 @@ Already shown (do not repeat): ${(avoid as string[]).slice(0, 30).join(" | ") ||
     try {
       parsed = await generateJsonSplit({ instructions: instructions + countryContext(destination), input, schema: SCHEMA, name: "budget_insights", strict: true, effort: "low",
         // Lighter model: about 10 s instead of 35 s for the same four parts.
-        model: "openai/gpt-6-luna", parts: [["scenarios"], ["analysis"], ["deals"], ["tips"]] });
+        model: "openai/gpt-6-luna", parts: dealsOnly ? [["deals"]] : [["scenarios"], ["analysis"], ["deals"], ["tips"]] });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;
