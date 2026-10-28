@@ -42,4 +42,4 @@
 - [x] Guides par pays dans la partie outils de l'accueil et dans le menu
 - [x] 21 pays : 19 nouveaux guides publics (MX, BR existaient), fiches culture écrites à la main, sites visa ID/ZA, 14 ressources logement vérifiées
 - [x] 21 pays reliés partout : devises, noms anglais, repères de prix Budget, repères pays des assistants IA
-- [ ] Îles (Réunion, Canaries, Baléares…) — à cadrer avec Juliette
+- [x] Îles et outre-mer : encart dans Visa/Budget/Logement + rubrique « Et les îles ? » des guides

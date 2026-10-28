@@ -2,6 +2,7 @@
 // emergency contacts. Official pages (security, entry, health, contacts) are
 // read for real; visa/passport answers for the exact profile come from the AI
 // and are saved with the trip so nothing is regenerated on each visit.
+import IslandNotice from "@/components/shared/IslandNotice";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -216,6 +217,8 @@ const GuideVisaPage = () => {
         </motion.header>
 
         <VisaProfileCard profile={profile} saving={savingProfile} onSave={saveProfile} />
+
+        <IslandNotice destination={tripData?.destination} city={profile.city} />
 
         {profile.destinationCode && (
           <VisaSummaryCards

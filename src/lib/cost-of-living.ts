@@ -36,6 +36,44 @@ interface CityProfile {
 }
 
 const PROFILES: CityProfile[] = [
+  // French overseas (before /france/: "Polynésie française"). Long-haul flight, higher food prices.
+  {
+    match: /nouvelle[- ]cal[eé]donie|new caledonia|noum[eé]a|polyn[eé]sie|polynesia|tahiti|papeete|wallis/i,
+    mealCost: 22,
+    transitDay: 6,
+    hotelNight: 140,
+    flight: 1800,
+    mult: { accommodation: 1.01, localTransport: 1.25, activities: 1.25, food: 1.09, shopping: 1.25, extras: 1.25, unexpected: 1.25 },
+    currency: "XPF",
+  },
+  {
+    match: /r[eé]union|guadeloupe|martinique|mayotte|guyane|french guiana|cayenne|fort-de-france|pointe-[aà]-pitre/i,
+    mealCost: 15,
+    transitDay: 4,
+    hotelNight: 90,
+    flight: 850,
+    mult: { accommodation: 1.11, localTransport: 1.0, activities: 1.0, food: 1.27, shopping: 1.0, extras: 1.0, unexpected: 1.0 },
+    currency: "EUR",
+  },
+  // Islands with long or costly connections (only when the city or island is named).
+  {
+    match: /canaries|canarias|canary|tenerife|gran canaria|lanzarote|fuerteventura/i,
+    mealCost: 13,
+    transitDay: 4,
+    hotelNight: 85,
+    flight: 300,
+    mult: { accommodation: 1.08, localTransport: 0.85, activities: 0.85, food: 1.08, shopping: 0.85, extras: 0.85, unexpected: 0.85 },
+    currency: "EUR",
+  },
+  {
+    match: /bal[eé]ares|balearic|majorque|mallorca|majorca|minorque|menorca|ibiza|formentera/i,
+    mealCost: 16,
+    transitDay: 5,
+    hotelNight: 120,
+    flight: 250,
+    mult: { accommodation: 1.11, localTransport: 1.0, activities: 1.0, food: 1.0, shopping: 1.0, extras: 1.0, unexpected: 1.0 },
+    currency: "EUR",
+  },
   {
     match: /paris|france/i,
     mealCost: 22,

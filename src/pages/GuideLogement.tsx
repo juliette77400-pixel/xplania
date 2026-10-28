@@ -2,6 +2,7 @@
 // look, compare homes spotted elsewhere, avoid scams and get ready to move in.
 // No listings, bookings or payments. Reads the trip from the questionnaire. The only AI is the
 // optional helper panel (tool-assistant), which never names sites or listings.
+import IslandNotice from "@/components/shared/IslandNotice";
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -143,7 +144,7 @@ const GuideLogement = () => {
     if (!trip) return null;
     switch (s) {
       case "resources":
-        return <HousingResources countryCode={countryCode} countryName={destination} />;
+        return <><IslandNotice destination={destination} city={city} className="mb-4" /><HousingResources countryCode={countryCode} countryName={destination} /></>;
       case "compare":
         return <HousingComparator tripId={trip.id} destination={destination} city={city || destination} departureDate={departureDate} durationDays={durationDays} confirmed={status === "confirmed"}
           returnDate={form.returnDate || trip.return_date || null} maxRentOverride={typeof form.maxRent === "number" ? form.maxRent : null} onSaveMaxRent={saveMaxRent} />;
