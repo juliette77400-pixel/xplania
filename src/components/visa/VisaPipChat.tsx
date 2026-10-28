@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
+import ChatText from "@/components/shared/assistant/ChatText";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -284,7 +285,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
 
           {(stage === "summary" || stage === "qa") && history.map((m, i) => (
             <div key={i} className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[92%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}>
-              {m.content}
+              <ChatText text={m.content} />
               {m.role === "assistant" && (
                 <div className="text-xs text-muted-foreground mt-1.5">
                   {t("guideVisa.chatbot.disclaimer")}

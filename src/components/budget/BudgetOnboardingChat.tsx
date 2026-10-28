@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
+import ChatText from "@/components/shared/assistant/ChatText";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -396,7 +397,7 @@ const BudgetOnboardingChat = ({
                   key={i}
                   className={`text-sm leading-relaxed rounded-lg px-3 py-2 max-w-[90%] whitespace-pre-wrap ${m.role === "user" ? "bg-primary/15 text-foreground ml-auto" : "bg-muted/50 text-foreground"}`}
                 >
-                  {m.content}
+                  <ChatText text={m.content} />
                 </div>
               ))}
               {qaHistory.length <= 1 && !qaLoading && (

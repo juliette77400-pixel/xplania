@@ -10,6 +10,7 @@ import { onOpenPipChat } from "@/lib/help-events";
 import { chatErrorReply } from "@/lib/ai-pause";
 import type { QuotaTool } from "@/lib/usage-quota";
 import { AssistantQuotaNote, AssistantSuggestions } from "./AssistantExtras";
+import ChatText from "./ChatText";
 
 interface Msg { role: "user" | "assistant"; content: string; failed?: boolean }
 
@@ -115,7 +116,7 @@ export default function ToolAssistant({ tool, quotaTool, title, greeting, sugges
         {history.length === 0 && <AssistantSuggestions items={suggestions} onPick={(q) => void ask(q)} disabled={loading} />}
         {history.map((m, i) => (
           <div key={i} className={`max-w-[92%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm leading-relaxed ${m.role === "user" ? "ml-auto bg-primary/15 text-foreground" : m.failed ? "border border-destructive/30 bg-destructive/5 text-foreground" : "bg-muted/50 text-foreground"}`}>
-            {m.content}
+            <ChatText text={m.content} />
           </div>
         ))}
         {loading && <p role="status" className="flex items-center gap-2 p-1 text-xs text-muted-foreground"><Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />{t("assistant.thinking")}</p>}
