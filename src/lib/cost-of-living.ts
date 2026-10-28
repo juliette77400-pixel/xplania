@@ -93,7 +93,7 @@ const PROFILES: CityProfile[] = [
     currency: "USD",
   },
   {
-    match: /lisbon|lisbonne|portugal|porto/i,
+    match: /lisbon|lisbonne|portugal|porto(?! alegre)/i,
     mealCost: 12,
     transitDay: 6,
     hotelNight: 75,
