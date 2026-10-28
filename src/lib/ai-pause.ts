@@ -41,3 +41,10 @@ export async function markAiPause<T extends InvokeResult>(result: T, notify: () 
   }
   return result;
 }
+
+/** For chats: the answer bubble already explains the pause, so the notice would only hide the input. */
+export function chatErrorReply(error: unknown, fallback: string): string {
+  if (!isAiPause(error)) return fallback;
+  toast.dismiss("ai-pause");
+  return i18n.t("aiPause.chat");
+}

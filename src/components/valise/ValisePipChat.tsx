@@ -5,7 +5,7 @@ import {
   Backpack, Loader2, Send, X, Sparkles, RotateCcw, WifiOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { isAiPause } from "@/lib/ai-pause";
+import { chatErrorReply, isAiPause } from "@/lib/ai-pause";
 import { useAuth } from "@/hooks/useAuth";
 import { onOpenPipChat } from "@/lib/help-events";
 
@@ -329,7 +329,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
       console.error("valise-qa failed", e);
       // Out of AI credits: say so, never queue (retrying would not help).
       if (isAiPause(e)) {
-        setHistory((prev) => [...prev, { role: "assistant", content: t("aiPause.chat"), ts: Date.now() }]);
+        setHistory((prev) => [...prev, { role: "assistant", content: chatErrorReply(e, ""), ts: Date.now() }]);
         return;
       }
       // Network/edge failure → queue for retry
