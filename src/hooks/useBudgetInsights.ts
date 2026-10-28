@@ -57,8 +57,10 @@ export function useBudgetInsights(a: Args) {
     queryKey: key,
     enabled: a.enabled && !!a.destination,
     staleTime: Infinity,
-    // Keep the current ideas on screen while new ones load (no empty flash, nothing lost on failure).
-    placeholderData: keepPreviousData,
+    // On "Régénérer" (same trip, new nonce) keep the current ideas on screen while new ones load.
+    // A different trip never shows the previous trip's ideas.
+    placeholderData: (prev, prevQuery) =>
+      prevQuery && JSON.stringify(prevQuery.queryKey.slice(0, -1)) === JSON.stringify(key.slice(0, -1)) ? keepPreviousData(prev) : undefined,
     // A missing credit or an exhausted quota will not fix itself on retry.
     retry: (count, err) => count < 1 && !(err instanceof Error && ["quota", "ai_unavailable"].includes(err.message)),
     queryFn: async (): Promise<BudgetInsights> => {
