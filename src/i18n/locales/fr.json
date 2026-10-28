@@ -138,7 +138,8 @@
     "culture": "Guide culturel",
     "housing": "Logement",
     "visaShort": "Visa",
-    "cultureShort": "Culture"
+    "cultureShort": "Culture",
+    "countryGuides": "Guides par pays"
   },
   "about": {
     "metaTitle": "À propos — Xplania, préparer son départ sans soucis",
@@ -7424,6 +7425,38 @@
       "embassy": "Ambassade / consulat",
       "local": "Urgences locales",
       "checkOfficial": "Vérifie ces numéros sur le site de l'ambassade avant ton départ."
+    },
+    "essentials": {
+      "passport-validity": {
+        "item": "Passeport ou carte d'identité valable pendant tout le séjour",
+        "detail": "Regarde la date d'expiration maintenant : certains pays demandent une validité qui dépasse ton retour, et un renouvellement prend du temps."
+      },
+      "admission-proof": {
+        "item": "Convention de stage ou lettre d'admission",
+        "detail": "Garde l'original et une copie dans ton bagage cabine : on peut te la demander pour le visa ou au passage de la frontière."
+      },
+      "health-insurance": {
+        "item": "Couverture santé pour tout ton séjour",
+        "detail": "Demande ta carte européenne d'assurance maladie (CEAM) à ta caisse avant de partir, et vérifie ce qu'elle ne couvre pas (le rapatriement, par exemple).",
+        "detailWorld": "Choisis une assurance santé qui couvre toute la durée du séjour, rapatriement compris : elle est souvent demandée pour le visa. Demande aussi à ton école ce qu'elle propose."
+      },
+      "internship-authorisation": {
+        "item": "Un visa qui t'autorise vraiment à faire ton stage",
+        "detail": "Un visa étudiant ou touristique n'autorise pas toujours un stage, même non payé : fais-le confirmer par l'ambassade ou le consulat du pays."
+      },
+      "residence-registration": {
+        "item": "Déclarer ta résidence en arrivant",
+        "detail": "Dans beaucoup de pays, un long séjour se déclare sur place (mairie, police ou service de l'immigration) dans les premières semaines. Demande la démarche exacte à ton école ou ton entreprise d'accueil.",
+        "condition": "ton séjour dure plus de 3 mois"
+      },
+      "document-copies": {
+        "item": "Copies numériques de tes documents",
+        "detail": "Scanne passeport, visa, convention et assurance, et range-les dans un espace en ligne sécurisé : en cas de perte, tout va beaucoup plus vite."
+      },
+      "ariane": {
+        "item": "T'inscrire sur Ariane (France Diplomatie)",
+        "detail": "Ce service gratuit du ministère des Affaires étrangères te prévient en cas de crise dans le pays et permet aux autorités de te joindre."
+      }
     }
   },
   "budget2": {
@@ -7798,6 +7831,11 @@
         "housing": "Une étudiante compare des annonces de logement sur son ordinateur",
         "valise": "Une valise posée dans une chambre vide",
         "culture": "Des étudiants partagent un repas avec une famille"
+      },
+      "countries": {
+        "title": "Guides par pays",
+        "subtitle": "Formalités, santé, budget, logement et codes culturels : l'essentiel pour chaque destination, avec les liens officiels.",
+        "all": "Tous les guides"
       }
     },
     "result": {
