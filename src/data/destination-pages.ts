@@ -13,6 +13,8 @@ export interface DestinationPage {
   nameEn: string;
   /** Slug used by France Diplomatie and Institut Pasteur pages. */
   officialSlug: string;
+  /** Day the page's content was checked by hand, when later than LINKS_CHECKED_ON. */
+  checkedOn?: string;
 }
 
 export const DESTINATION_PAGES: DestinationPage[] = [
@@ -27,25 +29,25 @@ export const DESTINATION_PAGES: DestinationPage[] = [
   { code: "MX", slug: "mexique", nameFr: "Mexique", nameEn: "Mexico", inFr: "au Mexique", inEn: "in Mexico", officialSlug: "mexique" },
   { code: "BR", slug: "bresil", nameFr: "Brésil", nameEn: "Brazil", inFr: "au Brésil", inEn: "in Brazil", officialSlug: "bresil" },
   // Added 28 Oct 2026 — France Diplomatie and Institut Pasteur pages opened (HTTP 200).
-  { code: "ID", slug: "indonesie", nameFr: "Indonésie", nameEn: "Indonesia", inFr: "en Indonésie", inEn: "in Indonesia", officialSlug: "indonesie" },
-  { code: "KR", slug: "coree-du-sud", nameFr: "Corée du Sud", nameEn: "South Korea", inFr: "en Corée du Sud", inEn: "in South Korea", officialSlug: "coree-du-sud" },
-  { code: "NZ", slug: "nouvelle-zelande", nameFr: "Nouvelle-Zélande", nameEn: "New Zealand", inFr: "en Nouvelle-Zélande", inEn: "in New Zealand", officialSlug: "nouvelle-zelande" },
-  { code: "PT", slug: "portugal", nameFr: "Portugal", nameEn: "Portugal", inFr: "au Portugal", inEn: "in Portugal", officialSlug: "portugal" },
-  { code: "CL", slug: "chili", nameFr: "Chili", nameEn: "Chile", inFr: "au Chili", inEn: "in Chile", officialSlug: "chili" },
-  { code: "AR", slug: "argentine", nameFr: "Argentine", nameEn: "Argentina", inFr: "en Argentine", inEn: "in Argentina", officialSlug: "argentine" },
-  { code: "DK", slug: "danemark", nameFr: "Danemark", nameEn: "Denmark", inFr: "au Danemark", inEn: "in Denmark", officialSlug: "danemark" },
-  { code: "SE", slug: "suede", nameFr: "Suède", nameEn: "Sweden", inFr: "en Suède", inEn: "in Sweden", officialSlug: "suede" },
-  { code: "IT", slug: "italie", nameFr: "Italie", nameEn: "Italy", inFr: "en Italie", inEn: "in Italy", officialSlug: "italie" },
-  { code: "HU", slug: "hongrie", nameFr: "Hongrie", nameEn: "Hungary", inFr: "en Hongrie", inEn: "in Hungary", officialSlug: "hongrie" },
-  { code: "CH", slug: "suisse", nameFr: "Suisse", nameEn: "Switzerland", inFr: "en Suisse", inEn: "in Switzerland", officialSlug: "suisse" },
-  { code: "NO", slug: "norvege", nameFr: "Norvège", nameEn: "Norway", inFr: "en Norvège", inEn: "in Norway", officialSlug: "norvege" },
-  { code: "GR", slug: "grece", nameFr: "Grèce", nameEn: "Greece", inFr: "en Grèce", inEn: "in Greece", officialSlug: "grece" },
-  { code: "ZA", slug: "afrique-du-sud", nameFr: "Afrique du Sud", nameEn: "South Africa", inFr: "en Afrique du Sud", inEn: "in South Africa", officialSlug: "afrique-du-sud" },
-  { code: "AT", slug: "autriche", nameFr: "Autriche", nameEn: "Austria", inFr: "en Autriche", inEn: "in Austria", officialSlug: "autriche" },
-  { code: "BG", slug: "bulgarie", nameFr: "Bulgarie", nameEn: "Bulgaria", inFr: "en Bulgarie", inEn: "in Bulgaria", officialSlug: "bulgarie" },
-  { code: "IE", slug: "irlande", nameFr: "Irlande", nameEn: "Ireland", inFr: "en Irlande", inEn: "in Ireland", officialSlug: "irlande" },
-  { code: "PE", slug: "perou", nameFr: "Pérou", nameEn: "Peru", inFr: "au Pérou", inEn: "in Peru", officialSlug: "perou" },
-  { code: "IN", slug: "inde", nameFr: "Inde", nameEn: "India", inFr: "en Inde", inEn: "in India", officialSlug: "inde" },
+  { code: "ID", slug: "indonesie", nameFr: "Indonésie", nameEn: "Indonesia", inFr: "en Indonésie", inEn: "in Indonesia", officialSlug: "indonesie", checkedOn: "2026-10-28" },
+  { code: "KR", slug: "coree-du-sud", nameFr: "Corée du Sud", nameEn: "South Korea", inFr: "en Corée du Sud", inEn: "in South Korea", officialSlug: "coree-du-sud", checkedOn: "2026-10-28" },
+  { code: "NZ", slug: "nouvelle-zelande", nameFr: "Nouvelle-Zélande", nameEn: "New Zealand", inFr: "en Nouvelle-Zélande", inEn: "in New Zealand", officialSlug: "nouvelle-zelande", checkedOn: "2026-10-28" },
+  { code: "PT", slug: "portugal", nameFr: "Portugal", nameEn: "Portugal", inFr: "au Portugal", inEn: "in Portugal", officialSlug: "portugal", checkedOn: "2026-10-28" },
+  { code: "CL", slug: "chili", nameFr: "Chili", nameEn: "Chile", inFr: "au Chili", inEn: "in Chile", officialSlug: "chili", checkedOn: "2026-10-28" },
+  { code: "AR", slug: "argentine", nameFr: "Argentine", nameEn: "Argentina", inFr: "en Argentine", inEn: "in Argentina", officialSlug: "argentine", checkedOn: "2026-10-28" },
+  { code: "DK", slug: "danemark", nameFr: "Danemark", nameEn: "Denmark", inFr: "au Danemark", inEn: "in Denmark", officialSlug: "danemark", checkedOn: "2026-10-28" },
+  { code: "SE", slug: "suede", nameFr: "Suède", nameEn: "Sweden", inFr: "en Suède", inEn: "in Sweden", officialSlug: "suede", checkedOn: "2026-10-28" },
+  { code: "IT", slug: "italie", nameFr: "Italie", nameEn: "Italy", inFr: "en Italie", inEn: "in Italy", officialSlug: "italie", checkedOn: "2026-10-28" },
+  { code: "HU", slug: "hongrie", nameFr: "Hongrie", nameEn: "Hungary", inFr: "en Hongrie", inEn: "in Hungary", officialSlug: "hongrie", checkedOn: "2026-10-28" },
+  { code: "CH", slug: "suisse", nameFr: "Suisse", nameEn: "Switzerland", inFr: "en Suisse", inEn: "in Switzerland", officialSlug: "suisse", checkedOn: "2026-10-28" },
+  { code: "NO", slug: "norvege", nameFr: "Norvège", nameEn: "Norway", inFr: "en Norvège", inEn: "in Norway", officialSlug: "norvege", checkedOn: "2026-10-28" },
+  { code: "GR", slug: "grece", nameFr: "Grèce", nameEn: "Greece", inFr: "en Grèce", inEn: "in Greece", officialSlug: "grece", checkedOn: "2026-10-28" },
+  { code: "ZA", slug: "afrique-du-sud", nameFr: "Afrique du Sud", nameEn: "South Africa", inFr: "en Afrique du Sud", inEn: "in South Africa", officialSlug: "afrique-du-sud", checkedOn: "2026-10-28" },
+  { code: "AT", slug: "autriche", nameFr: "Autriche", nameEn: "Austria", inFr: "en Autriche", inEn: "in Austria", officialSlug: "autriche", checkedOn: "2026-10-28" },
+  { code: "BG", slug: "bulgarie", nameFr: "Bulgarie", nameEn: "Bulgaria", inFr: "en Bulgarie", inEn: "in Bulgaria", officialSlug: "bulgarie", checkedOn: "2026-10-28" },
+  { code: "IE", slug: "irlande", nameFr: "Irlande", nameEn: "Ireland", inFr: "en Irlande", inEn: "in Ireland", officialSlug: "irlande", checkedOn: "2026-10-28" },
+  { code: "PE", slug: "perou", nameFr: "Pérou", nameEn: "Peru", inFr: "au Pérou", inEn: "in Peru", officialSlug: "perou", checkedOn: "2026-10-28" },
+  { code: "IN", slug: "inde", nameFr: "Inde", nameEn: "India", inFr: "en Inde", inEn: "in India", officialSlug: "inde", checkedOn: "2026-10-28" },
 ];
 
 export const DESTINATIONS_HUB = "/preparer";

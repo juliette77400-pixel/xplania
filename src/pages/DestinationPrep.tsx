@@ -163,7 +163,7 @@ const DestinationPrep = () => {
         <LinkCheckNote
           className="mt-8"
           urls={[franceDiplomatieEntryUrl(d), pasteurUrl(d), ...(entry ? [entry.url] : []), ...housingLinks.map((r) => r.url)]}
-          contentCheckedOn={LINKS_CHECKED_ON}
+          contentCheckedOn={d.checkedOn ?? LINKS_CHECKED_ON}
         />
 
         <section className="mt-10">
