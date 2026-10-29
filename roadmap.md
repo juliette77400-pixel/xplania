@@ -50,5 +50,5 @@
 - [ ] 3. Première préparation complète garantie + protections anti-abus ; quotas généreux régénérations/assistants, consultations jamais bloquées
 - [ ] 4. Culture : précharger les destinations prioritaires ; geste du jour moins cher
 - [ ] 5. Budget IA global : compteur, alertes, plafond contraignant (avec la limite Lovable comme filet)
-- [ ] 6. Clarification du 29/10 : première préparation garantie = Visa + tous les conseils Budget + conseils/tenues/vérification Valise + tous les thèmes Culture + Logement/Tableau de bord, hors quotas ; faisabilité et budget présentés, en attente des décisions de Juliette (dates du pilote, nombre de séjours garantis, test de modèles moins chers, montant à réserver)
+- [ ] 6. Clarification du 29/10 : première préparation garantie = Visa + tous les conseils Budget + conseils/tenues/vérification Valise + tous les thèmes Culture + Logement/Tableau de bord, hors quotas ; faisabilité et budget présentés, décidé : pilote 20/11→12/12, 2 séjours garantis, modèles actuels ; montant à réserver recommandé (≈ 1 300), en attente de sa validation
 - Après chaque étape : résultats accessibles, essais bien décomptés, test sur 2 appareils
