@@ -43,3 +43,11 @@
 - [x] 21 pays : 19 nouveaux guides publics (MX, BR existaient), fiches culture écrites à la main, sites visa ID/ZA, 14 ressources logement vérifiées
 - [x] 21 pays reliés partout : devises, noms anglais, repères de prix Budget, repères pays des assistants IA
 - [x] Îles et outre-mer : encart dans Visa/Budget/Logement + rubrique « Et les îles ? » des guides
+
+## Sécuriser l'IA pour la bêta ESTICE du 20/11/2026 (validé le 29/10) — en attente des réponses de Juliette avant exécution
+- [ ] 1. Budget + Valise : plus de génération automatique à la réouverture / actualisation / changement de langue ; résultats enregistrés dans le compte, par séjour (multi-appareil)
+- [ ] 2. Visa : analyse enregistrée dans le compte, par séjour
+- [ ] 3. Première préparation complète garantie + protections anti-abus ; quotas généreux régénérations/assistants, consultations jamais bloquées
+- [ ] 4. Culture : précharger les destinations prioritaires ; geste du jour moins cher
+- [ ] 5. Budget IA global : compteur, alertes, plafond contraignant (avec la limite Lovable comme filet)
+- Après chaque étape : résultats accessibles, essais bien décomptés, test sur 2 appareils
