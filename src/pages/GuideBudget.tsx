@@ -14,6 +14,8 @@ import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
+import { useAuth } from "@/hooks/useAuth";
+import { localGenerationBlocked, localGenerationUsesTry } from "@/config/open-tools";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import ErrorBoundary from "@/components/shared/ErrorBoundary";
 import { useBudgetInsights, type BudgetScenario } from "@/hooks/useBudgetInsights";
@@ -114,6 +116,8 @@ const GuideBudgetPage = () => {
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const [hydratedFromStorage, setHydratedFromStorage] = useState(false);
   const { reached, consume } = useQuota("budget");
+  const { user } = useAuth();
+  const signedIn = !!user;
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -351,8 +355,8 @@ const GuideBudgetPage = () => {
     if (isGenerating) return;
     // No destination yet: never build a budget for a made-up city, ask for the trip first.
     if (!hasDestination) { navigate("/preparation"); return; }
-    if (reached) { setShowUpgrade(true); return; }
-    consume();
+    if (localGenerationBlocked(signedIn, reached)) { setShowUpgrade(true); return; }
+    if (localGenerationUsesTry(signedIn)) consume();
     setIsGenerating(true);
     setGenStep(0);
     try {
@@ -369,7 +373,7 @@ const GuideBudgetPage = () => {
     } finally {
       setIsGenerating(false);
     }
-  }, [t, reached, consume, buildTripAwareCategories, budgetContextKey, isGenerating, hasDestination, navigate]);
+  }, [t, reached, signedIn, consume, buildTripAwareCategories, budgetContextKey, isGenerating, hasDestination, navigate]);
 
   const handleRegenerate = askRecalculate;
 
