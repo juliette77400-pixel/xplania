@@ -161,7 +161,7 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
           <p className="text-xs text-muted-foreground" aria-live="polite">
             {officialLoading
               ? t("visa2.cards.readingSources")
- : official && official.stale
+              : official && official.stale
                 ? t("visa2.cards.lastCheckedAt", { date: formatDayTime(fetchedAt, i18n.language) })
               : official && official.status !== "unavailable"
                 ? t("visa2.cards.sourcesCheckedAt", { date: formatDayTime(fetchedAt, i18n.language) }) + (reviewed ? ` · ${reviewed}` : "")
