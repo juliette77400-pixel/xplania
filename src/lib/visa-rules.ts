@@ -1,7 +1,7 @@
 // Visa guide rules: the student profile read from the trip, which answers are
 // still missing, the fixed EU free-movement rule, health relevance and the
 // saved analysis/checklist. Pure functions so they can be tested.
-import { countryList } from "@/lib/countries";
+import { countryList, getCountryNameIn } from "@/lib/countries";
 import { findCountry } from "@/lib/country-match";
 import { BUCKET_DAYS } from "@/lib/prep-quiz";
 import type { TravelFormData } from "@/types/travel";

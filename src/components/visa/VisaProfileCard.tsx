@@ -44,9 +44,9 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
     : profile.durationBucket ? t(`prepQuiz.dates.bucket.${profile.durationBucket}`) : "";
 
   const rows: Array<{ field: VisaField | null; label: string; value: string }> = [
-    { field: "destination", label: t("visa2.profile.destination"), value: [countryLabel(profile.destinationCode), profile.city].filter(Boolean).join(" — ") },
-    { field: "nationality", label: t("visa2.profile.nationality"), value: [countryLabel(profile.nationality), countryLabel(profile.secondNationality)].filter(Boolean).join(" + ") },
-    { field: "residence", label: t("visa2.profile.residence"), value: countryLabel(profile.residence) },
+    { field: "destination", label: t("visa2.profile.destination"), value: [countryShown(profile.destinationCode, i18n.language), profile.city].filter(Boolean).join(" — ") },
+    { field: "nationality", label: t("visa2.profile.nationality"), value: [countryShown(profile.nationality, i18n.language), countryShown(profile.secondNationality, i18n.language)].filter(Boolean).join(" + ") },
+    { field: "residence", label: t("visa2.profile.residence"), value: countryShown(profile.residence, i18n.language) },
     { field: "stayType", label: t("visa2.profile.purpose"), value: profile.stayType ? t(`prepQuiz.stay.${profile.stayType}.title`, { defaultValue: profile.stayType }) : "" },
     { field: "duration", label: t("visa2.profile.duration"), value: durationText },
     { field: "passportType", label: t("visa2.profile.passport"), value: profile.passportType ? t(`visa2.profile.passportTypes.${profile.passportType}`) : "" },
@@ -172,8 +172,8 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
                 <div className="flex flex-wrap gap-2">
                   {draft.transitCountries.map((c) => (
                     <span key={c} className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-sm">
-                      {countryLabel(c)}
-                      <button type="button" aria-label={t("visa2.profile.removeTransit", { country: countryLabel(c) })} onClick={() => set("transitCountries", draft.transitCountries.filter((x) => x !== c))}><X className="h-3.5 w-3.5" /></button>
+                      {countryShown(c, i18n.language)}
+                      <button type="button" aria-label={t("visa2.profile.removeTransit", { country: countryShown(c, i18n.language) })} onClick={() => set("transitCountries", draft.transitCountries.filter((x) => x !== c))}><X className="h-3.5 w-3.5" /></button>
                     </span>
                   ))}
                 </div>
