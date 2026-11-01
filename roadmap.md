@@ -63,7 +63,7 @@
 - [ ] Juliette : publier pour mettre en ligne les rappels Visa à l écran
 
 ## Sécuriser la bêta avec les plafonds (audit du 01/11, accord le 01/11)
-- [ ] 4-5. Résumé officiel Visa : garder le dernier résumé daté + avertissement si revérification impossible ; aucun essai compté sans clic de l étudiant
-- [ ] 6. Tenues Valise et bouton Aide : message calme « IA en pause » quand le plafond est atteint
-- [ ] 7. Réponse Valise vide : essai rendu
+- [x] 4-5. Résumé officiel Visa : garder le dernier résumé daté + avertissement si revérification impossible ; aucun essai compté sans clic de l étudiant
+- [x] 6. Tenues Valise et bouton Aide : message calme « IA en pause » quand le plafond est atteint
+- [x] 7. Réponse Valise vide : essai rendu
 - [ ] 1-3. Visa, Budget, Valise : résultats enregistrés dans le compte par séjour (multi-appareil), plus de relance à la réouverture / actualisation / changement de langue, bouton « Mettre à jour » après modification du séjour
