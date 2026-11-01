@@ -35,7 +35,7 @@ import { saveModuleProgress } from "@/lib/prep-progress";
 import { track } from "@/lib/analytics";
 import { stayDurationDays } from "@/lib/prep-quiz";
 import {
-  carryChecked, countryLabel, hasFreeMovement, loadVisaState, missingVisaFields, normalizeAnalysis, saveVisaState,
+  carryChecked, countryLabel, countryShown, hasFreeMovement, loadVisaState, missingVisaFields, normalizeAnalysis, saveVisaState,
   visaProfileFromTrip, visaProfileKey, visaStateKey, visaStayDays, type SavedVisaState, type VisaProfile,
 } from "@/lib/visa-rules";
 import type { TravelFormData } from "@/types/travel";

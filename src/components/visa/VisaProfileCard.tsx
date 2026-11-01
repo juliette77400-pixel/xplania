@@ -50,7 +50,7 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
     { field: "stayType", label: t("visa2.profile.purpose"), value: profile.stayType ? t(`prepQuiz.stay.${profile.stayType}.title`, { defaultValue: profile.stayType }) : "" },
     { field: "duration", label: t("visa2.profile.duration"), value: durationText },
     { field: "passportType", label: t("visa2.profile.passport"), value: profile.passportType ? t(`visa2.profile.passportTypes.${profile.passportType}`) : "" },
-    { field: "transit", label: t("visa2.profile.transit"), value: profile.hasTransit === "no" ? t("visa2.profile.noTransit") : profile.transitCountries.map(countryLabel).filter(Boolean).join(", ") },
+    { field: "transit", label: t("visa2.profile.transit"), value: profile.hasTransit === "no" ? t("visa2.profile.noTransit") : profile.transitCountries.map((c) => countryShown(c, i18n.language)).filter(Boolean).join(", ") },
     { field: null, label: t("visa2.profile.regions"), value: profile.regions },
   ];
 
