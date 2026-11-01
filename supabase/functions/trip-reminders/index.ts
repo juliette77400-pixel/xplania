@@ -5,6 +5,7 @@ import { SAFETY_RULE_FR, SAFETY_RULE_EN } from '../_shared/prompts.ts'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
+import { aiChat } from '../_shared/ai-provider.ts'
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
@@ -120,19 +121,14 @@ async function suggest(destination: string, summary: string, en: boolean) {
   const key = Deno.env.get('LOVABLE_API_KEY')
   if (!key) return []
   try {
-    const r = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'google/gemini-3-flash-preview',
+    const r = await aiChat({
         // Beta: preparation only — packing advice for the forecast, no activity ideas.
         messages: [
           { role: 'system', content: en ? SAFETY_RULE_EN : SAFETY_RULE_FR },
           { role: 'user', content: `${en ? 'In English' : 'En français'}. Destination: ${destination}. Weather: ${summary}. Give 3 concrete things to pack or prepare before leaving for ${destination} because of this weather (items, documents, precautions). Reply ONLY JSON: [{"title":"...","why":"short reason"}]` },
         ],
         reasoning: { effort: 'low' },
-      }),
-    })
+      })
     if (!r.ok) return []
     const txt: string = (await r.json())?.choices?.[0]?.message?.content || ''
     const m = txt.match(/\[[\s\S]*\]/)

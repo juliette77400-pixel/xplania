@@ -3,6 +3,7 @@ import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
+import { aiChat } from "../_shared/ai-provider.ts";
 // Intelligent chatbot router: classifies user intent and returns a route or free-mode reply.
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -81,17 +82,12 @@ Si la demande porte sur autre chose (itinéraire, lieux à visiter, suivi sur pl
       },
     }];
 
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+    const r = await aiChat({
         messages,
         tools,
         tool_choice: { type: "function", function: { name: "respond" } },
         reasoning: { effort: "low" },
-      }),
-    });
+      });
     if (!r.ok) {
       if (r.status === 429) return new Response(JSON.stringify({ error: "rate_limited" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       if (r.status === 402) return aiUnavailableResponse(corsHeaders);

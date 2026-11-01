@@ -3,10 +3,18 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { creditBlockResponse } from "./ai-unavailable.ts";
+import { aiEndpoint, aiHeaders, aiModel, AiConfigError } from "./ai-provider.ts";
 
 export class AiHttpError extends Error {
   constructor(public status: number, message: string, public body = "") {
     super(message);
+  }
+}
+
+function providerHeaders(): Record<string, string> {
+  try { return aiHeaders(); } catch (e) {
+    if (e instanceof AiConfigError) throw new AiHttpError(500, e.message);
+    throw e;
   }
 }
 
@@ -17,21 +25,14 @@ export async function generateJson<T = any>(opts: {
   name?: string;
   strict?: boolean;
   effort?: "low" | "medium" | "high";
-  /** Defaults to openai/gpt-6-astra. */
+  /** Defaults to the "default" role model of ai-provider.ts (GPT-6 Luna). */
   model?: string;
 }): Promise<T> {
-  const key = Deno.env.get("LOVABLE_API_KEY");
-  if (!key) throw new AiHttpError(500, "LOVABLE_API_KEY is not configured");
-
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+  const res = await fetch(aiEndpoint("responses"), {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": key,
-      "X-Lovable-AIG-SDK": "fetch",
-    },
+    headers: providerHeaders(),
     body: JSON.stringify({
-      model: opts.model ?? "openai/gpt-6-astra",
+      model: opts.model ?? aiModel(),
       instructions: opts.instructions,
       input: opts.input,
       stream: true,
@@ -126,16 +127,14 @@ export async function generateText(opts: {
   instructions: string;
   input: { role: "user" | "assistant"; content: string }[];
   effort?: "low" | "medium" | "high";
-  /** Defaults to openai/gpt-6-astra. */
+  /** Defaults to the "default" role model of ai-provider.ts (GPT-6 Luna). */
   model?: string;
 }): Promise<string> {
-  const key = Deno.env.get("LOVABLE_API_KEY");
-  if (!key) throw new AiHttpError(500, "LOVABLE_API_KEY is not configured");
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+  const res = await fetch(aiEndpoint("responses"), {
     method: "POST",
-    headers: { "Content-Type": "application/json", "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "fetch" },
+    headers: providerHeaders(),
     body: JSON.stringify({
-      model: opts.model ?? "openai/gpt-6-astra",
+      model: opts.model ?? aiModel(),
       instructions: opts.instructions,
       input: opts.input,
       stream: true,
