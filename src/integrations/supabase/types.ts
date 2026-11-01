@@ -3244,6 +3244,7 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      purge_old_assistant_chats: { Args: { _days?: number }; Returns: number }
       record_map_load: { Args: never; Returns: number }
       record_places_search: { Args: never; Returns: number }
       record_quiz_completion: { Args: never; Returns: Json }

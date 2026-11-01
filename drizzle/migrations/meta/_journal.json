@@ -232,6 +232,13 @@
       "when": 1793558662545,
       "tag": "0032_trip_ai_results",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1793561154223,
+      "tag": "0033_assistant_chat_retention",
+      "breakpoints": true
     }
   ]
 }
