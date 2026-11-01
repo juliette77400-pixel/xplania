@@ -93,6 +93,7 @@ const PrepQuiz = () => {
   // Current step for delayed actions: a card tap auto-advances after a short delay,
   // and a quick "Continue" or double tap must never skip a step or go past the last one.
   const stepRef = useRef(stepIndex);
+  const persistingRef = useRef(false);
   stepRef.current = stepIndex;
   const isFr = i18n.language.startsWith("fr");
 
@@ -201,7 +202,9 @@ const PrepQuiz = () => {
   }), [answers.stayType, answers.housing, t]);
 
   const persist = useCallback(async (a: PrepAnswers) => {
-    if (!user) return;
+    // A double tap on the last step must create one trip, not two.
+    if (!user || persistingRef.current) return;
+    persistingRef.current = true;
     setSaving(true);
     setSaveFailed(false);
     const data = buildTripFromAnswers(a, {
@@ -224,6 +227,7 @@ const PrepQuiz = () => {
       .select("id")
       .single();
     if (insertError || !trip) {
+      persistingRef.current = false;
       setSaving(false);
       setSaveFailed(true);
       return;
