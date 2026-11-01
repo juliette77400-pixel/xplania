@@ -76,6 +76,22 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Rows that are not removed by the account cascade (no direct link to the account).
+    // Usage statistics are kept without the account id; everything else is deleted.
+    const OWN_TABLES = [
+      "trip_ai_results", "housing_checklist", "housing_options", "beta_access", "alert_subscriptions",
+      "discover_notifications", "premium_waitlist", "trip_activities", "trip_alerts", "trip_checkins",
+      "trip_documents", "trip_positions", "trip_tracking", "place_list_items", "place_lists", "place_reviews",
+      "mood_badges", "mood_favorites", "mood_places", "mood_reactions", "mood_selections",
+      "explore_node_media", "explore_edges", "explore_badges", "explore_progress", "explore_nodes",
+      "gam_notification_log",
+    ];
+    for (const table of OWN_TABLES) {
+      const { error } = await adminClient.from(table).delete().eq("user_id", uid);
+      if (error) console.error("delete-account cleanup failed", table, error.code);
+    }
+    await adminClient.from("analytics_events").update({ user_id: null }).eq("user_id", uid);
+
     const { error: delErr } = await adminClient.auth.admin.deleteUser(uid);
     if (delErr) {
       return new Response(JSON.stringify({ error: delErr.message }), {
