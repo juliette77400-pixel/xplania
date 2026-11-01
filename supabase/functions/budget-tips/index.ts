@@ -144,7 +144,7 @@ Already shown (do not repeat): ${(Array.isArray(avoid) ? avoid : []).slice(-30).
     try {
       parsed = await generateJsonSplit({ instructions: instructions + countryContext(destination), input, schema: SCHEMA, name: "budget_insights", strict: true, effort: "low",
         // Lighter model: about 10 s instead of 35 s for the same four parts.
-        model: "openai/gpt-6-luna", parts: dealsOnly ? [["deals"]] : [["scenarios"], ["analysis"], ["deals"], ["tips"]] });
+        parts: dealsOnly ? [["deals"]] : [["scenarios"], ["analysis"], ["deals"], ["tips"]] });
     } catch (e) {
       const r = aiErrorResponse(e, corsHeaders);
       if (r) return r;

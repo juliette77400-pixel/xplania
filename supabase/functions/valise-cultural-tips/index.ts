@@ -6,6 +6,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
 import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
+import { aiChat } from "../_shared/ai-provider.ts";
 
 type Tip = { title: string; text: string };
 
@@ -121,22 +122,14 @@ Graine de variation : ${v} (produis un résultat clairement différent des varia
 
     console.log("[valise-cultural-tips] generating", { destination, tripType, locale: isEN ? "en" : "fr", variation: v });
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+    const response = await aiChat({
         messages: [
           { role: "system", content: systemWithCtx },
           { role: "user", content: user },
         ],
         temperature: 0.95,
         response_format: { type: "json_object" },
-      }),
-    });
+      });
 
     if (!response.ok) {
       const txt = await response.text();

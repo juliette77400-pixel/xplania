@@ -15,6 +15,7 @@ import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { SAFETY_RULE_EN, SAFETY_RULE_FR, NEUTRALITY_RULE_EN, NEUTRALITY_RULE_FR } from "../_shared/prompts.ts";
 import { FD_SLUGS, PASTEUR_SLUGS } from "./slugs.ts";
 import { AI_UNAVAILABLE, isAiCreditBlock } from "../_shared/ai-unavailable.ts";
+import { aiModel } from "../_shared/ai-provider.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -241,7 +242,7 @@ serve(withQuotaRefund(async (req) => {
   const input = okSources.map((s) => `### ${s.label}${s.updatedAt ? ` (mise à jour le ${s.updatedAt})` : ""}\n${s.text}`).join("\n\n");
   let content: unknown;
   try {
-    content = await generateJson({ instructions: instructions(lang), input, schema: SCHEMA, name: "official_summary", strict: true, effort: "low" });
+    content = await generateJson({ instructions: instructions(lang), input, schema: SCHEMA, name: "official_summary", strict: true, effort: "low", model: aiModel("official") });
   } catch (e) {
     console.error("[official-sources] AI failed", e);
     // Out of AI credits: own reason and a 503, never the student's quota 402 (the try is refunded).

@@ -168,7 +168,7 @@ function buildHandler(lang: Lang) {
           }),
       },
       invite: {
-        subject: fr ? "Tu as été invité·e" : "You've been invited",
+        subject: fr ? "Tu es invité sur Xplania" : "You've been invited",
         render: (data) =>
           React.createElement(InviteEmail, {
             siteName: SITE_NAME,

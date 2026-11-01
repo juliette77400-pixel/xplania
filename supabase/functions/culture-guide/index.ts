@@ -11,6 +11,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { brandHeader, NEUTRALITY_RULE_FR, NEUTRALITY_RULE_EN } from "../_shared/prompts.ts";
 import { cleanField } from "../_shared/untrusted.ts";
+import { cultureQualityIssues, type CulturePillar } from "../_shared/culture-quality.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -36,7 +37,7 @@ const PILLARS: Record<string, { fr: string; en: string }> = {
 
 /** Same entry paths as the app: priority themes first, then two others for variety. */
 const PATHS: Record<string, { label: { fr: string; en: string }; themes: string[] }> = {
-  study: { label: { fr: "étudiant·e en échange (Erasmus, semestre à l'université)", en: "exchange student (Erasmus, university semester)" }, themes: ["greetings", "work", "social", "language", "shock", "food", "sociallife"] },
+  study: { label: { fr: "étudiant en échange (Erasmus, semestre à l'université)", en: "exchange student (Erasmus, university semester)" }, themes: ["greetings", "work", "social", "language", "shock", "food", "sociallife"] },
   internship: { label: { fr: "stagiaire en entreprise", en: "intern in a company" }, themes: ["work", "greetings", "dress", "gestures", "language", "social", "food"] },
   daily: { label: { fr: "séjour long, vie quotidienne", en: "long stay, everyday life" }, themes: ["social", "food", "language", "calendar", "shock", "greetings", "gestures"] },
 };
@@ -130,7 +131,7 @@ serve(withQuotaRefund(async (req) => {
 
       const instructions = lang === "en"
         ? `${header}\n\nWrite the "gesture of the day": ONE concrete cultural habit a ${PATHS[path].label.en} should know in the country given, on the theme given. "title": the gesture in one short sentence (what to do or avoid). "context": why locals tend to do this (1-2 sentences). "example": a concrete everyday scene where it applies (1-2 sentences, a real local word, place or situation). "nuance": a frequent mistake to avoid or how it varies by region, age or setting (1 sentence). It must be specific to this country, not valid everywhere, and different from every gesture listed as already shown. Reply with the JSON only.`
-        : `${header}\n\nRédige le « geste du jour » : UNE habitude culturelle concrète qu'un·e ${PATHS[path].label.fr} doit connaître dans le pays donné, sur le thème donné. "title" : le geste en une phrase courte (à faire ou à éviter). "context" : pourquoi les habitants ont tendance à faire ainsi (1-2 phrases). "example" : une scène concrète du quotidien où ça s'applique (1-2 phrases, avec un vrai mot local, lieu ou situation). "nuance" : une erreur fréquente à éviter ou comment ça varie selon la région, l'âge ou le contexte (1 phrase). Il doit être propre à ce pays, pas valable partout, et différent de tous les gestes déjà montrés. Réponds uniquement avec le JSON.`;
+        : `${header}\n\nRédige le « geste du jour » : UNE habitude culturelle concrète qu'un ${PATHS[path].label.fr} doit connaître dans le pays donné, sur le thème donné. "title" : le geste en une phrase courte (à faire ou à éviter). "context" : pourquoi les habitants ont tendance à faire ainsi (1-2 phrases). "example" : une scène concrète du quotidien où ça s'applique (1-2 phrases, avec un vrai mot local, lieu ou situation). "nuance" : une erreur fréquente à éviter ou comment ça varie selon la région, l'âge ou le contexte (1 phrase). Il doit être propre à ce pays, pas valable partout, et différent de tous les gestes déjà montrés. Réponds uniquement avec le JSON.`;
       const input = `${lang === "en" ? "Country" : "Pays"}: ${country}\n${lang === "en" ? "Theme" : "Thème"}: ${PILLARS[theme][lang]}\n${lang === "en" ? "Already shown (do not repeat)" : "Déjà montrés (ne pas répéter)"}: ${already.join(" | ") || "—"}`;
       const gen = await generateJson<{ title: string; context: string; example: string; nuance: string }>({ instructions, input, schema: DAILY_SCHEMA, name: "culture_daily", strict: true, effort: "low" });
       const content = { ...gen, theme, date };
@@ -177,13 +178,16 @@ serve(withQuotaRefund(async (req) => {
 
     const p = PILLARS[pillar][lang];
     const instructions = lang === "en"
-      ? `${header}\n\nYou write a cultural immersion guide for students and interns going abroad. Give 3-4 "dos" and 3-4 "donts". Each has: "text" (short), "why" (the cultural context, one sentence), "example" (a concrete everyday scene, one sentence with a local detail), "nuance" (a frequent mistake or how it varies, one sentence); donts also have severity (low=harmless, medium=awkward, high=offensive). Add 2 "home (France) vs here" comparisons and a short friendly tip from Ping. Reply with the JSON only.`
-      : `${header}\n\nTu rédiges un guide d'immersion culturelle pour étudiants et stagiaires qui partent à l'étranger. Donne 3-4 "dos" (à faire) et 3-4 "donts" (à éviter). Chacun a : "text" (court), "why" (le contexte culturel, une phrase), "example" (une scène concrète du quotidien, une phrase avec un détail local), "nuance" (une erreur fréquente ou comment ça varie, une phrase) ; les donts ont aussi severity (low=anodin, medium=maladroit, high=offensant). Ajoute 2 comparaisons "Chez toi (France) / Ici" et une courte astuce bienveillante de Ping. Réponds uniquement avec le JSON.`;
+      ? `${header}\n\nYou write a cultural immersion guide for students and interns going abroad. Give 3-4 "dos" and 3-4 "donts". Each has: "text" (short), "why" (the cultural context, one sentence), "example" (a concrete everyday scene, one sentence with a local detail), "nuance" (a frequent mistake or how it varies, one sentence); donts also have severity (low=harmless, medium=awkward, high=offensive). Add 2 "home (France) vs here" comparisons and a short friendly tip from Ping. Richness: at least 2 items name a concept, word or custom specific to this country, written in quotes with its local name and explained simply in a few words; every example happens in a real study, internship or everyday situation with a local detail (city, place, expression); nothing that would fit any country as is; a nuance that avoids stereotypes. Reply with the JSON only.`
+      : `${header}\n\nTu rédiges un guide d'immersion culturelle pour étudiants et stagiaires qui partent à l'étranger. Donne 3-4 "dos" (à faire) et 3-4 "donts" (à éviter). Chacun a : "text" (court), "why" (le contexte culturel, une phrase), "example" (une scène concrète du quotidien, une phrase avec un détail local), "nuance" (une erreur fréquente ou comment ça varie, une phrase) ; les donts ont aussi severity (low=anodin, medium=maladroit, high=offensant). Ajoute 2 comparaisons "Chez toi (France) / Ici" et une courte astuce bienveillante de Ping. Richesse : au moins 2 éléments nomment un concept, un mot ou un usage propre à ce pays, écrit entre « » avec son nom local et expliqué simplement en quelques mots ; chaque exemple se passe dans une vraie situation d'études, de stage ou de vie quotidienne avec un détail local (ville, lieu, expression) ; rien qui puisse s'appliquer tel quel à n'importe quel pays ; une nuance qui évite le stéréotype. Réponds uniquement avec le JSON.`;
     const input = lang === "en" ? `Country: ${country}\nPillar: ${p}` : `Pays : ${country}\nPilier : ${p}`;
 
     // "À faire" and "À éviter" are written in parallel: the student waits for the slower half only.
     const content = await generateJsonSplit({ instructions, input, schema: SCHEMA, name: "culture_pillar", strict: true, effort: "low", parts: [["ping", "dos"], ["donts", "homeVsHere"]] });
-    await writeCache(pillar, content);
+    // Only a theme that passes the quality check becomes the shared version.
+    const issues = cultureQualityIssues(content as CulturePillar, country);
+    if (issues.length) console.warn("[culture-guide] theme not cached", code, pillar, lang, issues.join(","));
+    else await writeCache(pillar, content);
     return json({ content, updatedAt: new Date().toISOString(), cached: false });
   } catch (e) {
     const r = aiErrorResponse(e, cors);
