@@ -106,6 +106,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!selected) return;
     void syncBudgetState(budgetStorageKey(selected.destination, selected.departure_date), selected.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected?.id, selected?.destination, selected?.departure_date]);
 
   const progress = useMemo<Record<PrepModule, ModuleProgress> | null>(() => {
