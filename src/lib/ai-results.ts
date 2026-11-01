@@ -3,7 +3,8 @@
 // language or changing device shows the saved result: a new AI call happens
 // only when the student clicks a "new / update" button.
 
-export type AiResultKind = "visa" | "budget_insights" | "valise_tip" | "valise_outfits";
+// "budget_state" holds the student's own Budget numbers (not AI), saved the same way.
+export type AiResultKind = "visa" | "budget_insights" | "valise_tip" | "valise_outfits" | "budget_state";
 
 export interface SavedAiResult<T = unknown> {
   content: T;

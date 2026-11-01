@@ -15,6 +15,8 @@ import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import { useQuota } from "@/hooks/useQuota";
 import { useAuth } from "@/hooks/useAuth";
+import { useActiveTrip } from "@/stores/useActiveTrip";
+import { pushBudgetState, syncBudgetState } from "@/lib/data/budget-state";
 import { localGenerationBlocked, localGenerationUsesTry } from "@/config/open-tools";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import ErrorBoundary from "@/components/shared/ErrorBoundary";
@@ -116,6 +118,8 @@ const GuideBudgetPage = () => {
   const [generatedContextKey, setGeneratedContextKey] = useState("");
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const [hydratedFromStorage, setHydratedFromStorage] = useState(false);
+  const budgetTripId = useActiveTrip((st) => st.tripId);
+  const pushTimerRef = useRef<number | null>(null);
   const { reached, consume } = useQuota("budget");
   const { user } = useAuth();
   const signedIn = !!user;
@@ -197,45 +201,57 @@ const GuideBudgetPage = () => {
   }, [destination, tripData, days, travelers, totalBudget, categories, expenses, locale, t]);
 
 
-  // Hydrate from localStorage once per storageKey
+  // Hydrate once per storageKey: this device first, then the account copy when it is newer
+  // (another device), so the numbers follow the student. No AI call here.
   useEffect(() => {
+    let alive = true;
+    setHydratedFromStorage(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const apply = (parsed: any) => {
+        if (parsed?.hasGenerated && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
+        // Re-attach icon/color from defaults (functions don't survive JSON)
+        const rehydrated: BudgetCategory[] = parsed.categories.map((c: Partial<BudgetCategory> & { key: string }) => {
+          const def = defaultCategories.find((d) => d.key === c.key) || defaultCategories[0];
+          return {
+            ...def,
+            ...c,
+            // Older saves may hold text or missing amounts: charts and totals need numbers.
+            planned: Math.max(0, Number(c.planned) || 0),
+            spent: Math.max(0, Number(c.spent) || 0),
+            aiSuggested: Math.max(0, Number(c.aiSuggested) || 0),
+            icon: def.icon,
+            color: def.color,
+          } as BudgetCategory;
+        });
+        for (const def of defaultCategories) {
+          if (!rehydrated.some((c) => c.key === def.key)) rehydrated.push({ ...def });
+        }
+        setCategories(rehydrated);
+        setExpenses(Array.isArray(parsed.expenses) ? (parsed.expenses as Expense[]).filter((e) => e && typeof e === "object").map((e) => ({ ...e, amount: Math.max(0, Number(e.amount) || 0) })) : []);
+        setIncomes(sanitizeIncomes(parsed.incomes));
+        setIncomesGiven(!!parsed.incomes);
+        setHasGenerated(true);
+        setGeneratedContextKey(parsed.generatedContextKey || "");
+        setRegenCount(parsed.regenCount || 0);
+        setLastSavedAt(parsed.savedAt || null);
+      }
+    };
     try {
       const raw = localStorage.getItem(storageKey);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed?.hasGenerated && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
-          // Re-attach icon/color from defaults (functions don't survive JSON)
-          const rehydrated: BudgetCategory[] = parsed.categories.map((c: Partial<BudgetCategory> & { key: string }) => {
-            const def = defaultCategories.find((d) => d.key === c.key) || defaultCategories[0];
-            return {
-              ...def,
-              ...c,
-              // Older saves may hold text or missing amounts: charts and totals need numbers.
-              planned: Math.max(0, Number(c.planned) || 0),
-              spent: Math.max(0, Number(c.spent) || 0),
-              aiSuggested: Math.max(0, Number(c.aiSuggested) || 0),
-              icon: def.icon,
-              color: def.color,
-            } as BudgetCategory;
-          });
-          for (const def of defaultCategories) {
-            if (!rehydrated.some((c) => c.key === def.key)) rehydrated.push({ ...def });
-          }
-          setCategories(rehydrated);
-          setExpenses(Array.isArray(parsed.expenses) ? (parsed.expenses as Expense[]).filter((e) => e && typeof e === "object").map((e) => ({ ...e, amount: Math.max(0, Number(e.amount) || 0) })) : []);
-          setIncomes(sanitizeIncomes(parsed.incomes));
-          setIncomesGiven(!!parsed.incomes);
-          setHasGenerated(true);
-          setGeneratedContextKey(parsed.generatedContextKey || "");
-          setRegenCount(parsed.regenCount || 0);
-          setLastSavedAt(parsed.savedAt || null);
-        }
-      }
+      if (raw) apply(JSON.parse(raw));
     } catch {
       /* ignore */
     }
-    setHydratedFromStorage(true);
-  }, [storageKey]);
+    if (!user || !budgetTripId) { setHydratedFromStorage(true); return; }
+    // A slow network never blocks saving on this device.
+    const fallback = window.setTimeout(() => { if (alive) setHydratedFromStorage(true); }, 5000);
+    void syncBudgetState(storageKey, budgetTripId)
+      .then((r) => { if (alive && r.fromAccount) apply(r.state); })
+      .catch(() => undefined)
+      .finally(() => { window.clearTimeout(fallback); if (alive) setHydratedFromStorage(true); });
+    return () => { alive = false; window.clearTimeout(fallback); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey, user?.id, budgetTripId]);
 
   // Persist whenever state changes (auto-save), independent of focus/keyboard
   useEffect(() => {
@@ -255,6 +271,11 @@ const GuideBudgetPage = () => {
         })
       );
       setLastSavedAt(savedAt);
+      if (user && budgetTripId) {
+        const snapshot = JSON.parse(localStorage.getItem(storageKey) || "null");
+        if (pushTimerRef.current) window.clearTimeout(pushTimerRef.current);
+        pushTimerRef.current = window.setTimeout(() => pushBudgetState(storageKey, budgetTripId, snapshot), 1500);
+      }
     } catch {
       /* ignore */
     }

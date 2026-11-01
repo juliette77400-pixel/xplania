@@ -24,6 +24,7 @@ import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTri
 import { isPathEnabled } from "@/config/featureFlags";
 import { isHousingStatus } from "@/lib/housing";
 import { buildNextSteps, readBudgetSnapshot, readVisaSnapshot } from "@/lib/next-steps";
+import { budgetStorageKey, syncBudgetState } from "@/lib/data/budget-state";
 import { overallPercent, readTripProgress, moduleStatus, PREP_PROGRESS_EVENT, type ModuleProgress, type ModuleStatus, type PrepModule } from "@/lib/prep-progress";
 
 const MODULES: Array<{ key: PrepModule; to: string; icon: typeof Wallet }> = [
@@ -100,6 +101,13 @@ const Dashboard = () => {
   }, [loading, selected, activeTripId]);
 
   const selectTrip = useCallback((id: string) => { void hydrateTravelStoreFromTrip(id); }, []);
+
+  // Budget numbers saved from another device come to this one, so progress and next steps match.
+  useEffect(() => {
+    if (!selected) return;
+    void syncBudgetState(budgetStorageKey(selected.destination, selected.departure_date), selected.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected?.id, selected?.destination, selected?.departure_date]);
 
   const progress = useMemo<Record<PrepModule, ModuleProgress> | null>(() => {
     if (!selected) return null;

@@ -6270,7 +6270,7 @@
   },
   "adminSchools": {
     "title": "School spaces",
-    "subtitle": "Anonymous figures for students signed up with the school's email address. Click a school to see its report.",
+    "subtitle": "Aggregated anonymous figures for students signed up with the school's email address. Click a school to see its report.",
     "namePh": "School name (e.g. ESTICE)",
     "domainPh": "Email domain (e.g. estice.fr)",
     "add": "Add",
@@ -6290,7 +6290,11 @@
       "surveys": "Reviews",
       "nps": "Recommendation /10",
       "ease": "Ease"
-    }
+    },
+    "suppressed": "Fewer than {{n}} students signed up with this domain: no figure is shown, so nobody can be recognised.",
+    "fewer": "fewer than {{n}}",
+    "otherDestinations": "Other destinations (grouped)",
+    "privacyNote": "Internal preview. Figures rounded to the nearest {{n}}, nothing under {{n}} people, no individual data. Do not send anything to the school before reviewing and approving it."
   },
   "tripUtilities": {
     "title": "Handy trip tools",
