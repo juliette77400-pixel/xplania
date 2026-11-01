@@ -83,6 +83,7 @@
 - [x] Documents juridiques v2 FR/EN (non publiés)
 - [x] Tests réels compte fictif : inscription, quotas, ESTICE, sauvegarde multi-appareils, mobile, suppression de compte
 - [x] Message d'inscription qui reste affiché ; export des données complété
-- [ ] Activer le nettoyage (supprime 2 anciennes conversations Valise) — attend l'accord de Juliette
+- [x] Nettoyage des conversations activé (2 anciennes conversations Valise vides supprimées)
 - [ ] Publier les textes juridiques — attend adresse, hébergeur, statistiques écoles
-- [ ] Budget : montants saisis à la main gardés seulement sur l'appareil — proposition à valider (nouvelle sauvegarde)
+- [x] Budget : montants, catégories et changements manuels enregistrés dans le compte (testé sur deux appareils)
+- [x] Statistiques école : agrégées, seuil 5, arrondi 5, destinations rares regroupées
