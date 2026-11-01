@@ -41,6 +41,7 @@ import {
 import type { TravelFormData } from "@/types/travel";
 import { withEssentials, type EssentialContext } from "@/lib/visa-essentials";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
+import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
 
 const GuideVisaPage = () => {
   useHydrateActiveTrip();
@@ -77,7 +78,32 @@ const GuideVisaPage = () => {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [chatOpenSignal, setChatOpenSignal] = useState(0);
 
-  useEffect(() => { setSaved(profile.destinationCode ? loadVisaState(stateKey) : null); }, [stateKey, profile.destinationCode]);
+  // The analysis is saved with the trip: on this device and in the account (every device).
+  const accountScope = `visa::${stateKey}`;
+  const persistVisa = useCallback((next: SavedVisaState) => {
+    saveVisaState(stateKey, next);
+    saveAiResult(accountScope, user ? tripId : null, "visa", next, next.profileKey, lang);
+  }, [stateKey, accountScope, user, tripId, lang]);
+
+  useEffect(() => {
+    const code = profile.destinationCode;
+    if (!code) { setSaved(null); return; }
+    const local = loadVisaState(stateKey);
+    setSaved(local);
+    if (!user || !tripId) return;
+    let alive = true;
+    void loadAiResult<SavedVisaState>(accountScope, tripId, "visa").then((r) => {
+      if (!alive) return;
+      const s = r?.content;
+      // Only an analysis for this destination; another one belongs to an older version of the trip.
+      const valid = !!s?.analysis?.visa && Array.isArray(s.analysis.checklist) && typeof s.profileKey === "string" && s.profileKey.startsWith(`${code}|`);
+      if (valid) { saveVisaState(stateKey, s!); setSaved(s!); return; }
+      // An analysis made before account saving existed is sent to the account now.
+      if (local) saveAiResult(accountScope, tripId, "visa", local, local.profileKey, lang);
+    });
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stateKey, profile.destinationCode, user?.id, tripId]);
 
   const official = useOfficialInfo(profile.destinationCode || undefined, lang);
   const analysis = saved?.analysis ?? null;
@@ -180,7 +206,7 @@ const GuideVisaPage = () => {
       consume();
       const full = { ...result, checklist: withEssentials(result.checklist, essentialCtx, t) };
       const next: SavedVisaState = { profileKey: pKey, analysis: full, checked: carryChecked(saved?.checked ?? {}, full.checklist) };
-      saveVisaState(stateKey, next);
+      persistVisa(next);
       setSaved(next);
       track("guide_generated", { guide: "visa" });
       toast.success(t("visa2.analysis.done"));
@@ -190,12 +216,12 @@ const GuideVisaPage = () => {
     } finally {
       setGenerating(false);
     }
-  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, stateKey, essentialCtx]);
+  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, essentialCtx, persistVisa, residenceCode]);
 
   const toggle = (id: string) => {
     if (!saved) return;
     const next = { ...saved, checked: { ...saved.checked, [id]: !saved.checked[id] } };
-    saveVisaState(stateKey, next);
+    persistVisa(next);
     setSaved(next);
   };
 
@@ -203,7 +229,8 @@ const GuideVisaPage = () => {
     const r = await official.refresh();
     if (!r) return;
     // An AI pause is already explained by the shared notice.
-    if (r.status === "unavailable" && r.reason !== AI_UNAVAILABLE) toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
+    if (r.stale) { if (r.reason !== AI_UNAVAILABLE) toast.info(t("visa2.cards.refreshKeptOld")); }
+    else if (r.status === "unavailable" && r.reason !== AI_UNAVAILABLE) toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
     else toast.success(r.changed ? t("visa2.cards.refreshChanged") : t("visa2.cards.refreshSame"));
   };
 

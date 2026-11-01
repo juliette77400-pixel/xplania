@@ -225,6 +225,13 @@
       "when": 1793177582017,
       "tag": "0031_quota_tool_housing",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1793558662545,
+      "tag": "0032_trip_ai_results",
+      "breakpoints": true
     }
   ]
 }

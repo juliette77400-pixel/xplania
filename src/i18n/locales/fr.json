@@ -2424,6 +2424,7 @@
     "outfitsAiBadge": "Généré par IA",
     "outfitsLoading": "Ping prépare tes tenues…",
     "outfitsError": "Impossible de générer les tenues, looks par défaut affichés",
+    "outfitsPause": "L'IA fait une petite pause : voici des tenues de base. Ton essai n'a pas été décompté.",
     "culturalTitle": "Conseils culturels — {{destination}}",
     "culturalRegenerate": "Régénérer les conseils",
     "culturalAiBadge": "Généré par IA",
@@ -7379,6 +7380,10 @@
       "refresh": "Vérifier à nouveau les sources",
       "refreshing": "Vérification…",
       "refreshSame": "Sources consultées : aucun changement depuis la dernière lecture.",
+      "refreshKeptOld": "Impossible de revérifier les pages officielles maintenant : le dernier résumé reste affiché avec sa date.",
+      "lastCheckedAt": "Dernière vérification des pages officielles le {{date}}",
+      "staleWarning": "Dernière vérification le {{date}}. Impossible de revérifier aujourd'hui : confirme sur le site officiel avant toute démarche.",
+      "staleLink": "Ouvrir France Diplomatie",
       "refreshChanged": "Les pages officielles ont changé : le résumé est mis à jour.",
       "refreshFailed": "Les pages officielles ne répondent pas pour le moment. Réessaie plus tard.",
       "refreshQuota": "Les pages ont changé mais tes essais Visa du mois sont épuisés.",
@@ -7980,7 +7985,8 @@
     },
     "tip": {
       "error": "Impossible de générer un nouveau conseil pour l'instant. Réessaie dans un moment.",
-      "quota": "Tu as utilisé tes essais Valise de ce mois."
+      "quota": "Tu as utilisé tes essais Valise de ce mois.",
+      "pause": "L'IA fait une petite pause : ton conseil habituel reste affiché et ton essai n'a pas été décompté."
     }
   },
   "linkCheck": {
@@ -8021,6 +8027,10 @@
     "expired": "Ce code promo n'est plus valable.",
     "error": "Impossible de vérifier le code pour l'instant. Réessaie.",
     "note": "Un code bêta donne des essais IA illimités sur les outils jusqu'à la fin de la bêta."
+  },
+  "aiSaved": {
+    "outdated": "Ces conseils ont été préparés avant tes derniers changements (séjour ou langue). Ils restent affichés : tu peux les mettre à jour si tu veux (1 essai).",
+    "update": "Mettre à jour"
   },
   "aiPause": {
     "title": "L'IA d'Xplania fait une petite pause",

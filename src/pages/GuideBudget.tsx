@@ -19,6 +19,7 @@ import { localGenerationBlocked, localGenerationUsesTry } from "@/config/open-to
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import ErrorBoundary from "@/components/shared/ErrorBoundary";
 import { useBudgetInsights, type BudgetScenario } from "@/hooks/useBudgetInsights";
+import AiOutdatedNote from "@/components/shared/AiOutdatedNote";
 
 import BudgetHero from "@/components/budget/BudgetHero";
 import TripSummaryDashboard from "@/components/budget/TripSummaryDashboard";
@@ -630,6 +631,7 @@ const GuideBudgetPage = () => {
                 </div>
               </CollapsibleSection>
 
+              {insights.outdated && <AiOutdatedNote onUpdate={insights.refresh} busy={insights.isFetching} />}
               <CollapsibleSection title={t("collapsible.budget.analysis")} subtitle={t("collapsible.budget.analysisSub")} sectionId="analysis">
                 <BudgetAiResult
                   totalBudget={totalBudget}

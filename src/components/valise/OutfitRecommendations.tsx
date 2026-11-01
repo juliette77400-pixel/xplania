@@ -10,6 +10,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
+import { isOutdated, type SavedAiResult } from "@/lib/ai-results";
+import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
+import { useActiveTrip } from "@/stores/useActiveTrip";
+import AiOutdatedNote from "@/components/shared/AiOutdatedNote";
 import imgCasual from "@/assets/outfits/casualUrban.jpg";
 import imgEvening from "@/assets/outfits/elegantEvening.jpg";
 import imgNature from "@/assets/outfits/natureExploration.jpg";
@@ -103,37 +108,19 @@ function getRelevantFallback(tripType?: string): Outfit[] {
   return FALLBACK_OUTFITS.slice(0, 3);
 }
 
-// ----- AI cache -----
-const CACHE_TTL_MS = 60 * 60 * 1000;
-const CACHE_PREFIX = "xplania-valise-outfits-v2:";
-
-interface CachedOutfits { outfits: Outfit[]; ts: number; }
-
-function readCache(key: string): Outfit[] | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.localStorage.getItem(CACHE_PREFIX + key);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as CachedOutfits;
-    if (!parsed?.outfits?.length) return null;
-    if (Date.now() - parsed.ts > CACHE_TTL_MS) return null;
-    return parsed.outfits;
-  } catch { return null; }
-}
-
-function writeCache(key: string, outfits: Outfit[]) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ outfits, ts: Date.now() }));
-  } catch { /* quota */ }
-}
+// ----- Saved outfits -----
+// The AI outfits are saved with the trip (device + account). Reopening the
+// page, refreshing, switching language or another device shows them again
+// without a new AI call. When the trip changed since, they stay on screen
+// with an "update" button; only that button or "Regenerate" calls the AI.
+type SavedOutfits = { outfits: Outfit[] };
 
 const OutfitRecommendations = ({ tripType, destination, activities, luggage, onAddToChecklist, climate, stayType, city, dates }: OutfitRecommendationsProps) => {
   const { t, i18n } = useTranslation();
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
   const [aiOutfits, setAiOutfits] = useState<Outfit[] | null>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [hadError, setHadError] = useState(false);
+  const [hadError, setHadError] = useState<false | "error" | "pause">(false);
   const [variation, setVariation] = useState(0);
 
   const lang = (i18n.language || "fr").startsWith("en") ? "en" : "fr";
@@ -142,17 +129,17 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
     || destination === "votre destination"
     || destination.toLowerCase().includes("your destination");
 
-  const cacheKey = useMemo(
-    () => `${lang}:${(destination || "").toLowerCase().trim()}:${(city || "").toLowerCase().trim()}:${(tripType || "").toLowerCase().trim()}:${stayType || ""}:${(activities || []).join(",")}:${dates || ""}:${climate ? "c" : ""}`,
-    [lang, destination, city, tripType, stayType, activities, dates, climate]
+  const tripId = useActiveTrip((s) => s.tripId);
+  const scope = tripId || `no-trip::${(destination || "").toLowerCase().trim()}`;
+  // Trip facts the outfits depend on (language is compared separately).
+  const inputKey = useMemo(
+    () => `${(destination || "").toLowerCase().trim()}:${(city || "").toLowerCase().trim()}:${(tripType || "").toLowerCase().trim()}:${stayType || ""}:${(activities || []).join(",")}:${dates || ""}`,
+    [destination, city, tripType, stayType, activities, dates]
   );
+  const [saved, setSaved] = useState<SavedAiResult<SavedOutfits> | null>(null);
 
-  const fetchOutfits = useCallback(async (force = false, variationSeed = 0) => {
+  const fetchOutfits = useCallback(async (variationSeed = 0) => {
     if (isPlaceholderDest) return;
-    if (!force) {
-      const cached = readCache(cacheKey);
-      if (cached) { setAiOutfits(cached); return; }
-    }
     setIsFetching(true);
     setHadError(false);
     try {
@@ -182,30 +169,44 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
       if (outfits.length > 0) {
         const enriched = outfits.map((o, i) => ({ ...o, id: o.id || `ai-${i}`, ai: true }));
         setAiOutfits(enriched);
-        writeCache(cacheKey, enriched);
+        setSaved(saveAiResult<SavedOutfits>(scope, tripId, "valise_outfits", { outfits: enriched }, inputKey, lang));
       } else {
         console.error("[OutfitRecommendations] empty outfits response", data);
-        setHadError(true);
+        setHadError("error");
       }
     } catch (e) {
       console.error("[OutfitRecommendations] fetch error", e);
-      setHadError(true);
+      // AI paused (cap reached): calm notice, basic outfits stay.
+      setHadError(isAiPause(e) ? "pause" : "error");
     } finally {
       setIsFetching(false);
     }
-  }, [cacheKey, destination, tripType, activities, luggage, lang, isPlaceholderDest, climate, stayType, city, dates]);
+  }, [destination, tripType, activities, luggage, lang, isPlaceholderDest, climate, stayType, city, dates, scope, tripId, inputKey]);
 
   const handleRegenerate = useCallback(() => {
     const next = variation + 1;
     setVariation(next);
-    fetchOutfits(true, next);
+    fetchOutfits(next);
   }, [variation, fetchOutfits]);
 
+  // Saved outfits first; the AI is called on its own only when this trip never had any.
   useEffect(() => {
+    if (isPlaceholderDest) return;
+    let alive = true;
     setAiOutfits(null);
+    setSaved(null);
     setVariation(0);
-    if (!isPlaceholderDest) fetchOutfits(false, 0);
-  }, [cacheKey, isPlaceholderDest, fetchOutfits]);
+    void loadAiResult<SavedOutfits>(scope, tripId, "valise_outfits").then((r) => {
+      if (!alive) return;
+      const list = Array.isArray(r?.content?.outfits) ? r!.content.outfits : [];
+      if (list.length) { setSaved(r); setAiOutfits(list); return; }
+      void fetchOutfits(0);
+    });
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scope, tripId, isPlaceholderDest]);
+
+  const outdated = !isFetching && isOutdated(saved, inputKey, lang);
 
   // Resolve outfit data: AI first, else fallback to i18n
   const getStatic = (id: string): Outfit => {
@@ -273,8 +274,9 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
           )}
         </div>
 
+        {outdated && <AiOutdatedNote onUpdate={handleRegenerate} busy={isFetching} />}
         {hadError && (
-          <p className="text-xs text-amber-500/90">{t("valise.outfitsError")}</p>
+          <p role="status" className="text-xs text-amber-500/90">{t(hadError === "pause" ? "valise.outfitsPause" : "valise.outfitsError")}</p>
         )}
 
         {isFetching && !aiOutfits ? (

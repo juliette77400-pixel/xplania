@@ -2424,6 +2424,7 @@
     "outfitsAiBadge": "AI generated",
     "outfitsLoading": "Ping is preparing your outfits…",
     "outfitsError": "Could not generate outfits, showing defaults",
+    "outfitsPause": "The AI is taking a short break: here are basic outfits. Your try was not counted.",
     "culturalTitle": "Cultural tips — {{destination}}",
     "culturalRegenerate": "Regenerate tips",
     "culturalAiBadge": "AI generated",
@@ -7379,6 +7380,10 @@
       "refresh": "Check the sources again",
       "refreshing": "Checking…",
       "refreshSame": "Sources checked: no change since the last reading.",
+      "refreshKeptOld": "The official pages can't be checked again right now: the last summary stays on screen with its date.",
+      "lastCheckedAt": "Official pages last checked on {{date}}",
+      "staleWarning": "Last checked on {{date}}. It could not be checked again today: confirm on the official site before taking any step.",
+      "staleLink": "Open France Diplomatie",
       "refreshChanged": "The official pages changed: the summary is updated.",
       "refreshFailed": "The official pages are not responding right now. Try again later.",
       "refreshQuota": "The pages changed but your Visa trials for this month are used up.",
@@ -7980,7 +7985,8 @@
     },
     "tip": {
       "error": "Couldn't generate a new tip right now. Try again in a moment.",
-      "quota": "You've used this month's Valise tries."
+      "quota": "You've used this month's Valise tries.",
+      "pause": "The AI is taking a short break: your usual tip stays on screen and your try was not counted."
     }
   },
   "linkCheck": {
@@ -8021,6 +8027,10 @@
     "expired": "This promo code is no longer valid.",
     "error": "Couldn't check the code right now. Try again.",
     "note": "A beta code gives unlimited AI tries on the tools until the end of the beta."
+  },
+  "aiSaved": {
+    "outdated": "These tips were made before your latest changes (trip or language). They stay on screen: you can update them if you like (1 try).",
+    "update": "Update"
   },
   "aiPause": {
     "title": "Xplania's AI is taking a short break",

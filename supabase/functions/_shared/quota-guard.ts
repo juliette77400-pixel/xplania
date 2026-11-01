@@ -86,6 +86,11 @@ export async function enforceQuota(
 // Tracks requests that consumed a quota unit so failures can be refunded.
 const consumed = new WeakMap<Request, { tool: QuotaTool; userId: string }>();
 
+/** Gives the try back now, for handlers that answer 200 with an older result after a failure. */
+export async function refundQuota(req: Request) {
+  await refund(req);
+}
+
 async function refund(req: Request) {
   const c = consumed.get(req);
   if (!c) return;

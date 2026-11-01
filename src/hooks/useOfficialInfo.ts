@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AI_UNAVAILABLE, isAiPause } from "@/lib/ai-pause";
+import { keepPreviousSummary } from "@/lib/official-summary";
 
 export type SafetyCategory = "normal" | "reinforced" | "avoid_unless_essential" | "formally_advised_against" | "not_stated";
 export type OfficialSourceKey = "security" | "entry" | "contacts" | "health";
@@ -44,6 +45,8 @@ export interface OfficialResult {
   changed?: boolean;
   fetchedAt: string;
   lastVerifiedAt?: string | null;
+  /** The last summary, shown because a new check was impossible: never "checked today". */
+  stale?: boolean;
   /** Set when someone from Xplania re-read this summary against the official pages. */
   reviewedAt?: string | null;
   sources: OfficialSource[];
@@ -89,7 +92,8 @@ export function useOfficialInfo(countryCode: string | undefined, locale: "fr" | 
     setRefreshing(true);
     try {
       const fresh = await fetchOfficial(countryCode, locale, true);
-      qc.setQueryData(key, fresh);
+      // A failed check never wipes the summary already on screen.
+      qc.setQueryData<OfficialResult>(key, (prev) => keepPreviousSummary(prev, fresh));
       return fresh;
     } finally {
       setRefreshing(false);
