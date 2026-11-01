@@ -8028,6 +8028,10 @@
     "error": "Couldn't check the code right now. Try again.",
     "note": "A beta code gives unlimited AI tries on the tools until the end of the beta."
   },
+  "aiSaved": {
+    "outdated": "These tips were made before your latest changes (trip or language). They stay on screen: you can update them if you like (1 try).",
+    "update": "Update"
+  },
   "aiPause": {
     "title": "Xplania's AI is taking a short break",
     "message": "Your results already generated stay on screen and this try was not counted. Please try again a little later.",

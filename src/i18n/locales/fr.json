@@ -8028,6 +8028,10 @@
     "error": "Impossible de vérifier le code pour l'instant. Réessaie.",
     "note": "Un code bêta donne des essais IA illimités sur les outils jusqu'à la fin de la bêta."
   },
+  "aiSaved": {
+    "outdated": "Ces conseils ont été préparés avant tes derniers changements (séjour ou langue). Ils restent affichés : tu peux les mettre à jour si tu veux (1 essai).",
+    "update": "Mettre à jour"
+  },
   "aiPause": {
     "title": "L'IA d'Xplania fait une petite pause",
     "message": "Tes résultats déjà générés restent affichés et ton essai n'a pas été décompté. Réessaie un peu plus tard.",
