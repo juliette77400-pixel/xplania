@@ -54,3 +54,5 @@
 - Après chaque étape : résultats accessibles, essais bien décomptés, test sur 2 appareils
 
 - [x] Chiffrer crédits Lovable vs OpenAI direct pour 1 000 voyages (IA vs développement), sans modification
+- [x] Test qualité Luna/Sol vs modèles actuels (Visa x3, Culture, Valise, Logement, assistant Visa), sans modification
+- [ ] Après accord : renforcer la checklist Visa (titre de séjour pour non-nationaux, pièces d enregistrement UE > 3 mois) avant de passer à Luna
