@@ -10,7 +10,7 @@ import { sourceOf, type OfficialResult, type OfficialSource, type SafetyCategory
 import { healthRelevance, type VisaAnalysis } from "@/lib/visa-rules";
 import { formatDay, formatDayTime } from "@/lib/format-date";
 import { cn } from "@/lib/utils";
-import { entrySourceFor } from "@/data/entry-sources";
+import { entrySourceFor, entrySourceLabel } from "@/data/entry-sources";
 import { LinkCheckBadge } from "@/components/shared/LinkCheckNote";
 import { formatDay as fmtDayOnly } from "@/lib/format-date";
 

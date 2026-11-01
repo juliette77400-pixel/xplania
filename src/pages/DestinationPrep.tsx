@@ -9,7 +9,7 @@ import Footer from "@/components/xplania/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { PREPARATION_HOME } from "@/config/featureFlags";
 import { getPrewritten, getSituation, CULTURE_PILLARS } from "@/data/culture-guide";
-import { entrySourceFor } from "@/data/entry-sources";
+import { entrySourceFor, entrySourceLabel } from "@/data/entry-sources";
 import { resourcesForCountry } from "@/data/housing-resources";
 import { FREE_MOVEMENT } from "@/lib/visa-rules";
 import { LinkCheckNote } from "@/components/shared/LinkCheckNote";
