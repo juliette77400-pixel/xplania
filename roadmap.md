@@ -77,3 +77,12 @@
 - [ ] Purge automatique des conversations assistants > 30 jours — attend l'accord de Juliette (suppression de données)
 - [ ] Remplacer les textes juridiques publiés — attend statut/SIREN/adresse et accord de Juliette
 - [ ] P3 UX/SEO/traductions complètes, tests multi-appareils réels, inscription/suppression de compte de bout en bout — crédits à arbitrer
+
+## Finalisation 2 (1/11 soir)
+- [x] Conservation 30 jours des conversations : nettoyage prêt et testé (en pause), copies sur l'appareil limitées à 30 jours
+- [x] Documents juridiques v2 FR/EN (non publiés)
+- [x] Tests réels compte fictif : inscription, quotas, ESTICE, sauvegarde multi-appareils, mobile, suppression de compte
+- [x] Message d'inscription qui reste affiché ; export des données complété
+- [ ] Activer le nettoyage (supprime 2 anciennes conversations Valise) — attend l'accord de Juliette
+- [ ] Publier les textes juridiques — attend adresse, hébergeur, statistiques écoles
+- [ ] Budget : montants saisis à la main gardés seulement sur l'appareil — proposition à valider (nouvelle sauvegarde)
