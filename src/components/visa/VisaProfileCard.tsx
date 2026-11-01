@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CountryCombobox from "@/components/prep/CountryCombobox";
 import { STAY_TYPES, DURATION_BUCKETS } from "@/lib/prep-quiz";
-import { PASSPORT_TYPES, countryLabel, missingVisaFields, visaStayDays, type VisaField, type VisaProfile } from "@/lib/visa-rules";
+import { PASSPORT_TYPES, countryShown, missingVisaFields, visaStayDays, type VisaField, type VisaProfile } from "@/lib/visa-rules";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -21,7 +21,7 @@ const chip = (active: boolean) =>
   cn("rounded-xl border px-3 py-2 text-sm transition-colors", active ? "border-primary bg-primary/15 text-foreground" : "border-border text-muted-foreground hover:text-foreground");
 
 const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const missing = missingVisaFields(profile);
   // "quick": only the missing answers are asked (e.g. passport and stopover, which the questionnaire does not ask).
   const [mode, setMode] = useState<"view" | "quick" | "full">(missing.length > 0 ? "quick" : "view");
