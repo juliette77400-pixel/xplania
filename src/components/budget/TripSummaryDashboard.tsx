@@ -5,6 +5,7 @@ import {
   Heart, Globe, Luggage, Sparkles, AlertTriangle
 } from "lucide-react";
 import type { TravelFormData } from "@/types/travel";
+import { placeName } from "@/lib/country-match";
 import { Link } from "react-router-dom";
 
 interface TripSummaryDashboardProps {
@@ -38,8 +39,8 @@ const TripSummaryDashboard = ({ tripData }: TripSummaryDashboardProps) => {
     );
   }
 
-  const destination = tripData.destination || "—";
-  const departure = tripData.departureLocation || "—";
+  const destination = placeName(tripData.destination, i18n.language) || "—";
+  const departure = placeName(tripData.departureLocation, i18n.language) || "—";
   const days = tripData.duration ? parseInt(tripData.duration) || 0 : 0;
   const departureDate = tripData.departureDate
     ? new Date(tripData.departureDate).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })

@@ -4,6 +4,7 @@ import { Globe2, BedDouble,
   Compass, Heart, Map, Activity, Briefcase, BookOpen, Wallet, FileText, Sparkles, Plane,
 } from "lucide-react";
 import { useActiveTrip } from "@/stores/useActiveTrip";
+import { placeName } from "@/lib/country-match";
 import { isPathEnabled } from "@/config/featureFlags";
 
 interface JumpItem {
@@ -44,7 +45,7 @@ interface Props {
 const QuickJump = ({ title, compact = false, max }: Props) => {
   const { pathname } = useLocation();
   const { tripId, destination } = useActiveTrip();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const items = ALL.filter((it) => !pathname.startsWith(it.matchPrefix)).slice(0, max ?? ALL.length);
   if (items.length === 0) return null;
@@ -56,7 +57,7 @@ const QuickJump = ({ title, compact = false, max }: Props) => {
         <h2 className="text-sm font-semibold text-foreground">{title ?? t("quickJump.title")}</h2>
         {tripId && destination ? (
           <span className="inline-flex items-center gap-1.5 text-xs text-primary bg-primary/10 px-2.5 py-1 rounded-full ml-1">
-            <Plane className="w-3 h-3" /> {t("quickJump.activeTrip")} <strong>{destination}</strong>
+            <Plane className="w-3 h-3" /> {t("quickJump.activeTrip")} <strong>{placeName(destination, i18n.language)}</strong>
           </span>
         ) : (
           <span className="text-xs text-muted-foreground">{t("quickJump.directAccess")}</span>
