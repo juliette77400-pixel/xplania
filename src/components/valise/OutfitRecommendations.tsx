@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 import imgCasual from "@/assets/outfits/casualUrban.jpg";
 import imgEvening from "@/assets/outfits/elegantEvening.jpg";
 import imgNature from "@/assets/outfits/natureExploration.jpg";
@@ -133,7 +134,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
   const [aiOutfits, setAiOutfits] = useState<Outfit[] | null>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [hadError, setHadError] = useState(false);
+  const [hadError, setHadError] = useState<false | "error" | "pause">(false);
   const [variation, setVariation] = useState(0);
 
   const lang = (i18n.language || "fr").startsWith("en") ? "en" : "fr";
@@ -185,11 +186,12 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
         writeCache(cacheKey, enriched);
       } else {
         console.error("[OutfitRecommendations] empty outfits response", data);
-        setHadError(true);
+        setHadError("error");
       }
     } catch (e) {
       console.error("[OutfitRecommendations] fetch error", e);
-      setHadError(true);
+      // AI paused (cap reached): calm notice, basic outfits stay.
+      setHadError(isAiPause(e) ? "pause" : "error");
     } finally {
       setIsFetching(false);
     }
@@ -274,7 +276,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
         </div>
 
         {hadError && (
-          <p className="text-xs text-amber-500/90">{t("valise.outfitsError")}</p>
+          <p role="status" className="text-xs text-amber-500/90">{t(hadError === "pause" ? "valise.outfitsPause" : "valise.outfitsError")}</p>
         )}
 
         {isFetching && !aiOutfits ? (

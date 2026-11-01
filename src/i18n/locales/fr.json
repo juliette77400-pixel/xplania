@@ -7985,7 +7985,8 @@
     },
     "tip": {
       "error": "Impossible de générer un nouveau conseil pour l'instant. Réessaie dans un moment.",
-      "quota": "Tu as utilisé tes essais Valise de ce mois."
+      "quota": "Tu as utilisé tes essais Valise de ce mois.",
+      "pause": "L'IA fait une petite pause : ton conseil habituel reste affiché et ton essai n'a pas été décompté."
     }
   },
   "linkCheck": {

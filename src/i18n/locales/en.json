@@ -7985,7 +7985,8 @@
     },
     "tip": {
       "error": "Couldn't generate a new tip right now. Try again in a moment.",
-      "quota": "You've used this month's Valise tries."
+      "quota": "You've used this month's Valise tries.",
+      "pause": "The AI is taking a short break: your usual tip stays on screen and your try was not counted."
     }
   },
   "linkCheck": {

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Lightbulb, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { isAiPause } from "@/lib/ai-pause";
 import type { LuggageMode } from "./LuggageModes";
 
 interface AiTipCardProps {
@@ -81,7 +82,7 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
 
   const [dynamicTip, setDynamicTip] = useState<{ title: string; tip: string } | null>(null);
   const [loadingDynamic, setLoadingDynamic] = useState(false);
-  const [tipError, setTipError] = useState<"quota" | "error" | null>(null);
+  const [tipError, setTipError] = useState<"quota" | "pause" | "error" | null>(null);
   const inFlightRef = useRef(false);
   const shownRef = useRef<string[]>([]);
   const topicRef = useRef(Math.floor(Math.random() * TOPICS_FR.length));
@@ -124,7 +125,7 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
         });
         if (error) {
           const status = (error as { context?: Response })?.context?.status;
-          setTipError(status === 402 ? "quota" : "error");
+          setTipError(isAiPause(error) ? "pause" : status === 402 ? "quota" : "error");
           return;
         }
         const answer = (data as { answer?: string } | null)?.answer || "";
@@ -221,7 +222,7 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
               </button>
             </div>
             <p className={`text-sm text-muted-foreground leading-relaxed transition-opacity ${loadingDynamic ? "opacity-50" : ""}`}>{displayTip}</p>
-            {tipError && <p role="status" className="mt-2 text-xs text-warning">{t(tipError === "quota" ? "valise3.tip.quota" : "valise3.tip.error")}</p>}
+            {tipError && <p role="status" className="mt-2 text-xs text-warning">{t(tipError === "quota" ? "valise3.tip.quota" : tipError === "pause" ? "valise3.tip.pause" : "valise3.tip.error")}</p>}
           </div>
         </motion.div>
       )}
