@@ -239,6 +239,13 @@
       "when": 1793561154223,
       "tag": "0033_assistant_chat_retention",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1793562474625,
+      "tag": "0034_school_stats_small_group_protection",
+      "breakpoints": true
     }
   ]
 }
