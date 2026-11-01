@@ -53,4 +53,4 @@
 - [ ] 6. Clarification du 29/10 : première préparation garantie = Visa + tous les conseils Budget + conseils/tenues/vérification Valise + tous les thèmes Culture + Logement/Tableau de bord, hors quotas ; faisabilité et budget présentés, décidé : pilote 20/11→12/12, 2 séjours garantis, modèles actuels ; montant à réserver recommandé (≈ 1 300), en attente de sa validation
 - Après chaque étape : résultats accessibles, essais bien décomptés, test sur 2 appareils
 
-- [ ] Chiffrer crédits Lovable vs OpenAI direct pour 1 000 voyages (IA vs développement), sans modification
+- [x] Chiffrer crédits Lovable vs OpenAI direct pour 1 000 voyages (IA vs développement), sans modification
