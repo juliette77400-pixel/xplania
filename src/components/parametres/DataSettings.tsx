@@ -55,6 +55,13 @@ const EXPORT_TABLES = [
   "explore_badges",
   "discover_notifications",
   "pip_chat_sessions",
+  // Beta tools: saved AI results, Housing, survey answers, tries and school access.
+  "trip_ai_results",
+  "housing_options",
+  "housing_checklist",
+  "satisfaction_surveys",
+  "usage_counters",
+  "beta_access",
 ] as const;
 
 const DataSettings = () => {
