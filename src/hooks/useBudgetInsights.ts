@@ -2,6 +2,9 @@ import { useCallback, useRef, useState } from "react";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { isAiPause } from "@/lib/ai-pause";
+import { isOutdated, needsAiCall, type SavedAiResult } from "@/lib/ai-results";
+import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 import type { TravelFormData } from "@/types/travel";
 
 export interface BudgetPlace { name: string; zone: string; city: string; detail: string }
@@ -40,20 +43,33 @@ async function insightsErrorKind(error: unknown): Promise<InsightsErrorKind> {
   return "server";
 }
 
+/** Trip facts the tips depend on: when they change, the saved tips get an "update" button. */
+export function budgetInsightsInputKey(a: Pick<Args, "destination" | "days" | "travelers" | "tripData">): string {
+  const td = a.tripData;
+  return [a.destination, a.days, a.travelers, td?.departureDate || "", td?.totalBudget || 0, td?.arrivalCity || "", td?.stayType || ""].join("|");
+}
+
+function isInsights(v: unknown): v is BudgetInsights {
+  const x = v as BudgetInsights | null;
+  return !!x && typeof x === "object" && !!x.scenarios && Array.isArray(x.tips);
+}
+
 /**
- * One AI call per trip context returning scenarios, a personal analysis,
- * localized deals and saving tips. `refresh()` asks for brand-new ideas.
+ * Scenarios, a personal analysis, localized deals and saving tips for a trip.
+ * They are saved with the trip (device + account): reopening the page,
+ * refreshing or switching language shows them again without a new AI call.
+ * Only `refresh()` (or `regenerateDeals()`) asks the AI for new ideas.
  */
 export function useBudgetInsights(a: Args) {
   const [nonce, setNonce] = useState(0);
   const seen = useRef<string[]>([]);
   const payloadRef = useRef(a);
   payloadRef.current = a;
+  const tripId = useActiveTrip((s) => s.tripId);
+  const scope = tripId || `no-trip::${a.destination}::${a.tripData?.departureDate || ""}`;
+  const inputKey = budgetInsightsInputKey(a);
 
-  const key = [
-    "budget-insights", a.destination, a.days, a.travelers, a.locale,
-    a.tripData?.departureDate || "", a.tripData?.totalBudget || 0, a.tripData?.arrivalCity || "", a.tripData?.stayType || "", nonce,
-  ];
+  const key = ["budget-insights", scope, nonce];
 
   const query = useQuery({
     queryKey: key,
@@ -65,17 +81,23 @@ export function useBudgetInsights(a: Args) {
       prevQuery && JSON.stringify(prevQuery.queryKey.slice(0, -1)) === JSON.stringify(key.slice(0, -1)) ? keepPreviousData(prev) : undefined,
     // A missing credit or an exhausted quota will not fix itself on retry.
     retry: (count, err) => count < 1 && !(err instanceof Error && ["quota", "ai_unavailable"].includes(err.message)),
-    queryFn: async (): Promise<BudgetInsights> => {
-      const { data, error } = await supabase.functions.invoke("budget-tips", { body: buildBody(payloadRef.current, seen.current, nonce) });
+    queryFn: async (): Promise<SavedAiResult<BudgetInsights>> => {
+      const remember = (res: BudgetInsights) => {
+        const names = [
+          ...(res.tips || []).map((t) => t.title),
+          ...Object.values(res.deals || {}).flat().map((d) => (d as BudgetPlace).name),
+        ];
+        seen.current = [...seen.current, ...names].slice(-40);
+      };
+      const saved = await loadAiResult<BudgetInsights>(scope, tripId, "budget_insights");
+      const usable = saved && isInsights(saved.content) ? saved : null;
+      if (!needsAiCall(usable, nonce > 0)) { remember(usable!.content); return usable!; }
+      const p = payloadRef.current;
+      const { data, error } = await supabase.functions.invoke("budget-tips", { body: buildBody(p, seen.current, nonce) });
       if (error) throw new Error(await insightsErrorKind(error));
-      if (data?.error) throw new Error("server");
-      const res = data as BudgetInsights;
-      const names = [
-        ...(res.tips || []).map((t) => t.title),
-        ...Object.values(res.deals || {}).flat().map((d) => (d as BudgetPlace).name),
-      ];
-      seen.current = [...seen.current, ...names].slice(-40);
-      return res;
+      if (data?.error || !isInsights(data)) throw new Error("server");
+      remember(data);
+      return saveAiResult(scope, tripId, "budget_insights", data, budgetInsightsInputKey(p), p.locale);
     },
   });
 
@@ -89,7 +111,8 @@ export function useBudgetInsights(a: Args) {
   const [dealsState, setDealsState] = useState<{ loading: boolean; errorKind: InsightsErrorKind | null; noNew: boolean }>({ loading: false, errorKind: null, noNew: false });
   const dealsBusy = useRef(false);
   const regenerateDeals = useCallback(async () => {
-    const current = qc.getQueryData<BudgetInsights>(key);
+    const currentSaved = qc.getQueryData<SavedAiResult<BudgetInsights>>(key);
+    const current = currentSaved?.content;
     if (dealsBusy.current || fetchingRef.current || !current) return;
     dealsBusy.current = true;
     setDealsState({ loading: true, errorKind: null, noNew: false });
@@ -101,7 +124,8 @@ export function useBudgetInsights(a: Args) {
       const count = Object.values(fresh).flat().length;
       if (count === 0) { setDealsState({ loading: false, errorKind: null, noNew: true }); return; }
       seen.current = [...seen.current, ...Object.values(fresh).flat().map((d) => d.name)].slice(-40);
-      qc.setQueryData<BudgetInsights>(key, { ...current, deals: fresh });
+      const p = payloadRef.current;
+      qc.setQueryData(key, saveAiResult(scope, tripId, "budget_insights", { ...current, deals: fresh }, budgetInsightsInputKey(p), p.locale));
       setDealsState({ loading: false, errorKind: null, noNew: false });
     } catch (e) {
       const m = e instanceof Error ? e.message : "";
@@ -110,12 +134,14 @@ export function useBudgetInsights(a: Args) {
       dealsBusy.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qc, nonce, ...key]);
+  }, [qc, nonce, scope, tripId]);
   const msg = query.error instanceof Error ? query.error.message : "";
   const errorKind: InsightsErrorKind | null = query.isError
     ? (["quota", "ai_unavailable", "rate"].includes(msg) ? (msg as InsightsErrorKind) : "server")
     : null;
-  return { ...query, refresh, errorKind, regenerateDeals, deals: dealsState };
+  // Saved tips for another trip state or language: shown as they are, with an "update" button.
+  const outdated = !query.isFetching && isOutdated(query.data ?? null, inputKey, a.locale);
+  return { ...query, data: query.data?.content, refresh, errorKind, regenerateDeals, deals: dealsState, outdated };
 }
 
 function buildBody(p: Args, avoid: string[], nonce: number) {
