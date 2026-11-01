@@ -206,6 +206,7 @@ const GuideBudgetPage = () => {
   useEffect(() => {
     let alive = true;
     setHydratedFromStorage(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const apply = (parsed: any) => {
         if (parsed?.hasGenerated && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
         // Re-attach icon/color from defaults (functions don't survive JSON)

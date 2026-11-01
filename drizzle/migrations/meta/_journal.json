@@ -253,6 +253,13 @@
       "when": 1793562553905,
       "tag": "0035_school_stats_readonly_fix",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1793562821128,
+      "tag": "0036_trip_saved_budget_state",
+      "breakpoints": true
     }
   ]
 }
