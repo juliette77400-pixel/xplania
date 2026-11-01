@@ -1,8 +1,10 @@
 // Country field with suggestions (keyboard friendly). Stores the ISO code.
+// Names follow the interface language; typing a French or English name both work.
 import { useEffect, useId, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { countryList } from "@/lib/countries";
+import { countryList, getCountryNameIn } from "@/lib/countries";
 
 interface Props {
   label: string;
@@ -17,7 +19,14 @@ const normalize = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, 
 
 const CountryCombobox = ({ label, value, onChange, placeholder, autoFocus }: Props) => {
   const id = useId();
-  const selectedName = countryList.find((c) => c.code === value)?.name || "";
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
+  // Shown name in the interface language; the French name stays searchable.
+  const list = useMemo(
+    () => countryList.map((c) => ({ code: c.code, name: getCountryNameIn(c.code, lang), alt: c.name })),
+    [lang],
+  );
+  const selectedName = list.find((c) => c.code === value)?.name || "";
   const [query, setQuery] = useState(selectedName);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -31,10 +40,10 @@ const CountryCombobox = ({ label, value, onChange, placeholder, autoFocus }: Pro
   const matches = useMemo(() => {
     const q = normalize(query);
     if (!q || q === normalize(selectedName)) return [];
-    const starts = countryList.filter((c) => normalize(c.name).startsWith(q));
-    const contains = countryList.filter((c) => !normalize(c.name).startsWith(q) && normalize(c.name).includes(q));
+    const starts = list.filter((c) => normalize(c.name).startsWith(q) || normalize(c.alt).startsWith(q));
+    const contains = list.filter((c) => !starts.includes(c) && (normalize(c.name).includes(q) || normalize(c.alt).includes(q)));
     return [...starts, ...contains].slice(0, 6);
-  }, [query, selectedName]);
+  }, [query, selectedName, list]);
 
   const pick = (code: string, name: string) => {
     onChange(code);
@@ -46,7 +55,7 @@ const CountryCombobox = ({ label, value, onChange, placeholder, autoFocus }: Pro
     setQuery(text);
     setOpen(true);
     setActive(0);
-    const exact = countryList.find((c) => normalize(c.name) === normalize(text));
+    const exact = list.find((c) => normalize(c.name) === normalize(text) || normalize(c.alt) === normalize(text));
     onChange(exact ? exact.code : "");
   };
 

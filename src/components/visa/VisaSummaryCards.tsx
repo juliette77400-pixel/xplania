@@ -10,7 +10,7 @@ import { sourceOf, type OfficialResult, type OfficialSource, type SafetyCategory
 import { healthRelevance, type VisaAnalysis } from "@/lib/visa-rules";
 import { formatDay, formatDayTime } from "@/lib/format-date";
 import { cn } from "@/lib/utils";
-import { entrySourceFor } from "@/data/entry-sources";
+import { entrySourceFor, entrySourceLabel } from "@/data/entry-sources";
 import { LinkCheckBadge } from "@/components/shared/LinkCheckNote";
 import { formatDay as fmtDayOnly } from "@/lib/format-date";
 
@@ -204,7 +204,7 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
             ? <a href={EU_URL[lang]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.euSource")}<ExternalLink className="h-3 w-3" aria-hidden /></a>
             : <div className="space-y-1">
                 {entrySite && (
-                  <p><a href={entrySite.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">{t("visa2.cards.checkOn", { site: entrySite.label })}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span></a> <LinkCheckBadge url={entrySite.url} /></p>
+                  <p><a href={entrySite.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">{t("visa2.cards.checkOn", { site: entrySourceLabel(entrySite, i18n.language) })}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span></a> <LinkCheckBadge url={entrySite.url} /></p>
                 )}
                 <p>{t("visa2.cards.aiGenerated", { date: formatDayTime(analysis!.generatedAt, i18n.language) })}{!entrySite && v.official_url && <>{" · "}<a href={v.official_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-foreground/80 hover:underline">{t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /></a></>}</p>
               </div>)}
@@ -223,7 +223,7 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
                       <dd className="inline">
                         {t("visa2.cards.feesOfficialOnly")}{" "}
                         <a href={feesUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
-                          {entrySite?.label || t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span>
+                          {(entrySite && entrySourceLabel(entrySite, i18n.language)) || t("visa2.cards.officialSite")}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span>
                         </a>
                       </dd>
                     </div>

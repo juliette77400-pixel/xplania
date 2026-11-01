@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CloudSun, CloudOff, Thermometer, Droplets, Wind, RefreshCw, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import { cleanCityForWeather } from "@/lib/geocoding";
 import { toast } from "sonner";
 import { invokeProtectedFunction } from "@/lib/protected-functions";
@@ -21,7 +22,7 @@ interface WeatherSectionProps {
 }
 
 const WeatherSection = ({ destination }: WeatherSectionProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [weather, setWeather] = useState<WeatherInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -97,7 +98,7 @@ const WeatherSection = ({ destination }: WeatherSectionProps) => {
         </button>
       </div>
 
-      <p className="text-sm text-muted-foreground mb-4">{destination}</p>
+      <p className="text-sm text-muted-foreground mb-4">{placeName(destination, i18n.language)}</p>
 
       {loading && !weather ? (
         <div className="flex items-center gap-3 py-8 justify-center">

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import { PiggyBank, RefreshCw, Sparkles } from "lucide-react";
 import type { BudgetInsights, InsightsErrorKind } from "@/hooks/useBudgetInsights";
 
@@ -26,7 +27,7 @@ const CAT_EMOJI: Record<string, string> = {
 };
 
 const BudgetSavingTips = ({ destination, tips, loading, failed, errorKind, onRefresh }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const list = tips ?? [];
 
   return (
@@ -47,7 +48,7 @@ const BudgetSavingTips = ({ destination, tips, loading, failed, errorKind, onRef
               <Sparkles className="w-4 h-4 text-primary" />
             </h2>
             <p className="text-sm text-muted-foreground">
-              {t("budget.savingTipsSubtitle", { destination })}
+              {t("budget.savingTipsSubtitle", { destination: placeName(destination, i18n.language) })}
             </p>
           </div>
         </div>

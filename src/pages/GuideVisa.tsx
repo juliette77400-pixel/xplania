@@ -35,7 +35,7 @@ import { saveModuleProgress } from "@/lib/prep-progress";
 import { track } from "@/lib/analytics";
 import { stayDurationDays } from "@/lib/prep-quiz";
 import {
-  carryChecked, countryLabel, hasFreeMovement, loadVisaState, missingVisaFields, normalizeAnalysis, saveVisaState,
+  carryChecked, countryLabel, countryShown, hasFreeMovement, loadVisaState, missingVisaFields, normalizeAnalysis, saveVisaState,
   visaProfileFromTrip, visaProfileKey, visaStateKey, visaStayDays, type SavedVisaState, type VisaProfile,
 } from "@/lib/visa-rules";
 import type { TravelFormData } from "@/types/travel";
@@ -60,6 +60,8 @@ const GuideVisaPage = () => {
   const pKey = visaProfileKey(profile);
   const stateKey = visaStateKey(tripId, profile.destinationCode);
   const destinationName = countryLabel(profile.destinationCode);
+  // On screen, in the interface language (the AI request keeps destinationName).
+  const destinationShownName = countryShown(profile.destinationCode, i18n.language);
   const nationalityName = countryLabel(profile.nationality);
   const isFrench = profile.nationality === "FR" || profile.secondNationality === "FR";
   const freeMovement = profile.destinationCode ? hasFreeMovement(profile.destinationCode, [profile.nationality, profile.secondNationality]) : false;
@@ -246,7 +248,7 @@ const GuideVisaPage = () => {
 
         <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-primary/15 bg-[radial-gradient(circle_at_90%_20%,hsl(var(--secondary)/.16),transparent_32%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] p-6 sm:p-8">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-primary"><ShieldCheck className="h-4 w-4" />{t("guideVisa.heroKicker")}</p>
-          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{destinationName ? t("visa2.titleFor", { destination: destinationName }) : t("guideVisa.title")}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{destinationShownName ? t("visa2.titleFor", { destination: destinationShownName }) : t("guideVisa.title")}</h1>
           <p className="mt-3 max-w-2xl text-base text-muted-foreground">{t("visa2.subtitle")}</p>
         </motion.header>
 
@@ -331,7 +333,7 @@ const GuideVisaPage = () => {
         </div>
       </main>
       <QuickJump />
-      <VisaPipChat destination={destinationName || t("visa2.yourDestination")} nationality={nationalityName} openSignal={chatOpenSignal} />
+      <VisaPipChat destination={destinationShownName || t("visa2.yourDestination")} nationality={nationalityName} openSignal={chatOpenSignal} />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CountryCombobox from "@/components/prep/CountryCombobox";
 import { STAY_TYPES, DURATION_BUCKETS } from "@/lib/prep-quiz";
-import { PASSPORT_TYPES, countryLabel, missingVisaFields, visaStayDays, type VisaField, type VisaProfile } from "@/lib/visa-rules";
+import { PASSPORT_TYPES, countryShown, missingVisaFields, visaStayDays, type VisaField, type VisaProfile } from "@/lib/visa-rules";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -21,7 +21,7 @@ const chip = (active: boolean) =>
   cn("rounded-xl border px-3 py-2 text-sm transition-colors", active ? "border-primary bg-primary/15 text-foreground" : "border-border text-muted-foreground hover:text-foreground");
 
 const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const missing = missingVisaFields(profile);
   // "quick": only the missing answers are asked (e.g. passport and stopover, which the questionnaire does not ask).
   const [mode, setMode] = useState<"view" | "quick" | "full">(missing.length > 0 ? "quick" : "view");
@@ -44,13 +44,13 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
     : profile.durationBucket ? t(`prepQuiz.dates.bucket.${profile.durationBucket}`) : "";
 
   const rows: Array<{ field: VisaField | null; label: string; value: string }> = [
-    { field: "destination", label: t("visa2.profile.destination"), value: [countryLabel(profile.destinationCode), profile.city].filter(Boolean).join(" — ") },
-    { field: "nationality", label: t("visa2.profile.nationality"), value: [countryLabel(profile.nationality), countryLabel(profile.secondNationality)].filter(Boolean).join(" + ") },
-    { field: "residence", label: t("visa2.profile.residence"), value: countryLabel(profile.residence) },
+    { field: "destination", label: t("visa2.profile.destination"), value: [countryShown(profile.destinationCode, i18n.language), profile.city].filter(Boolean).join(" — ") },
+    { field: "nationality", label: t("visa2.profile.nationality"), value: [countryShown(profile.nationality, i18n.language), countryShown(profile.secondNationality, i18n.language)].filter(Boolean).join(" + ") },
+    { field: "residence", label: t("visa2.profile.residence"), value: countryShown(profile.residence, i18n.language) },
     { field: "stayType", label: t("visa2.profile.purpose"), value: profile.stayType ? t(`prepQuiz.stay.${profile.stayType}.title`, { defaultValue: profile.stayType }) : "" },
     { field: "duration", label: t("visa2.profile.duration"), value: durationText },
     { field: "passportType", label: t("visa2.profile.passport"), value: profile.passportType ? t(`visa2.profile.passportTypes.${profile.passportType}`) : "" },
-    { field: "transit", label: t("visa2.profile.transit"), value: profile.hasTransit === "no" ? t("visa2.profile.noTransit") : profile.transitCountries.map(countryLabel).filter(Boolean).join(", ") },
+    { field: "transit", label: t("visa2.profile.transit"), value: profile.hasTransit === "no" ? t("visa2.profile.noTransit") : profile.transitCountries.map((c) => countryShown(c, i18n.language)).filter(Boolean).join(", ") },
     { field: null, label: t("visa2.profile.regions"), value: profile.regions },
   ];
 
@@ -172,8 +172,8 @@ const VisaProfileCard = ({ profile, saving, onSave }: Props) => {
                 <div className="flex flex-wrap gap-2">
                   {draft.transitCountries.map((c) => (
                     <span key={c} className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-sm">
-                      {countryLabel(c)}
-                      <button type="button" aria-label={t("visa2.profile.removeTransit", { country: countryLabel(c) })} onClick={() => set("transitCountries", draft.transitCountries.filter((x) => x !== c))}><X className="h-3.5 w-3.5" /></button>
+                      {countryShown(c, i18n.language)}
+                      <button type="button" aria-label={t("visa2.profile.removeTransit", { country: countryShown(c, i18n.language) })} onClick={() => set("transitCountries", draft.transitCountries.filter((x) => x !== c))}><X className="h-3.5 w-3.5" /></button>
                     </span>
                   ))}
                 </div>

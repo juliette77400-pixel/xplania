@@ -9,7 +9,7 @@ import Footer from "@/components/xplania/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { PREPARATION_HOME } from "@/config/featureFlags";
 import { getPrewritten, getSituation, CULTURE_PILLARS } from "@/data/culture-guide";
-import { entrySourceFor } from "@/data/entry-sources";
+import { entrySourceFor, entrySourceLabel } from "@/data/entry-sources";
 import { resourcesForCountry } from "@/data/housing-resources";
 import { FREE_MOVEMENT } from "@/lib/visa-rules";
 import { LinkCheckNote } from "@/components/shared/LinkCheckNote";
@@ -105,7 +105,7 @@ const DestinationPrep = () => {
             <p>{eu ? t("destPages.visaEu", { place }) : t("destPages.visaOther", { place })}</p>
             <ul className="list-disc space-y-1 pl-5">
               <li><ExtLink href={franceDiplomatieEntryUrl(d)}>{t("destPages.franceDiplomatie")}</ExtLink> — {t("destPages.forFrench")}</li>
-              {entry && <li><ExtLink href={entry.url}>{entry.label}</ExtLink> — {t("destPages.forOthers")}</li>}
+              {entry && <li><ExtLink href={entry.url}>{entrySourceLabel(entry, i18n.language)}</ExtLink> — {t("destPages.forOthers")}</li>}
             </ul>
             <p>{t("destPages.visaTool")}</p>
           </Block>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, Mail, Share2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 
 interface ShareTripDialogProps {
   open: boolean;
@@ -15,7 +16,7 @@ interface ShareTripDialogProps {
 }
 
 const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: ShareTripDialogProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [copied, setCopied] = useState(false);
   const baseUrl = window.location.origin;
   const shareUrl = tripId && FEATURE_FLAGS.ENABLE_TRAVEL_JOURNAL ? `${baseUrl}/carnet/public/${tripId}` : `${baseUrl}/`;
@@ -30,7 +31,7 @@ const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: Shar
   };
 
   const email = () => {
-    window.location.href = `mailto:?subject=${encodeURIComponent(t("valise.shareEmailSubject", { destination }))}&body=${encodeURIComponent(message)}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(t("valise.shareEmailSubject", { destination: placeName(destination, i18n.language) }))}&body=${encodeURIComponent(message)}`;
   };
 
   const whatsapp = () => {
@@ -40,7 +41,7 @@ const ShareTripDialog = ({ open, onOpenChange, destination, days, tripId }: Shar
   const native = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: t("valise.shareEmailSubject", { destination }), text: message, url: shareUrl });
+        await navigator.share({ title: t("valise.shareEmailSubject", { destination: placeName(destination, i18n.language) }), text: message, url: shareUrl });
       } catch {}
     } else {
       copy();
