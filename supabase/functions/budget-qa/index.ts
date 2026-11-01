@@ -191,6 +191,12 @@ ${isEN ? SAFETY_RULE_EN : SAFETY_RULE_FR}`;
 
     const data = await response.json();
     const answer = data.choices?.[0]?.message?.content?.trim() || "";
+    // An empty answer is a failure: 502 so the try is given back.
+    if (!answer) {
+      return new Response(JSON.stringify({ error: "empty_answer" }), {
+        status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     return new Response(JSON.stringify({ answer }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
