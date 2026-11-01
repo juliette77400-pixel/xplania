@@ -67,3 +67,13 @@
 - [x] 6. Tenues Valise et bouton Aide : message calme « IA en pause » quand le plafond est atteint
 - [x] 7. Réponse Valise vide : essai rendu
 - [ ] 1-3. Visa, Budget, Valise : résultats enregistrés dans le compte par séjour (multi-appareil), plus de relance à la réouverture / actualisation / changement de langue, bouton « Mettre à jour » après modification du séjour
+
+## Finalisation avant bêta (document du 1/11)
+- [x] P0 Budget/Valise/Visa : résultats enregistrés par séjour, aucune relance automatique, bouton « Mettre à jour »
+- [x] P0 Assistants Budget et Visa : réponse vide → essai rendu
+- [x] P0 Suppression de compte : efface aussi les données sans lien direct au compte (Logement, résultats IA, accès bêta…)
+- [x] P0 Sécurité : isolation entre étudiants testée, 2 alertes du scan expliquées (données publiques voulues)
+- [x] P2 Projets de textes juridiques FR/EN (non publiés)
+- [ ] Purge automatique des conversations assistants > 30 jours — attend l'accord de Juliette (suppression de données)
+- [ ] Remplacer les textes juridiques publiés — attend statut/SIREN/adresse et accord de Juliette
+- [ ] P3 UX/SEO/traductions complètes, tests multi-appareils réels, inscription/suppression de compte de bout en bout — crédits à arbitrer
