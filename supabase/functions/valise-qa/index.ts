@@ -160,6 +160,12 @@ ${DATA_RULE_FR}`;
 
     const data = await response.json();
     const answer = data.choices?.[0]?.message?.content?.trim() || "";
+    if (!answer) {
+      // Empty answer: an error status gives the student's try back.
+      return new Response(JSON.stringify({ error: "empty_result" }), {
+        status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     return new Response(JSON.stringify({ answer }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
