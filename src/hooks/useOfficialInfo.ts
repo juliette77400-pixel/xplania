@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AI_UNAVAILABLE, isAiPause } from "@/lib/ai-pause";
+import { keepPreviousSummary } from "@/lib/official-summary";
 
 export type SafetyCategory = "normal" | "reinforced" | "avoid_unless_essential" | "formally_advised_against" | "not_stated";
 export type OfficialSourceKey = "security" | "entry" | "contacts" | "health";
@@ -65,12 +66,6 @@ async function fetchOfficial(countryCode: string, locale: "fr" | "en", force: bo
   }
   if (!data || typeof data !== "object") return unavailable("error");
   return data as OfficialResult;
-}
-
-/** Keeps the summary on screen when a new check brings none back (quota, AI paused, pages down). */
-export function keepPreviousSummary(prev: OfficialResult | undefined, fresh: OfficialResult): OfficialResult {
-  if (fresh.content || !prev?.content) return fresh;
-  return prev;
 }
 
 export function sourceOf(result: OfficialResult | null | undefined, key: OfficialSourceKey): OfficialSource | null {
