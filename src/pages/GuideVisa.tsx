@@ -216,7 +216,7 @@ const GuideVisaPage = () => {
     } finally {
       setGenerating(false);
     }
-  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, stateKey, essentialCtx]);
+  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, essentialCtx, persistVisa, residenceCode]);
 
   const toggle = (id: string) => {
     if (!saved) return;
