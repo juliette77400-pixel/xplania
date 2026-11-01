@@ -44,6 +44,8 @@ export interface OfficialResult {
   changed?: boolean;
   fetchedAt: string;
   lastVerifiedAt?: string | null;
+  /** The last summary, shown because a new check was impossible: never "checked today". */
+  stale?: boolean;
   /** Set when someone from Xplania re-read this summary against the official pages. */
   reviewedAt?: string | null;
   sources: OfficialSource[];
@@ -63,6 +65,12 @@ async function fetchOfficial(countryCode: string, locale: "fr" | "en", force: bo
   }
   if (!data || typeof data !== "object") return unavailable("error");
   return data as OfficialResult;
+}
+
+/** Keeps the summary on screen when a new check brings none back (quota, AI paused, pages down). */
+export function keepPreviousSummary(prev: OfficialResult | undefined, fresh: OfficialResult): OfficialResult {
+  if (fresh.content || !prev?.content) return fresh;
+  return prev;
 }
 
 export function sourceOf(result: OfficialResult | null | undefined, key: OfficialSourceKey): OfficialSource | null {
@@ -89,7 +97,8 @@ export function useOfficialInfo(countryCode: string | undefined, locale: "fr" | 
     setRefreshing(true);
     try {
       const fresh = await fetchOfficial(countryCode, locale, true);
-      qc.setQueryData(key, fresh);
+      // A failed check never wipes the summary already on screen.
+      qc.setQueryData<OfficialResult>(key, (prev) => keepPreviousSummary(prev, fresh));
       return fresh;
     } finally {
       setRefreshing(false);

@@ -4,7 +4,7 @@
 // from the official pages really read; visa and passport answers from the AI.
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { ChevronDown, ExternalLink, FileText, Globe, HeartPulse, Loader2, RefreshCw, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ChevronDown, ExternalLink, FileText, Globe, HeartPulse, Loader2, RefreshCw, ShieldAlert } from "lucide-react";
 import ReliabilityBadge, { type Reliability } from "@/components/visa/ReliabilityBadge";
 import { sourceOf, type OfficialResult, type OfficialSource, type SafetyCategory } from "@/hooks/useOfficialInfo";
 import { healthRelevance, type VisaAnalysis } from "@/lib/visa-rules";
@@ -161,6 +161,8 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
           <p className="text-xs text-muted-foreground" aria-live="polite">
             {officialLoading
               ? t("visa2.cards.readingSources")
+ : official && official.stale
+                ? t("visa2.cards.lastCheckedAt", { date: formatDayTime(fetchedAt, i18n.language) })
               : official && official.status !== "unavailable"
                 ? t("visa2.cards.sourcesCheckedAt", { date: formatDayTime(fetchedAt, i18n.language) }) + (reviewed ? ` · ${reviewed}` : "")
                 : t("visa2.cards.sourcesUnavailable")}
@@ -176,6 +178,18 @@ const VisaSummaryCards = ({ analysis, official, officialLoading, refreshing, onR
           {refreshing ? t("visa2.cards.refreshing") : t("visa2.cards.refresh")}
         </button>
       </div>
+
+      {official?.stale && official.content && (
+        <div role="status" className="flex items-start gap-2 rounded-xl border border-warning/40 bg-warning/10 p-3 text-sm text-foreground">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden />
+          <p>
+            {t("visa2.cards.staleWarning", { date: formatDay(fetchedAt, i18n.language) })}{" "}
+            <a href={FD_HOME} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
+              {t("visa2.cards.staleLink")}<ExternalLink className="h-3 w-3" aria-hidden /><span className="sr-only">{t("visa2.opensNewTab")}</span>
+            </a>
+          </p>
+        </div>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         <SummaryCard

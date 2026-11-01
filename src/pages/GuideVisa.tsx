@@ -203,7 +203,8 @@ const GuideVisaPage = () => {
     const r = await official.refresh();
     if (!r) return;
     // An AI pause is already explained by the shared notice.
-    if (r.status === "unavailable" && r.reason !== AI_UNAVAILABLE) toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
+    if (r.stale) { if (r.reason !== AI_UNAVAILABLE) toast.info(t("visa2.cards.refreshKeptOld")); }
+    else if (r.status === "unavailable" && r.reason !== AI_UNAVAILABLE) toast.error(r.reason === "quota" ? t("visa2.cards.refreshQuota") : t("visa2.cards.refreshFailed"));
     else toast.success(r.changed ? t("visa2.cards.refreshChanged") : t("visa2.cards.refreshSame"));
   };
 
