@@ -1119,6 +1119,8 @@
     "continueGoogle": "Continuer avec Google",
     "continueApple": "Continuer avec Apple",
     "backHome": "Retour à l'accueil",
+    "signupSentTitle": "Ton compte est presque prêt ✉️",
+    "signupSentBody": "Nous avons envoyé un lien de confirmation à {{email}}. Ouvre-le pour activer ton compte (pense à regarder dans les spams). Tu peux le faire depuis ton téléphone : tes réponses te suivent.",
     "signupSuccess": "Vérifie ta boîte mail pour confirmer ton inscription ✉️",
     "googleError": "Connexion Google impossible",
     "appleError": "Connexion Apple impossible",
