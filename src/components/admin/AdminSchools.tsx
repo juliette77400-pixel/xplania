@@ -6,10 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
+// Protected figures from admin_school_stats: nothing for fewer than 5 students,
+// counts rounded to 5, null = fewer than 5 (hidden), rare destinations merged.
 type Stats = {
-  students: number; active30: number; quiz_done: number; trips: number; journals: number;
-  tools: Record<string, number>; destinations: { name: string; count: number }[];
-  surveys: number; nps_avg: number | null; ease_avg: number | null;
+  suppressed: boolean; min_group: number;
+  students?: number; active30?: number | null; quiz_done?: number | null; trips?: number | null;
+  tools?: Record<string, number>; destinations?: { name: string; count: number }[]; other_destinations?: number | null;
+  surveys?: number | null; nps_avg?: number | null; ease_avg?: number | null;
 };
 
 const SchoolStats = ({ id }: { id: string }) => {
@@ -23,14 +26,19 @@ const SchoolStats = ({ id }: { id: string }) => {
     },
   });
   if (isLoading || !data) return <p className="text-sm text-muted-foreground">{t("adminSchools.loading")}</p>;
-  const kpis: [string, string | number][] = [
-    ["students", data.students], ["active30", data.active30], ["quiz", data.quiz_done],
-    ["trips", data.trips], ["journals", data.journals], ["surveys", data.surveys],
-    ["nps", data.nps_avg ?? "—"], ["ease", data.ease_avg != null ? `${data.ease_avg}/5` : "—"],
+  if (data.suppressed) return <p className="text-sm text-muted-foreground">{t("adminSchools.suppressed", { n: data.min_group })}</p>;
+  const few = t("adminSchools.fewer", { n: data.min_group });
+  const show = (v: number | null | undefined) => (v == null ? few : `≈ ${v}`);
+  const kpis: [string, string][] = [
+    ["students", show(data.students)], ["active30", show(data.active30)], ["quiz", show(data.quiz_done)],
+    ["trips", show(data.trips)], ["surveys", show(data.surveys)],
+    ["nps", data.nps_avg != null ? String(data.nps_avg) : few], ["ease", data.ease_avg != null ? `${data.ease_avg}/5` : few],
   ];
-  const tools = Object.entries(data.tools).sort((a, b) => b[1] - a[1]);
+  const tools = Object.entries(data.tools || {}).sort((a, b) => b[1] - a[1]);
+  const destinations = data.destinations || [];
   return (
     <div className="space-y-4">
+      <p role="note" className="rounded-lg border border-warning/40 bg-warning/10 p-2 text-xs text-foreground">{t("adminSchools.privacyNote", { n: data.min_group })}</p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {kpis.map(([k, v]) => (
           <div key={k} className="rounded-xl border border-border p-3">
@@ -42,18 +50,23 @@ const SchoolStats = ({ id }: { id: string }) => {
       <div className="grid md:grid-cols-2 gap-3">
         <div>
           <h4 className="text-xs font-semibold mb-2">{t("adminSchools.tools")}</h4>
-          {tools.length === 0 ? <p className="text-sm text-muted-foreground">—</p> : (
+          {tools.length === 0 ? <p className="text-sm text-muted-foreground">{few}</p> : (
             <ul className="space-y-1 text-sm">{tools.map(([k, n]) => (
-              <li key={k} className="flex justify-between"><span className="text-muted-foreground">{k}</span><span className="font-semibold">{n}</span></li>
+              <li key={k} className="flex justify-between"><span className="text-muted-foreground">{k}</span><span className="font-semibold">≈ {n}</span></li>
             ))}</ul>
           )}
         </div>
         <div>
           <h4 className="text-xs font-semibold mb-2">{t("adminSchools.destinations")}</h4>
-          {data.destinations.length === 0 ? <p className="text-sm text-muted-foreground">—</p> : (
-            <ul className="space-y-1 text-sm">{data.destinations.map((d) => (
-              <li key={d.name} className="flex justify-between"><span className="text-muted-foreground">{d.name}</span><span className="font-semibold">{d.count}</span></li>
-            ))}</ul>
+          {destinations.length === 0 && data.other_destinations == null ? <p className="text-sm text-muted-foreground">{few}</p> : (
+            <ul className="space-y-1 text-sm">
+              {destinations.map((d) => (
+                <li key={d.name} className="flex justify-between"><span className="text-muted-foreground">{d.name}</span><span className="font-semibold">≈ {d.count}</span></li>
+              ))}
+              {data.other_destinations != null && (
+                <li className="flex justify-between"><span className="text-muted-foreground">{t("adminSchools.otherDestinations")}</span><span className="font-semibold">≈ {data.other_destinations}</span></li>
+              )}
+            </ul>
           )}
         </div>
       </div>

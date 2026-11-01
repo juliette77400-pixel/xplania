@@ -6270,7 +6270,7 @@
   },
   "adminSchools": {
     "title": "Espaces écoles",
-    "subtitle": "Chiffres anonymes des étudiants inscrits avec l'adresse e-mail de l'école. Clique sur une école pour voir son bilan.",
+    "subtitle": "Chiffres agrégés et anonymes des étudiants inscrits avec l'adresse e-mail de l'école. Clique sur une école pour voir son bilan.",
     "namePh": "Nom de l'école (ex. ESTICE)",
     "domainPh": "Domaine e-mail (ex. estice.fr)",
     "add": "Ajouter",
@@ -6290,7 +6290,11 @@
       "surveys": "Avis reçus",
       "nps": "Recommandation /10",
       "ease": "Facilité"
-    }
+    },
+    "suppressed": "Moins de {{n}} étudiants inscrits avec ce domaine : aucun chiffre n'est affiché, pour que personne ne soit reconnaissable.",
+    "fewer": "moins de {{n}}",
+    "otherDestinations": "Autres destinations (regroupées)",
+    "privacyNote": "Aperçu interne. Chiffres arrondis à {{n}} près, rien sous {{n}} personnes, aucune donnée individuelle. Ne transmets rien à l'école sans l'avoir relu et validé."
   },
   "tripUtilities": {
     "title": "Outils pratiques du voyage",
