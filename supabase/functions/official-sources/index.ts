@@ -4,14 +4,18 @@
 // - Cache younger than 24 h: returned as is (free).
 // - Older cache or "force": pages are fetched again; if their dates/text did not
 //   change, the cached summary is kept (free, new consultation date).
-// - Pages changed or no cache: one AI summary (counts as one Visa trial).
-// - Pages unreachable: status "unavailable" — nothing is invented.
+// - Pages changed or no cache: one AI summary, shared by every student. It
+//   counts as one Visa trial only when the student clicked "check again"
+//   (force); opening the page never uses a try.
+// - Pages unreachable, or the summary cannot be rebuilt (AI paused, error):
+//   the last summary is returned with stale=true and its real check date,
+//   never as checked today. Without any summary: status "unavailable".
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { generateJson, AiHttpError } from "../_shared/ai-json.ts";
 import { requireAuth } from "../_shared/require-auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
-import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
+import { enforceQuota, refundQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { SAFETY_RULE_EN, SAFETY_RULE_FR, NEUTRALITY_RULE_EN, NEUTRALITY_RULE_FR } from "../_shared/prompts.ts";
 import { FD_SLUGS, PASTEUR_SLUGS } from "./slugs.ts";
 import { AI_UNAVAILABLE, isAiCreditBlock } from "../_shared/ai-unavailable.ts";
@@ -184,6 +188,17 @@ ${SAFETY_RULE_FR}
 Réponds uniquement avec le JSON.`;
 }
 
+// Students opening the same country at the same moment share one summary
+// instead of each starting their own.
+const inFlight = new Map<string, Promise<unknown>>();
+function summarizeOnce(key: string, run: () => Promise<unknown>): Promise<unknown> {
+  const running = inFlight.get(key);
+  if (running) return running;
+  const p = run().finally(() => inFlight.delete(key));
+  inFlight.set(key, p);
+  return p;
+}
+
 function publicSources(sources: Source[]) {
   return sources.map(({ key, label, url, ok, updatedAt }) => ({ key, label, url, ok, updatedAt }));
 }
@@ -220,8 +235,17 @@ serve(withQuotaRefund(async (req) => {
   const fetchedAt = new Date().toISOString();
   const okSources = sources.filter((s) => s.ok);
 
+  // Last known summary, shown with its own check date and a warning.
+  const staleAnswer = (reason: string) => cached ? json({
+    status: statusOf(cachedMeta.sources || []), stale: true, reason, fromCache: true, changed: false,
+    fetchedAt: cached.fetched_at, lastVerifiedAt: cached.fetched_at, reviewedAt: cached.reviewed_at,
+    sources: cachedMeta.sources || [], content: cached.content,
+  }) : null;
+
   if (okSources.length === 0) {
     // Live check failed: never present an old summary as freshly verified.
+    const old = staleAnswer("fetch_failed");
+    if (old) return old;
     return json({
       status: "unavailable", reason: "fetch_failed", fromCache: !!cached, changed: false, fetchedAt,
       lastVerifiedAt: cached?.fetched_at || null, sources: publicSources(sources), content: null,
@@ -236,17 +260,27 @@ serve(withQuotaRefund(async (req) => {
     return json({ status: statusOf(publicSources(sources)), fromCache: true, changed: false, fetchedAt, reviewedAt: cached.reviewed_at, sources: publicSources(sources), content: cached.content });
   }
 
-  const quota = await enforceQuota("visa", req, cors);
-  if (quota) return quota;
+  // A try is used only when the student asked for a new check.
+  if (force) {
+    const quota = await enforceQuota("visa", req, cors);
+    if (quota) return quota;
+  }
 
   const input = okSources.map((s) => `### ${s.label}${s.updatedAt ? ` (mise à jour le ${s.updatedAt})` : ""}\n${s.text}`).join("\n\n");
   let content: unknown;
   try {
-    content = await generateJson({ instructions: instructions(lang), input, schema: SCHEMA, name: "official_summary", strict: true, effort: "low", model: aiModel("official") });
+    content = await summarizeOnce(`${code}:${lang}`, () =>
+      generateJson({ instructions: instructions(lang), input, schema: SCHEMA, name: "official_summary", strict: true, effort: "low", model: aiModel("official") }));
   } catch (e) {
     console.error("[official-sources] AI failed", e);
+    const aiPaused = e instanceof AiHttpError && isAiCreditBlock(e.status, e.body);
+    if (cached) {
+      // Keep what students already read; the try (if any) is given back.
+      await refundQuota(req);
+      return staleAnswer(aiPaused ? AI_UNAVAILABLE : "summary_failed")!;
+    }
     // Out of AI credits: own reason and a 503, never the student's quota 402 (the try is refunded).
-    if (e instanceof AiHttpError && isAiCreditBlock(e.status, e.body)) {
+    if (aiPaused) {
       return json({ status: "unavailable", reason: AI_UNAVAILABLE, code: AI_UNAVAILABLE, fetchedAt, sources: publicSources(sources), content: null }, 503);
     }
     const status = e instanceof AiHttpError && e.status === 429 ? 429 : 502;
