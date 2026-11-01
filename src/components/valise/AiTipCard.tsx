@@ -4,6 +4,8 @@ import { Sparkles, Lightbulb, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { isAiPause } from "@/lib/ai-pause";
+import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 import type { LuggageMode } from "./LuggageModes";
 
 interface AiTipCardProps {
@@ -27,36 +29,13 @@ const TOPICS_EN = ["clothes for the season and climate of these months", "gear f
 
 const emojis: Record<LuggageMode, string> = { erasmus: "🎓", stage: "💼", cabine: "🎒", soute: "🧳", sport: "⚽" };
 
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1h
-const CACHE_PREFIX = "xplania-valise-aitip-v2:";
-
-interface CachedTip {
-  title: string;
-  tip: string;
-  ts: number;
-}
-
-function readCache(key: string): CachedTip | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.localStorage.getItem(CACHE_PREFIX + key);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as CachedTip;
-    if (Date.now() - parsed.ts > CACHE_TTL_MS) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function writeCache(key: string, value: Omit<CachedTip, "ts">) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ ...value, ts: Date.now() }));
-  } catch {
-    /* quota */
-  }
-}
+// Tips are saved with the trip (device + account), one per profile, stay
+// facts and language. Reopening the page or another device shows the saved
+// tip; a profile or language without a saved tip shows the written tip of
+// that profile. The AI is called on its own only for the very first tip of a
+// trip; after that, only the "New tip" button calls it.
+type SavedTips = { tips: Record<string, { title: string; tip: string }> };
+const MAX_SAVED_TIPS = 12;
 
 function parseTip(raw: string, fallbackTitle: string): { title: string; tip: string } {
   const trimmed = (raw || "").trim();
@@ -80,6 +59,10 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
   const actKey = activities.join(",");
   const cacheKey = `${lang}:${mode}:${(destination || "").toLowerCase().trim()}:${actKey}:${transport || ""}:${months || ""}`;
 
+  const tripId = useActiveTrip((s) => s.tripId);
+  const scope = tripId || `no-trip::${(destination || "").toLowerCase().trim()}`;
+  const savedRef = useRef<SavedTips["tips"] | null>(null);
+  const [savedReady, setSavedReady] = useState(false);
   const [dynamicTip, setDynamicTip] = useState<{ title: string; tip: string } | null>(null);
   const [loadingDynamic, setLoadingDynamic] = useState(false);
   const [tipError, setTipError] = useState<"quota" | "pause" | "error" | null>(null);
@@ -91,9 +74,9 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
     async (force = false) => {
       if (inFlightRef.current) return;
       if (!force) {
-        const cached = readCache(cacheKey);
-        if (cached) {
-          setDynamicTip({ title: cached.title, tip: cached.tip });
+        const saved = savedRef.current?.[cacheKey];
+        if (saved) {
+          setDynamicTip(saved);
           return;
         }
       }
@@ -133,7 +116,9 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
         if (parsed.tip) {
           setDynamicTip(parsed);
           shownRef.current = [...shownRef.current, parsed.title].slice(-10);
-          writeCache(cacheKey, parsed);
+          const kept = Object.entries({ ...(savedRef.current || {}) }).filter(([k]) => k !== cacheKey).slice(-(MAX_SAVED_TIPS - 1));
+          savedRef.current = Object.fromEntries([...kept, [cacheKey, parsed]]);
+          saveAiResult<SavedTips>(scope, tripId, "valise_tip", { tips: savedRef.current }, cacheKey, lang);
         } else {
           setTipError("error");
         }
@@ -146,19 +131,32 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months, actKey, stayType, transport, days, climate],
+    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months, actKey, stayType, transport, days, climate, scope, tripId],
   );
 
-  // On mode/destination/lang change: load from cache or fetch.
+  // Saved tips of this trip, from the device or the account.
   useEffect(() => {
-    const cached = readCache(cacheKey);
-    if (cached) {
-      setDynamicTip({ title: cached.title, tip: cached.tip });
-    } else {
-      setDynamicTip(null);
-      void fetchTip(false);
-    }
-  }, [cacheKey, fetchTip]);
+    let alive = true;
+    setSavedReady(false);
+    void loadAiResult<SavedTips>(scope, tripId, "valise_tip").then((r) => {
+      if (!alive) return;
+      savedRef.current = r?.content?.tips && typeof r.content.tips === "object" ? r.content.tips : null;
+      setSavedReady(true);
+    });
+    return () => { alive = false; };
+  }, [scope, tripId]);
+
+  // Profile, stay or language change: saved tip, else the written tip. Never a new AI call on its own,
+  // except for the very first tip of the trip.
+  useEffect(() => {
+    if (!savedReady) return;
+    const saved = savedRef.current?.[cacheKey];
+    if (saved) { setDynamicTip(saved); return; }
+    setDynamicTip(null);
+    const neverGenerated = !savedRef.current || Object.keys(savedRef.current).length === 0;
+    if (neverGenerated && destination) void fetchTip(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cacheKey, savedReady]);
 
   const displayTitle = dynamicTip?.title || staticTitle;
   const displayTip = dynamicTip?.tip || staticTip;
