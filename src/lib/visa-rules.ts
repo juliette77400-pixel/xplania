@@ -44,6 +44,10 @@ export type VisaField = "destination" | "nationality" | "residence" | "stayType"
 export const countryLabel = (code: string | null | undefined) =>
   (code && countryList.find((c) => c.code === code)?.name) || "";
 
+/** Country name to show on screen, in the interface language (countryLabel stays French for data and AI). */
+export const countryShown = (code: string | null | undefined, lang: string | undefined) =>
+  code && countryLabel(code) ? getCountryNameIn(code, lang) : "";
+
 export function visaProfileFromTrip(form: Partial<TravelFormData> | null | undefined, fallbackDestination?: string | null): VisaProfile {
   const f = form || {};
   const dest = f.destination || fallbackDestination || "";
