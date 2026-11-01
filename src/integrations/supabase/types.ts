@@ -2534,6 +2534,44 @@ export type Database = {
           },
         ]
       }
+      trip_ai_results: {
+        Row: {
+          content: Json
+          input_key: string
+          kind: string
+          locale: string
+          trip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: Json
+          input_key?: string
+          kind: string
+          locale?: string
+          trip_id: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          content?: Json
+          input_key?: string
+          kind?: string
+          locale?: string
+          trip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_ai_results_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trip_alerts: {
         Row: {
           category: string
