@@ -5,7 +5,7 @@ import { enforceQuota, withQuotaRefund } from "../_shared/quota-guard.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { getTravelerContextSnippet } from "../_shared/inject-context.ts";
 import { SAFETY_RULE_FR, SAFETY_RULE_EN } from "../_shared/prompts.ts";
-import { aiUnavailableResponse } from "../_shared/ai-unavailable.ts";
+import { aiUnavailableResponse, isAiCreditBlock } from "../_shared/ai-unavailable.ts";
 import { aiChat } from "../_shared/ai-provider.ts";
 
 type Tip = { title: string; text: string };
@@ -139,7 +139,8 @@ Graine de variation : ${v} (produis un résultat clairement différent des varia
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 402) return aiUnavailableResponse(corsHeaders);
+      // Out of credits or Xplania's monthly AI cap reached: the calm "AI paused" answer.
+      if (isAiCreditBlock(response.status, txt)) return aiUnavailableResponse(corsHeaders);
       throw new Error(`AI gateway ${response.status}: ${txt.slice(0, 200)}`);
     }
 
@@ -160,6 +161,10 @@ Graine de variation : ${v} (produis un résultat clairement différent des varia
 
     if (!tips.dress.text || !tips.customs.text) {
       console.error("[valise-cultural-tips] empty tips after parse", { raw: raw.slice(0, 400) });
+      // Nothing usable: an error status gives the student's try back.
+      return new Response(JSON.stringify({ error: "empty_result" }), {
+        status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     return new Response(JSON.stringify({ tips }), {
