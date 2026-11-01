@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import { Loader2, Plus, SearchCheck, Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -87,7 +88,7 @@ const MissingItemsCheck = ({ destination, days, tripTypes, activities, luggage, 
             <SearchCheck className="w-5 h-5 text-primary" />
             {t("valise.missing.title")}
           </h3>
-          <p className="text-xs text-muted-foreground">{t("valise.missing.subtitle", { destination })}</p>
+          <p className="text-xs text-muted-foreground">{t("valise.missing.subtitle", { destination: placeName(destination, i18n.language) })}</p>
         </div>
         <button
           type="button"

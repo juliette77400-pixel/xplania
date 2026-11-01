@@ -5,6 +5,7 @@ import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/as
 import ChatText from "@/components/shared/assistant/ChatText";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import {
   BarChart3,
   LineChart,
@@ -156,7 +157,7 @@ const BudgetOnboardingChat = ({
     const variants = (t("budget.qa.greetings", { returnObjects: true }) as unknown);
     const list = Array.isArray(variants) && variants.length > 0
       ? (variants as string[])
-      : [t(firstName ? "budget.qa.greeting" : "budget.qa.greetingNoName", { name: firstName, destination })];
+      : [t(firstName ? "budget.qa.greeting" : "budget.qa.greetingNoName", { name: firstName, destination: placeName(destination, i18n.language) })];
     const pick = list[Math.floor(Math.random() * list.length)];
     const filled = pick
       .replace(/\{\{\s*name\s*\}\}/g, firstName || "")
@@ -306,7 +307,7 @@ const BudgetOnboardingChat = ({
             {stage === "welcome" && (
               <>
                 <p className="text-sm text-foreground leading-relaxed">
-                  {t("budget.onboarding.welcome", { destination, days })}
+                  {t("budget.onboarding.welcome", { destination: placeName(destination, i18n.language), days })}
                 </p>
                 <p className="text-sm text-muted-foreground">{t("budget.onboarding.question")}</p>
                 <div className="flex flex-col sm:flex-row gap-2 pt-1">
@@ -390,7 +391,7 @@ const BudgetOnboardingChat = ({
             >
               {qaHistory.length === 0 && !qaLoading && (
                 <div className="text-xs text-muted-foreground p-3 rounded-lg bg-muted/40">
-                  {t("budget.qa.emptyState", { destination })}
+                  {t("budget.qa.emptyState", { destination: placeName(destination, i18n.language) })}
                 </div>
               )}
               {qaHistory.map((m, i) => (

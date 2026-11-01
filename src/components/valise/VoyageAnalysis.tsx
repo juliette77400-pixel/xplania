@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import type { TravelFormData } from "@/types/travel";
 
 interface VoyageAnalysisProps {
@@ -9,9 +10,9 @@ interface VoyageAnalysisProps {
 }
 
 const VoyageAnalysis = ({ tripData, destination, days }: VoyageAnalysisProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const items = [
-    { label: t("valise.voyageDestination"), value: destination },
+    { label: t("valise.voyageDestination"), value: placeName(destination, i18n.language) },
     { label: t("valise.voyageDuration"), value: t("valise.heroDays", { count: days }) },
     { label: t("valise.voyageStyle"), value: tripData?.travelerType || t("valise.voyageDefaultStyle") },
     { label: t("valise.voyageActivities"), value: (tripData?.valiseActivities?.length ? tripData.valiseActivities.map((a) => t(`valise3.activities.items.${a}`)) : tripData?.objectives ?? []).slice(0, 3).join(", ") || "—" },

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import { Sparkles, Edit3, Check, X } from "lucide-react";
 import { useState } from "react";
 import type { BudgetInsights } from "@/hooks/useBudgetInsights";
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange, insights, insightsLoading, onApplyScenario }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(String(totalBudget));
 
@@ -75,7 +76,7 @@ const BudgetAiResult = ({ totalBudget, days, destination, onTotalBudgetChange, i
           <span className="text-2xl font-extrabold gradient-text">{totalBudget}€</span>
         )}{" "}
         {t("budget.aiResultFor")} <span className="font-bold text-foreground">{t("budget.configDays", { count: days })}</span> {t("budget.aiResultIn")}{" "}
-        <span className="font-bold text-foreground">{destination}</span>.
+        <span className="font-bold text-foreground">{placeName(destination, i18n.language)}</span>.
       </p>
 
       <motion.button

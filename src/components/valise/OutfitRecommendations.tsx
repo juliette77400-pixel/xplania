@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { placeName } from "@/lib/country-match";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloudSun, Thermometer, Eye, Shirt, ChevronRight, RefreshCw, Sparkles, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -257,7 +258,7 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
             <p className="text-sm text-muted-foreground mt-1">
               {t("valise.outfitsSubtitle")}
               {!isPlaceholderDest && (
-                <> — <span className="text-primary font-medium">{destination}</span></>
+                <> — <span className="text-primary font-medium">{placeName(destination, i18n.language)}</span></>
               )}
             </p>
           </div>
