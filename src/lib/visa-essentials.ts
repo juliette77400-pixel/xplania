@@ -10,7 +10,9 @@ export type EssentialId =
   | "internship-authorisation"
   | "residence-registration"
   | "document-copies"
-  | "ariane";
+  | "ariane"
+  | "residence-permit-return"
+  | "eu-registration-documents";
 
 export interface EssentialContext {
   /** Stay length in days (0 = unknown). */
@@ -19,6 +21,10 @@ export interface EssentialContext {
   /** Free movement between the student's nationality and the destination (EU/EEA/Switzerland). */
   freeMovement: boolean;
   isFrench: boolean;
+  /** The student lives in a country whose nationality they do not hold. */
+  residenceDiffers?: boolean;
+  /** Free movement between the student's nationality and their country of residence. */
+  residenceFreeMovement?: boolean;
 }
 
 interface EssentialRule {
@@ -56,6 +62,16 @@ const RULES: EssentialRule[] = [
     covered: /cop(y|ie|ies)|scan|numéris|digital/i },
   { id: "ariane", category: "practical", priority: "recommended", applies: (c) => c.isFrench,
     covered: /ariane/i },
+  // Living abroad without that country's nationality (and without free movement
+  // there) means holding a residence permit: it must still be valid to come back.
+  { id: "residence-permit-return", category: "documents", priority: "required",
+    applies: (c) => !!c.residenceDiffers && !c.residenceFreeMovement,
+    covered: /titre de séjour|residence permit|droit (au|de) retour|re-?entry|right to return|retour en france|come back to|revenir en/i },
+  // EU registration after 3 months: the supporting papers depend on the purpose.
+  { id: "eu-registration-documents", category: "documents", priority: "if_applicable", conditional: true,
+    applies: (c) => c.freeMovement && c.days > LONG_STAY_DAYS,
+    covered: /ressources suffisantes|justificatifs? de ressources|preuve de ressources|sufficient resources|proof of (sufficient )?(resources|funds)/i,
+    detailKey: (c) => (c.stayType === "internship" ? "detailInternship" : "detail") },
 ];
 
 const ESSENTIAL_PREFIX = "essential-";

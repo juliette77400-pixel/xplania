@@ -7476,6 +7476,16 @@
       "ariane": {
         "item": "T'inscrire sur Ariane (France Diplomatie)",
         "detail": "Ce service gratuit du ministère des Affaires étrangères te prévient en cas de crise dans le pays et permet aux autorités de te joindre."
+      },
+      "residence-permit-return": {
+        "item": "Titre de séjour valable pour revenir",
+        "detail": "Tu vis dans un pays dont tu n'as pas la nationalité : vérifie que ton titre de séjour reste valable pendant ton absence et qu'il te permet d'y revenir (date d'expiration, durée d'absence autorisée). Fais-le confirmer par la préfecture ou le service de l'immigration de ce pays avant de partir."
+      },
+      "eu-registration-documents": {
+        "item": "Papiers pour t'enregistrer sur place",
+        "detail": "Pour un séjour d'études de plus de 3 mois dans l'Union européenne, l'enregistrement demande en général une attestation d'inscription, une assurance maladie et une déclaration de ressources suffisantes. Vérifie la liste exacte auprès de la mairie ou de la police du pays.",
+        "detailInternship": "Pour un stage de plus de 3 mois dans l'Union européenne, l'enregistrement demande en général ta convention ou ton contrat de stage, une assurance maladie et parfois une déclaration de ressources. Vérifie la liste exacte auprès de la mairie ou de la police du pays.",
+        "condition": "ton pays d'accueil demande un enregistrement au-delà de 3 mois"
       }
     }
   },

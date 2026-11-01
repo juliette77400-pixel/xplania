@@ -47,4 +47,25 @@ describe("visa essentials", () => {
     const once = withEssentials([], { ...base, isFrench: true }, t);
     expect(withEssentials(once, { ...base, isFrench: true }, t)).toHaveLength(once.length);
   });
+  it("reminds about the residence permit only to students living outside their nationality's country without free movement", () => {
+    // Moroccan student living in France
+    expect(ids([], { ...base, residenceDiffers: true, residenceFreeMovement: false })).toContain("residence-permit-return");
+    // French student living in France
+    expect(ids([], { ...base, residenceDiffers: false })).not.toContain("residence-permit-return");
+    // Italian student living in France (free movement: no permit)
+    expect(ids([], { ...base, residenceDiffers: true, residenceFreeMovement: true })).not.toContain("residence-permit-return");
+    expect(ids([item("a", "Vérifie ton titre de séjour français")], { ...base, residenceDiffers: true })).not.toContain("residence-permit-return");
+  });
+
+  it("lists EU registration papers only for free-movement stays over 3 months, never as mandatory", () => {
+    const eu = { ...base, freeMovement: true };
+    expect(ids([], { ...eu, days: 150 })).toContain("eu-registration-documents");
+    expect(ids([], { ...eu, days: 90 })).not.toContain("eu-registration-documents");
+    expect(ids([], { ...base, days: 150 })).not.toContain("eu-registration-documents");
+    const added = withEssentials([], { ...eu, days: 150 }, t).find((i) => i.id === "essential-eu-registration-documents");
+    expect(added?.priority).toBe("if_applicable");
+    expect(added?.condition).toBe("visa2.essentials.eu-registration-documents.condition");
+    const intern = withEssentials([], { ...eu, days: 150, stayType: "internship" }, t).find((i) => i.id === "essential-eu-registration-documents");
+    expect(intern?.detail).toBe("visa2.essentials.eu-registration-documents.detailInternship");
+  });
 });

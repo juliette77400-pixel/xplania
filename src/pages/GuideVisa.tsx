@@ -62,7 +62,13 @@ const GuideVisaPage = () => {
   const nationalityName = countryLabel(profile.nationality);
   const isFrench = profile.nationality === "FR" || profile.secondNationality === "FR";
   const freeMovement = profile.destinationCode ? hasFreeMovement(profile.destinationCode, [profile.nationality, profile.secondNationality]) : false;
-  const essentialCtx = useMemo<EssentialContext>(() => ({ days, stayType: profile.stayType, freeMovement, isFrench }), [days, profile.stayType, freeMovement, isFrench]);
+  const residenceCode = /^[A-Z]{2}$/.test(profile.residence) ? profile.residence : "";
+  const residenceDiffers = !!residenceCode && !!profile.nationality && residenceCode !== profile.nationality && residenceCode !== profile.secondNationality;
+  const residenceFreeMovement = residenceCode ? hasFreeMovement(residenceCode, [profile.nationality, profile.secondNationality]) : false;
+  const essentialCtx = useMemo<EssentialContext>(
+    () => ({ days, stayType: profile.stayType, freeMovement, isFrench, residenceDiffers, residenceFreeMovement }),
+    [days, profile.stayType, freeMovement, isFrench, residenceDiffers, residenceFreeMovement],
+  );
 
   const [saved, setSaved] = useState<SavedVisaState | null>(null);
   const [generating, setGenerating] = useState(false);
@@ -153,6 +159,7 @@ const GuideVisaPage = () => {
           secondNationality: countryLabel(profile.secondNationality),
           secondNationalityCode: profile.secondNationality,
           residence: countryLabel(profile.residence),
+          residenceCode,
           stayPurpose: t(`prepQuiz.stay.${profile.stayType}.title`, { defaultValue: profile.stayType }),
           durationDays: days,
           departureDate: profile.departureDate,

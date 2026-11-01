@@ -7476,6 +7476,16 @@
       "ariane": {
         "item": "Sign up to Ariane (France Diplomatie)",
         "detail": "This free service from the French foreign ministry warns you in a crisis and lets the authorities reach you."
+      },
+      "residence-permit-return": {
+        "item": "A residence permit valid for your return",
+        "detail": "You live in a country whose nationality you do not hold: check that your residence permit stays valid while you are away and lets you come back (expiry date, allowed length of absence). Have it confirmed by that country's immigration office before you leave."
+      },
+      "eu-registration-documents": {
+        "item": "Papers to register on arrival",
+        "detail": "For a study stay of more than 3 months in the European Union, registration usually requires proof of enrolment, health insurance and a declaration of sufficient resources. Check the exact list with the local town hall or police.",
+        "detailInternship": "For an internship of more than 3 months in the European Union, registration usually requires your internship agreement or contract, health insurance and sometimes a declaration of resources. Check the exact list with the local town hall or police.",
+        "condition": "your host country requires registration after 3 months"
       }
     }
   },
