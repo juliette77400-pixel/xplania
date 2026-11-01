@@ -1119,6 +1119,8 @@
     "continueGoogle": "Continue with Google",
     "continueApple": "Continue with Apple",
     "backHome": "Back to home",
+    "signupSentTitle": "Your account is almost ready ✉️",
+    "signupSentBody": "We sent a confirmation link to {{email}}. Open it to activate your account (check your spam folder too). You can do it from your phone: your answers follow you.",
     "signupSuccess": "Check your inbox to confirm your sign-up ✉️",
     "googleError": "Google sign-in failed",
     "appleError": "Apple sign-in failed",

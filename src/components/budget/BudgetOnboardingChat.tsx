@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { keepRecentMessages } from "@/lib/chat-retention";
 import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import ChatText from "@/components/shared/assistant/ChatText";
@@ -123,7 +124,7 @@ const BudgetOnboardingChat = ({
       const raw = localStorage.getItem(qaStorageKey);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) setQaHistory(parsed.slice(-30));
+        if (Array.isArray(parsed)) setQaHistory(keepRecentMessages(parsed).slice(-30));
       } else {
         setQaHistory([]);
       }

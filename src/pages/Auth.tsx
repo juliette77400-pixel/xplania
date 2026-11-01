@@ -37,6 +37,8 @@ const Auth = () => {
   const [displayName, setDisplayName] = useState("");
   const [promo, setPromo] = useState("");
   const [loading, setLoading] = useState(false);
+  // E-mail the confirmation was sent to: kept on screen so nobody thinks nothing happened.
+  const [sentTo, setSentTo] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && user) navigate(next);
@@ -69,6 +71,7 @@ const Auth = () => {
     else {
       track("signup_completed");
       toast.success(t("auth.signupSuccess"));
+      setSentTo(email.trim());
     }
     } catch {
       toast.error(t(authErrorKey("Failed to fetch")));
@@ -202,6 +205,12 @@ const Auth = () => {
             </TabsContent>
 
             <TabsContent value="signup">
+              {sentTo && (
+                <div role="status" className="mb-4 rounded-xl border border-primary/40 bg-primary/10 p-4 text-sm">
+                  <p className="font-semibold text-foreground">{t("auth.signupSentTitle")}</p>
+                  <p className="mt-1 text-muted-foreground">{t("auth.signupSentBody", { email: sentTo })}</p>
+                </div>
+              )}
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div>
                   <Label htmlFor="name">{t("auth.firstName")}</Label>
