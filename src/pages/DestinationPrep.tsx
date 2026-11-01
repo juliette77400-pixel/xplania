@@ -105,7 +105,7 @@ const DestinationPrep = () => {
             <p>{eu ? t("destPages.visaEu", { place }) : t("destPages.visaOther", { place })}</p>
             <ul className="list-disc space-y-1 pl-5">
               <li><ExtLink href={franceDiplomatieEntryUrl(d)}>{t("destPages.franceDiplomatie")}</ExtLink> — {t("destPages.forFrench")}</li>
-              {entry && <li><ExtLink href={entry.url}>{entry.label}</ExtLink> — {t("destPages.forOthers")}</li>}
+              {entry && <li><ExtLink href={entry.url}>{entrySourceLabel(entry, i18n.language)}</ExtLink> — {t("destPages.forOthers")}</li>}
             </ul>
             <p>{t("destPages.visaTool")}</p>
           </Block>

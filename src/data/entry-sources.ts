@@ -5,15 +5,20 @@ import { FREE_MOVEMENT } from "@/lib/visa-rules";
 
 export interface EntrySource {
   label: string;
+  /** English label when the official name above is written in French. */
+  labelEn?: string;
   url: string;
 }
+
+/** Label in the interface language (official names in another language stay as they are). */
+export const entrySourceLabel = (s: EntrySource, lang: string | undefined) => (lang?.startsWith("en") && s.labelEn) || s.label;
 
 export const ENTRY_SOURCES_CHECKED_ON = "2026-10-24";
 
 const SITES: Record<string, EntrySource> = {
   GB: { label: "GOV.UK — Check if you need a UK visa", url: "https://www.gov.uk/check-uk-visa" },
   US: { label: "U.S. Department of State — Visas", url: "https://travel.state.gov/content/travel/en/us-visas.html" },
-  CA: { label: "Gouvernement du Canada — Ai-je besoin d'un visa ou d'une AVE ?", url: "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/visiter-canada/verifiez-visa-ave.html" },
+  CA: { label: "Gouvernement du Canada — Ai-je besoin d'un visa ou d'une AVE ?", labelEn: "Government of Canada — Do I need a visa or an eTA?", url: "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/visiter-canada/verifiez-visa-ave.html" },
   AU: { label: "Australian Government — Visa Finder", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder" },
   NZ: { label: "Immigration New Zealand — Visas", url: "https://www.immigration.govt.nz/new-zealand-visas" },
   JP: { label: "Ministry of Foreign Affairs of Japan — Visa", url: "https://www.mofa.go.jp/j_info/visit/visa/index.html" },
@@ -23,15 +28,15 @@ const SITES: Record<string, EntrySource> = {
   IN: { label: "Government of India — Indian Visa Online", url: "https://indianvisaonline.gov.in/" },
   TH: { label: "Thailand — Official e-Visa", url: "https://www.thaievisa.go.th/" },
   AE: { label: "UAE Government — Visa and Emirates ID", url: "https://u.ae/en/information-and-services/visa-and-emirates-id" },
-  CH: { label: "Secrétariat d'État aux migrations (Suisse) — Entrée", url: "https://www.sem.admin.ch/sem/en/home/themen/einreise.html" },
+  CH: { label: "Secrétariat d'État aux migrations (Suisse) — Entrée", labelEn: "State Secretariat for Migration (Switzerland) — Entry", url: "https://www.sem.admin.ch/sem/en/home/themen/einreise.html" },
   MX: { label: "Gobierno de México — Visas para extranjeros", url: "https://www.gob.mx/sre/acciones-y-programas/visas-para-extranjeros" },
-  BR: { label: "Itamaraty (Brésil) — Vistos", url: "https://www.gov.br/mre/pt-br/assuntos/portal-consular/vistos" },
+  BR: { label: "Itamaraty (Brésil) — Vistos", labelEn: "Itamaraty (Brazil) — Visas", url: "https://www.gov.br/mre/pt-br/assuntos/portal-consular/vistos" },
   AR: { label: "Argentina — Dirección Nacional de Migraciones", url: "https://www.argentina.gob.ar/interior/migraciones" },
   CL: { label: "Chile — Servicio Nacional de Migraciones", url: "https://serviciomigraciones.cl/" },
   PE: { label: "Perú — Migraciones", url: "https://www.gob.pe/migraciones" },
   CO: { label: "Cancillería de Colombia — Visas", url: "https://www.cancilleria.gov.co/tramites_servicios/visa" },
-  MA: { label: "Royaume du Maroc — Visa", url: "https://www.consulat.ma/fr/visa" },
-  TR: { label: "République de Türkiye — e-Visa officiel", url: "https://www.evisa.gov.tr/" },
+  MA: { label: "Royaume du Maroc — Visa", labelEn: "Kingdom of Morocco — Visa", url: "https://www.consulat.ma/fr/visa" },
+  TR: { label: "République de Türkiye — e-Visa officiel", labelEn: "Republic of Türkiye — Official e-Visa", url: "https://www.evisa.gov.tr/" },
   IE: { label: "Irish Immigration Service — Studying in Ireland", url: "https://www.irishimmigration.ie/coming-to-study-in-ireland/" },
   // Added 28 Oct 2026 (the Indonesian site blocks automated checks: opened by hand).
   ID: { label: "Imigrasi Indonesia — Official e-Visa", url: "https://evisa.imigrasi.go.id/" },
@@ -40,6 +45,7 @@ const SITES: Record<string, EntrySource> = {
 
 const SCHENGEN_EU: EntrySource = {
   label: "Commission européenne — Politique des visas Schengen",
+  labelEn: "European Commission — Schengen visa policy",
   url: "https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en",
 };
 
