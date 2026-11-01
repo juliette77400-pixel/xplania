@@ -58,3 +58,4 @@
 - [ ] Après accord : renforcer la checklist Visa (titre de séjour pour non-nationaux, pièces d enregistrement UE > 3 mois) avant de passer à Luna
 - [x] Retest Luna avec consignes renforcées (copie de test uniquement)
 - [ ] Après accord : appliquer consignes Visa/assistants/Culture, règle titre de séjour seulement si résidence ≠ nationalité, retirer l écriture inclusive des consignes IA, contrôle qualité Culture avant mise en cache, passage à Luna
+- [x] Migration Luna préparée en copie de test + rappels Visa côté écran + contrôle qualité Culture + tests de non-régression (en attente de validation avant mise en ligne du serveur)
