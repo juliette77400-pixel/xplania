@@ -58,8 +58,12 @@ export default function GuideCulture() {
   const suggestions = useMemo(() => {
     const n = norm(query);
     if (n.length < 2) return [];
-    return countryList.filter((c) => norm(c.name).includes(n)).slice(0, 6);
-  }, [query]);
+    // French or English names both match; shown in the interface language.
+    return countryList
+      .filter((c) => norm(c.name).includes(n) || norm(getCountryNameIn(c.code, "en")).includes(n))
+      .slice(0, 6)
+      .map((c) => ({ code: c.code, name: getCountryNameIn(c.code, i18n.language) }));
+  }, [query, i18n.language]);
 
   const choose = (c: string) => { setTouched(true); setCode(c); setPillar(null); setNotFound(false); setQuery(""); setPicking(false); };
   const submit = (e: React.FormEvent) => {
