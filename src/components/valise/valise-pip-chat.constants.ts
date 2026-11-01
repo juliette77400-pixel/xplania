@@ -1,3 +1,4 @@
+import { isChatExpired } from "@/lib/chat-retention";
 // Data, storage helpers and pure utilities used by ValisePipChat.
 // Extracted so the main component file stays focused on UI/state.
 
@@ -68,6 +69,8 @@ export function readLocalState(): PersistedState | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as PersistedState;
     if (!parsed || !Array.isArray(parsed.history)) return null;
+    // Older than 30 days after the last message: removed from the device too.
+    if (isChatExpired(parsed.updatedAt)) { localStorage.removeItem(STORAGE_KEY); return null; }
     return parsed;
   } catch {
     return null;
