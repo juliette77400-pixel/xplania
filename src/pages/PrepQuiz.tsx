@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CountryCombobox from "@/components/prep/CountryCombobox";
+import { getCountryNameIn } from "@/lib/countries";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
 import { supabase } from "@/integrations/supabase/client";
@@ -309,7 +310,8 @@ const PrepQuiz = () => {
   if (!user && preview) {
     const steps = previewSteps(answers);
     const days = daysUntil(answers.departureDate);
-    const country = countryName(answers.destinationCode);
+    // Shown in the interface language ("Spain" in English, « Espagne » in French).
+    const country = countryName(answers.destinationCode) ? getCountryNameIn(answers.destinationCode!, i18n.language) : "";
     const signup = `/auth?mode=signup&next=${encodeURIComponent(RESUME_PATH)}`;
     const signin = `/auth?next=${encodeURIComponent(RESUME_PATH)}`;
     return (
