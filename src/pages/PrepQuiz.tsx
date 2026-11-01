@@ -90,6 +90,10 @@ const PrepQuiz = () => {
   const [preview, setPreview] = useState(false);
 
   const step = PREP_STEPS[stepIndex];
+  // Current step for delayed actions: a card tap auto-advances after a short delay,
+  // and a quick "Continue" or double tap must never skip a step or go past the last one.
+  const stepRef = useRef(stepIndex);
+  stepRef.current = stepIndex;
   const isFr = i18n.language.startsWith("fr");
 
   // Answers sent with the signup are only needed until the trip exists.
@@ -259,7 +263,7 @@ const PrepQuiz = () => {
       return true;
     }
     setDirection(1);
-    setStepIndex((i) => i + 1);
+    setStepIndex((i) => (i === stepIndex ? Math.min(i + 1, PREP_STEPS.length - 1) : i));
     return true;
   }, [answers, step, stepIndex, persist, t, user]);
 
@@ -274,7 +278,8 @@ const PrepQuiz = () => {
     const a = { ...answers, [key]: value };
     setAnswers(a);
     setError(null);
-    window.setTimeout(() => next(a), reduceMotion ? 0 : 260);
+    const at = stepIndex;
+    window.setTimeout(() => { if (stepRef.current === at) next(a); }, reduceMotion ? 0 : 260);
   };
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
