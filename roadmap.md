@@ -59,3 +59,5 @@
 - [x] Retest Luna avec consignes renforcées (copie de test uniquement)
 - [ ] Après accord : appliquer consignes Visa/assistants/Culture, règle titre de séjour seulement si résidence ≠ nationalité, retirer l écriture inclusive des consignes IA, contrôle qualité Culture avant mise en cache, passage à Luna
 - [x] Migration Luna préparée en copie de test + rappels Visa côté écran + contrôle qualité Culture + tests de non-régression (en attente de validation avant mise en ligne du serveur)
+- [x] Mise en ligne serveur Luna/Sol (1er nov. 2026, 17:53 UTC) + vérification en ligne ; sauvegarde de l ancienne version gardée pour retour arrière
+- [ ] Juliette : publier pour mettre en ligne les rappels Visa à l écran
