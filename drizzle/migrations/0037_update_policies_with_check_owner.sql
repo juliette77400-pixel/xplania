@@ -1,0 +1,17 @@
+ALTER POLICY "Users update own notifications" ON public.discover_notifications WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own media" ON public.explore_node_media WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own nodes" ON public.explore_nodes WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own journal blocks" ON public.journal_blocks WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own journal days" ON public.journal_days WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own journals" ON public.journals WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own mood favorites" ON public.mood_favorites WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own mood places" ON public.mood_places WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own mood reactions" ON public.mood_reactions WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own list items" ON public.place_list_items WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own lists" ON public.place_lists WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own reviews" ON public.place_reviews WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own profile" ON public.profiles WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own activities" ON public.trip_activities WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own trip documents" ON public.trip_documents WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users update own tracking" ON public.trip_tracking WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own trips" ON public.trips WITH CHECK (auth.uid() = user_id);
