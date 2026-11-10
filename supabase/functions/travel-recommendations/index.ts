@@ -81,8 +81,14 @@ const SCHEMA = obj({
   budgetBreakdown: { type: "array", items: obj({ category: str, amount: { type: "number" }, tip: str }) },
 });
 
+const ITINERARY_ENABLED = false;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  // Beta: the AI itinerary module is off (ENABLE_AI_ITINERARY=false in the app), so this
+  // generator is closed to everyone before any auth, quota or AI work. To bring the module
+  // back, remove this line together with flipping the flag.
+  if (!ITINERARY_ENABLED) return json({ error: "feature_disabled" }, 410);
   const __auth = await requireAuth(req, corsHeaders);
   if (__auth instanceof Response) return __auth;
 

@@ -45,3 +45,17 @@ describe("pickNewest", () => {
     expect(pickNewest(remote, null)).toBe(remote);
   });
 });
+
+import { culturalTipsAction } from "./ai-results";
+describe("culturalTipsAction (Valise cultural tips)", () => {
+  it("shows the saved tips on a visit, without AI", () => {
+    expect(culturalTipsAction({ "fr:japon:stage": { a: 1 } }, "fr:japon:stage")).toBe("show");
+  });
+  it("generates only when the trip never had cultural tips", () => {
+    expect(culturalTipsAction(null, "fr:japon:stage")).toBe("generate");
+    expect(culturalTipsAction({}, "fr:japon:stage")).toBe("generate");
+  });
+  it("never calls the AI on its own after a language switch", () => {
+    expect(culturalTipsAction({ "fr:japon:stage": { a: 1 } }, "en:japon:stage")).toBe("written");
+  });
+});

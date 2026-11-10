@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Globe, AlertTriangle, Shirt, Heart, RefreshCw, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
+import { culturalTipsAction } from "@/lib/ai-results";
+import { useActiveTrip } from "@/stores/useActiveTrip";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface CulturalTipsProps {
@@ -38,27 +41,7 @@ const ICONS: Record<TipKey, JSX.Element> = {
 
 type AiTips = Record<TipKey, { title: string; text: string }>;
 
-const CACHE_TTL_MS = 60 * 60 * 1000;
-const CACHE_PREFIX = "xplania-valise-cultural-v1:";
-
-function readCache(key: string): AiTips | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.localStorage.getItem(CACHE_PREFIX + key);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as { tips: AiTips; ts: number };
-    if (!parsed?.tips) return null;
-    if (Date.now() - parsed.ts > CACHE_TTL_MS) return null;
-    return parsed.tips;
-  } catch { return null; }
-}
-
-function writeCache(key: string, tips: AiTips) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ tips, ts: Date.now() }));
-  } catch { /* quota */ }
-}
+type SavedCultural = { tips: Record<string, AiTips> };
 
 const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
   const { t, i18n } = useTranslation();
@@ -73,18 +56,20 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
   const [isFetching, setIsFetching] = useState(false);
   const [hadError, setHadError] = useState(false);
   const [variation, setVariation] = useState(0);
+  const tripId = useActiveTrip((st) => st.tripId);
+  const scope = tripId || `no-trip::${(destination || "").toLowerCase().trim()}`;
+  const savedRef = useRef<Record<string, AiTips> | null>(null);
+  const [savedReady, setSavedReady] = useState(false);
+  const inFlight = useRef(false);
 
   const cacheKey = useMemo(
     () => `${lang}:${(destination || "").toLowerCase().trim()}:${(tripType || "").toLowerCase().trim()}`,
     [lang, destination, tripType]
   );
 
-  const fetchTips = useCallback(async (force = false, variationSeed = 0) => {
-    if (isPlaceholderDest) return;
-    if (!force) {
-      const cached = readCache(cacheKey);
-      if (cached) { setAiTips(cached); return; }
-    }
+  const fetchTips = useCallback(async (variationSeed = 0) => {
+    if (isPlaceholderDest || inFlight.current) return;
+    inFlight.current = true;
     setIsFetching(true);
     setHadError(false);
     try {
@@ -102,7 +87,8 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
       const tips = data?.tips as AiTips | undefined;
       if (tips && tips.dress && tips.dress.text) {
         setAiTips(tips);
-        writeCache(cacheKey, tips);
+        savedRef.current = { ...(savedRef.current || {}), [cacheKey]: tips };
+        saveAiResult<SavedCultural>(scope, tripId, "valise_cultural", { tips: savedRef.current }, cacheKey, lang);
       } else {
         console.error("[CulturalTips] empty tips response", data);
         setHadError(true);
@@ -111,20 +97,38 @@ const CulturalTips = ({ destination, tripType }: CulturalTipsProps) => {
       console.error("[CulturalTips] fetch error", e);
       setHadError(true);
     } finally {
+      inFlight.current = false;
       setIsFetching(false);
     }
-  }, [cacheKey, destination, tripType, lang, isPlaceholderDest]);
+  }, [cacheKey, destination, tripType, lang, isPlaceholderDest, scope, tripId]);
 
   const handleRegenerate = useCallback(() => {
     const next = variation + 1;
     setVariation(next);
-    fetchTips(true, next);
+    void fetchTips(next);
   }, [variation, fetchTips]);
 
+  // Saved tips of this trip, from the device or the account.
   useEffect(() => {
-    setAiTips(null);
-    if (!isPlaceholderDest) fetchTips(false);
-  }, [cacheKey, isPlaceholderDest, fetchTips]);
+    let alive = true;
+    setSavedReady(false);
+    void loadAiResult<SavedCultural>(scope, tripId, "valise_cultural").then((r) => {
+      if (!alive) return;
+      savedRef.current = r?.content?.tips && typeof r.content.tips === "object" ? r.content.tips : null;
+      setSavedReady(true);
+    });
+    return () => { alive = false; };
+  }, [scope, tripId]);
+
+  // Visits, refreshes and language or stay changes show saved or written tips; the AI runs on
+  // its own only for the very first cultural tips of the trip.
+  useEffect(() => {
+    if (!savedReady || isPlaceholderDest) return;
+    const action = culturalTipsAction(savedRef.current, cacheKey);
+    setAiTips(action === "show" ? savedRef.current![cacheKey] : null);
+    if (action === "generate") void fetchTips(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cacheKey, savedReady, isPlaceholderDest]);
 
   const resolveTip = (key: TipKey): { title: string; text: string } => {
     if (aiTips && aiTips[key]?.text) return aiTips[key];

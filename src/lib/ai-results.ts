@@ -4,7 +4,7 @@
 // only when the student clicks a "new / update" button.
 
 // "budget_state" holds the student's own Budget numbers (not AI), saved the same way.
-export type AiResultKind = "visa" | "budget_insights" | "valise_tip" | "valise_outfits" | "budget_state";
+export type AiResultKind = "visa" | "budget_insights" | "valise_tip" | "valise_outfits" | "budget_state" | "valise_cultural";
 
 export interface SavedAiResult<T = unknown> {
   content: T;
@@ -30,4 +30,15 @@ export function isOutdated(saved: Pick<SavedAiResult, "inputKey" | "locale"> | n
 /** Whether opening the page may call the AI: only when nothing was ever saved and the student did not ask for new ideas. */
 export function needsAiCall(saved: SavedAiResult | null, askedForNew: boolean): boolean {
   return askedForNew || !saved;
+}
+
+/**
+ * Valise cultural tips are saved per trip, one entry per language/destination/stay key.
+ * Opening the page shows the saved entry; with no entry for this key the hand-written tips
+ * are shown, and the AI runs on its own only when the trip never had any cultural tips.
+ */
+export function culturalTipsAction(saved: Record<string, unknown> | null | undefined, key: string): "show" | "generate" | "written" {
+  if (saved && saved[key]) return "show";
+  if (!saved || Object.keys(saved).length === 0) return "generate";
+  return "written";
 }
