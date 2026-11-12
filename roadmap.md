@@ -8,6 +8,7 @@
 - [ ] Raccorder les flux serveur, renforcer les validations et mesurer les optimisations des outils — accord de mise en ligne requis
 - [ ] Exécuter les paliers jusqu’à 500 sessions avec IA simulée — accord de test distant requis
 - [ ] Test IA réel borné — budget, nombre d’appels et accord explicite requis
+- [ ] Fiabiliser le suivi navigateur : 9/14 scénarios réussis ; 5 anciens tests de modules masqués à exclure dynamiquement ou réactiver avec leur module, sans les présenter comme des pannes bêta
 
 ## Optimisation avant 500 étudiants (plan validé le 12/11)
 - [x] Lectures des séjours : erreur distincte d’une liste vide, nouvelle tentative explicite (3 pages connectées vérifiées)
