@@ -33,7 +33,8 @@ async function loadRemote<T>(tripId: string, kind: AiResultKind): Promise<SavedA
     .eq("trip_id", tripId)
     .eq("kind", kind)
     .maybeSingle();
-  if (error || !data) return null;
+  if (error) throw error;
+  if (!data) return null;
   return { content: data.content as T, inputKey: data.input_key, locale: data.locale === "en" ? "en" : "fr", updatedAt: data.updated_at };
 }
 
@@ -41,17 +42,25 @@ async function loadRemote<T>(tripId: string, kind: AiResultKind): Promise<SavedA
  * The saved result for this trip, newest of device and account.
  * `tripId` is null for visitors or a trip not saved yet: device copy only.
  */
-export async function loadAiResult<T>(scope: string, tripId: string | null, kind: AiResultKind): Promise<SavedAiResult<T> | null> {
+export async function loadAiResult<T>(scope: string, tripId: string | null, kind: AiResultKind, options: { requireRemote?: boolean } = {}): Promise<SavedAiResult<T> | null> {
   const local = loadLocalAiResult<T>(scope, kind);
   if (!tripId) return local;
   const { data: auth } = await supabase.auth.getSession();
-  if (!auth.session) return local;
-  const remote = await loadRemote<T>(tripId, kind).catch(() => null);
+  if (!auth.session) {
+    if (options.requireRemote && !local) throw new Error("saved_result_unavailable");
+    return local;
+  }
+  let remote: SavedAiResult<T> | null;
+  try { remote = await loadRemote<T>(tripId, kind); }
+  catch (error) {
+    if (options.requireRemote && !local) throw error;
+    return local;
+  }
   const best = pickNewest(local, remote);
   if (best && best !== local) saveLocal(scope, kind, best);
   // An older device copy that never reached the account is sent now.
   if (local && best === local && remote !== local && (!remote || Date.parse(local.updatedAt) > Date.parse(remote.updatedAt))) {
-    void saveRemote(tripId, kind, local);
+    void saveRemote(tripId, kind, local).catch(() => undefined);
   }
   return best;
 }
@@ -85,6 +94,6 @@ export function saveAiResult<T>(
 ): SavedAiResult<T> {
   const value: SavedAiResult<T> = { content, inputKey, locale, updatedAt: new Date().toISOString() };
   saveLocal(scope, kind, value);
-  if (tripId) void saveRemote(tripId, kind, value);
+  if (tripId) void saveRemote(tripId, kind, value).catch(() => undefined);
   return value;
 }

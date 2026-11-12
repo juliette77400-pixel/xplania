@@ -21,17 +21,19 @@ export const useTrips = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
     queryKey: tripsQueryKey(user?.id),
     // Only run once we know the user; keeps behaviour identical to the old
     // effect that returned an empty list when logged out.
     enabled: !!user,
     queryFn: async () => {
-      const { data } = await supabase
+      if (!user) return [];
+      const { data, error } = await supabase
         .from("trips")
         .select("*")
-        .eq("user_id", user!.id)
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false });
+      if (error) throw error;
       return (data || []) as Trip[];
     },
   });
@@ -49,6 +51,8 @@ export const useTrips = () => {
     // When logged out the query is disabled (stays "pending"); surface it as
     // not-loading so consumers don't spin forever, matching the old hook.
     loading: user ? isLoading : false,
+    error,
+    isFetching,
     refetch,
     removeTrip,
   };

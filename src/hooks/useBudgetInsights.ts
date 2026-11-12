@@ -80,7 +80,7 @@ export function useBudgetInsights(a: Args) {
     placeholderData: (prev, prevQuery) =>
       prevQuery && JSON.stringify(prevQuery.queryKey.slice(0, -1)) === JSON.stringify(key.slice(0, -1)) ? keepPreviousData(prev) : undefined,
     // A missing credit or an exhausted quota will not fix itself on retry.
-    retry: (count, err) => count < 1 && !(err instanceof Error && ["quota", "ai_unavailable"].includes(err.message)),
+    retry: false,
     queryFn: async (): Promise<SavedAiResult<BudgetInsights>> => {
       const remember = (res: BudgetInsights) => {
         const names = [
@@ -89,9 +89,9 @@ export function useBudgetInsights(a: Args) {
         ];
         seen.current = [...seen.current, ...names].slice(-40);
       };
-      const saved = await loadAiResult<BudgetInsights>(scope, tripId, "budget_insights");
+      const saved = await loadAiResult<BudgetInsights>(scope, tripId, "budget_insights", { requireRemote: true });
       const usable = saved && isInsights(saved.content) ? saved : null;
-      if (!needsAiCall(usable, nonce > 0)) { remember(usable!.content); return usable!; }
+      if (usable && !needsAiCall(usable, nonce > 0)) { remember(usable.content); return usable; }
       const p = payloadRef.current;
       const { data, error } = await supabase.functions.invoke("budget-tips", { body: buildBody(p, seen.current, nonce) });
       if (error) throw new Error(await insightsErrorKind(error));

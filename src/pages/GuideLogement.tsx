@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { CalendarDays, Check, ClipboardCheck, Home, Loader2, MapPin, MessageCircle, Search, ShieldAlert, Scale } from "lucide-react";
 import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
 import AppNavbar from "@/components/shared/AppNavbar";
+import TripLoadError from "@/components/shared/TripLoadError";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -49,7 +50,7 @@ const Bar = ({ value, label }: { value: number; label: string }) => (
 const GuideLogement = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { trips, loading, refetch } = useTrips();
+  const { trips, loading, error: tripsError, isFetching, refetch } = useTrips();
   const activeTripId = useActiveTrip((s) => s.tripId);
   const [statusOpen, setStatusOpen] = useState(false);
   const [savingStatus, setSavingStatus] = useState<HousingStatus | null>(null);
@@ -79,7 +80,8 @@ const GuideLogement = () => {
   }, [trip?.id, status, progress.done, progress.total, checklistLoading, checklistError]);
 
   if (!user) return <Navigate to="/auth?next=/guide-logement" replace />;
-  if (!loading && !trip) return <Navigate to="/preparation" replace />;
+  if (tripsError && !trip) return <div className="min-h-screen bg-background"><AppNavbar /><TripLoadError retry={() => void refetch()} pending={isFetching} /></div>;
+  if (!loading && !tripsError && !trip) return <Navigate to="/preparation" replace />;
 
   const locale = i18n.language.startsWith("fr") ? "fr-FR" : "en-GB";
   const fmtDate = (d: string) => new Date(d).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" });

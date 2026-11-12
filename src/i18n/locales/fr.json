@@ -4,6 +4,9 @@
     "switchToDark": "Passer en mode sombre"
   },
   "common": {
+    "tripLoadError": "Ton séjour est momentanément inaccessible",
+    "tripLoadKept": "Ce chargement a échoué, mais ton séjour n’a pas été supprimé. Réessaie avant de commencer un nouveau questionnaire.",
+    "aiStillWorking": "La réponse prend plus de temps que prévu. La demande est toujours en cours ; inutile de la renvoyer.",
     "loading": "Chargement...",
     "save": "Enregistrer",
     "cancel": "Annuler",
@@ -1130,7 +1133,7 @@
     "errNotConfirmed": "Confirme d'abord ton email : regarde ta boîte mail (et les spams).",
     "errExists": "Un compte existe déjà avec cet email. Connecte-toi ou utilise « Mot de passe oublié ».",
     "errPassword": "Mot de passe trop faible : au moins 6 caractères.",
-    "errRate": "Trop d'essais. Patiente une minute puis réessaie.",
+    "errRate": "Trop de demandes rapprochées. Patiente avant de réessayer ; le délai peut être plus long sur un Wi-Fi partagé. Tes réponses au questionnaire restent sur cet appareil.",
     "errGeneric": "Une erreur est survenue. Réessaie dans un instant.",
     "errSamePassword": "Choisis un mot de passe différent de l'ancien.",
     "pageHeading": "Se connecter ou créer un compte Xplania"

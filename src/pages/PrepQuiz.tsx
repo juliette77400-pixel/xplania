@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CountryCombobox from "@/components/prep/CountryCombobox";
+import TripLoadError from "@/components/shared/TripLoadError";
+import { claimPrepTransition } from "@/lib/prep-transition";
 import { getCountryNameIn } from "@/lib/countries";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrips } from "@/hooks/useTrips";
@@ -70,7 +72,7 @@ const PrepQuiz = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const isNewTrip = params.get("new") === "1";
-  const { trips, loading: tripsLoading } = useTrips();
+  const { trips, loading: tripsLoading, error: tripsError, isFetching: tripsFetching, refetch: refetchTrips } = useTrips();
   const queryClient = useQueryClient();
   const setActiveTrip = useActiveTrip((s) => s.setActiveTrip);
   const setTripData = useTravelStore((s) => s.setTripData);
@@ -95,6 +97,7 @@ const PrepQuiz = () => {
   // and a quick "Continue" or double tap must never skip a step or go past the last one.
   const stepRef = useRef(stepIndex);
   const persistingRef = useRef(false);
+  const transitionRef = useRef<number | null>(null);
   stepRef.current = stepIndex;
   const isFr = i18n.language.startsWith("fr");
 
@@ -129,7 +132,7 @@ const PrepQuiz = () => {
       }
       return;
     }
-    if (tripsLoading) return;
+    if (tripsLoading || tripsError) return;
     restored.current = true;
     // Answers given before signing up: save them as the trip now. They come from this
     // browser, or from the account when the email was confirmed on another device.
@@ -176,7 +179,7 @@ const PrepQuiz = () => {
       else restoreOwnDraft();
     }).catch(restoreOwnDraft);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, trips, tripsLoading]);
+  }, [user, trips, tripsLoading, tripsError]);
 
   useEffect(() => {
     if (!restored.current || saved || saving) return;
@@ -212,7 +215,9 @@ const PrepQuiz = () => {
       tripType: a.stayType ? t(`prepQuiz.stay.${a.stayType}.title`) : "",
       accommodation: a.housing ? t(`prepQuiz.housing.${a.housing}`) : "",
     });
-    const { data: trip, error: insertError } = await supabase
+    let trip: { id: string } | null = null;
+    try {
+    const { data: created, error: insertError } = await supabase
       .from("trips")
       .insert({
         user_id: user.id,
@@ -227,8 +232,11 @@ const PrepQuiz = () => {
       })
       .select("id")
       .single();
-    if (insertError || !trip) {
+    if (insertError || !created) throw insertError ?? new Error("trip_not_saved");
+    trip = created;
+    } catch {
       persistingRef.current = false;
+      transitionRef.current = null;
       setSaving(false);
       setSaveFailed(true);
       return;
@@ -255,6 +263,7 @@ const PrepQuiz = () => {
     const a = override ?? answers;
     const invalid = validatePrepStep(step, a);
     if (invalid) { setError(t(invalid)); return false; }
+    if (!claimPrepTransition(transitionRef, stepIndex)) return false;
     setError(null);
     track("quiz_step", { flow: "prep", step, index: stepIndex + 1 });
     if (stepIndex === PREP_STEPS.length - 1) {
@@ -274,6 +283,7 @@ const PrepQuiz = () => {
 
   const back = () => {
     if (stepIndex === 0) return;
+    transitionRef.current = null;
     setError(null);
     setDirection(-1);
     setStepIndex((i) => i - 1);
@@ -294,7 +304,8 @@ const PrepQuiz = () => {
 
   // Someone who already has a trip is never pushed back into the questionnaire
   // (except to save the answers they gave before signing up).
-  if (user && !isNewTrip && !guestPending && !tripsLoading && trips.length > 0 && !saved && !saving) return <Navigate to="/app" replace />;
+  if (user && tripsError && !saved) return <div className="min-h-screen bg-background"><TripLoadError retry={() => void refetchTrips()} pending={tripsFetching} /></div>;
+  if (user && !isNewTrip && !guestPending && !tripsLoading && !tripsError && trips.length > 0 && !saved && !saving) return <Navigate to="/app" replace />;
 
   const variants = reduceMotion
     ? { enter: { opacity: 0 }, center: { opacity: 1 }, exit: { opacity: 0 } }
@@ -311,7 +322,7 @@ const PrepQuiz = () => {
     const steps = previewSteps(answers);
     const days = daysUntil(answers.departureDate);
     // Shown in the interface language ("Spain" in English, « Espagne » in French).
-    const country = countryName(answers.destinationCode) ? getCountryNameIn(answers.destinationCode!, i18n.language) : "";
+    const country = answers.destinationCode && countryName(answers.destinationCode) ? getCountryNameIn(answers.destinationCode, i18n.language) : "";
     const signup = `/auth?mode=signup&next=${encodeURIComponent(RESUME_PATH)}`;
     const signin = `/auth?next=${encodeURIComponent(RESUME_PATH)}`;
     return (
