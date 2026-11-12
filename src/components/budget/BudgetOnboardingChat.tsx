@@ -406,12 +406,7 @@ const BudgetOnboardingChat = ({
               {qaHistory.length <= 1 && !qaLoading && (
                 <AssistantSuggestions items={t("assistant.budget.suggestions", { returnObjects: true }) as string[]} onPick={(q) => void askQuestion(q)} />
               )}
-              {qaLoading && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  {t("budget.qa.loading")}
-                </div>
-              )}
+              <AssistantWait pending={qaLoading} label={t("budget.qa.loading")} />
             </div>
 
             <form

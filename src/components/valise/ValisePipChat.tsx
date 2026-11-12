@@ -69,6 +69,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   const [online, setOnline] = useState<boolean>(() => typeof navigator === "undefined" ? true : navigator.onLine);
   const [queueLen, setQueueLen] = useState<number>(() => readQueue().length);
   const drainingRef = useRef(false);
+  const askBusy = useRef(false);
 
   useEffect(() => { setCtxDest(destination); }, [destination]);
 
@@ -281,7 +282,8 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   };
 
   const askPip = async (q: string) => {
-    if (!q.trim() || loading) return;
+    if (!q.trim() || askBusy.current || drainingRef.current) return;
+    askBusy.current = true;
     const trimmed = q.trim();
     const tempId = `q_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const userMsg: ChatMsg = { role: "user", content: trimmed, ts: Date.now() };
@@ -310,6 +312,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
         ...prev,
         { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
       ]);
+      askBusy.current = false;
       return;
     }
 
@@ -324,30 +327,25 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
         setHistory((prev) => [...prev, { role: "assistant", content: chatErrorReply(e, ""), ts: Date.now() }]);
         return;
       }
-      // Network/edge failure → queue for retry
-      enqueueAsk({ tempId, question: trimmed, payload, createdAt: Date.now() });
+      // A submitted request may have completed upstream. Never enqueue it for automatic replay.
       setHistory((prev) => [
         ...prev,
-        { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
+        { role: "assistant", content: chatErrorReply(e, t("valise.chatbot.errorAnswer")), ts: Date.now() },
       ]);
     } finally {
+      askBusy.current = false;
       setLoading(false);
     }
   };
 
-  // Online/offline listeners + auto-drain
+  // Online status only: queued questions require an explicit student action, never a page visit.
   useEffect(() => {
     const handleOnline = () => {
       setOnline(true);
-      void drainQueue();
     };
     const handleOffline = () => setOnline(false);
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
-    // Attempt drain on mount if we have pending items and are online
-    if (typeof navigator === "undefined" || navigator.onLine) {
-      void drainQueue();
-    }
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
