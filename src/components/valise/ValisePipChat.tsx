@@ -3,6 +3,7 @@ import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import ChatText from "@/components/shared/assistant/ChatText";
 import AssistantWait from "@/components/shared/assistant/AssistantWait";
+import { terminalAiFailure } from "@/lib/ai-failure";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -242,7 +243,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   }, []);
 
   const drainQueue = useCallback(async () => {
-    if (drainingRef.current) return;
+    if (drainingRef.current || askBusy.current) return;
     if (typeof navigator !== "undefined" && !navigator.onLine) return;
     const items = readQueue();
     if (items.length === 0) return;
@@ -267,14 +268,22 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
           setQueueLen(remaining.length);
         } catch (e) {
           console.error("drain valise-qa failed", e);
-          // Stop draining on first failure; will retry on next online event or manual retry
+          if (terminalAiFailure(e)) {
+            const remaining = readQueue().filter((q) => q.tempId !== item.tempId);
+            writeQueue(remaining);
+            setQueueLen(remaining.length);
+            setHistory((prev) => prev.map((message) => message.tempId === item.tempId && message.pending
+              ? { role: "assistant", content: chatErrorReply(e, t("valise.chatbot.errorAnswer")), ts: Date.now() }
+              : message));
+          }
+          // Stop after failure. Only an explicit user action can retry transient failures.
           break;
         }
       }
     } finally {
       drainingRef.current = false;
     }
-  }, [callValiseQa]);
+  }, [callValiseQa, t]);
 
   const retryNow = () => {
     if (typeof navigator !== "undefined" && !navigator.onLine) return;
