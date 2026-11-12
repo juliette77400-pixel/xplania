@@ -3,7 +3,7 @@
 ## Capacité 500 étudiants actifs — préparation demandée le 12/11
 - [x] Confirmer la nature des 303 tests : unitaires/intégration locale simulée, aucun test de charge ; 303/303 réussis
 - [x] Présenter changements, vitesse, coûts, risques, limites Lovable, protocole 500 et validation finale sans modifier l’application
-- [ ] Vérifier/créer une copie réellement isolée — accord distinct requis
+- [x] Créer deux copies avec base de test isolée : régulation serveur et optimisations frontend ; aucune donnée réelle copiée
 - [ ] Réguler chaque appel fournisseur, rendre essais/reprises idempotents et conserver les consultations — validation isolée puis accord de mise en ligne requis
 - [ ] Raccorder les flux serveur, renforcer les validations et mesurer les optimisations des outils — accord de mise en ligne requis
 - [ ] Exécuter les paliers jusqu’à 500 sessions avec IA simulée — accord de test distant requis
