@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import ChatText from "@/components/shared/assistant/ChatText";
+import AssistantWait from "@/components/shared/assistant/AssistantWait";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -60,6 +61,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
   const [natInput, setNatInput] = useState("");
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
+  const busy = useRef(false);
   const [history, setHistory] = useState<ChatMsg[]>([]);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
 
@@ -110,7 +112,8 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
   }, [ctxDest, ctxNat, ctxTrip, ctxDuration, isFr, t]);
 
   const askPip = async (q: string) => {
-    if (!q.trim() || loading) return;
+    if (!q.trim() || busy.current) return;
+    busy.current = true;
     const next: ChatMsg[] = [...history, { role: "user", content: q, ts: Date.now() }];
     setHistory(next);
     setQuestion("");
@@ -128,8 +131,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
           locale,
         },
       });
-      const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 45000));
-      const { data, error } = await Promise.race([invokePromise, timeout]);
+      const { data, error } = await invokePromise;
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       const answer = typeof data?.answer === "string" && data.answer.trim()
@@ -140,6 +142,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
       console.error("visa-qa failed", e);
       setHistory((prev) => [...prev, { role: "assistant", content: chatErrorReply(e, t("guideVisa.chatbot.errorAnswer")), ts: Date.now() }]);
     } finally {
+      busy.current = false;
       setLoading(false);
     }
   };
@@ -298,12 +301,7 @@ const VisaPipChat = ({ destination = "", nationality = "France", initialOpen = f
             <AssistantSuggestions items={t("assistant.visa.suggestions", { returnObjects: true }) as string[]} onPick={(q) => { setStage("qa"); void askPip(q); }} />
           )}
 
-          {loading && (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              {t("guideVisa.chatbot.loading")}
-            </div>
-          )}
+          <AssistantWait pending={loading} label={t("guideVisa.chatbot.loading")} />
         </div>
 
         {/* Composer (always available) */}
