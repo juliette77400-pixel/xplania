@@ -1,5 +1,15 @@
 # Roadmap — parcours étudiant (après refonte accueil)
 
+## Optimisation avant 500 étudiants (plan validé le 12/11)
+- [x] Lectures des séjours : erreur distincte d’une liste vide, nouvelle tentative explicite (3 pages connectées vérifiées)
+- [x] Budget : pas de reprise automatique d’une génération ; panne de lecture du résultat distincte d’un résultat absent (tests simulés)
+- [x] Questionnaire : transitions dédupliquées, réponses conservées en cas d’échec (tests locaux)
+- [x] Attente des assistants : pas de faux échec pendant une demande encore active, messages FR/EN (attente simulée vérifiée)
+- [x] Préparer et tester la gestion des flux IA sans appel réel (helper non raccordé)
+- [ ] Raccorder les flux serveur : accord distinct de mise en ligne requis, pas de déploiement effectué
+- [ ] Régulation et réservations durables : spécification prête ; validation isolée et activation attendent l’accord distinct
+- [x] Protocole de charge isolée et rapport des preuves préparés ; aucun test distant lancé
+
 - [x] Bugs : bouton « Créer mon compte » coupé (aperçu questionnaire, mobile) ; ronds flottants Visa et Valise en plus de « Aide »
 - [x] Questionnaire : retirer l'étiquette « Glisse la photo… », question budget plus simple avec exemple, lien « Essayer le Budget sans compte » après l'aperçu
 - [x] Tableau de bord : carte « Ta prochaine étape » en haut, outils compacts sans les « 0 % / Non commencé »

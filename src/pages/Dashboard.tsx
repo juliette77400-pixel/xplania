@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, BedDouble, Briefcase, CalendarDays, CircleDashed, CircleCheck, FileCheck, Globe2, GraduationCap, ListTodo, Loader, Luggage, MapPin, Plus, Sparkles, Wallet } from "lucide-react";
 import AppNavbar from "@/components/shared/AppNavbar";
+import TripLoadError from "@/components/shared/TripLoadError";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -50,7 +51,7 @@ const STATUS_STYLE: Record<ModuleStatus, { icon: typeof CircleCheck; className: 
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { trips, loading, refetch, removeTrip } = useTrips();
+  const { trips, loading, error: tripsError, isFetching, refetch, removeTrip } = useTrips();
   const { t, i18n } = useTranslation();
   const activeTripId = useActiveTrip((s) => s.tripId);
   const clearActiveTrip = useActiveTrip((s) => s.clearActiveTrip);
@@ -61,10 +62,10 @@ const Dashboard = () => {
 
   // "Je prépare mon départ" buttons elsewhere land here with createTrip=true.
   useEffect(() => {
-    if ((location.state as { createTrip?: boolean } | null)?.createTrip && !loading && trips.length > 0) {
+    if ((location.state as { createTrip?: boolean } | null)?.createTrip && !loading && !tripsError && trips.length > 0) {
       navigate("/preparation?new=1", { replace: true });
     }
-  }, [location.state, loading, trips.length, navigate]);
+  }, [location.state, loading, tripsError, trips.length, navigate]);
 
   useEffect(() => {
     if (loading || trips.length === 0 || viewTracked.current) return;
@@ -163,7 +164,8 @@ const Dashboard = () => {
   }, [progress, selected, housingStatus]);
   const moduleOf = (k: PrepModule) => MODULES.find((m) => m.key === k)!;
 
-  if (!loading && !selected) return <Navigate to="/preparation" replace />;
+  if (tripsError && !selected) return <div className="min-h-screen bg-background"><AppNavbar /><TripLoadError retry={() => void refetch()} pending={isFetching} /></div>;
+  if (!loading && !tripsError && !selected) return <Navigate to="/preparation" replace />;
 
   return (
     <div className="min-h-screen bg-background">

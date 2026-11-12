@@ -4,6 +4,9 @@
     "switchToDark": "Switch to dark mode"
   },
   "common": {
+    "tripLoadError": "Your stay is temporarily unavailable",
+    "tripLoadKept": "Your stay could not be loaded, but it has not been deleted. Try again before starting a new questionnaire.",
+    "aiStillWorking": "The answer is taking longer than expected. Your request is still running; there is no need to send it again.",
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
@@ -1130,7 +1133,7 @@
     "errNotConfirmed": "Please confirm your email first (check your spam too).",
     "errExists": "An account already exists with this email. Sign in or use “Forgot password”.",
     "errPassword": "Password too weak: at least 6 characters.",
-    "errRate": "Too many attempts. Wait a minute and try again.",
+    "errRate": "Too many requests in a short time. Wait before trying again; the wait may be longer on shared Wi-Fi. Your questionnaire answers remain on this device.",
     "errGeneric": "Something went wrong. Please try again.",
     "errSamePassword": "Choose a password different from your previous one.",
     "pageHeading": "Sign in or create an Xplania account"

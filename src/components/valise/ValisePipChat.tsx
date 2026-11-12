@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import ChatText from "@/components/shared/assistant/ChatText";
+import AssistantWait from "@/components/shared/assistant/AssistantWait";
+import { terminalAiFailure } from "@/lib/ai-failure";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -68,6 +70,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   const [online, setOnline] = useState<boolean>(() => typeof navigator === "undefined" ? true : navigator.onLine);
   const [queueLen, setQueueLen] = useState<number>(() => readQueue().length);
   const drainingRef = useRef(false);
+  const askBusy = useRef(false);
 
   useEffect(() => { setCtxDest(destination); }, [destination]);
 
@@ -224,8 +227,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
 
   const callValiseQa = useCallback(async (payload: Record<string, unknown>) => {
     const invokePromise = supabase.functions.invoke("valise-qa", { body: payload });
-    const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 45000));
-    const { data, error } = await Promise.race([invokePromise, timeout]);
+    const { data, error } = await invokePromise;
     if (error) throw error;
     if (data?.error) throw new Error(data.error);
     const answer = typeof data?.answer === "string" && data.answer.trim()
@@ -241,7 +243,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   }, []);
 
   const drainQueue = useCallback(async () => {
-    if (drainingRef.current) return;
+    if (drainingRef.current || askBusy.current) return;
     if (typeof navigator !== "undefined" && !navigator.onLine) return;
     const items = readQueue();
     if (items.length === 0) return;
@@ -266,14 +268,22 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
           setQueueLen(remaining.length);
         } catch (e) {
           console.error("drain valise-qa failed", e);
-          // Stop draining on first failure; will retry on next online event or manual retry
+          if (terminalAiFailure(e)) {
+            const remaining = readQueue().filter((q) => q.tempId !== item.tempId);
+            writeQueue(remaining);
+            setQueueLen(remaining.length);
+            setHistory((prev) => prev.map((message) => message.tempId === item.tempId && message.pending
+              ? { role: "assistant", content: chatErrorReply(e, t("valise.chatbot.errorAnswer")), ts: Date.now() }
+              : message));
+          }
+          // Stop after failure. Only an explicit user action can retry transient failures.
           break;
         }
       }
     } finally {
       drainingRef.current = false;
     }
-  }, [callValiseQa]);
+  }, [callValiseQa, t]);
 
   const retryNow = () => {
     if (typeof navigator !== "undefined" && !navigator.onLine) return;
@@ -281,7 +291,8 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
   };
 
   const askPip = async (q: string) => {
-    if (!q.trim() || loading) return;
+    if (!q.trim() || askBusy.current || drainingRef.current) return;
+    askBusy.current = true;
     const trimmed = q.trim();
     const tempId = `q_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const userMsg: ChatMsg = { role: "user", content: trimmed, ts: Date.now() };
@@ -310,6 +321,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
         ...prev,
         { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
       ]);
+      askBusy.current = false;
       return;
     }
 
@@ -324,30 +336,25 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
         setHistory((prev) => [...prev, { role: "assistant", content: chatErrorReply(e, ""), ts: Date.now() }]);
         return;
       }
-      // Network/edge failure → queue for retry
-      enqueueAsk({ tempId, question: trimmed, payload, createdAt: Date.now() });
+      // A submitted request may have completed upstream. Never enqueue it for automatic replay.
       setHistory((prev) => [
         ...prev,
-        { role: "assistant", content: t("valise.chatbot.offline.queued"), ts: Date.now(), pending: true, tempId },
+        { role: "assistant", content: chatErrorReply(e, t("valise.chatbot.errorAnswer")), ts: Date.now() },
       ]);
     } finally {
+      askBusy.current = false;
       setLoading(false);
     }
   };
 
-  // Online/offline listeners + auto-drain
+  // Online status only: queued questions require an explicit student action, never a page visit.
   useEffect(() => {
     const handleOnline = () => {
       setOnline(true);
-      void drainQueue();
     };
     const handleOffline = () => setOnline(false);
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
-    // Attempt drain on mount if we have pending items and are online
-    if (typeof navigator === "undefined" || navigator.onLine) {
-      void drainQueue();
-    }
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
@@ -581,12 +588,7 @@ const ValisePipChat = ({ destination = "", initialOpen = false, openSignal = 0 }
             <AssistantSuggestions items={t("assistant.valise.suggestions", { returnObjects: true }) as string[]} onPick={(q) => { setStage("qa"); void askPip(q); }} />
           )}
 
-          {loading && (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              {t("valise.chatbot.loading")}
-            </div>
-          )}
+          <AssistantWait pending={loading} label={t("valise.chatbot.loading")} />
         </div>
 
         {/* Composer */}

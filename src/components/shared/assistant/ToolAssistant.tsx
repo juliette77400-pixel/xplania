@@ -11,8 +11,10 @@ import { chatErrorReply } from "@/lib/ai-pause";
 import type { QuotaTool } from "@/lib/usage-quota";
 import { AssistantQuotaNote, AssistantSuggestions } from "./AssistantExtras";
 import ChatText from "./ChatText";
+import AssistantWait from "./AssistantWait";
+import { terminalAiFailure } from "@/lib/ai-failure";
 
-interface Msg { role: "user" | "assistant"; content: string; failed?: boolean }
+interface Msg { role: "user" | "assistant"; content: string; failed?: boolean; terminal?: boolean }
 
 export interface ToolAssistantProps {
   /** Backend assistant ("culture" | "housing"). */
@@ -63,8 +65,7 @@ export default function ToolAssistant({ tool, quotaTool, title, greeting, sugges
       const call = supabase.functions.invoke("tool-assistant", {
         body: { tool, question: q, locale, history: next.slice(-9, -1).filter((m) => !m.failed).map(({ role, content }) => ({ role, content })), ...context() },
       });
-      const timeout = new Promise<never>((_, rej) => window.setTimeout(() => rej(new Error("timeout")), 45000));
-      const { data, error } = await Promise.race([call, timeout]);
+      const { data, error } = await call;
       if ((error as { context?: { status?: number } } | null)?.context?.status === 402) {
         setHistory((h) => [...h, { role: "assistant", content: t("assistant.quotaReached"), failed: true }]);
         return;
@@ -73,7 +74,7 @@ export default function ToolAssistant({ tool, quotaTool, title, greeting, sugges
       setHistory((h) => [...h, { role: "assistant", content: String(data.answer) }]);
       qc.invalidateQueries({ queryKey: ["quota"] });
     } catch (e) {
-      setHistory((h) => [...h, { role: "assistant", content: chatErrorReply(e, t("assistant.error")), failed: true }]);
+      setHistory((h) => [...h, { role: "assistant", content: chatErrorReply(e, t("assistant.error")), failed: true, terminal: terminalAiFailure(e) }]);
     } finally {
       busy.current = false;
       setLoading(false);
@@ -119,8 +120,8 @@ export default function ToolAssistant({ tool, quotaTool, title, greeting, sugges
             <ChatText text={m.content} />
           </div>
         ))}
-        {loading && <p role="status" className="flex items-center gap-2 p-1 text-xs text-muted-foreground"><Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />{t("assistant.thinking")}</p>}
-        {!loading && last?.failed && last.content !== t("assistant.quotaReached") && (
+        <AssistantWait pending={loading} label={t("assistant.thinking")} />
+        {!loading && last?.failed && !last.terminal && last.content !== t("assistant.quotaReached") && (
           <button type="button" onClick={retry} className="rounded-full border border-border px-3 py-1 text-xs text-foreground hover:bg-muted/60">{t("common.retry")}</button>
         )}
       </div>

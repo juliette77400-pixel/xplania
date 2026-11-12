@@ -3,6 +3,7 @@ import { keepRecentMessages } from "@/lib/chat-retention";
 import { useFirstName } from "@/lib/data/profiles";
 import { AssistantQuotaNote, AssistantSuggestions } from "@/components/shared/assistant/AssistantExtras";
 import ChatText from "@/components/shared/assistant/ChatText";
+import AssistantWait from "@/components/shared/assistant/AssistantWait";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { placeName } from "@/lib/country-match";
@@ -79,6 +80,7 @@ const BudgetOnboardingChat = ({
   const [stage, setStage] = useState<"welcome" | "suggestion">("welcome");
   const [question, setQuestion] = useState("");
   const [qaLoading, setQaLoading] = useState(false);
+  const qaBusy = useRef(false);
   const [qaHistory, setQaHistory] = useState<ChatMsg[]>([]);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const locale: "fr" | "en" = i18n.language.startsWith("en") ? "en" : "fr";
@@ -190,7 +192,8 @@ const BudgetOnboardingChat = ({
 
   const askQuestion = async (preset?: string) => {
     const q = (preset ?? question).trim();
-    if (!q || qaLoading) return;
+    if (!q || qaBusy.current) return;
+    qaBusy.current = true;
     const now = Date.now();
     const nextHistory: ChatMsg[] = [...qaHistory, { role: "user", content: q, ts: now }];
     setQaHistory(nextHistory);
@@ -218,10 +221,7 @@ const BudgetOnboardingChat = ({
         section: activeSection,
       };
       const invokePromise = supabase.functions.invoke("budget-qa", { body: payload });
-      const timeoutPromise = new Promise<never>((_, reject) =>
-        window.setTimeout(() => reject(new Error("qa_timeout")), 45000)
-      );
-      const { data, error: fnError } = await Promise.race([invokePromise, timeoutPromise]);
+      const { data, error: fnError } = await invokePromise;
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
       const answer = typeof data?.answer === "string" && data.answer.trim()
@@ -235,6 +235,7 @@ const BudgetOnboardingChat = ({
         { role: "assistant", content: chatErrorReply(e, t("budget.qa.errorAnswer")), ts: Date.now() },
       ]);
     } finally {
+      qaBusy.current = false;
       setQaLoading(false);
     }
   };
@@ -405,12 +406,7 @@ const BudgetOnboardingChat = ({
               {qaHistory.length <= 1 && !qaLoading && (
                 <AssistantSuggestions items={t("assistant.budget.suggestions", { returnObjects: true }) as string[]} onPick={(q) => void askQuestion(q)} />
               )}
-              {qaLoading && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground p-2">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  {t("budget.qa.loading")}
-                </div>
-              )}
+              <AssistantWait pending={qaLoading} label={t("budget.qa.loading")} />
             </div>
 
             <form
