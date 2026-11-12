@@ -241,6 +241,7 @@ const PrepQuiz = () => {
       setSaveFailed(true);
       return;
     }
+    if (!trip) return;
     track("trip_created", { trip_id: trip.id, flow: "prep_quiz" });
     track("quiz_completed", { flow: "prep", stay: a.stayType });
     await queryClient.invalidateQueries({ queryKey: ["trips"] });
@@ -364,7 +365,7 @@ const PrepQuiz = () => {
               {t("prepQuiz.preview.tryBudget")}
             </button>
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
-              <button type="button" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline" onClick={() => { setPreview(false); try { localStorage.setItem(GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* ignore */ } }}>{t("prepQuiz.preview.edit")}</button>
+              <button type="button" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline" onClick={() => { transitionRef.current = null; setPreview(false); try { localStorage.setItem(GUEST_DRAFT, JSON.stringify({ answers, step: stepIndex })); } catch { /* ignore */ } }}>{t("prepQuiz.preview.edit")}</button>
               <Link to={signin} className="font-semibold text-primary hover:underline">{t("prepQuiz.preview.signin")}</Link>
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground">{t("prepQuiz.preview.free")}</p>
