@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
     // Build visibility map (default: public)
     const visibility = new Map<string, string>();
     (settings.data || []).forEach((s: any) => {
-      if (s?.user_id) visibility.set(s.user_id, s.competition_visibility || "public");
+      if (s?.user_id) visibility.set(s.user_id, s.competition_visibility || "anonymized");
     });
 
     const stats = new Map<string, {
@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
         s.reactions * XP.moodReactions;
       if (user_id === auth.userId) me = { xp, badges: s.badges };
       if (xp <= 0) return;
-      const vis = visibility.get(user_id) || "public";
+      const vis = visibility.get(user_id) || "anonymized";
       if (vis === "private") return; // exclude entirely
       const p = profileMap.get(user_id);
       const anonymized = vis === "anonymized";

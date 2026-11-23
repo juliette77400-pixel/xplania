@@ -37,7 +37,7 @@ serve(withQuotaRefund(async (req) => {
     const supa = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const { data: places, error } = await supa.from("places")
       .select("id,name,category,subcategory,address,tags,created_by").in("id", placeIds.slice(0, 12)).is("why_fits", null)
-      .or(`created_by.is.null,created_by.eq.${__auth.userId}`);
+      .eq("created_by", __auth.userId);
     if (error) throw error;
     if (!places || places.length === 0) {
       return new Response(JSON.stringify({ enriched: 0 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -48,7 +48,8 @@ serve(withQuotaRefund(async (req) => {
     // caller's profile or free-text hint. Personalisation applies to the
     // caller's own places only.
     const ownPlaces = places.filter((p: any) => p.created_by === __auth.userId);
-    const sharedPlaces = places.filter((p: any) => p.created_by == null);
+    // Shared catalogue places are never rewritten by a traveler request.
+    const sharedPlaces: any[] = [];
 
     const travelCtx = ownPlaces.length ? await buildTravelContext(supa, __auth.userId) : null;
     const ctxSnippet = travelCtx ? contextToPromptSnippet(travelCtx, "fr") : "";

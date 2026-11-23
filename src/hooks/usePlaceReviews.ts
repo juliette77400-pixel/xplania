@@ -44,7 +44,7 @@ export function usePlaceReviews(placeId: string | null) {
           if (r.photo_url && !r.photo_url.startsWith("http")) {
             const { data: signed } = await supabase.storage
               .from("place-reviews")
-              .createSignedUrl(r.photo_url, 60 * 60 * 24 * 7);
+              .createSignedUrl(r.photo_url, 60 * 15);
             r.photo_url = signed?.signedUrl ?? null;
           }
         }),

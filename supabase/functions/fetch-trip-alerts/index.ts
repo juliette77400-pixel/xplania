@@ -263,7 +263,7 @@ serve(async (req) => {
         .eq("trip_id", tripId)
         .maybeSingle();
       const RESEND = Deno.env.get("RESEND_API_KEY");
-      if (sub && RESEND && sub.channels?.includes("email") && sub.email) {
+      if (sub && RESEND && sub.channels?.includes("email") && userData.user.email && sub.email?.toLowerCase() === userData.user.email.toLowerCase()) {
         const sevRank = { info: 0, warning: 1, critical: 2 } as const;
         const min = sevRank[sub.min_severity as keyof typeof sevRank] ?? 1;
         const toSend = alerts.filter(
@@ -300,7 +300,7 @@ serve(async (req) => {
             },
             body: JSON.stringify({
               from: "Xplania <onboarding@resend.dev>",
-              to: [sub.email],
+              to: [userData.user.email],
               subject:
                 locale === "en"
                   ? `Travel alerts — ${destination}`
