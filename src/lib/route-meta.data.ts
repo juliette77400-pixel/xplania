@@ -11,7 +11,7 @@ export const META: Record<string, Meta> = {
     en: ["Xplania | Prepare your Erasmus or internship abroad", "Prepare your Erasmus or internship abroad without the stress: paperwork, budget, housing, packing and local culture in one place, with advice tailored to your destination."],
   },
   "/home": {
-    fr: ["Accueil Xplania — ton départ à l'étranger, étape par étape", "Découvre comment Xplania t'aide à préparer ton séjour étudiant : visa, budget, valise, culture et logement, avec une liste claire de ce qu'il reste à faire."],
+    fr: ["Accueil Xplania — ton départ à l'étranger, étape par étape", "Vois comment Xplania t'aide à préparer ton séjour étudiant : visa, budget, valise, culture et logement, avec une liste claire de ce qu'il reste à faire."],
     en: ["Xplania home — your move abroad, step by step", "See how Xplania helps you prepare your student stay: visa, budget, packing, culture and housing, with a clear list of what is left to do."],
   },
   "/dashboard": {
