@@ -11,10 +11,10 @@ describe("generation delay", () => {
     vi.restoreAllMocks();
   });
 
-  it("stays within 0 to 15 seconds", () => {
+  it("stays within 0 to 30 seconds", () => {
     expect(randomGenerationDelay(() => 0)).toBe(0);
-    expect(randomGenerationDelay(() => 0.5)).toBe(7_500);
-    expect(randomGenerationDelay(() => 0.999999)).toBe(15_000);
+    expect(randomGenerationDelay(() => 0.5)).toBe(15_000);
+    expect(randomGenerationDelay(() => 0.999999)).toBe(30_000);
   });
 
   it("ignores a second click while the delay is pending", async () => {
@@ -23,7 +23,7 @@ describe("generation delay", () => {
     let first: Promise<boolean>;
     act(() => { first = hook.result.current.wait(); });
     await expect(hook.result.current.wait()).resolves.toBe(false);
-    await act(async () => { vi.advanceTimersByTime(15_000); });
+    await act(async () => { vi.advanceTimersByTime(30_000); });
     await expect(first!).resolves.toBe(true);
     hook.unmount();
   });

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-const MAX_DELAY_MS = 15_000;
+const MAX_DELAY_MS = 30_000;
 
 export function randomGenerationDelay(random: () => number = Math.random): number {
   return Math.floor(random() * (MAX_DELAY_MS + 1));
