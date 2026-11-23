@@ -43,6 +43,7 @@ import BudgetKpis from "@/components/budget/BudgetKpis";
 import BudgetRecommendations from "@/components/budget/BudgetRecommendations";
 import BudgetSimulator from "@/components/budget/BudgetSimulator";
 import BudgetConfirmDialog from "@/components/budget/BudgetConfirmDialog";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import BudgetIncomesForm from "@/components/budget/BudgetIncomes";
 import { budgetRecommendations, changedLines, emptyIncomes, sanitizeIncomes, summarizeBudget, type BudgetIncomes, type BudgetLine } from "@/lib/budget-math";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
@@ -723,7 +724,7 @@ const GuideBudgetPage = () => {
         </AnimatePresence>
       </main>
 
-      {hasGenerated && (
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && hasGenerated && (
         <BudgetOnboardingChat
           destination={destination}
           days={days}

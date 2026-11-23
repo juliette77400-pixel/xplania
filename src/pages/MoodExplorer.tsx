@@ -30,6 +30,7 @@ import { Share2 } from "lucide-react";
 import { moodByKey } from "@/lib/moods";
 import AppNavbar from "@/components/shared/AppNavbar";
 import QuickJump from "@/components/shared/QuickJump";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import { useQuota } from "@/hooks/useQuota";
@@ -158,7 +159,7 @@ const MoodExplorer = () => {
                   }
                 />
               )}
-              {mode === "pip" && (
+              {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && mode === "pip" && (
                 <MoodPipChat
                   loading={loading}
                   onClose={() => setMode("entry")}

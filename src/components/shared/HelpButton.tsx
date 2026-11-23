@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { isPipHidden, openPipChat, openReportAi } from "@/lib/help-events";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 export const SUPPORT_EMAIL = "juliette77400@gmail.com";
 
@@ -15,7 +16,7 @@ const HelpButton = () => {
   const subject = t("help.subject");
   const body = t("help.body", { page: `https://xplania.app${pathname}` });
   const href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  const showPip = !isPipHidden(pathname);
+  const showPip = FEATURE_FLAGS.ENABLE_PING_ASSISTANT && !isPipHidden(pathname);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

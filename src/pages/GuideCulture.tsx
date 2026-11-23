@@ -22,6 +22,7 @@ import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
 import { localDateFor } from "@/lib/country-timezone";
 import { useGenerationDelay } from "@/hooks/useGenerationDelay";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";
@@ -121,7 +122,7 @@ export default function GuideCulture() {
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/70 bg-card/45 px-5 py-4">
             <p className="text-sm text-muted-foreground">{t("culture.yourCountry")} <span className="ml-1 text-base font-bold text-foreground">{getCountryNameIn(code, lang)}</span></p>
             <div className="flex flex-wrap gap-2">
-              {user && <Button type="button" size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>}
+              {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && user && <Button type="button" size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>}
               <Button type="button" variant="outline" size="sm" onClick={() => setPicking(true)}>{t("culture.changeCountry")}</Button>
             </div>
           </div>
@@ -222,7 +223,7 @@ export default function GuideCulture() {
         </p>
       </main>
       <QuickJump />
-      {user && code && (
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && user && code && (
         <ToolAssistant tool="culture" quotaTool="culture" openSignal={assistantSignal}
           title={t("assistant.culture.title")} greeting={t("assistant.culture.greeting", { country: countryName })}
           suggestions={t("assistant.culture.suggestions", { returnObjects: true }) as string[]}

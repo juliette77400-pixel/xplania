@@ -198,7 +198,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
-            <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>
+            {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <Suspense fallback={<PipChatSkeleton />}><GlobalPipChat /></Suspense>}
             <Suspense fallback={null}><CookieBanner /></Suspense>
             <HelpButton />
             <PromoRedeemer />

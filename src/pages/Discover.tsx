@@ -19,6 +19,7 @@ import { useNearbyAlerts } from "@/hooks/useNearbyAlerts";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 // Spec slug → internal Place.category (from src/lib/discover.ts)
 const SLUG_TO_CATS: Record<DiscoverEntrySlug, string[]> = {
@@ -102,7 +103,7 @@ const Discover = () => {
           <DiscoverEntry onSubmit={handleEntrySubmit} onOpenPip={() => setPipOpen(true)} />
         </main>
         <QuickJump />
-        {pipOpen && (
+        {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && pipOpen && (
           <DiscoverPipChat
             onClose={() => setPipOpen(false)}
             onSubmit={handleEntrySubmit}

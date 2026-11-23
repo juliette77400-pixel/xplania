@@ -14,6 +14,8 @@ export const FEATURE_FLAGS = {
   ENABLE_CULTURAL_GUIDE: true,
   /** Housing assistant: resources, comparator, checklists (no AI, no listings). */
   ENABLE_HOUSING_ASSISTANT: true,
+  /** Ping chats and their entry points; cultural tips signed by Ping stay visible. */
+  ENABLE_PING_ASSISTANT: false,
 
   // Hidden during the beta
   ENABLE_MOOD_EXPLORER: false,

@@ -28,6 +28,7 @@ import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 import { useQuota } from "@/hooks/useQuota";
 import { useAuth } from "@/hooks/useAuth";
 import { useOfficialInfo } from "@/hooks/useOfficialInfo";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import { supabase } from "@/integrations/supabase/client";
 import { AI_UNAVAILABLE } from "@/lib/ai-pause";
 import { friendlyInvokeError } from "@/lib/invoke-error";
@@ -333,14 +334,14 @@ const GuideVisaPage = () => {
         {profile.destinationCode && <VisaEmergency official={official.data} analysis={analysis} />}
 
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <button type="button" onClick={() => setChatOpenSignal((n) => n + 1)} className="inline-flex items-center gap-2 rounded-xl bg-primary/10 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/20">
+          {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <button type="button" onClick={() => setChatOpenSignal((n) => n + 1)} className="inline-flex items-center gap-2 rounded-xl bg-primary/10 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/20">
             <MessageCircle className="h-4 w-4" aria-hidden />{t("guideVisa.stepper.reassurance")}
-          </button>
+          </button>}
           <Link to="/guide-budget" className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-5 py-3 text-sm font-semibold hover:bg-primary/10">{t("guideVisa.actions.continuePrep")} →</Link>
         </div>
       </main>
       <QuickJump />
-      <VisaPipChat destination={destinationShownName || t("visa2.yourDestination")} nationality={nationalityName} openSignal={chatOpenSignal} />
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <VisaPipChat destination={destinationShownName || t("visa2.yourDestination")} nationality={nationalityName} openSignal={chatOpenSignal} />}
     </div>
   );
 };

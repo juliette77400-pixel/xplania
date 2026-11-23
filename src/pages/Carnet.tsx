@@ -34,6 +34,7 @@ import { useTripStats } from "@/hooks/useTripStats";
 import TripStatsCard from "@/components/journal/TripStatsCard";
 const RouteCover = lazy(() => import("@/components/journal/RouteCover"));
 import SouvenirAlbum from "@/components/journal/SouvenirAlbum";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 type CarnetSection = "timeline" | "story" | "insights" | "docs" | "share" | "souvenir";
 
@@ -357,7 +358,7 @@ const Carnet = () => {
         title={journal.title}
         day={activeDay}
       />
-      <CarnetOnboardingChat
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <CarnetOnboardingChat
         tripId={tripId!}
         journalId={journal.id}
         journalTitle={journal.title}
@@ -372,7 +373,7 @@ const Carnet = () => {
         returnDate={tripMeta?.return_date || null}
         onSuggestFocus={(s) => setActiveTab(s)}
         onChanged={refetch}
-      />
+      />}
       <QuickJump />
     </div>
   );

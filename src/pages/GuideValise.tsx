@@ -38,6 +38,7 @@ import QuotaBanner from "@/components/shared/QuotaBanner";
 import UpgradeDialog from "@/components/shared/UpgradeDialog";
 import CollapsibleSection from "@/components/shared/CollapsibleSection";
 import ExampleResultPreview from "@/components/shared/ExampleResultPreview";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import { useQuota } from "@/hooks/useQuota";
 import { useHydrateActiveTrip } from "@/hooks/useHydrateActiveTrip";
 
@@ -515,7 +516,7 @@ const GuideValisePage = () => {
         </>)}
       </div>
       <QuickJump />
-      <ValisePipChat destination={destination} />
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <ValisePipChat destination={destination} />}
     </div>
   );
 };

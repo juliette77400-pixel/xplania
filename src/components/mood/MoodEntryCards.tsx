@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { MessageCircle, ListChecks, Footprints } from "lucide-react";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 interface Props {
   onPickPip: () => void;
@@ -23,7 +24,7 @@ const MoodEntryCards = ({ onPickPip, onPickForm, onPickSolo, disabled }: Props) 
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        <button
+        {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <button
           onClick={onPickPip}
           disabled={disabled}
           className="group text-left rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-5 interactive-card disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -41,7 +42,7 @@ const MoodEntryCards = ({ onPickPip, onPickForm, onPickSolo, disabled }: Props) 
               </p>
             </div>
           </div>
-        </button>
+        </button>}
 
         <button
           onClick={onPickForm}

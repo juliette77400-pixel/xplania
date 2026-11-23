@@ -7,6 +7,7 @@ const TripTracker = lazy(() => import("@/components/tracking/TripTracker"));
 import QuickJump from "@/components/shared/QuickJump";
 import DeleteTripButton from "@/components/shared/DeleteTripButton"; // ✨ NEW (Tâche 1)
 import SuiviPipChat from "@/components/tracking/SuiviPipChat";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 const SuiviTrip = () => {
   const { tripId } = useParams<{ tripId: string }>();
@@ -63,14 +64,14 @@ const SuiviTrip = () => {
         </Suspense>
       </main>
       <QuickJump />
-      <SuiviPipChat
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <SuiviPipChat
         onAction={(a) => {
           if (a === "share") {
             // Scroll to share button in header — user can tap "Partager"
             window.scrollTo({ top: 0, behavior: "smooth" });
           }
         }}
-      />
+      />}
     </div>
   );
 };

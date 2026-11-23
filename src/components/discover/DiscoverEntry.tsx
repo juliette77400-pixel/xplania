@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, MessageCircle, Footprints, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 
 export type DiscoverEntrySlug =
   | "gastronomie"
@@ -136,7 +137,7 @@ const DiscoverEntry = ({ onSubmit, onOpenPip }: Props) => {
       </div>
 
       {/* Option B — Pip */}
-      <div className="space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-accent/10 p-5">
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <div className="space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-accent/10 p-5">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           {t("discoverEntry.optionBPip")}
         </h2>
@@ -145,7 +146,7 @@ const DiscoverEntry = ({ onSubmit, onOpenPip }: Props) => {
           <MessageCircle className="h-4 w-4" />
           {t("discoverEntry.askPip")}
         </Button>
-      </div>
+      </div>}
 
       {/* Solo shortcut */}
       <button

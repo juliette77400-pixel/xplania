@@ -23,6 +23,7 @@ import { useTrips, type Trip } from "@/hooks/useTrips";
 import { useHousingChecklist } from "@/hooks/useHousing";
 import { supabase } from "@/integrations/supabase/client";
 import { useActiveTrip, hydrateTravelStoreFromTrip } from "@/stores/useActiveTrip";
+import { FEATURE_FLAGS } from "@/config/featureFlags";
 import { findCountry, placeName } from "@/lib/country-match";
 import { saveModuleProgress } from "@/lib/prep-progress";
 import { HOUSING_STATUSES, housingProgress, isHousingStatus, safetyChecksApply, sectionOrder, type HousingSection, type HousingStatus } from "@/lib/housing";
@@ -180,7 +181,7 @@ const GuideLogement = () => {
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="text-sm"><span className="text-muted-foreground">{t("housing.status.label")} </span><span className="font-semibold">{t(`prepQuiz.housingStatus.${status}`)}</span></p>
                     <div className="flex flex-wrap gap-2">
-                      <Button size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>
+                      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && <Button size="sm" onClick={() => setAssistantSignal((n) => n + 1)}><MessageCircle className="mr-1.5 h-4 w-4" aria-hidden />{t("assistant.open")}</Button>}
                       <Button size="sm" variant="outline" onClick={() => setStatusOpen(true)}>{t("housing.status.change")}</Button>
                     </div>
                   </div>
@@ -231,7 +232,7 @@ const GuideLogement = () => {
         )}
       </main>
 
-      {trip && (
+      {FEATURE_FLAGS.ENABLE_PING_ASSISTANT && trip && (
         <ToolAssistant tool="housing" quotaTool="housing" openSignal={assistantSignal}
           title={t("assistant.housing.title")} greeting={t("assistant.housing.greeting")}
           suggestions={t("assistant.housing.suggestions", { returnObjects: true }) as string[]}
