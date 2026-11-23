@@ -7,6 +7,7 @@ import { isAiPause } from "@/lib/ai-pause";
 import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 import type { LuggageMode } from "./LuggageModes";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 
 interface AiTipCardProps {
   mode: LuggageMode;
@@ -65,6 +66,7 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
   const [savedReady, setSavedReady] = useState(false);
   const [dynamicTip, setDynamicTip] = useState<{ title: string; tip: string } | null>(null);
   const [loadingDynamic, setLoadingDynamic] = useState(false);
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const [tipError, setTipError] = useState<"quota" | "pause" | "error" | null>(null);
   const inFlightRef = useRef(false);
   const shownRef = useRef<string[]>([]);
@@ -91,6 +93,7 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
             ? `Give me ONE new, concrete packing tip (max 50 words) for this student. Topic: ${topic}. Use the trip data provided (destination, dates, length, kind of stay, activities, transport, luggage profile "${profileLabel}"${climate ? `, real climate figures: ${climate}` : ""}). Never invent a weather event the figures don't show. No gadget, no brand, nothing valid for any trip. Different from these previous tips: ${avoid || "none"}. Format: line 1 = short title with one emoji, line 2 = the actionable tip. No intro, no outro.`
             : `Donne-moi UN nouveau conseil de valise concret (max 50 mots) pour cet étudiant. Sujet : ${topic}. Appuie-toi sur les données du séjour fournies (destination, dates, durée, type de séjour, activités, transport, profil de bagage « ${profileLabel} »${climate ? `, chiffres réels du climat : ${climate}` : ""}). N'invente jamais un phénomène météo absent des chiffres. Pas de gadget, pas de marque, rien qui vaille pour n'importe quel voyage. Différent de ces conseils déjà donnés : ${avoid || "aucun"}. Format : ligne 1 = titre court avec un emoji, ligne 2 = le conseil actionnable. Pas d'intro ni d'outro.`;
         setTipError(null);
+        if (!(await waitBeforeGeneration())) return;
 
         const { data, error } = await supabase.functions.invoke("valise-qa", {
           body: {
@@ -131,7 +134,7 @@ const AiTipCard = ({ mode, isLoading, destination, months, activities = [], stay
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months, actKey, stayType, transport, days, climate, scope, tripId],
+    [cacheKey, destination, lang, mode, staticTitle, profileLabel, months, actKey, stayType, transport, days, climate, scope, tripId, waitBeforeGeneration],
   );
 
   // Saved tips of this trip, from the device or the account.

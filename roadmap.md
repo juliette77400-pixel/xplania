@@ -1,5 +1,10 @@
 # Roadmap — parcours étudiant (après refonte accueil)
 
+## Correctifs interface du 23/11 — notifications et étalement des générations
+- [x] Notifications en haut sur téléphone, en bas à droite sur ordinateur — vérifié dans Chromium aux deux formats
+- [x] Délai aléatoire annulable de 0 à 15 s avant les envois IA Visa, Budget, Valise, Culture et Logement, message FR/EN, sans double envoi ni délai sur les résultats enregistrés
+- [x] 306 tests locaux sans IA et parcours Visa simulé : aucun appel pendant le délai, un seul après double-clic, aucun après sortie ; publication laissée à Juliette
+
 ## Capacité 500 étudiants actifs — préparation demandée le 12/11
 - [x] Confirmer la nature des 303 tests : unitaires/intégration locale simulée, aucun test de charge ; 303/303 réussis
 - [x] Présenter changements, vitesse, coûts, risques, limites Lovable, protocole 500 et validation finale sans modifier l’application

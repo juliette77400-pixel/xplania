@@ -7,6 +7,7 @@
     "tripLoadError": "Ton séjour est momentanément inaccessible",
     "tripLoadKept": "Ce chargement a échoué, mais ton séjour n’a pas été supprimé. Réessaie avant de commencer un nouveau questionnaire.",
     "aiStillWorking": "La réponse prend plus de temps que prévu. La demande est toujours en cours ; inutile de la renvoyer.",
+    "generationDelay": "Ta demande est en cours, ça arrive",
     "loading": "Chargement...",
     "save": "Enregistrer",
     "cancel": "Annuler",

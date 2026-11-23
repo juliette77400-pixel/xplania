@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { placeName } from "@/lib/country-match";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,7 @@ import { isOutdated, type SavedAiResult } from "@/lib/ai-results";
 import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 import AiOutdatedNote from "@/components/shared/AiOutdatedNote";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 import imgCasual from "@/assets/outfits/casualUrban.jpg";
 import imgEvening from "@/assets/outfits/elegantEvening.jpg";
 import imgNature from "@/assets/outfits/natureExploration.jpg";
@@ -121,6 +122,8 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
   const [aiOutfits, setAiOutfits] = useState<Outfit[] | null>(null);
   const [isFetching, setIsFetching] = useState(false);
+  const inFlight = useRef(false);
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const [hadError, setHadError] = useState<false | "error" | "pause">(false);
   const [variation, setVariation] = useState(0);
 
@@ -140,10 +143,12 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
   const [saved, setSaved] = useState<SavedAiResult<SavedOutfits> | null>(null);
 
   const fetchOutfits = useCallback(async (variationSeed = 0) => {
-    if (isPlaceholderDest) return;
+    if (isPlaceholderDest || inFlight.current) return;
+    inFlight.current = true;
     setIsFetching(true);
     setHadError(false);
     try {
+      if (!(await waitBeforeGeneration())) return;
       const { data, error } = await supabase.functions.invoke("valise-outfits", {
         body: {
           destination,
@@ -180,9 +185,10 @@ const OutfitRecommendations = ({ tripType, destination, activities, luggage, onA
       // AI paused (cap reached): calm notice, basic outfits stay.
       setHadError(isAiPause(e) ? "pause" : "error");
     } finally {
+      inFlight.current = false;
       setIsFetching(false);
     }
-  }, [destination, tripType, activities, luggage, lang, isPlaceholderDest, climate, stayType, city, dates, scope, tripId, inputKey]);
+  }, [destination, tripType, activities, luggage, lang, isPlaceholderDest, climate, stayType, city, dates, scope, tripId, inputKey, waitBeforeGeneration]);
 
   const handleRegenerate = useCallback(() => {
     const next = variation + 1;

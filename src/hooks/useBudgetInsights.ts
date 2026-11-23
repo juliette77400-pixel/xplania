@@ -6,6 +6,7 @@ import { isOutdated, needsAiCall, type SavedAiResult } from "@/lib/ai-results";
 import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
 import { useActiveTrip } from "@/stores/useActiveTrip";
 import type { TravelFormData } from "@/types/travel";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 
 export interface BudgetPlace { name: string; zone: string; city: string; detail: string }
 export interface BudgetScenario { total: number; note: string; split: { key: string; amount: number }[] }
@@ -62,6 +63,7 @@ function isInsights(v: unknown): v is BudgetInsights {
  */
 export function useBudgetInsights(a: Args) {
   const [nonce, setNonce] = useState(0);
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const seen = useRef<string[]>([]);
   const payloadRef = useRef(a);
   payloadRef.current = a;
@@ -93,6 +95,7 @@ export function useBudgetInsights(a: Args) {
       const usable = saved && isInsights(saved.content) ? saved : null;
       if (usable && !needsAiCall(usable, nonce > 0)) { remember(usable.content); return usable; }
       const p = payloadRef.current;
+      if (!(await waitBeforeGeneration())) throw new Error("cancelled");
       const { data, error } = await supabase.functions.invoke("budget-tips", { body: buildBody(p, seen.current, nonce) });
       if (error) throw new Error(await insightsErrorKind(error));
       if (data?.error || !isInsights(data)) throw new Error("server");
@@ -117,6 +120,7 @@ export function useBudgetInsights(a: Args) {
     dealsBusy.current = true;
     setDealsState({ loading: true, errorKind: null, noNew: false });
     try {
+      if (!(await waitBeforeGeneration())) return;
       const { data, error } = await supabase.functions.invoke("budget-tips", { body: { ...buildBody(payloadRef.current, seen.current, nonce), only: "deals" } });
       if (error) throw new Error(await insightsErrorKind(error));
       if (data?.error || !data?.deals) throw new Error("server");
@@ -134,7 +138,7 @@ export function useBudgetInsights(a: Args) {
       dealsBusy.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qc, nonce, scope, tripId]);
+  }, [qc, nonce, scope, tripId, waitBeforeGeneration]);
   const msg = query.error instanceof Error ? query.error.message : "";
   const errorKind: InsightsErrorKind | null = query.isError
     ? (["quota", "ai_unavailable", "rate"].includes(msg) ? (msg as InsightsErrorKind) : "server")

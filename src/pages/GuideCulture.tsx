@@ -21,6 +21,7 @@ import { CULTURE_PATHS, CULTURE_PATH_IDS, morePillars, pathForStay, type Culture
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import ToolAssistant from "@/components/shared/assistant/ToolAssistant";
 import { localDateFor } from "@/lib/country-timezone";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 
 const norm = normCountry;
 const PROGRESS_KEY = "xplania-culture-progress";
@@ -243,6 +244,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
   const sensitive = CULTURE_PILLARS.find((p) => p.id === pillar && "sensitive" in p);
 
   const qc = useQueryClient();
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const q = useQuery({
     queryKey: ["culture-guide", code, pillar, lang],
     enabled: !pre && !!user,
@@ -254,6 +256,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
       const { data: cached } = await supabase.from("culture_guide_cache").select("content")
         .eq("country_code", code).eq("pillar", pillar).eq("locale", lang).maybeSingle();
       if (cached) return cached.content as unknown as PillarContent;
+      if (!(await waitBeforeGeneration())) throw new Error("cancelled");
       const { data, error } = await supabase.functions.invoke("culture-guide", { body: { countryCode: code, countryName, pillar, locale: lang } });
       // Culture has its own monthly tries, separate from Valise.
       if ((error as { context?: { status?: number } } | null)?.context?.status === 402) throw new Error("quota_exceeded");
@@ -277,6 +280,7 @@ function PillarView({ code, countryName, pillar, lang, done, onToggle, onBack }:
       const { data: cached } = await supabase.from("culture_guide_cache").select("content")
         .eq("country_code", code).eq("pillar", key).eq("locale", lang).maybeSingle();
       if (cached) return (cached.content as unknown as { items: { example: string; nuance: string }[] }).items;
+      if (!(await waitBeforeGeneration())) throw new Error("cancelled");
       const { data, error } = await supabase.functions.invoke("culture-guide", { body: { kind: "enrich", countryCode: code, pillar, locale: lang, tips: preTips } });
       if (error || !data?.content) throw error ?? new Error("no content");
       return (data.content as { items: { example: string; nuance: string }[] }).items;

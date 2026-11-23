@@ -3,7 +3,7 @@
 // read for real; visa/passport answers for the exact profile come from the AI
 // and are saved with the trip so nothing is regenerated on each visit.
 import IslandNotice from "@/components/shared/IslandNotice";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -42,6 +42,7 @@ import type { TravelFormData } from "@/types/travel";
 import { withEssentials, type EssentialContext } from "@/lib/visa-essentials";
 import GuestSaveBanner from "@/components/shared/GuestSaveBanner";
 import { loadAiResult, saveAiResult } from "@/lib/data/trip-ai-results";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 
 const GuideVisaPage = () => {
   useHydrateActiveTrip();
@@ -75,6 +76,8 @@ const GuideVisaPage = () => {
 
   const [saved, setSaved] = useState<SavedVisaState | null>(null);
   const [generating, setGenerating] = useState(false);
+  const generatingRef = useRef(false);
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const [error, setError] = useState<string | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -173,11 +176,14 @@ const GuideVisaPage = () => {
   }, [user, tripId, t, setTripData, tripData, qc]);
 
   const runAnalysis = useCallback(async () => {
+    if (generatingRef.current) return;
     if (missing.length) { toast.error(t("visa2.analysis.completeFirst")); return; }
     if (reached) { setShowUpgrade(true); return; }
+    generatingRef.current = true;
     setGenerating(true);
     setError(null);
     try {
+      if (!(await waitBeforeGeneration())) return;
       const { data, error: invErr } = await supabase.functions.invoke("visa-info", {
         body: {
           destination: destinationName,
@@ -216,9 +222,10 @@ const GuideVisaPage = () => {
       const msg = e instanceof Error ? e.message : t("visa2.analysis.error");
       setError(msg);
     } finally {
+      generatingRef.current = false;
       setGenerating(false);
     }
-  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, essentialCtx, persistVisa, residenceCode]);
+  }, [missing.length, reached, destinationName, profile, nationalityName, days, lang, t, consume, pKey, saved?.checked, essentialCtx, persistVisa, residenceCode, waitBeforeGeneration]);
 
   const toggle = (id: string) => {
     if (!saved) return;

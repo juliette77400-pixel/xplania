@@ -8,6 +8,7 @@ const mock = vi.hoisted(() => ({ load: vi.fn(), save: vi.fn(), invoke: vi.fn() }
 vi.mock("@/lib/data/trip-ai-results", () => ({ loadAiResult: mock.load, saveAiResult: mock.save }));
 vi.mock("@/stores/useActiveTrip", () => ({ useActiveTrip: (pick: (s: { tripId: string }) => unknown) => pick({ tripId: "trip-student" }) }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { functions: { invoke: mock.invoke } } }));
+vi.mock("@/hooks/useGenerationDelay", () => ({ useGenerationDelay: () => ({ waiting: false, wait: vi.fn().mockResolvedValue(true) }) }));
 
 function open() {
   const client = new QueryClient({ defaultOptions: { queries: { retryDelay: 0 } } });

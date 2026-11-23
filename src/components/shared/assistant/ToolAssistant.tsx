@@ -13,6 +13,7 @@ import { AssistantQuotaNote, AssistantSuggestions } from "./AssistantExtras";
 import ChatText from "./ChatText";
 import AssistantWait from "./AssistantWait";
 import { terminalAiFailure } from "@/lib/ai-failure";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 
 interface Msg { role: "user" | "assistant"; content: string; failed?: boolean; terminal?: boolean }
 
@@ -37,6 +38,7 @@ export default function ToolAssistant({ tool, quotaTool, title, greeting, sugges
   const [history, setHistory] = useState<Msg[]>([]);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const busy = useRef(false);
   const scroller = useRef<HTMLDivElement | null>(null);
   const input = useRef<HTMLInputElement | null>(null);
@@ -62,6 +64,7 @@ export default function ToolAssistant({ tool, quotaTool, title, greeting, sugges
     setQuestion("");
     setLoading(true);
     try {
+      if (!(await waitBeforeGeneration())) return;
       const call = supabase.functions.invoke("tool-assistant", {
         body: { tool, question: q, locale, history: next.slice(-9, -1).filter((m) => !m.failed).map(({ role, content }) => ({ role, content })), ...context() },
       });

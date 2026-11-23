@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { placeName } from "@/lib/country-match";
 import { Loader2, Plus, SearchCheck, Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { isAiPause } from "@/lib/ai-pause";
+import { useGenerationDelay } from "@/hooks/useGenerationDelay";
 
 interface Missing { item: string; reason: string }
 
@@ -23,12 +24,17 @@ interface Props {
 const MissingItemsCheck = ({ destination, days, tripTypes, activities, luggage, transport, departureDate, currentItems, onAdd }: Props) => {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const busy = useRef(false);
+  const { wait: waitBeforeGeneration } = useGenerationDelay();
   const [result, setResult] = useState<{ essential: Missing[]; secondary: Missing[] } | null>(null);
   const [added, setAdded] = useState<Set<string>>(new Set());
 
   const run = async () => {
+    if (busy.current) return;
+    busy.current = true;
     setLoading(true);
     try {
+      if (!(await waitBeforeGeneration())) return;
       const { data, error } = await supabase.functions.invoke("valise-missing", {
         body: {
           destination, days, tripTypes: tripTypes || [], activities: activities || [], luggage, transport, departureDate,
@@ -44,6 +50,7 @@ const MissingItemsCheck = ({ destination, days, tripTypes, activities, luggage, 
       // The shared notice already explains an AI pause.
       if (!isAiPause(e)) toast.error(t("valise.missing.error"));
     } finally {
+      busy.current = false;
       setLoading(false);
     }
   };

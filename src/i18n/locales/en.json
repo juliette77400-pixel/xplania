@@ -7,6 +7,7 @@
     "tripLoadError": "Your stay is temporarily unavailable",
     "tripLoadKept": "Your stay could not be loaded, but it has not been deleted. Try again before starting a new questionnaire.",
     "aiStillWorking": "The answer is taking longer than expected. Your request is still running; there is no need to send it again.",
+    "generationDelay": "Your request is in progress, it's coming",
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
