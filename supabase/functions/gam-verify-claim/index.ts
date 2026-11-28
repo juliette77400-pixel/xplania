@@ -81,7 +81,7 @@ serve(async (req) => {
       force_manual_review: settingsRow?.force_manual_review ?? false,
     };
 
-    const analysis: any = { steps: [], settings, started_at: new Date().toISOString() };
+    const analysis: any = { steps: [], started_at: new Date().toISOString() };
     let verdict: "validated" | "submitted" | "rejected" = "submitted";
 
     // ─── 1) GEO check ───
@@ -156,10 +156,6 @@ Reply STRICTLY as compact JSON: {"verdict":"validated|rejected|uncertain","confi
               kind: "ai",
               raw: txt.slice(0, 400),
               parsed,
-              thresholds: {
-                validate: settings.ai_auto_validate_threshold,
-                reject: settings.ai_auto_reject_threshold,
-              },
             });
             if (!settings.force_manual_review) {
               if (parsed?.verdict === "validated" && (parsed.confidence ?? 0) >= settings.ai_auto_validate_threshold) {
@@ -197,7 +193,7 @@ Reply STRICTLY as compact JSON: {"verdict":"validated|rejected|uncertain","confi
       .eq("id", claim_id);
     if (uErr) return json({ error: uErr.message }, 500);
 
-    return json({ status: verdict, analysis });
+    return json({ status: verdict });
   } catch (e) {
     console.error(e);
     return json({ error: String(e) }, 500);

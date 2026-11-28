@@ -288,6 +288,13 @@
       "when": 1795452612035,
       "tag": "0040_harden_badge_points_and_beta_check",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1795884535418,
+      "tag": "0041_harden_badges_waitlist_place_lists",
+      "breakpoints": true
     }
   ]
 }

@@ -6,8 +6,8 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export const JOURNAL_MEDIA_BUCKET = "journal-media";
-/** Lifetime of a signed media link, in seconds (2 hours). */
-export const JOURNAL_MEDIA_TTL = 60 * 60 * 2;
+/** Lifetime of a signed media link, in seconds (5 minutes): unsharing cuts access fast. */
+export const JOURNAL_MEDIA_TTL = 60 * 5;
 
 const SIGN_MARKER = `/storage/v1/object/sign/${JOURNAL_MEDIA_BUCKET}/`;
 
